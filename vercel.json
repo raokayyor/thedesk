@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/analyse-mot.js": {
+      "maxDuration": 60
+    }
+  }
+}
