@@ -872,7 +872,7 @@ select.fi{background:transparent;cursor:pointer;}
   <div class="dlbl">How you score across 6 dimensions</div>
   <div id="rDm" style="margin-bottom:20px;"></div>
   <div class="pcard">
-    <div class="ptitle">What is holding the application back</div>
+    <div class="ptitle">The 3 things that will cost you this application</div>
     <div id="rPr"></div>
   </div>
   <div id="rSignalNoticed" style="display:none;font-size:11px;font-weight:500;color:var(--terra);margin:10px 0 0;"></div>
@@ -1937,7 +1937,9 @@ function showR(r){
     var of=document.getElementById('rFirmOffices'); if(of) of.textContent=fd.offices;
   }
   var bandLabel = r.band || '';
-  document.getElementById('rSc').innerHTML=Math.round(r.overallScore)+'<span class="scdenom"> /100</span>';
+  var scoreEl=document.getElementById('rSc');
+  scoreEl.innerHTML=Math.round(r.overallScore)+'<span class="scdenom"> /100</span>';
+  scoreEl.style.color=(sc<70)?'#DC2626':'inherit';
   // Show band as primary label
   var bandPre = document.getElementById('rBandPre');
   if(bandPre) bandPre.textContent='Current Positioning: '+bandLabel;
@@ -1963,40 +1965,68 @@ function showR(r){
   }
 
   var sc=r.overallScore, bn=document.getElementById('rBn');
+  var isWeak=sc<50, isBorderline=sc>=50&&sc<70;
+  var verdictBg=isWeak?'rgba(220,38,38,0.08)':isBorderline?'rgba(220,38,38,0.05)':'rgba(34,197,94,0.06)';
+  var verdictBorder=isWeak?'#FECACA':isBorderline?'#FED7D7':'rgba(34,197,94,0.2)';
+  var verdictTextCol=isWeak?'#7F1D1D':isBorderline?'#7F1D1D':'#14532D';
   var compText;
-  if(sc>=80){compText='This profile reads as strong against the screening signals we look for in this route.';}
-  else if(sc>=70){compText='This profile reads as competitive against the screening signals we look for in this route, though not yet a standout.';}
-  else if(sc>=50){compText='This profile currently reads as below where the screening signals we look for in this route would expect.';}
-  else{compText='At this stage, the profile would likely struggle against the screening signals we look for in this route.';}
-  bn.innerHTML='<div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;">Our read · The Desk\'s route-specific screening framework</div>'
-    +'<div style="font-family:Fraunces,serif;font-size:15px;font-weight:400;color:var(--ink);margin-bottom:5px;">'+compText+'</div>';
+  if(sc>=80){compText='This profile reads as strong. The evidence is in the right place and the direction is clear. There are still improvements to make, but this will get through the first screen.';}
+  else if(sc>=70){compText='This profile is competitive but not yet a standout. A screener would likely progress it — but only if the right details land in the first 20 seconds. Right now, they might not.';}
+  else if(sc>=50){compText='As it stands, a screener would likely move on before the second page. The ingredients are here but they are not working hard enough. Submitting this unchanged is a wasted application.';}
+  else{compText='This profile would not survive the first screen in its current form. The evidence exists but the application is not making it visible. This is fixable — but not after you submit.';}
+  bn.style.cssText='background:'+verdictBg+';border:0.5px solid '+verdictBorder+';border-radius:12px;padding:14px 16px;margin-bottom:20px;';
+  bn.innerHTML='<div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:'+verdictTextCol+';margin-bottom:6px;">The Desk verdict</div>'
+    +'<div style="font-size:13px;font-weight:400;color:'+verdictTextCol+';line-height:1.65;">'+compText+'</div>';
 
   var dm=document.getElementById('rDm'); dm.innerHTML='';
   (r.dimensions||[]).forEach(function(d,di){
-    var cl=d.score>=70?'hi':d.score>=50?'mi':'lo';
-    var band=d.score>=70?'Strong':d.score>=50?'Developing':'Weak';
-    var fixHtml=d.fix
-      ?'<div class="dim-right"><span class="dim-fix-label">The fix</span><span class="dim-fix-text">'+d.fix+'</span><div class="dim-unlock-pill" onclick="scrollToUpgrade()">Unlock with Full Cycle →</div></div>'
-      :'<div class="dim-right"><span class="dim-fix-text" style="color:var(--ink40);font-style:normal;display:block;margin-bottom:10px;">Detail available with Full Cycle.</span><div class="dim-unlock-pill" onclick="scrollToUpgrade()">Unlock with Full Cycle →</div></div>';
-    var div=document.createElement('div'); div.className='dim';
-    div.innerHTML='<div class="dim-left">'
-      +'<div class="dimhd"><div class="dimname">'+d.name+'</div><div class="dimscore '+cl+'">'+band+'</div></div>'
-      +'<div class="dbar"><div class="dfill '+cl+'" data-w="'+d.score+'" style="width:0%"></div></div>'
-      +'<div class="dnote">'+d.note+'</div>'
+    var scoreCol=d.score>=70?'#16A34A':d.score>=50?'#CA8A04':'#DC2626';
+    var band=d.score>=70?'Strong':d.score>=50?'Borderline':'Weak';
+    var badgeBg=d.score>=70?'#DCFCE7':d.score>=50?'#FEF9C3':'#FEE2E2';
+    var badgeCol=d.score>=70?'#15803D':d.score>=50?'#A16207':'#991B1B';
+    var isLow=d.score<50;
+    var fix=d.fix||'The specific fix for this dimension is available in Full Cycle.';
+    var words=fix.split(' ');
+    var splitAt=Math.min(9,Math.floor(words.length*0.35));
+    var fixPreview=words.slice(0,splitAt).join(' ');
+    var fixBlurred=words.slice(splitAt).join(' ');
+    var fixRowBg=isLow?'background:rgba(254,226,226,0.4);border:0.5px solid #FECACA;':'background:var(--warm);';
+    var lockCol=isLow?'#DC2626':'var(--ink40)';
+    var lockBorder=isLow?'#FECACA':'var(--ink08)';
+    var div=document.createElement('div');
+    div.style.cssText='padding:14px 0;border-bottom:0.5px solid var(--ink08);';
+    div.innerHTML=
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+        +'<span style="font-size:12px;font-weight:600;color:var(--ink);">'+(d.name||'')+'</span>'
+        +'<div style="display:flex;align-items:center;gap:8px;">'
+          +'<div style="width:70px;height:4px;background:var(--ink08);border-radius:2px;"><div style="height:4px;background:'+scoreCol+';border-radius:2px;width:'+Math.round(d.score)+'%;"></div></div>'
+          +'<span style="font-size:11px;color:var(--ink40);">'+Math.round(d.score)+'</span>'
+          +'<span style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:'+badgeBg+';color:'+badgeCol+';">'+band+'</span>'
+        +'</div>'
       +'</div>'
-      +fixHtml;
+      +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;">'+(d.note||'')+'</div>'
+      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:10px 48px 10px 12px;">'
+        +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">'
+          +fixPreview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+fixBlurred+'</span>'
+        +'</div>'
+        +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid '+lockBorder+';background:var(--warm);">'
+          +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="'+lockCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+          +'<span style="font-size:10px;color:'+lockCol+';font-weight:500;">Full Cycle</span>'
+        +'</div>'
+      +'</div>';
     dm.appendChild(div);
   });
-
-  setTimeout(function(){
-    dm.querySelectorAll('.dfill').forEach(function(el){el.style.width=el.dataset.w+'%';});
-  },150);
 
   pickT('cy');
   var pr=document.getElementById('rPr'); pr.innerHTML='';
   (r.priorities||[]).forEach(function(p,i){
-    var div=document.createElement('div'); div.className='pri';
-    div.innerHTML='<div class="prin">'+(i+1)+'.</div><div class="prit">'+p+'</div>';
+    var priCol=i===0?'#DC2626':'#D97706';
+    var priBg=i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)';
+    var priBorder=i===0?'#FECACA':'#FDE68A';
+    var div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:'+priBg+';border:0.5px solid '+priBorder+';border-radius:8px;margin-bottom:6px;';
+    div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
+      +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+p+'</span>';
     pr.appendChild(div);
   });
 
