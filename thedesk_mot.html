@@ -877,18 +877,13 @@ select.fi{background:transparent;cursor:pointer;}
   </div>
   <div id="rSignalNoticed" style="display:none;font-size:11px;font-weight:500;color:var(--terra);margin:10px 0 0;"></div>
 
-  <div id="rWastedEvidence" style="display:none;margin-top:14px;padding:12px 14px;background:var(--warm);border-radius:8px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink40);margin-bottom:4px;">Evidence currently being wasted</div>
-    <div id="rWastedEvidenceText" style="font-size:12.5px;font-weight:300;color:var(--ink);line-height:1.55;"></div>
+  <div id="rCompetencies" style="display:none;margin-top:20px;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:14px 16px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">Competency profile</div>
+    <div id="rCompList"></div>
   </div>
-
-  <div id="rMissedOpportunity" style="display:none;margin-top:10px;padding:12px 14px;background:var(--warm);border-radius:8px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink40);margin-bottom:4px;">Missed opportunity</div>
-    <div id="rMissedOpportunityText" style="font-size:12.5px;font-weight:300;color:var(--ink);line-height:1.55;"></div>
-  </div>
-
-  <div id="rLikelyRejection" style="display:none;margin-top:14px;padding:10px 0;border-top:0.5px solid var(--ink08);">
-    <span style="font-size:11px;font-weight:300;color:var(--ink40);">Likely rejection reason if unchanged: </span><span id="rLikelyRejectionText" style="font-size:11px;font-weight:500;color:var(--ink);"></span>
+  <div id="rLeavingOnTable" style="display:none;margin-top:20px;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:14px 16px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What this application is leaving on the table</div>
+    <div id="rLeavingList"></div>
   </div>
 
   <div id="rBeforeSubmit" style="display:none;margin-top:18px;padding:14px 16px;background:#1A1714;border-radius:10px;">
@@ -904,7 +899,7 @@ select.fi{background:transparent;cursor:pointer;}
     <a id="sampleReportLink" href="#" target="_blank" rel="noopener" style="display:inline-block;font-family:'Fraunces',serif;font-size:15px;font-weight:400;color:#F7F3EE;background:var(--ink);text-decoration:none;padding:13px 26px;border-radius:100px;">Download sample report →</a>
   </div>
 
-  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="rUntappedAssets" style="display:none;margin-top:20px;"><div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What you might be leaving on the table</div><div id="rUntappedList"></div></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
+  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
     <div class="uey">Before you submit</div>
     <div class="utitle" id="utitleEl">Fix the application <em>before it goes in.</em></div>
     <div class="udesc" id="udesc">A pre-submission review focused on what could cost you the first screen: which evidence to lead with, what to cut, where the CV sounds generic, and how to frame your strongest experience for this specific role.</div>
@@ -2009,33 +2004,6 @@ function showR(r){
     dm.appendChild(div);
   });
 
-  // Untapped assets
-  var uaBox=document.getElementById('rUntappedAssets');
-  var uaList=document.getElementById('rUntappedList');
-  if(uaBox && uaList && Array.isArray(r.untappedAssets) && r.untappedAssets.length>0){
-    uaBox.style.display='block';
-    uaList.innerHTML='';
-    r.untappedAssets.forEach(function(ua){
-      var words=(ua.howToFrame||'').split(' ');
-      var splitAt=Math.min(6,Math.floor(words.length*0.3));
-      var preview=words.slice(0,splitAt).join(' ');
-      var blurred=words.slice(splitAt).join(' ');
-      var div=document.createElement('div');
-      div.style.cssText='padding:12px 0;border-bottom:0.5px solid var(--ink08);';
-      div.innerHTML='<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:5px;">'+ua.asset+'</div>'
-        +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:8px;">'+ua.why+'</div>'
-        +'<div style="position:relative;background:var(--warm);border-radius:8px;padding:10px 48px 10px 12px;">'
-          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">'
-            +preview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span>'
-          +'</div>'
-          +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--warm);">'
-            +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-            +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
-          +'</div>'
-        +'</div>';
-      uaList.appendChild(div);
-    });
-  } else if(uaBox){ uaBox.style.display='none'; }
 
   pickT('cy');
   var pr=document.getElementById('rPr'); pr.innerHTML='';
@@ -2044,9 +2012,23 @@ function showR(r){
     var priBg=i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)';
     var priBorder=i===0?'#FECACA':'#FDE68A';
     var div=document.createElement('div');
-    div.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:'+priBg+';border:0.5px solid '+priBorder+';border-radius:8px;margin-bottom:6px;';
-    div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
-      +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+p+'</span>';
+    div.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:'+priBg+';border:0.5px solid '+priBorder+';border-radius:8px;margin-bottom:6px;position:relative;overflow:hidden;';
+    if(i===0){
+      div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
+        +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+p+'</span>';
+    } else {
+      var words=p.split(' ');
+      var preview=words.slice(0,6).join(' ');
+      var blurred=words.slice(6).join(' ');
+      div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
+        +'<div style="flex:1;padding-right:80px;">'
+          +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+preview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span></span>'
+        +'</div>'
+        +'<div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+priBorder+';background:'+priBg+';">'
+          +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="'+priCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+          +'<span style="font-size:10px;color:'+priCol+';font-weight:500;">Full Cycle</span>'
+        +'</div>';
+    }
     pr.appendChild(div);
   });
 
@@ -2074,28 +2056,77 @@ function showR(r){
     } else { sigEl.style.display='none'; }
   }
 
-  // Evidence currently being wasted
-  var weBox=document.getElementById('rWastedEvidence');
-  var weText=document.getElementById('rWastedEvidenceText');
-  if(weBox && weText){
-    if(r.wastedEvidence){ weBox.style.display='block'; weText.textContent=r.wastedEvidence; }
-    else { weBox.style.display='none'; }
-  }
+  // Competencies section
+  var compBox=document.getElementById('rCompetencies');
+  var compList=document.getElementById('rCompList');
+  if(compBox && compList && Array.isArray(r.competencies) && r.competencies.length>0){
+    compBox.style.display='block';
+    compList.innerHTML='';
+    r.competencies.forEach(function(c,idx){
+      var hasEvidence=c.evidenced && !c.evidenced.toLowerCase().startsWith('not evidenced');
+      var dotCol=hasEvidence?'#16A34A':'#DC2626';
+      var isLast=idx===r.competencies.length-1;
+      var div=document.createElement('div');
+      div.style.cssText='display:grid;grid-template-columns:120px 1fr;gap:8px 14px;padding:10px 0;align-items:start;'+(isLast?'':'border-bottom:0.5px solid var(--ink08);');
+      var fixWords=(c.fix||'').split(' ');
+      var fixPreview=fixWords.slice(0,5).join(' ');
+      var fixBlurred=fixWords.slice(5).join(' ');
+      div.innerHTML=
+        '<div style="font-size:11px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;">'
+          +'<span style="width:7px;height:7px;border-radius:50%;background:'+dotCol+';flex-shrink:0;display:inline-block;"></span>'
+          +c.name
+        +'</div>'
+        +'<div>'
+          +'<div style="font-size:12px;font-weight:300;color:var(--ink60);line-height:1.5;margin-bottom:4px;">'+c.evidenced+'</div>'
+          +'<div style="font-size:11.5px;font-weight:300;color:var(--terra);line-height:1.5;margin-bottom:6px;">'+c.gap+'</div>'
+          +'<div style="position:relative;background:var(--cream);border-radius:6px;padding:6px 48px 6px 10px;">'
+            +'<span style="font-size:11px;font-weight:300;color:var(--ink);">'+fixPreview+'</span>'
+            +' <span style="font-size:11px;filter:blur(4px);user-select:none;pointer-events:none;">'+fixBlurred+'</span>'
+            +'<div style="position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:3px 6px;border-radius:5px;border:0.5px solid var(--ink08);background:var(--warm);">'
+              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
+            +'</div>'
+          +'</div>'
+        +'</div>';
+      compList.appendChild(div);
+    });
+  } else if(compBox){ compBox.style.display='none'; }
 
-  // Missed opportunity
-  var moBox=document.getElementById('rMissedOpportunity');
-  var moText=document.getElementById('rMissedOpportunityText');
-  if(moBox && moText){
-    if(r.missedOpportunity){ moBox.style.display='block'; moText.textContent=r.missedOpportunity; }
-    else { moBox.style.display='none'; }
-  }
-
-  // Likely rejection reason
-  var lrBox=document.getElementById('rLikelyRejection');
-  var lrText=document.getElementById('rLikelyRejectionText');
-  if(lrBox && lrText){
-    if(r.likelyRejectionReason){ lrBox.style.display='block'; lrText.textContent=r.likelyRejectionReason; }
-    else { lrBox.style.display='none'; }
+  // Consolidated "leaving on the table" section
+  var lotBox=document.getElementById('rLeavingOnTable');
+  var lotList=document.getElementById('rLeavingList');
+  if(lotBox && lotList){
+    var items=[];
+    if(r.wastedEvidence) items.push({label:'Evidence being wasted',text:r.wastedEvidence});
+    if(r.missedOpportunity) items.push({label:'Missed opportunity',text:r.missedOpportunity});
+    if(Array.isArray(r.untappedAssets) && r.untappedAssets.length>0){
+      r.untappedAssets.forEach(function(ua){
+        items.push({label:ua.asset,text:ua.why,blur:ua.howToFrame});
+      });
+    }
+    if(items.length>0){
+      lotBox.style.display='block';
+      lotList.innerHTML='';
+      items.forEach(function(item,idx){
+        var isLast=idx===items.length-1;
+        var div=document.createElement('div');
+        div.style.cssText='padding:10px 0;'+(isLast?'':'border-bottom:0.5px solid var(--ink08);');
+        var words=(item.text||'').split(' ');
+        var preview=words.slice(0,10).join(' ');
+        var blurred=words.slice(10).join(' ');
+        var blurHtml=blurred?(' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span>'):'';
+        div.innerHTML='<div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);margin-bottom:4px;">'+item.label+'</div>'
+          +'<div style="font-size:12.5px;font-weight:300;color:var(--ink);line-height:1.55;margin-bottom:6px;">'+preview+blurHtml+'</div>'
+          +(item.blur?'<div style="position:relative;background:var(--cream);border-radius:6px;padding:8px 48px 8px 10px;">'
+            +'<span style="font-size:11px;font-weight:300;color:var(--ink60);filter:blur(4px);user-select:none;">'+item.blur+'</span>'
+            +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:5px;border:0.5px solid var(--ink08);background:var(--warm);">'
+              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
+            +'</div>'
+          +'</div>':'');
+        lotList.appendChild(div);
+      });
+    } else { lotBox.style.display='none'; }
   }
 
   // Before you submit — consequence-led bridge into the paid card
