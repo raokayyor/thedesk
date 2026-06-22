@@ -31,12 +31,12 @@ const FIRM_PROCESS = {
   "Goldman Sachs": {
     numericalStage: null,
     aiInterviewStage: "HireVue",
-    distinctiveFact: "Goldman's HireVue is AI-scored before a human sees it. The AI measures finance vocabulary density, answer structure, filler word frequency (um, like, basically), and energy. Most candidates look at their own face on screen instead of the camera — this registers as lack of eye contact. Superday interviewers are trained to push hard on generic why-Goldman answers and will not let a vague motivation answer survive. A 57/100 technical score at this firm is not borderline — it is a likely filter-out before a human reads the CV.",
+    distinctiveFact: "Goldman's HireVue is evaluated by AI across verbal and non-verbal delivery before a human reviews it, and Superday interviewers are trained to push hard on generic \"why Goldman\" answers specifically.",
   },
   "JP Morgan": {
     numericalStage: "Pymetrics",
     aiInterviewStage: "HireVue",
-    distinctiveFact: "JPMorgan screens with Pymetrics before HireVue — a gamified neuroscience assessment of cognitive and behavioural traits including risk tolerance, attention and memory, not a traditional numerical reasoning test. Pymetrics is not widely trainable in the same way SHL is, but familiarity with the format and understanding what each game actually measures significantly reduces anxiety and error rate. After Pymetrics, HireVue video scoring at JPMorgan follows similar patterns to Goldman — structure, finance vocabulary, energy and filler word frequency are all signals.",
+    distinctiveFact: "JPMorgan screens with Pymetrics before HireVue — a gamified neuroscience assessment of cognitive and behavioural traits, not a traditional numerical reasoning test.",
   },
   "Barclays": {
     numericalStage: "SHL Verify numerical reasoning",
@@ -225,7 +225,7 @@ function parseMultipart(req) {
 async function callClaude(prompt) {
   const response = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 8000,
+    max_tokens: 4000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
@@ -233,12 +233,7 @@ async function callClaude(prompt) {
 
   const text    = response.content?.[0]?.text || "";
   const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
-  try {
-    return JSON.parse(cleaned);
-  } catch(e) {
-    console.error("JSON parse failed. Raw output length:", text.length, "First 500 chars:", text.slice(0,500));
-    throw e;
-  }
+  return JSON.parse(cleaned);
 }
 
 // ── Result validation ─────────────────────────────────────────────────────────
@@ -270,7 +265,6 @@ function isValidResult(result, cvRequired) {
     if (!result.specificSignalNoticed || typeof result.specificSignalNoticed !== "string") return false;
   }
 
-  // untappedAssets is best-effort — never block on it
   return true;
 }
 
@@ -381,7 +375,7 @@ CRITICAL: never use AM language (thesis, variant view, downside risk) for an IBD
 
 GENERAL FINANCE / CONSULTING / AUDIT / TAX / RISK — if the track is General Finance (i.e. not IBD, S&T or AM), do not force IBD-style transaction language onto the diagnostic. Use broader language about commercial credibility, direction and route-specific evidence instead, and do not claim the assessment is a role-specific consulting, audit, tax or risk evaluation — it is a general application-readiness read.
 
-CONSEQUENCE PSYCHOLOGY — the result should not just say "here is what is weak." It should say "this is exactly how this weakness costs you, at this stage, with this firm, and this is what fixing it actually involves." The student should come away thinking "I need to fix this before I submit" — not mild concern, not panic, just clear-eyed sober consequence. Where the score is below 65 on any dimension, name the specific stage at the target firm where that weakness bites — HireVue numerical filter, CV sieve in under 30 seconds, Superday push-back on motivation. Be direct about what happens: "A screener spending 20 seconds on this CV will not find a reason to move forward." "This is a likely filter-out before a human reads your name." "Submitting this unchanged is a wasted application at this firm." Weave in, where natural: most students get one application per firm per cycle; undersold evidence is usually only discovered after the rejection; the fix is specific and teachable but only useful before submission. On extracurriculars and personal signals: if something personal is found on the CV — a sport, a part-time job, an unusual project — name it directly in the diagnostic. The more personal and specific the reference, the more the student believes the tool actually read their application. Generic diagnostics that could apply to any candidate fail this test entirely. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "beat the competition", "limited time", "don't miss out", "life-changing", "supercharge", "elite secrets". Prefer grounded, practitioner-voiced phrases: "first screen", "before submission", "one application per firm per cycle", "the CV is not making the evidence visible", "asks the screener to infer too much", "fixable, but a wasted application if submitted unchanged".
+CONSEQUENCE PSYCHOLOGY — the result should not just say "here is what is weak." It should say "this is how the weakness could cost you the first screen, and this is the part a deeper review would fix." The student should come away thinking "this is fixable, but I should not submit it like this" — not panic, not hopelessness, just sober consequence. Weave in, where natural: most students get one application per firm per cycle; undersold evidence is usually only discovered after the rejection, not before; the issue is fixable but costly if ignored. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "beat the competition", "limited time", "don't miss out", "life-changing", "supercharge", "elite secrets". Prefer grounded phrases: "first screen", "before submission", "one application per firm per cycle", "evidence being missed", "asks the screener to infer too much", "fixable, but costly if submitted unchanged".
 
 TRACK: ${track}
 Weights: ${weights}
@@ -456,12 +450,6 @@ SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
 Positioning: quantified achievements +15, clear role relevance +15, commercial framing +10, specific achievements +10, good hierarchy +10, generic descriptions -10, no measurable outcomes -8, weak opening -5, unclear motivation -8, too broad -8.
 
-ECA AND PERSONAL SIGNALS — score within Experience Relevance. Name specific items found; never ignore them:
-Team sport + leadership role (captain/vice-captain): +12, strong signal. Individual/endurance sport (rowing, marathon, triathlon): +8. Competitive strategic activity (chess, debate, MUN): +8 to Technical or Commercial. National/county level sport: +10 additional. Society leadership (president, treasurer, committee): +10 finance society, +8 other. Part-time work during studies (retail, bar, tutoring, hospitality): +6, always name it — signals time management and self-sufficiency. Volunteering with responsibility: +8. No ECA or work experience at all: -6, note it explicitly as a gap.
-
-FINANCE INTEREST SIGNALS — score within Commercial Awareness. Flag absence explicitly for S&T/AM:
-Investment society with named role: +10 Experience +8 Commercial. Named stock pitch (company): +15 Commercial +10 Experience. Student-managed fund: +18 Commercial. BMC certificate: +6 Technical. CFA Level 1: +8 Technical. Modelling course/bootcamp: +8 Technical. Personal trading account: +6 Commercial. FT/Economist/Bloomberg reading evidenced: +5 Commercial. No finance interest evidence beyond stated target: flag as gap — medium risk IBD, high risk S&T/AM.
-
 FEEDBACK TRIGGERS — check each and apply relevant:
 T1: Academic>=75 AND Positioning<60 — translation gap not grade
 T2: Experience>=65 AND Positioning<55 — interchangeable presentation
@@ -485,9 +473,6 @@ REQUIRED PHRASES: "The application currently reads...", "A screener is likely to
 CV REFERENCE RULE — CRITICAL: output MUST reference at least one named specific item: actual employer, society, project title, module name, stock pitch company, role title or qualification. Generic references such as "your finance experience" or "your project" are not acceptable. If no named detail can be extracted, state that explicitly rather than fabricating.
 
 FREE vs PAID: Free layer diagnoses clearly and identifies the main weaknesses but does NOT give the tactical fix. Candidate should think "I understand the problem" not "I can fix it myself." The fix field previews what fixing involves without giving how.
-
-UNTAPPED ASSETS — infer 2-3 genuine assets the candidate likely has but hasn't used well. Output as untappedAssets array. Each needs: asset (short name), why (2-3 sentences free, practitioner-voiced, specific to their profile and target firm — not generic), howToFrame (1-2 sentences of concrete advice — this is blurred/paid).
-Consider: language skills beyond GCSE (doors it opens at their target firm); non-core university angle (what the CV needs to do differently because of it); non-core subject bridge (explicit link to target track); non-linear path/gap year (how to frame as deliberate not absent); part-time work during studies (resilience and time management signal being buried); no finance extracurriculars (specific additions possible before deadline); sport not yet positioned as leadership/resilience evidence. Only include what's genuinely inferable from their actual profile — no generic filler.
 
 QUALITY CONTROL — before finalising check:
 1. Does output reference the selected track? If not, rewrite.
@@ -543,7 +528,6 @@ OUTPUT — respond ONLY with this JSON, no markdown, no preamble:
 "deeperReviewFocus":"[Same content as paidHook — track-specific, names the same detail, explains the type of fix without giving the actual rewrite.]",
 "paidHook":"[1 sentence — what a deep CV review would specifically focus on for THIS candidate, referencing the SAME named CV detail as the diagnostic. Must explain the type of fix needed without giving the actual rewritten line. Generic phrasing like \\"reframing the experience section around analytical ownership\\" with no named detail FAILS — it must read like \\"A deeper review would focus on rewriting the [named detail] around thesis, variant view, valuation and downside risk.\\"]",
 "namedCvDetails":["[list each named item found in CV text: employer names, society names, project titles, module names, stock pitch companies, role titles, qualifications, A-level subjects.]"],
-"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]",
-"untappedAssets":[{"asset":"[short name of the untapped asset, e.g. Language skills, Non-core university angle, Non-linear path]","why":"[2-3 sentences — practitioner-voiced, specific to this candidate. Visible free. Explains why this matters for their specific track and target firm. E.g. for language skills: specific doors it opens at their target firm. For non-core uni: exactly what the gap means and why the rest of the application needs to work harder. Never generic.]","howToFrame":"[1-2 sentences of specific framing advice — this is the paid content, will be blurred on the free result. Concrete and actionable. E.g. for non-core uni: which signals compensate, how to lead with evidence not institution. For gap year: how to position as deliberate choice with named output.]"}]
+"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]"
 }`;
 }
