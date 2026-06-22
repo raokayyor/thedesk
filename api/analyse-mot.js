@@ -212,13 +212,13 @@ async function callClaude(prompt) {
   console.time("model-call");
   const modelCall = anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 8000,
+    max_tokens: 4000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
   });
   const timeout = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error("MODEL_TIMEOUT")), 50000)
+    setTimeout(() => reject(new Error("MODEL_TIMEOUT")), 45000)
   );
   const response = await Promise.race([modelCall, timeout]);
   console.timeEnd("model-call");
