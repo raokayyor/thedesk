@@ -13,6 +13,8 @@
 //   npm install @anthropic-ai/sdk pdf-parse mammoth formidable
 // ─────────────────────────────────────────────────────────────────────────────
 
+export const maxDuration = 60; // Vercel Pro — 60 second function timeout
+
 import Anthropic from "@anthropic-ai/sdk";
 import formidable from "formidable";
 import fs from "fs";
@@ -81,6 +83,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  console.time("analyse-mot-total");
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "METHOD_NOT_ALLOWED", message: "Use POST." });
@@ -131,38 +134,17 @@ export default async function handler(req, res) {
     const prompt = buildPrompt(profile, quiz, cvText);
     let result   = await callClaude(prompt);
 
-    // ── Retry once if named CV details missing ────────────────────────────
-    if (!isValidResult(result, true)) {
-      console.log("First attempt missing named CV details — retrying");
-      const retryPrompt = buildPrompt(profile, quiz, cvText) + `
-
-RETRY INSTRUCTION — YOUR PREVIOUS RESPONSE WAS REJECTED:
-Your output did not reference at least one named CV detail.
-This is mandatory. Re-read the CANDIDATE CV TEXT above carefully.
-Extract and reference at least one of:
-- A named employer (e.g. Goldman Sachs, Tesco, boutique corporate finance firm)
-- A named society (e.g. Bristol Finance Society, Warwick Trading Society)
-- A named project (e.g. Python yield curve project, Diageo stock pitch)
-- A named module (e.g. Corporate Finance, Valuation, Econometrics)
-- A named role or internship title
-- An A-level subject
-
-Do NOT use generic phrases like "your finance experience" or "your project".
-Return ONLY valid JSON matching the exact schema. No markdown. No explanation.`;
-
-      result = await callClaude(retryPrompt);
-    }
-
-    // ── Final validation ──────────────────────────────────────────────────
-    if (!isValidResult(result, true)) {
+    // ── Validation (no retry — keeps calls within 60s timeout) ─────────
+    if (!isValidResult(result, false)) {
       return res.status(422).json({
         success: false,
         source: "error",
-        error: "NO_NAMED_CV_DETAIL",
-        message: "We could not generate a sufficiently specific CV read. Please upload a clearer CV, or paste your CV text directly and try again.",
+        error: "INVALID_RESULT",
+        message: "We could not generate a complete assessment. Please try again.",
       });
     }
 
+        console.timeEnd("analyse-mot-total");
     return res.status(200).json({
       success: true,
       source: "claude",
@@ -174,6 +156,10 @@ Return ONLY valid JSON matching the exact schema. No markdown. No explanation.`;
   } catch (err) {
     console.error("analyse-mot error:", err);
 
+    console.timeEnd("analyse-mot-total");
+    if (err.message === "MODEL_TIMEOUT") {
+      return res.status(504).json({ success: false, source: "error", error: "MODEL_TIMEOUT", message: "The assessment took too long to generate. Please try again." });
+    }
     if (err.message?.includes("API key") || err.status === 401) {
       return res.status(500).json({ success: false, source: "error", error: "AUTH_FAILED", message: "Server configuration error. Please contact support." });
     }
@@ -223,17 +209,27 @@ function parseMultipart(req) {
 
 // ── Claude API call ───────────────────────────────────────────────────────────
 async function callClaude(prompt) {
-  const response = await anthropic.messages.create({
+  console.time("model-call");
+  const modelCall = anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 8000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
   });
-
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("MODEL_TIMEOUT")), 50000)
+  );
+  const response = await Promise.race([modelCall, timeout]);
+  console.timeEnd("model-call");
   const text    = response.content?.[0]?.text || "";
   const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
-  return JSON.parse(cleaned);
+  try {
+    return JSON.parse(cleaned);
+  } catch(e) {
+    console.error("JSON parse failed, length:", text.length, "preview:", text.slice(0,200));
+    throw e;
+  }
 }
 
 // ── Result validation ─────────────────────────────────────────────────────────
