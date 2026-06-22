@@ -904,7 +904,7 @@ select.fi{background:transparent;cursor:pointer;}
     <a id="sampleReportLink" href="#" target="_blank" rel="noopener" style="display:inline-block;font-family:'Fraunces',serif;font-size:15px;font-weight:400;color:#F7F3EE;background:var(--ink);text-decoration:none;padding:13px 26px;border-radius:100px;">Download sample report →</a>
   </div>
 
-  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="rCvDetails" style="display:none;font-size:11px;font-weight:300;color:var(--ink);margin-bottom:8px;padding:8px 0;border-top:0.5px solid var(--ink08);"></div><div id="rUntappedAssets" style="display:none;margin-top:20px;"><div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What you might be leaving on the table</div><div id="rUntappedList"></div></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
+  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="rUntappedAssets" style="display:none;margin-top:20px;"><div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What you might be leaving on the table</div><div id="rUntappedList"></div></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
     <div class="uey">Before you submit</div>
     <div class="utitle" id="utitleEl">Fix the application <em>before it goes in.</em></div>
     <div class="udesc" id="udesc">A pre-submission review focused on what could cost you the first screen: which evidence to lead with, what to cut, where the CV sounds generic, and how to frame your strongest experience for this specific role.</div>
@@ -2063,18 +2063,7 @@ function showR(r){
     } else { srcBadge.style.display='none'; }
   }
 
-  // Named CV details credibility line
-  var cvDet=document.getElementById('rCvDetails');
-  if(cvDet){
-    var named=(r.namedCvDetails||r.namedCvDetailsFound||[]).filter(function(x){return x&&typeof x==='string'&&x.length>4;});
-    if(named.length>0){
-      cvDet.style.display='block';
-      cvDet.innerHTML='<span style="color:var(--ink40);">CV signals referenced: </span>'+named.join(', ');
-    } else if(D.cvB&&r.cvSpecificityWarning){
-      cvDet.style.display='block';
-      cvDet.innerHTML='<span style="color:var(--ink40);font-style:italic;">'+r.cvSpecificityWarning+'</span>';
-    } else { cvDet.style.display='none'; }
-  }
+
 
   // Specific signal noticed — reinforces the CV was actually read
   var sigEl=document.getElementById('rSignalNoticed');
