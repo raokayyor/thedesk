@@ -450,8 +450,9 @@ SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
 Positioning: quantified achievements +15, clear role relevance +15, commercial framing +10, specific achievements +10, good hierarchy +10, generic descriptions -10, no measurable outcomes -8, weak opening -5, unclear motivation -8, too broad -8.
 
-ECA AND PERSONAL SIGNALS — score within Experience Relevance. Always name specific items; never ignore them:
-Team sport + leadership role (captain/vice-captain): +12. Individual/endurance sport (rowing, marathon, triathlon): +8. Competitive strategic activity (chess, debate, MUN): +8. Society leadership (president, treasurer, committee): +10 finance society, +8 other. Part-time work during studies (retail, bar, tutoring, hospitality): +6, always name it — signals time management and self-sufficiency. Volunteering with responsibility: +8. No ECA or work experience: -6, note it explicitly.
+ECA AND PERSONAL SIGNALS — MANDATORY: scan the CV for these and name them explicitly in Experience Relevance note and fix. Never skip them even if finance evidence exists.
+Team sport + named leadership role (captain/vice-captain/manager): +12 to Experience — name the specific sport and role in the note. Individual/endurance sport (rowing, marathon, triathlon, cycling): +8. Competitive strategic activity (chess, debate, MUN, moot): +8. Society leadership (president, treasurer, committee, editor): +10 finance society, +8 other — name the society and role. Part-time work during studies (retail, bar, café, tutoring, lifeguarding, delivery): +6 — ALWAYS name the employer and role, state that it was alongside a full degree. Volunteering with named responsibility: +8. Music performance (Grade 8+, ensemble): +6. No ECA or work experience at all: -6 and state this explicitly as a gap in the note.
+CRITICAL: if a sport, part-time job, society, or hobby appears anywhere in the CV text, it MUST appear by name in the Experience Relevance note. Ignoring ECAs is a quality failure.
 
 FINANCE INTEREST SIGNALS — score within Commercial Awareness. Flag absence for S&T/AM:
 Investment society with named role: +10 Exp +8 Comm. Named stock pitch: +15 Comm +10 Exp. Student fund: +18 Comm. BMC certificate: +6 Tech. CFA Level 1: +8 Tech. Modelling bootcamp: +8 Tech. Personal trading account: +6 Comm. FT/Bloomberg reading evidenced: +5 Comm. No finance interest evidence: flag as gap — medium risk IBD, high risk S&T/AM.
@@ -479,6 +480,16 @@ REQUIRED PHRASES: "The application currently reads...", "A screener is likely to
 CV REFERENCE RULE — CRITICAL: output MUST reference at least one named specific item: actual employer, society, project title, module name, stock pitch company, role title or qualification. Generic references such as "your finance experience" or "your project" are not acceptable. If no named detail can be extracted, state that explicitly rather than fabricating.
 
 FREE vs PAID: Free layer diagnoses clearly and identifies the main weaknesses but does NOT give the tactical fix. Candidate should think "I understand the problem" not "I can fix it myself." The fix field previews what fixing involves without giving how.
+
+COMPETENCIES — output a competencies array covering all 7 of these core banking competencies. For each, assess the CV for evidence and flag gaps:
+1. Leadership — named leadership role (captain, president, committee lead, project lead, team manager). Evidence: name the specific role. Gap: if only individual roles exist with no team responsibility.
+2. Teamwork — group projects, team sports, collaborative work. Evidence: name the context. Gap: if everything on the CV reads as individual achievement.
+3. Commercial Acumen — finance interest evidence, market awareness, business understanding, customer-facing roles. Evidence: name investment society/stock pitch/FT reading/commercial role. Gap: if no commercial signal beyond the stated target.
+4. Analytical Thinking — quantitative modules, modelling, data work, problem-solving evidence, engineering/maths/science degree. Evidence: name the specific module, project or degree strand. Gap: if no quantitative or structured reasoning evidence.
+5. Communication — presentation, writing, debate, client-facing or public-facing role. Evidence: name the specific context. Gap: if no evidence of structured communication.
+6. Resilience — part-time work during studies, endurance sport, high-stakes performance, overcoming adversity if mentioned. Evidence: name specifically. Gap: if nothing on the CV signals sustained effort under pressure.
+7. Initiative — self-started projects, founding something, seeking out internships or qualifications unprompted, competitive applications beyond the obvious. Evidence: name specifically. Gap: if the profile reads as following a standard path without going beyond it.
+For each competency: evidenced (what's on the CV by name, or "Not evidenced"), gap (what's missing or what would make it stronger for this track), fix (one concrete action — this is blurred/paid).
 
 QUALITY CONTROL — before finalising check:
 1. Does output reference the selected track? If not, rewrite.
@@ -535,6 +546,7 @@ OUTPUT — respond ONLY with this JSON, no markdown, no preamble:
 "paidHook":"[1 sentence — what a deep CV review would specifically focus on for THIS candidate, referencing the SAME named CV detail as the diagnostic. Must explain the type of fix needed without giving the actual rewritten line. Generic phrasing like \\"reframing the experience section around analytical ownership\\" with no named detail FAILS — it must read like \\"A deeper review would focus on rewriting the [named detail] around thesis, variant view, valuation and downside risk.\\"]",
 "namedCvDetails":["[list each named item found in CV text: employer names, society names, project titles, module names, stock pitch companies, role titles, qualifications, A-level subjects.]"],
 "cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]",
-"untappedAssets":[{"asset":"[e.g. Language skills / Non-core university angle / Non-linear path / Part-time work / No finance ECAs / Sport not positioned]","why":"[2 sentences — specific to this candidate, practitioner-voiced, names their actual university/subject/background. Free visible content.]","howToFrame":"[1 sentence of concrete framing advice — paid/blurred content.]"}]
+"untappedAssets":[{"asset":"[e.g. Language skills / Non-core university angle / Non-linear path / Part-time work / No finance ECAs / Sport not positioned]","why":"[2 sentences — specific to this candidate, practitioner-voiced, names their actual university/subject/background. Free visible content.]","howToFrame":"[1 sentence of concrete framing advice — paid/blurred content.]"}],
+"competencies":[{"name":"[Leadership|Teamwork|Commercial Acumen|Analytical Thinking|Communication|Resilience|Initiative]","evidenced":"[1 sentence — what specific named CV item evidences this competency, or state Not evidenced if absent]","gap":"[1 sentence — what is missing or what would make the evidence stronger for this track and firm]","fix":"[1 sentence — concrete action, will be blurred/paid]"}]
 }`;
 }
