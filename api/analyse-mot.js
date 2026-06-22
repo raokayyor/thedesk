@@ -233,7 +233,12 @@ async function callClaude(prompt) {
 
   const text    = response.content?.[0]?.text || "";
   const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
-  return JSON.parse(cleaned);
+  try {
+    return JSON.parse(cleaned);
+  } catch(e) {
+    console.error("JSON parse failed. Raw output length:", text.length, "First 500 chars:", text.slice(0,500));
+    throw e;
+  }
 }
 
 // ── Result validation ─────────────────────────────────────────────────────────
@@ -265,14 +270,7 @@ function isValidResult(result, cvRequired) {
     if (!result.specificSignalNoticed || typeof result.specificSignalNoticed !== "string") return false;
   }
 
-  // untappedAssets is optional but if present must be well-formed
-  if (result.untappedAssets !== undefined) {
-    if (!Array.isArray(result.untappedAssets)) return false;
-    for (const a of result.untappedAssets) {
-      if (!a.asset || !a.why || !a.howToFrame) return false;
-    }
-  }
-
+  // untappedAssets is best-effort — never block on it
   return true;
 }
 
