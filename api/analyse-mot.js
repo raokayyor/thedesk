@@ -31,12 +31,12 @@ const FIRM_PROCESS = {
   "Goldman Sachs": {
     numericalStage: null,
     aiInterviewStage: "HireVue",
-    distinctiveFact: "Goldman's HireVue is evaluated by AI across verbal and non-verbal delivery before a human reviews it, and Superday interviewers are trained to push hard on generic \"why Goldman\" answers specifically.",
+    distinctiveFact: "Goldman's HireVue is AI-scored before a human sees it. The AI measures finance vocabulary density, answer structure, filler word frequency (um, like, basically), and energy. Most candidates look at their own face on screen instead of the camera — this registers as lack of eye contact. Superday interviewers are trained to push hard on generic why-Goldman answers and will not let a vague motivation answer survive. A 57/100 technical score at this firm is not borderline — it is a likely filter-out before a human reads the CV.",
   },
   "JP Morgan": {
     numericalStage: "Pymetrics",
     aiInterviewStage: "HireVue",
-    distinctiveFact: "JPMorgan screens with Pymetrics before HireVue — a gamified neuroscience assessment of cognitive and behavioural traits, not a traditional numerical reasoning test.",
+    distinctiveFact: "JPMorgan screens with Pymetrics before HireVue — a gamified neuroscience assessment of cognitive and behavioural traits including risk tolerance, attention and memory, not a traditional numerical reasoning test. Pymetrics is not widely trainable in the same way SHL is, but familiarity with the format and understanding what each game actually measures significantly reduces anxiety and error rate. After Pymetrics, HireVue video scoring at JPMorgan follows similar patterns to Goldman — structure, finance vocabulary, energy and filler word frequency are all signals.",
   },
   "Barclays": {
     numericalStage: "SHL Verify numerical reasoning",
@@ -265,6 +265,14 @@ function isValidResult(result, cvRequired) {
     if (!result.specificSignalNoticed || typeof result.specificSignalNoticed !== "string") return false;
   }
 
+  // untappedAssets is optional but if present must be well-formed
+  if (result.untappedAssets !== undefined) {
+    if (!Array.isArray(result.untappedAssets)) return false;
+    for (const a of result.untappedAssets) {
+      if (!a.asset || !a.why || !a.howToFrame) return false;
+    }
+  }
+
   return true;
 }
 
@@ -375,7 +383,7 @@ CRITICAL: never use AM language (thesis, variant view, downside risk) for an IBD
 
 GENERAL FINANCE / CONSULTING / AUDIT / TAX / RISK — if the track is General Finance (i.e. not IBD, S&T or AM), do not force IBD-style transaction language onto the diagnostic. Use broader language about commercial credibility, direction and route-specific evidence instead, and do not claim the assessment is a role-specific consulting, audit, tax or risk evaluation — it is a general application-readiness read.
 
-CONSEQUENCE PSYCHOLOGY — the result should not just say "here is what is weak." It should say "this is how the weakness could cost you the first screen, and this is the part a deeper review would fix." The student should come away thinking "this is fixable, but I should not submit it like this" — not panic, not hopelessness, just sober consequence. Weave in, where natural: most students get one application per firm per cycle; undersold evidence is usually only discovered after the rejection, not before; the issue is fixable but costly if ignored. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "beat the competition", "limited time", "don't miss out", "life-changing", "supercharge", "elite secrets". Prefer grounded phrases: "first screen", "before submission", "one application per firm per cycle", "evidence being missed", "asks the screener to infer too much", "fixable, but costly if submitted unchanged".
+CONSEQUENCE PSYCHOLOGY — the result should not just say "here is what is weak." It should say "this is exactly how this weakness costs you, at this stage, with this firm, and this is what fixing it actually involves." The student should come away thinking "I need to fix this before I submit" — not mild concern, not panic, just clear-eyed sober consequence. Where the score is below 65 on any dimension, name the specific stage at the target firm where that weakness bites — HireVue numerical filter, CV sieve in under 30 seconds, Superday push-back on motivation. Be direct about what happens: "A screener spending 20 seconds on this CV will not find a reason to move forward." "This is a likely filter-out before a human reads your name." "Submitting this unchanged is a wasted application at this firm." Weave in, where natural: most students get one application per firm per cycle; undersold evidence is usually only discovered after the rejection; the fix is specific and teachable but only useful before submission. On extracurriculars and personal signals: if something personal is found on the CV — a sport, a part-time job, an unusual project — name it directly in the diagnostic. The more personal and specific the reference, the more the student believes the tool actually read their application. Generic diagnostics that could apply to any candidate fail this test entirely. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "beat the competition", "limited time", "don't miss out", "life-changing", "supercharge", "elite secrets". Prefer grounded, practitioner-voiced phrases: "first screen", "before submission", "one application per firm per cycle", "the CV is not making the evidence visible", "asks the screener to infer too much", "fixable, but a wasted application if submitted unchanged".
 
 TRACK: ${track}
 Weights: ${weights}
@@ -450,6 +458,30 @@ SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
 Positioning: quantified achievements +15, clear role relevance +15, commercial framing +10, specific achievements +10, good hierarchy +10, generic descriptions -10, no measurable outcomes -8, weak opening -5, unclear motivation -8, too broad -8.
 
+EXTRACURRICULAR AND LEADERSHIP SCORING — actively look for and score these within the Experience Relevance and Directional Clarity dimensions. These are real signals recruiters notice, especially for non-core university candidates who need compensating evidence:
+- Team sport with named leadership role (captain, vice-captain, team manager) +12 to Experience. Signal: management under pressure, accountability, team trust. Always name the specific sport and role — "captain of the university rugby team" not "sports captain".
+- Individual or endurance sport (rowing, triathlon, marathon, climbing, cycling, long-distance running) +8 to Experience. Signal: self-discipline, training under monotony, performance consistency — all valued on trading floors and in high-pressure analytical environments.
+- Competitive strategic activity (chess, bridge, competitive debate, MUN, moot court) +8 to Technical or Commercial (whichever is lower). Signal: pattern recognition, strategic thinking under time pressure. Not a soft signal — name it specifically.
+- National, county or regional level in any sport or competitive activity +10 additional to the base above. Signal: exceptional commitment and proven competitive performance at a level that stands out from university participation.
+- Society leadership (president, treasurer, committee member, editor, head of marketing, events lead) +10 to Experience if finance/business society, +8 if other society. Signal: execution, team management, follow-through — particularly strong if any commercial output is mentioned (events managed, members grown, budget managed).
+- Music performance (Grade 8 or above, university ensemble, national youth orchestra, live performance) +6 to Experience. Signal: long-term discipline and practice under performance pressure — ties to S&T floor environments specifically.
+- Volunteering with clear responsibility (mentor, coach, tutor, team lead, project coordinator) +8 to Experience. Signal: character and initiative outside self-interest.
+- Part-time work during full-time study (retail, hospitality, bar, café, delivery, tutoring, lifeguarding) +6 to Experience. Signal: time management, financial reality, self-sufficiency — this is often more impressive to practitioners than it sounds, especially if the student managed a full finance degree alongside it.
+- Absence of any named ECA, sport, society, or work experience: -6 from Experience and note this explicitly — a blank extracurricular section at a non-target university is a genuine weakness that Full Cycle can address with specific additions before the deadline.
+
+FINANCE AND WORLD INTEREST EVIDENCE — score within Commercial Awareness and note explicitly where present or absent:
+- Investment society membership (with named role) +10 to Experience, +8 to Commercial.
+- Written stock pitch or investment thesis (named company) +15 to Commercial, +10 to Experience. Always name the company — "Diageo stock pitch" not "stock pitch".
+- Student-managed fund (named fund, named role) +18 to Commercial, +12 to Experience.
+- Bloomberg Market Concepts (BMC) certificate +6 to Technical and +4 to Commercial.
+- CFA Level 1 registered or passed +8 to Technical.
+- Financial modelling bootcamp or online course (e.g. Wall Street Oasis, Breaking Into Wall Street, Macabacus) +8 to Technical.
+- Personal trading account or investing account referenced +6 to Commercial. Not a gimmick — evidence of real skin in the game.
+- FT, Economist, Bloomberg or equivalent reading evidenced or referenced +5 to Commercial. If not evidenced: note its absence in the Commercial Awareness note as a gap.
+- Macro or geopolitical views expressed in personal statement or cover letter +5 to Commercial. Shows genuine engagement beyond CV box-ticking.
+- Economics olympiad, maths olympiad, coding competition, or similar competition +10 to Technical or Commercial depending on track.
+- Absence of any finance interest signal beyond the stated target: always flag this in the Commercial Awareness note. For IBD this is a medium risk; for S&T and AM this is a high risk — the expectation of genuine market interest is much higher in those tracks.
+
 FEEDBACK TRIGGERS — check each and apply relevant:
 T1: Academic>=75 AND Positioning<60 — translation gap not grade
 T2: Experience>=65 AND Positioning<55 — interchangeable presentation
@@ -473,6 +505,17 @@ REQUIRED PHRASES: "The application currently reads...", "A screener is likely to
 CV REFERENCE RULE — CRITICAL: output MUST reference at least one named specific item: actual employer, society, project title, module name, stock pitch company, role title or qualification. Generic references such as "your finance experience" or "your project" are not acceptable. If no named detail can be extracted, state that explicitly rather than fabricating.
 
 FREE vs PAID: Free layer diagnoses clearly and identifies the main weaknesses but does NOT give the tactical fix. Candidate should think "I understand the problem" not "I can fix it myself." The fix field previews what fixing involves without giving how.
+
+UNTAPPED ASSETS — infer 2-3 things the candidate probably has but either hasn't mentioned or hasn't framed correctly. These are presented to the student as "what you might be leaving on the table" — free diagnostic, fix blurred. Each asset must be genuinely inferred from what IS on the CV (background, university, subject, year, non-finance details) — do not fabricate. For each, output: asset name, why it matters (2-3 sentences, visible free, practitioner-voiced, specific to their profile), howToFrame (1-2 sentences — the actual framing advice, this is the paid content, will be blurred).
+
+Assets to consider inferring (pick only those genuinely likely for this candidate — do not list all of them generically):
+1. Language skills — if university is international, if languages A-level present, or if no language is mentioned at all: "Everyone has GCSE French. Genuine fluency opens specific doors — international sales, FX desks, European client coverage, cross-border M&A. At [target firm], language coverage is a live differentiator in lateral and international hiring. If yours goes beyond GCSE, it belongs on this CV." howToFrame: where to position it and how to frame the level and context of use.
+2. Non-core university angle — if university is not Oxford/Cambridge/LSE/Imperial/Warwick: "Non-target candidates do get through to [target firm]. But the application has to work harder in every other dimension. Right now, the CV does not yet compensate for the pipeline gap — it reads like it expects the university to do that work." howToFrame: how to lead with evidence rather than institution, which firms actively recruit from their university, and how to reframe the narrative.
+3. Non-core subject angle — if degree is not Finance/Economics: "A [degree subject] is not a weakness at Goldman IBD. But it is a neutral at best until the application explicitly connects it to commercial thinking. Recruiters will not make that inference themselves — it has to be stated." howToFrame: the specific bridge from [their subject] to the target track, with examples of how peers in similar disciplines have framed it.
+4. Non-linear path — if gap year, mature student, career change, or delayed timeline evident: "A gap year reads as a gap if you let it. In the right framing — what you were doing, why you chose it, what it built — it becomes the most distinctive paragraph in the application. Most candidates with non-linear paths under-use this." howToFrame: how to position the gap as a deliberate choice with a named output, rather than an absence.
+5. Part-time work during studies — if retail, hospitality, bar, tutoring, sport coaching, or any service work evident: "Working through a finance degree is a time management and self-sufficiency signal that most candidates either ignore or mention without framing. At firms that value resilience, it reads well — but only if it is positioned that way rather than buried at the bottom." howToFrame: how to position the role numerically, what language to use, and where to place it in the CV.
+6. No finance extracurriculars — if no investment society, no stock pitch, no Bloomberg certification, no finance reading evidenced: "There is no finance extracurricular signal on this application. For [target track] at [target firm], this is a gap — not a disqualifier, but a gap. There are specific additions that can be made before the deadline that would address this credibly." howToFrame: what to add in the time available before application deadline, and how to present it authentically without it reading as last-minute box-ticking.
+7. Sports leadership not yet positioned — if sport or team activity mentioned but without a leadership angle or positioned without consequence: "The [sport] is listed but it is not doing any work yet. A sport alone is not a signal — but captain, training commitment, competitive results, or coaching responsibility creates a genuine resilience and leadership case." howToFrame: how to reframe the activity as evidence rather than a hobby, including the specific language that lands with banking recruiters.
 
 QUALITY CONTROL — before finalising check:
 1. Does output reference the selected track? If not, rewrite.
@@ -528,6 +571,7 @@ OUTPUT — respond ONLY with this JSON, no markdown, no preamble:
 "deeperReviewFocus":"[Same content as paidHook — track-specific, names the same detail, explains the type of fix without giving the actual rewrite.]",
 "paidHook":"[1 sentence — what a deep CV review would specifically focus on for THIS candidate, referencing the SAME named CV detail as the diagnostic. Must explain the type of fix needed without giving the actual rewritten line. Generic phrasing like \\"reframing the experience section around analytical ownership\\" with no named detail FAILS — it must read like \\"A deeper review would focus on rewriting the [named detail] around thesis, variant view, valuation and downside risk.\\"]",
 "namedCvDetails":["[list each named item found in CV text: employer names, society names, project titles, module names, stock pitch companies, role titles, qualifications, A-level subjects.]"],
-"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]"
+"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]",
+"untappedAssets":[{"asset":"[short name of the untapped asset, e.g. Language skills, Non-core university angle, Non-linear path]","why":"[2-3 sentences — practitioner-voiced, specific to this candidate. Visible free. Explains why this matters for their specific track and target firm. E.g. for language skills: specific doors it opens at their target firm. For non-core uni: exactly what the gap means and why the rest of the application needs to work harder. Never generic.]","howToFrame":"[1-2 sentences of specific framing advice — this is the paid content, will be blurred on the free result. Concrete and actionable. E.g. for non-core uni: which signals compensate, how to lead with evidence not institution. For gap year: how to position as deliberate choice with named output.]"}]
 }`;
 }
