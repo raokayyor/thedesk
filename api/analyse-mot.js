@@ -21,7 +21,7 @@ import path from "path";
 // Lazy-load heavy extractors so cold start is fast
 let pdfParse, mammoth;
 
-const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-4-6";
+const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-haiku-4-5-20251001";
 const CV_MIN_CHARS = 500; // minimum non-whitespace characters
 
 // FIRM_PROCESS — researched, sourced recruitment process steps per firm, mirrored from the frontend.
@@ -456,29 +456,11 @@ SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
 Positioning: quantified achievements +15, clear role relevance +15, commercial framing +10, specific achievements +10, good hierarchy +10, generic descriptions -10, no measurable outcomes -8, weak opening -5, unclear motivation -8, too broad -8.
 
-EXTRACURRICULAR AND LEADERSHIP SCORING — actively look for and score these within the Experience Relevance and Directional Clarity dimensions. These are real signals recruiters notice, especially for non-core university candidates who need compensating evidence:
-- Team sport with named leadership role (captain, vice-captain, team manager) +12 to Experience. Signal: management under pressure, accountability, team trust. Always name the specific sport and role — "captain of the university rugby team" not "sports captain".
-- Individual or endurance sport (rowing, triathlon, marathon, climbing, cycling, long-distance running) +8 to Experience. Signal: self-discipline, training under monotony, performance consistency — all valued on trading floors and in high-pressure analytical environments.
-- Competitive strategic activity (chess, bridge, competitive debate, MUN, moot court) +8 to Technical or Commercial (whichever is lower). Signal: pattern recognition, strategic thinking under time pressure. Not a soft signal — name it specifically.
-- National, county or regional level in any sport or competitive activity +10 additional to the base above. Signal: exceptional commitment and proven competitive performance at a level that stands out from university participation.
-- Society leadership (president, treasurer, committee member, editor, head of marketing, events lead) +10 to Experience if finance/business society, +8 if other society. Signal: execution, team management, follow-through — particularly strong if any commercial output is mentioned (events managed, members grown, budget managed).
-- Music performance (Grade 8 or above, university ensemble, national youth orchestra, live performance) +6 to Experience. Signal: long-term discipline and practice under performance pressure — ties to S&T floor environments specifically.
-- Volunteering with clear responsibility (mentor, coach, tutor, team lead, project coordinator) +8 to Experience. Signal: character and initiative outside self-interest.
-- Part-time work during full-time study (retail, hospitality, bar, café, delivery, tutoring, lifeguarding) +6 to Experience. Signal: time management, financial reality, self-sufficiency — this is often more impressive to practitioners than it sounds, especially if the student managed a full finance degree alongside it.
-- Absence of any named ECA, sport, society, or work experience: -6 from Experience and note this explicitly — a blank extracurricular section at a non-target university is a genuine weakness that Full Cycle can address with specific additions before the deadline.
+ECA AND PERSONAL SIGNALS — score within Experience Relevance. Name specific items found; never ignore them:
+Team sport + leadership role (captain/vice-captain): +12, strong signal. Individual/endurance sport (rowing, marathon, triathlon): +8. Competitive strategic activity (chess, debate, MUN): +8 to Technical or Commercial. National/county level sport: +10 additional. Society leadership (president, treasurer, committee): +10 finance society, +8 other. Part-time work during studies (retail, bar, tutoring, hospitality): +6, always name it — signals time management and self-sufficiency. Volunteering with responsibility: +8. No ECA or work experience at all: -6, note it explicitly as a gap.
 
-FINANCE AND WORLD INTEREST EVIDENCE — score within Commercial Awareness and note explicitly where present or absent:
-- Investment society membership (with named role) +10 to Experience, +8 to Commercial.
-- Written stock pitch or investment thesis (named company) +15 to Commercial, +10 to Experience. Always name the company — "Diageo stock pitch" not "stock pitch".
-- Student-managed fund (named fund, named role) +18 to Commercial, +12 to Experience.
-- Bloomberg Market Concepts (BMC) certificate +6 to Technical and +4 to Commercial.
-- CFA Level 1 registered or passed +8 to Technical.
-- Financial modelling bootcamp or online course (e.g. Wall Street Oasis, Breaking Into Wall Street, Macabacus) +8 to Technical.
-- Personal trading account or investing account referenced +6 to Commercial. Not a gimmick — evidence of real skin in the game.
-- FT, Economist, Bloomberg or equivalent reading evidenced or referenced +5 to Commercial. If not evidenced: note its absence in the Commercial Awareness note as a gap.
-- Macro or geopolitical views expressed in personal statement or cover letter +5 to Commercial. Shows genuine engagement beyond CV box-ticking.
-- Economics olympiad, maths olympiad, coding competition, or similar competition +10 to Technical or Commercial depending on track.
-- Absence of any finance interest signal beyond the stated target: always flag this in the Commercial Awareness note. For IBD this is a medium risk; for S&T and AM this is a high risk — the expectation of genuine market interest is much higher in those tracks.
+FINANCE INTEREST SIGNALS — score within Commercial Awareness. Flag absence explicitly for S&T/AM:
+Investment society with named role: +10 Experience +8 Commercial. Named stock pitch (company): +15 Commercial +10 Experience. Student-managed fund: +18 Commercial. BMC certificate: +6 Technical. CFA Level 1: +8 Technical. Modelling course/bootcamp: +8 Technical. Personal trading account: +6 Commercial. FT/Economist/Bloomberg reading evidenced: +5 Commercial. No finance interest evidence beyond stated target: flag as gap — medium risk IBD, high risk S&T/AM.
 
 FEEDBACK TRIGGERS — check each and apply relevant:
 T1: Academic>=75 AND Positioning<60 — translation gap not grade
@@ -504,16 +486,8 @@ CV REFERENCE RULE — CRITICAL: output MUST reference at least one named specifi
 
 FREE vs PAID: Free layer diagnoses clearly and identifies the main weaknesses but does NOT give the tactical fix. Candidate should think "I understand the problem" not "I can fix it myself." The fix field previews what fixing involves without giving how.
 
-UNTAPPED ASSETS — infer 2-3 things the candidate probably has but either hasn't mentioned or hasn't framed correctly. These are presented to the student as "what you might be leaving on the table" — free diagnostic, fix blurred. Each asset must be genuinely inferred from what IS on the CV (background, university, subject, year, non-finance details) — do not fabricate. For each, output: asset name, why it matters (2-3 sentences, visible free, practitioner-voiced, specific to their profile), howToFrame (1-2 sentences — the actual framing advice, this is the paid content, will be blurred).
-
-Assets to consider inferring (pick only those genuinely likely for this candidate — do not list all of them generically):
-1. Language skills — if university is international, if languages A-level present, or if no language is mentioned at all: "Everyone has GCSE French. Genuine fluency opens specific doors — international sales, FX desks, European client coverage, cross-border M&A. At [target firm], language coverage is a live differentiator in lateral and international hiring. If yours goes beyond GCSE, it belongs on this CV." howToFrame: where to position it and how to frame the level and context of use.
-2. Non-core university angle — if university is not Oxford/Cambridge/LSE/Imperial/Warwick: "Non-target candidates do get through to [target firm]. But the application has to work harder in every other dimension. Right now, the CV does not yet compensate for the pipeline gap — it reads like it expects the university to do that work." howToFrame: how to lead with evidence rather than institution, which firms actively recruit from their university, and how to reframe the narrative.
-3. Non-core subject angle — if degree is not Finance/Economics: "A [degree subject] is not a weakness at Goldman IBD. But it is a neutral at best until the application explicitly connects it to commercial thinking. Recruiters will not make that inference themselves — it has to be stated." howToFrame: the specific bridge from [their subject] to the target track, with examples of how peers in similar disciplines have framed it.
-4. Non-linear path — if gap year, mature student, career change, or delayed timeline evident: "A gap year reads as a gap if you let it. In the right framing — what you were doing, why you chose it, what it built — it becomes the most distinctive paragraph in the application. Most candidates with non-linear paths under-use this." howToFrame: how to position the gap as a deliberate choice with a named output, rather than an absence.
-5. Part-time work during studies — if retail, hospitality, bar, tutoring, sport coaching, or any service work evident: "Working through a finance degree is a time management and self-sufficiency signal that most candidates either ignore or mention without framing. At firms that value resilience, it reads well — but only if it is positioned that way rather than buried at the bottom." howToFrame: how to position the role numerically, what language to use, and where to place it in the CV.
-6. No finance extracurriculars — if no investment society, no stock pitch, no Bloomberg certification, no finance reading evidenced: "There is no finance extracurricular signal on this application. For [target track] at [target firm], this is a gap — not a disqualifier, but a gap. There are specific additions that can be made before the deadline that would address this credibly." howToFrame: what to add in the time available before application deadline, and how to present it authentically without it reading as last-minute box-ticking.
-7. Sports leadership not yet positioned — if sport or team activity mentioned but without a leadership angle or positioned without consequence: "The [sport] is listed but it is not doing any work yet. A sport alone is not a signal — but captain, training commitment, competitive results, or coaching responsibility creates a genuine resilience and leadership case." howToFrame: how to reframe the activity as evidence rather than a hobby, including the specific language that lands with banking recruiters.
+UNTAPPED ASSETS — infer 2-3 genuine assets the candidate likely has but hasn't used well. Output as untappedAssets array. Each needs: asset (short name), why (2-3 sentences free, practitioner-voiced, specific to their profile and target firm — not generic), howToFrame (1-2 sentences of concrete advice — this is blurred/paid).
+Consider: language skills beyond GCSE (doors it opens at their target firm); non-core university angle (what the CV needs to do differently because of it); non-core subject bridge (explicit link to target track); non-linear path/gap year (how to frame as deliberate not absent); part-time work during studies (resilience and time management signal being buried); no finance extracurriculars (specific additions possible before deadline); sport not yet positioned as leadership/resilience evidence. Only include what's genuinely inferable from their actual profile — no generic filler.
 
 QUALITY CONTROL — before finalising check:
 1. Does output reference the selected track? If not, rewrite.
