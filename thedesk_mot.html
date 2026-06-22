@@ -904,7 +904,7 @@ select.fi{background:transparent;cursor:pointer;}
     <a id="sampleReportLink" href="#" target="_blank" rel="noopener" style="display:inline-block;font-family:'Fraunces',serif;font-size:15px;font-weight:400;color:#F7F3EE;background:var(--ink);text-decoration:none;padding:13px 26px;border-radius:100px;">Download sample report →</a>
   </div>
 
-  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="rCvDetails" style="display:none;font-size:11px;font-weight:300;color:var(--ink);margin-bottom:8px;padding:8px 0;border-top:0.5px solid var(--ink08);"></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
+  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="rCvDetails" style="display:none;font-size:11px;font-weight:300;color:var(--ink);margin-bottom:8px;padding:8px 0;border-top:0.5px solid var(--ink08);"></div><div id="rUntappedAssets" style="display:none;margin-top:20px;"><div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What you might be leaving on the table</div><div id="rUntappedList"></div></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
     <div class="uey">Before you submit</div>
     <div class="utitle" id="utitleEl">Fix the application <em>before it goes in.</em></div>
     <div class="udesc" id="udesc">A pre-submission review focused on what could cost you the first screen: which evidence to lead with, what to cut, where the CV sounds generic, and how to frame your strongest experience for this specific role.</div>
@@ -913,15 +913,7 @@ select.fi{background:transparent;cursor:pointer;}
     </div>
     <div style="font-size:11px;font-weight:300;color:rgba(247,243,238,0.3);margin-bottom:12px;border-top:0.5px solid rgba(247,243,238,0.08);padding-top:12px;">A single application cycle can shape the first years of your career. Most students go through it with remarkably little honest feedback. You only get one shot — go in prepared.</div>
     <div class="utiers" style="flex-direction:column;gap:8px;">
-      <div class="utier" id="tARC" onclick="pickT('arc')">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div>
-            <div class="utiertag" style="color:var(--terra);">Application Review</div>
-            <div class="utiername">Let us review your job application</div>
-          </div>
-          <div class="utierprice" style="flex-shrink:0;">&#163;19<span style="font-size:10px;color:rgba(247,243,238,0.3);font-weight:300;"> / app</span></div>
-        </div>
-      </div>
+
       <div class="utier on" id="tCy" onclick="pickT('cy')" style="border-color:var(--terra);position:relative;">
         <div style="position:absolute;top:-1px;right:14px;background:var(--terra);font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:white;padding:3px 10px;border-radius:0 0 6px 6px;">Most popular</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;">
@@ -2017,6 +2009,34 @@ function showR(r){
     dm.appendChild(div);
   });
 
+  // Untapped assets
+  var uaBox=document.getElementById('rUntappedAssets');
+  var uaList=document.getElementById('rUntappedList');
+  if(uaBox && uaList && Array.isArray(r.untappedAssets) && r.untappedAssets.length>0){
+    uaBox.style.display='block';
+    uaList.innerHTML='';
+    r.untappedAssets.forEach(function(ua){
+      var words=(ua.howToFrame||'').split(' ');
+      var splitAt=Math.min(6,Math.floor(words.length*0.3));
+      var preview=words.slice(0,splitAt).join(' ');
+      var blurred=words.slice(splitAt).join(' ');
+      var div=document.createElement('div');
+      div.style.cssText='padding:12px 0;border-bottom:0.5px solid var(--ink08);';
+      div.innerHTML='<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:5px;">'+ua.asset+'</div>'
+        +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:8px;">'+ua.why+'</div>'
+        +'<div style="position:relative;background:var(--warm);border-radius:8px;padding:10px 48px 10px 12px;">'
+          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">'
+            +preview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span>'
+          +'</div>'
+          +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--warm);">'
+            +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+            +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
+          +'</div>'
+        +'</div>';
+      uaList.appendChild(div);
+    });
+  } else if(uaBox){ uaBox.style.display='none'; }
+
   pickT('cy');
   var pr=document.getElementById('rPr'); pr.innerHTML='';
   (r.priorities||[]).forEach(function(p,i){
@@ -2680,24 +2700,12 @@ function fb(){
 }
 
 function pickT(t){
-  var arcEl=document.getElementById('tARC'); if(arcEl) arcEl.classList.remove('on');
   var cyEl=document.getElementById('tCy'); if(cyEl) cyEl.classList.remove('on');
   var t11El=document.getElementById('t11'); if(t11El) t11El.classList.remove('on');
   var desc=document.getElementById('udesc');
   var inc=document.getElementById('uincList');
 
-  if(t==='arc'){
-    if(arcEl) arcEl.classList.add('on');
-    var b=document.getElementById('uctaBtn'); if(b) b.textContent='Review one application \u2014 \u00a319';
-    var tt=document.getElementById('utitleEl'); if(tt) tt.innerHTML='Focused review of <em>one application</em> before submission.';
-    if(desc) desc.textContent='We identify what is weakening the CV, what a screener may miss, and what needs fixing before it goes in.';
-    if(inc) inc.innerHTML='<div class="uincrow"><div class="uincdot"></div>Weak positioning identified</div>'
-      +'<div class="uincrow"><div class="uincdot"></div>Avoidable screening issues flagged</div>'
-      +'<div class="uincrow"><div class="uincdot"></div>Unclear commercial narrative</div>'
-      +'<div class="uincrow"><div class="uincdot"></div>Generic bullet points identified</div>'
-      +'<div class="uincrow"><div class="uincdot"></div>Firm-fit concerns raised</div>';
-    return;
-  }
+
   // default: cycle
   if(cyEl) cyEl.classList.add('on');
   var b=document.getElementById('uctaBtn'); if(b) b.textContent='Fix the application before you send it \u2014 \u00a379';
