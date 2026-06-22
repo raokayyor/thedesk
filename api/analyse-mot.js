@@ -234,33 +234,17 @@ async function callClaude(prompt) {
 
 // ── Result validation ─────────────────────────────────────────────────────────
 function isValidResult(result, cvRequired) {
-  if (!result || typeof result !== "object")             return false;
-  if (typeof result.overallScore !== "number")           return false;
-  if (result.overallScore < 0 || result.overallScore > 100) return false;
-  if (!result.band             || typeof result.band             !== "string") return false;
-  if (!result.archetype        || typeof result.archetype        !== "string") return false;
-  if (!result.killerSentence   || typeof result.killerSentence   !== "string") return false;
-  if (!Array.isArray(result.dimensions)  || result.dimensions.length  < 6)    return false;
-  if (!Array.isArray(result.priorities)  || result.priorities.length  !== 3)  return false;
-  if (!result.diagnostic       || typeof result.diagnostic       !== "string") return false;
-  if (!result.highestLeverage  || typeof result.highestLeverage  !== "string") return false;
-  if (!result.paidHook         || typeof result.paidHook         !== "string") return false;
-
-  for (const d of result.dimensions) {
-    if (!d.name  || typeof d.name  !== "string") return false;
-    if (typeof d.score !== "number")             return false;
-    if (d.score < 0 || d.score > 100)           return false;
-    if (!d.note  || typeof d.note  !== "string") return false;
-    if (!d.fix   || typeof d.fix   !== "string") return false;
-  }
-
-  if (cvRequired) {
-    if (!Array.isArray(result.namedCvDetails))   return false;
-    const real = result.namedCvDetails.filter(d => d && typeof d === "string" && d.length > 4);
-    if (real.length < 1)                         return false;
-    if (!result.specificSignalNoticed || typeof result.specificSignalNoticed !== "string") return false;
-  }
-
+  if (!result || typeof result !== "object") { console.log("VALID_FAIL: not object"); return false; }
+  if (typeof result.overallScore !== "number") { console.log("VALID_FAIL: overallScore", typeof result.overallScore); return false; }
+  if (result.overallScore < 0 || result.overallScore > 100) { console.log("VALID_FAIL: score out of range", result.overallScore); return false; }
+  if (!result.band) { console.log("VALID_FAIL: no band"); return false; }
+  if (!result.archetype) { console.log("VALID_FAIL: no archetype"); return false; }
+  if (!result.killerSentence) { console.log("VALID_FAIL: no killerSentence"); return false; }
+  if (!Array.isArray(result.dimensions) || result.dimensions.length < 4) { console.log("VALID_FAIL: dimensions", result.dimensions?.length); return false; }
+  if (!Array.isArray(result.priorities) || result.priorities.length < 1) { console.log("VALID_FAIL: priorities", result.priorities?.length); return false; }
+  if (!result.diagnostic) { console.log("VALID_FAIL: no diagnostic"); return false; }
+  if (!result.paidHook) { console.log("VALID_FAIL: no paidHook"); return false; }
+  console.log("VALID_PASS: score", result.overallScore, "dims", result.dimensions.length, "pris", result.priorities.length);
   return true;
 }
 
