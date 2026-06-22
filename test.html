@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Desk — API Test Harness</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
+  h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1400px; }
+  .panel { background: white; border-radius: 10px; padding: 16px; border: 1px solid #e0e0e0; }
+  .panel h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 12px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  label { font-size: 12px; color: #555; display: block; margin-bottom: 3px; }
+  input, select, textarea { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 7px 10px; font-size: 13px; font-family: inherit; }
+  textarea { resize: vertical; min-height: 300px; font-family: monospace; font-size: 12px; }
+  .quiz-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { background: #1a1a1a; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 12px; }
+  .btn:hover { background: #333; }
+  .btn:disabled { background: #999; cursor: not-allowed; }
+  #output { background: #0d0d0d; color: #e0e0e0; border-radius: 10px; padding: 16px; font-family: monospace; font-size: 12px; line-height: 1.6; overflow: auto; max-height: 80vh; white-space: pre-wrap; }
+  .status { font-size: 12px; margin-bottom: 8px; }
+  .status.ok { color: #16a34a; }
+  .status.err { color: #dc2626; }
+  .status.loading { color: #ca8a04; }
+  .score-bar { display: inline-block; background: #1a1a1a; color: white; padding: 3px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 8px; }
+  .quick-fills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .qf-btn { font-size: 11px; padding: 4px 10px; border: 1px solid #ddd; border-radius: 20px; background: white; cursor: pointer; color: #444; }
+  .qf-btn:hover { background: #f0f0f0; }
+  .summary { background: #f9f9f9; border-radius: 8px; padding: 12px; margin-bottom: 12px; display: none; }
+  .summary h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .dim-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; border-bottom: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<h1>The Desk — API Test Harness</h1>
+<p class="subtitle">For internal testing only. Not linked from the main site.</p>
+
+<div class="grid">
+  <div>
+    <div class="panel" style="margin-bottom:16px;">
+      <h2>Quick fill</h2>
+      <div class="quick-fills">
+        <button class="qf-btn" onclick="fill('warwick-ibd')">Warwick IBD</button>
+        <button class="qf-btn" onclick="fill('lse-am')">LSE Asset Mgmt</button>
+        <button class="qf-btn" onclick="fill('bristol-st')">Bristol S&T</button>
+        <button class="qf-btn" onclick="fill('non-target')">Non-target weak</button>
+        <button class="qf-btn" onclick="fill('spring-week')">Spring Week</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Profile</h2>
+      <div class="row">
+        <div><label>University</label><input id="university" value="University of Warwick"></div>
+        <div><label>Course</label><input id="course" value="Economics"></div>
+      </div>
+      <div class="row">
+        <div><label>Year</label>
+          <select id="year">
+            <option>1st Year</option><option>2nd Year</option><option selected>Final Year</option><option>Graduate</option>
+          </select>
+        </div>
+        <div><label>Grade</label><input id="grade" value="First Class (predicted)"></div>
+      </div>
+      <div class="row">
+        <div><label>Target Firm</label>
+          <select id="firm">
+            <option>Goldman Sachs</option><option>JP Morgan</option><option>Barclays</option><option>Lazard</option><option>Morgan Stanley</option><option>Rothschild</option><option>Other</option>
+          </select>
+        </div>
+        <div><label>Division</label>
+          <select id="division">
+            <option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>General Finance</option>
+          </select>
+        </div>
+      </div>
+      <div><label>Programme</label>
+        <select id="programme">
+          <option>Summer Internship</option><option>Spring Week</option><option>Graduate Role</option><option>Off-cycle Internship</option>
+        </select>
+      </div>
+
+      <h2 style="margin-top:16px;">Quiz</h2>
+      <div class="quiz-row">
+        <div><label>Commercial correct / total</label>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="commCorrect" type="number" value="3" min="0" max="5" style="width:60px;">
+            <span style="font-size:13px;color:#666;">/ 5</span>
+          </div>
+        </div>
+        <div><label>Numerical correct / total</label>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="techCorrect" type="number" value="3" min="0" max="5" style="width:60px;">
+            <span style="font-size:13px;color:#666;">/ 5</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:16px;">CV Text</h2>
+      <textarea id="cvText" placeholder="Paste CV text here..."></textarea>
+
+      <button class="btn" onclick="runTest()" id="runBtn">Run Assessment →</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="summary" id="summary">
+      <h3 id="sumTitle"></h3>
+      <div id="sumDims"></div>
+    </div>
+    <div class="status" id="status"></div>
+    <div id="output">Results will appear here...</div>
+  </div>
+</div>
+
+<script>
+const PRESETS = {
+  'warwick-ibd': {
+    university:'University of Warwick', course:'Economics', year:'Final Year', grade:'2:1 (predicted)',
+    firm:'Goldman Sachs', division:'Investment Banking / IBD', programme:'Summer Internship',
+    comm:3, tech:3,
+    cv:`ROHAN MEHTA | rohan.mehta@warwick.ac.uk
+
+EDUCATION
+University of Warwick — BSc Economics 2022-2025, predicted 2:1
+Relevant modules: Corporate Finance, Econometrics, Game Theory
+A-Levels: Maths (A*), Economics (A), History (A)
+
+EXPERIENCE
+Intern — Hawkpoint Partners (Boutique Corporate Finance) Jun-Aug 2023
+- Assisted with M&A mandates across TMT and industrials
+- Supported preparation of information memoranda
+- Involved in buyer list construction for a mid-market sell-side process
+Part-time Barista — Costa Coffee Sep 2022-Jun 2023 (15hrs/week during term)
+
+EXTRACURRICULAR
+Captain, Warwick University 2nd XI Football 2023-Present (team of 18 players)
+Warwick Finance Society — General Member
+
+SKILLS
+Excel, basic financial modelling, French (GCSE)`
+  },
+  'lse-am': {
+    university:'London School of Economics', course:'Finance', year:'Final Year', grade:'First Class (predicted)',
+    firm:'Goldman Sachs', division:'Asset Management / Investing', programme:'Summer Internship',
+    comm:4, tech:4,
+    cv:`PRIYA SHARMA | priya.sharma@lse.ac.uk
+
+EDUCATION
+LSE — BSc Finance 2022-2025, predicted First
+Modules: Corporate Valuation, Investments, Quantitative Finance
+A-Levels: Maths (A*), Further Maths (A), Economics (A*)
+
+EXPERIENCE
+Investment Research Intern — Schroders Jun-Aug 2024
+- Conducted equity research on UK consumer sector
+- Built DCF model for Tesco; presented buy thesis to portfolio manager
+- Attended weekly investment committee meetings
+
+EXTRACURRICULAR
+LSE Investment Society — Research Analyst, covered healthcare sector
+Stock pitch: Diageo (buy thesis, presented at national student investment competition)
+Student-managed fund: contributed to £50k student portfolio
+
+INTERESTS
+Read FT daily, track macro developments, personal equity portfolio`
+  },
+  'bristol-st': {
+    university:'University of Bristol', course:'Mathematics', year:'Final Year', grade:'First Class (predicted)',
+    firm:'Barclays', division:'Sales & Trading / Markets', programme:'Summer Internship',
+    comm:3, tech:4,
+    cv:`JAMES CHEN | j.chen@bristol.ac.uk
+
+EDUCATION
+University of Bristol — BSc Mathematics 2022-2025, predicted First
+Modules: Stochastic Processes, Statistics, Numerical Methods, Python for Data Science
+A-Levels: Maths (A*), Further Maths (A*), Physics (A)
+
+EXPERIENCE
+Markets Insight Programme — Citi Spring 2024
+Python project: yield curve modelling and rate sensitivity analysis
+Bloomberg Market Concepts certified
+
+EXTRACURRICULAR
+Bristol Trading Society — Macro Analyst, wrote weekly FX commentary
+National chess player, county representative 2019-2022
+Volunteer maths tutor for A-level students (6hrs/week)`
+  },
+  'non-target': {
+    university:'University of Huddersfield', course:'Business Management', year:'Final Year', grade:'2:2',
+    firm:'Goldman Sachs', division:'Investment Banking / IBD', programme:'Summer Internship',
+    comm:2, tech:2,
+    cv:`DANIEL WRIGHT | d.wright@hud.ac.uk
+
+EDUCATION
+University of Huddersfield — BA Business Management 2022-2025, predicted 2:2
+
+EXPERIENCE
+Retail Assistant — Tesco Jun 2023-Present
+Admin Intern — Local Accounting Firm Summer 2023
+
+INTERESTS
+Interested in finance and investment banking`
+  },
+  'spring-week': {
+    university:'University of Edinburgh', course:'History', year:'1st Year', grade:'First Class (predicted)',
+    firm:'JP Morgan', division:'Investment Banking / IBD', programme:'Spring Week',
+    comm:2, tech:2,
+    cv:`SOPHIE ANDERSON | s.anderson@ed.ac.uk
+
+EDUCATION
+University of Edinburgh — MA History 2024-2028, predicted First
+A-Levels: History (A*), English (A*), Geography (A)
+
+EXTRACURRICULAR
+Edinburgh Debating Union — active member
+Volunteer at local foodbank 2023-Present
+Part-time barista during gap year (saved £4,000 for university)`
+  }
+};
+
+function fill(key) {
+  const p = PRESETS[key];
+  if (!p) return;
+  document.getElementById('university').value = p.university;
+  document.getElementById('course').value = p.course;
+  document.getElementById('year').value = p.year;
+  document.getElementById('grade').value = p.grade;
+  document.getElementById('firm').value = p.firm;
+  document.getElementById('division').value = p.division;
+  document.getElementById('programme').value = p.programme;
+  document.getElementById('commCorrect').value = p.comm;
+  document.getElementById('techCorrect').value = p.tech;
+  document.getElementById('cvText').value = p.cv;
+}
+
+async function runTest() {
+  const btn = document.getElementById('runBtn');
+  const status = document.getElementById('status');
+  const output = document.getElementById('output');
+  const summary = document.getElementById('summary');
+
+  btn.disabled = true;
+  btn.textContent = 'Running...';
+  status.className = 'status loading';
+  status.textContent = 'Calling API...';
+  output.textContent = '';
+  summary.style.display = 'none';
+
+  const payload = {
+    profile: {
+      university: document.getElementById('university').value,
+      course: document.getElementById('course').value,
+      year: document.getElementById('year').value,
+      grade: document.getElementById('grade').value,
+      targetFirm: document.getElementById('firm').value,
+      targetDivision: document.getElementById('division').value,
+      programme: document.getElementById('programme').value,
+    },
+    quiz: {
+      commercialCorrect: parseInt(document.getElementById('commCorrect').value),
+      commercialTotal: 5,
+      technicalCorrect: parseInt(document.getElementById('techCorrect').value),
+      technicalTotal: 5,
+    },
+    cv: { text: document.getElementById('cvText').value }
+  };
+
+  const start = Date.now();
+  try {
+    const res = await fetch('https://thedesk.vercel.app/api/analyse-mot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+    const data = await res.json();
+
+    if (data.success && data.result) {
+      const r = data.result;
+      status.className = 'status ok';
+      status.textContent = `✓ Success in ${elapsed}s`;
+
+      // Summary card
+      summary.style.display = 'block';
+      document.getElementById('sumTitle').innerHTML =
+        `<span class="score-bar">${Math.round(r.overallScore)}/100</span>${r.band} · ${r.archetype}`;
+      let dimHtml = '';
+      (r.dimensions||[]).forEach(d => {
+        dimHtml += `<div class="dim-row"><span>${d.name}</span><span style="font-weight:500;">${Math.round(d.score)}</span></div>`;
+      });
+      document.getElementById('sumDims').innerHTML = dimHtml;
+
+      output.textContent = JSON.stringify(data.result, null, 2);
+    } else {
+      status.className = 'status err';
+      status.textContent = `✗ Failed in ${elapsed}s — ${data.error || 'unknown'}`;
+      output.textContent = JSON.stringify(data, null, 2);
+    }
+  } catch (e) {
+    const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+    status.className = 'status err';
+    status.textContent = `✗ Error in ${elapsed}s — ${e.message}`;
+    output.textContent = e.toString();
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Run Assessment →';
+}
+</script>
+</body>
+</html>
