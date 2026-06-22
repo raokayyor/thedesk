@@ -21,7 +21,7 @@ import path from "path";
 // Lazy-load heavy extractors so cold start is fast
 let pdfParse, mammoth;
 
-const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-haiku-4-5-20251001";
+const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-4-6";
 const CV_MIN_CHARS = 500; // minimum non-whitespace characters
 
 // FIRM_PROCESS — researched, sourced recruitment process steps per firm, mirrored from the frontend.
@@ -225,7 +225,7 @@ function parseMultipart(req) {
 async function callClaude(prompt) {
   const response = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 4000,
+    max_tokens: 8000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
