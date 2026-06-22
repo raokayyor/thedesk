@@ -31,7 +31,7 @@ const FIRM_PROCESS = {
   "Goldman Sachs": {
     numericalStage: null,
     aiInterviewStage: "HireVue",
-    distinctiveFact: "Goldman's HireVue is evaluated by AI across verbal and non-verbal delivery before a human reviews it, and Superday interviewers are trained to push hard on generic \"why Goldman\" answers specifically.",
+    distinctiveFact: "Goldman's HireVue is AI-scored before a human sees it — measuring finance vocabulary density, answer structure, filler word frequency, and energy. Most candidates look at their own face on screen rather than the camera, which registers as poor eye contact. Superday interviewers push hard on generic why-Goldman answers and a vague motivation answer will not survive. A technical score below 60 at this firm is a likely filter before a human reads the name.",
   },
   "JP Morgan": {
     numericalStage: "Pymetrics",
@@ -375,7 +375,7 @@ CRITICAL: never use AM language (thesis, variant view, downside risk) for an IBD
 
 GENERAL FINANCE / CONSULTING / AUDIT / TAX / RISK — if the track is General Finance (i.e. not IBD, S&T or AM), do not force IBD-style transaction language onto the diagnostic. Use broader language about commercial credibility, direction and route-specific evidence instead, and do not claim the assessment is a role-specific consulting, audit, tax or risk evaluation — it is a general application-readiness read.
 
-CONSEQUENCE PSYCHOLOGY — the result should not just say "here is what is weak." It should say "this is how the weakness could cost you the first screen, and this is the part a deeper review would fix." The student should come away thinking "this is fixable, but I should not submit it like this" — not panic, not hopelessness, just sober consequence. Weave in, where natural: most students get one application per firm per cycle; undersold evidence is usually only discovered after the rejection, not before; the issue is fixable but costly if ignored. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "beat the competition", "limited time", "don't miss out", "life-changing", "supercharge", "elite secrets". Prefer grounded phrases: "first screen", "before submission", "one application per firm per cycle", "evidence being missed", "asks the screener to infer too much", "fixable, but costly if submitted unchanged".
+CONSEQUENCE PSYCHOLOGY — name the specific stage at the target firm where each weakness bites. Be direct: "a screener spending 20 seconds on this will not find a reason to move forward", "this is a likely filter before a human reads the name", "submitting this unchanged is a wasted application." The student should come away thinking "I need to fix this before I submit." Where something personal is found — a sport, a part-time job, an unusual hobby — name it directly. The more specific the reference, the more the student believes the tool actually read their application. Weave in: most students get one application per firm per cycle; undersold evidence is discovered after the rejection; the fix is specific and teachable but only useful before submission. Never use hype language: "dream job", "unlock your potential", "guaranteed", "transform your future", "supercharge". Prefer: "first screen", "before submission", "one application per firm per cycle", "fixable but a wasted application if submitted unchanged".
 
 TRACK: ${track}
 Weights: ${weights}
@@ -449,6 +449,12 @@ SCORING: Each dimension 0-100. Apply track weights. Bands: 85-100=Strong, 70-84=
 SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
 Positioning: quantified achievements +15, clear role relevance +15, commercial framing +10, specific achievements +10, good hierarchy +10, generic descriptions -10, no measurable outcomes -8, weak opening -5, unclear motivation -8, too broad -8.
+
+ECA AND PERSONAL SIGNALS — score within Experience Relevance. Always name specific items; never ignore them:
+Team sport + leadership role (captain/vice-captain): +12. Individual/endurance sport (rowing, marathon, triathlon): +8. Competitive strategic activity (chess, debate, MUN): +8. Society leadership (president, treasurer, committee): +10 finance society, +8 other. Part-time work during studies (retail, bar, tutoring, hospitality): +6, always name it — signals time management and self-sufficiency. Volunteering with responsibility: +8. No ECA or work experience: -6, note it explicitly.
+
+FINANCE INTEREST SIGNALS — score within Commercial Awareness. Flag absence for S&T/AM:
+Investment society with named role: +10 Exp +8 Comm. Named stock pitch: +15 Comm +10 Exp. Student fund: +18 Comm. BMC certificate: +6 Tech. CFA Level 1: +8 Tech. Modelling bootcamp: +8 Tech. Personal trading account: +6 Comm. FT/Bloomberg reading evidenced: +5 Comm. No finance interest evidence: flag as gap — medium risk IBD, high risk S&T/AM.
 
 FEEDBACK TRIGGERS — check each and apply relevant:
 T1: Academic>=75 AND Positioning<60 — translation gap not grade
@@ -528,6 +534,7 @@ OUTPUT — respond ONLY with this JSON, no markdown, no preamble:
 "deeperReviewFocus":"[Same content as paidHook — track-specific, names the same detail, explains the type of fix without giving the actual rewrite.]",
 "paidHook":"[1 sentence — what a deep CV review would specifically focus on for THIS candidate, referencing the SAME named CV detail as the diagnostic. Must explain the type of fix needed without giving the actual rewritten line. Generic phrasing like \\"reframing the experience section around analytical ownership\\" with no named detail FAILS — it must read like \\"A deeper review would focus on rewriting the [named detail] around thesis, variant view, valuation and downside risk.\\"]",
 "namedCvDetails":["[list each named item found in CV text: employer names, society names, project titles, module names, stock pitch companies, role titles, qualifications, A-level subjects.]"],
-"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]"
+"cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]",
+"untappedAssets":[{"asset":"[e.g. Language skills / Non-core university angle / Non-linear path / Part-time work / No finance ECAs / Sport not positioned]","why":"[2 sentences — specific to this candidate, practitioner-voiced, names their actual university/subject/background. Free visible content.]","howToFrame":"[1 sentence of concrete framing advice — paid/blurred content.]"}]
 }`;
 }
