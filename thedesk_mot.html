@@ -194,7 +194,7 @@ select.fi{background:transparent;cursor:pointer;}
 .ls.dn .ldk{display:block;}
 
 /* RESULTS WRAP */
-.rwrap{max-width:620px;margin:0 auto;padding:32px 24px 80px;}
+.rwrap{max-width:620px;margin:0 auto;padding:32px 24px 80px;user-select:none;-webkit-user-select:none;}
 
 /* RESULTS HEADER */
 .rey{
@@ -840,6 +840,7 @@ select.fi{background:transparent;cursor:pointer;}
 <div class="page" id="pR">
 <div class="rwrap">
   <div class="rey">Application MOT · <span id="rF"></span></div>
+  <div id="rFramework" style="display:none;font-size:11px;font-weight:400;color:var(--terra);letter-spacing:0.03em;margin-bottom:4px;margin-top:-6px;opacity:0.85;"></div>
   <h1 class="rtitle">Your <em>honest score.</em></h1>
   <div class="scard">
     <div class="sctop">
@@ -899,7 +900,16 @@ select.fi{background:transparent;cursor:pointer;}
     <a id="sampleReportLink" href="#" target="_blank" rel="noopener" style="display:inline-block;font-family:'Fraunces',serif;font-size:15px;font-weight:400;color:#F7F3EE;background:var(--ink);text-decoration:none;padding:13px 26px;border-radius:100px;">Download sample report →</a>
   </div>
 
-  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div class="ucard" style="margin-top:0;" id="upgradeSection">
+  <div style="padding:14px 0 16px;"><div id="rPaidHook" style="font-size:13px;font-weight:300;font-style:italic;color:var(--ink60);line-height:1.65;"></div></div><div id="rSourceBadge" style="display:none;background:rgba(168,94,10,0.08);border:0.5px solid rgba(168,94,10,0.2);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:300;color:var(--amber,#A85E0A);margin-bottom:8px;line-height:1.55;"></div><div id="emailCapture" style="background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;">Get your result by email</div>
+    <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;margin-bottom:12px;">Get this result sent to your inbox — plus <strong>10% off Full Cycle</strong> when you're ready to fix it.</div>
+    <div style="display:flex;gap:8px;">
+      <input id="emailInput" type="email" placeholder="your@email.com" style="flex:1;border:0.5px solid var(--ink08);border-radius:8px;padding:10px 12px;font-size:13px;background:var(--cream);color:var(--ink);font-family:inherit;outline:none;">
+      <button onclick="submitEmail()" style="background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">Send it →</button>
+    </div>
+    <div id="emailMsg" style="font-size:12px;margin-top:8px;display:none;"></div>
+  </div>
+  <div class="ucard" style="margin-top:0;" id="upgradeSection">
     <div class="uey">Before you submit</div>
     <div class="utitle" id="utitleEl">Fix the application <em>before it goes in.</em></div>
     <div class="udesc" id="udesc">A pre-submission review focused on what could cost you the first screen: which evidence to lead with, what to cut, where the CV sounds generic, and how to frame your strongest experience for this specific role.</div>
@@ -1909,6 +1919,18 @@ function showR(r){
   window.scrollTo(0,0);
 
   document.getElementById('rF').textContent=D.firm;
+  var rfEl=document.getElementById('rFramework');
+  if(rfEl){
+    var div=D.division||'';
+    var firm=D.firm||'';
+    var fwText='';
+    if(div.toLowerCase().includes('ibd')||div.toLowerCase().includes('banking')) fwText='IBD screening framework applied';
+    else if(div.toLowerCase().includes('trading')||div.toLowerCase().includes('markets')) fwText='Sales & Trading framework applied';
+    else if(div.toLowerCase().includes('asset')||div.toLowerCase().includes('invest')) fwText='Asset Management framework applied';
+    else fwText='Finance recruiting framework applied';
+    if(firm) fwText=firm+' — '+fwText;
+    rfEl.textContent=fwText; rfEl.style.display='block';
+  }
   var rfn=document.getElementById('rFN'); if(rfn){rfn.textContent=D.firm;rfn.style.display='block';}
   var rfu=document.getElementById('rFU'); if(rfu) rfu.textContent=D.firm;
   // Firm logo + stats
@@ -1992,7 +2014,7 @@ function showR(r){
         +'</div>'
       +'</div>'
       +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;">'+(d.note||'')+'</div>'
-      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:10px 48px 10px 12px;">'
+      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:10px 48px 10px 12px;min-height:76px;">'
         +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">'
           +fixPreview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+fixBlurred+'</span>'
         +'</div>'
@@ -2941,6 +2963,22 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+
+
+  function submitEmail(){
+    var email=document.getElementById('emailInput').value.trim();
+    var msg=document.getElementById('emailMsg');
+    if(!email||!email.includes('@')){
+      if(msg){msg.style.display='block';msg.style.color='var(--terra)';msg.textContent='Please enter a valid email.';}
+      return;
+    }
+    localStorage.setItem('tdesk_email',email);
+    var cap=document.getElementById('emailCapture');
+    if(cap) cap.innerHTML='<div style="padding:8px 0;text-align:center;">'
+      +'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;">Done &#10003;</div>'
+      +'<div style="font-size:12px;font-weight:300;color:var(--ink60);">Your result is on its way. Your 10% off code will be in the same email.</div>'
+      +'</div>';
+  }
 
 </script>
 </body>
