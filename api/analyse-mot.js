@@ -212,7 +212,7 @@ async function callClaude(prompt) {
   console.time("model-call");
   const modelCall = anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 4000,
+    max_tokens: 5000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
@@ -222,12 +222,20 @@ async function callClaude(prompt) {
   );
   const response = await Promise.race([modelCall, timeout]);
   console.timeEnd("model-call");
-  const text    = response.content?.[0]?.text || "";
-  const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
+  const text = response.content?.[0]?.text || "";
+  console.log("Raw output length:", text.length, "preview:", text.slice(0,100));
+  // Extract JSON by finding outermost { }
+  const first = text.indexOf("{");
+  const last  = text.lastIndexOf("}");
+  if (first === -1 || last === -1) {
+    console.error("No JSON braces found in output");
+    throw new SyntaxError("No JSON object in response");
+  }
+  const cleaned = text.slice(first, last + 1);
   try {
     return JSON.parse(cleaned);
   } catch(e) {
-    console.error("JSON parse failed, length:", text.length, "preview:", text.slice(0,200));
+    console.error("JSON parse failed, length:", cleaned.length, "tail:", cleaned.slice(-200));
     throw e;
   }
 }
@@ -744,7 +752,7 @@ async function callClaude(prompt) {
   console.time("model-call");
   const modelCall = anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 4000,
+    max_tokens: 5000,
     temperature: 0.2,
     system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
