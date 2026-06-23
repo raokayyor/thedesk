@@ -1613,8 +1613,16 @@ function submit(){
         showError(resp.data.message||'This does not look like a complete CV. Please paste the full text, including education, experience and skills sections.');
         return;
       }
-      if(errCode==='NO_NAMED_CV_DETAIL'){
-        showError(resp.data.message||'We could not generate a sufficiently specific CV read. Please upload a clearer CV or try again.');
+      if(errCode==='NO_NAMED_CV_DETAIL'||errCode==='INVALID_RESULT'){
+        showError('The assessment could not complete — please paste your CV text directly into the box and try again.');
+        return;
+      }
+      if(errCode==='MODEL_TIMEOUT'){
+        showError('The assessment is taking longer than usual. Please try again in a moment.');
+        return;
+      }
+      if(errCode==='INVALID_JSON'){
+        showError('Something went wrong generating your result. Please try again.');
         return;
       }
       throw new Error(resp.data.message||'Backend failed');
