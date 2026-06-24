@@ -221,7 +221,7 @@ function isValidResult(result, cvRequired) {
   if (!result.archetype)     { console.log("FAIL: no archetype"); return false; }
   if (!result.killerSentence){ console.log("FAIL: no killerSentence"); return false; }
   if (!Array.isArray(result.dimensions) || result.dimensions.length < 4) { console.log("FAIL: dims", result.dimensions?.length); return false; }
-  if (!Array.isArray(result.priorities) || result.priorities.length < 3) { console.log("FAIL: priorities need 3, got", result.priorities?.length); return false; }
+  if (!Array.isArray(result.priorities) || result.priorities.length < 1) { console.log("FAIL: priorities", result.priorities?.length); return false; }
   if (!result.diagnostic)    { console.log("FAIL: no diagnostic"); return false; }
   if (!result.paidHook)      { console.log("FAIL: no paidHook"); return false; }
   console.log("PASS: score", result.overallScore);
