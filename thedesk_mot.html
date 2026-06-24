@@ -1668,7 +1668,11 @@ function finish(res){
   });
   setTimeout(function(){
     document.getElementById('ldr').classList.remove('show');
-    showR(res);
+    try {
+      showR(res);
+    } catch(e) {
+      alert('showR ERROR: ' + e.message + ' | line: ' + (e.stack||'').split('\n')[1]);
+    }
   },800);
 }
 
