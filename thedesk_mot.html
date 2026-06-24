@@ -517,7 +517,7 @@ select.fi{background:transparent;cursor:pointer;}
     </div>
   </div>
 
-  <button class="btn-primary" onclick="D.step=1;go(1);" style="width:100%;padding:16px;font-size:15px;">Start the assessment →</button>
+  <button onclick="D.step=1;go(1);" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start the assessment →</button>
   <div style="text-align:center;font-size:11px;font-weight:300;color:var(--ink40);margin-top:12px;">No account needed · Takes 6–8 minutes · Free result instant</div>
 
 </div>
@@ -739,7 +739,7 @@ select.fi{background:transparent;cursor:pointer;}
           <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Unanswered questions are marked wrong when time runs out</span></div>
         </div>
       </div>
-      <button class="btn-primary" onclick="startSection1Timer();" style="width:100%;padding:16px;font-size:15px;">Start — timer begins now →</button>
+      <button onclick="startSection1Timer();" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
     </div>
   </div>
   <!-- Questions state (hidden until timer starts) -->
@@ -769,7 +769,7 @@ select.fi{background:transparent;cursor:pointer;}
           <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">This replicates the pressure of a real HireVue numerical test</span></div>
         </div>
       </div>
-      <button class="btn-primary" onclick="startSection2Timer();" style="width:100%;padding:16px;font-size:15px;">Start — timer begins now →</button>
+      <button onclick="startSection2Timer();" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
     </div>
   </div>
   <!-- Questions state -->
@@ -2922,6 +2922,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var section2Timer = null;
 
   function startSection1Timer(){
+    if(section2Timer){ clearInterval(section2Timer); section2Timer=null; }
     // Hide intro, show questions
     document.getElementById('p4intro').style.display='none';
     document.getElementById('p4questions').style.display='block';
@@ -2954,6 +2955,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function startSection2Timer(){
+    if(section1Timer){ clearInterval(section1Timer); section1Timer=null; }
     document.getElementById('p5intro').style.display='none';
     document.getElementById('p5questions').style.display='block';
     renderNQ();
@@ -2982,13 +2984,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 1000);
   }
 
-  // Clear timers if user navigates away
-  var origGo = go;
-  function go(n){
-    if(n !== 4 && section1Timer){ clearInterval(section1Timer); section1Timer = null; }
-    if(n !== 5 && section2Timer){ clearInterval(section2Timer); section2Timer = null; }
-    origGo(n);
-  }
+  // Timer cleanup handled inside startSection functions
 
 </script>
 </body>
