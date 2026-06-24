@@ -279,6 +279,7 @@ select.fi{background:transparent;cursor:pointer;}
 .hi{color:var(--green);}.mi{color:var(--amber);}.lo{color:var(--terra);}
 .dbar{height:1px;background:var(--ink08);margin-bottom:8px;overflow:hidden;}
 .dfill{height:100%;transition:width 0.8s ease;}
+.sticky-timer{position:sticky;top:56px;z-index:50;background:var(--cream);padding:10px 0 8px;margin-bottom:8px;border-bottom:1px solid var(--ink08);}
 .blur-row{position:relative;border-radius:8px;padding:10px 48px 10px 12px;min-height:88px;overflow:hidden;}
 .blur-text{font-size:12px;font-weight:300;line-height:1.6;color:var(--ink);filter:blur(4.5px);user-select:none;pointer-events:none;}
 .blur-lock{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid var(--ink08);}
@@ -685,61 +686,51 @@ select.fi{background:transparent;cursor:pointer;}
 <div class="wrap">
   <!-- Intro state -->
   <div id="p4intro">
-    <div style="padding-top:24px;">
+    <div style="padding-top:8px;">
       <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;">Section 1 of 2 · Commercial Awareness</div>
       <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--ink);letter-spacing:-0.5px;margin-bottom:12px;">Five questions.<br><em style="color:var(--terra);">8 minutes.</em></div>
-      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:24px;">These questions test the commercial awareness your target firm expects. They are timed — just like the real thing.</div>
-      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:24px;">
-        <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">Before you start</div>
+      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:20px;">Commercial awareness questions timed just like the real thing.</div>
+      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:20px;">
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">You have <strong>8 minutes</strong> for all five questions</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen recommended — no calculator</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">The timer starts when you click Start</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Unanswered questions are marked wrong when time runs out</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">8 minutes for all five questions</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen — no calculator</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Timer starts when you click Start</span></div>
         </div>
       </div>
-      <button onclick="startSection1Timer();" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
+      <button onclick="startSection1Timer();" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
     </div>
   </div>
-  <!-- Questions state (hidden until timer starts) -->
+  <!-- Questions state -->
   <div id="p4questions" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:16px;">
-      <div style="font-size:12px;font-weight:500;color:var(--ink60);">Commercial Awareness · 5 questions</div>
-      <div id="timer1" style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;color:var(--terra);letter-spacing:-0.5px;">8:00</div>
-    </div>
-    <div id="timer1bar" style="height:3px;background:var(--ink08);border-radius:2px;margin-bottom:20px;"><div id="timer1fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div></div>
     <div id="fqs"></div>
+    <button onclick="next();" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;margin-top:24px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Submit answers →</button>
   </div>
+</div>
 </div>
 <div class="page" id="p5">
 <div class="wrap">
   <!-- Intro state -->
   <div id="p5intro">
-    <div style="padding-top:24px;">
+    <div style="padding-top:8px;">
       <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;">Section 2 of 2 · Numerical Reasoning</div>
       <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--ink);letter-spacing:-0.5px;margin-bottom:12px;">Five questions.<br><em style="color:var(--terra);">5 minutes.</em></div>
-      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:24px;">These are the type of numerical reasoning questions used at HireVue and online testing stages. Speed and accuracy both matter.</div>
-      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:24px;">
-        <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">Before you start</div>
+      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:20px;">Numerical reasoning — the type used at HireVue. Speed and accuracy both matter.</div>
+      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:20px;">
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">You have <strong>5 minutes</strong> for all five questions</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen only — no calculator</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">The timer starts when you click Start</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">This replicates the pressure of a real HireVue numerical test</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">5 minutes for all five questions</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen only — no calculator</span></div>
+          <div style="display:flex;gap:10px;"><span style="color:var(--terra);">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Replicates real HireVue pressure</span></div>
         </div>
       </div>
-      <button onclick="startSection2Timer();" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
+      <button onclick="startSection2Timer();" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Start — timer begins now →</button>
     </div>
   </div>
   <!-- Questions state -->
   <div id="p5questions" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:16px;">
-      <div style="font-size:12px;font-weight:500;color:var(--ink60);">Numerical Reasoning · 5 questions</div>
-      <div id="timer2" style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;color:var(--terra);letter-spacing:-0.5px;">5:00</div>
-    </div>
-    <div id="timer2bar" style="height:3px;background:var(--ink08);border-radius:2px;margin-bottom:20px;"><div id="timer2fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div></div>
     <div id="nqs"></div>
+    <button onclick="next();" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;margin-top:24px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Submit answers →</button>
   </div>
+</div>
 </div>
 <div class="page" id="p6">
 <div class="wrap">
@@ -2876,6 +2867,17 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('p4intro').style.display='none';
     document.getElementById('p4questions').style.display='block';
     renderFQ();
+    // Inject sticky timer at top of questions
+    var qDiv = document.getElementById('fqs');
+    var timerHtml = '<div class="sticky-timer">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+      +   '<div style="font-size:11px;font-weight:500;color:var(--ink60);">Commercial Awareness · 5 questions</div>'
+      +   '<div id="timer1" style="font-family:Fraunces,serif;font-size:20px;font-weight:400;color:var(--terra);">8:00</div>'
+      + '</div>'
+      + '<div style="height:3px;background:var(--ink08);border-radius:2px;">'
+      +   '<div id="timer1fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div>'
+      + '</div></div>';
+    if(qDiv) qDiv.insertAdjacentHTML('beforebegin', timerHtml);
 
     var total = 8 * 60; // 8 minutes in seconds
     var remaining = total;
@@ -2908,6 +2910,16 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('p5intro').style.display='none';
     document.getElementById('p5questions').style.display='block';
     renderNQ();
+    var qDiv2 = document.getElementById('nqs');
+    var timerHtml2 = '<div class="sticky-timer">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+      +   '<div style="font-size:11px;font-weight:500;color:var(--ink60);">Numerical Reasoning · 5 questions</div>'
+      +   '<div id="timer2" style="font-family:Fraunces,serif;font-size:20px;font-weight:400;color:var(--terra);">5:00</div>'
+      + '</div>'
+      + '<div style="height:3px;background:var(--ink08);border-radius:2px;">'
+      +   '<div id="timer2fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div>'
+      + '</div></div>';
+    if(qDiv2) qDiv2.insertAdjacentHTML('beforebegin', timerHtml2);
 
     var total = 5 * 60; // 5 minutes in seconds
     var remaining = total;
