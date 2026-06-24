@@ -279,6 +279,9 @@ select.fi{background:transparent;cursor:pointer;}
 .hi{color:var(--green);}.mi{color:var(--amber);}.lo{color:var(--terra);}
 .dbar{height:1px;background:var(--ink08);margin-bottom:8px;overflow:hidden;}
 .dfill{height:100%;transition:width 0.8s ease;}
+.blur-row{position:relative;border-radius:8px;padding:10px 48px 10px 12px;min-height:88px;overflow:hidden;}
+.blur-text{font-size:12px;font-weight:300;line-height:1.6;color:var(--ink);filter:blur(4.5px);user-select:none;pointer-events:none;}
+.blur-lock{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid var(--ink08);}
 .dfill.hi{background:var(--green);}.dfill.mi{background:var(--amber);}.dfill.lo{background:var(--terra);}
 .dnote{font-size:13px;font-weight:300;color:var(--ink60);line-height:1.6;}
 
@@ -472,85 +475,52 @@ select.fi{background:transparent;cursor:pointer;}
 
 <!-- PAGE 0 — INTRO -->
 <div class="page show" id="p0">
-<div class="wrap" style="padding-top:32px;padding-bottom:100px;">
+<div class="wrap" style="padding-top:40px;padding-bottom:100px;">
 
-  <div style="margin-bottom:28px;">
+  <div style="margin-bottom:32px;">
     <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;color:var(--ink);letter-spacing:-0.3px;">The<em style="font-style:italic;color:var(--terra);">Desk</em></div>
     <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-top:4px;">Application MOT</div>
   </div>
 
-  <div style="margin-bottom:28px;">
-    <div style="font-family:'Fraunces',serif;font-size:clamp(26px,5vw,36px);font-weight:300;letter-spacing:-1px;color:var(--ink);line-height:1.1;margin-bottom:10px;">Your application.<br><em style="font-style:italic;color:var(--terra);">As a recruiter would read it.</em></div>
-    <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;">We assess how your profile is likely to be read at first screening.</div>
+  <div style="margin-bottom:32px;">
+    <div style="font-family:'Fraunces',serif;font-size:clamp(28px,5vw,38px);font-weight:300;letter-spacing:-1px;color:var(--ink);line-height:1.1;margin-bottom:12px;">Your application.<br><em style="font-style:italic;color:var(--terra);">As a recruiter would screen it.</em></div>
+    <div style="font-size:14px;font-weight:300;color:var(--ink60);line-height:1.7;">Six dimensions. Two timed tests. One honest score.</div>
   </div>
 
-  <!-- FIVE DIMENSIONS -->
-  <div style="border-top:0.5px solid var(--ink08);padding-top:20px;margin-bottom:28px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink40);margin-bottom:14px;">We assess across six dimensions</div>
-    <div style="display:flex;flex-direction:column;">
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ink08);">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">1</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Academic Signal</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Does the academic profile clear basic screening credibility?</div></div>
+  <div style="border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-bottom:28px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:16px;">What to expect</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <div style="font-size:11px;font-weight:600;color:var(--terra);flex-shrink:0;">◎</div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">Takes <strong>6–8 minutes</strong> — have your CV ready before you start</div>
       </div>
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ink08);">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">2</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Experience Relevance</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Does prior experience map to the selected track?</div></div>
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <div style="font-size:11px;font-weight:600;color:var(--terra);flex-shrink:0;">◎</div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">Two <strong>timed test sections</strong> — commercial awareness and numerical reasoning. Paper and pen ready, no calculator</div>
       </div>
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ink08);">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">3</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Commercial Awareness</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Can this candidate connect markets, firms and business logic?</div></div>
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <div style="font-size:11px;font-weight:600;color:var(--terra);flex-shrink:0;">◎</div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">Your <strong>free result</strong> gives a high-level read of where you stand across six dimensions</div>
       </div>
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ink08);">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">4</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Technical Readiness</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Can this candidate survive technical questions for the selected track?</div></div>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ink08);">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">5</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Application Positioning</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Does the CV tell a coherent, differentiated story?</div></div>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0;">
-        <div style="font-size:10px;font-weight:600;color:var(--terra);width:16px;flex-shrink:0;">6</div>
-        <div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px;">Directional Clarity</div><div style="font-size:11px;font-weight:300;color:var(--ink40);">Does the application feel intentional for this specific route?</div></div>
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <div style="font-size:11px;font-weight:600;color:var(--terra);flex-shrink:0;">◎</div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;"><strong>Full Cycle</strong> gives you the exact CV fixes, numerical practice, technical prep and application guidance before you submit</div>
       </div>
     </div>
   </div>
 
-  <!-- BEFORE YOU START + WHAT YOU GET — collapsed -->
-  <div style="border-top:0.5px solid var(--ink08);padding-top:20px;margin-bottom:32px;">
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <span style="font-size:13px;flex-shrink:0;margin-top:1px;">⏱</span>
-        <span style="font-size:13px;font-weight:300;color:var(--ink);">Takes 6–8 minutes</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <span style="font-size:13px;flex-shrink:0;margin-top:1px;">◎</span>
-        <span style="font-size:13px;font-weight:300;color:var(--ink);">Your free result gives a high-level read of where you stand</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <span style="font-size:13px;flex-shrink:0;margin-top:1px;">◎</span>
-        <span style="font-size:13px;font-weight:300;color:var(--ink);">A deeper review shows which evidence to lead with, what to cut, and how to frame your strongest experience before submission</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <span style="font-size:13px;flex-shrink:0;margin-top:1px;">◎</span>
-        <span style="font-size:13px;font-weight:300;color:var(--ink);">The Full Cycle gives you personalised CV fixes, numerical practice, technical prep and application guidance before you submit</span>
-      </div>
+  <div style="background:rgba(168,94,10,0.06);border:0.5px solid rgba(168,94,10,0.2);border-radius:10px;padding:14px 16px;margin-bottom:28px;display:flex;align-items:center;gap:12px;">
+    <div style="font-size:20px;">📄</div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--terra);margin-bottom:2px;">Have your CV ready</div>
+      <div style="font-size:12px;font-weight:300;color:var(--ink60);line-height:1.5;">You'll need to upload or paste it during the assessment. PDF or Word. The more detail you give, the more specific the result.</div>
     </div>
   </div>
 
-  <!-- START CTA -->
-  <div onclick="startAssessment()" style="display:inline-flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:18px;font-weight:300;letter-spacing:-0.3px;color:white;background:var(--ink);border-radius:100px;padding:13px 28px;cursor:pointer;transition:background 0.2s;">
-    Start assessment →
-  </div>
-  <div style="font-size:11px;font-weight:300;color:var(--ink40);margin-top:10px;">Free · No account required</div>
-
-  <div style="font-size:11px;font-weight:300;color:var(--ink40);font-style:italic;line-height:1.6;margin-top:28px;padding-top:20px;border-top:0.5px solid var(--ink08);">
-    Most applicants never get honest feedback. This is meant to change that.
-  </div>
+  <button class="btn-primary" onclick="D.step=1;go(1);" style="width:100%;padding:16px;font-size:15px;">Start the assessment →</button>
+  <div style="text-align:center;font-size:11px;font-weight:300;color:var(--ink40);margin-top:12px;">No account needed · Takes 6–8 minutes · Free result instant</div>
 
 </div>
-</div>
-
-<!-- PAGE 1 -->
 <div class="page" id="p1">
 <div class="wrap">
   <div class="step-bar">
@@ -754,36 +724,64 @@ select.fi{background:transparent;cursor:pointer;}
 <!-- PAGE 4 -->
 <div class="page" id="p4">
 <div class="wrap">
-  <div class="step-bar">
-    <div>
-      <div class="snum">Step 4 of 6</div>
-      <div class="step-bar-label">Five <em>quick</em> questions.</div>
+  <!-- Intro state -->
+  <div id="p4intro">
+    <div style="padding-top:24px;">
+      <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;">Section 1 of 2 · Commercial Awareness</div>
+      <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--ink);letter-spacing:-0.5px;margin-bottom:12px;">Five questions.<br><em style="color:var(--terra);">8 minutes.</em></div>
+      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:24px;">These questions test the commercial awareness your target firm expects. They are timed — just like the real thing.</div>
+      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:24px;">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">Before you start</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">You have <strong>8 minutes</strong> for all five questions</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen recommended — no calculator</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">The timer starts when you click Start</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Unanswered questions are marked wrong when time runs out</span></div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startSection1Timer();" style="width:100%;padding:16px;font-size:15px;">Start — timer begins now →</button>
     </div>
-    <div class="step-bar-divider"></div>
-    <div class="step-bar-count">4 / 6</div>
   </div>
-  <p class="sdesc">Testing the commercial awareness your target firm expects.</p>
-  <div id="fqs"></div>
+  <!-- Questions state (hidden until timer starts) -->
+  <div id="p4questions" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:16px;">
+      <div style="font-size:12px;font-weight:500;color:var(--ink60);">Commercial Awareness · 5 questions</div>
+      <div id="timer1" style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;color:var(--terra);letter-spacing:-0.5px;">8:00</div>
+    </div>
+    <div id="timer1bar" style="height:3px;background:var(--ink08);border-radius:2px;margin-bottom:20px;"><div id="timer1fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div></div>
+    <div id="fqs"></div>
+  </div>
 </div>
-</div>
-
-<!-- PAGE 5 -->
 <div class="page" id="p5">
 <div class="wrap">
-  <div class="step-bar">
-    <div>
-      <div class="snum">Step 5 of 6</div>
-      <div class="step-bar-label">Five <em>timed</em> questions.</div>
+  <!-- Intro state -->
+  <div id="p5intro">
+    <div style="padding-top:24px;">
+      <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;">Section 2 of 2 · Numerical Reasoning</div>
+      <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--ink);letter-spacing:-0.5px;margin-bottom:12px;">Five questions.<br><em style="color:var(--terra);">5 minutes.</em></div>
+      <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;margin-bottom:24px;">These are the type of numerical reasoning questions used at HireVue and online testing stages. Speed and accuracy both matter.</div>
+      <div style="border:0.5px solid var(--ink08);border-radius:10px;padding:16px;margin-bottom:24px;">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">Before you start</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">You have <strong>5 minutes</strong> for all five questions</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">Paper and pen only — no calculator</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">The timer starts when you click Start</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--terra);font-size:12px;">◎</span><span style="font-size:13px;font-weight:300;color:var(--ink);">This replicates the pressure of a real HireVue numerical test</span></div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startSection2Timer();" style="width:100%;padding:16px;font-size:15px;">Start — timer begins now →</button>
     </div>
-    <div class="step-bar-divider"></div>
-    <div class="step-bar-count">5 / 6</div>
   </div>
-  <p class="sdesc">Five questions testing numerical reasoning. Take your time — accuracy matters more than speed at this stage.</p>
-  <div id="nqs"></div>
+  <!-- Questions state -->
+  <div id="p5questions" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:16px;">
+      <div style="font-size:12px;font-weight:500;color:var(--ink60);">Numerical Reasoning · 5 questions</div>
+      <div id="timer2" style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;color:var(--terra);letter-spacing:-0.5px;">5:00</div>
+    </div>
+    <div id="timer2bar" style="height:3px;background:var(--ink08);border-radius:2px;margin-bottom:20px;"><div id="timer2fill" style="height:3px;background:var(--terra);border-radius:2px;width:100%;transition:width 1s linear;"></div></div>
+    <div id="nqs"></div>
+  </div>
 </div>
-</div>
-
-<!-- PAGE 6 -->
 <div class="page" id="p6">
 <div class="wrap">
   <div class="step-bar">
@@ -1202,9 +1200,8 @@ function loadCV(f){
   if(cvicEl) cvicEl.textContent='\u2705';
   if(cvttEl) cvttEl.textContent=f.name;
   if(cvsbEl) cvsbEl.textContent='Will be read when you submit — paste is still more reliable for beta';
-  var imp = document.getElementById('cvImpression');
-  if(imp) imp.style.display='block';
-  startCvScan();
+  // No loading animation on upload — only animate on submit
+  D.cvN = f.name; // already set above, just confirm
 }
 
 function startCvScan(){
@@ -1339,8 +1336,15 @@ function go(n){
   if(bbk) bbk.style.visibility=(D.step<=1)?'hidden':'visible';
   var bnxt=document.getElementById('bnxt');
   if(bnxt) bnxt.textContent=D.step===D.total?'Get my score →':'Continue →';
-  if(n===4) renderFQ();
-  if(n===5) renderNQ();
+  if(n===4){
+    // Show intro, questions render only when timer starts
+    var i4=document.getElementById('p4intro'); if(i4) i4.style.display='block';
+    var q4=document.getElementById('p4questions'); if(q4) q4.style.display='none';
+  }
+  if(n===5){
+    var i5=document.getElementById('p5intro'); if(i5) i5.style.display='block';
+    var q5=document.getElementById('p5questions'); if(q5) q5.style.display='none';
+  }
   if(n===6) buildSum();
 }
 
@@ -1919,11 +1923,11 @@ function showR(r){
     var div=D.division||'';
     var firm=D.firm||'';
     var fwText='';
-    if(div.toLowerCase().includes('ibd')||div.toLowerCase().includes('banking')) fwText='IBD screening framework applied';
-    else if(div.toLowerCase().includes('trading')||div.toLowerCase().includes('markets')) fwText='Sales & Trading framework applied';
-    else if(div.toLowerCase().includes('asset')||div.toLowerCase().includes('invest')) fwText='Asset Management framework applied';
-    else fwText='Finance recruiting framework applied';
-    if(firm) fwText=firm+' — '+fwText;
+    if(div.toLowerCase().includes('ibd')||div.toLowerCase().includes('banking')) fwText='IBD screening principles · The Desk practitioner framework applied';
+    else if(div.toLowerCase().includes('trading')||div.toLowerCase().includes('markets')) fwText='Sales & Trading screening principles · The Desk practitioner framework applied';
+    else if(div.toLowerCase().includes('asset')||div.toLowerCase().includes('invest')) fwText='Asset Management screening principles · The Desk practitioner framework applied';
+    else fwText='Finance screening principles · The Desk practitioner framework applied';
+    if(firm) fwText='Benchmarked against '+firm+' '+fwText;
     rfEl.textContent=fwText; rfEl.style.display='block';
   }
   var rfn=document.getElementById('rFN'); if(rfn){rfn.textContent=D.firm;rfn.style.display='block';}
@@ -2009,90 +2013,8 @@ function showR(r){
         +'</div>'
       +'</div>'
       +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;">'+(d.note||'')+'</div>'
-      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:10px 48px 10px 12px;min-height:76px;">'
-        +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;">'
-          +fixPreview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+fixBlurred+'</span>'
-        +'</div>'
-        +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid '+lockBorder+';background:var(--warm);">'
-          +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="'+lockCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-          +'<span style="font-size:10px;color:'+lockCol+';font-weight:500;">Full Cycle</span>'
-        +'</div>'
-      +'</div>';
-    dm.appendChild(div);
-  });
-
-
-  pickT('cy');
-  var pr=document.getElementById('rPr'); pr.innerHTML='';
-  (r.priorities||[]).forEach(function(p,i){
-    var priCol=i===0?'#DC2626':'#D97706';
-    var priBg=i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)';
-    var priBorder=i===0?'#FECACA':'#FDE68A';
-    var div=document.createElement('div');
-    div.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:'+priBg+';border:0.5px solid '+priBorder+';border-radius:8px;margin-bottom:6px;position:relative;overflow:hidden;';
-    if(i===0){
-      div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
-        +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+p+'</span>';
-    } else {
-      var words=p.split(' ');
-      var preview=words.slice(0,6).join(' ');
-      var blurred=words.slice(6).join(' ');
-      div.innerHTML='<span style="font-size:13px;font-weight:600;color:'+priCol+';min-width:16px;flex-shrink:0;">'+(i+1)+'</span>'
-        +'<div style="flex:1;padding-right:80px;">'
-          +'<span style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;">'+preview+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span></span>'
-        +'</div>'
-        +'<div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+priBorder+';background:'+priBg+';">'
-          +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="'+priCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-          +'<span style="font-size:10px;color:'+priCol+';font-weight:500;">Full Cycle</span>'
-        +'</div>';
-    }
-    pr.appendChild(div);
-  });
-
-  // Paid hook
-  var hookEl=document.getElementById('rPaidHook');
-  if(hookEl && r.paidHook) hookEl.textContent=r.paidHook;
-
-  // Source badge — shown whenever no usable CV was actually provided for this result
-  var srcBadge=document.getElementById('rSourceBadge');
-  if(srcBadge){
-    if(!D.cvB){
-      srcBadge.style.display='block';
-      srcBadge.textContent='CV text was limited, so this result relies more heavily on your profile and quiz answers.';
-    } else { srcBadge.style.display='none'; }
-  }
-
-
-
-  // Specific signal noticed — reinforces the CV was actually read
-  var sigEl=document.getElementById('rSignalNoticed');
-  if(sigEl){
-    if(r.specificSignalNoticed && typeof r.specificSignalNoticed==='string' && r.specificSignalNoticed.length>0){
-      sigEl.style.display='block';
-      sigEl.innerHTML='<span style="color:var(--ink40);font-weight:300;">Specific signal noticed: </span>'+r.specificSignalNoticed;
-    } else { sigEl.style.display='none'; }
-  }
-
-  // Competencies section
-  var compBox=document.getElementById('rCompetencies');
-  var compList=document.getElementById('rCompList');
-  if(compBox && compList && Array.isArray(r.competencies) && r.competencies.length>0){
-    compBox.style.display='block';
-    compList.innerHTML='';
-    r.competencies.forEach(function(c,idx){
-      var hasEvidence=c.evidenced && !c.evidenced.toLowerCase().startsWith('not evidenced');
-      var dotCol=hasEvidence?'#16A34A':'#DC2626';
-      var isLast=idx===r.competencies.length-1;
-      var div=document.createElement('div');
-      div.style.cssText='display:grid;grid-template-columns:120px 1fr;gap:8px 14px;padding:10px 0;align-items:start;'+(isLast?'':'border-bottom:0.5px solid var(--ink08);');
-      var fixWords=(c.fix||'').split(' ');
-      var fixPreview=fixWords.slice(0,5).join(' ');
-      var fixBlurred=fixWords.slice(5).join(' ');
-      div.innerHTML=
-        '<div style="font-size:11px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;">'
-          +'<span style="width:7px;height:7px;border-radius:50%;background:'+dotCol+';flex-shrink:0;display:inline-block;"></span>'
-          +c.name
-        +'</div>'
+      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:12px 48px 12px 12px;min-height:88px;overflow:hidden;">'
+        +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.65;filter:blur(4.5px);user-select:none;pointer-events:none;">'+fix+'</div>'
         +'<div>'
           +'<div style="font-size:12px;font-weight:300;color:var(--ink60);line-height:1.5;margin-bottom:4px;">'+c.evidenced+'</div>'
           +'<div style="font-size:11.5px;font-weight:300;color:var(--terra);line-height:1.5;margin-bottom:6px;">'+c.gap+'</div>'
@@ -2993,6 +2915,79 @@ document.addEventListener('DOMContentLoaded', function(){
     var gate=document.getElementById('emailGate');
     if(gate) gate.style.display='none';
     if(window._pendingResult) showR(window._pendingResult);
+  }
+
+
+  var section1Timer = null;
+  var section2Timer = null;
+
+  function startSection1Timer(){
+    // Hide intro, show questions
+    document.getElementById('p4intro').style.display='none';
+    document.getElementById('p4questions').style.display='block';
+    renderFQ();
+
+    var total = 8 * 60; // 8 minutes in seconds
+    var remaining = total;
+    var fill = document.getElementById('timer1fill');
+
+    section1Timer = setInterval(function(){
+      remaining--;
+      var mins = Math.floor(remaining / 60);
+      var secs = remaining % 60;
+      var display = mins + ':' + (secs < 10 ? '0' : '') + secs;
+      document.getElementById('timer1').textContent = display;
+      if(fill) fill.style.width = (remaining / total * 100) + '%';
+      // Turn red in last 60 seconds
+      if(remaining <= 60){
+        document.getElementById('timer1').style.color = '#DC2626';
+        if(fill) fill.style.background = '#DC2626';
+      }
+      if(remaining <= 0){
+        clearInterval(section1Timer);
+        document.getElementById('timer1').textContent = '0:00';
+        // Auto-advance - unanswered = wrong
+        D.step = 5;
+        go(5);
+      }
+    }, 1000);
+  }
+
+  function startSection2Timer(){
+    document.getElementById('p5intro').style.display='none';
+    document.getElementById('p5questions').style.display='block';
+    renderNQ();
+
+    var total = 5 * 60; // 5 minutes in seconds
+    var remaining = total;
+    var fill = document.getElementById('timer2fill');
+
+    section2Timer = setInterval(function(){
+      remaining--;
+      var mins = Math.floor(remaining / 60);
+      var secs = remaining % 60;
+      var display = mins + ':' + (secs < 10 ? '0' : '') + secs;
+      document.getElementById('timer2').textContent = display;
+      if(fill) fill.style.width = (remaining / total * 100) + '%';
+      if(remaining <= 60){
+        document.getElementById('timer2').style.color = '#DC2626';
+        if(fill) fill.style.background = '#DC2626';
+      }
+      if(remaining <= 0){
+        clearInterval(section2Timer);
+        document.getElementById('timer2').textContent = '0:00';
+        D.step = 6;
+        go(6);
+      }
+    }, 1000);
+  }
+
+  // Clear timers if user navigates away
+  var origGo = go;
+  function go(n){
+    if(n !== 4 && section1Timer){ clearInterval(section1Timer); section1Timer = null; }
+    if(n !== 5 && section2Timer){ clearInterval(section2Timer); section2Timer = null; }
+    origGo(n);
   }
 
 </script>
