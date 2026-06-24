@@ -14,7 +14,7 @@ label{font-size:12px;font-weight:500;color:#444;display:block;margin-bottom:4px;
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 select,input{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;}
 textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:13px;font-family:monospace;min-height:220px;resize:vertical;margin-bottom:6px;}
-.file-btn{display:inline-block;padding:8px 16px;border:1.5px dashed #ccc;border-radius:8px;font-size:12px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;}
+.file-btn{display:block;padding:28px 16px;border:2px dashed #ccc;border-radius:10px;font-size:13px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;transition:border-color 0.2s,background 0.2s;}
 .file-btn:hover{border-color:#1a1a1a;color:#1a1a1a;}
 input[type=file]{display:none;}
 .scores{background:#f9f8f6;border-radius:8px;padding:14px;margin-bottom:16px;}
@@ -112,7 +112,7 @@ input[type=file]{display:none;}
   <label>CV text</label>
   <p class="tip">Paste full CV text below, or click to upload a file. Text gives the most reliable read.</p>
   <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>
-  <label class="file-btn" for="cvFile">📄 Or upload PDF / Word file</label>
+  <label class="file-btn" for="cvFile" id="dropZone">📄 Drag & drop your CV here, or click to browse<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">PDF or Word · Max 5MB</span></label>
   <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
 
   <button class="btn" onclick="run()" id="runBtn">Run assessment →</button>
@@ -141,14 +141,40 @@ function makeScoreBtns(containerId, getScore, setScore){
 makeScoreBtns('comm-btns', function(){return commScore;}, function(n){commScore=n;});
 makeScoreBtns('tech-btns', function(){return techScore;}, function(n){techScore=n;});
 
+// Drag and drop
+var dropZone = document.getElementById('dropZone');
+if(dropZone){
+  ['dragenter','dragover'].forEach(function(evt){
+    dropZone.addEventListener(evt, function(e){
+      e.preventDefault();
+      dropZone.style.borderColor='#1a1a1a';
+      dropZone.style.background='#f0f0ec';
+    });
+  });
+  ['dragleave','drop'].forEach(function(evt){
+    dropZone.addEventListener(evt, function(e){
+      e.preventDefault();
+      dropZone.style.borderColor='#ccc';
+      dropZone.style.background='';
+    });
+  });
+  dropZone.addEventListener('drop', function(e){
+    var file = e.dataTransfer.files[0];
+    if(file){ handleFile(file); }
+  });
+}
+
 // File reading
+function handleFile(file){
+  var label=document.getElementById('dropZone');
+  label.innerHTML='📄 <strong>'+file.name+'</strong> ready<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">Will be sent for text extraction</span>';
+  label.style.borderColor='#1a1a1a';
+  window._cvFile=file;
+  document.getElementById('status').textContent='';
+}
 document.getElementById('cvFile').addEventListener('change', function(e){
   var file=e.target.files[0]; if(!file) return;
-  var label=document.querySelector('.file-btn');
-  label.textContent='📄 '+file.name+' selected';
-  // For text extraction we rely on backend - store file ref
-  window._cvFile=file;
-  document.getElementById('status').textContent='File selected — will be sent to API for text extraction.';
+  handleFile(file);
 });
 
 async function run(){
