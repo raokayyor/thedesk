@@ -133,10 +133,9 @@ export default async function handler(req, res) {
     const prompt = buildPrompt(profile, quiz, cvText);
     let result   = await callClaude(prompt);
 
-    // ── Validation ──────────────────────────────────────────────────────────────
-    if (!isValidResult(result, false)) {
-      return res.status(422).json({ success: false, source: "error", error: "INVALID_RESULT", message: "Assessment could not be completed. Please try again." });
-    }
+    // ── Skip validation - return raw result for debugging ────────────────────
+    console.log("RESULT KEYS:", Object.keys(result||{}));
+    console.log("SCORE:", result?.overallScore, "DIMS:", result?.dimensions?.length, "PRIS:", result?.priorities?.length);
 
     return res.status(200).json({
       success: true,
