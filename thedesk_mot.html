@@ -844,7 +844,7 @@ select.fi{background:transparent;cursor:pointer;}
 
   <!-- LEAVING ON TABLE -->
   <div id="rLeavingOnTable" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:14px 16px;margin-bottom:12px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">What this application is leaving on the table</div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:0;">What you're not using — tap to expand</div>
     <div id="rLeavingList"></div>
   </div>
 
@@ -1046,30 +1046,59 @@ select.fi{background:transparent;cursor:pointer;}
     apSteps.innerHTML=stepsHTML;
   }
 
-  // LEAVING ON TABLE
+  // LEAVING ON TABLE — expandable rows like dimensions
   var lotBox=document.getElementById('rLeavingOnTable');
   var lotList=document.getElementById('rLeavingList');
   if(lotBox&&lotList){
     var items=[];
-    if(r.wastedEvidence) items.push({label:'Evidence being wasted',text:r.wastedEvidence});
-    if(r.missedOpportunity) items.push({label:'Missed opportunity',text:r.missedOpportunity});
-    if(Array.isArray(r.untappedAssets)) r.untappedAssets.forEach(function(ua){ items.push({label:ua.asset,text:ua.why,blur:ua.howToFrame}); });
+    if(r.wastedEvidence) items.push({label:'Evidence being wasted',dot:'#DC2626',sub:r.specificSignalNoticed||'',text:r.wastedEvidence});
+    if(r.missedOpportunity) items.push({label:'Missed opportunity',dot:'#D97706',sub:'',text:r.missedOpportunity});
+    if(Array.isArray(r.untappedAssets)) r.untappedAssets.forEach(function(ua){
+      items.push({label:ua.asset,dot:'#D97706',sub:'',text:ua.why,fix:ua.howToFrame});
+    });
     if(items.length>0){
       lotBox.style.display='block'; lotList.innerHTML='';
       items.forEach(function(item,idx){
+        var uid='lot'+idx;
         var isLast=idx===items.length-1;
-        var div=document.createElement('div');
-        div.style.cssText='padding:10px 0;'+(isLast?'':'border-bottom:0.5px solid var(--ink08);');
-        var words=(item.text||'').split(' '), preview=words.slice(0,10).join(' '), blurred=words.slice(10).join(' ');
-        div.innerHTML='<div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);margin-bottom:4px;">'+item.label+'</div>'
-          +'<div style="font-size:12.5px;font-weight:300;color:var(--ink);line-height:1.55;margin-bottom:6px;">'+preview+(blurred?' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span>':'')+'</div>'
-          +(item.blur?'<div style="position:relative;background:var(--cream);border-radius:6px;padding:8px 48px 8px 10px;">'
-            +'<span style="font-size:11px;color:var(--ink60);filter:blur(4px);user-select:none;">'+item.blur+'</span>'
-            +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:5px;border:0.5px solid var(--ink08);background:var(--warm);">'
-              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-              +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
-            +'</div></div>':'');
-        lotList.appendChild(div);
+        // Split text: first sentence visible, rest blurred ~3/4 through second
+        var sentences=item.text.split('. ');
+        var line1=(sentences[0]||'')+'.';
+        var rest=sentences.slice(1).join('. ');
+        // Show ~half of second sentence then blur
+        var restWords=rest.split(' ');
+        var splitAt=Math.max(4,Math.floor(restWords.length*0.4));
+        var restVis=restWords.slice(0,splitAt).join(' ');
+        var restBlur=restWords.slice(splitAt).join(' ');
+        var fixText=item.fix||'Full Cycle gives you the exact framing and placement — specific to your CV and this firm.';
+        var row=document.createElement('div');
+        row.style.cssText='border-bottom:'+(isLast?'none':'0.5px solid var(--ink08)');
+        row.innerHTML=
+          '<div onclick="toggleLot(''+uid+'')" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;cursor:pointer;">'
+            +'<div style="display:flex;align-items:center;gap:10px;">'
+              +'<div style="width:8px;height:8px;border-radius:50%;background:'+item.dot+';flex-shrink:0;"></div>'
+              +'<div>'
+                +'<div style="font-size:13px;color:var(--ink);">'+item.label+'</div>'
+                +(item.sub?'<div style="font-size:11px;color:var(--ink40);margin-top:1px;">'+item.sub+'</div>':'')
+              +'</div>'
+            +'</div>'
+            +'<svg id="lotchev'+idx+'" style="width:14px;height:14px;flex-shrink:0;transition:transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
+          +'</div>'
+          +'<div id="'+uid+'" style="display:none;border-top:0.5px solid var(--ink08);padding:14px 16px 16px;">'
+            +'<div style="font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:14px;">'
+              +line1+'<br>'
+              +'<span style="color:var(--ink60);">'+restVis+' </span>'
+              +'<span style="filter:blur(4.5px);user-select:none;pointer-events:none;color:var(--ink60);">'+restBlur+'</span>'
+            +'</div>'
+            +'<div style="position:relative;background:var(--warm);border-radius:8px;padding:12px 90px 12px 14px;min-height:76px;">'
+              +'<div style="font-size:12px;color:var(--ink);line-height:1.65;filter:blur(4.5px);user-select:none;pointer-events:none;">'+fixText+'</div>'
+              +'<div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:8px;background:var(--cream);border:0.5px solid var(--ink08);white-space:nowrap;">'
+                +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+                +'<span style="font-size:11px;color:var(--ink40);font-weight:500;">Full Cycle fix</span>'
+              +'</div>'
+            +'</div>'
+          +'</div>';
+        lotList.appendChild(row);
       });
     } else { lotBox.style.display='none'; }
   }
@@ -1099,5 +1128,20 @@ function toggleDim(id){
   var myChev=document.getElementById('chev'+idx);
   if(myChev&&el.style.display==='block') myChev.style.transform='rotate(180deg)';
 }
+
+
+  function toggleLot(id){
+    var el=document.getElementById(id);
+    if(!el) return;
+    var isOpen=el.style.display!=='none';
+    document.querySelectorAll('[id^="lot"]').forEach(function(d){ if(d.id.startsWith('lot')&&!isNaN(d.id.slice(3))) d.style.display='none'; });
+    document.querySelectorAll('[id^="lotchev"]').forEach(function(c){ c.style.transform='rotate(0deg)'; });
+    if(!isOpen){
+      el.style.display='block';
+      var idx=id.replace('lot','');
+      var chev=document.getElementById('lotchev'+idx);
+      if(chev) chev.style.transform='rotate(180deg)';
+    }
+  }
 
 
