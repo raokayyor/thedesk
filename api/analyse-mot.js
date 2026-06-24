@@ -1,4 +1,4 @@
-// The Desk — Application MOT Backend
+"priorities":["[REQUIRED gap 1 of exactly 3 — name a specific CV detail, dimension weakness, or track-specific expectation. Never generic. e.g. 'Your Hawkpoint internship reads as support work — a screener won't see deal ownership in 20 seconds.']","[REQUIRED gap 2 of exactly 3 — meaningfully different from gap 1. Specific named detail or dimension.]","[REQUIRED gap 3 of exactly 3 — the third distinct weakness a screener would notice. Always provide all three even if the profile is strong.]"// The Desk — Application MOT Backend
 // ─────────────────────────────────────────────────────────────────────────────
 // DEPLOYMENT:
 //   Vercel:  place at /api/analyse-mot.js in your project root
@@ -221,7 +221,7 @@ function isValidResult(result, cvRequired) {
   if (!result.archetype)     { console.log("FAIL: no archetype"); return false; }
   if (!result.killerSentence){ console.log("FAIL: no killerSentence"); return false; }
   if (!Array.isArray(result.dimensions) || result.dimensions.length < 4) { console.log("FAIL: dims", result.dimensions?.length); return false; }
-  if (!Array.isArray(result.priorities) || result.priorities.length < 1) { console.log("FAIL: priorities", result.priorities?.length); return false; }
+  if (!Array.isArray(result.priorities) || result.priorities.length < 3) { console.log("FAIL: priorities need 3, got", result.priorities?.length); return false; }
   if (!result.diagnostic)    { console.log("FAIL: no diagnostic"); return false; }
   if (!result.paidHook)      { console.log("FAIL: no paidHook"); return false; }
   console.log("PASS: score", result.overallScore);
