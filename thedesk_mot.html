@@ -1347,6 +1347,9 @@ function go(n){
     var q5=document.getElementById('p5questions'); if(q5) q5.style.display='none';
   }
   if(n===6) buildSum();
+  // Always show nav on pages 1-6
+  var bnavEl = document.getElementById('bn');
+  if(bnavEl) bnavEl.style.display = (n===0) ? 'none' : 'flex';
 }
 
 function next(){
