@@ -1946,28 +1946,25 @@ function showR(r){
     var badgeBg=d.score>=70?'#DCFCE7':d.score>=50?'#FEF9C3':'#FEE2E2';
     var badgeCol=d.score>=70?'#15803D':d.score>=50?'#A16207':'#991B1B';
     var isLow=d.score<50;
-    var fix=d.fix||'The specific fix for this dimension is available in Full Cycle.';
-    var words=fix.split(' ');
-    var splitAt=Math.min(9,Math.floor(words.length*0.35));
-    var fixPreview=words.slice(0,splitAt).join(' ');
-    var fixBlurred=words.slice(splitAt).join(' ');
+    var fix=d.fix||'Full Cycle includes the specific fix for this dimension.';
+    // Split into first sentence (visible) and rest (blurred)
+    var sentEnd=fix.indexOf('. ');
+    if(sentEnd<0||sentEnd>120) sentEnd=Math.min(60,Math.floor(fix.length*0.3));
+    else sentEnd=sentEnd+1;
+    var fixVisible=fix.slice(0,sentEnd).trim();
+    var fixBlurred=fix.slice(sentEnd).trim();
+    // Add Full Cycle specific line for Technical and Commercial when weak
+    var fcExtra='';
+    if(d.name==='Technical Readiness' && d.score<70) fcExtra=' Full Cycle includes unlimited numerical testing practice — SHL, Korn Ferry and Cubiks style — with worked solutions and re-test tracking.';
+    if(d.name==='Commercial Awareness' && d.score<70) fcExtra=' Full Cycle includes commercial awareness primers, sector guides and market briefings covering the exact themes tested this cycle.';
+    if(fcExtra) fixBlurred=(fixBlurred+fcExtra).trim();
     var fixRowBg=isLow?'background:rgba(254,226,226,0.4);border:0.5px solid #FECACA;':'background:var(--warm);';
     var lockCol=isLow?'#DC2626':'var(--ink40)';
     var lockBorder=isLow?'#FECACA':'var(--ink08)';
     var div=document.createElement('div');
     div.style.cssText='padding:14px 0;border-bottom:0.5px solid var(--ink08);';
     div.innerHTML=
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
-        +'<span style="font-size:12px;font-weight:600;color:var(--ink);">'+(d.name||'')+'</span>'
-        +'<div style="display:flex;align-items:center;gap:8px;">'
-          +'<div style="width:70px;height:4px;background:var(--ink08);border-radius:2px;"><div style="height:4px;background:'+scoreCol+';border-radius:2px;width:'+Math.round(d.score)+'%;"></div></div>'
-          +'<span style="font-size:11px;color:var(--ink40);">'+Math.round(d.score)+'</span>'
-          +'<span style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:'+badgeBg+';color:'+badgeCol+';">'+band+'</span>'
-        +'</div>'
-      +'</div>'
-      +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;">'+(d.note||'')+'</div>'
-      +'<div style="position:relative;'+fixRowBg+'border-radius:8px;padding:12px 48px 12px 12px;min-height:88px;overflow:hidden;">'
-        +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.65;filter:blur(4.5px);user-select:none;pointer-events:none;">'+fix+'</div>'      +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--warm);">'        +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'        +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>'      +'</div>'    +'</div>';
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'        +'<span style="font-size:12px;font-weight:600;color:var(--ink);">'+(d.name||'')+'</span>'        +'<div style="display:flex;align-items:center;gap:8px;">'          +'<div style="width:70px;height:4px;background:var(--ink08);border-radius:2px;"><div style="height:4px;background:'+scoreCol+';border-radius:2px;width:'+Math.round(d.score)+'%;"></div></div>'          +'<span style="font-size:11px;color:var(--ink40);">'+Math.round(d.score)+'</span>'          +'<span style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:'+badgeBg+';color:'+badgeCol+';">'+band+'</span>'        +'</div>'      +'</div>'      +'<div style="font-size:12.5px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;">'+(d.note||'')+'</div>'      +'<div style="'+fixRowBg+'border-radius:8px;padding:12px 14px;min-height:88px;">'        +'<div style="font-size:12px;font-weight:400;color:var(--ink);line-height:1.65;margin-bottom:6px;">'+fixVisible+'</div>'        +'<div style="position:relative;">'          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.65;filter:blur(4px);user-select:none;pointer-events:none;padding-right:90px;">'+fixBlurred+'</div>'          +'<div style="position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+lockBorder+';background:var(--cream);white-space:nowrap;">'            +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="'+lockCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'            +'<span style="font-size:10px;color:'+lockCol+';font-weight:500;">Full Cycle fix</span>'          +'</div>'        +'</div>'      +'</div>';
     dm.appendChild(div);
   });
 
