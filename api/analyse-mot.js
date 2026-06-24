@@ -133,36 +133,9 @@ export default async function handler(req, res) {
     const prompt = buildPrompt(profile, quiz, cvText);
     let result   = await callClaude(prompt);
 
-    // ── Retry once if named CV details missing ────────────────────────────
-    if (!isValidResult(result, true)) {
-      console.log("First attempt missing named CV details — retrying");
-      const retryPrompt = buildPrompt(profile, quiz, cvText) + `
-
-RETRY INSTRUCTION — YOUR PREVIOUS RESPONSE WAS REJECTED:
-Your output did not reference at least one named CV detail.
-This is mandatory. Re-read the CANDIDATE CV TEXT above carefully.
-Extract and reference at least one of:
-- A named employer (e.g. Goldman Sachs, Tesco, boutique corporate finance firm)
-- A named society (e.g. Bristol Finance Society, Warwick Trading Society)
-- A named project (e.g. Python yield curve project, Diageo stock pitch)
-- A named module (e.g. Corporate Finance, Valuation, Econometrics)
-- A named role or internship title
-- An A-level subject
-
-Do NOT use generic phrases like "your finance experience" or "your project".
-Return ONLY valid JSON matching the exact schema. No markdown. No explanation.`;
-
-      result = await callClaude(retryPrompt);
-    }
-
-    // ── Final validation ──────────────────────────────────────────────────
-    if (!isValidResult(result, true)) {
-      return res.status(422).json({
-        success: false,
-        source: "error",
-        error: "NO_NAMED_CV_DETAIL",
-        message: "We could not generate a sufficiently specific CV read. Please upload a clearer CV, or paste your CV text directly and try again.",
-      });
+    // ── Validation ──────────────────────────────────────────────────────────────
+    if (!isValidResult(result, false)) {
+      return res.status(422).json({ success: false, source: "error", error: "INVALID_RESULT", message: "Assessment could not be completed. Please try again." });
     }
 
     return res.status(200).json({
@@ -233,40 +206,28 @@ async function callClaude(prompt) {
     messages: [{ role: "user", content: prompt }],
   });
 
-  const text    = response.content?.[0]?.text || "";
-  const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
-  return JSON.parse(cleaned);
+  const text = response.content?.[0]?.text || "";
+  console.log("Output length:", text.length, "start:", text.slice(0,80));
+  const first = text.indexOf("{");
+  const last  = text.lastIndexOf("}");
+  if (first === -1 || last === -1) throw new SyntaxError("No JSON in response");
+  try { return JSON.parse(text.slice(first, last + 1)); }
+  catch(e) { console.error("JSON parse fail, tail:", text.slice(-200)); throw e; }
 }
 
 // ── Result validation ─────────────────────────────────────────────────────────
 function isValidResult(result, cvRequired) {
-  if (!result || typeof result !== "object")             return false;
-  if (typeof result.overallScore !== "number")           return false;
-  if (result.overallScore < 0 || result.overallScore > 100) return false;
-  if (!result.band             || typeof result.band             !== "string") return false;
-  if (!result.archetype        || typeof result.archetype        !== "string") return false;
-  if (!result.killerSentence   || typeof result.killerSentence   !== "string") return false;
-  if (!Array.isArray(result.dimensions)  || result.dimensions.length  < 6)    return false;
-  if (!Array.isArray(result.priorities)  || result.priorities.length  !== 3)  return false;
-  if (!result.diagnostic       || typeof result.diagnostic       !== "string") return false;
-  if (!result.highestLeverage  || typeof result.highestLeverage  !== "string") return false;
-  if (!result.paidHook         || typeof result.paidHook         !== "string") return false;
-
-  for (const d of result.dimensions) {
-    if (!d.name  || typeof d.name  !== "string") return false;
-    if (typeof d.score !== "number")             return false;
-    if (d.score < 0 || d.score > 100)           return false;
-    if (!d.note  || typeof d.note  !== "string") return false;
-    if (!d.fix   || typeof d.fix   !== "string") return false;
-  }
-
-  if (cvRequired) {
-    if (!Array.isArray(result.namedCvDetails))   return false;
-    const real = result.namedCvDetails.filter(d => d && typeof d === "string" && d.length > 4);
-    if (real.length < 1)                         return false;
-    if (!result.specificSignalNoticed || typeof result.specificSignalNoticed !== "string") return false;
-  }
-
+  if (!result || typeof result !== "object")   { console.log("FAIL: not object"); return false; }
+  if (typeof result.overallScore !== "number") { console.log("FAIL: no score"); return false; }
+  if (result.overallScore < 0 || result.overallScore > 100) { console.log("FAIL: score range"); return false; }
+  if (!result.band)          { console.log("FAIL: no band"); return false; }
+  if (!result.archetype)     { console.log("FAIL: no archetype"); return false; }
+  if (!result.killerSentence){ console.log("FAIL: no killerSentence"); return false; }
+  if (!Array.isArray(result.dimensions) || result.dimensions.length < 4) { console.log("FAIL: dims", result.dimensions?.length); return false; }
+  if (!Array.isArray(result.priorities) || result.priorities.length < 1) { console.log("FAIL: priorities", result.priorities?.length); return false; }
+  if (!result.diagnostic)    { console.log("FAIL: no diagnostic"); return false; }
+  if (!result.paidHook)      { console.log("FAIL: no paidHook"); return false; }
+  console.log("PASS: score", result.overallScore, "dims", result.dimensions.length);
   return true;
 }
 
