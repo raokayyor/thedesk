@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Desk — Rapid CV Test</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f5f4f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.card{background:white;border-radius:12px;padding:28px;max-width:560px;width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.08);}
+h1{font-size:20px;font-weight:600;margin-bottom:4px;}
+.sub{font-size:13px;color:#666;margin-bottom:24px;}
+label{font-size:12px;font-weight:500;color:#444;display:block;margin-bottom:4px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+select,input{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;}
+textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:13px;font-family:monospace;min-height:220px;resize:vertical;margin-bottom:6px;}
+.file-btn{display:inline-block;padding:8px 16px;border:1.5px dashed #ccc;border-radius:8px;font-size:12px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;}
+.file-btn:hover{border-color:#1a1a1a;color:#1a1a1a;}
+input[type=file]{display:none;}
+.scores{background:#f9f8f6;border-radius:8px;padding:14px;margin-bottom:16px;}
+.scores-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:10px;}
+.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.score-label{font-size:13px;color:#333;}
+.score-btns{display:flex;gap:4px;}
+.sb{width:32px;height:32px;border:1.5px solid #ddd;border-radius:6px;background:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sb.on{background:#1a1a1a;color:white;border-color:#1a1a1a;}
+.btn{width:100%;padding:14px;background:#1a1a1a;color:white;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;}
+.btn:hover{background:#333;}
+.btn:disabled{background:#999;cursor:not-allowed;}
+.status{font-size:13px;margin-top:12px;text-align:center;color:#666;min-height:20px;}
+.status.err{color:#dc2626;}
+.tip{font-size:11px;color:#999;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Rapid CV Test</h1>
+  <p class="sub">Upload or paste a CV → get the result page instantly.</p>
+
+  <div class="row">
+    <div>
+      <label>Target firm</label>
+      <select id="firm">
+        <option>Goldman Sachs</option>
+        <option>JP Morgan</option>
+        <option>Barclays</option>
+        <option>Lazard</option>
+        <option>Morgan Stanley</option>
+        <option>Rothschild</option>
+        <option>UBS</option>
+      </select>
+    </div>
+    <div>
+      <label>Division</label>
+      <select id="division">
+        <option>Investment Banking / IBD</option>
+        <option>Sales & Trading / Markets</option>
+        <option>Asset Management / Investing</option>
+        <option>General Finance</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>University</label>
+      <input id="uni" value="University of Warwick" placeholder="e.g. LSE">
+    </div>
+    <div>
+      <label>Course</label>
+      <input id="course" value="Economics" placeholder="e.g. Finance">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Year</label>
+      <select id="year">
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option selected>Final Year</option>
+        <option>Graduate</option>
+      </select>
+    </div>
+    <div>
+      <label>Grade</label>
+      <input id="grade" value="First Class (predicted)">
+    </div>
+  </div>
+
+  <div class="scores">
+    <div class="scores-title">Quiz scores (tap to set)</div>
+    <div class="score-row">
+      <div class="score-label">Commercial awareness</div>
+      <div class="score-btns" id="comm-btns"></div>
+    </div>
+    <div class="score-row" style="margin-bottom:0;">
+      <div class="score-label">Numerical reasoning</div>
+      <div class="score-btns" id="tech-btns"></div>
+    </div>
+  </div>
+
+  <label>CV text</label>
+  <p class="tip">Paste full CV text below, or click to upload a file. Text gives the most reliable read.</p>
+  <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>
+  <label class="file-btn" for="cvFile">📄 Or upload PDF / Word file</label>
+  <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
+
+  <button class="btn" onclick="run()" id="runBtn">Run assessment →</button>
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+// Score buttons
+var commScore=3, techScore=3;
+function makeScoreBtns(containerId, getScore, setScore){
+  var c=document.getElementById(containerId);
+  for(var i=1;i<=5;i++){
+    (function(n){
+      var b=document.createElement('button');
+      b.className='sb'+(n===getScore()?' on':'');
+      b.textContent=n;
+      b.onclick=function(){
+        setScore(n);
+        var btns=c.querySelectorAll('.sb');
+        btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=n?' on':''); });
+      };
+      c.appendChild(b);
+    })(i);
+  }
+}
+makeScoreBtns('comm-btns', function(){return commScore;}, function(n){commScore=n;});
+makeScoreBtns('tech-btns', function(){return techScore;}, function(n){techScore=n;});
+
+// File reading
+document.getElementById('cvFile').addEventListener('change', function(e){
+  var file=e.target.files[0]; if(!file) return;
+  var label=document.querySelector('.file-btn');
+  label.textContent='📄 '+file.name+' selected';
+  // For text extraction we rely on backend - store file ref
+  window._cvFile=file;
+  document.getElementById('status').textContent='File selected — will be sent to API for text extraction.';
+});
+
+async function run(){
+  var btn=document.getElementById('runBtn');
+  var status=document.getElementById('status');
+  var cvText=document.getElementById('cvText').value.trim();
+  var cvFile=window._cvFile;
+
+  if(!cvText && !cvFile){
+    status.className='status err';
+    status.textContent='Please paste CV text or upload a file.';
+    return;
+  }
+
+  btn.disabled=true; btn.textContent='Analysing...';
+  status.className='status';
+  var t=Date.now();
+
+  var profile={
+    university:document.getElementById('uni').value,
+    course:document.getElementById('course').value,
+    year:document.getElementById('year').value,
+    grade:document.getElementById('grade').value,
+    targetFirm:document.getElementById('firm').value,
+    targetDivision:document.getElementById('division').value,
+    programme:'Summer Internship',
+    track:document.getElementById('division').value
+  };
+  var quiz={commercialCorrect:commScore,commercialTotal:5,technicalCorrect:techScore,technicalTotal:5};
+
+  try {
+    var resp, data;
+    if(cvFile && !cvText){
+      // Send as multipart
+      var fd=new FormData();
+      fd.append('profile',JSON.stringify(profile));
+      fd.append('quiz',JSON.stringify(quiz));
+      fd.append('cvFile',cvFile);
+      resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{method:'POST',body:fd});
+    } else {
+      resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({profile,quiz,cv:{fileName:'pasted.txt',text:cvText}})
+      });
+    }
+
+    data=await resp.json();
+    var elapsed=((Date.now()-t)/1000).toFixed(1);
+
+    if(data.success && data.result){
+      status.textContent='✓ Done in '+elapsed+'s — loading result...';
+      // Store everything in localStorage for thedesk_mot.html to pick up
+      localStorage.setItem('tdesk_rapid_result', JSON.stringify({
+        result: data.result,
+        profile: profile,
+        quiz: quiz,
+        ts: Date.now()
+      }));
+      setTimeout(function(){
+        window.location.href='thedesk_mot.html?rapidtest=1';
+      }, 400);
+    } else {
+      status.className='status err';
+      status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
+      btn.disabled=false; btn.textContent='Run assessment →';
+    }
+  } catch(e){
+    status.className='status err';
+    status.textContent='Error: '+e.message;
+    btn.disabled=false; btn.textContent='Run assessment →';
+  }
+}
+</script>
+</body>
+</html>
