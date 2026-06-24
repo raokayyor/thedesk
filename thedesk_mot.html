@@ -1668,15 +1668,7 @@ function finish(res){
   });
   setTimeout(function(){
     document.getElementById('ldr').classList.remove('show');
-    window._pendingResult=res;
-    var gate=document.getElementById('emailGate');
-    if(gate){
-      gate.style.display='flex';
-      var ge=document.getElementById('gateEmail');
-      if(ge) setTimeout(function(){ge.focus();},100);
-    } else {
-      showR(res); // fallback if the gate markup is ever missing
-    }
+    showR(res);
   },800);
 }
 
