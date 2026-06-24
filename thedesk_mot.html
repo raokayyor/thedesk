@@ -2838,14 +2838,11 @@ function setCvScanVariant(){
 function validateResult(result, cvUploaded){
   if(!result) return false;
   if(typeof result.overallScore !== 'number') return false;
-  if(!Array.isArray(result.dimensions) || result.dimensions.length < 6) return false;
+  if(!Array.isArray(result.dimensions) || result.dimensions.length < 4) return false;
   if(!result.archetype) return false;
   if(!result.killerSentence) return false;
-  if(!Array.isArray(result.priorities) || result.priorities.length !== 3) return false;
-  if(cvUploaded){
-    var details = result.namedCvDetails || result.namedCvDetailsFound || [];
-    if(!Array.isArray(details) || details.length === 0) return false;
-  }
+  if(!Array.isArray(result.priorities) || result.priorities.length < 1) return false;
+  if(!result.diagnostic) return false;
   return true;
 }
 
