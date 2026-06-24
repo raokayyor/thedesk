@@ -668,63 +668,14 @@ select.fi{background:transparent;cursor:pointer;}
   <div class="cvdrop" id="cvd">
     <div style="font-size:22px;margin-bottom:6px;" id="cvic">📄</div>
     <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:400;color:var(--ink);margin-bottom:4px;" id="cvtt">Or upload your CV</div>
-    <div style="font-size:11.5px;font-weight:300;color:var(--ink40);margin-bottom:10px;" id="cvsb">Upload is available, but pasted text gives the most reliable beta result · PDF or Word · Max 5MB</div>
+    <div style="font-size:11.5px;font-weight:300;color:var(--ink40);margin-bottom:10px;" id="cvsb">PDF or Word · Max 5MB</div>
     <div style="display:inline-block;font-size:12px;font-weight:500;color:var(--terra);border:0.5px solid var(--terra);border-radius:100px;padding:5px 14px;">Browse files</div>
     <input type="file" id="cvf" accept=".pdf,.doc,.docx" style="display:none">
   </div>
-  <p style="font-size:11px;font-weight:300;color:var(--ink40);margin-bottom:8px;">🔒 Your CV is processed securely and used only to generate your assessment.</p>
-  <p style="font-size:12px;font-weight:300;color:var(--ink40);margin-bottom:12px;">Don't have a CV yet? <span style="color:var(--terra);border-bottom:0.5px solid var(--terra);cursor:pointer;">Build one here for free →</span></p>
 
-  <!-- CV SCAN RESULT — shown after upload -->
-  <div id="cvImpression" style="display:none;">
+  <p style="font-size:11px;font-weight:300;color:var(--ink40);margin-bottom:20px;">🔒 Your CV is processed securely and used only to generate your assessment.</p>
 
-    <!-- Scanner animation -->
-    <div id="cvScanning" style="background:var(--warm);border:0.5px solid var(--ink08);border-radius:14px;padding:20px;margin-bottom:10px;text-align:center;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;">Scanning your CV</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;" id="scanLines">
-        <div class="scan-row" id="sc1" style="opacity:0.2;transition:opacity 0.4s;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--ink60);"><span>Reviewing academic profile</span><span id="sc1v" style="color:var(--ink40);">—</span></div></div>
-        <div class="scan-row" id="sc2" style="opacity:0.2;transition:opacity 0.4s;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--ink60);"><span>Reviewing experience and background</span><span id="sc2v" style="color:var(--ink40);">—</span></div></div>
-        <div class="scan-row" id="sc3" style="opacity:0.2;transition:opacity 0.4s;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--ink60);"><span>Assessing application positioning</span><span id="sc3v" style="color:var(--ink40);">—</span></div></div>
-        <div class="scan-row" id="sc4" style="opacity:0.2;transition:opacity 0.4s;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--ink60);"><span>Benchmarking application profile</span><span id="sc4v" style="color:var(--ink40);">—</span></div></div>
-        <div class="scan-row" id="sc5" style="opacity:0.2;transition:opacity 0.4s;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--ink60);"><span>Generating your assessment</span><span id="sc5v" style="color:var(--ink40);">—</span></div></div>
-      </div>
-    </div>
-
-    <!-- Score reveal — hidden until scan completes -->
-    <div id="cvScore" style="display:none;background:var(--ink);border-radius:14px;padding:22px;margin-bottom:10px;">
-      <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:12px;">Recruiter read</div>
-      <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;">
-        <div style="font-family:'Fraunces',serif;font-size:56px;font-weight:300;letter-spacing:-2px;color:#F7F3EE;line-height:1;"><span id="impScore">—</span></div>
-        <div style="font-size:20px;color:rgba(247,243,238,0.25);font-family:'Fraunces',serif;padding-bottom:6px;">/ 100</div>
-        <div style="margin-left:auto;text-align:right;">
-          <div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:4px;">Target</div>
-          <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:300;color:rgba(247,243,238,0.6);" id="impFirm">—</div>
-        </div>
-      </div>
-      <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:300;font-style:italic;color:rgba(247,243,238,0.45);line-height:1.55;border-top:0.5px solid rgba(247,243,238,0.1);padding-top:13px;"><span id="cvScanVerdict">Initial CV read complete. Continue the assessment for your full diagnostic.</span></div>
-    </div>
-
-    <!-- Continue prompt -->
-    <div id="cvContinue" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:14px;padding:18px;margin-bottom:10px;">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;">CV assessed</div>
-      <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;letter-spacing:-0.4px;color:var(--ink);margin-bottom:6px;">Ready to continue<br>your assessment?</div>
-      <div style="margin-bottom:16px;">
-        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
-          <div style="font-size:15px;font-weight:400;color:var(--ink);line-height:1.5;">Finance knowledge — 5 questions on markets and commercial awareness</div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
-          <div style="font-size:15px;font-weight:400;color:var(--ink);line-height:1.5;">Numerical reasoning — 5 questions, untimed</div>
-        </div>
-      </div>
-      <div style="font-size:12px;font-weight:300;color:var(--ink40);margin-bottom:16px;">Takes about 6 minutes.</div>
-      <button onclick="next()" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;transition:background 0.2s;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Continue assessment →</button>
-    </div>
-
-  
-  <button onclick="next();" style="width:100%;margin-top:24px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Continue →</button>
-</div>
+  <button onclick="next();" style="width:100%;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Continue →</button>
 
 </div>
 </div>
