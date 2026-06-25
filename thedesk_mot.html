@@ -834,6 +834,24 @@ select.fi{background:transparent;cursor:pointer;}
     </div>
   </div>
 
+  <!-- RECRUITER MAY MISS -->
+  <div id="rRecruiterMiss" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:8px;">What a recruiter may miss in 30 seconds</div>
+    <div id="rRecruiterMissText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
+  </div>
+
+  <!-- UNCOMFORTABLE TRUTH -->
+  <div id="rTruth" style="display:none;background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:12px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.35);margin-bottom:6px;">The uncomfortable truth</div>
+    <div id="rTruthText" style="font-size:14px;font-weight:300;color:#F7F3EE;line-height:1.65;font-style:italic;"></div>
+  </div>
+
+  <!-- FULL CYCLE FIRST FIX -->
+  <div id="rFirstFix" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:8px;">What Full Cycle would fix first</div>
+    <div id="rFirstFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
+  </div>
+
   <!-- 6 DIMENSIONS -->
   <div style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;margin-bottom:12px;overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
@@ -1993,6 +2011,30 @@ function showR(r){
   var kw=document.getElementById('rKillerWrap'), kd=document.getElementById('rDiagnosis');
   if(kw&&kd&&r.killerSentence){kd.textContent='"'+r.killerSentence+'"';kw.style.display='block';}
 
+  // RECRUITER MAY MISS
+  var rmBox=document.getElementById('rRecruiterMiss');
+  var rmText=document.getElementById('rRecruiterMissText');
+  if(rmBox&&rmText&&r.recruiterMayMiss){
+    rmText.textContent=r.recruiterMayMiss;
+    rmBox.style.display='block';
+  }
+
+  // UNCOMFORTABLE TRUTH
+  var truthBox=document.getElementById('rTruth');
+  var truthText=document.getElementById('rTruthText');
+  if(truthBox&&truthText&&r.uncomfortableTruth){
+    truthText.textContent=r.uncomfortableTruth;
+    truthBox.style.display='block';
+  }
+
+  // FULL CYCLE FIRST FIX
+  var ffBox=document.getElementById('rFirstFix');
+  var ffText=document.getElementById('rFirstFixText');
+  if(ffBox&&ffText&&r.fullCycleFirstFix){
+    ffText.textContent=r.fullCycleFirstFix;
+    ffBox.style.display='block';
+  }
+
   // 6 DIMENSIONS — expandable
   var dm=document.getElementById('rDm'); dm.innerHTML='';
   (r.dimensions||[]).forEach(function(d,i){
@@ -2090,47 +2132,42 @@ function showR(r){
   var pr=document.getElementById('rPr');
   if(pr){
     pr.innerHTML='';
-    var pris=r.priorities||[];
-    // Take first 2 personal gaps from model
-    while(pris.length<2) pris.push('A key gap in this application needs addressing before you submit.');
-    var techPct=Math.round((D.nS/5)*100);
-    var commPct=Math.round((D.fS/5)*100);
-    var techGap=D.nS>=5
-      ?'Your numerical score is strong — but application season moves fast. Full Cycle gives you unlimited timed practice to stay sharp and test again before you submit. Most candidates who score 5/5 early lose ground before their actual HireVue.'
-      :'Your numerical score of '+D.nS+'/5 ('+techPct+'%) is below the estimated pass threshold for '+( D.firm||'your target firm')+'. Full Cycle gives you unlimited SHL, Korn Ferry and Cubiks-style timed tests with worked solutions — the specific question types used at this firm are in the practice bank.';
-    var commGap=D.fS>=5
-      ?'Your commercial quiz score is strong — but commercial awareness is tested continuously through the application. Full Cycle includes weekly market briefings and sector primers covering the exact themes interviewers at '+(D.firm||'your target firm')+' are testing this cycle.'
-      :'Your commercial score of '+D.fS+'/5 ('+commPct+'%) suggests you can identify market events but may struggle to connect them to deal consequences — which is exactly what '+(D.firm||'your target firm')+' tests at interview. Full Cycle includes commercial awareness guides, sector briefings and current market primers.';
-    // Deduplicate: don't show numerical/commercial gap if model already named it in pris[0] or pris[1]
-    var pri0lower=(pris[0]||'').toLowerCase();
-    var pri1lower=(pris[1]||'').toLowerCase();
-    var showNumGap=!pri0lower.includes('numer')&&!pri1lower.includes('numer')&&!pri0lower.includes('technical')&&!pri1lower.includes('technical');
-    var showCommGap=!pri0lower.includes('commercial')&&!pri1lower.includes('commercial')&&!pri0lower.includes('awareness')&&!pri1lower.includes('awareness');
-    var gap3=showNumGap
-      ?{text:'Numerical readiness — your score needs to hold up under real test conditions', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:techGap}
-      :{text:(pris[2]||'A third gap identified in this application'), col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'};
-    var gap4=showCommGap
-      ?{text:'Commercial awareness — connecting market events to deal consequences', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:commGap}
-      :{text:'Application positioning — how the full picture reads to a screener in 20 seconds', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'};
-    var allGaps=[
-      {text:pris[0], col:'#DC2626', bg:'rgba(254,226,226,0.5)', border:'#FECACA'},
-      {text:pris[1], col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'},
-      gap3,
-      gap4
-    ];
+    // Use new priorityGaps structure if available, else fall back
+    var pgaps=r.priorityGaps;
+    var allGaps=[];
+    if(pgaps&&pgaps.length>=4){
+      pgaps.slice(0,4).forEach(function(g,i){
+        var col=i===0?'#DC2626':'#D97706';
+        var bg=i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)';
+        var border=i===0?'#FECACA':'#FDE68A';
+        allGaps.push({title:g.title,risk:g.risk,why:g.whyItMatters,fix:g.fixType,col:col,bg:bg,border:border});
+      });
+    } else {
+      // Fallback to old priorities array
+      var pris=r.priorities||[];
+      while(pris.length<2) pris.push('A key gap in this application needs addressing before you submit.');
+      allGaps=[
+        {title:pris[0],col:'#DC2626',bg:'rgba(254,226,226,0.5)',border:'#FECACA'},
+        {title:pris[1],col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'},
+        {title:'Numerical readiness — score '+D.nS+'/5 ('+Math.round((D.nS/5)*100)+'%)',col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'},
+        {title:'Commercial awareness — score '+D.fS+'/5 ('+Math.round((D.fS/5)*100)+'%)',col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'}
+      ];
+    }
     allGaps.forEach(function(gap,i){
-      var words=(gap.fix||gap.text).split(' ');
-      var preview=words.slice(0,5).join(' ');
-      var blurred=words.slice(5).join(' ');
-      // Pad blurred to 4 lines
-      var padExtra=' Full Cycle gives you the specific fix — personal to your CV and your target firm.';
-      while((preview+' '+blurred).length<180) blurred+=padExtra;
+      var mainText=gap.title||gap.text||'';
+      var subLines=[];
+      if(gap.risk) subLines.push(gap.risk);
+      if(gap.why) subLines.push(gap.why);
+      var fixText=gap.fix||gap.fixType||'Full Cycle gives you the specific fix — personal to your CV and your target firm.';
+      // Pad fix to 4 lines
+      while(fixText.length<200) fixText+=' Full Cycle shows you exactly what to change and how — specific to your CV, your score and your target firm.';
       var div=document.createElement('div');
       div.style.cssText='position:relative;display:flex;gap:10px;padding:10px 12px;background:'+gap.bg+';border:0.5px solid '+gap.border+';border-radius:8px;margin-bottom:6px;overflow:hidden;';
       div.innerHTML='<span style="font-size:13px;font-weight:500;color:'+gap.col+';flex-shrink:0;">'+(i+1)+'</span>'
         +'<div style="flex:1;padding-right:80px;">'
-          +'<div style="font-size:12px;font-weight:500;color:'+gap.col+';margin-bottom:4px;">'+gap.text+'</div>'
-          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;"><span style="filter:blur(4px);user-select:none;pointer-events:none;">'+blurred+'</span></div>'
+          +'<div style="font-size:12px;font-weight:500;color:'+gap.col+';margin-bottom:'+(subLines.length?'4px':'2px')+';">'+mainText+'</div>'
+          +(subLines.length?'<div style="font-size:11.5px;color:var(--ink60);line-height:1.55;margin-bottom:4px;">'+subLines[0]+'</div>':'')
+          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+fixText+'</div>'
         +'</div>'
         +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;background:'+gap.bg+';border:0.5px solid '+gap.border+';white-space:nowrap;">'
           +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+gap.col+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
@@ -2183,6 +2220,11 @@ function showR(r){
     ];    // Personalise header with name
     var apHeader=document.querySelector('.ap-header');
     if(apHeader) apHeader.textContent=(candName?candName+', let\'s get your fixes.':'Let\'s get your fixes.');
+    // Score-band CTA from model
+    if(r.fullCycleCta){
+      var ctaSub=document.querySelector('.ap-subtitle');
+      if(ctaSub) ctaSub.textContent=r.fullCycleCta;
+    }
 
     var ctaHTML='<div style="display:flex;flex-direction:column;">';
     ctaItems.forEach(function(item,ci){
@@ -2259,7 +2301,7 @@ function showR(r){
   var compBox=document.getElementById('rCompetencies');
   var compList=document.getElementById('rCompList');
   var compScore=document.getElementById('rCompScore');
-  if(compBox&&compList&&r.competencies){
+  if(compBox&&compList&&(r.competencies)){
     var compDefs=[
       {key:'leadership',label:'Leadership',desc:'Captaining, managing, committee roles'},
       {key:'analytical',label:'Analytical',desc:'Modelling, valuation, data, research'},
@@ -2268,34 +2310,64 @@ function showR(r){
       {key:'resilience',label:'Resilience',desc:'Part-time work, endurance sport, pressure situations'},
       {key:'teamwork',label:'Teamwork',desc:'Group projects, team sport, collaborative roles'}
     ];
-    var evidencedCount=compDefs.filter(function(c){return r.competencies[c.key]&&r.competencies[c.key].evidenced;}).length;
+    // Normalise competencies — support both array (new) and object (old) formats
+    var compMap={};
+    if(Array.isArray(r.competencies)){
+      r.competencies.forEach(function(c){
+        var k=(c.name||'').toLowerCase();
+        compMap[k]=c;
+      });
+    } else if(r.competencies){
+      Object.keys(r.competencies).forEach(function(k){ compMap[k]=r.competencies[k]; });
+    }
+    // Support both array format (new) and object format (old)
+    var compData={};
+    if(Array.isArray(r.competencies)){
+      r.competencies.forEach(function(c){ compData[c.name.toLowerCase()]=c; });
+    } else {
+      compData=r.competencies||{};
+    }
+    var evidencedCount=compDefs.filter(function(c){
+      var cx=compMap[c.key]||compMap[c.label.toLowerCase()]||{};
+      return cx.evidenced||(cx.status&&cx.status!=='Not yet evidenced');
+    }).length;
     if(compScore) compScore.textContent=evidencedCount+' / 5 evidenced';
     compBox.style.display='block';
     compList.innerHTML='';
     compDefs.forEach(function(cd,ci){
-      var comp=r.competencies[cd.key]||{};
-      var isOn=!!comp.evidenced;
+      var comp=compData[cd.key]||compData[cd.label]||compData[cd.label.toLowerCase()]||{};
+      var isOn=comp.evidenced||(comp.status&&comp.status!=='Not yet evidenced'&&comp.status!=='Partially evidenced');
       var ev=comp.evidence||'';
       var isLast=ci===compDefs.length-1;
       var row=document.createElement('div');
       row.style.cssText='display:flex;align-items:flex-start;gap:12px;padding:10px 16px;border-bottom:'+(isLast?'none':'0.5px solid var(--ink08)');
-      var dotCol=isOn?'#16A34A':'#DC2626';
-      var evidencedBlur='Full Cycle shows you how to make this competency impossible to miss — the exact framing, placement and language that makes a screener stop. Most evidenced competencies are buried or understated. Full Cycle surfaces them.';
-      var missingBlur='Full Cycle shows you how to reframe what is already on your CV so this competency reads clearly — specific to your experience and your target firm. No new activities needed, just the right framing.';
-      var blurText=isOn?evidencedBlur:missingBlur;
+      var status=comp.status||(isOn?'Evidenced':'Not yet evidenced');
+      var statusCol={'Strong':'#15803D','Evidenced':'#15803D','Partially evidenced':'#CA8A04','Not yet evidenced':'#DC2626'}[status]||'#DC2626';
+      var statusBg={'Strong':'var(--warm)','Evidenced':'var(--warm)','Partially evidenced':'rgba(254,243,199,0.4)','Not yet evidenced':'#FEF2F2'}[status]||'#FEF2F2';
+      var statusBorder={'Strong':'var(--ink08)','Evidenced':'var(--ink08)','Partially evidenced':'#FDE68A','Not yet evidenced':'#FECACA'}[status]||'#FECACA';
+      var compNote=comp.note||'';
+      var blurText=status==='Strong'
+        ?'Full Cycle shows you how to make this the first thing a screener notices — the exact framing, placement and language. Most strong competencies are buried. Full Cycle surfaces them at the right point in the CV.'
+        :status==='Evidenced'
+        ?'Full Cycle shows you how to sharpen this so it reads as a clear competency signal, not background noise. The difference between evidenced and strongly evidenced is usually one sentence rewrite.'
+        :status==='Partially evidenced'
+        ?'You have something here but it is not landing as a clear competency signal. Full Cycle shows you how to reframe what is already on your CV — no new activities needed, just the right framing.'
+        :'Full Cycle shows you what type of evidence counts here and how to find it in what you have already done. No new activities necessarily needed — just the right framing.';
       row.innerHTML=
-        '<div style="width:8px;height:8px;border-radius:50%;background:'+dotCol+';flex-shrink:0;margin-top:5px;"></div>'
+        '<div style="width:8px;height:8px;border-radius:50%;background:'+statusCol+';flex-shrink:0;margin-top:5px;"></div>'
         +'<div style="flex:1;">'
           +'<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;">'
             +'<div style="font-size:13px;font-weight:500;color:var(--ink);">'+cd.label+'</div>'
-            +'<div style="font-size:10px;color:'+(isOn?'#16A34A':'#DC2626')+';font-weight:500;">'+(isOn?'✓ Evidenced':'✗ Missing')+'</div>'
+            +'<div style="font-size:10px;color:'+statusCol+';font-weight:500;">'+status+'</div>'
           +'</div>'
-          +'<div style="font-size:11.5px;color:var(--ink40);margin-bottom:6px;">'+cd.desc+(ev?' · <em>'+ev+'</em>':'')+'</div>'
-          +'<div style="position:relative;background:'+(isOn?'var(--warm)':'#FEF2F2')+';border:'+(isOn?'0.5px solid var(--ink08)':'0.5px solid #FECACA')+';border-radius:6px;padding:8px 80px 8px 10px;min-height:56px;">'
-            +'<div style="font-size:12px;color:var(--ink);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+blurText+'</div>'
-            +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+(isOn?'var(--ink08)':'#FECACA')+';background:var(--cream);white-space:nowrap;">'
-              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+(isOn?'var(--ink40)':'#DC2626')+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-              +'<span style="font-size:10px;color:'+(isOn?'var(--ink40)':'#DC2626')+';font-weight:500;">fix on Full Cycle</span>'
+          +(compNote
+            ?'<div style="font-size:12px;color:var(--ink60);line-height:1.55;margin-bottom:6px;">'+compNote+'</div>'
+            :'<div style="font-size:11.5px;color:var(--ink40);margin-bottom:6px;">'+cd.desc+'</div>')
+          +'<div style="position:relative;background:'+statusBg+';border:0.5px solid '+statusBorder+';border-radius:6px;padding:8px 80px 8px 10px;min-height:56px;">'
+            +'<div style="font-size:12px;color:var(--ink);line-height:1.75;filter:blur(4px);user-select:none;pointer-events:none;">'+blurText+'</div>'
+            +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+statusBorder+';background:var(--cream);white-space:nowrap;">'
+              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+statusCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:10px;color:'+statusCol+';font-weight:500;">fix on Full Cycle</span>'
             +'</div>'
           +'</div>'
         +'</div>';
