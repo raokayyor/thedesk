@@ -866,30 +866,34 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rCompList" style="padding:4px 0;"></div>
   </div>
   <!-- FULL CYCLE CTA LIST -->
-  <div id="rActionPlan" style="display:none;background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">
-    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
-      <div style="font-size:14px;font-weight:500;color:#F7F3EE;">Full Cycle gives you everything to fix this application.</div>
+  <div id="rActionPlan" style="display:none;background:#1a1a1a;border-radius:12px;margin-bottom:12px;overflow:hidden;">
+    <!-- Clickable header -->
+    <div onclick="toggleAPlan()" style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;">
+      <div>
+        <div class="ap-header" style="font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:#F7F3EE;letter-spacing:-0.3px;">How does Full Cycle fix this?</div>
+        <div style="font-size:12px;color:rgba(247,243,238,0.4);margin-top:3px;">Everything you need to be ready to apply — and to get through the later stages.</div>
+      </div>
+      <svg id="apChev" style="width:20px;height:20px;flex-shrink:0;margin-left:12px;transition:transform 0.25s;" viewBox="0 0 24 24" fill="none" stroke="rgba(247,243,238,0.4)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
-    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:10px;line-height:1.55;">Everything you need to be ready to apply — and to get through the later stages.</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">CV rewrite</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Numerical testing</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Weekly market briefing</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Insider firm knowledge</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Competency stories</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">AI interview practice</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Firm guides — all banks</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Deadline tracker</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Finance in plain English</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Monthly live Q&A</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Trading game</div>
+    <!-- Feature pills - always visible -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px;">
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">CV rewrite</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Numerical testing</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Insider firm knowledge</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">AI interview practice</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">All banks + Big 4</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Weekly briefing</div>
     </div>
-    <div id="rActionSteps"></div>
-    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid rgba(255,255,255,0.1);">
-      <button onclick="scrollToUpgrade()" style="width:100%;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>
-      <div style="font-size:10px;color:rgba(247,243,238,0.3);text-align:center;margin-top:6px;">One-time · All firms · Lifetime access</div>
+    <!-- Collapsible body -->
+    <div id="rAPBody" style="display:none;border-top:0.5px solid rgba(255,255,255,0.08);">
+      <div style="padding:16px 20px 0;">
+        <div id="rActionSteps"></div>
+      </div>
+      <div style="padding:16px 20px 20px;border-top:0.5px solid rgba(255,255,255,0.08);margin-top:16px;">
+        <button onclick="scrollToUpgrade()" style="width:100%;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>
+        <div style="text-align:center;font-size:10px;color:rgba(247,243,238,0.3);margin-top:6px;">One-time · All firms · Lifetime access</div>
+      </div>
     </div>
-
   </div>
 
   <!-- SOURCE BADGE -->
@@ -2688,6 +2692,16 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   // Timer cleanup handled inside startSection functions
+
+
+  function toggleAPlan(){
+    var body=document.getElementById('rAPBody');
+    var chev=document.getElementById('apChev');
+    if(!body) return;
+    var open=body.style.display!=='none';
+    body.style.display=open?'none':'block';
+    if(chev) chev.style.transform=open?'rotate(0deg)':'rotate(180deg)';
+  }
 
 </script>
 </body>
