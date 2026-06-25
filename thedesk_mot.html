@@ -790,6 +790,11 @@ select.fi{background:transparent;cursor:pointer;}
 
 <!-- RESULTS PAGE -->
 <div class="page" id="pR">
+  <!-- Copy for GPT button - appears after result loads -->
+  <div id="rCopyBar" style="display:none;position:sticky;top:60px;z-index:60;background:var(--cream);border-bottom:0.5px solid var(--ink08);padding:8px 16px;display:none;align-items:center;justify-content:space-between;gap:8px;">
+    <div style="font-size:11px;color:var(--ink40);">Want a second opinion? Copy your result for ChatGPT analysis.</div>
+    <button onclick="copyForGPT()" id="rCopyBtn" style="flex-shrink:0;background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;">Copy result →</button>
+  </div>
 <div class="rwrap" style="user-select:none;-webkit-user-select:none;">
 
   <!-- SCORE CARD -->
@@ -2301,6 +2306,8 @@ function showR(r){
   if(sb&&r.cvSpecificityWarning&&r.cvSpecificityWarning.length>5){sb.style.display='block';sb.textContent=r.cvSpecificityWarning;}
 
   window._lastResult=r;
+  var cb=document.getElementById('rCopyBar');
+  if(cb) cb.style.display='flex';
   pickT('cy');
   // Remove blurb between CTA and tier options
   var udEl=document.getElementById('udescEl'); if(udEl) udEl.style.display='none';
@@ -2796,6 +2803,55 @@ document.addEventListener('DOMContentLoaded', function(){
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+
+  function copyForGPT(){
+    var r=window._lastResult;
+    if(!r) return;
+    var txt='THE DESK — APPLICATION MOT RESULT\n';
+    txt+='====================================\n\n';
+    txt+='CANDIDATE: '+(r.candidateName||'Candidate')+' | Firm: '+(D.firm||'?')+' | Division: '+(D.div||'?')+'\n';
+    txt+='University: '+(D.uni||'?')+' | Course: '+(D.crs||'?')+' | Grade: '+(D.gr||'?')+'\n\n';
+    txt+='OVERALL SCORE: '+Math.round(r.overallScore)+'/100 | BAND: '+(r.band||'')+'\n';
+    txt+='ARCHETYPE: '+(r.archetype||'')+'\n\n';
+    txt+='KILLER SENTENCE:\n'+(r.killerSentence||'')+'\n\n';
+    txt+='DIAGNOSTIC:\n'+(r.diagnostic||'')+'\n\n';
+    txt+='QUIZ SCORES: Commercial '+D.fS+'/5 | Numerical '+D.nS+'/5\n\n';
+    txt+='6 DIMENSIONS:\n';
+    (r.dimensions||[]).forEach(function(d){
+      txt+=d.name+': '+Math.round(d.score)+'/100\n';
+      txt+='  Note: '+(d.note||'')+'\n\n';
+    });
+    txt+='4 KEY GAPS:\n';
+    (r.priorities||[]).forEach(function(p,i){ txt+=(i+1)+'. '+p+'\n'; });
+    txt+='3. Numerical: '+D.nS+'/5 ('+Math.round((D.nS/5)*100)+'%)\n';
+    txt+='4. Commercial: '+D.fS+'/5 ('+Math.round((D.fS/5)*100)+'%)\n\n';
+    if(r.competencies){
+      txt+='COMPETENCIES:\n';
+      var cmap={leadership:'Leadership',analytical:'Analytical',commercial:'Commercial',communication:'Communication',resilience:'Resilience',teamwork:'Teamwork'};
+      Object.keys(cmap).forEach(function(k){
+        var c=r.competencies[k]||{};
+        txt+=cmap[k]+': '+(c.evidenced?'Evidenced — '+(c.evidence||''):'Not evidenced')+'\n';
+      });
+      txt+='\n';
+    }
+    txt+='====================================\n';
+    txt+='Please analyse this application MOT result and give me:\n';
+    txt+='1. Your view on the most critical issues\n';
+    txt+='2. What I should prioritise fixing first\n';
+    txt+='3. Any patterns or issues the assessment may have missed\n';
+    txt+='4. How competitive this profile really is for the target firm and division\n';
+    navigator.clipboard.writeText(txt).then(function(){
+      var btn=document.getElementById('rCopyBtn');
+      if(btn){btn.textContent='Copied ✓';setTimeout(function(){btn.textContent='Copy result →';},2000);}
+    }).catch(function(){
+      var ta=document.createElement('textarea');
+      ta.value=txt; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      var btn=document.getElementById('rCopyBtn');
+      if(btn){btn.textContent='Copied ✓';setTimeout(function(){btn.textContent='Copy result →';},2000);}
+    });
   }
 
 </script>
