@@ -849,15 +849,18 @@ select.fi{background:transparent;cursor:pointer;}
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
       <div style="font-size:14px;font-weight:500;color:#F7F3EE;">Full Cycle gives you everything to fix this application.</div>
     </div>
-    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:16px;line-height:1.55;">Specific to your CV, your score, and your target firm. Here is exactly what Full Cycle does for this application.</div>
+    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:16px;line-height:1.55;">Everything you need to be ready to apply — and to get through the later stages.</div>
     <div id="rActionSteps"></div>
-    <button onclick="scrollToUpgrade()" style="width:100%;margin-top:16px;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;letter-spacing:0.01em;">Get Full Cycle — £79 →</button>
-    <div style="text-align:center;font-size:11px;color:rgba(247,243,238,0.3);margin-top:8px;">One-time · Lifetime access · All firms included</div>
-    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid rgba(255,255,255,0.1);text-align:center;">
-      <div style="font-size:12px;font-weight:500;color:rgba(247,243,238,0.6);margin-bottom:6px;">Need 1-to-1 help from a practitioner?</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.35);margin-bottom:12px;">We connect you with a 1-to-1 support mentor who has worked at these firms to guide you from start to finish through the whole cycle.</div>
-      <a href="mailto:hello@thedesk.com?subject=1-to-1 Application Review" style="display:inline-block;background:transparent;color:rgba(247,243,238,0.7);border:0.5px solid rgba(247,243,238,0.25);border-radius:8px;padding:10px 24px;font-size:13px;font-weight:400;text-decoration:none;">Apply for a 1-to-1 session →</a>
+    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid rgba(255,255,255,0.1);">
+      <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:#F7F3EE;letter-spacing:-0.3px;margin-bottom:6px;">What next — <em style="color:#E87040;">Full Cycle</em></div>
+      <button onclick="scrollToUpgrade()" style="width:100%;margin-top:10px;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>
+      <div style="font-size:10px;color:rgba(247,243,238,0.3);text-align:center;margin-top:6px;">One-time · All firms · Lifetime access</div>
+      <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(255,255,255,0.08);">
+        <div style="font-size:12px;color:rgba(247,243,238,0.5);margin-bottom:8px;">Need more help? Want 1-to-1 support through the whole cycle?</div>
+        <a href="mailto:hello@thedesk.com?subject=Full Mentor Application" style="display:block;width:100%;text-align:center;background:transparent;color:#F7F3EE;border:0.5px solid rgba(247,243,238,0.3);border-radius:8px;padding:13px;font-size:14px;font-weight:500;text-decoration:none;box-sizing:border-box;">Apply for a Full Mentor →</a>
+      </div>
     </div>
+
   </div>
 
   <!-- SOURCE BADGE -->
@@ -2005,11 +2008,22 @@ function showR(r){
     var commGap=D.fS>=5
       ?'Your commercial quiz score is strong — but commercial awareness is tested continuously through the application. Full Cycle includes weekly market briefings and sector primers covering the exact themes interviewers at '+(D.firm||'your target firm')+' are testing this cycle.'
       :'Your commercial score of '+D.fS+'/5 ('+commPct+'%) suggests you can identify market events but may struggle to connect them to deal consequences — which is exactly what '+(D.firm||'your target firm')+' tests at interview. Full Cycle includes commercial awareness guides, sector briefings and current market primers.';
+    // Deduplicate: don't show numerical/commercial gap if model already named it in pris[0] or pris[1]
+    var pri0lower=(pris[0]||'').toLowerCase();
+    var pri1lower=(pris[1]||'').toLowerCase();
+    var showNumGap=!pri0lower.includes('numer')&&!pri1lower.includes('numer')&&!pri0lower.includes('technical')&&!pri1lower.includes('technical');
+    var showCommGap=!pri0lower.includes('commercial')&&!pri1lower.includes('commercial')&&!pri0lower.includes('awareness')&&!pri1lower.includes('awareness');
+    var gap3=showNumGap
+      ?{text:'Numerical readiness — your score needs to hold up under real test conditions', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:techGap}
+      :{text:(pris[2]||'A third gap identified in this application'), col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'};
+    var gap4=showCommGap
+      ?{text:'Commercial awareness — connecting market events to deal consequences', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:commGap}
+      :{text:'Application positioning — how the full picture reads to a screener in 20 seconds', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'};
     var allGaps=[
       {text:pris[0], col:'#DC2626', bg:'rgba(254,226,226,0.5)', border:'#FECACA'},
       {text:pris[1], col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A'},
-      {text:'Numerical readiness — your score needs to hold up under real test conditions', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:techGap},
-      {text:'Commercial awareness — connecting market events to deal consequences', col:'#D97706', bg:'rgba(254,243,199,0.5)', border:'#FDE68A', fix:commGap}
+      gap3,
+      gap4
     ];
     allGaps.forEach(function(gap,i){
       var words=(gap.fix||gap.text).split(' ');
