@@ -808,6 +808,26 @@ select.fi{background:transparent;cursor:pointer;}
     </div>
   </div>
 
+  <!-- HIREVUE PRE-SCREEN SCORE -->
+  <div id="rHireVue" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+    <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:12px;">HireVue automated screen estimate</div>
+    <div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:10px;">
+      <div id="rHVScore" style="font-family:'Fraunces',serif;font-size:48px;font-weight:300;line-height:1;color:#DC2626;">—</div>
+      <div style="padding-bottom:6px;">
+        <div style="font-size:13px;color:var(--ink40);">estimated pass probability</div>
+        <div id="rHVLabel" style="font-size:11px;font-weight:500;color:#DC2626;margin-top:2px;"></div>
+      </div>
+    </div>
+    <div id="rHVDesc" style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:10px;"></div>
+    <div style="position:relative;background:#FEF2F2;border:0.5px solid #FECACA;border-radius:8px;padding:10px 80px 10px 12px;min-height:72px;">
+      <div id="rHVFix" style="font-size:12px;color:var(--ink);line-height:1.65;filter:blur(4.5px);user-select:none;pointer-events:none;"></div>
+      <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid #FECACA;background:var(--cream);white-space:nowrap;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span style="font-size:10px;color:#DC2626;font-weight:500;">fix on Full Cycle</span>
+      </div>
+    </div>
+  </div>
+
   <!-- 6 DIMENSIONS -->
   <div style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;margin-bottom:12px;overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
@@ -854,6 +874,8 @@ select.fi{background:transparent;cursor:pointer;}
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">CV rewrite</div>
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Numerical testing</div>
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Weekly market briefing</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Insider firm knowledge</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Competency stories</div>
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">AI interview practice</div>
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Firm guides — all banks</div>
       <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Deadline tracker</div>
@@ -1915,6 +1937,38 @@ function showR(r){
     bdEl.style.color=isWeak||isBorderline?'#FCA5A5':'#86EFAC';
   }
 
+  // HIREVUE PRE-SCREEN SCORE
+  var hvBox=document.getElementById('rHireVue');
+  var hvScore=document.getElementById('rHVScore');
+  var hvLabel=document.getElementById('rHVLabel');
+  var hvDesc=document.getElementById('rHVDesc');
+  var hvFix=document.getElementById('rHVFix');
+  if(hvBox&&hvScore){
+    // Calculate: numerical (50%) + commercial (30%) + positioning (20%)
+    var techDim=r.dimensions&&r.dimensions.find(function(d){return d.name==='Technical Readiness';});
+    var commDim=r.dimensions&&r.dimensions.find(function(d){return d.name==='Commercial Awareness';});
+    var posDim=r.dimensions&&r.dimensions.find(function(d){return d.name==='Application Positioning';});
+    var techSc=(techDim?techDim.score:50)/100;
+    var commSc=(commDim?commDim.score:50)/100;
+    var posSc=(posDim?posDim.score:50)/100;
+    var hvPct=Math.round((techSc*0.5+commSc*0.3+posSc*0.2)*100);
+    hvScore.textContent=hvPct+'%';
+    var hvCol=hvPct>=65?'#16A34A':hvPct>=45?'#CA8A04':'#DC2626';
+    hvScore.style.color=hvCol;
+    var hvLbl=hvPct>=65?'Likely to clear automated screen':'At risk of automated rejection';
+    if(hvPct<45) hvLbl='High risk — likely filtered before a human reads your name';
+    hvLabel.textContent=hvLbl;
+    hvLabel.style.color=hvCol;
+    hvDesc.textContent='Estimated probability of clearing the automated screen at tier 1 banks including Goldman Sachs, Barclays, JP Morgan and Morgan Stanley — before a human reviewer sees your application. Based on your numerical score ('+D.nS+'/5), commercial score ('+D.fS+'/5) and application positioning.';
+    var fixText=hvPct>=65
+      ?'Your score suggests you are likely to clear automated screens. Full Cycle shows you the specific question types used at each firm — the ones most likely to appear in your HireVue — and how to maintain your score under real time pressure. Most candidates who pass early screening lose ground when conditions change.'
+      :'Your score suggests a material risk of automated rejection before a human reads your name. Full Cycle identifies the exact question types dragging your score — data sufficiency, percentage change, graph interpretation — and gives you targeted drill sets for each. Two weeks of structured practice moves most candidates from below threshold to above it.';
+    // Pad to 4 lines
+    while(fixText.length<220) fixText+=' Full Cycle also shows you how '+firm2+' structures its automated screening and what the pass threshold is estimated to be for your target division.';
+    hvFix.textContent=fixText;
+    hvBox.style.display='block';
+  }
+
   // Archetype + killer
   var arEl=document.getElementById('rArchetype'); if(arEl) arEl.textContent=r.archetype||'';
   var kw=document.getElementById('rKillerWrap'), kd=document.getElementById('rDiagnosis');
@@ -2089,6 +2143,10 @@ function showR(r){
 
       {label:'CV rewrite — '+(killerShort?killerShort.slice(0,70)+'...' :'get your strongest evidence in the language screeners respond to'),
        desc:'Line-by-line rewrite of your key bullets — before and after — using the exact language finance screeners are trained to spot. Not generic. Your CV, your evidence, your firms.'},
+      {label:'Firm-specific insider knowledge — what they actually look for',
+       desc:'What Goldman IBD screeners score in HireVue before a human reads your name. How Barclays structures its assessment centre. What JPM is really testing in competency interviews. What the question behind the question is at each stage. This is practitioner knowledge — not available anywhere online.'},
+      {label:'Competency story builder — turn your CV evidence into interview-ready answers',
+       desc:'You have the evidence. Full Cycle builds you a STAR-format competency story for each of the 5 core competencies using your specific named CV details. Leadership story from your football captaincy. Analytical story from your Hawkpoint internship. Ready to use in any interview.'},
       {label:'AI interview practice — prepare for HireVue and video interviews',
        desc:'Record a practice answer to common finance interview questions. The AI scores you on vocabulary, structure, finance language and confidence — the same dimensions real HireVue AI uses. Repeat until your score holds consistently.'},
       {label:'Application question bank — every question, every firm, answered using your CV',
