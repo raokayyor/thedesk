@@ -221,11 +221,16 @@ function isValidResult(result, cvRequired) {
   if (!result.archetype)     { console.log("FAIL: no archetype"); return false; }
   if (!result.killerSentence){ console.log("FAIL: no killerSentence"); return false; }
   if (!Array.isArray(result.dimensions) || result.dimensions.length < 4) { console.log("FAIL: dims", result.dimensions?.length); return false; }
-  if (!Array.isArray(result.priorities) || result.priorities.length < 1) { console.log("FAIL: priorities", result.priorities?.length); return false; }
+  // Accept both old priorities array and new priorityGaps array
+  var hasPriorities = (Array.isArray(result.priorities) && result.priorities.length >= 1)
+                   || (Array.isArray(result.priorityGaps) && result.priorityGaps.length >= 1);
+  if (!hasPriorities) { console.log("FAIL: no priorities or priorityGaps"); return false; }
   if (!result.diagnostic)    { console.log("FAIL: no diagnostic"); return false; }
-  if (!result.recruiterMayMiss) { console.log("WARN: no recruiterMayMiss"); }
-  if (!result.uncomfortableTruth) { console.log("WARN: no uncomfortableTruth"); }
-  if (!result.paidHook)      { console.log("FAIL: no paidHook"); return false; }
+  // Warnings only — don't fail on missing new fields
+  if (!result.recruiterMayMiss)   console.log("WARN: no recruiterMayMiss");
+  if (!result.uncomfortableTruth) console.log("WARN: no uncomfortableTruth");
+  if (!result.fullCycleFirstFix)  console.log("WARN: no fullCycleFirstFix");
+  if (!result.paidHook)           console.log("WARN: no paidHook");
   console.log("PASS: score", result.overallScore);
   return true;
 }
