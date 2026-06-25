@@ -868,21 +868,14 @@ select.fi{background:transparent;cursor:pointer;}
   <!-- FULL CYCLE CTA LIST -->
   <div id="rActionPlan" style="display:none;background:#1a1a1a;border-radius:12px;margin-bottom:12px;overflow:hidden;">
     <!-- Clickable header -->
-    <div onclick="toggleAPlan()" style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;">
-      <div>
-        <div class="ap-header" style="font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:#F7F3EE;letter-spacing:-0.3px;">How does Full Cycle fix this?</div>
-        <div style="font-size:12px;color:rgba(247,243,238,0.4);margin-top:3px;">Everything you need to be ready to apply — and to get through the later stages.</div>
+    <div onclick="toggleAPlan()" style="display:flex;align-items:center;justify-content:space-between;padding:20px;cursor:pointer;gap:16px;">
+      <div style="flex:1;">
+        <div class="ap-header" style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:#F7F3EE;letter-spacing:-0.3px;margin-bottom:6px;">How does Full Cycle fix this?</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:#E87040;border-radius:20px;padding:5px 14px;">
+          <span style="font-size:12px;font-weight:500;color:white;">See what you get →</span>
+        </div>
       </div>
-      <svg id="apChev" style="width:20px;height:20px;flex-shrink:0;margin-left:12px;transition:transform 0.25s;" viewBox="0 0 24 24" fill="none" stroke="rgba(247,243,238,0.4)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <!-- Feature pills - always visible -->
-    <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px;">
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">CV rewrite</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Numerical testing</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Insider firm knowledge</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">AI interview practice</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">All banks + Big 4</div>
-      <div style="font-size:11px;color:rgba(247,243,238,0.45);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:3px 10px;">Weekly briefing</div>
+      <svg id="apChev" style="width:22px;height:22px;flex-shrink:0;transition:transform 0.25s;" viewBox="0 0 24 24" fill="none" stroke="rgba(247,243,238,0.5)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <!-- Collapsible body -->
     <div id="rAPBody" style="display:none;border-top:0.5px solid rgba(255,255,255,0.08);">
