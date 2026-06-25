@@ -488,6 +488,8 @@ OUTPUT — respond ONLY with this JSON, no markdown, no preamble:
 "deeperReviewFocus":"[Same content as paidHook — track-specific, names the same detail, explains the type of fix without giving the actual rewrite.]",
 "paidHook":"[1 sentence — what a deep CV review would specifically focus on for THIS candidate, referencing the SAME named CV detail as the diagnostic. Must explain the type of fix needed without giving the actual rewritten line. Generic phrasing like \\"reframing the experience section around analytical ownership\\" with no named detail FAILS — it must read like \\"A deeper review would focus on rewriting the [named detail] around thesis, variant view, valuation and downside risk.\\"]",
 "namedCvDetails":["[list each named item found in CV text: employer names, society names, project titles, module names, stock pitch companies, role titles, qualifications, A-level subjects.]"],
+"candidateName":"[First name only from CV header if present, e.g. Rohan. Empty string if not found.]",
+"competencies":{"leadership":{"evidenced":false,"evidence":""},"analytical":{"evidenced":false,"evidence":""},"commercial":{"evidenced":false,"evidence":""},"communication":{"evidenced":false,"evidence":""},"resilience":{"evidenced":false,"evidence":""}},
 "cvSpecificityWarning":"[Empty string if named details found. If no named detail found set to: No named CV details could be confidently extracted from this document.]"
 }`;
 }
