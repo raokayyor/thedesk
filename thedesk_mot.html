@@ -874,7 +874,7 @@ select.fi{background:transparent;cursor:pointer;}
       <button onclick="toggleAPlan()" style="width:100%;background:#E87040;color:white;border:none;border-radius:8px;padding:14px 20px;font-size:15px;font-weight:500;cursor:pointer;letter-spacing:0.01em;">FIX — download your report →</button>
     </div>
     <!-- Email gate -->
-    <div id="rAPGate" style="display:none;border-top:0.5px solid rgba(255,255,255,0.1);padding:16px 20px;">
+    <div id="rAPGate" style="display:none !important;border-top:0.5px solid rgba(255,255,255,0.1);padding:16px 20px;">
       <div style="font-size:13px;font-weight:400;color:#F7F3EE;margin-bottom:4px;">Download your personalised report</div>
       <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:12px;">Enter your email and we'll send you a copy. Your score, gaps, competencies and fix plan — all in one document.</div>
       <div style="display:flex;gap:8px;">
@@ -890,6 +890,15 @@ select.fi{background:transparent;cursor:pointer;}
         <div id="rActionSteps"></div>
       </div>
       <div style="padding:16px 20px 20px;border-top:0.5px solid rgba(255,255,255,0.08);margin-top:16px;">
+        <div id="rEmailCapture" style="margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:400;color:#F7F3EE;margin-bottom:4px;">Download your full report</div>
+          <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:10px;">Your score, gaps, competencies and fix plan — in one document.</div>
+          <div style="display:flex;gap:8px;">
+            <input id="apEmailInput" type="email" placeholder="your@email.com" style="flex:1;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 12px;color:#F7F3EE;outline:none;" onkeydown="if(event.key==='Enter')submitAPEmail()">
+            <button onclick="submitAPEmail()" style="background:#E87040;color:white;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">Download →</button>
+          </div>
+          <div id="apEmailErr" style="display:none;font-size:11px;color:#FCA5A5;margin-top:5px;"></div>
+        </div>
         <button onclick="scrollToUpgrade()" style="width:100%;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>
         <div style="text-align:center;font-size:10px;color:rgba(247,243,238,0.3);margin-top:6px;">One-time · All firms · Lifetime access</div>
       </div>
@@ -2697,19 +2706,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function toggleAPlan(){
     var body=document.getElementById('rAPBody');
-    var gate=document.getElementById('rAPGate');
-    // If already open, close it
-    if(body&&body.style.display==='block'){
-      body.style.display='none';
-      return;
-    }
-    // If email already captured, open directly
-    if(localStorage.getItem('tdesk_email')||window._apEmailDone){
-      if(body) body.style.display='block';
-      return;
-    }
-    // Show email gate
-    if(gate) gate.style.display='block';
+    if(!body) return;
+    var open=body.style.display==='block';
+    body.style.display=open?'none':'block';
   }
 
   function submitAPEmail(){
@@ -2723,22 +2722,17 @@ document.addEventListener('DOMContentLoaded', function(){
     if(err) err.style.display='none';
     localStorage.setItem('tdesk_email', val);
     window._apEmailDone=true;
-    // Store email + result for report
-    if(window._lastResult) {
-      try {
-        fetch('/api/capture-email', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({email:val, firm:D.firm, div:D.div, score:window._lastResult.overallScore, name:window._lastResult.candidateName||''})
+    if(window._lastResult){
+      try{
+        fetch('/api/capture-email',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({email:val,firm:D.firm,div:D.div,score:window._lastResult.overallScore,name:window._lastResult.candidateName||''})
         }).catch(function(){});
-      } catch(e){}
+      }catch(e){}
     }
-    var gate=document.getElementById('rAPGate');
-    var body=document.getElementById('rAPBody');
-    if(gate) gate.style.display='none';
-    if(body) body.style.display='block';
-    // Trigger PDF download
-    setTimeout(function(){ generateReport(); }, 300);
+    // Hide capture field, show thanks
+    var cap=document.getElementById('rEmailCapture');
+    if(cap) cap.innerHTML='<div style="font-size:12px;color:rgba(247,243,238,0.5);padding:6px 0;">✓ Report downloading...</div>';
+    setTimeout(function(){ generateReport(); }, 200);
   }
 
   function generateReport(){
