@@ -864,26 +864,39 @@ select.fi{background:transparent;cursor:pointer;}
   <!-- PAID HOOK + UPGRADE -->
   <div id="rPaidHook" style="display:none;"></div>
 
-  <div class="ucard" style="margin-top:0;" id="upgradeSection">
-    <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--ink);letter-spacing:-0.4px;margin-bottom:6px;">Need <em style="color:var(--terra);">1-to-1</em> help?</div>
-    <div class="utitle" id="utitleEl" style="display:none;">Get <em>everything</em> you need to fix this application.</div>
-    <div class="udesc" id="udescEl"></div>
-    <div class="uinc" id="uincEl"></div>
-    <div class="utiers">
-      <div class="utier on" id="tCy" onclick="pickT('cy')">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div><div class="utiertag" style="color:var(--green);">Full Cycle</div><div class="utiername">Complete application preparation</div></div>
-          <div class="utierprice">&#163;79</div>
-        </div>
+  <div id="upgradeSection" style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-top:0;">
+    <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--ink);letter-spacing:-0.4px;margin-bottom:4px;">Need more help?</div>
+    <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:16px;">1-to-1 support from a practitioner who has worked at these firms — guiding you from application to offer.</div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+      <div style="display:flex;gap:10px;align-items:baseline;">
+        <div style="width:5px;height:5px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.55;">Personal review of your full application — CV, motivation answers and positioning</div>
       </div>
-      <div class="utier" id="t11" onclick="pickT('11')">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div><div class="utiertag" style="color:var(--terra);">1-to-1 with Rao</div><div class="utiername">60-minute personal review</div></div>
-          <div class="utierprice">&#163;3,000</div>
-        </div>
+      <div style="display:flex;gap:10px;align-items:baseline;">
+        <div style="width:5px;height:5px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.55;">Guidance through every stage — screening, numerical tests, HireVue, first round, Superday</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:baseline;">
+        <div style="width:5px;height:5px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.55;">Insider knowledge of what each firm actually looks for — from someone who has been on both sides</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:baseline;">
+        <div style="width:5px;height:5px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;"></div>
+        <div style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.55;">Direct access throughout the cycle — not a one-off session</div>
       </div>
     </div>
-    <a class="ucta" id="uctaBtn" href="mailto:hello@thedesk.com?subject=Full%20Cycle%20Review">Get Full Cycle — &#163;79 →</a>
+
+    <a href="mailto:hello@thedesk.com?subject=1-to-1 Mentor Application" style="display:block;width:100%;text-align:center;background:var(--ink);color:var(--cream);border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:400;font-family:'Fraunces',serif;text-decoration:none;box-sizing:border-box;">Apply for 1-to-1 support →</a>
+    <div style="text-align:center;font-size:11px;color:var(--ink40);margin-top:8px;">Limited places each cycle · hello@thedesk.com</div>
+
+    <!-- hidden elements for JS compatibility -->
+    <div id="utitleEl" style="display:none;"></div>
+    <div id="udescEl" style="display:none;"></div>
+    <div id="uincEl" style="display:none;"></div>
+    <div id="tCy" style="display:none;"></div>
+    <div id="t11" style="display:none;"></div>
+    <a id="uctaBtn" style="display:none;"></a>
   </div>
 
 </div>
