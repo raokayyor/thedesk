@@ -109,6 +109,121 @@ input[type=file]{display:none;}
     </div>
   </div>
 
+  <label>Upload CV</label>
+  <label class="file-btn" for="cvFile" id="dropZone">📄 Drag & drop your CV here, or click to browse<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">PDF or Word · Max 5MB</span></label>
+  <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none">
+  <label style="display:block;margin-top:12px;">Or paste CV text</label>
+  <p class="tip" style="margin-bottom:6px;">Paste the full text of your CV below for the most reliable read.</p>
+  <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>l lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Desk — Rapid CV Test</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f5f4f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.card{background:white;border-radius:12px;padding:28px;max-width:560px;width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.08);}
+h1{font-size:20px;font-weight:600;margin-bottom:4px;}
+.sub{font-size:13px;color:#666;margin-bottom:24px;}
+label{font-size:12px;font-weight:500;color:#444;display:block;margin-bottom:4px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+select,input{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;}
+textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:13px;font-family:monospace;min-height:220px;resize:vertical;margin-bottom:6px;}
+.file-btn{display:block;padding:28px 16px;border:2px dashed #ccc;border-radius:10px;font-size:13px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;transition:border-color 0.2s,background 0.2s;}
+.file-btn:hover{border-color:#1a1a1a;color:#1a1a1a;}
+input[type=file]{display:none;}
+.scores{background:#f9f8f6;border-radius:8px;padding:14px;margin-bottom:16px;}
+.scores-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:10px;}
+.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.score-label{font-size:13px;color:#333;}
+.score-btns{display:flex;gap:4px;}
+.sb{width:32px;height:32px;border:1.5px solid #ddd;border-radius:6px;background:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sb.on{background:#1a1a1a;color:white;border-color:#1a1a1a;}
+.btn{width:100%;padding:14px;background:#1a1a1a;color:white;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;}
+.btn:hover{background:#333;}
+.btn:disabled{background:#999;cursor:not-allowed;}
+.status{font-size:13px;margin-top:12px;text-align:center;color:#666;min-height:20px;}
+.status.err{color:#dc2626;}
+.tip{font-size:11px;color:#999;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Rapid CV Test</h1>
+  <p class="sub">Upload or paste a CV → get the result page instantly.</p>
+
+  <div class="row">
+    <div>
+      <label>Target firm</label>
+      <select id="firm">
+        <option>Goldman Sachs</option>
+        <option>JP Morgan</option>
+        <option>Barclays</option>
+        <option>Lazard</option>
+        <option>Morgan Stanley</option>
+        <option>Rothschild</option>
+        <option>UBS</option>
+      </select>
+    </div>
+    <div>
+      <label>Division</label>
+      <select id="division">
+        <option>Investment Banking / IBD</option>
+        <option>Sales & Trading / Markets</option>
+        <option>Asset Management / Investing</option>
+        <option>General Finance</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>University</label>
+      <input id="uni" value="University of Warwick" placeholder="e.g. LSE">
+    </div>
+    <div>
+      <label>Course</label>
+      <input id="course" value="Economics" placeholder="e.g. Finance">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Year</label>
+      <select id="year">
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option selected>Final Year</option>
+        <option>Graduate</option>
+      </select>
+    </div>
+    <div>
+      <label>Grade</label>
+      <select id="grade">
+      <option>First Class (predicted)</option>
+      <option>First Class</option>
+      <option>2:1 (predicted)</option>
+      <option>2:1</option>
+      <option>2:2 (predicted)</option>
+      <option>2:2</option>
+      <option>Third</option>
+      <option>Pass</option>
+    </select>
+    </div>
+  </div>
+
+  <div class="scores">
+    <div class="scores-title">Quiz scores (tap to set)</div>
+    <div class="score-row">
+      <div class="score-label">Commercial awareness</div>
+      <div class="score-btns" id="comm-btns"></div>
+    </div>
+    <div class="score-row" style="margin-bottom:0;">
+      <div class="score-label">Numerical reasoning</div>
+      <div class="score-btns" id="tech-btns"></div>
+    </div>
+  </div>
+
   <label>CV text</label>
   <p class="tip">Paste full CV text below, or click to upload a file. Text gives the most reliable read.</p>
   <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>
