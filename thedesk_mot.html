@@ -766,6 +766,7 @@ select.fi{background:transparent;cursor:pointer;}
     <div class="ls" id="l3"><div class="lic">💼</div><div class="ltx">Scoring work experience</div><div class="spin"></div><div class="ldk">Done</div></div>
     <div class="ls" id="l4"><div class="lic">📊</div><div class="ltx">Benchmarking against target firm</div><div class="spin"></div><div class="ldk">Done</div></div>
     <div class="ls" id="l5"><div class="lic">🎯</div><div class="ltx">Generating your score</div><div class="spin"></div><div class="ldk">Done</div></div>
+    <div class="ls" id="l6"><div class="lic">🧠</div><div class="ltx">Applying The Desk Insider Knowledge Model</div><div class="spin"></div><div class="ldk">Done</div></div>
   </div>
   <div style="width:100%;max-width:380px;margin-top:36px;padding-top:24px;border-top:0.5px solid var(--ink08);">
     <div style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;">Did you know</div>
@@ -1517,13 +1518,13 @@ function submit(){
   var ldr=document.getElementById('ldr');
   ldr.classList.add('show');
   // Reset all step states so animation plays fresh every time
-  ['l1','l2','l3','l4','l5'].forEach(function(id){
+  ['l1','l2','l3','l4','l5','l6'].forEach(function(id){
     var el=document.getElementById(id);
     if(el){ el.classList.remove('on','dn'); }
   });
   rotateDyk();
   var dykTimer=setInterval(rotateDyk,5000);
-  anim(['l1','l2','l3','l4','l5'],0);
+  anim(['l1','l2','l3','l4','l5','l6'],0);
 
   var animDone=false, apiResult=null;
   var MIN_MS=23000;
@@ -1660,7 +1661,7 @@ function submit(){
 
 function finish(res){
   if(typeof dykTimer!=='undefined') clearInterval(dykTimer);
-  ['l1','l2','l3','l4','l5'].forEach(function(id){
+  ['l1','l2','l3','l4','l5','l6'].forEach(function(id){
     var el=document.getElementById(id);
     el.classList.add('on','dn');
   });
@@ -2486,7 +2487,7 @@ function setupCvPaste(){
 function showAssessmentError(msg){
   var ldr=document.getElementById('ldr');
   if(ldr) ldr.classList.remove('show');
-  ['l1','l2','l3','l4','l5'].forEach(function(id){
+  ['l1','l2','l3','l4','l5','l6'].forEach(function(id){
     var el=document.getElementById(id);
     if(el){el.classList.remove('on','dn');}
   });
