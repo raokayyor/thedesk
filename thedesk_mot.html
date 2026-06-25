@@ -808,7 +808,7 @@ select.fi{background:transparent;cursor:pointer;}
   <!-- 6 DIMENSIONS -->
   <div style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;margin-bottom:12px;overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);">6-dimension breakdown · tap to expand</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);">6-dimension breakdown</div><div style="font-size:11px;color:var(--terra);font-weight:500;">↓ tap each to expand</div></div>
     </div>
     <div id="rDm"></div>
   </div>
@@ -1932,7 +1932,10 @@ function showR(r){
         +'</div>'
         +'<div style="height:5px;background:var(--ink08);border-radius:3px;overflow:hidden;"><div style="height:5px;width:'+Math.round(d.score)+'%;background:'+scoreCol+';border-radius:3px;"></div></div>'
         +'<div style="font-size:12px;font-weight:500;color:'+scoreCol+';text-align:right;">'+Math.round(d.score)+'</div>'
-        +'<svg id="chev'+i+'" style="width:14px;height:14px;transition:transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
+        +'<div style="display:flex;align-items:center;gap:4px;">'
+          +'<span style="font-size:10px;color:var(--terra);font-weight:500;white-space:nowrap;opacity:0.8;">see fix</span>'
+          +'<svg id="chev'+i+'" style="width:14px;height:14px;transition:transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="var(--terra)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
+        +'</div>'
       +'</div>'
       +'<div id="'+uid+'" style="display:none;border-top:0.5px solid var(--ink08);padding:14px 16px;">'
         +'<div style="display:inline-block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:'+bandTxt+';background:'+bandBg+';padding:2px 8px;border-radius:20px;margin-bottom:10px;">'+bandLabel+' · '+Math.round(d.score)+'</div>'
@@ -1948,6 +1951,11 @@ function showR(r){
       +'</div>';
     dm.appendChild(row);
   });
+  // Auto-open first dimension
+  var firstDim=document.getElementById('rdim0');
+  var firstChev=document.getElementById('chev0');
+  if(firstDim){firstDim.style.display='block';}
+  if(firstChev){firstChev.style.transform='rotate(180deg)';}
 
   // 3 GAPS
   var pr=document.getElementById('rPr');
