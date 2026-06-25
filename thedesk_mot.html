@@ -1944,6 +1944,12 @@ function anim(ids,i){
 }
 
 function showR(r){
+  // Normalise band — model sometimes hallucinates band text
+  var validBands=['Strong','Competitive','Borderline','Weak','Not yet ready'];
+  if(r.band&&!validBands.includes(r.band)){
+    var sc=r.overallScore||0;
+    r.band=sc>=85?'Strong':sc>=70?'Competitive':sc>=55?'Borderline':sc>=40?'Weak':'Not yet ready';
+  }
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('show');});
   document.getElementById('pR').classList.add('show');
   window.scrollTo(0,0);
