@@ -9,60 +9,50 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --ink:#1A1714;--ink60:rgba(26,23,20,0.6);--ink40:rgba(26,23,20,0.4);--ink08:rgba(26,23,20,0.08);
-  --cream:#F7F3EE;--warm:#F2EDE6;--terra:#A85E0A;--green:#15803D;
+  --cream:#F7F3EE;--warm:#F2EDE6;--terra:#A85E0A;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
 nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.5px solid var(--ink08);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;}
 .logo{font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:var(--ink);text-decoration:none;}
 .logo em{color:var(--terra);font-style:italic;}
-.wrap{max-width:580px;margin:0 auto;padding:80px 24px 60px;}
-
-/* HERO */
-.hero{padding:32px 0 28px;}
+.wrap{max-width:560px;margin:0 auto;padding:80px 24px 60px;}
+.hero{padding:28px 0 20px;}
 .hero-tag{font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;}
-.hero-title{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,38px);font-weight:300;letter-spacing:-0.8px;line-height:1.1;margin-bottom:14px;}
+.hero-title{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,36px);font-weight:300;letter-spacing:-0.8px;line-height:1.1;margin-bottom:12px;}
 .hero-title em{color:var(--terra);font-style:italic;}
 .hero-sub{font-size:14px;font-weight:300;color:var(--ink60);line-height:1.7;}
-
-/* WHAT'S INCLUDED */
 .section{background:white;border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-bottom:14px;}
 .section-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:14px;}
 .bullet{display:flex;gap:10px;align-items:baseline;margin-bottom:10px;}
 .bullet:last-child{margin-bottom:0;}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:6px;}
 .bullet-text{font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;}
-
-/* PRACTITIONERS */
-.practitioner{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:0.5px solid var(--ink08);}
-.practitioner:last-child{border-bottom:none;padding-bottom:0;}
-.prac-avatar{width:48px;height:48px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:var(--cream);flex-shrink:0;}
+.practitioner{display:flex;gap:16px;align-items:flex-start;}
+.prac-avatar{width:44px;height:44px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:17px;color:var(--cream);flex-shrink:0;}
 .prac-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
-.prac-role{font-size:12px;font-weight:300;color:var(--terra);margin-bottom:4px;}
+.prac-role{font-size:12px;color:var(--terra);margin-bottom:4px;}
 .prac-bio{font-size:12px;font-weight:300;color:var(--ink60);line-height:1.55;}
-.prac-tag{display:inline-block;font-size:10px;font-weight:500;background:var(--warm);border:0.5px solid var(--ink08);border-radius:20px;padding:2px 8px;margin-top:6px;margin-right:4px;color:var(--ink40);}
-
-/* FORM */
+.prac-tag{display:inline-block;font-size:10px;background:var(--warm);border:0.5px solid var(--ink08);border-radius:20px;padding:2px 8px;margin-top:6px;margin-right:4px;color:var(--ink40);}
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;}
 .fi{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--ink);background:white;border:0.5px solid var(--ink08);border-radius:8px;padding:11px 13px;outline:none;transition:border-color 0.15s;}
 .fi:focus{border-color:var(--terra);}
-select.fi{cursor:pointer;}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.firms-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;}
-.firm-chip{display:flex;align-items:center;gap:6px;padding:8px 10px;border:0.5px solid var(--ink08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:300;color:var(--ink60);transition:all 0.15s;background:white;}
-.firm-chip.on{border-color:var(--terra);background:rgba(168,94,10,0.06);color:var(--terra);}
-.firm-chip input{display:none;}
-.firm-check{width:14px;height:14px;border:1.5px solid var(--ink08);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
-.firm-chip.on .firm-check{background:var(--terra);border-color:var(--terra);}
-.file-zone{border:1.5px dashed var(--ink08);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:0.5px solid var(--ink08);border-radius:20px;cursor:pointer;font-size:12px;font-weight:300;color:var(--ink60);transition:all 0.15s;background:white;user-select:none;}
+.chip.on{border-color:var(--terra);background:rgba(168,94,10,0.07);color:var(--terra);font-weight:500;}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--ink08);transition:background 0.15s;}
+.chip.on .chip-dot{background:var(--terra);}
+.file-zone{border:1.5px dashed var(--ink08);border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:all 0.2s;display:block;}
 .file-zone:hover,.file-zone.on{border-color:var(--terra);background:rgba(168,94,10,0.04);}
-.file-zone-text{font-size:13px;font-weight:300;color:var(--ink40);}
-.submit-btn{width:100%;padding:16px;background:var(--ink);color:var(--cream);border:none;border-radius:10px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;cursor:pointer;letter-spacing:-0.2px;margin-top:8px;transition:background 0.2s;}
+.fzt{font-size:13px;font-weight:300;color:var(--ink40);}
+.submit-btn{width:100%;padding:15px;background:var(--ink);color:var(--cream);border:none;border-radius:10px;font-family:'Fraunces',serif;font-size:16px;font-weight:300;cursor:pointer;margin-top:6px;transition:background 0.2s;}
 .submit-btn:hover{background:var(--terra);}
-.success{display:none;text-align:center;padding:32px 20px;background:white;border:0.5px solid var(--ink08);border-radius:12px;}
-.success-icon{font-size:40px;margin-bottom:12px;}
-.success-title{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--ink);margin-bottom:8px;}
-.success-desc{font-size:13px;font-weight:300;color:var(--ink60);line-height:1.6;}
+.submit-btn:disabled{background:#999;cursor:not-allowed;}
+.success{display:none;text-align:center;padding:40px 20px;}
+.success-icon{font-size:44px;margin-bottom:14px;}
+.success-title{font-family:'Fraunces',serif;font-size:24px;font-weight:300;color:var(--ink);margin-bottom:8px;}
+.success-desc{font-size:13px;font-weight:300;color:var(--ink60);line-height:1.7;}
 </style>
 </head>
 <body>
@@ -74,34 +64,31 @@ select.fi{cursor:pointer;}
 
 <div class="wrap">
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-tag">1-to-1 Support</div>
     <div class="hero-title">Real guidance.<br><em>From people who have been there.</em></div>
     <div class="hero-sub">We match you with a practitioner who has worked at your target firms and guide you through every stage of the application cycle — from CV to offer.</div>
   </div>
 
-  <!-- WHAT'S INCLUDED -->
   <div class="section">
     <div class="section-label">What's included</div>
     <div class="bullet"><div class="dot"></div><div class="bullet-text">Personal review of your full application — CV, motivation answers and positioning — before you submit</div></div>
     <div class="bullet"><div class="dot"></div><div class="bullet-text">Guidance through every stage — CV screen, numerical tests, HireVue, first round and Superday</div></div>
     <div class="bullet"><div class="dot"></div><div class="bullet-text">Insider knowledge of what each firm actually looks for — from someone who has been on both sides of the table</div></div>
-    <div class="bullet"><div class="dot"></div><div class="bullet-text">Direct access throughout the cycle — not a one-off session</div></div>
     <div class="bullet"><div class="dot"></div><div class="bullet-text">Weekly market briefing — what is happening in markets and what it means, in plain English</div></div>
-    <div class="bullet"><div class="dot"></div><div class="bullet-text">We can also schedule a call with your parents if helpful — to explain the process, the timeline and what the journey looks like</div></div>
-    <div class="bullet"><div class="dot"></div><div class="bullet-text">We match you to a practitioner in your chosen field — banking, accountancy, hedge fund / buyside, or other financial services</div></div>
+    <div class="bullet"><div class="dot"></div><div class="bullet-text">Direct access throughout the full cycle — not a one-off session</div></div>
+    <div class="bullet"><div class="dot"></div><div class="bullet-text">We can schedule a call with your parents if helpful — to walk through the process, the timeline and what the journey looks like</div></div>
+    <div class="bullet"><div class="dot"></div><div class="bullet-text">We match you to a practitioner in your chosen field — banking, accountancy, hedge fund / buyside or other financial services</div></div>
   </div>
 
-  <!-- PRACTITIONERS -->
   <div class="section">
     <div class="section-label">Our practitioners</div>
     <div class="practitioner">
       <div class="prac-avatar">R</div>
       <div>
         <div class="prac-name">Rao Kayyor</div>
-        <div class="prac-role">Managing Director — Secondary Credit Markets</div>
-        <div class="prac-bio">20 years across UBS, Barclays and BGC Partners. Most recently Co-Head of Secondary Credit Markets at BGC. Has hired, assessed and mentored candidates across all levels at bulge bracket and specialist firms. Built The Desk from the inside out.</div>
+        <div class="prac-role">Former Managing Director — Secondary Credit Markets</div>
+        <div class="prac-bio">20 years across UBS, Barclays and BGC Partners. Co-Head of Secondary Credit Markets at BGC. Has hired, assessed and mentored candidates across all levels at bulge bracket and specialist firms.</div>
         <span class="prac-tag">Investment Banking</span>
         <span class="prac-tag">Credit Markets</span>
         <span class="prac-tag">Sales & Trading</span>
@@ -110,11 +97,10 @@ select.fi{cursor:pointer;}
     <div style="margin-top:14px;padding:12px;background:var(--warm);border-radius:8px;font-size:12px;font-weight:300;color:var(--ink60);line-height:1.6;">More practitioners joining shortly across accountancy, asset management, private equity and hedge funds. We will match you to the best fit for your target firms and division.</div>
   </div>
 
-  <!-- APPLICATION FORM -->
   <div class="section" id="formSection">
     <div class="section-label">Apply for 1-to-1 support</div>
-    <form id="mentorForm" onsubmit="submitForm(event)">
 
+    <div id="theForm">
       <div class="row2">
         <div class="field">
           <label>First name</label>
@@ -150,7 +136,7 @@ select.fi{cursor:pointer;}
       </div>
 
       <div class="field">
-        <label>Predicted / achieved grade</label>
+        <label>Grade</label>
         <select class="fi" id="grade">
           <option value="">Select...</option>
           <option>First Class (predicted)</option>
@@ -165,78 +151,60 @@ select.fi{cursor:pointer;}
       </div>
 
       <div class="field">
-        <label>Target area</label>
-        <select class="fi" id="area">
-          <option value="">Select...</option>
-          <option>Investment Banking / IBD</option>
-          <option>Sales & Trading / Markets</option>
-          <option>Asset Management / Investing</option>
-          <option>Big 4 Accountancy</option>
-          <option>Hedge Fund / Buyside</option>
-          <option>Private Equity / Venture Capital</option>
-          <option>Risk / Compliance</option>
-          <option>General Finance / Other</option>
-        </select>
+        <label>Target areas <span style="font-size:10px;color:var(--ink40);text-transform:none;letter-spacing:0;font-weight:300;">select all that apply</span></label>
+        <div class="chip-grid" id="areaChips"></div>
       </div>
 
       <div class="field">
-        <label>Target firms <span style="font-size:10px;color:var(--ink40);text-transform:none;letter-spacing:0;font-weight:300;">(select all that apply)</span></label>
-        <div class="firms-grid" id="firmsGrid"></div>
-      </div>
-
-      <div class="field">
-        <label>Upload your CV <span style="font-size:10px;color:var(--ink40);text-transform:none;letter-spacing:0;font-weight:300;">(optional but recommended)</span></label>
+        <label>Upload your CV <span style="font-size:10px;color:var(--ink40);text-transform:none;letter-spacing:0;font-weight:300;">optional but recommended</span></label>
         <label class="file-zone" for="cvUpload" id="fileZone">
-          <div class="file-zone-text" id="fileZoneText">📄 Drag & drop your CV or click to browse · PDF or Word</div>
+          <div class="fzt" id="fzt">📄 Drag & drop or click to browse · PDF or Word</div>
         </label>
         <input type="file" id="cvUpload" accept=".pdf,.doc,.docx" style="display:none">
       </div>
 
       <div class="row2">
         <div class="field">
-          <label>Email address</label>
+          <label>Email</label>
           <input class="fi" type="email" id="email" placeholder="your@email.com" required>
         </div>
         <div class="field">
-          <label>Phone number</label>
+          <label>Phone</label>
           <input class="fi" type="tel" id="phone" placeholder="+44 7700 000000">
         </div>
       </div>
 
       <div class="field">
-        <label>Anything else we should know?</label>
-        <textarea class="fi" id="notes" placeholder="Stage you are at, specific firms you are targeting, anything you want to flag..." style="min-height:80px;resize:vertical;"></textarea>
+        <label>Anything else?</label>
+        <textarea class="fi" id="notes" placeholder="Where you are in the process, specific firms, anything you want to flag..." style="min-height:72px;resize:vertical;"></textarea>
       </div>
 
-      <button type="submit" class="submit-btn">Submit to arrange your 1-to-1 →</button>
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit application →</button>
       <div style="text-align:center;font-size:11px;color:var(--ink40);margin-top:10px;">We will be in touch within 24 hours · Limited places each cycle</div>
-    </form>
+      <div id="errMsg" style="display:none;text-align:center;font-size:12px;color:var(--terra);margin-top:8px;"></div>
+    </div>
 
-    <!-- SUCCESS STATE -->
     <div class="success" id="successMsg">
       <div class="success-icon">✓</div>
       <div class="success-title">Application received</div>
-      <div class="success-desc">We will review your details and be in touch within 24 hours to arrange your first call. Check your inbox — including spam.</div>
+      <div class="success-desc">Thank you — we will review your details and be in touch within 24 hours to arrange your first call.<br><br>Check your inbox, including your spam folder.</div>
     </div>
   </div>
 
 </div>
 
 <script>
-// Firms
-var FIRMS=['Goldman Sachs','JP Morgan','Barclays','Morgan Stanley','UBS','Lazard','Rothschild','Citi','Deutsche Bank','HSBC','BNP Paribas','Credit Suisse','Deloitte','PwC','EY','KPMG','Blackrock','Bridgewater','Two Sigma','Man Group','KKR','Blackstone','Apollo'];
-var selectedFirms=[];
-var grid=document.getElementById('firmsGrid');
-FIRMS.forEach(function(f){
-  var chip=document.createElement('label');
-  chip.className='firm-chip';
-  chip.innerHTML='<input type="checkbox" value="'+f+'"><div class="firm-check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none" style="display:none;"><path d="M1 3L3 5L7 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><span>'+f+'</span>';
+var AREAS=['Investment Banking / IBD','Sales & Trading / Markets','Asset Management','Big 4 Accountancy','Hedge Fund / Buyside','Private Equity / VC','Risk / Compliance','General Finance'];
+var selectedAreas=[];
+var grid=document.getElementById('areaChips');
+AREAS.forEach(function(a){
+  var chip=document.createElement('div');
+  chip.className='chip';
+  chip.innerHTML='<div class="chip-dot"></div>'+a;
   chip.addEventListener('click',function(){
-    var cb=chip.querySelector('input');
     var on=chip.classList.toggle('on');
-    var check=chip.querySelector('svg'); if(check) check.style.display=on?'block':'none';
-    if(on) selectedFirms.push(f);
-    else selectedFirms=selectedFirms.filter(function(x){return x!==f;});
+    if(on) selectedAreas.push(a);
+    else selectedAreas=selectedAreas.filter(function(x){return x!==a;});
   });
   grid.appendChild(chip);
 });
@@ -244,50 +212,57 @@ FIRMS.forEach(function(f){
 // File
 document.getElementById('cvUpload').addEventListener('change',function(e){
   var f=e.target.files[0];
-  if(f){
-    document.getElementById('fileZoneText').textContent='📄 '+f.name+' ready';
-    document.getElementById('fileZone').classList.add('on');
-    window._mentorCV=f;
-  }
+  if(f){document.getElementById('fzt').textContent='📄 '+f.name+' ready';document.getElementById('fileZone').classList.add('on');window._cv=f;}
 });
-
-// Drag & drop on file zone
 var fz=document.getElementById('fileZone');
 fz.addEventListener('dragover',function(e){e.preventDefault();fz.classList.add('on');});
-fz.addEventListener('dragleave',function(){fz.classList.remove('on');});
+fz.addEventListener('dragleave',function(){if(!window._cv)fz.classList.remove('on');});
 fz.addEventListener('drop',function(e){
   e.preventDefault();
   var f=e.dataTransfer.files[0];
-  if(f){document.getElementById('fileZoneText').textContent='📄 '+f.name+' ready';window._mentorCV=f;}
+  if(f){document.getElementById('fzt').textContent='📄 '+f.name+' ready';document.getElementById('fileZone').classList.add('on');window._cv=f;}
 });
 
-function submitForm(e){
-  e.preventDefault();
-  var btn=document.querySelector('.submit-btn');
-  btn.disabled=true; btn.textContent='Sending...';
+async function submitForm(){
+  var fname=document.getElementById('fname').value.trim();
+  var email=document.getElementById('email').value.trim();
+  var errMsg=document.getElementById('errMsg');
+  if(!fname||!email){errMsg.textContent='Please enter your name and email to continue.';errMsg.style.display='block';return;}
+  
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Submitting...';
+  errMsg.style.display='none';
 
-  var body='1-TO-1 MENTOR APPLICATION\n\n'
-    +'Name: '+document.getElementById('fname').value+' '+document.getElementById('lname').value+'\n'
-    +'University: '+document.getElementById('uni').value+'\n'
-    +'Course: '+document.getElementById('course').value+'\n'
-    +'Year: '+document.getElementById('year').value+'\n'
-    +'Grade: '+document.getElementById('grade').value+'\n'
-    +'Target area: '+document.getElementById('area').value+'\n'
-    +'Target firms: '+selectedFirms.join(', ')+'\n'
-    +'Email: '+document.getElementById('email').value+'\n'
-    +'Phone: '+document.getElementById('phone').value+'\n'
-    +'Notes: '+document.getElementById('notes').value;
+  var data={
+    name:fname+' '+document.getElementById('lname').value.trim(),
+    university:document.getElementById('uni').value,
+    course:document.getElementById('course').value,
+    year:document.getElementById('year').value,
+    grade:document.getElementById('grade').value,
+    areas:selectedAreas.join(', '),
+    email:email,
+    phone:document.getElementById('phone').value,
+    notes:document.getElementById('notes').value
+  };
 
-  var mailto='mailto:hello@thedesk.com'
-    +'?subject='+encodeURIComponent('1-to-1 Mentor Application — '+document.getElementById('fname').value+' '+document.getElementById('lname').value)
-    +'&body='+encodeURIComponent(body);
-
-  window.location.href=mailto;
-
-  setTimeout(function(){
-    document.getElementById('mentorForm').style.display='none';
-    document.getElementById('successMsg').style.display='block';
-  },800);
+  try{
+    var resp=await fetch('/api/mentor-apply',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    var result=await resp.json();
+    if(result.success){
+      document.getElementById('theForm').style.display='none';
+      document.getElementById('successMsg').style.display='block';
+    } else {
+      throw new Error(result.error||'Submission failed');
+    }
+  }catch(e){
+    btn.disabled=false;btn.textContent='Submit application →';
+    errMsg.textContent='Something went wrong — please email us directly at hello@thedesk.com';
+    errMsg.style.display='block';
+  }
 }
 </script>
 </body>
