@@ -834,6 +834,16 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rLeavingList"></div>
   </div>
 
+  <!-- COMPETENCIES -->
+  <div id="rCompetencies" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+    <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);">Core competencies evidenced</div>
+        <div id="rCompScore" style="font-size:12px;font-weight:500;color:var(--terra);"></div>
+      </div>
+    </div>
+    <div id="rCompList" style="padding:4px 0;"></div>
+  </div>
   <!-- FULL CYCLE CTA LIST -->
   <div id="rActionPlan" style="display:none;background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
@@ -850,16 +860,6 @@ select.fi{background:transparent;cursor:pointer;}
 
   <!-- PAID HOOK + UPGRADE -->
   <div id="rPaidHook" style="display:none;"></div>
-  <!-- COMPETENCIES -->
-  <div id="rCompetencies" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;overflow:hidden;margin-bottom:12px;">
-    <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);">Core competencies evidenced</div>
-        <div id="rCompScore" style="font-size:12px;font-weight:500;color:var(--terra);"></div>
-      </div>
-    </div>
-    <div id="rCompList" style="padding:4px 0;"></div>
-  </div>
 
   <div class="ucard" style="margin-top:0;" id="upgradeSection">
     <div class="utitle" id="utitleEl">Get <em>everything</em> you need to fix this application.</div>
@@ -2033,26 +2033,26 @@ function showR(r){
   if(apBox&&apSteps){
     apBox.style.display='block';
     var firm=D.firm||'your target firm';
-    // Extract candidate name from CV details
+    // Extract candidate name - used once at header only
     var candName=r.candidateName||'';
-    var namePrefix=candName?candName+', your ':' Your ';
-    var namePossessive=candName?candName+'\'s ':'Your ';
     var techPctStr=Math.round((D.nS/5)*100)+'%';
     var commPctStr=Math.round((D.fS/5)*100)+'%';
     var firm2=D.firm||'your target firm';
     var div2=D.div||'finance';
-    var killerShort=(r.killerSentence||'').split('—')[0].trim();
-
+    var killerShort=(r.killerSentence||'').split('.')[0].trim()
     var ctaItems=[
-      {label:namePrefix+'numerical score of '+D.nS+'/5 ('+techPctStr+') needs to improve before you apply', desc:'Full Cycle gives you unlimited SHL, Korn Ferry and Cubiks timed tests with worked solutions. The question types used at '+firm2+' are in the practice bank. Most students move from '+D.nS+'/5 to 4-5/5 within two weeks.'},
-      {label:namePrefix+'commercial score of '+D.fS+'/5 ('+commPctStr+') leaves you exposed at interview', desc:'Full Cycle includes commercial awareness primers, sector briefings and weekly market updates covering the exact themes '+firm2+' interviewers are testing this cycle. You need to connect market events to deal consequences — right now that gap is showing.'},
-      {label:namePossessive+'strongest CV signal needs to be made impossible to miss', desc:killerShort?killerShort+'. Full Cycle gives you the line-by-line rewrite — before and after — using the exact language '+firm2+' screeners are trained to spot.':'Full Cycle gives you the line-by-line CV rewrite using the exact language '+firm2+' screeners are trained to spot. Before and after included.'},
+      {label:'Numerical score: '+D.nS+'/5 ('+techPctStr+') — needs to improve before you apply', desc:'Full Cycle gives you unlimited SHL, Korn Ferry and Cubiks timed tests with worked solutions. The question types used at '+firm2+' are in the practice bank. Most students move from '+D.nS+'/5 to 4-5/5 within two weeks.'},
+      {label:'Commercial score: '+D.fS+'/5 ('+commPctStr+') — leaves you exposed at interview', desc:'Full Cycle includes commercial awareness primers, sector briefings and weekly market updates covering the exact themes '+firm2+' interviewers are testing this cycle. You need to connect market events to deal consequences — right now that gap is showing.'},
+      {label:'Your strongest CV signal needs to be impossible to miss', desc:killerShort?killerShort+'. Full Cycle gives you the line-by-line rewrite — before and after — using the exact language '+firm2+' screeners are trained to spot.':'Full Cycle gives you the line-by-line CV rewrite using the exact language '+firm2+' screeners are trained to spot. Before and after included.'},
       {label:'Get your competencies evidenced — not just implied', desc:'Banks screen for 5 core competencies: Leadership, Analytical, Commercial, Communication, Resilience. Full Cycle shows you how to reframe what\'s already on your CV so every competency reads clearly — without adding anything new.'},
       {label:'Access application guides for every major firm', desc:'Goldman Sachs, Barclays, JP Morgan, UBS, Lazard, Morgan Stanley, Rothschild — and Big 4, VC and PE. What each application is actually asking, what the screener wants to see, and the most common mistakes. All included in Full Cycle.'},
       {label:'Practice your '+firm2+' interview with AI', desc:'Record a practice answer to common '+div2+' interview questions. Our AI scores it on vocabulary, structure, confidence and finance-specific language — the same dimensions real HireVue AI uses.'},
       {label:'Never miss a deadline', desc:'Every firm\'s opening date, rolling vs fixed deadline, spring week vs summer internship — in one tracker. Personalised reminders so you submit before the real pipeline closes, not after.'}
     ];
-    var ctaHTML='<div style="display:flex;flex-direction:column;gap:10px;">';
+    // Personalise header with name once
+    var apHeader=document.querySelector('.ap-header');
+    if(apHeader&&candName) apHeader.textContent=candName+' — here is your Full Cycle plan.';
+    var ctaHTML='<div style="display:flex;flex-direction:column;gap:4px;">';
     ctaItems.forEach(function(item,ci){
       ctaHTML+='<div style="padding:10px 0;border-bottom:'+(ci<ctaItems.length-1?'0.5px solid rgba(255,255,255,0.08)':'none')+';">'
           +'<div style="font-size:13px;font-weight:500;color:#F7F3EE;margin-bottom:3px;">'+item.label+'</div>'
