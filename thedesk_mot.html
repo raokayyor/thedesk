@@ -752,7 +752,7 @@ select.fi{background:transparent;cursor:pointer;}
     Your MOT score is benchmarked against The Desk's route-specific screening framework. Honest, specific — no generic advice.
   </div>
 
-  <button onclick="scoreAll();submit();" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Get my score →</button>
+  <button onclick="try{scoreAll();submit();}catch(e){alert('ERROR: '+e.message+' | stack: '+(e.stack||'').slice(0,200));}" style="width:100%;margin-top:20px;font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:white;background:var(--ink);border:none;border-radius:10px;padding:14px;cursor:pointer;letter-spacing:-0.2px;" onmouseover="this.style.background='var(--terra)'" onmouseout="this.style.background='var(--ink)'">Get my score →</button>
 
 </div>
 </div>
