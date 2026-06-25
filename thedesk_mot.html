@@ -849,10 +849,15 @@ select.fi{background:transparent;cursor:pointer;}
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
       <div style="font-size:14px;font-weight:500;color:#F7F3EE;">Full Cycle gives you everything to fix this application.</div>
     </div>
-    <div style="font-size:12px;color:rgba(247,243,238,0.4);margin-bottom:16px;">Specific to your CV · Specific to this firm · This cycle</div>
+    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:16px;line-height:1.55;">Specific to your CV, your score, and your target firm. Here is exactly what Full Cycle does for this application.</div>
     <div id="rActionSteps"></div>
     <button onclick="scrollToUpgrade()" style="width:100%;margin-top:16px;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;letter-spacing:0.01em;">Get Full Cycle — £79 →</button>
-    <div style="text-align:center;font-size:11px;color:rgba(247,243,238,0.3);margin-top:8px;">One-time · Lifetime access · One shot per firm per cycle</div>
+    <div style="text-align:center;font-size:11px;color:rgba(247,243,238,0.3);margin-top:8px;">One-time · Lifetime access · All firms included</div>
+    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid rgba(255,255,255,0.1);text-align:center;">
+      <div style="font-size:12px;font-weight:500;color:rgba(247,243,238,0.6);margin-bottom:6px;">Need 1-to-1 help from a practitioner?</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.35);margin-bottom:12px;">60 minutes with Rao — former MD at BGC Partners, UBS and Barclays. Direct, honest, specific.</div>
+      <a href="mailto:hello@thedesk.com?subject=1-to-1 Application Review" style="display:inline-block;background:transparent;color:rgba(247,243,238,0.7);border:0.5px solid rgba(247,243,238,0.25);border-radius:8px;padding:10px 24px;font-size:13px;font-weight:400;text-decoration:none;">Apply for a 1-to-1 session →</a>
+    </div>
   </div>
 
   <!-- SOURCE BADGE -->
@@ -2040,23 +2045,35 @@ function showR(r){
     var firm2=D.firm||'your target firm';
     var div2=D.div||'finance';
     var killerShort=(r.killerSentence||'').split('.')[0].trim()
+    var techNeed=D.nS>=5?'keep sharp — candidates who score well early still fail HireVue if they stop practising':'get from '+D.nS+'/5 to 5/5 before your '+firm2+' application closes';
+    var commNeed=D.fS>=5?'translate market events into deal consequences — the commercial question that trips most candidates':'connect your '+D.fS+'/5 score to deal-level consequences, which is what '+firm2+' actually tests';
     var ctaItems=[
-      {label:'Numerical score: '+D.nS+'/5 ('+techPctStr+') — needs to improve before you apply', desc:'Full Cycle gives you unlimited SHL, Korn Ferry and Cubiks timed tests with worked solutions. The question types used at '+firm2+' are in the practice bank. Most students move from '+D.nS+'/5 to 4-5/5 within two weeks.'},
-      {label:'Commercial score: '+D.fS+'/5 ('+commPctStr+') — leaves you exposed at interview', desc:'Full Cycle includes commercial awareness primers, sector briefings and weekly market updates covering the exact themes '+firm2+' interviewers are testing this cycle. You need to connect market events to deal consequences — right now that gap is showing.'},
-      {label:'Your strongest CV signal needs to be impossible to miss', desc:killerShort?killerShort+'. Full Cycle gives you the line-by-line rewrite — before and after — using the exact language '+firm2+' screeners are trained to spot.':'Full Cycle gives you the line-by-line CV rewrite using the exact language '+firm2+' screeners are trained to spot. Before and after included.'},
-      {label:'Get your competencies evidenced — not just implied', desc:'Banks screen for 5 core competencies: Leadership, Analytical, Commercial, Communication, Resilience. Full Cycle shows you how to reframe what\'s already on your CV so every competency reads clearly — without adding anything new.'},
-      {label:'Access application guides for every major firm', desc:'Goldman Sachs, Barclays, JP Morgan, UBS, Lazard, Morgan Stanley, Rothschild — and Big 4, VC and PE. What each application is actually asking, what the screener wants to see, and the most common mistakes. All included in Full Cycle.'},
-      {label:'Practice your '+firm2+' interview with AI', desc:'Record a practice answer to common '+div2+' interview questions. Our AI scores it on vocabulary, structure, confidence and finance-specific language — the same dimensions real HireVue AI uses.'},
-      {label:'Never miss a deadline', desc:'Every firm\'s opening date, rolling vs fixed deadline, spring week vs summer internship — in one tracker. Personalised reminders so you submit before the real pipeline closes, not after.'}
-    ];
-    // Personalise header with name once
+      {label:'Numerical testing — '+techNeed,
+       desc:'Unlimited timed SHL, Korn Ferry and Cubiks tests with worked solutions. The specific question types used at '+firm2+' are in the bank. Re-test as many times as you need until your score holds under pressure.'},
+      {label:'Commercial awareness — read the '+firm2+' briefing before your interview',
+       desc:'Weekly market briefings, sector primers and commercial awareness guides — updated each cycle. The exact macro themes and deal trends '+firm2+' interviewers are probing right now, with a framework for connecting events to deal consequences.'},
+      {label:'CV rewrite — '+(killerShort?killerShort.slice(0,70)+'...' :'get your strongest evidence reframed in the language screeners respond to'),
+       desc:'Line-by-line rewrite of your weakest bullets — before and after — using the exact language '+firm2+' screeners are trained to spot. Not generic advice. Your CV, your firm.'},
+      {label:'AI interview practice — prepare for '+firm2+' HireVue',
+       desc:'Record a practice answer to common '+div2+' interview questions. The AI scores you on vocabulary, structure, finance-specific language and confidence — the same dimensions the real HireVue AI uses. Repeat until your score holds.'},
+      {label:'Application question bank — every '+firm2+' question answered using your CV',
+       desc:'Paste any application question and Full Cycle generates a strong draft answer using your specific CV details. Why '+firm2+'? Why '+div2+'? Tell us about a time you showed leadership. Every question, every firm.'},
+      {label:'Application guides — '+firm2+' and every other firm you are targeting',
+       desc:'Goldman Sachs, Barclays, JP Morgan, UBS, Lazard, Morgan Stanley, Rothschild, Big 4, VC and PE. What each firm is actually asking, what the screener wants to see, and the most common mistakes candidates make.'},
+      {label:'Deadline tracker — never miss your window',
+       desc:'Every firm\'s opening date, rolling vs fixed deadline, spring week vs summer vs graduate. Most candidates miss the real pipeline close — not the advertised one. Full Cycle tracks it all.'}
+    ];    // Personalise header
     var apHeader=document.querySelector('.ap-header');
-    if(apHeader&&candName) apHeader.textContent=candName+' — here is your Full Cycle plan.';
-    var ctaHTML='<div style="display:flex;flex-direction:column;gap:4px;">';
+    if(apHeader) apHeader.textContent=(candName?candName+', how does Full Cycle fix this?':'How does Full Cycle fix this?');
+
+    var ctaHTML='<div style="display:flex;flex-direction:column;">';
     ctaItems.forEach(function(item,ci){
-      ctaHTML+='<div style="padding:10px 0;border-bottom:'+(ci<ctaItems.length-1?'0.5px solid rgba(255,255,255,0.08)':'none')+';">'
-          +'<div style="font-size:13px;font-weight:500;color:#F7F3EE;margin-bottom:3px;">'+item.label+'</div>'
-          +'<div style="font-size:12px;font-weight:300;color:rgba(247,243,238,0.5);line-height:1.55;">'+item.desc+'</div>'
+      ctaHTML+='<div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:'+(ci<ctaItems.length-1?'0.5px solid rgba(255,255,255,0.08)':'none')+';">'
+        +'<div style="width:6px;height:6px;border-radius:50%;background:#E87040;flex-shrink:0;margin-top:5px;"></div>'
+        +'<div>'
+          +'<div style="font-size:13px;font-weight:500;color:#F7F3EE;margin-bottom:2px;">'+item.label+'</div>'
+          +'<div style="font-size:12px;font-weight:300;color:rgba(247,243,238,0.55);line-height:1.55;">'+item.desc+'</div>'
+        +'</div>'
       +'</div>';
     });
     ctaHTML+='</div>';
@@ -2144,10 +2161,9 @@ function showR(r){
       var row=document.createElement('div');
       row.style.cssText='display:flex;align-items:flex-start;gap:12px;padding:10px 16px;border-bottom:'+(isLast?'none':'0.5px solid var(--ink08)');
       var dotCol=isOn?'#16A34A':'#DC2626';
-      var fixText=isOn
-        ?'Evidenced — '+ev
-        :'Not evidenced. '+(ev?'Closest signal: '+ev+'. ':'')+'Full Cycle shows you how to reframe what\'s already on your CV so this competency reads clearly to a screener.';
-      var blurredFix='Full Cycle shows you the exact framing to evidence this competency using what is already on your CV — specific to your experience and your target firm. No new activities needed.';
+      var evidencedBlur='Full Cycle shows you how to make this competency impossible to miss — the exact framing, placement and language that makes a screener stop. Most evidenced competencies are buried or understated. Full Cycle surfaces them.';
+      var missingBlur='Full Cycle shows you how to reframe what is already on your CV so this competency reads clearly — specific to your experience and your target firm. No new activities needed, just the right framing.';
+      var blurText=isOn?evidencedBlur:missingBlur;
       row.innerHTML=
         '<div style="width:8px;height:8px;border-radius:50%;background:'+dotCol+';flex-shrink:0;margin-top:5px;"></div>'
         +'<div style="flex:1;">'
@@ -2155,17 +2171,14 @@ function showR(r){
             +'<div style="font-size:13px;font-weight:500;color:var(--ink);">'+cd.label+'</div>'
             +'<div style="font-size:10px;color:'+(isOn?'#16A34A':'#DC2626')+';font-weight:500;">'+(isOn?'✓ Evidenced':'✗ Missing')+'</div>'
           +'</div>'
-          +'<div style="font-size:11.5px;color:var(--ink40);margin-bottom:4px;">'+cd.desc+'</div>'
-          +(isOn
-            ?'<div style="font-size:12px;color:var(--ink60);">'+ev+'</div>'
-            :'<div style="position:relative;background:var(--warm);border-radius:6px;padding:8px 80px 8px 10px;min-height:60px;">'
-              +'<div style="font-size:12px;color:var(--ink);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+blurredFix+'</div>'
-              +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--cream);white-space:nowrap;">'
-                +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-                +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle fix</span>'
-              +'</div>'
+          +'<div style="font-size:11.5px;color:var(--ink40);margin-bottom:6px;">'+cd.desc+(ev?' · <em>'+ev+'</em>':'')+'</div>'
+          +'<div style="position:relative;background:'+(isOn?'var(--warm)':'#FEF2F2')+';border:'+(isOn?'0.5px solid var(--ink08)':'0.5px solid #FECACA')+';border-radius:6px;padding:8px 80px 8px 10px;min-height:56px;">'
+            +'<div style="font-size:12px;color:var(--ink);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+blurText+'</div>'
+            +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+(isOn?'var(--ink08)':'#FECACA')+';background:var(--cream);white-space:nowrap;">'
+              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+(isOn?'var(--ink40)':'#DC2626')+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:10px;color:'+(isOn?'var(--ink40)':'#DC2626')+';font-weight:500;">Full Cycle fix</span>'
             +'</div>'
-          )
+          +'</div>'
         +'</div>';
       compList.appendChild(row);
     });
