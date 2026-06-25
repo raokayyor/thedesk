@@ -849,7 +849,15 @@ select.fi{background:transparent;cursor:pointer;}
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
       <div style="font-size:14px;font-weight:500;color:#F7F3EE;">Full Cycle gives you everything to fix this application.</div>
     </div>
-    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:16px;line-height:1.55;">Everything you need to be ready to apply — and to get through the later stages.</div>
+    <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:10px;line-height:1.55;">Everything you need to be ready to apply — and to get through the later stages.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">CV rewrite</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Numerical testing</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Weekly market briefing</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">AI interview practice</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Firm guides — all banks</div>
+      <div style="font-size:11px;color:rgba(247,243,238,0.5);background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 10px;">Deadline tracker</div>
+    </div>
     <div id="rActionSteps"></div>
     <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid rgba(255,255,255,0.1);">
       <button onclick="scrollToUpgrade()" style="width:100%;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>
@@ -2075,8 +2083,7 @@ function showR(r){
        desc:'Unlimited timed SHL, Korn Ferry and Cubiks tests with worked solutions. Re-test as many times as you need until your score holds under real test conditions. All question types banks use are in the bank.'},
       {label:'Commercial awareness — what is happening in markets and why it matters',
        desc:'Weekly market briefings, sector primers and commercial awareness guides — updated each recruiting cycle. Learn to connect current macro events to deal flow and M&A consequences. What interviewers are probing right now.'},
-      {label:'Weekly market briefing — in plain English',
-       desc:'Every week during recruiting season: what moved in markets, what the big macro themes are, and what it actually means for the sectors and firms you are targeting. Written to be read in five minutes, retained in an interview.'},
+
       {label:'CV rewrite — '+(killerShort?killerShort.slice(0,70)+'...' :'get your strongest evidence in the language screeners respond to'),
        desc:'Line-by-line rewrite of your key bullets — before and after — using the exact language finance screeners are trained to spot. Not generic. Your CV, your evidence, your firms.'},
       {label:'AI interview practice — prepare for HireVue and video interviews',
@@ -2172,7 +2179,8 @@ function showR(r){
       {key:'analytical',label:'Analytical',desc:'Modelling, valuation, data, research'},
       {key:'commercial',label:'Commercial',desc:'Investment society, deal exposure, market knowledge'},
       {key:'communication',label:'Communication',desc:'Presenting, pitching, tutoring, writing'},
-      {key:'resilience',label:'Resilience',desc:'Part-time work, endurance sport, pressure situations'}
+      {key:'resilience',label:'Resilience',desc:'Part-time work, endurance sport, pressure situations'},
+      {key:'teamwork',label:'Teamwork',desc:'Group projects, team sport, collaborative roles'}
     ];
     var evidencedCount=compDefs.filter(function(c){return r.competencies[c.key]&&r.competencies[c.key].evidenced;}).length;
     if(compScore) compScore.textContent=evidencedCount+' / 5 evidenced';
