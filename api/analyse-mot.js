@@ -470,7 +470,7 @@ ${cvText}
 OUTPUT — respond ONLY with valid JSON, no markdown, no backticks, no preamble:
 {
 "overallScore":[integer 0-100],
-"band":"[Strong|Competitive|Borderline|Weak|Not yet ready]",
+"band":"[MUST be exactly one of these five strings — Strong, Competitive, Borderline, Weak, Not yet ready — nothing else. 85-100=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready]",
 "archetype":"[3-7 word archetype — clean, human, memorable. Examples: Credible IBD Candidate, Technical Risk | Strong Raw Material, Weak Framing | Commercially Curious, Not Yet Interview-Ready | Elite but Unfocused | Markets Signal, Unclear Story | Generic Good Candidate | Not Yet Ready to Submit]",
 "killerSentence":"[one specific sentence — the single sharpest diagnosis of this exact candidate. Must name a CV detail. Must make the student think: annoyingly, that is accurate.]",
 "namedCvDetails":["[3-6 named items from CV: employer names, society names, project titles, module names, qualifications, A-level subjects]"],
