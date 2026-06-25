@@ -873,6 +873,17 @@ select.fi{background:transparent;cursor:pointer;}
       <div class="ap-header" style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:#F7F3EE;letter-spacing:-0.3px;font-style:italic;margin-bottom:16px;">How can we fix this?</div>
       <button onclick="toggleAPlan()" style="width:100%;background:#E87040;color:white;border:none;border-radius:8px;padding:14px 20px;font-size:15px;font-weight:500;cursor:pointer;letter-spacing:0.01em;">FIX →</button>
     </div>
+    <!-- Email gate -->
+    <div id="rAPGate" style="display:none;border-top:0.5px solid rgba(255,255,255,0.1);padding:16px 20px;">
+      <div style="font-size:13px;font-weight:400;color:#F7F3EE;margin-bottom:4px;">Save your result and see your fix plan</div>
+      <div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:12px;">We'll also send you the application deadline for your target firm.</div>
+      <div style="display:flex;gap:8px;">
+        <input id="apEmailInput" type="email" placeholder="your@email.com" style="flex:1;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:11px 13px;color:#F7F3EE;outline:none;" onkeydown="if(event.key==='Enter')submitAPEmail()">
+        <button onclick="submitAPEmail()" style="background:#E87040;color:white;border:none;border-radius:8px;padding:11px 18px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">Continue →</button>
+      </div>
+      <div id="apEmailErr" style="display:none;font-size:11px;color:#FCA5A5;margin-top:6px;"></div>
+      <div onclick="window._apEmailDone=true;document.getElementById('rAPGate').style.display='none';document.getElementById('rAPBody').style.display='block';" style="font-size:11px;color:rgba(247,243,238,0.3);text-align:center;margin-top:10px;cursor:pointer;text-decoration:underline;">Skip — just show me the plan</div>
+    </div>
     <!-- Collapsible body -->
     <div id="rAPBody" style="display:none;border-top:0.5px solid rgba(255,255,255,0.08);">
       <div style="padding:16px 20px 0;">
@@ -2685,11 +2696,36 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function toggleAPlan(){
     var body=document.getElementById('rAPBody');
-    var chev=document.getElementById('apChev');
-    if(!body) return;
-    var open=body.style.display!=='none';
-    body.style.display=open?'none':'block';
-    if(chev) chev.style.transform=open?'rotate(0deg)':'rotate(180deg)';
+    var gate=document.getElementById('rAPGate');
+    // If already open, close it
+    if(body&&body.style.display==='block'){
+      body.style.display='none';
+      return;
+    }
+    // If email already captured, open directly
+    if(localStorage.getItem('tdesk_email')||window._apEmailDone){
+      if(body) body.style.display='block';
+      return;
+    }
+    // Show email gate
+    if(gate) gate.style.display='block';
+  }
+
+  function submitAPEmail(){
+    var inp=document.getElementById('apEmailInput');
+    var err=document.getElementById('apEmailErr');
+    var val=(inp&&inp.value||'').trim();
+    if(!val||!val.includes('@')){
+      if(err){err.textContent='Please enter a valid email.';err.style.display='block';}
+      return;
+    }
+    if(err) err.style.display='none';
+    localStorage.setItem('tdesk_email', val);
+    window._apEmailDone=true;
+    var gate=document.getElementById('rAPGate');
+    var body=document.getElementById('rAPBody');
+    if(gate) gate.style.display='none';
+    if(body) body.style.display='block';
   }
 
 </script>
