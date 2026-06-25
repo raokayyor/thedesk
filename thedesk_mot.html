@@ -846,12 +846,6 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rTruthText" style="font-size:14px;font-weight:300;color:#F7F3EE;line-height:1.65;font-style:italic;"></div>
   </div>
 
-  <!-- FULL CYCLE FIRST FIX -->
-  <div id="rFirstFix" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:8px;">What Full Cycle would fix first</div>
-    <div id="rFirstFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
-  </div>
-
   <!-- 6 DIMENSIONS -->
   <div style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;margin-bottom:12px;overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:0.5px solid var(--ink08);">
@@ -2033,14 +2027,6 @@ function showR(r){
     truthBox.style.display='block';
   }
 
-  // FULL CYCLE FIRST FIX
-  var ffBox=document.getElementById('rFirstFix');
-  var ffText=document.getElementById('rFirstFixText');
-  if(ffBox&&ffText&&r.fullCycleFirstFix){
-    ffText.textContent=r.fullCycleFirstFix;
-    ffBox.style.display='block';
-  }
-
   // 6 DIMENSIONS — expandable
   var dm=document.getElementById('rDm'); dm.innerHTML='';
   (r.dimensions||[]).forEach(function(d,i){
@@ -2195,9 +2181,24 @@ function showR(r){
     var firm2=D.firm||'your target firm';
     var div2=D.div||'finance';
     var killerShort=(r.killerSentence||'').split('.')[0].trim()
+    // Personal first item from model's fix direction (toned down — direction not solution)
+    var personalFix='';
+    if(r.fullCycleFirstFix){
+      var fixWords=r.fullCycleFirstFix.split(' ');
+      // Take first 15-20 words as a hook, strip the solution detail
+      var hookWords=fixWords.slice(0,18).join(' ');
+      // Remove anything after a dash or colon that reveals the fix
+      hookWords=hookWords.split(':')[0].split(' — ')[0];
+      personalFix=hookWords+'— Full Cycle has the specific rewrite.';
+    }
     var techNeed=D.nS>=5?'stay sharp — candidates who score well early still fail HireVue if they stop practising':'improve from '+D.nS+'/5 to 5/5 before your applications close';
     var commNeed=D.fS>=5?'translate market events into deal consequences — the question that trips most candidates at interview':'connect your '+D.fS+'/5 score to deal-level consequences, which is what banks actually test at interview';
-    var ctaItems=[
+    var ctaItems=[];
+    if(personalFix) ctaItems.push({
+      label:'Your priority fix — '+personalFix,
+      desc:'Full Cycle identifies the highest-leverage change specific to your CV and your target firm. The direction is clear from your result. The specific rewrite, framing and language is in Full Cycle.'
+    });
+    ctaItems=ctaItems.concat([
       {label:'Numerical testing — '+techNeed,
        desc:'Unlimited timed SHL, Korn Ferry and Cubiks tests with worked solutions. Re-test as many times as you need until your score holds under real test conditions. All question types banks use are in the bank.'},
       {label:'Commercial awareness — what is happening in markets and why it matters',
@@ -2223,7 +2224,7 @@ function showR(r){
        desc:'Live sessions with practitioners who have worked at the firms you are targeting. Ask anything — applications, interviews, what the job is actually like, how decisions are made. Real answers, not careers-service advice.'},
       {label:'Share trading game — weekly cash prizes',
        desc:'Build a virtual portfolio, track your positions and compete against other applicants. Weekly prizes for the best performers. Builds market intuition and gives you something genuine to talk about at commercial awareness interviews.'}
-    ];    // Personalise header with name
+    ]);  // Personalise header with name
     var apHeader=document.querySelector('.ap-header');
     if(apHeader) apHeader.textContent=(candName?candName+', let\'s get your fixes.':'Let\'s get your fixes.');
     // Score-band CTA from model
