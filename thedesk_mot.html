@@ -1458,9 +1458,9 @@ function submit(){
     return;
   }
   scoreAll();
-  document.getElementById('bn').style.display='none';
+  var _bn=document.getElementById('bn'); if(_bn) _bn.style.display='none';
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('show');});
-  document.getElementById('pf').parentElement.style.display='none';
+  var _pf=document.getElementById('pf'); if(_pf&&_pf.parentElement) _pf.parentElement.style.display='none';
   var ldr=document.getElementById('ldr');
   ldr.classList.add('show');
   // Reset all step states so animation plays fresh every time
@@ -1599,7 +1599,10 @@ function submit(){
     tryFinish();
   });
 
-  } catch(e){console.error('submit error:',e); D.resultSource='fallback'; finish(fb());}
+  } catch(e){
+    console.error('submit error:',e);
+    alert('Submit error: '+e.message);
+  }
 }
 
 function finish(res){
