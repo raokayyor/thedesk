@@ -834,23 +834,15 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rLeavingList"></div>
   </div>
 
-  <!-- PLAN OF ACTION -->
-  <div id="rActionPlan" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;position:relative;overflow:hidden;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);">Your plan of action</div>
-      <div style="display:flex;align-items:center;gap:4px;background:var(--warm);padding:3px 8px;border-radius:20px;border:0.5px solid var(--ink08);">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle</span>
-      </div>
+  <!-- FULL CYCLE CTA LIST -->
+  <div id="rActionPlan" style="display:none;background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:14px;font-weight:500;color:#F7F3EE;">Full Cycle gives you everything to fix this application.</div>
     </div>
-    <div id="rActionSteps" style="filter:blur(3.5px);user-select:none;pointer-events:none;"></div>
-    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(247,243,238,0.75);">
-      <div style="text-align:center;padding:16px;">
-        <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;">Your personalised action plan is ready</div>
-        <div style="font-size:11px;color:var(--ink40);margin-bottom:12px;">Day-by-day, specific to your CV and this application</div>
-        <button onclick="scrollToUpgrade()" style="background:var(--ink);color:var(--cream);border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;">Get Full Cycle — £79</button>
-      </div>
-    </div>
+    <div style="font-size:12px;color:rgba(247,243,238,0.4);margin-bottom:16px;">Specific to your CV · Specific to this firm · This cycle</div>
+    <div id="rActionSteps"></div>
+    <button onclick="scrollToUpgrade()" style="width:100%;margin-top:16px;background:#E87040;color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;letter-spacing:0.01em;">Get Full Cycle — £79 →</button>
+    <div style="text-align:center;font-size:11px;color:rgba(247,243,238,0.3);margin-top:8px;">One-time · Lifetime access · One shot per firm per cycle</div>
   </div>
 
   <!-- SOURCE BADGE -->
@@ -1901,6 +1893,20 @@ function showR(r){
     var sentEnd=fix.indexOf('. '); if(sentEnd<0||sentEnd>120) sentEnd=Math.min(65,Math.floor(fix.length*0.35)); else sentEnd++;
     var fixVis=fix.slice(0,sentEnd).trim();
     var fixBlur=fix.slice(sentEnd).trim();
+    // Pad fixBlur to always render as ~4 lines (min 200 chars) so blur looks substantial
+    var targetLen=220;
+    if(fixBlur.length<targetLen){
+      var padders=[
+        ' The specific rewrite for this dimension is included in Full Cycle.',
+        ' Full Cycle shows you exactly how to reframe this for '+( D.firm||'your target firm')+'.',
+        ' The fix is specific to your CV and your target firm — not generic advice.',
+        ' This is one of the highest-leverage changes available before you submit.',
+        ' Full Cycle gives you the exact language a screener at this firm is trained to respond to.'
+      ];
+      var pi=0;
+      while(fixBlur.length<targetLen&&pi<padders.length){fixBlur+=padders[pi];pi++;}
+    }
+    var lockBorder=isLow?'#FECACA':'var(--ink08)';
     var fixBg=isLow?'background:#FEF2F2;border:0.5px solid #FECACA;':'background:var(--warm);';
     var lockCol=isLow?'#DC2626':'var(--ink40)';
     var personalBlock='';
@@ -1947,11 +1953,16 @@ function showR(r){
         +'<div style="display:inline-block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:'+bandTxt+';background:'+bandBg+';padding:2px 8px;border-radius:20px;margin-bottom:10px;">'+bandLabel+' · '+Math.round(d.score)+'</div>'
         +personalBlock
         +'<div style="font-size:13px;color:var(--ink60);line-height:1.65;margin-bottom:12px;">'+(d.note||'')+'</div>'
-        +'<div style="'+fixBg+'border-radius:8px;padding:12px 14px;min-height:80px;">'
-          +'<div style="font-size:12px;color:var(--ink);line-height:1.65;">'+fixVis+' <span style="filter:blur(4px);user-select:none;pointer-events:none;">'+fixBlur+'</span></div>'
-          +'<div style="display:flex;align-items:center;gap:4px;margin-top:8px;">'
-            +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+lockCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-            +'<span style="font-size:10px;color:'+lockCol+';font-weight:500;">Full Cycle fix'+(d.name==='Technical Readiness'?' · unlimited numerical practice':d.name==='Commercial Awareness'?' · commercial awareness guides':'')+'</span>'
+        +'<div style="'+fixBg+'border-radius:8px;padding:12px 14px;">'
+          +'<div style="font-size:12px;color:var(--ink);line-height:1.65;margin-bottom:8px;">'+fixVis+'</div>'
+          +'<div style="position:relative;padding-right:90px;">'
+            +'<div style="font-size:12px;color:var(--ink);line-height:1.75;filter:blur(4.5px);user-select:none;pointer-events:none;min-height:88px;">'
+              +fixBlur
+            +'</div>'
+            +'<div style="position:absolute;right:0;top:4px;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:7px;border:0.5px solid '+lockBorder+';background:var(--cream);white-space:nowrap;">'
+              +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+lockCol+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:10px;color:'+lockCol+';font-weight:500;">Full Cycle fix</span>'
+            +'</div>'
           +'</div>'
         +'</div>'
       +'</div>';
@@ -1986,25 +1997,33 @@ function showR(r){
     });
   }
 
-  // PLAN OF ACTION
+  // PLAN OF ACTION — personalised CTA list
   var apBox=document.getElementById('rActionPlan'), apSteps=document.getElementById('rActionSteps');
   if(apBox&&apSteps){
     apBox.style.display='block';
     var firm=D.firm||'your target firm';
-    var stepLabels=['This week — Fix most urgent gap first','Days 3–5 — CV rewrite','Days 5–7 — Commercial & motivation prep','Before submission — Final check'];
-    var stepDescs=['Start with your weakest dimension. Full Cycle gives you the specific drill set and rewrite for this gap — the one most likely to cost you the application.','Full Cycle rewrites your experience bullets using the exact transaction-process language '+firm+' screeners are trained to spot. Before and after included.','Read the '+firm+'-specific commercial briefing and lock in your motivation answer using the Full Cycle framework. Built for this cycle.','Re-run the MOT with your updated CV. Target score: '+(sc+15)+'+. Submit with confidence.'];
-    var stepsHTML='<div style="display:flex;flex-direction:column;gap:12px;">';
-    stepLabels.forEach(function(lbl,si){
-      var col=si===0?'#DC2626':si<3?'#D97706':'var(--ink40)';
-      var bg=si===0?'#FEF2F2':si<3?'#FFFBEB':'var(--warm)';
-      var border=si===0?'#FECACA':si<3?'#FDE68A':'var(--ink08)';
-      stepsHTML+='<div style="display:flex;gap:12px;align-items:flex-start;">'
-        +'<div style="width:26px;height:26px;border-radius:50%;background:'+bg+';border:0.5px solid '+border+';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:500;color:'+col+';">'+(si+1)+'</div>'
-        +'<div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px;">'+lbl+'</div><div style="font-size:12px;color:var(--ink60);line-height:1.5;">'+stepDescs[si]+'</div></div></div>';
-      if(si<3) stepsHTML+='<div style="height:0.5px;background:var(--ink08);margin-left:38px;"></div>';
+    var ctaItems=[
+      {icon:'📊', label:'Fix your numerical readiness', desc:'Unlimited SHL, Korn Ferry and Cubiks-style practice — timed, with worked solutions and re-test tracking.'},
+      {icon:'📰', label:'Fix your commercial awareness', desc:'Technical readiness guides, commercial awareness primers and sector briefings — what '+firm+' interviewers are testing this cycle.'},
+      {icon:'📈', label:'Understand market trends', desc:'Weekly market briefings covering macro themes, sector moves and the deals most likely to come up in your interview.'},
+      {icon:'🔍', label:'Get your evidence utilised', desc:'Our practitioners identify the strongest signals in your CV and show you exactly how to make them impossible to miss.'},
+      {icon:'✍️', label:'Get your achievements in the right format', desc:'Line-by-line CV rewrites using the exact language '+firm+' screeners are trained to respond to. Before and after included.'},
+      {icon:'🏢', label:'Get your '+firm+' application guide', desc:'Everything '+firm+' is actually asking, what the question behind the question is, and what a screener wants to see — for every section.'},
+      {icon:'🎯', label:'Lock in your why '+firm+' answer', desc:'A structured motivation framework built from what '+firm+' interviewers actually test — one answer that survives a Superday push.'},
+      {icon:'📅', label:'Deadline tracker & application timeline', desc:'Every opening date, rolling vs fixed deadline, and a personalised timeline so you never miss your window.'}
+    ];
+    var ctaHTML='<div style="display:flex;flex-direction:column;gap:10px;">';
+    ctaItems.forEach(function(item,ci){
+      ctaHTML+='<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:'+(ci<ctaItems.length-1?'0.5px solid var(--ink08)':'none')+';">'
+        +'<div style="font-size:18px;flex-shrink:0;width:28px;text-align:center;">'+item.icon+'</div>'
+        +'<div>'
+          +'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;">'+item.label+'</div>'
+          +'<div style="font-size:12px;font-weight:300;color:var(--ink60);line-height:1.55;">'+item.desc+'</div>'
+        +'</div>'
+      +'</div>';
     });
-    stepsHTML+='</div>';
-    apSteps.innerHTML=stepsHTML;
+    ctaHTML+='</div>';
+    apSteps.innerHTML=ctaHTML;
   }
 
   // WHAT YOU'RE NOT USING
@@ -2027,26 +2046,32 @@ function showR(r){
         var restVis=restWords.slice(0,splitAt).join(' ');
         var restBlur=restWords.slice(splitAt).join(' ');
         var fixText=item.fix||'Full Cycle gives you the exact framing and placement — specific to your CV and this firm.';
+        var lotFix=fixText;
+        var lotPad=[' Full Cycle shows you the exact framing for '+(D.firm||'your target firm')+'.', ' The specific positioning change is included in Full Cycle.', ' This is one of the most overlooked high-leverage signals in finance applications.', ' Full Cycle gives you the exact language specific to your CV and this firm.'];
+        var lpi=0; while(lotFix.length<220&&lpi<lotPad.length){lotFix+=lotPad[lpi];lpi++;}
+        var clickLabel=item.label==='Evidence being wasted'
+          ?'\u2192 Tap to see what evidence you are leaving on the table'
+          :'\u2192 Tap to see your missed opportunities in this application';
         var row=document.createElement('div');
         row.style.cssText='border-bottom:'+(isLast?'none':'0.5px solid var(--ink08)');
         row.innerHTML=
           '<div data-uid="'+uid+'" onclick="toggleLot(this.dataset.uid)" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;cursor:pointer;">'
             +'<div style="display:flex;align-items:center;gap:10px;">'
               +'<div style="width:8px;height:8px;border-radius:50%;background:'+item.dot+';flex-shrink:0;"></div>'
-              +'<div><div style="font-size:13px;color:var(--ink);">'+item.label+'</div>'
-              +(item.sub?'<div style="font-size:11px;color:var(--ink40);margin-top:1px;">'+item.sub+'</div>':'')+'</div>'
+              +'<div>'
+                +'<div style="font-size:13px;color:var(--ink);">'+item.label+'</div>'
+                +'<div style="font-size:11px;color:var(--terra);font-weight:500;margin-top:2px;">'+clickLabel+'</div>'
+              +'</div>'
             +'</div>'
-            +'<svg id="lotchev'+idx+'" style="width:14px;height:14px;flex-shrink:0;transition:transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
+            +'<svg id="lotchev'+idx+'" style="width:14px;height:14px;flex-shrink:0;transition:transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="var(--terra)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
           +'</div>'
           +'<div id="'+uid+'" style="display:none;border-top:0.5px solid var(--ink08);padding:14px 16px 16px;">'
-            +'<div style="font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:14px;">'
-              +line1+'<br><span style="color:var(--ink60);">'+restVis+' </span><span style="filter:blur(4.5px);user-select:none;pointer-events:none;color:var(--ink60);">'+restBlur+'</span>'
-            +'</div>'
-            +'<div style="position:relative;background:var(--warm);border-radius:8px;padding:12px 90px 12px 14px;min-height:76px;">'
-              +'<div style="font-size:12px;color:var(--ink);line-height:1.65;filter:blur(4.5px);user-select:none;pointer-events:none;">'+fixText+'</div>'
-              +'<div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:8px;background:var(--cream);border:0.5px solid var(--ink08);white-space:nowrap;">'
-                +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
-                +'<span style="font-size:11px;color:var(--ink40);font-weight:500;">Full Cycle fix</span>'
+            +'<div style="font-size:13px;font-weight:400;color:var(--ink);line-height:1.65;margin-bottom:10px;">'+line1+'</div>'
+            +'<div style="position:relative;background:var(--warm);border-radius:8px;padding:12px 14px;">'
+              +'<div style="font-size:12px;color:var(--ink);line-height:1.75;filter:blur(4.5px);user-select:none;pointer-events:none;min-height:88px;">'+lotFix+'</div>'
+              +'<div style="position:absolute;right:10px;top:10px;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:7px;background:var(--cream);border:0.5px solid var(--ink08);white-space:nowrap;">'
+                +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+                +'<span style="font-size:10px;color:var(--ink40);font-weight:500;">Full Cycle fix</span>'
               +'</div>'
             +'</div>'
           +'</div>';
