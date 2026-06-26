@@ -852,6 +852,12 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rTruthText" style="font-size:14px;font-weight:300;color:#F7F3EE;line-height:1.65;font-style:italic;"></div>
   </div>
 
+  <!-- FULL CYCLE FIRST FIX -->
+  <div id="rFirstFix" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:8px;">What Full Cycle would fix first</div>
+    <div id="rFirstFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
+  </div>
+
   <!-- LOCKED FIX PREVIEW -->
   <div id="rLockedFix" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:14px 18px;margin-bottom:12px;position:relative;overflow:hidden;">
     <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;">What is locked in Full Cycle</div>
@@ -873,7 +879,7 @@ select.fi{background:transparent;cursor:pointer;}
   <!-- 3 GAPS -->
   <div class="pcard" style="margin-bottom:12px;">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;">
-      <div class="ptitle" style="margin-bottom:0;">The 4 things that will cost you this application</div>
+      <div class="ptitle" style="margin-bottom:0;">4 Priority Gaps</div>
       <div style="font-size:10px;color:var(--terra);font-weight:500;white-space:nowrap;margin-left:8px;">Full Cycle fixes all four</div>
     </div>
     <div style="height:0.5px;background:var(--ink08);margin-bottom:10px;"></div>
@@ -2156,26 +2162,18 @@ function showR(r){
   var pr=document.getElementById('rPr');
   if(pr){
     pr.innerHTML='';
-    // Use new priorityGaps structure if available, else fall back
-    var pgaps=r.priorityGaps;
-    var allGaps=[];
-    if(pgaps&&pgaps.length>=4){
-      pgaps.slice(0,4).forEach(function(g,i){
-        var col=i===0?'#DC2626':'#D97706';
-        var bg=i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)';
-        var border=i===0?'#FECACA':'#FDE68A';
-        allGaps.push({title:g.title,risk:g.risk,why:g.whyItMatters,fix:g.fixType,col:col,bg:bg,border:border});
-      });
-    } else {
-      // Fallback to old priorities array
-      var pris=r.priorities||[];
-      while(pris.length<2) pris.push('A key gap in this application needs addressing before you submit.');
-      allGaps=[
-        {title:pris[0],col:'#DC2626',bg:'rgba(254,226,226,0.5)',border:'#FECACA'},
-        {title:pris[1],col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'},
-        {title:'Numerical readiness — score '+D.nS+'/5 ('+Math.round((D.nS/5)*100)+'%)',col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'},
-        {title:'Commercial awareness — score '+D.fS+'/5 ('+Math.round((D.fS/5)*100)+'%)',col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'}
-      ];
+    // Build allGaps from priorityGaps (backend always provides exactly 4 after repair)
+    var pgaps=r.priorityGaps||[];
+    var allGaps=pgaps.slice(0,4).map(function(g,i){
+      return {
+        title:g.title||'Gap '+(i+1),risk:g.risk||'',why:g.whyItMatters||'',fix:g.fixType||'',
+        fullCycleTeaser:g.fullCycleTeaser||'Full Cycle addresses this gap with a specific repair plan.',
+        col:i===0?'#DC2626':'#D97706',bg:i===0?'rgba(254,226,226,0.5)':'rgba(254,243,199,0.5)',
+        border:i===0?'#FECACA':'#FDE68A'
+      };
+    });
+    while(allGaps.length<4){
+      allGaps.push({title:'Gap '+(allGaps.length+1),risk:'',why:'',fix:'',fullCycleTeaser:'Full Cycle addresses this with a specific repair plan.',col:'#D97706',bg:'rgba(254,243,199,0.5)',border:'#FDE68A'});
     }
     allGaps.forEach(function(gap,i){
       var mainText=gap.title||gap.text||'';
@@ -2935,7 +2933,7 @@ document.addEventListener('DOMContentLoaded', function(){
       txt+=d.name+': '+Math.round(d.score)+'/100\n';
       txt+='  Note: '+(d.note||'')+'\n\n';
     });
-    txt+='4 KEY GAPS:\n';
+    txt+='4 Priority Gaps:\n';
     (r.priorities||[]).forEach(function(p,i){ txt+=(i+1)+'. '+p+'\n'; });
     txt+='3. Numerical: '+D.nS+'/5 ('+Math.round((D.nS/5)*100)+'%)\n';
     txt+='4. Commercial: '+D.fS+'/5 ('+Math.round((D.fS/5)*100)+'%)\n\n';
