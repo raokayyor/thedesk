@@ -347,37 +347,12 @@ async function run(){
     var elapsed=((Date.now()-t)/1000).toFixed(1);
 
     if(data.success && data.result){
-      status.textContent='✓ Done in '+elapsed+'s — opening result...';
-      // Store D values from profile
-      window._D_firm=profile.targetFirm||'';
-      window._D_div=profile.targetDivision||profile.track||'';
-      window._D_uni=profile.university||'';
-      window._D_crs=profile.course||'';
-      window._D_gr=profile.grade||'';
-      window._D_fS=quiz.commercialCorrect||3;
-      window._D_nS=quiz.technicalCorrect||3;
-      // Open result in new tab via data URI to avoid all storage issues
-      var r=data.result;
-      var firm=profile.targetFirm||'your target firm';
-      // Store in sessionStorage and redirect to result page
-      try{
-        sessionStorage.setItem('tdesk_r', JSON.stringify({
-          result: data.result,
-          firm: profile.targetFirm||'',
-          div: profile.targetDivision||profile.track||'',
-          uni: profile.university||'',
-          crs: profile.course||'',
-          gr: profile.grade||'',
-          fS: quiz.commercialCorrect||3,
-          nS: quiz.technicalCorrect||3
-        }));
-        window.location.replace('thedesk_mot.html?r=1');
-      }catch(e){
-        // Fallback: show inline
-        var html=buildResultPage(data.result, profile, quiz);
-        document.open(); document.write(html); document.close();
-      }
-    } else {
+      status.textContent='✓ Done in '+elapsed+'s — building result...';
+      var html=buildResultPage(data.result, profile, quiz);
+      document.open();
+      document.write(html);
+      document.close();
+        } else {
       status.className='status err';
       status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
       btn.disabled=false; btn.textContent='Run assessment →';
