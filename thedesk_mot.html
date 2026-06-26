@@ -956,6 +956,16 @@ select.fi{background:transparent;cursor:pointer;}
   <!-- PAID HOOK + UPGRADE -->
   <div id="rPaidHook" style="display:none;"></div>
 
+    <!-- LOCKED REPAIR PLAN CARDS -->
+  <div id="rLockedPlan" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+    <div style="padding:14px 20px;border-bottom:0.5px solid var(--ink08);">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:4px;">Locked in Full Cycle</div>
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:var(--ink);letter-spacing:-0.3px;">Your personalised repair plan</div>
+      <div style="font-size:12px;color:var(--ink40);margin-top:3px;">Shows what to lead with, what to cut, what to rebuild, and what to fix before applying.</div>
+    </div>
+    <div id="rLockedPlanCards" style="padding:4px 0;"></div>
+  </div>
+
   <div id="upgradeSection" style="background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-top:0;">
     <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--ink);letter-spacing:-0.4px;margin-bottom:4px;">Need more help?</div>
     <div style="font-size:13px;font-weight:300;color:var(--ink60);line-height:1.6;margin-bottom:16px;">1-to-1 support from a practitioner who has worked at these firms — guiding you from application to offer.</div>
@@ -2154,7 +2164,16 @@ function showR(r){
       +'<div id="'+uid+'" style="display:none;border-top:0.5px solid var(--ink08);padding:14px 16px;">'
         +'<div style="display:inline-block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:'+bandTxt+';background:'+bandBg+';padding:2px 8px;border-radius:20px;margin-bottom:10px;">'+bandLabel+' · '+Math.round(d.score)+'</div>'
         +personalBlock
-        +'<div style="font-size:13px;color:var(--ink60);line-height:1.65;margin-bottom:12px;">'+(d.note||'')+'</div>'
+        +'<div style="font-size:13px;color:var(--ink60);line-height:1.65;margin-bottom:8px;">'+(d.visibleSummary||d.note||'')+'</div>'
+        +(d.lockedDetail
+          ?'<div style="position:relative;margin-bottom:10px;">'
+            +'<div style="font-size:12px;color:var(--ink);line-height:1.7;filter:blur(4px);user-select:none;pointer-events:none;min-height:64px;">'+(d.lockedDetail)+'</div>'
+            +'<div style="position:absolute;right:0;top:4px;display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--cream);">'
+              +'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:9px;color:var(--ink40);font-weight:500;">fix on Full Cycle</span>'
+            +'</div>'
+          +'</div>'
+          :'')
         +'<div style="'+fixBg+'border-radius:8px;padding:12px 14px;">'
           +'<div style="font-size:12px;color:var(--ink);line-height:1.65;margin-bottom:8px;">'+fixVis+'</div>'
           +'<div style="position:relative;padding-right:90px;">'
@@ -2195,20 +2214,18 @@ function showR(r){
     }
     allGaps.forEach(function(gap,i){
       var mainText=gap.title||gap.text||'';
-      var subLines=[];
-      if(gap.risk) subLines.push(gap.risk);
-      if(gap.why) subLines.push(gap.why);
-      var fixText=gap.fullCycleTeaser||gap.fix||gap.fixType||'Full Cycle gives you the specific repair — personal to your CV and your target firm.';
-      if(!fixText) fixText='Full Cycle would address this gap directly — specific to your CV, your score and your target firm.';
-      // Pad to 4 lines
-      while(fixText.length<200) fixText+=' The exact rewrite, framing and application language sits inside Full Cycle — not in the free result.';
+      var visRisk=gap.visibleRisk||gap.risk||'';
+      var lockedText=(gap.lockedWhyItMatters||gap.whyItMatters||'')
+        +' '+(gap.lockedFixType||gap.fixType||'')
+        +' '+(gap.lockedFullCycleTeaser||gap.fullCycleTeaser||'Full Cycle has the specific repair plan for this gap.');
+      if(lockedText.length<200) lockedText+=' The exact rewrite, framing and application language sits inside Full Cycle — not in the free result.';
       var div=document.createElement('div');
       div.style.cssText='position:relative;display:flex;gap:10px;padding:10px 12px;background:'+gap.bg+';border:0.5px solid '+gap.border+';border-radius:8px;margin-bottom:6px;overflow:hidden;';
       div.innerHTML='<span style="font-size:13px;font-weight:500;color:'+gap.col+';flex-shrink:0;">'+(i+1)+'</span>'
         +'<div style="flex:1;padding-right:80px;">'
-          +'<div style="font-size:12px;font-weight:500;color:'+gap.col+';margin-bottom:'+(subLines.length?'4px':'2px')+';">'+mainText+'</div>'
-          +(subLines.length?'<div style="font-size:11.5px;color:var(--ink60);line-height:1.55;margin-bottom:4px;">'+subLines[0]+'</div>':'')
-          +'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+fixText+'</div>'
+          +'<div style="font-size:12px;font-weight:500;color:'+gap.col+';margin-bottom:4px;">'+mainText+'</div>'
+          +(visRisk?'<div style="font-size:12px;font-weight:300;color:var(--ink);line-height:1.55;margin-bottom:4px;">'+visRisk+'</div>':'')
+          +'<div style="font-size:12px;color:var(--ink);line-height:1.65;filter:blur(4px);user-select:none;pointer-events:none;min-height:52px;">'+lockedText+'</div>'
         +'</div>'
         +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;background:'+gap.bg+';border:0.5px solid '+gap.border+';white-space:nowrap;">'
           +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="'+gap.col+'" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
@@ -2223,6 +2240,37 @@ function showR(r){
   if(apBox&&apSteps){
     apBox.style.display='block';
     var firm=D.firm||'your target firm';
+    // LOCKED REPAIR PLAN CARDS
+    var lpBox=document.getElementById('rLockedPlan');
+    var lpCards=document.getElementById('rLockedPlanCards');
+    if(lpBox&&lpCards){
+      var cards=[
+        {title:'Evidence hierarchy',teaser:'See which parts of your CV should lead, support, or be reduced.',detail:'Full Cycle ranks every named piece of evidence on your CV by its value for the target route and firm — and shows what to cut, what to surface, and what to reframe.'},
+        {title:'CV repair map',teaser:'See which sections need rebuilding before submission.',detail:'Section-by-section repair instructions: what to rewrite, what to add, what to remove, and what language to use — specific to your CV and this firm.'},
+        {title:'Route positioning',teaser:'See whether your evidence supports the route you are targeting.',detail:'Full Cycle assesses whether the chosen route is the best fit for the profile and explains how to position the application convincingly for that route.'},
+        {title:'Commercial awareness plan',teaser:'See how to close the commercial gap before your interview.',detail:'A structured plan for building commercial awareness in the time available — what to read, what to track, and how to demonstrate market reasoning in HireVue and interview.'},
+        {title:'Numerical and technical plan',teaser:'See what practice will move your score before the deadline.',detail:'A targeted practice plan based on your current score and the specific question types used at this firm — with worked solutions and re-test tracking.'},
+        {title:'Interview risk map',teaser:'See which questions will expose the gaps in this application.',detail:'The questions this profile is most likely to be asked and where the current application is exposed — with the reasoning needed to answer them credibly.'},
+        {title:'7-day action plan',teaser:'See the specific steps to take before submitting.',detail:'A day-by-day plan of what to do in the week before submission — specific to your profile, your gaps, and your target firm\'s timeline.'}
+      ];
+      var cardsHTML='';
+      cards.forEach(function(c,ci){
+        cardsHTML+='<div style="padding:12px 20px;border-bottom:'+(ci<cards.length-1?'0.5px solid var(--ink08)':'none')+';">'
+          +'<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">'
+            +'<div style="font-size:13px;font-weight:500;color:var(--ink);">'+c.title+'</div>'
+            +'<div style="display:flex;align-items:center;gap:3px;">'
+              +'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+              +'<span style="font-size:9px;color:var(--ink40);font-weight:500;">Full Cycle</span>'
+            +'</div>'
+          +'</div>'
+          +'<div style="font-size:12px;color:var(--terra);margin-bottom:4px;">'+c.teaser+'</div>'
+          +'<div style="font-size:12px;color:var(--ink60);line-height:1.6;filter:blur(4px);user-select:none;pointer-events:none;">'+c.detail+'</div>'
+        +'</div>';
+      });
+      lpCards.innerHTML=cardsHTML;
+      lpBox.style.display='block';
+    }
+
     // firm2/div2/candName already defined at top of showR
     var techPctStr=Math.round((D.nS/5)*100)+'%';
     var commPctStr=Math.round((D.fS/5)*100)+'%';
@@ -2413,9 +2461,11 @@ function showR(r){
             +'<div style="font-size:13px;font-weight:500;color:var(--ink);">'+cd.label+'</div>'
             +'<div style="font-size:10px;color:'+statusCol+';font-weight:500;">'+status+'</div>'
           +'</div>'
-          +(compNote
-            ?'<div style="font-size:12px;color:var(--ink60);line-height:1.55;margin-bottom:6px;">'+compNote+'</div>'
-            :'<div style="font-size:11.5px;color:var(--ink40);margin-bottom:6px;">'+cd.desc+'</div>')
+          +(function(){
+            var vr=comp.visibleReason||compNote||cd.desc||'';
+            var li=comp.lockedImprovement||'Full Cycle shows how to strengthen and position this competency for the target route.';
+            return (vr?'<div style="font-size:12px;color:var(--ink60);line-height:1.55;margin-bottom:6px;">'+vr+'</div>':'')
+          })()
           +'<div style="position:relative;background:'+statusBg+';border:0.5px solid '+statusBorder+';border-radius:6px;padding:8px 80px 8px 10px;min-height:56px;">'
             +'<div style="font-size:12px;color:var(--ink);line-height:1.75;filter:blur(4px);user-select:none;pointer-events:none;">'+blurText+'</div>'
             +'<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;border:0.5px solid '+statusBorder+';background:var(--cream);white-space:nowrap;">'
