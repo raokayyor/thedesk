@@ -349,7 +349,7 @@ async function run(){
     if(data.success && data.result){
       status.textContent='✓ Done in '+elapsed+'s — loading result...';
       // Store everything in localStorage for thedesk_mot.html to pick up
-      localStorage.setItem('tdesk_rapid_result', JSON.stringify({
+      sessionStorage.setItem('tdesk_rapid_result', JSON.stringify({
         result: data.result,
         profile: profile,
         quiz: quiz,
@@ -509,7 +509,7 @@ function generateRandom(){
   // Fill form fields
   var set=function(id,val){var el=document.getElementById(id);if(el)el.value=val;};
   set('uni', c.uni);
-  set('crs', c.course);
+  set('course', c.course);
   
   // Year selector
   var yrEl=document.getElementById('gy');
