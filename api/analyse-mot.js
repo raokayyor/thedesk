@@ -317,8 +317,8 @@ export default async function handler(req, res) {
         diagSentences = result.diagnostic.split('. ');
       }
       // Take first 2 sentences only — model always puts repair in sentence 3+
-      var safeDiag = diagSentences.slice(0, 2).join('. ').replace(/\.\s*$/, '').trim();
-      if (safeDiag && !safeDiag.endsWith('.')) safeDiag += '.';
+      var safeDiag = diagSentences.slice(0, 2).join(' ').replace(/\.+\s*$/, '').trim();
+      safeDiag += '.';
       // Always append the bridge sentence
       result.diagnostic = safeDiag + ' The application needs a clearer bridge between the existing evidence, commercial finance intent and readiness for this route. The detailed rebuild sits in Full Cycle.';
       console.log('SANITISE: diagnostic hard-truncated to 2 sentences + bridge');
@@ -714,8 +714,8 @@ QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) 
  "lockedFixType":"[Type of repair needed. Locked.]",
  "lockedFullCycleTeaser":"[What Full Cycle does for this gap. Locked.]"},
 {"title":"[gap 2]","visibleRisk":"","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""},
-{"title":"[gap 3 — numerical readiness with actual score]","visibleRisk":"[Include actual score and screening risk]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""},
-{"title":"[gap 4 — commercial awareness with actual score]","visibleRisk":"[Include actual score and interview risk]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""}
+{"title":"[gap 3 — ONLY use numerical/technical as a gap if score is below 70%. If 70%+ it is a strength — use a real positioning, evidence or conviction gap instead. Examples of real gaps: investment thesis not visible, route conviction not demonstrated, strongest evidence undersold, no named sector or deal view, narrative too generic for this route]","visibleRisk":"[actual weakness or positioning gap]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""},
+{"title":"[gap 4 — ONLY use commercial awareness as a gap if score is below 70%. If 70%+ it is a strength — use a real gap such as: application positioning weak, directional clarity missing, evidence not translated into route-specific language, or conviction not demonstrated]","visibleRisk":"[actual weakness]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""}
 ],
 "competencies":[
 {"name":"Leadership",
