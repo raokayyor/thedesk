@@ -2524,43 +2524,39 @@ function rotateDyk(){
 }
 // INIT
 // Rapid test hook
-// Rapid test result pickup — check localStorage regardless of URL
-(function(){
+// Rapid test result pickup
+var _rapidData = (function(){
   try{
-    var _stored=localStorage.getItem('tdesk_rapid_result');
-    // Show debug banner
-    var _dbg=document.createElement('div');
-    _dbg.style.cssText='position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;font-size:13px;z-index:9999;font-family:monospace;';
-    _dbg.id='rapidDebug';
-    _dbg.textContent='RAPID: stored='+( !!_stored)+' | lsKeys='+Object.keys(localStorage).join(',');
-    document.body.appendChild(_dbg);
-    if(!_stored){return;}
-    var _p=JSON.parse(_stored);
-    _dbg.textContent+=' | result='+(!!_p.result)+' | pKeys='+Object.keys(_p||{}).join(',');
-    if(!_p||!_p.result) return;
-    // Clear immediately so refresh doesn't re-trigger
+    var s=localStorage.getItem('tdesk_rapid_result');
+    if(!s) return null;
+    var p=JSON.parse(s);
+    if(!p||!p.result) return null;
     localStorage.removeItem('tdesk_rapid_result');
-    // Load profile into D
-    var _pr=_p.profile||{};
-    D.firm=_pr.targetFirm||''; D.div=_pr.targetDivision||_pr.track||'';
-    D.uni=_pr.university||''; D.crs=_pr.course||'';
-    D.yr=_pr.year||''; D.gr=_pr.grade||'';
-    if(_p.quiz){ D.fS=_p.quiz.commercialCorrect||3; D.nS=_p.quiz.technicalCorrect||3; }
-    // Show result page
-    document.querySelectorAll('.page').forEach(function(pg){pg.classList.remove('show');});
-    var _pR=document.getElementById('pR'); if(_pR) _pR.classList.add('show');
-    var _bn=document.getElementById('bn'); if(_bn) _bn.style.display='none';
-    window._rapidLoaded=true;
-    setTimeout(function(){
-      try{ showR(_p.result); }
-      catch(e){ alert('showR error: '+e.message); }
-    },200);
-  }catch(e){ console.error('rapid pickup error',e); }
+    return p;
+  }catch(e){ return null; }
 })();
 
-if(!window._rapidLoaded){
-  D.step = 0;
-  go(0);
+if(_rapidData){
+  // Load into D immediately
+  var _pr=_rapidData.profile||{};
+  D.firm=_pr.targetFirm||''; D.div=_pr.targetDivision||_pr.track||'';
+  D.uni=_pr.university||''; D.crs=_pr.course||'';
+  D.yr=_pr.year||''; D.gr=_pr.grade||'';
+  if(_rapidData.quiz){ D.fS=_rapidData.quiz.commercialCorrect||3; D.nS=_rapidData.quiz.technicalCorrect||3; }
+  // Wait for DOM then show result
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.page').forEach(function(pg){pg.classList.remove('show');});
+    var pR=document.getElementById('pR'); if(pR) pR.classList.add('show');
+    var bn=document.getElementById('bn'); if(bn) bn.style.display='none';
+    setTimeout(function(){
+      try{ showR(_rapidData.result); }
+      catch(e){ alert('showR error: '+e.message); }
+    }, 300);
+  });
+} else {
+  document.addEventListener('DOMContentLoaded', function(){
+    D.step=0; go(0);
+  });
 }
 
 var bnEl = document.getElementById('bn');
