@@ -1972,6 +1972,10 @@ function showR(r){
     var sc=r.overallScore||0;
     r.band=sc>=85?'Strong':sc>=70?'Competitive':sc>=55?'Borderline':sc>=40?'Weak':'Not yet ready';
   }
+  // Define shared variables used throughout showR
+  var firm2=D.firm||'your target firm';
+  var div2=D.div||'finance';
+  var candName=r.candidateName||''
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('show');});
   document.getElementById('pR').classList.add('show');
   window.scrollTo(0,0);
@@ -2061,6 +2065,14 @@ function showR(r){
   if(truthBox&&truthText&&r.uncomfortableTruth){
     truthText.textContent=r.uncomfortableTruth;
     truthBox.style.display='block';
+  }
+
+  // FULL CYCLE FIRST FIX (blurred)
+  var ffBox2=document.getElementById('rFirstFix');
+  var ffText2=document.getElementById('rFirstFixText');
+  if(ffBox2&&ffText2&&r.fullCycleFirstFix){
+    ffText2.textContent=r.fullCycleFirstFix;
+    ffBox2.style.display='block';
   }
 
   // LOCKED FIX PREVIEW
@@ -2211,12 +2223,9 @@ function showR(r){
   if(apBox&&apSteps){
     apBox.style.display='block';
     var firm=D.firm||'your target firm';
-    // Extract candidate name - used once at header only
-    var candName=r.candidateName||'';
+    // firm2/div2/candName already defined at top of showR
     var techPctStr=Math.round((D.nS/5)*100)+'%';
     var commPctStr=Math.round((D.fS/5)*100)+'%';
-    var firm2=D.firm||'your target firm';
-    var div2=D.div||'finance';
     var killerShort=(r.killerSentence||'').split('.')[0].trim()
     // Personal first item from model's fix direction (toned down — direction not solution)
     var personalFix='';
