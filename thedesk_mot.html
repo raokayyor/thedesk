@@ -840,10 +840,26 @@ select.fi{background:transparent;cursor:pointer;}
     <div id="rRecruiterMissText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
   </div>
 
+  <!-- BEING MISREAD AS -->
+  <div id="rMisread" style="display:none;border:0.5px solid var(--terra);border-radius:12px;padding:12px 18px;margin-bottom:12px;background:rgba(168,94,10,0.04);">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:6px;">You are being read as</div>
+    <div id="rMisreadText" style="font-size:14px;font-weight:300;color:var(--ink);line-height:1.6;"></div>
+  </div>
+
   <!-- UNCOMFORTABLE TRUTH -->
   <div id="rTruth" style="display:none;background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:12px;">
     <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.35);margin-bottom:6px;">The uncomfortable truth</div>
     <div id="rTruthText" style="font-size:14px;font-weight:300;color:#F7F3EE;line-height:1.65;font-style:italic;"></div>
+  </div>
+
+  <!-- LOCKED FIX PREVIEW -->
+  <div id="rLockedFix" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;padding:14px 18px;margin-bottom:12px;position:relative;overflow:hidden;">
+    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:6px;">What is locked in Full Cycle</div>
+    <div id="rLockedFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.65;filter:blur(3.5px);user-select:none;pointer-events:none;"></div>
+    <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:7px;background:var(--warm);border:0.5px solid var(--ink08);">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span style="font-size:10px;color:var(--ink40);font-weight:500;">fix on Full Cycle</span>
+    </div>
   </div>
 
   <!-- 6 DIMENSIONS -->
@@ -2019,12 +2035,28 @@ function showR(r){
     rmBox.style.display='block';
   }
 
+  // BEING MISREAD AS
+  var misreadBox=document.getElementById('rMisread');
+  var misreadText=document.getElementById('rMisreadText');
+  if(misreadBox&&misreadText&&r.beingMisreadAs){
+    misreadText.textContent=r.beingMisreadAs;
+    misreadBox.style.display='block';
+  }
+
   // UNCOMFORTABLE TRUTH
   var truthBox=document.getElementById('rTruth');
   var truthText=document.getElementById('rTruthText');
   if(truthBox&&truthText&&r.uncomfortableTruth){
     truthText.textContent=r.uncomfortableTruth;
     truthBox.style.display='block';
+  }
+
+  // LOCKED FIX PREVIEW
+  var lfBox=document.getElementById('rLockedFix');
+  var lfText=document.getElementById('rLockedFixText');
+  if(lfBox&&lfText&&r.lockedFixPreview){
+    lfText.textContent=r.lockedFixPreview;
+    lfBox.style.display='block';
   }
 
   // 6 DIMENSIONS — expandable
@@ -2150,9 +2182,10 @@ function showR(r){
       var subLines=[];
       if(gap.risk) subLines.push(gap.risk);
       if(gap.why) subLines.push(gap.why);
-      var fixText=gap.fix||gap.fixType||'Full Cycle gives you the specific fix — personal to your CV and your target firm.';
-      // Pad fix to 4 lines
-      while(fixText.length<200) fixText+=' Full Cycle shows you exactly what to change and how — specific to your CV, your score and your target firm.';
+      var fixText=gap.fullCycleTeaser||gap.fix||gap.fixType||'Full Cycle gives you the specific repair — personal to your CV and your target firm.';
+      if(!fixText) fixText='Full Cycle would address this gap directly — specific to your CV, your score and your target firm.';
+      // Pad to 4 lines
+      while(fixText.length<200) fixText+=' The exact rewrite, framing and application language sits inside Full Cycle — not in the free result.';
       var div=document.createElement('div');
       div.style.cssText='position:relative;display:flex;gap:10px;padding:10px 12px;background:'+gap.bg+';border:0.5px solid '+gap.border+';border-radius:8px;margin-bottom:6px;overflow:hidden;';
       div.innerHTML='<span style="font-size:13px;font-weight:500;color:'+gap.col+';flex-shrink:0;">'+(i+1)+'</span>'
