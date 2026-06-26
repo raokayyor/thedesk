@@ -472,45 +472,50 @@ CANDIDATE CV TEXT:
 ${cvText}
 """
 
-OUTPUT — respond ONLY with valid JSON, no markdown, no backticks, no preamble:
+OUTPUT — respond ONLY with valid JSON, no markdown, no backticks, no preamble. Before returning, silently check: (1) does the killer sentence name real CV evidence? (2) namedCvDetails has 3-6 real items? (3) every dimension note references specific evidence? (4) exactly 4 priority gaps? (5) quiz scores folded into gaps not standalone? (6) competencies consistent with diagnostic? (7) at least one section creates the "being misread as" feeling? (8) Full Cycle feels like repair plan without giving the fix? (9) result specific enough to not feel generic? (10) result withholds enough that student still has reason to pay?
+
+FREE VS PAID BOUNDARY — the free result may reveal: diagnosis, risk, what evidence matters, what type of fix is needed, why the candidate is being misread, what Full Cycle would work on. The free result must NOT reveal: final rewritten CV bullets, complete route narrative, full application answer, full commercial scripts, bank-specific wording, complete HireVue answers, detailed interview scripts. If the model starts to give a full solution, stop at teaser level.
+
 {
-"overallScore":[integer 0-100],
-"band":"[MUST be exactly one of these five strings — Strong, Competitive, Borderline, Weak, Not yet ready — nothing else. 85-100=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready]",
-"archetype":"[3-7 word archetype — clean, human, memorable. Examples: Credible IBD Candidate, Technical Risk | Strong Raw Material, Weak Framing | Commercially Curious, Not Yet Interview-Ready | Elite but Unfocused | Markets Signal, Unclear Story | Generic Good Candidate | Not Yet Ready to Submit]",
-"killerSentence":"[one specific sentence — the single sharpest diagnosis of this exact candidate. Must name a CV detail. Must make the student think: annoyingly, that is accurate.]",
-"namedCvDetails":["[3-6 named items from CV: employer names, society names, project titles, module names, qualifications, A-level subjects]"],
-"recruiterMayMiss":"[2-4 sentences. What is the candidate\'s strongest evidence and why is it currently hidden, buried, under-framed or not obvious on first screen? Must name at least 1 specific CV item. Must explain the missed signal problem. Must not give the rewrite. Creates the feeling that the system has looked beyond surface-level scoring.]",
-"uncomfortableTruth":"[1-2 sentences. Blunt but constructive. For strong: focus on lost edge. For borderline: fixable risk. For weak: do not submit yet. Examples: You are not a weak candidate — you are a candidate with usable material that is currently under-framed. | Your problem is not lack of effort. It is that your strongest evidence is not being translated into first-screen proof. | The risk is not that you look uninterested. The risk is that you look interested but not yet bank-ready.]",
-"fullCycleFirstFix":"[2-4 sentences. What would Full Cycle work on first? Why is that hard to fix alone? What would change after the fix? Must mention 1-3 named CV items. Must connect to target firm or division. Must sound like a repair plan. No generic upsell language. Do not give the full solution.]",
-"diagnostic":"[2-3 sentences. Direct, track-specific, practitioner-voiced. Must name at least one specific CV detail.]",
+"overallScore":[integer 0-100. Calibrate fairly: LSE + Barclays Rates Sales + Markets Society President + 4/5 numerical should not be below high 60s. Oxford + KKR + Goldman Insight + 5/5 numerical should be Competitive. Warwick + Lazard + Finance Society + low quiz scores can be Borderline. Score reflects both raw candidate strength AND application readiness. If raw strength is strong but positioning weak, score 65-75 range.],
+"band":"[MUST be exactly one of: Strong, Competitive, Borderline, Weak, Not yet ready. 85-100=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready. Never write anything else.]",
+"archetype":"[3-7 words. Clean, human, memorable. Examples: Credible IBD Candidate Technical Risk | Strong Raw Material Weak Framing | Commercially Curious Not Yet Interview-Ready | Elite but Unfocused | Markets Signal Unclear Story | Competitive Raw Material Under-Positioned | Generic Good Candidate | Not Yet Ready to Submit]",
+"killerSentence":"[One sharp sentence: strongest evidence + hidden risk + target route consequence. Must name a real CV item. Must identify the hidden risk. Must not give the fix. Example: Your Barclays Rates Sales internship and macro dashboard are real S&T evidence, but right now they read as desk exposure rather than market instinct.]",
+"namedCvDetails":["[3-6 specific named items from this CV only — employer names, project titles, society roles, module names, qualifications. Do not invent.]"],
+"recruiterMayMiss":"[2-4 sentences. What is the strongest hidden or underused signal and why may a recruiter miss it? Must name at least 1 specific CV item. Explain why the evidence may be missed, buried, or undervalued. Do NOT provide the rewritten version. Example: Your strongest S&T signal is the Barclays Rates Sales internship, but the CV presents it as tasks rather than evidence of market judgement.]",
+"beingMisreadAs":"[1 sentence. How is this profile currently being wrongly read? Must be specific, slightly uncomfortable, not insulting, not fixing. Example: You are being read as someone with desk exposure, not yet someone with a market view. OR: You are being read as interested in IBD, not yet ready for IBD.]",
+"uncomfortableTruth":"[1-2 sentences. Blunt but constructive. Band-specific urgency. For strong: lost edge. For borderline: fixable risk. For weak: do not submit yet. Do not give the fix. Example: You are not a weak candidate. You are a candidate with usable material that is not yet being translated into first-screen proof.]",
+"diagnostic":"[2-3 sentences. Direct, track-specific, practitioner-voiced. Must name at least one specific CV detail. Must identify the hidden risk and route consequence.]",
+"fullCycleFirstFix":"[What Full Cycle would work on first — repair area only, not the fix. Must mention 1-3 named CV items. Must feel specific and valuable. Must NOT provide rewritten bullets, final wording, or exact answers. Must NOT sound like an advert. Example: Full Cycle would start by rebuilding the Barclays Rates Sales internship and macro dashboard into a clearer S&T story — showing market instinct, rates reasoning and risk/reward judgement rather than desk-exposure tasks.]",
+"lockedFixPreview":"[What sits inside Full Cycle — creates curiosity without revealing the answer. Must feel specific and valuable. Must NOT be vague. Example: Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story. OR: Locked in Full Cycle: how to turn this internship into a market-view bullet, what to cut, and how to answer the likely HireVue follow-up.]",
 "dimensions":[
-{"name":"Academic Signal","score":[0-100],"note":"[2-3 sentences. Name the actual university and degree. Genuine practitioner read. Name A-levels if in CV.]","fix":"[1 sentence teaser — not the full fix]"},
-{"name":"Experience Relevance","score":[0-100],"note":"[1-2 sentences. Name specific experience or gap. Name extracurricular or work experience if notable.]","fix":"[1 sentence teaser]"},
-{"name":"Commercial Awareness","score":[0-100],"note":"[1 sentence. What the quiz and CV signals reveal. Track-specific.]","fix":"[1 sentence teaser]"},
-{"name":"Technical Readiness","score":[0-100],"note":"[1 sentence. Numerical score meaning for this track. Direct.]","fix":"[1 sentence teaser]"},
-{"name":"Application Positioning","score":[0-100],"note":"[1 sentence. Specific about what reads weakly or strongly.]","fix":"[1 sentence teaser]"},
-{"name":"Directional Clarity","score":[0-100],"note":"[1 sentence. Intentional or generic for this track and firm.]","fix":"[1 sentence teaser]"}
+{"name":"Academic Signal","score":[0-100],"note":"[1-2 sentences. Name the actual university and degree. If grade provided, apply grade handling rules. Genuine practitioner read — not coaching language.]"},
+{"name":"Experience Relevance","score":[0-100],"note":"[1-2 sentences. Name the specific experience. Identify what it shows and what it currently fails to show for the target route.]"},
+{"name":"Commercial Awareness","score":[0-100],"note":"[1 sentence. Reference the quiz score AND any commercial CV signals. What does the profile reveal about market reasoning vs just market interest?]"},
+{"name":"Technical Readiness","score":[0-100],"note":"[1 sentence. Reference the numerical quiz score. What does it mean for HireVue or screening at this firm?]"},
+{"name":"Application Positioning","score":[0-100],"note":"[1 sentence. What reads weakly or strongly on first screen? Name specific evidence.]"},
+{"name":"Directional Clarity","score":[0-100],"note":"[1 sentence. Does the CV read as intentional for this route and firm, or generic? Reference specific evidence.]"}
 ],
 "priorityGaps":[
-{"title":"[gap name — 4-8 words]","risk":"[what the specific risk is]","whyItMatters":"[why it matters for this exact route and firm]","fixType":"[what kind of fix is needed — not the actual fix]"},
-{"title":"[gap 2]","risk":"[risk]","whyItMatters":"[why]","fixType":"[fix type]"},
-{"title":"[gap 3 — fold in numerical score: e.g. Technical readiness below screening threshold]","risk":"[risk — include actual score e.g. 3/5]","whyItMatters":"[why HireVue matters at this firm]","fixType":"[targeted numerical practice, specific question types]"},
-{"title":"[gap 4 — fold in commercial score]","risk":"[risk — include actual score]","whyItMatters":"[why commercial awareness matters at interview stage]","fixType":"[type of preparation needed]"}
+{"title":"[4-8 word title]","risk":"[Specific risk using named CV evidence]","whyItMatters":"[Why this matters for the exact target route and firm]","fixType":"[Type of fix required — not the actual fix. E.g.: Reframe the experience around market reasoning rather than tasks completed.]","fullCycleTeaser":"[What Full Cycle would do — repair area not the fix. E.g.: Full Cycle would rebuild this section into a stronger S&T evidence block.]"},
+{"title":"[gap 2]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""},
+{"title":"[gap 3 — address numerical score with actual score number]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""},
+{"title":"[gap 4 — address commercial awareness with actual score number]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""}
 ],
 "competencies":[
-{"name":"Leadership","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences. Use named CV evidence if present. If not evidenced, explain what would count — not invented evidence.]"},
+{"name":"Leadership","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences using named CV evidence. If not evidenced, explain what would count — never invent.]"},
 {"name":"Analytical","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
 {"name":"Commercial","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
 {"name":"Communication","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
 {"name":"Resilience","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
 {"name":"Teamwork","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"}
 ],
-"fullCycleFit":"[High|Medium|Low]",
-"fullCycleReason":"[1-2 sentences. Why is Full Cycle a high/medium/low fit for this specific candidate? Reference named CV details.]",
-"fullCycleCta":"[Score-band personalised CTA. Strong 85-100: You are close. Full Cycle is about sharpening the final 10-15%: evidence hierarchy, firm-specific positioning and interview pressure points. Competitive 70-84: You have enough to work with. Full Cycle would focus on turning credible evidence into a cleaner first-screen application. Borderline 55-69: This is the core Full Cycle use case — usable material, but not yet enough clarity or technical confidence to submit. Weak 40-54: Do not submit this version yet. Full Cycle would focus on rebuilding the base: evidence, direction, technical readiness and application structure. Below 40: You may need foundation work before Full Cycle. Build clearer evidence, commercial awareness and technical basics before targeting competitive roles. Personalise with named CV evidence where possible.]",
-"specificSignalNoticed":"[single most distinctive named CV item used in diagnostic]",
-"paidHook":"[1 sentence — what a deeper review would focus on for this candidate, referencing named CV detail]",
-"candidateName":"[first name from CV if present, else empty string]",
-"cvSpecificityWarning":"[empty string if named details found. If no named detail: No named CV details could be confidently extracted from this document.]"
+"fullCycleFit":"[High: score 50-75, credible raw material, specific fixable weaknesses, competitive target route. Medium: strong candidate needing final edge, or weak candidate with some usable evidence. Low: too weak needing foundation work first, or already very strong needing only marginal polish.]",
+"fullCycleReason":"[1-2 sentences. Why High/Medium/Low? Reference named CV details. Example: This is the core Full Cycle use case — credible finance evidence from Lazard and Finance Society, but not yet enough technical confidence or first-screen positioning to submit comfortably.]",
+"fullCycleCta":"[Personalised CTA using named CV evidence. Must NOT say upgrade now. Must feel like natural next step. Band-specific. Examples — Borderline IBD: This is the core Full Cycle use case: credible finance evidence from Lazard and Finance Society, but not yet enough technical confidence or first-screen positioning to submit comfortably. Competitive S&T: You have real markets evidence. Full Cycle would focus on turning the Barclays Rates Sales internship and macro dashboard into a sharper S&T story before Morgan Stanley sees it.]",
+"candidateName":"[First name from CV header if present, else empty string]",
+"specificSignalNoticed":"[Single most distinctive named CV item used in diagnostic]",
+"paidHook":"[1 sentence — what a deeper review would focus on, referencing named CV detail. Do not give the fix.]",
+"cvSpecificityWarning":"[Empty string if named details found. If no named detail: No named CV details could be confidently extracted from this document.]"
 }`;
 }
