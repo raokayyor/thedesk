@@ -853,9 +853,15 @@ select.fi{background:transparent;cursor:pointer;}
   </div>
 
   <!-- FULL CYCLE FIRST FIX -->
-  <div id="rFirstFix" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;">
-    <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:8px;">What Full Cycle would fix first</div>
-    <div id="rFirstFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;"></div>
+  <div id="rFirstFix" style="display:none;background:var(--warm);border:0.5px solid var(--ink08);border-radius:12px;padding:16px 20px;margin-bottom:12px;position:relative;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);">What Full Cycle would fix first</div>
+      <div style="display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--ink08);background:var(--cream);">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--ink40)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span style="font-size:9px;color:var(--ink40);font-weight:500;">fix on Full Cycle</span>
+      </div>
+    </div>
+    <div id="rFirstFixText" style="font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;filter:blur(4px);user-select:none;pointer-events:none;min-height:72px;"></div>
   </div>
 
   <!-- LOCKED FIX PREVIEW -->
