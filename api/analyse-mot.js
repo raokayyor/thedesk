@@ -307,7 +307,7 @@ export default async function handler(req, res) {
         ? 'You have usable material, but it is not yet landing as a '+safeCtaFirm+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
         : sc4 >= 40
         ? 'This profile needs work before submitting to competitive finance roles. Full Cycle shows what evidence, readiness and structure need to be in place first.'
-        : 'This version is not ready to submit. Full Cycle shows what to build before targeting competitive finance roles.'
+        : 'This version is not ready to submit. Full Cycle shows what evidence needs building, which gaps matter first, and whether the current route is realistic before you apply.'
     );
 
     // Sanitise diagnostic — strip any fix/solution language at the end
@@ -322,8 +322,9 @@ export default async function handler(req, res) {
         if (!hitRepair) cleanDiag.push(s);
       });
       if (hitRepair) {
-        result.diagnostic = cleanDiag.join('. ') + (cleanDiag.length ? '.' : '');
-        console.log('SANITISE: stripped repair language from diagnostic');
+        var base = cleanDiag.join('. ') + (cleanDiag.length ? '.' : '');
+        result.diagnostic = base + ' The application needs a clearer bridge between academic research, commercial finance intent and readiness for this route. The detailed rebuild work belongs in Full Cycle.';
+        console.log('SANITISE: stripped repair language from diagnostic, added bridge sentence');
       }
     }
 
