@@ -2574,15 +2574,21 @@ function rotateDyk(){
 }
 // INIT
 // Rapid test hook
-// Rapid test result pickup
+// Rapid test result pickup — check both storage keys
 var _rapidData = (function(){
   try{
-    var s=sessionStorage.getItem('tdesk_rapid_result');
+    // Try new compact key first
+    var s=sessionStorage.getItem('tdesk_r');
+    if(!s) s=sessionStorage.getItem('tdesk_rapid_result');
     if(!s) return null;
     var p=JSON.parse(s);
-    if(!p||!p.result) return null;
+    if(!p) return null;
+    sessionStorage.removeItem('tdesk_r');
     sessionStorage.removeItem('tdesk_rapid_result');
-    return p;
+    // Handle both formats
+    if(p.result) return p;          // old format: {result, profile, quiz}
+    if(p.overallScore) return {result:p, firm:p.firm||'', div:p.div||'', fS:3, nS:3}; // bare result
+    return null;
   }catch(e){ return null; }
 })();
 
@@ -2599,8 +2605,10 @@ if(_rapidData){
     var pR=document.getElementById('pR'); if(pR) pR.classList.add('show');
     var bn=document.getElementById('bn'); if(bn) bn.style.display='none';
     setTimeout(function(){
-      try{ showR(_rapidData.result); }
-      catch(e){ alert('showR error: '+e.message); }
+      try{
+        var res=_rapidData.result||_rapidData;
+        showR(res);
+      }catch(e){ console.error('showR error',e); }
     }, 300);
   });
 } else {
