@@ -959,9 +959,9 @@ select.fi{background:transparent;cursor:pointer;}
     <!-- LOCKED REPAIR PLAN CARDS -->
   <div id="rLockedPlan" style="display:none;background:var(--cream);border:0.5px solid var(--ink08);border-radius:12px;overflow:hidden;margin-bottom:12px;">
     <div style="padding:14px 20px;border-bottom:0.5px solid var(--ink08);">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:4px;">Locked in Full Cycle</div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink40);margin-bottom:4px;">Unlocked in Full Cycle</div>
       <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:var(--ink);letter-spacing:-0.3px;">Your personalised repair plan</div>
-      <div style="font-size:12px;color:var(--ink40);margin-top:3px;">Shows what to lead with, what to cut, what to rebuild, and what to fix before applying.</div>
+      <div style="font-size:12px;color:var(--ink40);margin-top:3px;">Shows what to lead with, what to reduce, and how to rebuild the profile around the evidence that matters before submission.</div>
     </div>
     <div id="rLockedPlanCards" style="padding:4px 0;"></div>
   </div>
@@ -2320,7 +2320,16 @@ function showR(r){
        desc:'Build a virtual portfolio, track your positions and compete against other applicants. Weekly prizes for the best performers. Builds market intuition and gives you something genuine to talk about at commercial awareness interviews.'}
     ]);  // Personalise header with name
     var apHeader=document.querySelector('.ap-header');
-    if(apHeader) apHeader.textContent=(candName?candName+', unlock your repair plan before you submit.':'Unlock your repair plan before you submit.');
+    if(apHeader){
+    var _band=r.band||'';
+    var _ctaName=candName?candName+', ':'';
+    var _ctaFirm=firm2||'your target firm';
+    var _ctaMsg=_band==='Strong'?_ctaName+'sharpen this before '+_ctaFirm+' sees it.'
+      :_band==='Competitive'?_ctaName+'sharpen this before '+_ctaFirm+' sees it.'
+      :_band==='Borderline'?_ctaName+'sharpen this before '+_ctaFirm+' sees it.'
+      :_ctaName+'rebuild this before you submit.';
+    apHeader.textContent=_ctaMsg;
+  }
     // Score-band CTA from model
     if(r.fullCycleCta){
       var ctaSub=document.querySelector('.ap-subtitle');
