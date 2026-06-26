@@ -2528,10 +2528,15 @@ function rotateDyk(){
 (function(){
   try{
     var _stored=localStorage.getItem('tdesk_rapid_result');
-    alert('RAPID DEBUG: stored='+(!!_stored)+' | keys='+Object.keys(localStorage).join(','));
-    if(!_stored) return;
+    // Show debug banner
+    var _dbg=document.createElement('div');
+    _dbg.style.cssText='position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;font-size:13px;z-index:9999;font-family:monospace;';
+    _dbg.id='rapidDebug';
+    _dbg.textContent='RAPID: stored='+( !!_stored)+' | lsKeys='+Object.keys(localStorage).join(',');
+    document.body.appendChild(_dbg);
+    if(!_stored){return;}
     var _p=JSON.parse(_stored);
-    alert('RAPID DEBUG: _p.result='+(!!_p.result)+' | keys='+Object.keys(_p||{}).join(','));
+    _dbg.textContent+=' | result='+(!!_p.result)+' | pKeys='+Object.keys(_p||{}).join(',');
     if(!_p||!_p.result) return;
     // Clear immediately so refresh doesn't re-trigger
     localStorage.removeItem('tdesk_rapid_result');
