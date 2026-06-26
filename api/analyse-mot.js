@@ -139,6 +139,110 @@ export default async function handler(req, res) {
       return res.status(422).json({ success: false, source: "error", error: "INVALID_RESULT", message: "Assessment could not be completed. Please try again." });
     }
 
+    // ── POST-PARSE REPAIR ──────────────────────────────────────────────────────
+
+    // 1. Ensure band is valid
+    const validBands = ['Strong','Competitive','Borderline','Weak','Not yet ready'];
+    if (!validBands.includes(result.band)) {
+      const sc = result.overallScore || 0;
+      result.band = sc>=85?'Strong':sc>=70?'Competitive':sc>=55?'Borderline':sc>=40?'Weak':'Not yet ready';
+    }
+
+    // 2. Ensure priorityGaps is always exactly 4 structured objects
+    const hasPG = Array.isArray(result.priorityGaps) && result.priorityGaps.length === 4
+               && result.priorityGaps.every(g => g && typeof g === 'object' && g.title);
+    if (!hasPG) {
+      // Build from old priorities array or regenerate
+      const pris = result.priorities || [];
+      const techScore = result.dimensions?.find(d=>d.name==='Technical Readiness')?.score || 50;
+      const commScore = result.dimensions?.find(d=>d.name==='Commercial Awareness')?.score || 50;
+      result.priorityGaps = [
+        { title: pris[0] || 'Application positioning needs work',
+          risk: pris[0] || 'The CV is not yet translating evidence into a clear first-screen story.',
+          whyItMatters: 'Screeners spend under 30 seconds on first pass. If the story is unclear, the application is filtered before it reaches interview depth.',
+          fixType: 'Reframe the CV around the target route using the strongest named evidence.',
+          fullCycleTeaser: 'Full Cycle would rebuild the application story around the most credible evidence for this route.' },
+        { title: pris[1] || 'Evidence is present but under-framed',
+          risk: pris[1] || 'The strongest CV signals are not being presented in a way that lands with a screener.',
+          whyItMatters: 'Evidence buried in generic descriptions reads as participation, not analytical ownership.',
+          fixType: 'Surface the strongest signals and reframe around outcomes, judgement and route-specific language.',
+          fullCycleTeaser: 'Full Cycle would identify what to lead with and rebuild the evidence hierarchy.' },
+        { title: `Technical readiness — ${techScore < 70 ? 'below screening threshold' : 'maintain under pressure'}`,
+          risk: `Technical score of ${techScore}/100 ${techScore < 70 ? 'suggests risk at automated numerical screening stage' : 'is solid but must hold under timed HireVue conditions'}.`,
+          whyItMatters: 'Most tier-1 banks use automated numerical screening before a human reads the application. A borderline score gets filtered automatically.',
+          fixType: 'Targeted timed numerical practice on the specific question types used at this firm.',
+          fullCycleTeaser: 'Full Cycle gives you unlimited timed SHL, Korn Ferry and Cubiks practice with worked solutions.' },
+        { title: 'Commercial awareness — connecting events to deal consequences',
+          risk: `Commercial score of ${commScore}/100 suggests market awareness at headline level but possible gap in deal-consequence reasoning.`,
+          whyItMatters: 'Interviewers do not just test whether you follow markets. They test whether you can connect a macro event to deal flow, M&A consequences or valuation impact.',
+          fixType: 'Build a framework for connecting current events to the sectors and transaction types relevant to the target firm.',
+          fullCycleTeaser: 'Full Cycle includes weekly market briefings and commercial awareness primers calibrated to the target firm and division.' }
+      ];
+      console.log('REPAIR: rebuilt priorityGaps from scratch');
+    }
+
+    // 3. Repair competencies — never allow all "Not yet evidenced" if evidence exists
+    const dims = result.dimensions || [];
+    const techDim = dims.find(d=>d.name==='Technical Readiness');
+    const analyticalDim = dims.find(d=>d.name==='Experience Relevance');
+    const namedDetails = result.namedCvDetails || [];
+    const hasAnalyticalEvidence = (techDim && techDim.score > 70)
+      || namedDetails.some(d => /intern|model|dissert|quant|research|python|valuat|analy/i.test(d));
+
+    if (Array.isArray(result.competencies) && result.competencies.length > 0) {
+      const allNotEvidenced = result.competencies.every(c => c.status === 'Not yet evidenced');
+      if (allNotEvidenced && hasAnalyticalEvidence) {
+        // Fix analytical competency at minimum
+        const analytical = result.competencies.find(c => c.name === 'Analytical');
+        if (analytical) {
+          analytical.status = 'Evidenced';
+          analytical.note = `The ${namedDetails[0] || 'technical work'} in this CV shows analytical capability. The issue is not ability — it is how the evidence is framed for the target route.`;
+        }
+        console.log('REPAIR: fixed all-Not-evidenced competencies');
+      }
+    } else {
+      // Competencies missing entirely — build basic set
+      result.competencies = [
+        { name:'Leadership', status:'Not yet evidenced', note:'No clear named evidence of ownership, initiative or responsibility. A society role, committee position or team captain role would count.' },
+        { name:'Analytical', status: hasAnalyticalEvidence ? 'Evidenced' : 'Not yet evidenced',
+          note: hasAnalyticalEvidence ? `${namedDetails[0] || 'Technical work'} shows analytical capability. The framing needs to match the target route more precisely.` : 'No clear analytical evidence in the CV. Financial modelling, data analysis or research output would count.' },
+        { name:'Commercial', status:'Not yet evidenced', note:'No clear commercial signal in the CV. An investment society role, market commentary or deal exposure would count.' },
+        { name:'Communication', status:'Not yet evidenced', note:'No clear communication evidence. Presenting, tutoring, pitching or writing for publication would count.' },
+        { name:'Resilience', status:'Not yet evidenced', note:'No clear resilience signal. Part-time work alongside full-time study or endurance sport would count.' },
+        { name:'Teamwork', status:'Not yet evidenced', note:'No clear teamwork evidence. Team sport, group projects or collaborative society roles would count.' }
+      ];
+      console.log('REPAIR: built missing competencies');
+    }
+
+    // 4. Ensure new conversion fields have fallback values
+    if (!result.recruiterMayMiss) {
+      const top = namedDetails[0] || 'key experience';
+      result.recruiterMayMiss = `The strongest signal in this CV is ${top}, but it may currently be presenting as participation rather than evidence of judgement. A screener spending 20 seconds on this application may not identify it as the lead piece of evidence for this route.`;
+    }
+    if (!result.beingMisreadAs) {
+      result.beingMisreadAs = `You are being read as interested in ${result.dimensions?.find(d=>d.name==='Directional Clarity')?.score > 60 ? 'this route' : 'finance broadly'}, not yet ready for it.`;
+    }
+    if (!result.uncomfortableTruth) {
+      result.uncomfortableTruth = 'The problem is not the quality of the experience. It is that the application makes the recruiter work too hard to find the right signals.';
+    }
+    if (!result.fullCycleFirstFix) {
+      const top2 = namedDetails.slice(0,2).join(' and ') || 'the strongest evidence in this CV';
+      result.fullCycleFirstFix = `Full Cycle would start by rebuilding the application around ${top2} — translating it into clearer route-specific evidence without giving away the repair in the free result.`;
+    }
+    if (!result.lockedFixPreview) {
+      result.lockedFixPreview = `Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, the route-specific application story, and the specific language that makes this profile legible to a screener in under 20 seconds.`;
+    }
+    if (!result.fullCycleCta) {
+      const sc = result.overallScore || 0;
+      result.fullCycleCta = sc >= 70
+        ? `You have enough to work with. Full Cycle would focus on turning ${namedDetails[0] || 'your strongest evidence'} into a cleaner first-screen application.`
+        : sc >= 55
+        ? `This is the core Full Cycle use case — credible raw material, but not yet enough clarity or technical confidence to submit comfortably.`
+        : `Do not submit this version yet. Full Cycle would focus on rebuilding the base: evidence, direction, technical readiness and application structure.`;
+    }
+
+    // ── END REPAIR ──────────────────────────────────────────────────────────────
+
     return res.status(200).json({
       success: true,
       source: "claude",
