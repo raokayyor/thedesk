@@ -310,22 +310,18 @@ export default async function handler(req, res) {
         : 'This version is not ready to submit. Full Cycle shows what evidence needs building, which gaps matter first, and whether the current route is realistic before you apply.'
     );
 
-    // Sanitise diagnostic — strip any fix/solution language at the end
+    // Sanitise diagnostic — hard truncate to first 2 sentences, always append bridge
     if (result.diagnostic) {
-      var diagSentences = result.diagnostic.split(/\.\s+/);
-      var cleanDiag = [];
-      var hitRepair = false;
-      diagSentences.forEach(function(s) {
-        if (!hitRepair && /the fix is|to identify|to create|to build|to reframe|a valuation|a deal write|before submission|before applying|needs to become|should become/i.test(s)) {
-          hitRepair = true;
-        }
-        if (!hitRepair) cleanDiag.push(s);
-      });
-      if (hitRepair) {
-        var base = cleanDiag.join('. ') + (cleanDiag.length ? '.' : '');
-        result.diagnostic = base + ' The application needs a clearer bridge between academic research, commercial finance intent and readiness for this route. The detailed rebuild work belongs in Full Cycle.';
-        console.log('SANITISE: stripped repair language from diagnostic, added bridge sentence');
+      var diagSentences = result.diagnostic.split(/(?<=\.\s)|(?<=\.\n)/);
+      if (diagSentences.length <= 1) {
+        diagSentences = result.diagnostic.split('. ');
       }
+      // Take first 2 sentences only — model always puts repair in sentence 3+
+      var safeDiag = diagSentences.slice(0, 2).join('. ').replace(/\.\s*$/, '').trim();
+      if (safeDiag && !safeDiag.endsWith('.')) safeDiag += '.';
+      // Always append the bridge sentence
+      result.diagnostic = safeDiag + ' The application needs a clearer bridge between the existing evidence, commercial finance intent and readiness for this route. The detailed rebuild sits in Full Cycle.';
+      console.log('SANITISE: diagnostic hard-truncated to 2 sentences + bridge');
     }
 
     // Sanitise fullCycleFirstFix — if it reveals strategy, replace with safe version
