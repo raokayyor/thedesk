@@ -2524,28 +2524,38 @@ function rotateDyk(){
 }
 // INIT
 // Rapid test hook
-if(window.location.search.includes('rapidtest=1')){
-  var _stored=localStorage.getItem('tdesk_rapid_result');
-  if(_stored){try{
+// Rapid test result pickup — check localStorage regardless of URL
+(function(){
+  try{
+    var _stored=localStorage.getItem('tdesk_rapid_result');
+    if(!_stored) return;
     var _p=JSON.parse(_stored);
-    if(_p&&_p.result&&(Date.now()-_p.ts)<300000){
-      var _pr=_p.profile||{};
-      D.firm=_pr.targetFirm||''; D.div=_pr.targetDivision||'';
-      D.uni=_pr.university||''; D.crs=_pr.course||'';
-      D.yr=_pr.year||''; D.gr=_pr.grade||'';
-      if(_p.quiz){D.fS=_p.quiz.commercialCorrect||3; D.nS=_p.quiz.technicalCorrect||3;}
-      localStorage.removeItem('tdesk_rapid_result');
-      document.querySelectorAll('.page').forEach(function(pg){pg.classList.remove('show');});
-      var _pR=document.getElementById('pR'); if(_pR) _pR.classList.add('show');
-      var _bn=document.getElementById('bn'); if(_bn) _bn.style.display='none';
-      setTimeout(function(){showR(_p.result);},100);
-    }
-  }catch(e){console.error('rapid load error',e);}}
-  // Don't go(0) — rapidtest result is already showing
-} else {
+    if(!_p||!_p.result) return;
+    // Clear immediately so refresh doesn't re-trigger
+    localStorage.removeItem('tdesk_rapid_result');
+    // Load profile into D
+    var _pr=_p.profile||{};
+    D.firm=_pr.targetFirm||''; D.div=_pr.targetDivision||_pr.track||'';
+    D.uni=_pr.university||''; D.crs=_pr.course||'';
+    D.yr=_pr.year||''; D.gr=_pr.grade||'';
+    if(_p.quiz){ D.fS=_p.quiz.commercialCorrect||3; D.nS=_p.quiz.technicalCorrect||3; }
+    // Show result page
+    document.querySelectorAll('.page').forEach(function(pg){pg.classList.remove('show');});
+    var _pR=document.getElementById('pR'); if(_pR) _pR.classList.add('show');
+    var _bn=document.getElementById('bn'); if(_bn) _bn.style.display='none';
+    window._rapidLoaded=true;
+    setTimeout(function(){
+      try{ showR(_p.result); }
+      catch(e){ alert('showR error: '+e.message); }
+    },200);
+  }catch(e){ console.error('rapid pickup error',e); }
+})();
+
+if(!window._rapidLoaded){
   D.step = 0;
   go(0);
 }
+
 var bnEl = document.getElementById('bn');
 if(bnEl) bnEl.style.display='none';
 
