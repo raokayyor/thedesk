@@ -364,5 +364,197 @@ async function run(){
   }
 }
 </script>
+
+<script>
+var CANDIDATES = [
+  {
+    name:'James Whitfield', uni:'University of Warwick', course:'Economics', year:'2nd Year', grade:'2:1 (predicted)',
+    firm:'Goldman Sachs', div:'Investment Banking Division (IBD)', nScore:3, fScore:2,
+    cv:`James Whitfield
+james.whitfield@warwick.ac.uk | 07700 900123 | linkedin.com/in/jwhitfield
+
+EDUCATION
+University of Warwick | BSc Economics | 2:1 predicted | 2022–2025
+Relevant modules: Corporate Finance, Econometrics, Financial Markets, Game Theory
+A-Levels: Mathematics (A*), Economics (A), History (A) | Harrow School
+
+EXPERIENCE
+Insight Week — Lazard, London | June 2024
+Sat in on M&A pitch preparation for a mid-market UK retail transaction. Assisted analysts with comparable companies research and formatting of client materials.
+
+Finance Society — Warwick | Equity Analyst | Oct 2023–present
+Write monthly equity notes on FTSE 100 constituents. Covered Rolls-Royce and BP in recent cycles.
+
+Customer Assistant — Tesco, Harrow | Saturdays, 2021–2022
+Front-of-house customer service, stock replenishment and till operation.
+
+SKILLS & INTERESTS
+Excel (intermediate), Bloomberg (basic training), Python (self-taught basics)
+Interests: financial markets, football (played for school 1st XI), reading`
+  },
+  {
+    name:'Priya Sharma', uni:'London School of Economics', course:'BSc Accounting and Finance', year:'Final Year', grade:'First Class (predicted)',
+    firm:'Morgan Stanley', div:'Sales & Trading', nScore:4, fScore:3,
+    cv:`Priya Sharma
+p.sharma@lse.ac.uk | 07700 900456 | London
+
+EDUCATION
+London School of Economics | BSc Accounting and Finance | First Class predicted | 2021–2024
+Modules: Financial Reporting, Corporate Valuation, Derivatives, Fixed Income
+A-Levels: Mathematics (A*), Further Mathematics (A*), Economics (A) | North London Collegiate
+
+EXPERIENCE
+Summer Intern — Barclays, Rates Sales | June–August 2023
+Rotated across rates, FX and credit desks. Produced morning market summaries for the sales team. Built a macro dashboard tracking G10 central bank positioning in Excel and Python.
+
+Markets Society — LSE | President | Sept 2022–present
+Organise speaker events with alumni at Goldman, JP Morgan, Citi. Run weekly market discussions attended by 80+ students.
+
+Part-time Barista — Pret a Manger | 20 hrs/week, 2021–2022
+Worked full shifts alongside A-level studies. Managed peak periods and trained new staff.
+
+SKILLS
+Python, Excel, Bloomberg Terminal (full certification), basic R
+CFA Level 1 candidate (sitting December 2024)`
+  },
+  {
+    name:'Tom Bradley', uni:'University of Bristol', course:'BA History', year:'Final Year', grade:'2:2 (predicted)',
+    firm:'JP Morgan', div:'Investment Banking Coverage', nScore:2, fScore:2,
+    cv:`Tom Bradley
+tombradley@bristol.ac.uk | 07700 900789
+
+EDUCATION
+University of Bristol | BA History | 2:2 predicted | 2021–2024
+Dissertation: The Role of American Banking in Post-War European Reconstruction
+A-Levels: History (A), English Literature (A), Politics (B)
+
+EXPERIENCE
+Work Experience — Local Solicitors Firm, Bristol | 2 weeks, June 2023
+Shadowed solicitors, sat in on client meetings, helped organise filing systems.
+
+Bristol University Investment Society | Member | 2022–present
+Attend weekly meetings. Have been following technology sector stocks informally.
+
+Waiter — The Ivy, Bristol | Weekends 2022–present
+Customer-facing role in busy restaurant. Responsible for section of 6 tables.
+
+INTERESTS
+History of financial markets, reading, travel, cricket`
+  },
+  {
+    name:'Aisha Okonkwo', uni:'University of Oxford', course:'PPE', year:'2nd Year', grade:'First Class (predicted)',
+    firm:'Blackstone', div:'Private Equity', nScore:5, fScore:4,
+    cv:`Aisha Okonkwo
+aisha.okonkwo@oxford.ac.uk | 07700 900321
+
+EDUCATION
+University of Oxford | BA Philosophy, Politics and Economics | First Class predicted | 2022–2025
+Modules: Microeconomics, Macroeconomics, Quantitative Economics, Corporate Strategy
+A-Levels: Mathematics (A*), Economics (A*), Further Mathematics (A) | Cheltenham Ladies College
+
+EXPERIENCE
+Spring Week — KKR, Private Equity | April 2024
+Worked on a case study modelling the LBO of a European logistics business. Built a three-statement model and contributed to investment committee presentation materials.
+
+Insight — Goldman Sachs, IBD | January 2024
+Two-day programme. Attended M&A pitch presentation and completed financial modelling exercise.
+
+Oxford SIB (Social Impact Bond) | Analyst | Oct 2022–present
+Structured a £200k social impact investment with Oxfordshire County Council. Responsible for financial model and investor reporting.
+
+Oxford Union | Committee | 2023–present
+Logistics committee for flagship debates. Managed speaker coordination for three international events.
+
+SKILLS
+Excel (advanced LBO modelling), Python, Bloomberg, Mandarin (conversational)`
+  },
+  {
+    name:'Harry Chen', uni:'University of Manchester', course:'BSc Mathematics', year:'Final Year', grade:'2:1',
+    firm:'Barclays', div:'Quantitative Analytics', nScore:5, fScore:3,
+    cv:`Harry Chen
+harry.chen@manchester.ac.uk | 07700 900654
+
+EDUCATION
+University of Manchester | BSc Mathematics | 2:1 | 2020–2023
+Modules: Stochastic Calculus, Time Series Analysis, Numerical Methods, Probability Theory
+Dissertation: Monte Carlo Methods for Option Pricing Under Stochastic Volatility
+A-Levels: Mathematics (A*), Further Mathematics (A*), Physics (A*)
+
+EXPERIENCE
+Quantitative Research Intern — Man Group, London | Summer 2022
+Implemented a signal detection algorithm in Python for systematic equity strategies. Backtested on 10 years of daily data. Presented findings to senior quant team.
+
+Mathematics Society | Secretary | 2021–2023
+Organised termly talks with alumni working in quantitative finance and actuarial roles.
+
+SKILLS
+Python (NumPy, pandas, scikit-learn), R, MATLAB, SQL, C++ (basic)
+Hobbies: competitive chess (national junior finalist 2019), long-distance running`
+  }
+];
+
+function generateRandom(){
+  var st=document.getElementById('genStatus');
+  st.style.display='block';
+  st.textContent='Generating candidate...';
+
+  var c=CANDIDATES[Math.floor(Math.random()*CANDIDATES.length)];
+
+  // Fill form fields
+  var set=function(id,val){var el=document.getElementById(id);if(el)el.value=val;};
+  set('uni', c.uni);
+  set('crs', c.course);
+  
+  // Year selector
+  var yrEl=document.getElementById('gy');
+  if(yrEl){
+    for(var i=0;i<yrEl.options.length;i++){
+      if(yrEl.options[i].value===c.year||yrEl.options[i].text===c.year){
+        yrEl.selectedIndex=i; break;
+      }
+    }
+  }
+
+  // Grade
+  var grEl=document.getElementById('grade');
+  if(grEl){
+    for(var i=0;i<grEl.options.length;i++){
+      if(grEl.options[i].value===c.grade||grEl.options[i].text===c.grade){
+        grEl.selectedIndex=i; break;
+      }
+    }
+  }
+
+  // Firm and division
+  var firmEl=document.getElementById('firm');
+  if(firmEl) firmEl.value=c.firm;
+  var divEl=document.getElementById('division');
+  if(divEl) divEl.value=c.div;
+
+  // CV text
+  var cvEl=document.getElementById('cvText');
+  if(cvEl) cvEl.value=c.cv;
+
+  // Quiz scores — set chip selections
+  // Numerical
+  setScore('numer', c.nScore);
+  setScore('comm', c.fScore);
+
+  // Show feedback
+  st.innerHTML='✓ Generated: <strong>'+c.name+'</strong> | '+c.uni+' | '+c.firm+' '+c.div+'<br>Numerical: '+c.nScore+'/5 · Commercial: '+c.fScore+'/5';
+  st.style.color='#15803D';
+}
+
+function setScoreBtn(containerId, val){
+  var c=document.getElementById(containerId);
+  if(!c) return;
+  var btns=c.querySelectorAll('.sb');
+  btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=val?' on':''); });
+}
+function setScore(type, val){
+  if(type==='numer'){ techScore=val; setScoreBtn('tech-btns', val); }
+  if(type==='comm'){  commScore=val; setScoreBtn('comm-btns', val); }
+}
+</script>
 </body>
 </html>
