@@ -259,6 +259,63 @@ export default async function handler(req, res) {
         :'This version is not ready to submit. Full Cycle shows what needs to be rebuilt before targeting competitive finance roles.';
     }
 
+    // ── SANITISE FREE FIELDS — strip repair language before sending ──────────────
+
+    // These fields appear on the FREE page. They must NEVER contain:
+    // - specific reframing concepts (rates, FX, yield curve, capital allocation etc)
+    // - "how to rewrite", "how to reframe", "how to build", "how to position"
+    // - named repair steps or strategy
+    // Instead: diagnose the gap, withhold the fix, point to Full Cycle
+
+    var FORBIDDEN_REPAIR_PHRASES = [
+      /how to rewrite/gi, /how to reframe/gi, /how to rebuild/gi,
+      /how to position/gi, /how to build/gi, /how to turn/gi,
+      /how to clarify/gi, /how to demonstrate/gi, /how to present/gi,
+      /reframe.{0,30}around/gi, /rebuild.{0,30}around/gi,
+      /turn.{0,50}into evidence/gi, /position.{0,50}as evidence/gi,
+      /analytical ownership/gi, /deal rationale/gi, /market instinct/gi,
+      /yield curve/gi, /central bank positioning/gi, /rates direction/gi,
+      /capital allocation/gi, /thesis defence/gi, /downside protection/gi,
+      /client flow reasoning/gi, /risk\/reward/gi, /rates intuition/gi
+    ];
+
+    function sanitiseFreeField(text) {
+      if (!text) return text;
+      var clean = text;
+      FORBIDDEN_REPAIR_PHRASES.forEach(function(pattern) {
+        if (pattern.test(clean)) {
+          console.log('SANITISE: removed repair language from free field:', pattern.toString());
+        }
+      });
+      // If any forbidden phrase detected, replace entire field with safe template
+      var hasForbidden = FORBIDDEN_REPAIR_PHRASES.some(function(p) { return p.test(text); });
+      return hasForbidden ? null : text; // null = use template fallback
+    }
+
+    // Sanitise and apply template for fullCycleCta
+    var ctaSanitised = sanitiseFreeField(result.fullCycleCta);
+    var sc4 = result.overallScore || 0;
+    var firmName = (result.targetFirm || '').trim();
+    var routeName = (result.targetDivision || result.track || '').trim();
+    var safeCtaFirm = firmName || 'your target firm';
+    result.fullCycleCta = ctaSanitised || (
+      sc4 >= 70
+        ? 'You have real evidence, but it is not yet sharp enough for '+safeCtaFirm+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
+        : sc4 >= 55
+        ? 'You have usable material, but it is not yet landing as a '+safeCtaFirm+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
+        : sc4 >= 40
+        ? 'This profile needs work before submitting to competitive finance roles. Full Cycle shows what evidence, readiness and structure need to be in place first.'
+        : 'This version is not ready to submit. Full Cycle shows what to build before targeting competitive finance roles.'
+    );
+
+    // Sanitise fullCycleFirstFix — if it reveals strategy, replace with safe version
+    var fixSanitised = sanitiseFreeField(result.fullCycleFirstFix);
+    var topEvidence = (result.namedCvDetails || [])[0] || 'your strongest CV evidence';
+    result.fullCycleFirstFix = fixSanitised || (topEvidence+' is your starting point. Full Cycle shows what to do with it before you submit.');
+
+    // Sanitise lockedFixPreview — this one CAN have more detail but still no exact reframing
+    // Keep it as-is since it's already blurred on the page
+
     // ── END REPAIR ──────────────────────────────────────────────────────────────
 
     return res.status(200).json({
