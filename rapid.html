@@ -572,7 +572,7 @@ function buildResultPage(r, profile, quiz) {
   var name = r.candidateName||'';
   var sc   = Math.round(r.overallScore||0);
   var scCol = sc>=70?'#16A34A':sc>=50?'#CA8A04':'#DC2626';
-  var LOCK = '<div style="display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid #ddd;background:#f7f3ee;float:right;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span style="font-size:9px;color:#888;font-weight:500;">fix on Full Cycle</span></div>';
+  var LOCK = '<div style="display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid #ddd;background:#f7f3ee;float:right;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span style="font-size:9px;color:#888;font-weight:500;">Unlocked in Full Cycle</span></div>';
   var BLUR = 'filter:blur(4px);user-select:none;pointer-events:none;';
 
   var dimHTML = (r.dimensions||[]).map(function(d){
@@ -681,7 +681,7 @@ function buildResultPage(r, profile, quiz) {
     +'<div style="background:#1a1a1a;border-radius:12px;padding:20px;text-align:center;margin-top:16px;">'
       +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">'+( name?name+', let\'s get your fixes.':'Let\'s get your fixes.')+'</div>'
       +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">'+bandCta+'</div>'
-      +'<a href="thedesk.vercel.app/mentor.html" style="display:inline-block;background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;text-decoration:none;">Get Full Cycle — £79 →</a>'
+      +'<a href="thedesk.vercel.app/mentor.html" style="display:inline-block;background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;text-decoration:none;">Unlock the Full Cycle repair plan — £79 →</a>'
     +'</div>'
 
     +'</div></body></html>';
