@@ -638,11 +638,15 @@ function buildResultPage(r, profile, quiz) {
   }).join('');
 
   var sc_cta=r.overallScore||0;
-  var bandCta = r.fullCycleCta||(sc_cta>=70
-    ?'You have real evidence, but it is not yet sharp enough for '+( firm||'your target firm')+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
+  // Always use safe template for the visible locked plan description — never the model's raw text
+  var safeTarget=firm||'your target firm';
+  var bandCta=sc_cta>=70
+    ?'You have real evidence, but it is not yet sharp enough for '+safeTarget+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
     :sc_cta>=55
-    ?'You have usable material, but it is not yet landing as a '+( firm||'your target firm')+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
-    :'This version is not ready to submit. Full Cycle shows what evidence, numerical readiness and commercial proof need rebuilding before applying.');
+    ?'You have usable material, but it is not yet landing as a '+safeTarget+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters before submission.'
+    :sc_cta>=40
+    ?'This profile needs work before submitting to '+safeTarget+'. Full Cycle shows what evidence, readiness and structure need to be in place first.'
+    :'This version is not ready to submit. Full Cycle shows what to build before targeting competitive finance roles.';
 
   return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     +'<title>The Desk — MOT Result</title>'
@@ -685,7 +689,7 @@ function buildResultPage(r, profile, quiz) {
 
     +'<div style="background:#1a1a1a;border-radius:12px;padding:20px;text-align:center;margin-top:16px;">'
       +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">'+( name?name+', unlock your repair plan before you submit.':'Let\'s get your fixes.')+'</div>'
-      +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">'+bandCta+'</div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Specific to your CV, your scores, and '+safeTarget+' — not generic advice.</div>'
       +'<a href="thedesk.vercel.app/mentor.html" style="display:inline-block;background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;text-decoration:none;">Unlock the Full Cycle repair plan — £79 →</a>'
     +'</div>'
 
