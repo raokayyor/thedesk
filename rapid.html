@@ -637,7 +637,12 @@ function buildResultPage(r, profile, quiz) {
     +'</div>';
   }).join('');
 
-  var bandCta = r.fullCycleCta||'Full Cycle shows you the specific repair plan for this application.';
+  var sc_cta=r.overallScore||0;
+  var bandCta = r.fullCycleCta||(sc_cta>=70
+    ?'You have real evidence, but it is not yet sharp enough for '+( firm||'your target firm')+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
+    :sc_cta>=55
+    ?'You have usable material, but it is not yet landing as a '+( firm||'your target firm')+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
+    :'This version is not ready to submit. Full Cycle shows what evidence, numerical readiness and commercial proof need rebuilding before applying.');
 
   return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     +'<title>The Desk — MOT Result</title>'
@@ -672,7 +677,7 @@ function buildResultPage(r, profile, quiz) {
 
     +'<div class="card"><div class="label">4 Priority Gaps</div>'+gapHTML+'</div>'
 
-    +'<div class="card" style="background:#f7f3ee;border:1px solid #e0d8ce;"><div class="label">Locked in Full Cycle — Your personalised repair plan</div><div style="font-size:12px;color:#a85e0a;margin-bottom:12px;">'+bandCta+'</div>'+repairHTML+'</div>'
+    +'<div class="card" style="background:#f7f3ee;border:1px solid #e0d8ce;"><div class="label">Unlocked in Full Cycle — Your personalised repair plan</div><div style="font-size:12px;color:#a85e0a;margin-bottom:12px;">'+bandCta+'</div>'+repairHTML+'</div>'
 
     +(compHTML?'<div class="card"><div class="label">Competencies</div>'+compHTML+'</div>':'')
 
