@@ -2527,11 +2527,11 @@ function rotateDyk(){
 // Rapid test result pickup
 var _rapidData = (function(){
   try{
-    var s=localStorage.getItem('tdesk_rapid_result');
+    var s=sessionStorage.getItem('tdesk_rapid_result');
     if(!s) return null;
     var p=JSON.parse(s);
     if(!p||!p.result) return null;
-    localStorage.removeItem('tdesk_rapid_result');
+    sessionStorage.removeItem('tdesk_rapid_result');
     return p;
   }catch(e){ return null; }
 })();
