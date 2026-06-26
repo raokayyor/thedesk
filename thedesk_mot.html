@@ -2541,10 +2541,11 @@ if(window.location.search.includes('rapidtest=1')){
       setTimeout(function(){showR(_p.result);},100);
     }
   }catch(e){console.error('rapid load error',e);}}
+  // Don't go(0) — rapidtest result is already showing
+} else {
+  D.step = 0;
+  go(0);
 }
-
-D.step = 0;
-go(0);
 var bnEl = document.getElementById('bn');
 if(bnEl) bnEl.style.display='none';
 
