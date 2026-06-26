@@ -2528,8 +2528,10 @@ function rotateDyk(){
 (function(){
   try{
     var _stored=localStorage.getItem('tdesk_rapid_result');
+    alert('RAPID DEBUG: stored='+(!!_stored)+' | keys='+Object.keys(localStorage).join(','));
     if(!_stored) return;
     var _p=JSON.parse(_stored);
+    alert('RAPID DEBUG: _p.result='+(!!_p.result)+' | keys='+Object.keys(_p||{}).join(','));
     if(!_p||!_p.result) return;
     // Clear immediately so refresh doesn't re-trigger
     localStorage.removeItem('tdesk_rapid_result');
