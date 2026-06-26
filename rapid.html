@@ -109,6 +109,12 @@ input[type=file]{display:none;}
     </div>
   </div>
 
+  <div style="margin-bottom:20px;">
+    <button type="button" onclick="generateRandom()" style="width:100%;padding:13px;background:#1a1a1a;color:#F7F3EE;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:sans-serif;">⚡ Generate random test candidate</button>
+    <div id="genStatus" style="font-size:11px;color:#15803D;text-align:center;margin-top:8px;display:none;line-height:1.5;"></div>
+  </div>
+  <div style="height:1px;background:#eee;margin-bottom:16px;"></div>
+
   <label>Upload CV</label>
   <label class="file-btn" for="cvFile" id="dropZone">📄 Drag & drop your CV here, or click to browse<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">PDF or Word · Max 5MB</span></label>
   <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none">
@@ -527,7 +533,17 @@ function generateRandom(){
 
   // Firm and division
   var firmEl=document.getElementById('firm');
-  if(firmEl) firmEl.value=c.firm;
+  if(firmEl){
+    for(var i=0;i<firmEl.options.length;i++){
+      if(firmEl.options[i].value===c.firm||firmEl.options[i].text===c.firm){firmEl.selectedIndex=i;break;}
+    }
+    // If not found, try partial match
+    if(firmEl.value!==c.firm){
+      for(var i=0;i<firmEl.options.length;i++){
+        if(firmEl.options[i].text.includes(c.firm.split(' ')[0])){firmEl.selectedIndex=i;break;}
+      }
+    }
+  }
   var divEl=document.getElementById('division');
   if(divEl) divEl.value=c.div;
 
