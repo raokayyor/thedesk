@@ -2941,26 +2941,44 @@ document.addEventListener('DOMContentLoaded', function(){
     txt+='OVERALL SCORE: '+Math.round(r.overallScore)+'/100 | BAND: '+(r.band||'')+'\n';
     txt+='ARCHETYPE: '+(r.archetype||'')+'\n\n';
     txt+='KILLER SENTENCE:\n'+(r.killerSentence||'')+'\n\n';
+    if(r.recruiterMayMiss) txt+='WHAT A RECRUITER MAY MISS:\n'+r.recruiterMayMiss+'\n\n';
+    if(r.beingMisreadAs)   txt+='BEING MISREAD AS:\n'+r.beingMisreadAs+'\n\n';
+    if(r.uncomfortableTruth) txt+='UNCOMFORTABLE TRUTH:\n'+r.uncomfortableTruth+'\n\n';
     txt+='DIAGNOSTIC:\n'+(r.diagnostic||'')+'\n\n';
+    if(r.fullCycleFirstFix) txt+='FULL CYCLE FIRST FIX DIRECTION:\n'+r.fullCycleFirstFix+'\n\n';
     txt+='QUIZ SCORES: Commercial '+D.fS+'/5 | Numerical '+D.nS+'/5\n\n';
     txt+='6 DIMENSIONS:\n';
     (r.dimensions||[]).forEach(function(d){
       txt+=d.name+': '+Math.round(d.score)+'/100\n';
-      txt+='  Note: '+(d.note||'')+'\n\n';
-    });
-    txt+='4 Priority Gaps:\n';
-    (r.priorities||[]).forEach(function(p,i){ txt+=(i+1)+'. '+p+'\n'; });
-    txt+='3. Numerical: '+D.nS+'/5 ('+Math.round((D.nS/5)*100)+'%)\n';
-    txt+='4. Commercial: '+D.fS+'/5 ('+Math.round((D.fS/5)*100)+'%)\n\n';
-    if(r.competencies){
-      txt+='COMPETENCIES:\n';
-      var cmap={leadership:'Leadership',analytical:'Analytical',commercial:'Commercial',communication:'Communication',resilience:'Resilience',teamwork:'Teamwork'};
-      Object.keys(cmap).forEach(function(k){
-        var c=r.competencies[k]||{};
-        txt+=cmap[k]+': '+(c.evidenced?'Evidenced — '+(c.evidence||''):'Not evidenced')+'\n';
-      });
+      if(d.note) txt+='  Note: '+d.note+'\n';
       txt+='\n';
+    });
+    txt+='4 PRIORITY GAPS:\n';
+    if(Array.isArray(r.priorityGaps)&&r.priorityGaps.length){
+      r.priorityGaps.forEach(function(g,i){
+        txt+=(i+1)+'. '+(g.title||'')+'\n';
+        if(g.risk) txt+='   Risk: '+g.risk+'\n';
+        if(g.whyItMatters) txt+='   Why: '+g.whyItMatters+'\n';
+        if(g.fixType) txt+='   Fix type: '+g.fixType+'\n';
+        txt+='\n';
+      });
     }
+    txt+='COMPETENCIES:\n';
+    if(Array.isArray(r.competencies)){
+      r.competencies.forEach(function(c){
+        txt+=(c.name||'')+': '+(c.status||'Not yet evidenced');
+        if(c.note) txt+=' — '+c.note;
+        txt+='\n';
+      });
+    } else if(r.competencies){
+      Object.keys(r.competencies).forEach(function(k){
+        var c=r.competencies[k]||{};
+        var st=c.status||(c.evidenced?'Evidenced':'Not yet evidenced');
+        txt+=k+': '+st+(c.note?' — '+c.note:'')+'\n';
+      });
+    }
+    txt+='\n';
+    if(r.fullCycleFit) txt+='FULL CYCLE FIT: '+r.fullCycleFit+'\n'+(r.fullCycleReason||'')+'\n\n';
     txt+='====================================\n';
     txt+='Please analyse this application MOT result and give me:\n';
     txt+='1. Your view on the most critical issues\n';
@@ -2979,6 +2997,4 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-</script>
-</body>
-</html>
+
