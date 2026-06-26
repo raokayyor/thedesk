@@ -346,7 +346,6 @@ async function run(){
     data=await resp.json();
     var elapsed=((Date.now()-t)/1000).toFixed(1);
 
-    alert('API response: success='+data.success+' | hasResult='+(!!data.result)+' | error='+(data.error||data.message||'none'));
     if(data.success && data.result){
       status.textContent='✓ Done in '+elapsed+'s — opening result...';
       // Store D values from profile
@@ -361,10 +360,10 @@ async function run(){
       var r=data.result;
       var firm=profile.targetFirm||'your target firm';
       var html=buildResultPage(r, profile, quiz);
-      var blob=new Blob([html],{type:'text/html'});
-      var url=URL.createObjectURL(blob);
-      window.open(url,'_blank');
-      btn.disabled=false; btn.textContent='Run assessment →';
+      // Write result directly into current page to avoid popup blockers
+      document.open();
+      document.write(html);
+      document.close();
     } else {
       status.className='status err';
       status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
