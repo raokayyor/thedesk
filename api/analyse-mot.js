@@ -148,105 +148,115 @@ export default async function handler(req, res) {
       result.band = sc2>=85?'Strong':sc2>=70?'Competitive':sc2>=55?'Borderline':sc2>=40?'Weak':'Not yet ready';
     }
 
-    // 2. Ensure priorityGaps is always exactly 4 structured objects
+    // 2. Ensure priorityGaps always has exactly 4 with correct fields
+    var namedD = result.namedCvDetails || [];
+    var diagT = ((result.diagnostic||'')+(result.killerSentence||'')+ namedD.join(' ')).toLowerCase();
+    var dims4 = result.dimensions || [];
     var pgOk = Array.isArray(result.priorityGaps) && result.priorityGaps.length === 4
-            && result.priorityGaps.every(function(g){ return g && typeof g === 'object' && g.title; });
+            && result.priorityGaps.every(function(g){ return g && g.title; });
     if (!pgOk) {
-      var dims2 = result.dimensions || [];
-      var techDim2 = dims2.find(function(d){ return d.name === 'Technical Readiness'; }) || {};
-      var commDim2 = dims2.find(function(d){ return d.name === 'Commercial Awareness'; }) || {};
+      var techD = dims4.find(function(d){ return d.name==='Technical Readiness'; }) || {};
+      var commD = dims4.find(function(d){ return d.name==='Commercial Awareness'; }) || {};
       var pris2 = result.priorities || [];
-      var techSc2 = techDim2.score || 50;
-      var commSc2 = commDim2.score || 50;
       result.priorityGaps = [
         { title: pris2[0] || 'Application positioning needs work',
-          risk: pris2[0] || 'The CV is not yet translating evidence into a clear first-screen story.',
-          whyItMatters: 'Screeners spend under 30 seconds on first pass. If the story is unclear, the application is filtered before interview depth.',
-          fixType: 'Reframe the CV around the target route using the strongest named evidence.',
-          fullCycleTeaser: 'Full Cycle would rebuild the application story around the most credible evidence for this route.' },
-        { title: pris2[1] || 'Evidence is present but under-framed',
-          risk: pris2[1] || 'The strongest CV signals are not being presented in a way that lands with a screener.',
-          whyItMatters: 'Evidence buried in generic descriptions reads as participation, not analytical ownership.',
-          fixType: 'Surface the strongest signals and reframe around outcomes, judgement and route-specific language.',
-          fullCycleTeaser: 'Full Cycle would identify what to lead with and rebuild the evidence hierarchy.' },
-        { title: 'Technical readiness' + (techSc2 < 70 ? ' — below screening threshold' : ' — maintain under pressure'),
-          risk: 'Technical score of ' + Math.round(techSc2) + '/100 ' + (techSc2 < 70 ? 'suggests risk at automated numerical screening.' : 'must hold under timed HireVue conditions.'),
-          whyItMatters: 'Most tier-1 banks use automated numerical screening before a human reads the application.',
-          fixType: 'Targeted timed numerical practice on the specific question types used at this firm.',
-          fullCycleTeaser: 'Full Cycle gives you unlimited timed SHL, Korn Ferry and Cubiks practice with worked solutions.' },
+          visibleRisk: 'The CV is not yet translating evidence into a clear first-screen story.',
+          lockedWhyItMatters: 'Screeners spend under 30 seconds on first pass.',
+          lockedFixType: 'Reframe around the target route using the strongest named evidence.',
+          lockedFullCycleTeaser: 'Full Cycle would rebuild the application story.' },
+        { title: pris2[1] || 'Evidence present but under-framed',
+          visibleRisk: 'The strongest CV signals are not landing clearly with a screener.',
+          lockedWhyItMatters: 'Evidence buried in generic descriptions reads as participation, not ownership.',
+          lockedFixType: 'Surface the strongest signals and reframe around outcomes.',
+          lockedFullCycleTeaser: 'Full Cycle would identify what to lead with.' },
+        { title: 'Technical readiness'+(( techD.score||50) < 70?' — below screening threshold':' — maintain under pressure'),
+          visibleRisk: 'Technical score of '+Math.round(techD.score||50)+'/100 '+(( techD.score||50) < 70?'is a screening risk at this firm.':'must hold under real timed conditions.'),
+          lockedWhyItMatters: 'Most tier-1 banks use automated numerical screening before a human reads the application.',
+          lockedFixType: 'Targeted timed numerical practice on the specific question types used at this firm.',
+          lockedFullCycleTeaser: 'Full Cycle gives you unlimited timed SHL, Korn Ferry and Cubiks practice.' },
         { title: 'Commercial awareness — connecting events to deal consequences',
-          risk: 'Commercial score of ' + Math.round(commSc2) + '/100 suggests market awareness at headline level with possible gap in deal-consequence reasoning.',
-          whyItMatters: 'Interviewers test whether you can connect a macro event to deal flow, M&A consequences or valuation impact.',
-          fixType: 'Build a framework for connecting current events to the sectors and transaction types relevant to the target firm.',
-          fullCycleTeaser: 'Full Cycle includes weekly market briefings and commercial awareness primers.' }
+          visibleRisk: 'Commercial score of '+Math.round(commD.score||50)+'/100 suggests market awareness at headline level with a gap in deal-consequence reasoning.',
+          lockedWhyItMatters: 'Interviewers test whether you can connect a macro event to deal flow.',
+          lockedFixType: 'Build a framework for connecting current events to the target sectors.',
+          lockedFullCycleTeaser: 'Full Cycle includes weekly market briefings and commercial awareness primers.' }
       ];
       console.log('REPAIR: rebuilt priorityGaps');
     }
+    // Migrate old field names to new ones
+    result.priorityGaps.forEach(function(g){
+      if (!g.visibleRisk && g.risk) g.visibleRisk = g.risk;
+      if (!g.lockedWhyItMatters && g.whyItMatters) g.lockedWhyItMatters = g.whyItMatters;
+      if (!g.lockedFixType && g.fixType) g.lockedFixType = g.fixType;
+      if (!g.lockedFullCycleTeaser && g.fullCycleTeaser) g.lockedFullCycleTeaser = g.fullCycleTeaser;
+    });
 
-    // 3. Repair competencies
-    var namedDetails2 = result.namedCvDetails || [];
-    var diagText2 = ((result.diagnostic||'') + ' ' + (result.killerSentence||'') + ' ' + namedDetails2.join(' ')).toLowerCase();
-    var dims3 = result.dimensions || [];
-    var techDim3 = dims3.find(function(d){ return d.name==='Technical Readiness'; }) || {};
-    var hasAnalytical = (techDim3.score > 70) || /dissert|research|model|valuat|python|quant|analy|intern/.test(diagText2);
-
-    if (Array.isArray(result.competencies) && result.competencies.length > 0) {
-      var allNotEv = result.competencies.every(function(c){ return c.status === 'Not yet evidenced'; });
-      if (allNotEv) {
-        result.competencies.forEach(function(c) {
-          if (c.name === 'Analytical' && (hasAnalytical || /dissert|model|valuat|python|quant|analy/.test(diagText2))) {
-            c.status = 'Evidenced';
-            c.note = (namedDetails2[0]||'Technical work') + ' provides analytical evidence. The framing for the target route needs to be sharper.';
-          }
-          if (c.name === 'Resilience' && /waiter|barista|retail|tesco|costa|part.time|hrs.week|sport|marathon/.test(diagText2)) {
-            c.status = 'Partially evidenced';
-            c.note = 'Consistent commitments alongside study show reliability under pressure. Supporting evidence rather than a core finance signal.';
-          }
-          if (c.name === 'Communication' && /president|present|pitch|tutor|debate|society|speaker|publish/.test(diagText2)) {
-            c.status = 'Partially evidenced';
-            c.note = 'Communication context is present but not yet framed as a deliberate competency signal.';
-          }
-          if (c.name === 'Leadership' && /president|captain|committee|chair|manag|led|head|founder/.test(diagText2)) {
-            c.status = 'Evidenced';
-            c.note = 'Leadership evidence present. Needs named outcomes rather than titles to land clearly with a screener.';
-          }
-          if (c.name === 'Teamwork' && /team|society|group|club|squad|collab|member/.test(diagText2)) {
-            c.status = 'Partially evidenced';
-            c.note = 'Team context is present but not yet shown as a deliberate competency signal.';
-          }
-          if (c.name === 'Commercial' && /investment society|stock|equity|portfolio|market|commercial|deal|trading/.test(diagText2)) {
-            c.status = 'Partially evidenced';
-            c.note = 'Commercial interest is evident but needs to be translated into active market reasoning, not just participation.';
-          }
-        });
-        console.log('REPAIR: fixed all-Not-evidenced competencies');
+    // 3. Migrate dimension notes to visibleSummary/lockedDetail
+    dims4.forEach(function(d){
+      if (d.note && !d.visibleSummary) {
+        var sentences = d.note.split(/\.\s+/);
+        d.visibleSummary = sentences[0] + '.';
+        d.lockedDetail = sentences.slice(1).join('. ');
+        if (!d.lockedDetail) d.lockedDetail = d.note;
       }
+    });
+
+    // 4. Repair competencies
+    var allComp = Array.isArray(result.competencies) && result.competencies.length === 6;
+    if (allComp) {
+      var allNotEv = result.competencies.every(function(c){ return c.status === 'Not yet evidenced'; });
+      result.competencies.forEach(function(c){
+        // Migrate old fields
+        if (!c.visibleReason && c.note) c.visibleReason = c.note;
+        if (!c.lockedImprovement) c.lockedImprovement = 'Full Cycle shows how to strengthen and position this competency for the target route.';
+
+        if (allNotEv) {
+          if (c.name === 'Analytical' && (( diagT.indexOf('dissert')>-1)||( diagT.indexOf('research')>-1)||( diagT.indexOf('model')>-1)||( diagT.indexOf('quant')>-1)||( diagT.indexOf('python')>-1)||( diagT.indexOf('valuat')>-1)||( diagT.indexOf('analy')>-1))) {
+            c.status = 'Partially evidenced';
+            c.visibleReason = 'Research or technical work shows analytical potential, but not yet finance-specific analysis.';
+          }
+          if (c.name === 'Communication' && (( diagT.indexOf('dissert')>-1)||( diagT.indexOf('essay')>-1)||( diagT.indexOf('history')>-1)||( diagT.indexOf('waiter')>-1)||( diagT.indexOf('customer')>-1)||( diagT.indexOf('society')>-1))) {
+            c.status = 'Partially evidenced';
+            c.visibleReason = 'Written and customer-facing experience suggests communication ability, but not yet as a deliberate signal.';
+          }
+          if (c.name === 'Resilience' && (( diagT.indexOf('waiter')>-1)||( diagT.indexOf('barista')>-1)||( diagT.indexOf('tesco')>-1)||( diagT.indexOf('retail')>-1)||( diagT.indexOf('part-time')>-1)||( diagT.indexOf('part time')>-1)||( diagT.indexOf('hrs')>-1))) {
+            c.status = 'Partially evidenced';
+            c.visibleReason = 'Sustained work alongside study shows reliability under pressure, though not yet a finance signal.';
+          }
+          if (c.name === 'Teamwork' && (( diagT.indexOf('society')>-1)||( diagT.indexOf('team')>-1)||( diagT.indexOf('waiter')>-1)||( diagT.indexOf('group')>-1)||( diagT.indexOf('intern')>-1))) {
+            c.status = 'Partially evidenced';
+            c.visibleReason = 'Work and activity context shows some team exposure, but not yet a named collaborative signal.';
+          }
+          if (c.name === 'Leadership' && (( diagT.indexOf('president')>-1)||( diagT.indexOf('captain')>-1)||( diagT.indexOf('committee')>-1)||( diagT.indexOf('chair')>-1)||( diagT.indexOf('head')>-1))) {
+            c.status = 'Evidenced';
+            c.visibleReason = 'Leadership role present. Needs named outcomes to land clearly.';
+          }
+        }
+      });
+    } else {
+      result.competencies = [
+        {name:'Leadership',status:'Not yet evidenced',visibleReason:'No clear ownership or committee role is visible yet.',lockedImprovement:'Full Cycle identifies whether existing experience can show ownership, or whether new evidence is needed.'},
+        {name:'Analytical',status:(diagT.indexOf('dissert')>-1||diagT.indexOf('model')>-1||diagT.indexOf('quant')>-1)?'Partially evidenced':'Not yet evidenced',visibleReason:'Research or technical work shows potential but not yet finance-specific analysis.',lockedImprovement:'Full Cycle shows how to position this without overstating it.'},
+        {name:'Commercial',status:'Not yet evidenced',visibleReason:'Interest in finance is visible but active commercial reasoning is not yet evidenced.',lockedImprovement:'Full Cycle identifies what commercial evidence to build before applying.'},
+        {name:'Communication',status:'Partially evidenced',visibleReason:'Written and customer-facing experience suggests communication ability.',lockedImprovement:'Full Cycle shows how to translate this into application evidence.'},
+        {name:'Resilience',status:(diagT.indexOf('waiter')>-1||diagT.indexOf('barista')>-1||diagT.indexOf('retail')>-1||diagT.indexOf('part')>-1)?'Partially evidenced':'Not yet evidenced',visibleReason:'Work experience shows reliability, but not yet positioned as a finance signal.',lockedImprovement:'Full Cycle shows where this supports the application.'},
+        {name:'Teamwork',status:'Partially evidenced',visibleReason:'Work and activity context shows team exposure, but not yet a named signal.',lockedImprovement:'Full Cycle identifies whether this is enough or whether a stronger example is needed.'}
+      ];
+      console.log('REPAIR: rebuilt competencies from scratch');
     }
 
-    // 4. Ensure new conversion fields have fallback values
-    var top2 = namedDetails2[0] || 'key experience';
-    if (!result.recruiterMayMiss) {
-      result.recruiterMayMiss = 'The strongest signal in this CV is ' + top2 + ', but it may currently read as participation rather than evidence of judgement. A screener spending 20 seconds on this application may not identify it as the lead piece of evidence for this route.';
-    }
-    if (!result.beingMisreadAs) {
-      result.beingMisreadAs = 'You are being read as interested in this route, but not yet ready for it.';
-    }
-    if (!result.uncomfortableTruth) {
-      result.uncomfortableTruth = 'The problem is not the quality of the experience. It is that the application makes the recruiter work too hard to find the right signals.';
-    }
-    if (!result.fullCycleFirstFix) {
-      result.fullCycleFirstFix = 'Full Cycle would start by rebuilding the application around ' + top2 + ' — translating it into clearer route-specific evidence.';
-    }
-    if (!result.lockedFixPreview) {
-      result.lockedFixPreview = 'Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, the route-specific application story, and the specific language that makes this profile legible to a screener in under 20 seconds.';
-    }
+    // 5. Ensure new narrative fields have fallback values
+    var top2 = namedD[0] || 'key experience';
+    if (!result.recruiterMayMiss) result.recruiterMayMiss = 'The strongest signal in this CV is '+top2+', but it may currently read as participation rather than evidence of judgement.';
+    if (!result.beingMisreadAs) result.beingMisreadAs = 'You are being read as interested in this route, but not yet ready for it.';
+    if (!result.uncomfortableTruth) result.uncomfortableTruth = 'The problem is not the quality of the experience. It is that the application makes the recruiter work too hard to find the right signals.';
+    if (!result.fullCycleFirstFix) result.fullCycleFirstFix = 'Full Cycle would start by rebuilding the application around '+top2+'.';
+    if (!result.lockedFixPreview) result.lockedFixPreview = 'Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story.';
     if (!result.fullCycleCta) {
       var sc3 = result.overallScore || 0;
-      result.fullCycleCta = sc3 >= 70
-        ? 'You have enough to work with. Full Cycle would focus on turning ' + top2 + ' into a cleaner first-screen application.'
-        : sc3 >= 55
-        ? 'This is the core Full Cycle use case — credible raw material, but not yet enough clarity or technical confidence to submit comfortably.'
-        : 'Do not submit this version yet. Full Cycle would focus on rebuilding the base: evidence, direction, technical readiness and application structure.';
+      result.fullCycleCta = sc3>=70?'You have real evidence. Full Cycle shows how to turn it into a cleaner first-screen application before the firm sees it.'
+        :sc3>=55?'You have usable material. Full Cycle shows how to rebuild the application around the evidence that matters.'
+        :sc3>=40?'Do not submit this version yet. Full Cycle shows what evidence, numerical readiness and commercial proof need rebuilding before applying.'
+        :'This version is not ready to submit. Full Cycle shows what needs to be rebuilt before targeting competitive finance roles.';
     }
 
     // ── END REPAIR ──────────────────────────────────────────────────────────────
@@ -584,50 +594,76 @@ CANDIDATE CV TEXT:
 ${cvText}
 """
 
-OUTPUT — respond ONLY with valid JSON, no markdown, no backticks, no preamble. Before returning, silently check: (1) does the killer sentence name real CV evidence? (2) namedCvDetails has 3-6 real items? (3) every dimension note references specific evidence? (4) exactly 4 priority gaps? (5) quiz scores folded into gaps not standalone? (6) competencies consistent with diagnostic? (7) at least one section creates the "being misread as" feeling? (8) Full Cycle feels like repair plan without giving the fix? (9) result specific enough to not feel generic? (10) result withholds enough that student still has reason to pay?
+OUTPUT — respond ONLY with valid JSON, no markdown, no backticks, no preamble.
 
-FREE VS PAID BOUNDARY — the free result may reveal: diagnosis, risk, what evidence matters, what type of fix is needed, why the candidate is being misread, what Full Cycle would work on. The free result must NOT reveal: final rewritten CV bullets, complete route narrative, full application answer, full commercial scripts, bank-specific wording, complete HireVue answers, detailed interview scripts. If the model starts to give a full solution, stop at teaser level.
+COMMERCIAL RULE: The free result shows diagnosis only. The repair plan is locked in Full Cycle.
+- visibleSummary / visibleRisk / visibleReason = short, diagnostic, "what is wrong" only
+- lockedDetail / lockedWhyItMatters / lockedFixType / lockedFullCycleTeaser / lockedImprovement = deeper analysis and repair direction — do NOT give these away in visible fields
+
+QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) namedCvDetails has 3-6 real items (3) exactly 4 priorityGaps (4) exactly 6 competencies (5) not all competencies "Not yet evidenced" unless CV has almost no content (6) Analytical must be at least Partially evidenced if dissertation/research/modelling/quant/coding/numerical 4+/5 exists (7) Communication must be at least Partially evidenced if essay degree/dissertation/customer-facing/society role exists (8) Resilience must be at least Partially evidenced if part-time work/demanding schedule/sport exists (9) visibleSummary is SHORT — one sentence max (10) lockedDetail contains the full analysis
 
 {
-"overallScore":[integer 0-100. Calibrate fairly: LSE + Barclays Rates Sales + Markets Society President + 4/5 numerical should not be below high 60s. Oxford + KKR + Goldman Insight + 5/5 numerical should be Competitive. Warwick + Lazard + Finance Society + low quiz scores can be Borderline. Score reflects both raw candidate strength AND application readiness. If raw strength is strong but positioning weak, score 65-75 range.],
-"band":"[MUST be exactly one of: Strong, Competitive, Borderline, Weak, Not yet ready. 85-100=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready. Never write anything else.]",
-"archetype":"[3-7 words. Clean, human, memorable. Examples: Credible IBD Candidate Technical Risk | Strong Raw Material Weak Framing | Commercially Curious Not Yet Interview-Ready | Elite but Unfocused | Markets Signal Unclear Story | Competitive Raw Material Under-Positioned | Generic Good Candidate | Not Yet Ready to Submit]",
-"killerSentence":"[One sharp sentence: strongest evidence + hidden risk + target route consequence. Must name a real CV item. Must identify the hidden risk. Must not give the fix. Example: Your Barclays Rates Sales internship and macro dashboard are real S&T evidence, but right now they read as desk exposure rather than market instinct.]",
-"namedCvDetails":["[3-6 specific named items from this CV only — employer names, project titles, society roles, module names, qualifications. Do not invent.]"],
-"recruiterMayMiss":"[2-4 sentences. What is the strongest hidden or underused signal and why may a recruiter miss it? Must name at least 1 specific CV item. Explain why the evidence may be missed, buried, or undervalued. Do NOT provide the rewritten version. Example: Your strongest S&T signal is the Barclays Rates Sales internship, but the CV presents it as tasks rather than evidence of market judgement.]",
-"beingMisreadAs":"[1 sentence. How is this profile currently being wrongly read? Must be specific, slightly uncomfortable, not insulting, not fixing. Example: You are being read as someone with desk exposure, not yet someone with a market view. OR: You are being read as interested in IBD, not yet ready for IBD.]",
-"uncomfortableTruth":"[1-2 sentences. Blunt but constructive. Band-specific urgency. For strong: lost edge. For borderline: fixable risk. For weak: do not submit yet. Do not give the fix. Example: You are not a weak candidate. You are a candidate with usable material that is not yet being translated into first-screen proof.]",
-"diagnostic":"[2-3 sentences. Direct, track-specific, practitioner-voiced. Must name at least one specific CV detail. Must identify the hidden risk and route consequence.]",
-"fullCycleFirstFix":"[What Full Cycle would work on first — repair area only, not the fix. Must mention 1-3 named CV items. Must feel specific and valuable. Must NOT provide rewritten bullets, final wording, or exact answers. Must NOT sound like an advert. Example: Full Cycle would start by rebuilding the Barclays Rates Sales internship and macro dashboard into a clearer S&T story — showing market instinct, rates reasoning and risk/reward judgement rather than desk-exposure tasks.]",
-"lockedFixPreview":"[What sits inside Full Cycle — creates curiosity without revealing the answer. Must feel specific and valuable. Must NOT be vague. Example: Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story. OR: Locked in Full Cycle: how to turn this internship into a market-view bullet, what to cut, and how to answer the likely HireVue follow-up.]",
+"overallScore":[integer 0-100. Calibrate fairly — strong profiles with positioning issues should be 60-75, not below 50],
+"band":"[MUST be exactly: Strong, Competitive, Borderline, Weak, or Not yet ready. 85+=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready]",
+"archetype":"[3-7 words. Clean, human, memorable. E.g.: Credible IBD Candidate Technical Risk | Strong Raw Material Weak Framing | Early-Stage Evidence Gap | Commercially Curious Not Yet Interview-Ready | Elite but Unfocused]",
+"killerSentence":"[One sharp sentence: strongest named CV evidence + hidden risk + route consequence. Must name a real CV item. Must not give the repair.]",
+"namedCvDetails":["[3-6 specific named items from this CV — employer names, project titles, society roles, module names. Do not invent.]"],
+"recruiterMayMiss":"[2-4 sentences. What is the strongest hidden or underused signal and why may a recruiter miss it? Must name a CV item. Do NOT provide the rewrite. Creates the it-sees-me feeling.]",
+"beingMisreadAs":"[1 sentence. How is this profile currently being misread? Specific and slightly uncomfortable. E.g.: You are being read as interested in IBD, not yet ready for IBD.]",
+"uncomfortableTruth":"[1-2 sentences. Blunt but constructive. Band-specific. Do not give the fix.]",
+"diagnostic":"[2-3 sentences. Direct, practitioner-voiced, named CV details. Diagnosis only — not the repair.]",
+"fullCycleFirstFix":"[Direction of first repair area — 1-2 sentences naming CV items. Do not give the actual rewrite or fix language.]",
+"lockedFixPreview":"[What sits inside Full Cycle — creates curiosity. Must feel specific. Must NOT reveal the fix. E.g.: Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story.]",
 "dimensions":[
-{"name":"Academic Signal","score":[0-100],"note":"[1-2 sentences. Name the actual university and degree. If grade provided, apply grade handling rules. Genuine practitioner read — not coaching language.]"},
-{"name":"Experience Relevance","score":[0-100],"note":"[1-2 sentences. Name the specific experience. Identify what it shows and what it currently fails to show for the target route.]"},
-{"name":"Commercial Awareness","score":[0-100],"note":"[1 sentence. Reference the quiz score AND any commercial CV signals. What does the profile reveal about market reasoning vs just market interest?]"},
-{"name":"Technical Readiness","score":[0-100],"note":"[1 sentence. Reference the numerical quiz score. What does it mean for HireVue or screening at this firm?]"},
-{"name":"Application Positioning","score":[0-100],"note":"[1 sentence. What reads weakly or strongly on first screen? Name specific evidence.]"},
-{"name":"Directional Clarity","score":[0-100],"note":"[1 sentence. Does the CV read as intentional for this route and firm, or generic? Reference specific evidence.]"}
+{"name":"Academic Signal","score":[0-100],
+ "visibleSummary":"[One sentence. Diagnostic only. E.g.: Strong academic reasoning, but not yet translated into finance-relevant evidence.]",
+ "lockedDetail":"[Full paragraph. Deeper analysis, named CV details, repair direction. This is locked in Full Cycle.]"},
+{"name":"Experience Relevance","score":[0-100],
+ "visibleSummary":"[One sentence. What the experience shows and what it currently fails to show.]",
+ "lockedDetail":"[Full paragraph with repair direction. Locked in Full Cycle.]"},
+{"name":"Commercial Awareness","score":[0-100],
+ "visibleSummary":"[One sentence referencing quiz score and CV signals.]",
+ "lockedDetail":"[Full commercial analysis and what Full Cycle would address. Locked.]"},
+{"name":"Technical Readiness","score":[0-100],
+ "visibleSummary":"[One sentence referencing numerical quiz score and what it means for HireVue.]",
+ "lockedDetail":"[Full technical analysis and prep direction. Locked.]"},
+{"name":"Application Positioning","score":[0-100],
+ "visibleSummary":"[One sentence. What reads weakly or strongly on first screen.]",
+ "lockedDetail":"[Full positioning analysis. Locked.]"},
+{"name":"Directional Clarity","score":[0-100],
+ "visibleSummary":"[One sentence. Intentional or generic for this route and firm.]",
+ "lockedDetail":"[Full directional analysis and narrative repair. Locked.]"}
 ],
 "priorityGaps":[
-{"title":"[4-8 word title]","risk":"[Specific risk using named CV evidence]","whyItMatters":"[Why this matters for the exact target route and firm]","fixType":"[Type of fix required — not the actual fix. E.g.: Reframe the experience around market reasoning rather than tasks completed.]","fullCycleTeaser":"[What Full Cycle would do — repair area not the fix. E.g.: Full Cycle would rebuild this section into a stronger S&T evidence block.]"},
-{"title":"[gap 2]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""},
-{"title":"[gap 3 — address numerical score with actual score number]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""},
-{"title":"[gap 4 — address commercial awareness with actual score number]","risk":"","whyItMatters":"","fixType":"","fullCycleTeaser":""}
+{"title":"[4-8 words]",
+ "visibleRisk":"[One sentence. What the problem is — diagnosis only. No repair.]",
+ "lockedWhyItMatters":"[Why this matters specifically for this route and firm. Locked.]",
+ "lockedFixType":"[Type of repair needed. Locked.]",
+ "lockedFullCycleTeaser":"[What Full Cycle does for this gap. Locked.]"},
+{"title":"[gap 2]","visibleRisk":"","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""},
+{"title":"[gap 3 — numerical readiness with actual score]","visibleRisk":"[Include actual score and screening risk]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""},
+{"title":"[gap 4 — commercial awareness with actual score]","visibleRisk":"[Include actual score and interview risk]","lockedWhyItMatters":"","lockedFixType":"","lockedFullCycleTeaser":""}
 ],
 "competencies":[
-{"name":"Leadership","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences using named CV evidence. If not evidenced, explain what would count — never invent.]"},
-{"name":"Analytical","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
-{"name":"Commercial","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
-{"name":"Communication","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
-{"name":"Resilience","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"},
-{"name":"Teamwork","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]","note":"[1-2 sentences]"}
+{"name":"Leadership",
+ "status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]",
+ "visibleReason":"[One sentence. What is or is not evidenced. No repair language.]",
+ "lockedImprovement":"[How Full Cycle would strengthen or position this competency. Locked.]"},
+{"name":"Analytical","status":"[MUST be at least Partially evidenced if dissertation/research/modelling/quant/numerical 4+/5 exists]",
+ "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"},
+{"name":"Commercial","status":"[Only Evidenced/Strong if active market reasoning, deal exposure, or investment research exists — not just interest]",
+ "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"},
+{"name":"Communication","status":"[MUST be at least Partially evidenced if essay degree/dissertation/customer-facing/society/presentations exist]",
+ "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"},
+{"name":"Resilience","status":"[MUST be at least Partially evidenced if part-time work/demanding schedule/competitive sport exists]",
+ "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"},
+{"name":"Teamwork","status":"[MUST be at least Partially evidenced if internship/group project/society/hospitality/sport exists]",
+ "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"}
 ],
-"fullCycleFit":"[High: score 50-75, credible raw material, specific fixable weaknesses, competitive target route. Medium: strong candidate needing final edge, or weak candidate with some usable evidence. Low: too weak needing foundation work first, or already very strong needing only marginal polish.]",
-"fullCycleReason":"[1-2 sentences. Why High/Medium/Low? Reference named CV details. Example: This is the core Full Cycle use case — credible finance evidence from Lazard and Finance Society, but not yet enough technical confidence or first-screen positioning to submit comfortably.]",
-"fullCycleCta":"[Personalised CTA using named CV evidence. Must NOT say upgrade now. Must feel like natural next step. Band-specific. Examples — Borderline IBD: This is the core Full Cycle use case: credible finance evidence from Lazard and Finance Society, but not yet enough technical confidence or first-screen positioning to submit comfortably. Competitive S&T: You have real markets evidence. Full Cycle would focus on turning the Barclays Rates Sales internship and macro dashboard into a sharper S&T story before Morgan Stanley sees it.]",
-"candidateName":"[First name from CV header if present, else empty string]",
-"specificSignalNoticed":"[Single most distinctive named CV item used in diagnostic]",
-"paidHook":"[1 sentence — what a deeper review would focus on, referencing named CV detail. Do not give the fix.]",
+"fullCycleFit":"[High: score 50-75, credible material, specific fixable weaknesses. Medium: strong needing edge or weak with some material. Low: too weak for FC yet, or already very strong needing only polish]",
+"fullCycleReason":"[1-2 sentences with named CV evidence. Locked direction, not free repair.]",
+"fullCycleCta":"[Band-specific. Weak: Do not submit yet — Full Cycle shows what evidence, numerical readiness and commercial proof need rebuilding. Borderline: You have usable material. Full Cycle shows how to rebuild the application around the evidence that matters. Competitive: You have real evidence. Full Cycle shows how to turn it into a cleaner first-screen application. Strong: You are close. Full Cycle focuses on evidence hierarchy, firm-specific positioning and interview pressure points. Personalise with named CV evidence.]",
+"candidateName":"[First name from CV if present, else empty string]",
 "cvSpecificityWarning":"[Empty string if named details found. If no named detail: No named CV details could be confidently extracted from this document.]"
 }`;
 }
