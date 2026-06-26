@@ -276,7 +276,9 @@ export default async function handler(req, res) {
       /analytical ownership/gi, /deal rationale/gi, /market instinct/gi,
       /yield curve/gi, /central bank positioning/gi, /rates direction/gi,
       /capital allocation/gi, /thesis defence/gi, /downside protection/gi,
-      /client flow reasoning/gi, /risk\/reward/gi, /rates intuition/gi
+      /client flow reasoning/gi, /rates intuition/gi,
+      /the fix is to/gi, /to identify or create/gi, /a valuation exercise/gi,
+      /a deal write.up/gi, /before submission\./gi, /before applying\./gi
     ];
 
     function sanitiseFreeField(text) {
@@ -307,6 +309,23 @@ export default async function handler(req, res) {
         ? 'This profile needs work before submitting to competitive finance roles. Full Cycle shows what evidence, readiness and structure need to be in place first.'
         : 'This version is not ready to submit. Full Cycle shows what to build before targeting competitive finance roles.'
     );
+
+    // Sanitise diagnostic — strip any fix/solution language at the end
+    if (result.diagnostic) {
+      var diagSentences = result.diagnostic.split(/\.\s+/);
+      var cleanDiag = [];
+      var hitRepair = false;
+      diagSentences.forEach(function(s) {
+        if (!hitRepair && /the fix is|to identify|to create|to build|to reframe|a valuation|a deal write|before submission|before applying|needs to become|should become/i.test(s)) {
+          hitRepair = true;
+        }
+        if (!hitRepair) cleanDiag.push(s);
+      });
+      if (hitRepair) {
+        result.diagnostic = cleanDiag.join('. ') + (cleanDiag.length ? '.' : '');
+        console.log('SANITISE: stripped repair language from diagnostic');
+      }
+    }
 
     // Sanitise fullCycleFirstFix — if it reveals strategy, replace with safe version
     var fixSanitised = sanitiseFreeField(result.fullCycleFirstFix);
