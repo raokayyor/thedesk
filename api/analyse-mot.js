@@ -191,14 +191,41 @@ export default async function handler(req, res) {
 
     if (Array.isArray(result.competencies) && result.competencies.length > 0) {
       const allNotEvidenced = result.competencies.every(c => c.status === 'Not yet evidenced');
-      if (allNotEvidenced && hasAnalyticalEvidence) {
-        // Fix analytical competency at minimum
-        const analytical = result.competencies.find(c => c.name === 'Analytical');
-        if (analytical) {
-          analytical.status = 'Evidenced';
-          analytical.note = `The ${namedDetails[0] || 'technical work'} in this CV shows analytical capability. The issue is not ability — it is how the evidence is framed for the target route.`;
+      if (allNotEvidenced) {
+        console.log('REPAIR: all competencies Not evidenced — applying evidence-based repair');
+        const diagText = (result.diagnostic||'') + ' ' + (result.killerSentence||'') + ' ' + namedDetails.join(' ');
+        const cvText = diagText.toLowerCase();
+
+        // Analytical — if any technical/research/modelling evidence
+        if (hasAnalyticalEvidence || /dissert|research|model|valuat|python|r |sql|quant|analy/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Analytical');
+          if(c){ c.status='Evidenced'; c.note=`${namedDetails[0]||'Research or technical work'} provides analytical evidence. The framing for the target route needs to be sharper.`; }
         }
-        console.log('REPAIR: fixed all-Not-evidenced competencies');
+        // Resilience — if part-time work, sport, or demanding schedule
+        if (/waiter|barista|retail|tesco|costa|part.time|15.hrs|20.hrs|sport|marathon|endur|rugby|cricket|football/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Resilience');
+          if(c){ c.status='Partially evidenced'; c.note=`${namedDetails.find(d=>/waiter|barista|retail|tesco/i.test(d))||'Part-time or demanding commitments'} show consistency under pressure. Supporting evidence, not a finance signal.`; }
+        }
+        // Communication — if presenting, pitching, tutoring, debating, writing
+        if (/present|pitch|tutor|debate|society|president|speaker|writ|publish/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Communication');
+          if(c){ c.status='Partially evidenced'; c.note='Communication evidence is present but not yet framed as a clear signal for the target route.'; }
+        }
+        // Leadership — if captaining, president, committee, managing
+        if (/president|captain|committee|chair|manag|led|head|founder|co-found/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Leadership');
+          if(c){ c.status='Evidenced'; c.note='Leadership evidence present. Needs to show named outcomes, not just titles, to land clearly with a screener.'; }
+        }
+        // Teamwork — if team sport, group project, society
+        if (/team|society|group|club|squad|member|collab/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Teamwork');
+          if(c){ c.status='Partially evidenced'; c.note='Team context is present but not yet shown as a deliberate competency signal.'; }
+        }
+        // Commercial — if investment society, stock pitch, market commentary
+        if (/investment society|stock|equity|portfolio|market|commercial|deal|m&a|trading/i.test(cvText)) {
+          const c = result.competencies.find(c=>c.name==='Commercial');
+          if(c){ c.status='Partially evidenced'; c.note='Commercial interest is evident from the CV but needs to be translated into active market reasoning, not just participation.'; }
+        }
       }
     } else {
       // Competencies missing entirely — build basic set
