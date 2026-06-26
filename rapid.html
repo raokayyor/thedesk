@@ -347,17 +347,23 @@ async function run(){
     var elapsed=((Date.now()-t)/1000).toFixed(1);
 
     if(data.success && data.result){
-      status.textContent='✓ Done in '+elapsed+'s — loading result...';
-      // Store everything in localStorage for thedesk_mot.html to pick up
-      sessionStorage.setItem('tdesk_rapid_result', JSON.stringify({
-        result: data.result,
-        profile: profile,
-        quiz: quiz,
-        ts: Date.now()
-      }));
-      setTimeout(function(){
-        window.location.href='thedesk_mot.html?rapidtest=1';
-      }, 400);
+      status.textContent='✓ Done in '+elapsed+'s — opening result...';
+      // Store D values from profile
+      window._D_firm=profile.targetFirm||'';
+      window._D_div=profile.targetDivision||profile.track||'';
+      window._D_uni=profile.university||'';
+      window._D_crs=profile.course||'';
+      window._D_gr=profile.grade||'';
+      window._D_fS=quiz.commercialCorrect||3;
+      window._D_nS=quiz.technicalCorrect||3;
+      // Open result in new tab via data URI to avoid all storage issues
+      var r=data.result;
+      var firm=profile.targetFirm||'your target firm';
+      var html=buildResultPage(r, profile, quiz);
+      var blob=new Blob([html],{type:'text/html'});
+      var url=URL.createObjectURL(blob);
+      window.open(url,'_blank');
+      btn.disabled=false; btn.textContent='Run assessment →';
     } else {
       status.className='status err';
       status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
@@ -571,6 +577,73 @@ function setScore(type, val){
   if(type==='numer'){ techScore=val; setScoreBtn('tech-btns', val); }
   if(type==='comm'){  commScore=val; setScoreBtn('comm-btns', val); }
 }
+
+function buildResultPage(r, profile, quiz) {
+  var firm = profile.targetFirm||'your target firm';
+  var div  = profile.targetDivision||'';
+  var name = r.candidateName||'';
+  var sc   = Math.round(r.overallScore||0);
+  var col  = sc>=70?'#16A34A':sc>=50?'#CA8A04':'#DC2626';
+
+  var dims = (r.dimensions||[]).map(function(d){
+    var dc = d.score>=70?'#16A34A':d.score>=50?'#CA8A04':'#DC2626';
+    return '<div style="padding:10px 0;border-bottom:1px solid #f0f0ee;">'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:4px;">'
+        +'<b style="font-size:13px;">'+d.name+'</b>'
+        +'<span style="font-size:13px;font-weight:500;color:'+dc+';">'+Math.round(d.score)+'</span>'
+      +'</div>'
+      +'<div style="font-size:12px;color:#555;line-height:1.6;">'+( d.note||'')+'</div>'
+    +'</div>';
+  }).join('');
+
+  var gaps = '';
+  if(Array.isArray(r.priorityGaps)&&r.priorityGaps.length){
+    gaps = r.priorityGaps.map(function(g,i){
+      return '<div style="background:'+(i===0?'#fef2f2':'#fffbeb')+';border-radius:8px;padding:10px 12px;margin-bottom:8px;">'
+        +'<div style="font-size:13px;font-weight:500;color:'+(i===0?'#dc2626':'#d97706')+';">'+( i+1)+'. '+(g.title||'')+'</div>'
+        +(g.risk?'<div style="font-size:12px;color:#555;margin-top:4px;">'+g.risk+'</div>':'')
+      +'</div>';
+    }).join('');
+  }
+
+  var comps = '';
+  if(Array.isArray(r.competencies)){
+    comps = r.competencies.map(function(c){
+      var sc2 = c.status||'Not yet evidenced';
+      var cc  = sc2==='Strong'||sc2==='Evidenced'?'#16A34A':sc2==='Partially evidenced'?'#ca8a04':'#dc2626';
+      return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f0ee;font-size:13px;">'
+        +'<span>'+c.name+'</span>'
+        +'<span style="color:'+cc+';font-weight:500;">'+sc2+'</span>'
+      +'</div>';
+    }).join('');
+  }
+
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>The Desk — MOT Result</title>'
+    +'<meta name="viewport" content="width=device-width,initial-scale=1">'
+    +'<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">'
+    +'<style>body{font-family:"DM Sans",sans-serif;background:#F7F3EE;color:#1A1714;max-width:580px;margin:0 auto;padding:20px 16px 60px;}</style>'
+    +'</head><body>'
+    +'<div style="font-family:'Fraunces',serif;font-size:16px;margin-bottom:20px;"><em style="color:#A85E0A;">The</em>Desk — Application MOT</div>'
+    +'<div style="background:white;border-radius:12px;padding:20px;margin-bottom:12px;">'
+      +'<div style="font-size:11px;color:#999;margin-bottom:6px;">'+(firm+(div?' · '+div:''))+'</div>'
+      +'<div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:10px;">'
+        +'<div style="font-family:'Fraunces',serif;font-size:64px;font-weight:300;line-height:1;color:'+col+';">'+sc+'</div>'
+        +'<div><div style="font-size:14px;font-weight:500;">'+( r.band||'')+'</div><div style="font-size:12px;color:#999;">'+( r.archetype||'')+'</div></div>'
+      +'</div>'
+      +(r.killerSentence?'<div style="border-left:3px solid #dc2626;padding:8px 12px;background:#fef2f2;font-size:13px;font-style:italic;line-height:1.6;">'+r.killerSentence+'</div>':'')
+    +'</div>'
+    +(r.recruiterMayMiss?'<div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:8px;">What a recruiter may miss</div><div style="font-size:13px;line-height:1.65;">'+r.recruiterMayMiss+'</div></div>':'')
+    +(r.beingMisreadAs?'<div style="background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:6px;">Being misread as</div><div style="font-size:14px;color:#F7F3EE;font-style:italic;line-height:1.6;">'+r.beingMisreadAs+'</div></div>':'')
+    +(r.uncomfortableTruth?'<div style="background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:6px;">Uncomfortable truth</div><div style="font-size:14px;color:#F7F3EE;font-style:italic;line-height:1.6;">'+r.uncomfortableTruth+'</div></div>':'')
+    +'<div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:10px;">6 Dimensions</div>'+dims+'</div>'
+    +'<div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:10px;">4 Priority Gaps</div>'+gaps+'</div>'
+    +(comps?'<div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:10px;">Competencies</div>'+comps+'</div>':'')
+    +(r.diagnostic?'<div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:12px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:8px;">Diagnostic</div><div style="font-size:13px;line-height:1.7;">'+r.diagnostic+'</div></div>':'')
+    +'<div style="text-align:center;font-size:11px;color:#999;margin-top:20px;">The Desk · thedesk.vercel.app · For testing only</div>'
+    +'</body></html>';
+}
+
 </script>
 </body>
 </html>
