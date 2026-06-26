@@ -346,6 +346,7 @@ async function run(){
     data=await resp.json();
     var elapsed=((Date.now()-t)/1000).toFixed(1);
 
+    alert('API response: success='+data.success+' | hasResult='+(!!data.result)+' | error='+(data.error||data.message||'none'));
     if(data.success && data.result){
       status.textContent='✓ Done in '+elapsed+'s — opening result...';
       // Store D values from profile
