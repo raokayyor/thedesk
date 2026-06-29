@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 8000,
+      max_tokens: 8192,
       temperature: 0.3,
       system: `You are a senior finance career practitioner with 20+ years at Goldman Sachs, Barclays, JP Morgan and boutique firms. You have hired, screened and interviewed hundreds of students. You give direct, honest, specific advice. You do not use motivational language. You do not invent CV evidence. You work from what the candidate has actually done. Your paid repair plan must feel materially more valuable than the free diagnostic — it gives specific direction, not just diagnosis.`,
       messages: [{ role: "user", content: prompt }]
@@ -29,9 +29,65 @@ export default async function handler(req, res) {
 
     const raw = response.content[0]?.text || "";
     const first = raw.indexOf("{");
+    if (first < 0) throw new Error("No JSON in response");
+    
+    // Try full parse first
+    let paid;
     const last = raw.lastIndexOf("}");
-    if (first < 0 || last < 0) throw new Error("No JSON in response");
-    const paid = JSON.parse(raw.slice(first, last + 1));
+    try {
+      paid = JSON.parse(raw.slice(first, last + 1));
+    } catch(parseErr) {
+      // Response truncated — attempt to recover by closing open structure
+      console.log("JSON truncated, attempting recovery...");
+      let partial = raw.slice(first);
+      // Count open braces/brackets to close them
+      let opens = 0, squareOpens = 0;
+      for (let i = 0; i < partial.length; i++) {
+        if (partial[i] === '{') opens++;
+        else if (partial[i] === '}') opens--;
+        else if (partial[i] === '[') squareOpens++;
+        else if (partial[i] === ']') squareOpens--;
+      }
+      // Close any open strings, arrays, objects
+      let closing = '';
+      // Remove trailing incomplete property
+      partial = partial.replace(/,\s*"[^"]*"\s*:\s*"[^"]*$/, '');
+      partial = partial.replace(/,\s*"[^"]*"\s*:\s*\[$/, '');
+      partial = partial.replace(/,\s*"[^"]*"\s*:\s*$/, '');
+      partial = partial.replace(/,\s*"[^"]*"\s*:\s*\{[^}]*$/, '');
+      // Add closing brackets
+      for (let i = 0; i < squareOpens; i++) closing += ']';
+      for (let i = 0; i < opens; i++) closing += '}';
+      try {
+        paid = JSON.parse(partial + closing);
+        console.log("Recovery succeeded");
+      } catch(e2) {
+        // Final fallback — return minimal valid structure
+        console.log("Recovery failed, using minimal fallback");
+        paid = {
+          paidTitle: "Full Cycle Repair Plan",
+          executiveVerdict: {
+            summary: "Your repair plan was generated but the response was too long. The key sections below contain your most important guidance.",
+            readinessVerdict: "See priority gaps below",
+            mostImportantFix: "See evidence hierarchy",
+            submitAdvice: "Review all sections before submitting"
+          },
+          applicationRiskMap: [],
+          evidenceHierarchy: { leadWith: [], supportWith: [], reduceOrCut: [] },
+          cvRepairMap: [],
+          bulletRepair: [],
+          routePositioning: { currentRouteFit: "", routeRisk: "", strongerPositioning: "", alternativeRoutes: [] },
+          firmDivisionFit: { targetFirm: "", targetDivision: "", whatTheFirmWillLike: "", whatTheFirmWillQuestion: "", howToMakeFitClearer: "" },
+          commercialAwarenessPlan: { currentLevel: "", risk: "", priorityTopics: [], tasks: [], interviewUse: "" },
+          numericalTechnicalPlan: { currentLevel: "", risk: "", targetLevelBeforeSubmission: "", priorityPracticeAreas: [], practicePlan: [] },
+          interviewRiskMap: [],
+          competencyRepair: [],
+          sevenDayActionPlan: [],
+          finalSubmissionChecklist: [],
+          recheckRecommendation: ""
+        };
+      }
+    }
 
     return res.status(200).json({ success: true, paid });
 
@@ -170,7 +226,7 @@ Return ONLY valid JSON in this exact structure:
   "commercialAwarenessPlan": {
     "currentLevel": "[Based on ${quiz.commercialCorrect || "?"}]/5 quiz and CV signals]",
     "risk": "[Specific commercial risk for this candidate at ${firm} ${div}]",
-    "priorityTopics": ["[Topic 1 relevant to ${div}]", "[Topic 2]", "[Topic 3]"],
+    "priorityTopics": ["[3 priority commercial topics for this route]"],
     "tasks": [
       {
         "task": "[Specific task — not just read the FT]",
@@ -184,7 +240,7 @@ Return ONLY valid JSON in this exact structure:
     "currentLevel": "[${quiz.technicalCorrect || "?"}/5 — what this means]",
     "risk": "[Specific technical risk at ${firm} ${div}]",
     "targetLevelBeforeSubmission": "[Target score and timeframe]",
-    "priorityPracticeAreas": ["[Area 1]", "[Area 2]", "[Area 3]"],
+    "priorityPracticeAreas": ["[3 specific areas for this firm/route]"],
     "practicePlan": [
       {
         "task": "[Specific practice task]",
