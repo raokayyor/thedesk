@@ -12,82 +12,57 @@ export default async function handler(req, res) {
 
   try {
     const { result: freeResult, cvText, profile, quiz } = req.body || {};
-
     if (!freeResult || !freeResult.overallScore) {
       return res.status(400).json({ success: false, error: "Missing free MOT result" });
     }
 
-    const prompt = buildFullCyclePrompt(freeResult, cvText || "", profile || {}, quiz || {});
+    const ctx = buildContext(freeResult, cvText || "", profile || {}, quiz || {});
 
-    const response = await client.messages.create({
-      model: MODEL,
-      max_tokens: 8192,
-      temperature: 0.3,
-      system: `You are a senior finance career practitioner with 20+ years at Goldman Sachs, Barclays, JP Morgan and boutique firms. You have hired, screened and interviewed hundreds of students. You give direct, honest, specific advice. You do not use motivational language. You do not invent CV evidence. You work from what the candidate has actually done. Your paid repair plan must feel materially more valuable than the free diagnostic — it gives specific direction, not just diagnosis.`,
-      messages: [{ role: "user", content: prompt }]
+    const SYSTEM = `You are a senior finance career practitioner with 20+ years at Goldman Sachs, Barclays and JP Morgan. You give direct, honest, specific advice. Never invent CV evidence. Work from what the candidate has actually done. Return ONLY valid compact JSON — no markdown, no comments.`;
+
+    // CALL 1 — diagnosis and evidence
+    const p1 = `${ctx.header}
+
+Generate ONLY this JSON (compact, no line breaks inside strings):
+{
+"paidTitle":"Full Cycle Repair Plan — ${ctx.name} | ${ctx.firm} ${ctx.div}",
+"executiveVerdict":{"summary":"[2-3 direct sentences. Is this ready? What is the core issue?]","readinessVerdict":"[One sentence]","mostImportantFix":"[One sentence — highest leverage change]","submitAdvice":"[Submit now / wait / rebuild first — be specific]"},
+"applicationRiskMap":[{"risk":"[title]","severity":"High","whyItMatters":"[specific to ${ctx.firm} ${ctx.div}]","howToFix":"[specific direction using their CV]"},{"risk":"[title]","severity":"High","whyItMatters":"[2nd risk]","howToFix":"[fix]"},{"risk":"[title]","severity":"Medium","whyItMatters":"[3rd risk]","howToFix":"[fix]"}],
+"evidenceHierarchy":{"leadWith":[{"evidence":"[named CV item]","whyItLeads":"[why]","howToUseIt":"[how]"},{"evidence":"[2nd item]","whyItLeads":"[why]","howToUseIt":"[how]"}],"supportWith":[{"evidence":"[item]","whyItSupports":"[why]","howToUseIt":"[how]"}],"reduceOrCut":[{"evidence":"[what to cut]","whyReduce":"[why]","whatToDoInstead":"[instead]"}]},
+"cvRepairMap":[{"section":"Experience","currentProblem":"[what is wrong]","whatThisSectionNeedsToProve":"[what ${ctx.firm} ${ctx.div} needs to see]","repairDirection":"[specific direction]","exampleDirection":"[example direction — no invented facts]","whatNotToDo":"[avoid]"},{"section":"Education","currentProblem":"[problem]","whatThisSectionNeedsToProve":"[what it needs to prove]","repairDirection":"[direction]","exampleDirection":"[example]","whatNotToDo":"[avoid]"},{"section":"Societies/Activities","currentProblem":"[problem]","whatThisSectionNeedsToProve":"[what it needs to prove]","repairDirection":"[direction]","exampleDirection":"[example]","whatNotToDo":"[avoid]"}],
+"bulletRepair":[{"cvItem":"[most important named CV item]","currentIssue":"[what is wrong with current bullet]","strongerAngle":"[what it should prove]","bulletStructure":"context → action → analytical output","exampleBullet":"[stronger direction grounded in real evidence]","whyThisWorks":"[why this lands better for ${ctx.firm} ${ctx.div}]"},{"cvItem":"[2nd CV item]","currentIssue":"[issue]","strongerAngle":"[angle]","bulletStructure":"[structure]","exampleBullet":"[direction]","whyThisWorks":"[why]"}]
+}`;
+
+    const r1 = await client.messages.create({
+      model: MODEL, max_tokens: 4000, temperature: 0.3,
+      system: SYSTEM, messages: [{ role: "user", content: p1 }]
     });
 
-    const raw = response.content[0]?.text || "";
-    const first = raw.indexOf("{");
-    if (first < 0) throw new Error("No JSON in response");
-    
-    // Try full parse first
-    let paid;
-    const last = raw.lastIndexOf("}");
-    try {
-      paid = JSON.parse(raw.slice(first, last + 1));
-    } catch(parseErr) {
-      // Response truncated — attempt to recover by closing open structure
-      console.log("JSON truncated, attempting recovery...");
-      let partial = raw.slice(first);
-      // Count open braces/brackets to close them
-      let opens = 0, squareOpens = 0;
-      for (let i = 0; i < partial.length; i++) {
-        if (partial[i] === '{') opens++;
-        else if (partial[i] === '}') opens--;
-        else if (partial[i] === '[') squareOpens++;
-        else if (partial[i] === ']') squareOpens--;
-      }
-      // Close any open strings, arrays, objects
-      let closing = '';
-      // Remove trailing incomplete property
-      partial = partial.replace(/,\s*"[^"]*"\s*:\s*"[^"]*$/, '');
-      partial = partial.replace(/,\s*"[^"]*"\s*:\s*\[$/, '');
-      partial = partial.replace(/,\s*"[^"]*"\s*:\s*$/, '');
-      partial = partial.replace(/,\s*"[^"]*"\s*:\s*\{[^}]*$/, '');
-      // Add closing brackets
-      for (let i = 0; i < squareOpens; i++) closing += ']';
-      for (let i = 0; i < opens; i++) closing += '}';
-      try {
-        paid = JSON.parse(partial + closing);
-        console.log("Recovery succeeded");
-      } catch(e2) {
-        // Final fallback — return minimal valid structure
-        console.log("Recovery failed, using minimal fallback");
-        paid = {
-          paidTitle: "Full Cycle Repair Plan",
-          executiveVerdict: {
-            summary: "Your repair plan was generated but the response was too long. The key sections below contain your most important guidance.",
-            readinessVerdict: "See priority gaps below",
-            mostImportantFix: "See evidence hierarchy",
-            submitAdvice: "Review all sections before submitting"
-          },
-          applicationRiskMap: [],
-          evidenceHierarchy: { leadWith: [], supportWith: [], reduceOrCut: [] },
-          cvRepairMap: [],
-          bulletRepair: [],
-          routePositioning: { currentRouteFit: "", routeRisk: "", strongerPositioning: "", alternativeRoutes: [] },
-          firmDivisionFit: { targetFirm: "", targetDivision: "", whatTheFirmWillLike: "", whatTheFirmWillQuestion: "", howToMakeFitClearer: "" },
-          commercialAwarenessPlan: { currentLevel: "", risk: "", priorityTopics: [], tasks: [], interviewUse: "" },
-          numericalTechnicalPlan: { currentLevel: "", risk: "", targetLevelBeforeSubmission: "", priorityPracticeAreas: [], practicePlan: [] },
-          interviewRiskMap: [],
-          competencyRepair: [],
-          sevenDayActionPlan: [],
-          finalSubmissionChecklist: [],
-          recheckRecommendation: ""
-        };
-      }
-    }
+    // CALL 2 — plan sections
+    const p2 = `${ctx.header}
+
+Generate ONLY this JSON (compact, no line breaks inside strings):
+{
+"routePositioning":{"currentRouteFit":"[how credible is ${ctx.div} at ${ctx.firm} for this profile]","routeRisk":"[main risk]","strongerPositioning":"[how to position more convincingly]","alternativeRoutes":[{"route":"[alt route]","fit":"Possible","why":"[why fits]"}]},
+"firmDivisionFit":{"targetFirm":"${ctx.firm}","targetDivision":"${ctx.div}","whatTheFirmWillLike":"[what ${ctx.firm} will respond to]","whatTheFirmWillQuestion":"[what they will probe]","howToMakeFitClearer":"[specific to ${ctx.firm} ${ctx.div}]"},
+"commercialAwarenessPlan":{"currentLevel":"[${ctx.commScore}/5 — what this means]","risk":"[specific risk at ${ctx.firm} ${ctx.div}]","priorityTopics":["[topic 1]","[topic 2]","[topic 3]"],"tasks":[{"task":"[specific task not just read FT]","whyItMatters":"[why for ${ctx.firm} ${ctx.div}]","outputToCreate":"[what to produce]"},{"task":"[task 2]","whyItMatters":"[why]","outputToCreate":"[output]"}],"interviewUse":"[how to use in interviews]"},
+"numericalTechnicalPlan":{"currentLevel":"[${ctx.techScore}/5 — what this means]","risk":"[specific risk]","targetLevelBeforeSubmission":"[target and timeframe]","priorityPracticeAreas":["[area 1]","[area 2]","[area 3]"],"practicePlan":[{"task":"[specific task]","whyItMatters":"[why for ${ctx.firm}]","targetOutput":"[improvement target]"}]},
+"interviewRiskMap":[{"likelyQuestion":"[most dangerous question for this profile]","whyThisQuestionExposesRisk":"[why it is risky]","weakAnswerPattern":"[what weak sounds like]","strongAnswerStructure":"[strong answer structure]","candidateEvidenceToUse":"[their actual CV evidence to anchor]"},{"likelyQuestion":"[2nd question]","whyThisQuestionExposesRisk":"[why]","weakAnswerPattern":"[weak]","strongAnswerStructure":"[strong]","candidateEvidenceToUse":"[evidence]"},{"likelyQuestion":"[3rd question]","whyThisQuestionExposesRisk":"[why]","weakAnswerPattern":"[weak]","strongAnswerStructure":"[strong]","candidateEvidenceToUse":"[evidence]"}],
+"competencyRepair":[{"competency":"Analytical","currentStatus":"[from free result]","currentEvidence":"[what exists]","whatIsMissing":"[what would make it application-grade]","howToStrengthen":"[specific direction]","interviewRisk":"[how gap shows up in interview]"},{"competency":"Commercial","currentStatus":"[status]","currentEvidence":"[evidence]","whatIsMissing":"[missing]","howToStrengthen":"[direction]","interviewRisk":"[risk]"},{"competency":"Leadership","currentStatus":"[status]","currentEvidence":"[evidence]","whatIsMissing":"[missing]","howToStrengthen":"[direction]","interviewRisk":"[risk]"}],
+"sevenDayActionPlan":[{"day":"Day 1","focus":"Evidence & CV","tasks":["[task 1]","[task 2]"],"deliverable":"[what they have at end of day]"},{"day":"Day 2","focus":"Bullet repair","tasks":["[task]","[task]"],"deliverable":"[deliverable]"},{"day":"Day 3","focus":"Technical readiness","tasks":["[task]","[task]"],"deliverable":"[deliverable]"},{"day":"Day 4","focus":"Commercial awareness","tasks":["[task]","[task]"],"deliverable":"[deliverable]"},{"day":"Day 5","focus":"Route & firm positioning","tasks":["[task]","[task]"],"deliverable":"[deliverable]"},{"day":"Day 6","focus":"Interview preparation","tasks":["[task]","[task]"],"deliverable":"[deliverable]"},{"day":"Day 7","focus":"Final check","tasks":["[task]","[task]"],"deliverable":"[submit or hold decision]"}],
+"finalSubmissionChecklist":[{"item":"[checklist item]","statusNeeded":"[done = this]","whyItMatters":"[why for ${ctx.firm}]"},{"item":"[item 2]","statusNeeded":"[done]","whyItMatters":"[why]"},{"item":"[item 3]","statusNeeded":"[done]","whyItMatters":"[why]"},{"item":"[item 4]","statusNeeded":"[done]","whyItMatters":"[why]"},{"item":"[item 5]","statusNeeded":"[done]","whyItMatters":"[why]"}],
+"recheckRecommendation":"[when and how to recheck before submitting]"
+}`;
+
+    const r2 = await client.messages.create({
+      model: MODEL, max_tokens: 4000, temperature: 0.3,
+      system: SYSTEM, messages: [{ role: "user", content: p2 }]
+    });
+
+    const p1json = safeParseJSON(r1.content[0]?.text || "");
+    const p2json = safeParseJSON(r2.content[0]?.text || "");
+
+    const paid = Object.assign({}, p1json, p2json);
 
     return res.status(200).json({ success: true, paid });
 
@@ -97,7 +72,34 @@ export default async function handler(req, res) {
   }
 }
 
-function buildFullCyclePrompt(r, cvText, profile, quiz) {
+function safeParseJSON(raw) {
+  const first = raw.indexOf("{");
+  const last  = raw.lastIndexOf("}");
+  if (first < 0) return {};
+  try {
+    return JSON.parse(raw.slice(first, last + 1));
+  } catch(e) {
+    // Try recovery — close unclosed structures
+    let partial = raw.slice(first);
+    partial = partial.replace(/,\s*"[^"]*"\s*:\s*"[^"]*$/, "");
+    partial = partial.replace(/,\s*"[^"]*"\s*:\s*\[$/, "");
+    partial = partial.replace(/,\s*"[^"]*"\s*:\s*$/, "");
+    let opens = 0, sq = 0;
+    for (let i = 0; i < partial.length; i++) {
+      if (partial[i] === "{") opens++;
+      else if (partial[i] === "}") opens--;
+      else if (partial[i] === "[") sq++;
+      else if (partial[i] === "]") sq--;
+    }
+    let close = "";
+    for (let i = 0; i < sq; i++) close += "]";
+    for (let i = 0; i < opens; i++) close += "}";
+    try { return JSON.parse(partial + close); }
+    catch(e2) { console.error("JSON recovery failed:", e2.message); return {}; }
+  }
+}
+
+function buildContext(r, cvText, profile, quiz) {
   const firm = profile.targetFirm || r.targetFirm || "your target firm";
   const div  = profile.targetDivision || r.targetDivision || "finance";
   const name = r.candidateName || profile.name || "Candidate";
@@ -105,184 +107,22 @@ function buildFullCyclePrompt(r, cvText, profile, quiz) {
   const band = r.band || "Borderline";
   const namedDetails = (r.namedCvDetails || []).join(", ");
   const gaps = (r.priorityGaps || []).map((g,i) => `${i+1}. ${g.title}: ${g.visibleRisk||""}`).join("\n");
-  const comps = (r.competencies || []).map(c => `${c.name}: ${c.status} — ${c.visibleReason||""}`).join("\n");
-  const dims = (r.dimensions || []).map(d => `${d.name}: ${d.score}/100 — ${d.visibleSummary||""}`).join("\n");
+  const comps = (r.competencies || []).map(c => `${c.name}: ${c.status}`).join(", ");
+  const dims = (r.dimensions || []).map(d => `${d.name}: ${d.score}/100`).join(" | ");
+  const commScore = quiz.commercialCorrect || 3;
+  const techScore = quiz.technicalCorrect || 3;
 
-  return `You are building the paid Full Cycle repair plan for this candidate's finance application.
+  const header = `CANDIDATE: ${name} | ${profile.university||""} | ${profile.course||""} | ${profile.grade||""}
+TARGET: ${firm} — ${div}
+SCORE: ${sc}/100 | ${band} | ${r.archetype||""}
+KILLER: ${r.killerSentence||""}
+BEING MISREAD: ${r.beingMisreadAs||""}
+NAMED CV EVIDENCE: ${namedDetails}
+DIMENSIONS: ${dims}
+QUIZ: Commercial ${commScore}/5 | Numerical ${techScore}/5
+GAPS:\n${gaps}
+COMPETENCIES: ${comps}
+CV EXTRACT: ${cvText ? cvText.slice(0, 1500) : "Use named CV details above"}`;
 
-CANDIDATE PROFILE:
-Name: ${name}
-University: ${profile.university || ""}
-Course: ${profile.course || ""}
-Grade: ${profile.grade || ""}
-Target Firm: ${firm}
-Target Division: ${div}
-
-FREE MOT RESULT:
-Score: ${sc}/100 | Band: ${band} | Archetype: ${r.archetype || ""}
-Killer sentence: ${r.killerSentence || ""}
-Being misread as: ${r.beingMisreadAs || ""}
-Uncomfortable truth: ${r.uncomfortableTruth || ""}
-Free diagnostic: ${r.diagnostic || ""}
-Named CV details: ${namedDetails}
-Commercial quiz: ${quiz.commercialCorrect || r.quizScores?.commercial || "?"}/5
-Numerical quiz: ${quiz.technicalCorrect || r.quizScores?.numerical || "?"}/5
-
-DIMENSION SCORES:
-${dims}
-
-PRIORITY GAPS:
-${gaps}
-
-COMPETENCIES:
-${comps}
-
-CV TEXT:
-${cvText ? cvText.slice(0, 3000) : "Not provided — use named CV details above"}
-
-TASK:
-Generate the full paid Full Cycle repair plan. This must materially exceed the free diagnostic. It must be specific to this candidate's actual CV evidence — do not invent facts or outcomes not in the CV.
-
-Return ONLY valid JSON in this exact structure:
-
-{
-  "paidTitle": "Full Cycle Repair Plan — ${name} | ${firm} ${div}",
-  "executiveVerdict": {
-    "summary": "[2-3 sentences. Is this application ready? What is the core issue? Direct and honest.]",
-    "readinessVerdict": "[One sentence. Ready / Not ready / Needs specific repair before submitting]",
-    "mostImportantFix": "[The single highest-leverage change. One sentence.]",
-    "submitAdvice": "[Should they submit now, wait, or rebuild first? Be specific.]"
-  },
-  "applicationRiskMap": [
-    {
-      "risk": "[Risk title]",
-      "severity": "High",
-      "whyItMatters": "[Why this specific risk matters for ${firm} ${div}]",
-      "howToFix": "[Specific fix direction using their actual CV evidence]"
-    }
-  ],
-  "evidenceHierarchy": {
-    "leadWith": [
-      {
-        "evidence": "[Named CV item to lead with]",
-        "whyItLeads": "[Why this should be the lead signal]",
-        "howToUseIt": "[How to position it in the application]"
-      }
-    ],
-    "supportWith": [
-      {
-        "evidence": "[Supporting evidence]",
-        "whyItSupports": "[Why it supports rather than leads]",
-        "howToUseIt": "[How to use it]"
-      }
-    ],
-    "reduceOrCut": [
-      {
-        "evidence": "[What to reduce]",
-        "whyReduce": "[Why]",
-        "whatToDoInstead": "[Alternative]"
-      }
-    ]
-  },
-  "cvRepairMap": [
-    {
-      "section": "[Education / Experience / Societies etc]",
-      "currentProblem": "[What is wrong with this section]",
-      "whatThisSectionNeedsToProve": "[For ${firm} ${div}, this section needs to show...]",
-      "repairDirection": "[Specific repair direction]",
-      "exampleDirection": "[Example of the direction — not invented facts, but direction]",
-      "whatNotToDo": "[Common mistake to avoid]"
-    }
-  ],
-  "bulletRepair": [
-    {
-      "cvItem": "[Named CV item]",
-      "currentIssue": "[What the current bullet does wrong]",
-      "strongerAngle": "[What the bullet should prove instead]",
-      "bulletStructure": "[Structure: context → action → outcome or similar]",
-      "exampleBullet": "[A stronger bullet direction grounded in their real evidence — flag if inventing any detail]",
-      "whyThisWorks": "[Why this version is stronger for ${firm} ${div}]"
-    }
-  ],
-  "routePositioning": {
-    "currentRouteFit": "[How credible is ${div} at ${firm} for this profile?]",
-    "routeRisk": "[What is the route risk?]",
-    "strongerPositioning": "[How to position for this route more convincingly]",
-    "alternativeRoutes": [
-      {
-        "route": "[Alternative route]",
-        "fit": "Possible",
-        "why": "[Why this alternative fits]"
-      }
-    ]
-  },
-  "firmDivisionFit": {
-    "targetFirm": "${firm}",
-    "targetDivision": "${div}",
-    "whatTheFirmWillLike": "[What ${firm} ${div} will respond well to in this profile]",
-    "whatTheFirmWillQuestion": "[What they will probe or question]",
-    "howToMakeFitClearer": "[Specific to ${firm} ${div} — safe language, not invented process details]"
-  },
-  "commercialAwarenessPlan": {
-    "currentLevel": "[Based on ${quiz.commercialCorrect || "?"}]/5 quiz and CV signals]",
-    "risk": "[Specific commercial risk for this candidate at ${firm} ${div}]",
-    "priorityTopics": ["[3 priority commercial topics for this route]"],
-    "tasks": [
-      {
-        "task": "[Specific task — not just read the FT]",
-        "whyItMatters": "[Why this specific task matters for ${firm} ${div}]",
-        "outputToCreate": "[What to produce from this task]"
-      }
-    ],
-    "interviewUse": "[How to use this commercial prep in actual interviews]"
-  },
-  "numericalTechnicalPlan": {
-    "currentLevel": "[${quiz.technicalCorrect || "?"}/5 — what this means]",
-    "risk": "[Specific technical risk at ${firm} ${div}]",
-    "targetLevelBeforeSubmission": "[Target score and timeframe]",
-    "priorityPracticeAreas": ["[3 specific areas for this firm/route]"],
-    "practicePlan": [
-      {
-        "task": "[Specific practice task]",
-        "whyItMatters": "[Why this type for ${firm} ${div}]",
-        "targetOutput": "[What improvement to aim for]"
-      }
-    ]
-  },
-  "interviewRiskMap": [
-    {
-      "likelyQuestion": "[Question this candidate is likely to face]",
-      "whyThisQuestionExposesRisk": "[Why this question is dangerous for this specific profile]",
-      "weakAnswerPattern": "[What a weak answer sounds like]",
-      "strongAnswerStructure": "[Structure for a strong answer]",
-      "candidateEvidenceToUse": "[Which of their actual CV evidence to anchor the answer]"
-    }
-  ],
-  "competencyRepair": [
-    {
-      "competency": "[Competency name]",
-      "currentStatus": "[Status from free result]",
-      "currentEvidence": "[What evidence exists]",
-      "whatIsMissing": "[What would make this application-grade]",
-      "howToStrengthen": "[Specific direction]",
-      "interviewRisk": "[How this competency gap shows up in interview]"
-    }
-  ],
-  "sevenDayActionPlan": [
-    {
-      "day": "Day 1",
-      "focus": "[Focus area]",
-      "tasks": ["[Specific task 1]", "[Specific task 2]"],
-      "deliverable": "[What they should have at end of day]"
-    }
-  ],
-  "finalSubmissionChecklist": [
-    {
-      "item": "[Checklist item]",
-      "statusNeeded": "[What done looks like]",
-      "whyItMatters": "[Why this matters for ${firm} ${div}]"
-    }
-  ],
-  "recheckRecommendation": "[When and how to recheck the application before submitting]"
-}`;
+  return { firm, div, name, sc, band, namedDetails, commScore, techScore, header };
 }
