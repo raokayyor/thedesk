@@ -3,13 +3,17 @@ import Anthropic from "@anthropic-ai/sdk";
 const MODEL = "claude-sonnet-4-6";
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const SYSTEM = `You are a senior finance career practitioner with 20+ years across Goldman Sachs, Barclays, JP Morgan and boutique advisory firms. You have hired, screened and interviewed hundreds of students. You give direct, honest, specific advice. Core rules:
-- Never invent deal names, client names, outcomes, scores, responsibilities or roles
-- If suggesting a bullet that depends on unconfirmed content, label it "Use only if accurate"
-- If evidence is missing, say "This cannot be fixed by wording alone — evidence needs to be built first"
-- For weak candidates: honest, not cruel. The value is showing the fastest route to a credible application
-- For strong candidates: do not force strengths into gaps. Create gaps around thesis framing, route specificity, interview edge
-- Return ONLY valid compact JSON — no markdown, no backticks, no comments`;
+const SYSTEM = `You are a senior finance career practitioner with 20+ years across Goldman Sachs, Barclays, JP Morgan and boutique advisory firms. You have hired, screened and interviewed hundreds of students.
+
+CORE RULES:
+1. Never invent deal names, clients, outcomes, scores, responsibilities, modelling assumptions or roles
+2. Label any bullet requiring unconfirmed detail: "Use only if accurate"
+3. If evidence is missing: "This cannot be fixed by wording alone — evidence needs to be built first"
+4. Never use overconfident language about firm processes: use "likely", "may", "would typically", not "will fail" or "will screen out"
+5. Strong candidates (Oxford/LSE/Warwick + relevant finance experience + strong scores): frame as evidence hierarchy and thesis framing issues, NOT as weak or not ready
+6. Weak candidates: honest, not cruel. Give a real path, not false hope
+7. Do not use "Do not submit now" for every band — use: Weak="Do not submit this version", Borderline="Do not submit as-is", Competitive="Sharpen before submission", Strong="Final polish before submission"
+8. Return ONLY valid compact JSON — no markdown, no backticks, no comments`;
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -79,11 +83,16 @@ CV TEXT: ${cvText ? cvText.slice(0, 1800) : "Use named CV details above"}`;
 
 function buildPrompt1(ctx) {
   const isWeak = ctx.sc < 55;
-  const toneNote = isWeak
-    ? "TONE: Honest but constructive. Do not pretend they can submit tomorrow. Include: The value of Full Cycle here is not polishing this version — it is showing the fastest route from weak evidence to a credible first application."
-    : ctx.sc >= 70
-    ? "TONE: Emphasise sharpening. Not a weak profile — the issue is the strongest evidence is not yet saying the right thing quickly enough."
-    : "TONE: Emphasise repair. Fixable borderline — application will underperform unless lead evidence, technical readiness and commercial story are repaired.";
+  const isStrong = ctx.sc >= 70;
+  const toneNote = ctx.sc < 40
+    ? "TONE — WEAK/REBUILD: Honest and constructive. This is a rebuild not a polish. Be clear they may not be ready, the route may be a stretch, evidence may need building. Include: The value of Full Cycle here is not polishing this version — it is showing the fastest route from weak evidence to a credible first application. Submit advice: Do not submit this version."
+    : ctx.sc < 55
+    ? "TONE — WEAK: Honest and constructive. Give a real path not false hope. Some evidence exists but application needs significant repair. Submit advice: Do not submit this version as-is."
+    : ctx.sc < 70
+    ? "TONE — BORDERLINE REPAIR: Fixable. Usable evidence exists but application will underperform unless lead evidence, technical readiness and commercial story are repaired. Submit advice: Do not submit this version as-is — repair first."
+    : ctx.sc < 85
+    ? "TONE — COMPETITIVE SHARPEN: Strong raw material. The issue is the strongest evidence is not yet saying the right thing quickly enough. Do NOT mark them down artificially. Do NOT call numerical or commercial strong scores as gaps. Submit advice: Sharpen before submission."
+    : "TONE — STRONG POLISH: Strong application. Focus on evidence hierarchy, firm-specific nuance and interview pressure points. Submit advice: Final polish before submission.";
 
   return `${ctx.header}
 
@@ -127,7 +136,7 @@ function buildPrompt2(ctx, planName) {
 Generate ONLY this JSON (no line breaks inside string values):
 {
 "routePositioning":{"currentRouteFit":"[How credible is ${ctx.div} at ${ctx.firm} for this profile]","routeRisk":"[Main route risk]","strongerPositioning":"[How to position more convincingly]","alternativeRoutes":[{"route":"[Alt route 1]","fit":"Possible","why":"[Why this fits]"},{"route":"[Alt route 2]","fit":"Possible","why":"[Why]"}]},
-"firmDivisionFit":{"targetFirm":"${ctx.firm}","targetDivision":"${ctx.div}","whatTheFirmWillLike":"[What ${ctx.firm} ${ctx.div} will respond positively to in this profile]","whatTheFirmWillQuestion":"[What they will probe or question]","howToMakeFitClearer":"[Specific to ${ctx.firm} ${ctx.div} — use safe language, do not fabricate internal criteria]"},
+"firmDivisionFit":{"targetFirm":"${ctx.firm}","targetDivision":"${ctx.div}","whatTheFirmWillLike":"[What ${ctx.firm} ${ctx.div} will respond positively to in this profile]","whatTheFirmWillQuestion":"[What they will probe or question]","howToMakeFitClearer":"[Specific to ${ctx.firm} ${ctx.div} — use safe language: for a firm like ${ctx.firm}, the candidate should be ready to discuss / this may be questioned / this would likely be probed. Never say will fail, will screen out, consistently tests. Do not fabricate internal criteria]"},
 "commercialAwarenessPlan":{"currentLevel":"${commPct}% — [what this means for ${ctx.div} readiness]","risk":"[Specific commercial risk at ${ctx.firm} ${ctx.div} interview stage]","priorityTopics":["[Topic 1 relevant to ${ctx.div} at ${ctx.firm}]","[Topic 2]","[Topic 3]"],"tasks":[{"task":"[Specific task — not just read the FT]","whyItMatters":"[Why this for ${ctx.firm} ${ctx.div}]","outputToCreate":"[What to produce]"},{"task":"[Task 2]","whyItMatters":"[Why]","outputToCreate":"[Output]"},{"task":"[Task 3]","whyItMatters":"[Why]","outputToCreate":"[Output]"}],"interviewUse":"[How to deploy commercial prep in actual ${ctx.firm} interviews]"},
 "numericalTechnicalPlan":{"currentLevel":"${techPct}% — ${techAdvice}","risk":"[Specific technical risk at ${ctx.firm} ${ctx.div}]","targetLevelBeforeSubmission":"[Target % and honest timeframe]","priorityPracticeAreas":["[Practice area 1 specific to ${ctx.div}]","[Area 2]","[Area 3]"],"practicePlan":[{"task":"[Specific practice task]","whyItMatters":"[Why this type for ${ctx.firm}]","targetOutput":"[Measurable improvement target]"}]},
 "interviewRiskMap":[
