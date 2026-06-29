@@ -499,13 +499,26 @@ function downloadCV(){
 document.addEventListener('DOMContentLoaded', async function(){
   try {
     var stored=sessionStorage.getItem('tdesk_fc');
-    if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first.');
+    console.log('tdesk_fc present:', !!stored, '| length:', stored?stored.length:0);
+    if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first, then click the Full Cycle button immediately.');
     var data=JSON.parse(stored);
+    console.log('data keys:', Object.keys(data).join(','), '| has result:', !!data.result);
     sessionStorage.removeItem('tdesk_fc');
+
+    // Check data is valid before calling API
+    if(!data.result||!data.result.overallScore){
+      throw new Error('Assessment data is incomplete. Please run your assessment again from rapid.html.');
+    }
 
     var resp=await fetch('/api/full-cycle',{
       method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
     });
+
+    if(!resp.ok){
+      var errText=await resp.text();
+      throw new Error('API error '+resp.status+': '+errText.slice(0,200));
+    }
+
     var json=await resp.json();
     clearInterval(mt);
 
