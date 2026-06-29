@@ -11,393 +11,315 @@
   --ink:#1A1714;--ink60:rgba(26,23,20,0.6);--ink40:rgba(26,23,20,0.4);--ink08:rgba(26,23,20,0.08);
   --cream:#F7F3EE;--warm:#F2EDE6;--terra:#A85E0A;--green:#15803D;--red:#DC2626;--amber:#D97706;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
 nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.5px solid var(--ink08);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;}
-.logo{font-family:'Fraunces',serif;font-size:18px;font-weight:400;color:var(--ink);text-decoration:none;}
+.logo{font-family:'Fraunces',serif;font-size:18px;color:var(--ink);text-decoration:none;}
 .logo em{color:var(--terra);font-style:italic;}
-.fc-badge{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);background:rgba(168,94,10,0.1);border:0.5px solid rgba(168,94,10,0.3);border-radius:20px;padding:3px 10px;}
-.wrap{max-width:620px;margin:0 auto;padding:80px 20px 60px;}
-.section{background:white;border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-bottom:14px;}
-.section-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:10px;}
-.section-title{font-family:'Fraunces',serif;font-size:18px;font-weight:300;letter-spacing:-0.3px;color:var(--ink);margin-bottom:14px;}
-.verdict-box{background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:14px;}
-.risk-card{padding:12px 0;border-bottom:0.5px solid var(--ink08);}
-.risk-card:last-child{border-bottom:none;padding-bottom:0;}
-.risk-severity{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:6px;}
-.sev-high{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
-.sev-med{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
-.sev-low{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
-.ev-item{padding:10px 0;border-bottom:0.5px solid var(--ink08);}
-.ev-item:last-child{border-bottom:none;}
-.ev-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
-.ev-lead{color:var(--green);}
-.ev-support{color:var(--amber);}
-.ev-cut{color:var(--red);}
-.body-text{font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;}
-.subtext{font-size:12px;color:var(--ink60);line-height:1.6;margin-top:4px;}
-.cv-section{padding:14px 0;border-bottom:0.5px solid var(--ink08);}
-.cv-section:last-child{border-bottom:none;}
-.bullet-card{background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;}
-.bullet-before{font-size:12px;color:var(--red);font-style:italic;margin-bottom:8px;padding-left:10px;border-left:2px solid #fecaca;}
-.bullet-after{font-size:12px;color:var(--green);margin-bottom:8px;padding-left:10px;border-left:2px solid #bbf7d0;}
+.badge{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);background:rgba(168,94,10,0.1);border:0.5px solid rgba(168,94,10,0.3);border-radius:20px;padding:3px 10px;}
+.wrap{max-width:620px;margin:0 auto;padding:80px 20px 80px;}
+.card{background:white;border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-bottom:12px;}
+.lbl{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:8px;}
+.sec-title{font-family:'Fraunces',serif;font-size:18px;font-weight:300;letter-spacing:-0.3px;color:var(--ink);margin-bottom:14px;}
+.body{font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;}
+.sub{font-size:12px;color:var(--ink60);line-height:1.6;margin-top:4px;}
+.divider{height:0.5px;background:var(--ink08);margin:12px 0;}
+.sev{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:6px;}
+.sev-h{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
+.sev-m{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
+.sev-l{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
 .tag{display:inline-block;font-size:10px;font-weight:500;background:var(--warm);border:0.5px solid var(--ink08);border-radius:20px;padding:2px 8px;margin:2px 2px 2px 0;color:var(--ink40);}
-.day-card{display:flex;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--ink08);}
-.day-card:last-child{border-bottom:none;}
-.day-num{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--terra);flex-shrink:0;width:44px;text-align:center;}
-.day-tasks{list-style:none;}
-.day-tasks li{font-size:12px;color:var(--ink60);line-height:1.6;padding:2px 0 2px 14px;position:relative;}
-.day-tasks li::before{content:'→';position:absolute;left:0;color:var(--terra);}
-.deliverable{font-size:11px;font-weight:500;color:var(--terra);margin-top:4px;}
-.q-card{background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;}
-.q-text{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:8px;font-style:italic;}
-.checklist-item{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--ink08);}
-.checklist-item:last-child{border-bottom:none;}
-.check-box{width:18px;height:18px;border:1.5px solid var(--ink08);border-radius:4px;flex-shrink:0;margin-top:2px;}
-.comp-card{padding:10px 0;border-bottom:0.5px solid var(--ink08);}
-.comp-card:last-child{border-bottom:none;}
-.comp-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:4px;}
-.status-strong,.status-evidenced{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
-.status-partially{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
-.status-not{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
+.cs{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.cs-s,.cs-e{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
+.cs-p{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
+.cs-n{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
 .loading{text-align:center;padding:80px 20px;}
-.loading-spinner{width:40px;height:40px;border:3px solid var(--ink08);border-top-color:var(--terra);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+.spinner{width:40px;height:40px;border:3px solid var(--ink08);border-top-color:var(--terra);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.error-box{background:#fef2f2;border:0.5px solid #fecaca;border-radius:10px;padding:20px;text-align:center;}
+.err{background:#fef2f2;border:0.5px solid #fecaca;border-radius:10px;padding:20px;text-align:center;}
 </style>
 </head>
 <body>
 <nav>
   <a href="index.html" class="logo">The<em>Desk</em></a>
-  <span class="fc-badge">Full Cycle</span>
+  <span class="badge">Full Cycle</span>
 </nav>
-
-<div class="wrap" id="mainWrap">
-  <div class="loading" id="loadingState">
-    <div class="loading-spinner"></div>
-    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:6px;" id="loadingMsg">Building your repair plan...</div>
-    <div style="font-size:12px;color:var(--ink40);">This takes 15–20 seconds. We're generating a plan specific to your CV and target firm.</div>
+<div class="wrap" id="wrap">
+  <div class="loading" id="ld">
+    <div class="spinner"></div>
+    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:6px;" id="lmsg">Building your repair plan...</div>
+    <div style="font-size:12px;color:var(--ink40);">Takes 20–30 seconds. Generating a plan specific to your CV and target firm.</div>
   </div>
-  <div id="resultState" style="display:none;"></div>
-  <div class="error-box" id="errorState" style="display:none;">
-    <div style="font-size:14px;font-weight:500;margin-bottom:6px;">Something went wrong</div>
-    <div id="errorMsg" style="font-size:12px;color:var(--ink60);"></div>
-  </div>
+  <div id="rs" style="display:none;"></div>
+  <div class="err" id="er" style="display:none;"><div style="font-size:14px;font-weight:500;margin-bottom:6px;">Something went wrong</div><div id="em" style="font-size:12px;color:var(--ink60);"></div></div>
 </div>
-
 <script>
-var LOADING_MSGS = [
-  'Building your repair plan...',
-  'Analysing your evidence hierarchy...',
-  'Mapping CV repair priorities...',
-  'Preparing interview risk map...',
-  'Generating 7-day action plan...'
-];
-var msgEl = document.getElementById('loadingMsg');
-var msgIdx = 0;
-var msgTimer = setInterval(function(){
-  msgIdx = (msgIdx+1) % LOADING_MSGS.length;
-  msgEl.textContent = LOADING_MSGS[msgIdx];
-}, 3500);
+var msgs=['Building your repair plan...','Analysing your CV evidence...','Mapping the repair priorities...','Preparing interview risk map...','Writing your 7-day plan...'];
+var mi=0, ml=document.getElementById('lmsg');
+var mt=setInterval(function(){ mi=(mi+1)%msgs.length; ml.textContent=msgs[mi]; },4000);
 
-function sev(s){
-  if(!s) return '';
-  var cls = s.toLowerCase()==='high'?'sev-high':s.toLowerCase()==='medium'?'sev-med':'sev-low';
-  return '<span class="risk-severity '+cls+'">'+s+'</span>';
+function h(t,val){ return '<div style="font-size:14px;font-weight:500;color:var(--ink);margin:10px 0 6px;">'+t+'</div>'; }
+function row(label,val,col){
+  return val?'<div style="padding:7px 0;border-bottom:0.5px solid var(--ink08);"><span style="font-size:11px;font-weight:600;color:var(--ink40);text-transform:uppercase;letter-spacing:0.08em;">'+label+'</span><div class="body" style="margin-top:3px;'+(col?'color:'+col+';':'')+'">'+(val||'')+'</div></div>':'';
 }
-function statusCls(s){
-  if(!s) return 'status-not';
-  s = s.toLowerCase();
-  if(s.includes('strong')) return 'status-strong';
-  if(s==='evidenced') return 'status-evidenced';
-  if(s.includes('partially')) return 'status-partially';
-  return 'status-not';
-}
-function p(text){ return '<p class="body-text">'+( text||'')+'</p>'; }
-function sub(text){ return '<div class="subtext">'+( text||'')+'</div>'; }
-function label(text){ return '<div class="section-label">'+( text||'')+'</div>'; }
-function h2(text){ return '<div style="font-size:14px;font-weight:500;color:var(--ink);margin:10px 0 6px;">'+( text||'')+'</div>'; }
+function sev(s){ var c=s&&s.toLowerCase()==='high'?'sev-h':s&&s.toLowerCase()==='medium'?'sev-m':'sev-l'; return '<span class="sev '+c+'">'+(s||'')+'</span>'; }
+function cs(s){ var c=s&&(s==='Strong'||s==='Evidenced')?'cs-e':s&&s.includes('Partially')?'cs-p':'cs-n'; return '<span class="cs '+c+'">'+(s||'')+'</span>'; }
 
-function renderPaid(paid, profile) {
-  var firm = (profile&&profile.targetFirm)||'your target firm';
-  var div2  = (profile&&profile.targetDivision)||'';
-  var name = paid.paidTitle||'';
-  var ev = paid.executiveVerdict||{};
-  var html = '';
+function render(paid, profile){
+  var firm=(profile&&profile.targetFirm)||'your target firm';
+  var div2=(profile&&profile.targetDivision)||'finance';
+  var name=paid.paidTitle||'Full Cycle Repair Plan';
+  var ev=paid.executiveVerdict||{};
+  var plan=paid.planName||'7-Day Action Plan';
+  var H='';
 
   // HEADER
-  html += '<div style="padding:20px 0 16px;">';
-  html += '<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:6px;">Full Cycle Repair Plan</div>';
-  html += '<div style="font-family:\'Fraunces\',serif;font-size:clamp(22px,4vw,30px);font-weight:300;letter-spacing:-0.5px;color:var(--ink);line-height:1.15;margin-bottom:6px;">'+(paid.paidTitle||'Your Repair Plan')+'</div>';
-  html += '</div>';
+  H+='<div style="padding:20px 0 16px;">';
+  H+='<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:6px;">Full Cycle Repair Plan</div>';
+  H+='<div style="font-family:\'Fraunces\',serif;font-size:clamp(20px,4vw,28px);font-weight:300;letter-spacing:-0.5px;color:var(--ink);line-height:1.2;margin-bottom:4px;">'+(paid.paidTitle||name)+'</div></div>';
 
-  // EXECUTIVE VERDICT
-  html += '<div class="verdict-box">';
-  html += '<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.35);margin-bottom:10px;">Executive Verdict</div>';
-  html += '<div style="font-size:15px;font-weight:300;color:#F7F3EE;line-height:1.65;margin-bottom:12px;">'+(ev.summary||'')+'</div>';
-  if(ev.readinessVerdict) html += '<div style="font-size:12px;color:#E87040;font-weight:500;margin-bottom:6px;">→ '+ev.readinessVerdict+'</div>';
-  if(ev.mostImportantFix) html += '<div style="font-size:12px;color:rgba(247,243,238,0.6);margin-bottom:6px;"><strong style="color:rgba(247,243,238,0.9);">Highest leverage fix:</strong> '+ev.mostImportantFix+'</div>';
-  if(ev.submitAdvice) html += '<div style="font-size:12px;color:rgba(247,243,238,0.6);"><strong style="color:rgba(247,243,238,0.9);">Submit advice:</strong> '+ev.submitAdvice+'</div>';
-  html += '</div>';
+  // 1. EXECUTIVE VERDICT
+  H+='<div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">';
+  H+='<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:10px;">Executive Verdict</div>';
+  H+='<div style="font-size:15px;font-weight:300;color:#F7F3EE;line-height:1.65;margin-bottom:12px;">'+(ev.summary||'')+'</div>';
+  if(ev.readinessVerdict) H+='<div style="font-size:12px;color:#E87040;font-weight:500;margin-bottom:6px;">→ '+ev.readinessVerdict+'</div>';
+  if(ev.mostImportantFix) H+='<div style="font-size:12px;color:rgba(247,243,238,0.6);margin-bottom:4px;"><b style="color:rgba(247,243,238,0.9);">Highest-leverage fix:</b> '+ev.mostImportantFix+'</div>';
+  if(ev.submitAdvice) H+='<div style="font-size:12px;color:rgba(247,243,238,0.6);"><b style="color:rgba(247,243,238,0.9);">Submit advice:</b> '+ev.submitAdvice+'</div>';
+  H+='</div>';
 
-  // APPLICATION RISK MAP
+  // 2. TARGET ROUTE MEANING
+  var tr=paid.targetRouteMeaning||{};
+  if(tr.isRouteRealistic||tr.routeGap){
+    H+='<div class="card"><div class="lbl">What this means for your target route</div>';
+    H+='<div class="sec-title">Is '+div2+' at '+firm+' realistic right now?</div>';
+    if(tr.isRouteRealistic) H+='<div class="body" style="margin-bottom:8px;">'+tr.isRouteRealistic+'</div>';
+    if(tr.routeGap) H+='<div class="body" style="color:var(--red);margin-bottom:8px;"><b>Gap:</b> '+tr.routeGap+'</div>';
+    if(tr.whatWouldMakeItCredible) H+='<div class="body" style="color:var(--terra);margin-bottom:8px;"><b>What would make it credible:</b> '+tr.whatWouldMakeItCredible+'</div>';
+    if(tr.steppingStoneRoute) H+='<div style="background:var(--warm);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.65;"><b>Stepping-stone route:</b> '+tr.steppingStoneRoute+'</div>';
+    H+='</div>';
+  }
+
+  // 3. APPLICATION RISK MAP
   if(paid.applicationRiskMap&&paid.applicationRiskMap.length){
-    html += '<div class="section"><div class="section-label">Application Risk Map</div>';
-    html += '<div class="section-title">Where this application is most likely to fail</div>';
+    H+='<div class="card"><div class="lbl">Application Risk Map</div><div class="sec-title">Where this application is most likely to fail</div>';
     paid.applicationRiskMap.forEach(function(r){
-      html += '<div class="risk-card">'+sev(r.severity)+'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;">'+( r.risk||'')+'</div>';
-      html += '<div class="body-text">'+( r.whyItMatters||'')+'</div>';
-      if(r.howToFix) html += '<div style="font-size:12px;color:var(--terra);margin-top:6px;line-height:1.6;"><strong>Fix direction:</strong> '+r.howToFix+'</div>';
-      html += '</div>';
+      H+='<div style="padding:12px 0;border-bottom:0.5px solid var(--ink08);">'+sev(r.severity)+'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;">'+(r.risk||'')+'</div>';
+      H+='<div class="body" style="margin-bottom:6px;">'+(r.whyItMatters||'')+'</div>';
+      if(r.howToFix) H+='<div style="font-size:12px;color:var(--terra);line-height:1.6;"><b>Fix direction:</b> '+r.howToFix+'</div>';
+      H+='</div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // EVIDENCE HIERARCHY
+  // 4. EVIDENCE HIERARCHY
   if(paid.evidenceHierarchy){
-    var eh = paid.evidenceHierarchy;
-    html += '<div class="section"><div class="section-label">Evidence Hierarchy</div>';
-    html += '<div class="section-title">What to lead with, support with, and reduce</div>';
-    if(eh.leadWith&&eh.leadWith.length){
-      html += h2('🟢 Lead with');
-      eh.leadWith.forEach(function(e){
-        html += '<div class="ev-item"><div style="font-size:13px;font-weight:500;color:var(--green);">'+( e.evidence||'')+'</div>';
-        html += sub(e.whyItLeads)+'<div style="font-size:12px;color:var(--terra);margin-top:4px;">'+( e.howToUseIt||'')+'</div></div>';
+    var eh=paid.evidenceHierarchy;
+    H+='<div class="card"><div class="lbl">Evidence Hierarchy</div><div class="sec-title">What to lead with, support with, and reduce</div>';
+    function ehSection(items,label,col,icon){
+      if(!items||!items.length) return '';
+      var s='<div style="font-size:12px;font-weight:600;color:'+col+';margin:10px 0 6px;">'+icon+' '+label+'</div>';
+      items.forEach(function(e){
+        s+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);">'
+          +'<div style="font-size:13px;font-weight:500;color:'+col+';">'+(e.evidence||'')+'</div>'
+          +'<div class="sub">'+(e.whyItLeads||e.whyItSupports||e.whyReduce||'')+'</div>'
+          +'<div style="font-size:12px;color:var(--ink40);margin-top:4px;">'+(e.howToUseIt||e.whatToDoInstead||'')+'</div>'
+        +'</div>';
       });
+      return s;
     }
-    if(eh.supportWith&&eh.supportWith.length){
-      html += h2('🟡 Support with');
-      eh.supportWith.forEach(function(e){
-        html += '<div class="ev-item"><div style="font-size:13px;font-weight:500;color:var(--amber);">'+( e.evidence||'')+'</div>';
-        html += sub(e.whyItSupports)+'<div style="font-size:12px;color:var(--ink40);margin-top:4px;">'+( e.howToUseIt||'')+'</div></div>';
-      });
-    }
-    if(eh.reduceOrCut&&eh.reduceOrCut.length){
-      html += h2('🔴 Reduce or cut');
-      eh.reduceOrCut.forEach(function(e){
-        html += '<div class="ev-item"><div style="font-size:13px;font-weight:500;color:var(--red);">'+( e.evidence||'')+'</div>';
-        html += sub(e.whyReduce)+'<div style="font-size:12px;color:var(--ink40);margin-top:4px;">'+( e.whatToDoInstead||'')+'</div></div>';
-      });
-    }
-    html += '</div>';
+    H+=ehSection(eh.leadWith,'Lead with','var(--green)','🟢');
+    H+=ehSection(eh.supportWith,'Support with','var(--amber)','🟡');
+    H+=ehSection(eh.reduceOrCut,'Reduce or cut','var(--red)','🔴');
+    H+='</div>';
   }
 
-  // CV REPAIR MAP
+  // 5. CV REPAIR MAP
   if(paid.cvRepairMap&&paid.cvRepairMap.length){
-    html += '<div class="section"><div class="section-label">CV Repair Map</div>';
-    html += '<div class="section-title">Section-by-section repair plan</div>';
+    H+='<div class="card"><div class="lbl">CV Repair Map</div><div class="sec-title">Section-by-section repair plan</div>';
     paid.cvRepairMap.forEach(function(s){
-      html += '<div class="cv-section">';
-      html += '<div style="font-size:12px;font-weight:600;color:var(--terra);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">'+( s.section||'')+'</div>';
-      html += '<div class="body-text" style="margin-bottom:6px;"><strong>Problem:</strong> '+(s.currentProblem||'')+'</div>';
-      html += '<div class="body-text" style="margin-bottom:6px;"><strong>Needs to prove:</strong> '+(s.whatThisSectionNeedsToProve||'')+'</div>';
-      html += '<div class="body-text" style="color:var(--terra);margin-bottom:6px;"><strong>Repair:</strong> '+(s.repairDirection||'')+'</div>';
-      if(s.exampleDirection) html += '<div style="font-size:12px;color:var(--ink60);font-style:italic;border-left:2px solid var(--terra);padding-left:10px;margin-bottom:6px;">'+s.exampleDirection+'</div>';
-      if(s.whatNotToDo) html += '<div style="font-size:12px;color:var(--red);margin-top:4px;"><strong>Avoid:</strong> '+s.whatNotToDo+'</div>';
-      html += '</div>';
+      H+='<div style="padding:14px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="font-size:11px;font-weight:600;color:var(--terra);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">'+(s.section||'')+'</div>'
+        +'<div class="body" style="margin-bottom:6px;"><b>Problem:</b> '+(s.currentProblem||'')+'</div>'
+        +'<div class="body" style="margin-bottom:6px;"><b>Needs to prove:</b> '+(s.whatThisSectionNeedsToProve||'')+'</div>'
+        +'<div class="body" style="color:var(--terra);margin-bottom:6px;"><b>Repair:</b> '+(s.repairDirection||'')+'</div>'
+        +(s.exampleDirection?'<div style="font-size:12px;color:var(--ink60);font-style:italic;border-left:2px solid var(--terra);padding-left:10px;margin-bottom:6px;">'+(s.exampleDirection)+'</div>':'')
+        +(s.whatNotToDo?'<div style="font-size:12px;color:var(--red);"><b>Avoid:</b> '+(s.whatNotToDo)+'</div>':'')
+      +'</div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // BULLET REPAIR
+  // 6. BULLET REPAIR
   if(paid.bulletRepair&&paid.bulletRepair.length){
-    html += '<div class="section"><div class="section-label">Bullet Repair</div>';
-    html += '<div class="section-title">Your most important CV items — what to change</div>';
+    H+='<div class="card"><div class="lbl">Bullet Repair</div><div class="sec-title">Your most important CV items — what to change</div>';
     paid.bulletRepair.forEach(function(b){
-      html += '<div class="bullet-card">';
-      html += '<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px;">'+( b.cvItem||'')+'</div>';
-      html += '<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><strong>Current issue:</strong> '+( b.currentIssue||'')+'</div>';
-      html += '<div style="font-size:12px;color:var(--terra);margin-bottom:6px;"><strong>Stronger angle:</strong> '+( b.strongerAngle||'')+'</div>';
-      if(b.bulletStructure) html += '<div style="font-size:11px;color:var(--ink40);margin-bottom:8px;">Structure: '+b.bulletStructure+'</div>';
-      if(b.exampleBullet) html += '<div class="bullet-after"><strong>Example direction:</strong> '+b.exampleBullet+'</div>';
-      if(b.whyThisWorks) html += '<div style="font-size:12px;color:var(--ink60);margin-top:6px;">'+b.whyThisWorks+'</div>';
-      html += '</div>';
+      H+='<div style="background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;">'
+        +'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px;">'+(b.cvItem||'')+'</div>'
+        +'<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><b>Current issue:</b> '+(b.currentIssue||'')+'</div>'
+        +'<div style="font-size:12px;color:var(--terra);margin-bottom:6px;"><b>Stronger angle:</b> '+(b.strongerAngle||'')+'</div>'
+        +(b.bulletStructure?'<div style="font-size:11px;color:var(--ink40);margin-bottom:8px;">Structure: '+(b.bulletStructure)+'</div>':'')
+        +(b.exampleBullet?'<div style="font-size:12px;color:var(--green);padding:8px 12px;background:white;border-radius:6px;border-left:2px solid var(--green);margin-bottom:6px;">'+(b.exampleBullet)+'</div>':'')
+        +(b.whyThisWorks?'<div style="font-size:12px;color:var(--ink60);">'+(b.whyThisWorks)+'</div>':'')
+      +'</div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // ROUTE + FIRM FIT
+  // 7. ROUTE POSITIONING
   if(paid.routePositioning){
-    var rp = paid.routePositioning;
-    html += '<div class="section"><div class="section-label">Route Positioning</div>';
-    html += '<div class="section-title">Is this the right route?</div>';
-    html += '<div class="body-text" style="margin-bottom:8px;"><strong>Current fit:</strong> '+(rp.currentRouteFit||'')+'</div>';
-    if(rp.routeRisk) html += '<div class="body-text" style="color:var(--red);margin-bottom:8px;"><strong>Risk:</strong> '+rp.routeRisk+'</div>';
-    if(rp.strongerPositioning) html += '<div class="body-text" style="color:var(--terra);margin-bottom:10px;"><strong>Stronger positioning:</strong> '+rp.strongerPositioning+'</div>';
+    var rp=paid.routePositioning;
+    H+='<div class="card"><div class="lbl">Route Positioning</div><div class="sec-title">Is this the right route?</div>';
+    if(rp.currentRouteFit) H+='<div class="body" style="margin-bottom:8px;"><b>Current fit:</b> '+rp.currentRouteFit+'</div>';
+    if(rp.routeRisk) H+='<div class="body" style="color:var(--red);margin-bottom:8px;"><b>Risk:</b> '+rp.routeRisk+'</div>';
+    if(rp.strongerPositioning) H+='<div class="body" style="color:var(--terra);margin-bottom:10px;"><b>Stronger positioning:</b> '+rp.strongerPositioning+'</div>';
     if(rp.alternativeRoutes&&rp.alternativeRoutes.length){
-      html += '<div style="font-size:12px;font-weight:600;color:var(--ink40);margin-bottom:6px;">ALTERNATIVE ROUTES</div>';
+      H+='<div style="font-size:11px;font-weight:600;color:var(--ink40);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Alternative routes</div>';
       rp.alternativeRoutes.forEach(function(a){
-        var fitCol = a.fit==='Strong'?'#16a34a':a.fit==='Possible'?'#d97706':a.fit==='Stretch'?'#dc2626':'#888';
-        html += '<div style="display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:0.5px solid var(--ink08);">'
-          +'<span style="font-size:13px;color:var(--ink);">'+( a.route||'')+'</span>'
-          +'<span style="font-size:10px;font-weight:600;color:'+fitCol+';margin-left:auto;">'+( a.fit||'')+'</span>'
-          +'</div>'
-          +(a.why?'<div class="subtext" style="margin-bottom:4px;">'+a.why+'</div>':'');
+        var fc=a.fit==='Strong'?'var(--green)':a.fit==='Possible'?'var(--amber)':'var(--red)';
+        H+='<div style="display:flex;gap:8px;align-items:baseline;padding:6px 0;border-bottom:0.5px solid var(--ink08);">'
+          +'<span class="body">'+(a.route||'')+'</span>'
+          +'<span style="font-size:10px;font-weight:600;color:'+fc+';margin-left:auto;">'+(a.fit||'')+'</span>'
+          +'</div>'+(a.why?'<div class="sub" style="margin-bottom:4px;">'+a.why+'</div>':'');
       });
     }
-    html += '</div>';
+    H+='</div>';
   }
 
+  // 8. FIRM/DIVISION FIT
   if(paid.firmDivisionFit){
-    var ff = paid.firmDivisionFit;
-    html += '<div class="section"><div class="section-label">'+( ff.targetFirm||firm)+' '+( ff.targetDivision||div2)+' Fit</div>';
-    html += '<div class="section-title">What the firm will like — and what they will question</div>';
-    if(ff.whatTheFirmWillLike) html += '<div class="body-text" style="margin-bottom:8px;"><span style="color:var(--green);">✓ Will like:</span> '+ff.whatTheFirmWillLike+'</div>';
-    if(ff.whatTheFirmWillQuestion) html += '<div class="body-text" style="margin-bottom:8px;"><span style="color:var(--red);">✗ Will question:</span> '+ff.whatTheFirmWillQuestion+'</div>';
-    if(ff.howToMakeFitClearer) html += '<div class="body-text" style="color:var(--terra);"><strong>Make fit clearer:</strong> '+ff.howToMakeFitClearer+'</div>';
-    html += '</div>';
+    var ff=paid.firmDivisionFit;
+    H+='<div class="card"><div class="lbl">'+(ff.targetFirm||firm)+' — '+(ff.targetDivision||div2)+' Fit</div>';
+    H+='<div class="sec-title">What the firm will like — and what they will question</div>';
+    if(ff.whatTheFirmWillLike) H+='<div class="body" style="margin-bottom:8px;"><span style="color:var(--green);">✓ Will like:</span> '+ff.whatTheFirmWillLike+'</div>';
+    if(ff.whatTheFirmWillQuestion) H+='<div class="body" style="margin-bottom:8px;"><span style="color:var(--red);">✗ Will question:</span> '+ff.whatTheFirmWillQuestion+'</div>';
+    if(ff.howToMakeFitClearer) H+='<div class="body" style="color:var(--terra);"><b>Make fit clearer:</b> '+ff.howToMakeFitClearer+'</div>';
+    H+='</div>';
   }
 
-  // COMMERCIAL + TECHNICAL PLANS
+  // 9. COMMERCIAL PLAN
   if(paid.commercialAwarenessPlan){
-    var cp = paid.commercialAwarenessPlan;
-    html += '<div class="section"><div class="section-label">Commercial Awareness Plan</div>';
-    html += '<div class="section-title">How to close the commercial gap</div>';
-    if(cp.currentLevel) html += '<div class="body-text" style="margin-bottom:6px;"><strong>Current level:</strong> '+cp.currentLevel+'</div>';
-    if(cp.risk) html += '<div class="body-text" style="color:var(--red);margin-bottom:10px;"><strong>Risk:</strong> '+cp.risk+'</div>';
-    if(cp.priorityTopics&&cp.priorityTopics.length){
-      html += '<div style="margin-bottom:10px;">'+cp.priorityTopics.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div>';
-    }
-    if(cp.tasks&&cp.tasks.length){
-      cp.tasks.forEach(function(t){
-        html += '<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);">';
-        html += '<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+( t.task||'')+'</div>';
-        html += '<div class="subtext">'+( t.whyItMatters||'')+'</div>';
-        if(t.outputToCreate) html += '<div style="font-size:11px;color:var(--terra);margin-top:3px;">Output: '+t.outputToCreate+'</div>';
-        html += '</div>';
-      });
-    }
-    if(cp.interviewUse) html += '<div style="margin-top:10px;font-size:12px;color:var(--terra);">'+cp.interviewUse+'</div>';
-    html += '</div>';
+    var cp=paid.commercialAwarenessPlan;
+    H+='<div class="card"><div class="lbl">Commercial Awareness Plan</div><div class="sec-title">How to close the commercial gap before your interview</div>';
+    if(cp.currentLevel) H+='<div class="body" style="margin-bottom:6px;"><b>Current level:</b> '+cp.currentLevel+'</div>';
+    if(cp.risk) H+='<div class="body" style="color:var(--red);margin-bottom:10px;"><b>Risk:</b> '+cp.risk+'</div>';
+    if(cp.priorityTopics&&cp.priorityTopics.length) H+='<div style="margin-bottom:12px;">'+cp.priorityTopics.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div>';
+    if(cp.tasks&&cp.tasks.length) cp.tasks.forEach(function(t){
+      H+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);"><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+(t.task||'')+'</div><div class="sub">'+(t.whyItMatters||'')+'</div>'+(t.outputToCreate?'<div style="font-size:11px;color:var(--terra);margin-top:3px;">Output: '+t.outputToCreate+'</div>':'')+'</div>';
+    });
+    if(cp.interviewUse) H+='<div style="margin-top:10px;font-size:12px;color:var(--terra);">'+cp.interviewUse+'</div>';
+    H+='</div>';
   }
 
+  // 10. NUMERICAL PLAN
   if(paid.numericalTechnicalPlan){
-    var np = paid.numericalTechnicalPlan;
-    html += '<div class="section"><div class="section-label">Numerical & Technical Plan</div>';
-    html += '<div class="section-title">How to improve your score before submission</div>';
-    if(np.currentLevel) html += '<div class="body-text" style="margin-bottom:6px;"><strong>Current level:</strong> '+np.currentLevel+'</div>';
-    if(np.risk) html += '<div class="body-text" style="color:var(--red);margin-bottom:6px;"><strong>Risk:</strong> '+np.risk+'</div>';
-    if(np.targetLevelBeforeSubmission) html += '<div class="body-text" style="color:var(--green);margin-bottom:10px;"><strong>Target:</strong> '+np.targetLevelBeforeSubmission+'</div>';
-    if(np.priorityPracticeAreas&&np.priorityPracticeAreas.length){
-      html += '<div style="margin-bottom:10px;">'+np.priorityPracticeAreas.map(function(a){return '<span class="tag">'+a+'</span>';}).join('')+'</div>';
-    }
-    if(np.practicePlan&&np.practicePlan.length){
-      np.practicePlan.forEach(function(t){
-        html += '<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);">';
-        html += '<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+( t.task||'')+'</div>';
-        html += '<div class="subtext">'+( t.whyItMatters||'')+'</div>';
-        if(t.targetOutput) html += '<div style="font-size:11px;color:var(--terra);margin-top:3px;">Target: '+t.targetOutput+'</div>';
-        html += '</div>';
-      });
-    }
-    html += '</div>';
+    var np=paid.numericalTechnicalPlan;
+    H+='<div class="card"><div class="lbl">Numerical & Technical Plan</div><div class="sec-title">How to improve before submission</div>';
+    if(np.currentLevel) H+='<div class="body" style="margin-bottom:6px;"><b>Current level:</b> '+np.currentLevel+'</div>';
+    if(np.risk) H+='<div class="body" style="color:var(--red);margin-bottom:6px;"><b>Risk:</b> '+np.risk+'</div>';
+    if(np.targetLevelBeforeSubmission) H+='<div class="body" style="color:var(--green);margin-bottom:10px;"><b>Target:</b> '+np.targetLevelBeforeSubmission+'</div>';
+    if(np.priorityPracticeAreas&&np.priorityPracticeAreas.length) H+='<div style="margin-bottom:12px;">'+np.priorityPracticeAreas.map(function(a){return '<span class="tag">'+a+'</span>';}).join('')+'</div>';
+    if(np.practicePlan&&np.practicePlan.length) np.practicePlan.forEach(function(t){
+      H+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);"><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+(t.task||'')+'</div><div class="sub">'+(t.whyItMatters||'')+'</div>'+(t.targetOutput?'<div style="font-size:11px;color:var(--terra);margin-top:3px;">Target: '+t.targetOutput+'</div>':'')+'</div>';
+    });
+    H+='</div>';
   }
 
-  // INTERVIEW RISK MAP
+  // 11. INTERVIEW RISK MAP
   if(paid.interviewRiskMap&&paid.interviewRiskMap.length){
-    html += '<div class="section"><div class="section-label">Interview Risk Map</div>';
-    html += '<div class="section-title">Questions likely to expose the gaps in this application</div>';
+    H+='<div class="card"><div class="lbl">Interview & HireVue Risk Map</div><div class="sec-title">Questions most likely to expose the gaps in this application</div>';
     paid.interviewRiskMap.forEach(function(q){
-      html += '<div class="q-card">';
-      html += '<div class="q-text">"'+( q.likelyQuestion||'')+'"</div>';
-      html += '<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><strong>Why it exposes risk:</strong> '+( q.whyThisQuestionExposesRisk||'')+'</div>';
-      if(q.weakAnswerPattern) html += '<div style="font-size:12px;color:var(--ink60);margin-bottom:6px;"><strong>Weak answer sounds like:</strong> '+q.weakAnswerPattern+'</div>';
-      if(q.strongAnswerStructure) html += '<div style="font-size:12px;color:var(--green);margin-bottom:6px;"><strong>Strong answer structure:</strong> '+q.strongAnswerStructure+'</div>';
-      if(q.candidateEvidenceToUse) html += '<div style="font-size:12px;color:var(--terra);"><strong>Your evidence to use:</strong> '+q.candidateEvidenceToUse+'</div>';
-      html += '</div>';
+      H+='<div style="background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;">'
+        +'<div style="font-size:14px;font-weight:500;color:var(--ink);font-style:italic;margin-bottom:8px;">"'+(q.likelyQuestion||'')+'"</div>'
+        +'<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><b>Why it exposes risk:</b> '+(q.whyThisQuestionExposesRisk||'')+'</div>'
+        +(q.weakAnswerPattern?'<div style="font-size:12px;color:var(--ink60);margin-bottom:6px;"><b>Weak answer sounds like:</b> '+q.weakAnswerPattern+'</div>':'')
+        +(q.strongAnswerStructure?'<div style="font-size:12px;color:var(--green);margin-bottom:6px;"><b>Strong answer structure:</b> '+q.strongAnswerStructure+'</div>':'')
+        +(q.candidateEvidenceToUse?'<div style="font-size:12px;color:var(--terra);"><b>Your evidence to use:</b> '+q.candidateEvidenceToUse+'</div>':'')
+      +'</div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // COMPETENCY REPAIR
+  // 12. COMPETENCY REPAIR
   if(paid.competencyRepair&&paid.competencyRepair.length){
-    html += '<div class="section"><div class="section-label">Competency Repair</div>';
-    html += '<div class="section-title">What each competency needs to become application-grade</div>';
+    H+='<div class="card"><div class="lbl">Competency Repair</div><div class="sec-title">What each competency needs to become application-grade</div>';
     paid.competencyRepair.forEach(function(c){
-      html += '<div class="comp-card">';
-      var sc2 = c.currentStatus||'Not yet evidenced';
-      var cls = statusCls(sc2);
-      html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">';
-      html += '<div style="font-size:14px;font-weight:500;color:var(--ink);">'+( c.competency||'')+'</div>';
-      html += '<span class="comp-status '+cls+'">'+sc2+'</span></div>';
-      if(c.currentEvidence) html += '<div class="subtext" style="margin-bottom:4px;"><strong>Current:</strong> '+c.currentEvidence+'</div>';
-      if(c.whatIsMissing) html += '<div style="font-size:12px;color:var(--red);margin-bottom:4px;"><strong>Missing:</strong> '+c.whatIsMissing+'</div>';
-      if(c.howToStrengthen) html += '<div style="font-size:12px;color:var(--terra);margin-bottom:4px;"><strong>How to strengthen:</strong> '+c.howToStrengthen+'</div>';
-      if(c.interviewRisk) html += '<div style="font-size:11px;color:var(--ink40);">Interview risk: '+c.interviewRisk+'</div>';
-      html += '</div>';
+      H+='<div style="padding:10px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+          +'<div style="font-size:14px;font-weight:500;color:var(--ink);">'+(c.competency||'')+'</div>'
+          +cs(c.currentStatus)
+        +'</div>'
+        +(c.currentEvidence?'<div class="sub" style="margin-bottom:4px;"><b>Evidence:</b> '+c.currentEvidence+'</div>':'')
+        +(c.whatIsMissing?'<div style="font-size:12px;color:var(--red);margin-bottom:4px;"><b>Missing:</b> '+c.whatIsMissing+'</div>':'')
+        +(c.howToStrengthen?'<div style="font-size:12px;color:var(--terra);margin-bottom:4px;"><b>Strengthen:</b> '+c.howToStrengthen+'</div>':'')
+        +(c.interviewRisk?'<div style="font-size:11px;color:var(--ink40);">Interview risk: '+c.interviewRisk+'</div>':'')
+        +(c.shouldItLead?'<div style="font-size:11px;color:var(--ink40);margin-top:3px;">Role: '+c.shouldItLead+'</div>':'')
+      +'</div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // 7-DAY ACTION PLAN
+  // 13. 7-DAY PLAN
   if(paid.sevenDayActionPlan&&paid.sevenDayActionPlan.length){
-    html += '<div class="section"><div class="section-label">7-Day Action Plan</div>';
-    html += '<div class="section-title">What to do before submitting</div>';
+    H+='<div class="card"><div class="lbl">'+plan+'</div><div class="sec-title">What to do before submitting</div>';
     paid.sevenDayActionPlan.forEach(function(d){
-      html += '<div class="day-card">';
-      html += '<div class="day-num">'+( d.day||'')+'</div>';
-      html += '<div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;">'+( d.focus||'')+'</div>';
-      if(d.tasks&&d.tasks.length){
-        html += '<ul class="day-tasks">'+d.tasks.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>';
-      }
-      if(d.deliverable) html += '<div class="deliverable">↳ '+d.deliverable+'</div>';
-      html += '</div></div>';
+      H+='<div style="display:flex;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="font-family:\'Fraunces\',serif;font-size:22px;font-weight:300;color:var(--terra);flex-shrink:0;width:44px;text-align:center;">'+(d.day||'').replace('Day ','')+'</div>'
+        +'<div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;">'+(d.focus||'')+'</div>'
+        +(d.tasks&&d.tasks.length?'<ul style="list-style:none;">'+d.tasks.map(function(t){return '<li style="font-size:12px;color:var(--ink60);line-height:1.6;padding:2px 0 2px 14px;position:relative;"><span style="position:absolute;left:0;color:var(--terra);">→</span>'+t+'</li>';}).join('')+'</ul>':'')
+        +(d.deliverable?'<div style="font-size:11px;font-weight:500;color:var(--terra);margin-top:4px;">↳ '+d.deliverable+'</div>':'')
+        +'</div></div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // FINAL CHECKLIST
+  // 14. FINAL CHECKLIST
   if(paid.finalSubmissionChecklist&&paid.finalSubmissionChecklist.length){
-    html += '<div class="section"><div class="section-label">Final Submission Checklist</div>';
-    html += '<div class="section-title">Before you click submit</div>';
+    H+='<div class="card"><div class="lbl">Final Submission Checklist</div><div class="sec-title">Before you click submit</div>';
     paid.finalSubmissionChecklist.forEach(function(c){
-      html += '<div class="checklist-item"><div class="check-box"></div>';
-      html += '<div><div style="font-size:13px;font-weight:400;color:var(--ink);">'+( c.item||'')+'</div>';
-      if(c.statusNeeded) html += '<div style="font-size:11px;color:var(--terra);margin-top:2px;">Done = '+c.statusNeeded+'</div>';
-      if(c.whyItMatters) html += '<div class="subtext">'+c.whyItMatters+'</div>';
-      html += '</div></div>';
+      H+='<div style="display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="width:18px;height:18px;border:1.5px solid var(--ink08);border-radius:4px;flex-shrink:0;margin-top:2px;"></div>'
+        +'<div><div style="font-size:13px;font-weight:400;color:var(--ink);">'+(c.item||'')+'</div>'
+        +(c.statusNeeded?'<div style="font-size:11px;color:var(--terra);margin-top:2px;">Done = '+c.statusNeeded+'</div>':'')
+        +(c.whyItMatters?'<div class="sub">'+c.whyItMatters+'</div>':'')
+        +'</div></div>';
     });
-    html += '</div>';
+    H+='</div>';
   }
 
-  // RECHECK
+  // 15. RECHECK
   if(paid.recheckRecommendation){
-    html += '<div style="background:var(--warm);border-radius:10px;padding:16px 20px;margin-bottom:14px;">';
-    html += '<div class="section-label" style="margin-bottom:6px;">Recheck Recommendation</div>';
-    html += '<div class="body-text">'+paid.recheckRecommendation+'</div>';
-    html += '</div>';
+    H+='<div style="background:var(--warm);border-radius:10px;padding:16px 20px;margin-bottom:14px;">'
+      +'<div class="lbl" style="margin-bottom:6px;">Recheck Recommendation</div>'
+      +'<div class="body">'+paid.recheckRecommendation+'</div>'
+    +'</div>';
   }
 
-  return html;
+  return H;
 }
 
-// Load from sessionStorage
 document.addEventListener('DOMContentLoaded', async function(){
   try {
-    var stored = sessionStorage.getItem('tdesk_fc');
-    if(!stored) throw new Error('No Full Cycle data found. Please go back and run your assessment first.');
-    var data = JSON.parse(stored);
+    var stored=sessionStorage.getItem('tdesk_fc');
+    if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first.');
+    var data=JSON.parse(stored);
     sessionStorage.removeItem('tdesk_fc');
 
-    var resp = await fetch('/api/full-cycle', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+    var resp=await fetch('/api/full-cycle',{
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
     });
-    var json = await resp.json();
-    clearInterval(msgTimer);
+    var json=await resp.json();
+    clearInterval(mt);
 
-    if(!json.success || !json.paid) throw new Error(json.error||'Generation failed');
+    if(!json.success||!json.paid) throw new Error(json.error||'Generation failed — please try again.');
 
-    document.getElementById('loadingState').style.display='none';
-    var rs = document.getElementById('resultState');
-    rs.innerHTML = renderPaid(json.paid, data.profile||{});
+    document.getElementById('ld').style.display='none';
+    var rs=document.getElementById('rs');
+    rs.innerHTML=render(json.paid, data.profile||{});
     rs.style.display='block';
-
-  } catch(e) {
-    clearInterval(msgTimer);
-    document.getElementById('loadingState').style.display='none';
-    document.getElementById('errorMsg').textContent = e.message;
-    document.getElementById('errorState').style.display='block';
+  } catch(e){
+    clearInterval(mt);
+    document.getElementById('ld').style.display='none';
+    document.getElementById('em').textContent=e.message;
+    document.getElementById('er').style.display='block';
   }
 });
 </script>
