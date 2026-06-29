@@ -1,7 +1,7 @@
 {
   "functions": {
-    "api/analyse-mot.js": {
-      "maxDuration": 60
-    }
+    "api/analyse-mot.js": { "maxDuration": 60 },
+    "api/full-cycle.js":  { "maxDuration": 60 },
+    "api/generate-cv.js": { "maxDuration": 60 }
   }
 }
