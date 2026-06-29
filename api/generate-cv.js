@@ -16,65 +16,78 @@ export default async function handler(req, res) {
 
     const firm = profile?.targetFirm || "your target firm";
     const div  = profile?.targetDivision || "finance";
-    const name = paid?.paidTitle?.split("—")[1]?.split("|")[0]?.trim() || profile?.name || "";
+    const name = profile?.name || "";
 
-    const bulletRepair = (paid?.bulletRepair || []).map(b =>
-      `- ${b.cvItem}: ${b.strongerAngle} | Structure: ${b.bulletStructure} | Direction: ${b.exampleBullet}`
-    ).join("\n");
-
-    const evidenceHierarchy = [
-      ...(paid?.evidenceHierarchy?.leadWith || []).map(e => `LEAD: ${e.evidence} — ${e.howToUseIt}`),
+    const evidenceOrder = [
+      ...(paid?.evidenceHierarchy?.leadWith    || []).map(e => `LEAD: ${e.evidence} — ${e.howToUseIt}`),
       ...(paid?.evidenceHierarchy?.supportWith || []).map(e => `SUPPORT: ${e.evidence} — ${e.howToUseIt}`),
-      ...(paid?.evidenceHierarchy?.reduceOrCut || []).map(e => `CUT/REDUCE: ${e.evidence} — ${e.whatToDoInstead}`)
+      ...(paid?.evidenceHierarchy?.reduceOrCut || []).map(e => `REDUCE: ${e.evidence} — ${e.whatToDoInstead}`)
     ].join("\n");
 
-    const prompt = `You are a senior finance career practitioner rewriting a student CV for a ${div} application at ${firm}.
+    const bulletDirections = (paid?.bulletRepair || []).map(b =>
+      `${b.cvItem}:\n  Issue: ${b.currentIssue}\n  Stronger angle: ${b.strongerAngle}\n  Structure: ${b.bulletStructure}\n  Direction: ${b.exampleBullet}`
+    ).join("\n\n");
+
+    const repairNotes = (paid?.cvRepairMap || []).map(s =>
+      `${s.section}: ${s.repairDirection}`
+    ).join("\n");
+
+    const prompt = `You are a senior finance career practitioner rewriting a student CV for ${div} at ${firm}.
 
 ORIGINAL CV:
-${cvText}
+${cvText || "(not provided — use the named CV details from the repair plan)"}
 
-REPAIR PLAN CONTEXT:
-Target: ${firm} — ${div}
-Evidence hierarchy:
-${evidenceHierarchy}
+EVIDENCE ORDER FROM REPAIR PLAN:
+${evidenceOrder}
 
-Bullet repair directions:
-${bulletRepair}
+BULLET REPAIR DIRECTIONS:
+${bulletDirections}
 
-CV Repair notes:
-${(paid?.cvRepairMap || []).map(s => `${s.section}: ${s.repairDirection}`).join("\n")}
+SECTION REPAIR NOTES:
+${repairNotes}
 
-STRICT RULES — you MUST follow these:
-1. NEVER invent deals, clients, outcomes, numbers, responsibilities or roles
-2. ONLY rewrite what is in the original CV — improve framing, not facts
-3. If a bullet cannot be improved without inventing content, improve structure and language only
-4. Keep all dates, job titles, company names, grades and qualifications exactly as in the original
-5. Flag any bullet with "[Review: this direction assumes X — use only if accurate]" if it depends on unconfirmed detail
-6. Every bullet should follow: context → action → analytical output where possible
-7. Do NOT add experience that is not in the original CV
+EXECUTIVE VERDICT: ${paid?.executiveVerdict?.summary || ""}
 
-Generate a rewritten CV as JSON:
+STRICT RULES:
+1. NEVER invent deals, clients, outcomes, numbers, modelling assumptions, responsibilities, committee presentations, investor reporting details or roles
+2. Keep ALL dates, company names, job titles, grades and qualifications exactly as in the original
+3. Reorder sections based on the evidence hierarchy above — lead evidence must appear first in Experience
+4. Every bullet must follow: context → action → analytical output where possible
+5. Label each bullet with a confidence level: "ready" / "if_accurate" / "needs_confirmation" / "build_first"
+   - ready: CV already clearly supports this wording
+   - if_accurate: depends on details that may be true but are not fully confirmed
+   - needs_confirmation: needs more information from the student
+   - build_first: candidate lacks underlying evidence — do not include yet
+6. If a section cannot be improved without inventing content, flag it as build_first
+7. The draft is for editing — be explicit about what needs student verification
+
+Return ONLY valid JSON:
 {
-  "candidateName": "${name || "[Name from original CV]"}",
-  "targetRole": "${div} — ${firm}",
+  "candidateName": "${name || "[Name]"}",
+  "targetRole": "${div} at ${firm}",
   "sections": [
     {
       "title": "Education",
       "items": [
         {
-          "heading": "[University | Degree | Dates]",
-          "subheading": "[Grade if present]",
-          "bullets": ["[Rewritten bullet]"]
+          "heading": "[University | Degree | Expected Year]",
+          "subheading": "[Grade / predicted grade]",
+          "bullets": [
+            { "text": "[Bullet text]", "confidence": "ready|if_accurate|needs_confirmation|build_first", "note": "[Optional note to student]" }
+          ]
         }
       ]
     },
     {
       "title": "Experience",
+      "orderNote": "[Explain the evidence ordering — e.g. KKR leads because it is stronger technical evidence than Goldman Insight]",
       "items": [
         {
           "heading": "[Company | Role | Dates]",
-          "subheading": "[Location if present]",
-          "bullets": ["[Rewritten bullet 1]", "[Rewritten bullet 2]"]
+          "subheading": "[Location if in original]",
+          "bullets": [
+            { "text": "[Rewritten bullet]", "confidence": "ready|if_accurate|needs_confirmation|build_first", "note": "[Note if needed]" }
+          ]
         }
       ]
     },
@@ -84,7 +97,9 @@ Generate a rewritten CV as JSON:
         {
           "heading": "[Society | Role | Dates]",
           "subheading": "",
-          "bullets": ["[Rewritten bullet]"]
+          "bullets": [
+            { "text": "[Bullet]", "confidence": "ready|if_accurate|needs_confirmation|build_first", "note": "" }
+          ]
         }
       ]
     },
@@ -94,26 +109,33 @@ Generate a rewritten CV as JSON:
         {
           "heading": "Technical Skills",
           "subheading": "",
-          "bullets": ["[Skills list from original CV]"]
+          "bullets": [
+            { "text": "[Skills from original CV exactly]", "confidence": "ready", "note": "" }
+          ]
         }
       ]
     }
   ],
-  "writingNotes": ["[Note 1 about what was changed and why]", "[Note 2]"],
-  "accuracyFlags": ["[Any bullet that needs candidate verification]"]
+  "whatChangedAndWhy": [
+    { "change": "[What was changed]", "reason": "[Why — connect to repair plan logic]" }
+  ],
+  "accuracyFlags": [
+    { "item": "[CV item needing verification]", "question": "[Specific question for student to answer]" }
+  ],
+  "buildFirst": [
+    { "gap": "[What evidence needs to be built]", "why": "[Why it matters for ${div} at ${firm}]" }
+  ]
 }`;
 
     const response = await client.messages.create({
-      model: MODEL,
-      max_tokens: 4096,
-      temperature: 0.2,
-      system: `You are a senior finance career practitioner rewriting student CVs. You never invent content. You only improve framing, structure and language. You flag anything that depends on unconfirmed detail. Return ONLY valid JSON.`,
+      model: MODEL, max_tokens: 4096, temperature: 0.2,
+      system: `You are a senior finance career practitioner rewriting student CVs. You never invent content. You improve framing, structure and language only. You flag everything uncertain. Return ONLY valid JSON.`,
       messages: [{ role: "user", content: prompt }]
     });
 
     const raw = response.content[0]?.text || "";
     const first = raw.indexOf("{");
-    const last = raw.lastIndexOf("}");
+    const last  = raw.lastIndexOf("}");
     if (first < 0) throw new Error("No JSON returned");
     const cv = JSON.parse(raw.slice(first, last + 1));
 
