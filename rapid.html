@@ -349,13 +349,14 @@ async function run(){
     if(data.success && data.result){
       status.textContent='✓ Done in '+elapsed+'s — building result...';
       // Store for Full Cycle unlock
-      window._lastFCData = {
+      var fcData = {
         result: data.result,
         cvText: cvText||'',
         profile: profile,
         quiz: quiz
       };
-      var html=buildResultPage(data.result, profile, quiz);
+      window._lastFCData = fcData;
+      var html=buildResultPage(data.result, profile, quiz, fcData);
       document.open();
       document.write(html);
       document.close();
@@ -573,7 +574,7 @@ function setScore(type, val){
   if(type==='comm'){  commScore=val; setScoreBtn('comm-btns', val); }
 }
 
-function buildResultPage(r, profile, quiz) {
+function buildResultPage(r, profile, quiz, fcData) {
   var firm = profile.targetFirm||'your target firm';
   var div  = profile.targetDivision||profile.track||'';
   var name = r.candidateName||'';
@@ -706,11 +707,15 @@ function buildResultPage(r, profile, quiz) {
 
 
 function unlockFullCycle(){
-  if(!window._lastFCData){ alert('Please run an assessment first.'); return; }
+  var d=window._lastFCData;
+  if(!d||!d.result){ alert('Assessment data not found. Please run your assessment again.'); return; }
   try{
-    sessionStorage.setItem('tdesk_fc', JSON.stringify(window._lastFCData));
+    sessionStorage.setItem('tdesk_fc', JSON.stringify(d));
     window.location.href='fullcycle.html';
-  }catch(e){ alert('Error: '+e.message); }
+  }catch(e){
+    // sessionStorage failed — try opening fullcycle with data in URL hash
+    alert('Error storing data: '+e.message+'. Please try again.');
+  }
 }
 
 </script>
