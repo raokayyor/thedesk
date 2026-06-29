@@ -510,13 +510,23 @@ document.addEventListener('DOMContentLoaded', async function(){
       throw new Error('Assessment data is incomplete. Please run your assessment again from rapid.html.');
     }
 
+    var controller=new AbortController();
+    var timeout=setTimeout(function(){ controller.abort(); }, 55000);
+
     var resp=await fetch('/api/full-cycle',{
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data),
+      signal:controller.signal
+    }).catch(function(e){
+      if(e.name==='AbortError') throw new Error('The repair plan is taking too long to generate. Please try again — it usually takes 20-30 seconds.');
+      throw e;
     });
+    clearTimeout(timeout);
 
     if(!resp.ok){
       var errText=await resp.text();
-      throw new Error('API error '+resp.status+': '+errText.slice(0,200));
+      throw new Error('API error '+resp.status+': '+errText.slice(0,300));
     }
 
     var json=await resp.json();
