@@ -348,6 +348,13 @@ async function run(){
 
     if(data.success && data.result){
       status.textContent='✓ Done in '+elapsed+'s — building result...';
+      // Store for Full Cycle unlock
+      window._lastFCData = {
+        result: data.result,
+        cvText: cvText||'',
+        profile: profile,
+        quiz: quiz
+      };
       var html=buildResultPage(data.result, profile, quiz);
       document.open();
       document.write(html);
@@ -690,12 +697,21 @@ function buildResultPage(r, profile, quiz) {
     +'<div style="background:#1a1a1a;border-radius:12px;padding:20px;text-align:center;margin-top:16px;">'
       +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">'+( name?name+', unlock your repair plan before you submit.':'Let\'s get your fixes.')+'</div>'
       +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Specific to your CV, your scores, and '+safeTarget+' — not generic advice.</div>'
-      +'<a href="thedesk.vercel.app/mentor.html" style="display:inline-block;background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;text-decoration:none;">Unlock the Full Cycle repair plan — £79 →</a>'
+      +'<button onclick="unlockFullCycle()" style="background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;">Unlock the Full Cycle repair plan — £79 →</button>'
     +'</div>'
 
     +'</div></body></html>';
 }
 
+
+
+function unlockFullCycle(){
+  if(!window._lastFCData){ alert('Please run an assessment first.'); return; }
+  try{
+    sessionStorage.setItem('tdesk_fc', JSON.stringify(window._lastFCData));
+    window.location.href='fullcycle.html';
+  }catch(e){ alert('Error: '+e.message); }
+}
 
 </script>
 </body>
