@@ -355,11 +355,13 @@ async function run(){
         profile: profile,
         quiz: quiz
       };
-      window._lastFCData = fcData;
+      try{ sessionStorage.setItem('tdesk_fc_pending', JSON.stringify(fcData)); }catch(e){}
       var html=buildResultPage(data.result, profile, quiz, fcData);
       document.open();
       document.write(html);
       document.close();
+      // Re-attach after document.write wipes window object
+      window._lastFCData = fcData;
         } else {
       status.className='status err';
       status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
@@ -708,12 +710,19 @@ function buildResultPage(r, profile, quiz, fcData) {
 
 function unlockFullCycle(){
   var d=window._lastFCData;
+  if(!d||!d.result){
+    // Fallback: try sessionStorage backup set right after API success
+    try{
+      var backup=sessionStorage.getItem('tdesk_fc_pending');
+      if(backup) d=JSON.parse(backup);
+    }catch(e){}
+  }
   if(!d||!d.result){ alert('Assessment data not found. Please run your assessment again.'); return; }
   try{
     sessionStorage.setItem('tdesk_fc', JSON.stringify(d));
+    sessionStorage.removeItem('tdesk_fc_pending');
     window.location.href='fullcycle.html';
   }catch(e){
-    // sessionStorage failed — try opening fullcycle with data in URL hash
     alert('Error storing data: '+e.message+'. Please try again.');
   }
 }
