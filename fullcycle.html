@@ -93,8 +93,8 @@ function render(paid, profile){
   // 16. REPAIRED CV DRAFT SECTION
   H+='<div id="cvGenSection" style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">'
     +'<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:8px;">Section 16 — Repaired CV Draft</div>'
-    +'<div style="font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">Generate your repaired CV draft</div>'
-    +'<div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:14px;line-height:1.6;">Using your Full Cycle repair plan, we'll build an editable CV draft based only on your existing evidence. We do not invent experience — we restructure and reframe what you have already done into a stronger application for '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetFirm||firm)+' '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetDivision||div2)+'.</div>'
+    +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">Generate your repaired CV draft</div>'
+    +'<div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:14px;line-height:1.6;">Using your Full Cycle repair plan, we will build an editable CV draft based only on your existing evidence. We do not invent experience — we restructure and reframe what you have already done into a stronger application for '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetFirm||firm)+' '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetDivision||div2)+'.</div>'
     +'<button onclick="generateCV()" id="cvGenBtn" style="background:#E87040;color:white;border:none;border-radius:8px;padding:11px 24px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Generate repaired CV draft →</button>'
     +'<div id="cvGenStatus" style="display:none;font-size:12px;color:rgba(247,243,238,0.5);text-align:center;padding:10px;"></div>'
   +'</div>';
@@ -436,7 +436,7 @@ function renderCV(cv){
 
   // RECHECK + DOWNLOAD
   H+='<div style="display:flex;gap:8px;margin-top:14px;">';
-  H+='<button onclick="downloadCV()" style="flex:1;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:11px;font-family:'Fraunces',serif;font-size:14px;font-weight:300;cursor:pointer;">Download draft →</button>';
+  H+='<button onclick="downloadCV()" style="flex:1;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:11px;font-family:Fraunces,serif;font-size:14px;font-weight:300;cursor:pointer;">Download draft →</button>';
   H+='<button onclick="runRecheck()" style="flex:1;background:white;color:var(--ink);border:0.5px solid var(--ink08);border-radius:8px;padding:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Upload revised CV for recheck <span style="font-size:10px;color:var(--terra);">(<span id="rc2">2</span> remaining)</span></button>';
   H+='</div>';
   H+='</div>';
@@ -510,29 +510,52 @@ document.addEventListener('DOMContentLoaded', async function(){
       throw new Error('Assessment data is incomplete. Please run your assessment again from rapid.html.');
     }
 
-    var controller=new AbortController();
-    var timeout=setTimeout(function(){ controller.abort(); }, 55000);
+    var parts=['verdict','evidence','route','prep','plan'];
+    var partLabels={
+      verdict:'Executive verdict and risk map...',
+      evidence:'Evidence hierarchy and CV repair...',
+      route:'Route positioning and firm fit...',
+      prep:'Commercial and technical prep...',
+      plan:'7-day action plan...'
+    };
+    var paid={};
 
-    var resp=await fetch('/api/full-cycle',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(data),
-      signal:controller.signal
-    }).catch(function(e){
-      if(e.name==='AbortError') throw new Error('The repair plan is taking too long to generate. Please try again — it usually takes 20-30 seconds.');
-      throw e;
-    });
-    clearTimeout(timeout);
+    for(var i=0;i<parts.length;i++){
+      var partName=parts[i];
+      ml.textContent=partLabels[partName]+' ('+(i+1)+'/'+parts.length+')';
 
-    if(!resp.ok){
-      var errText=await resp.text();
-      throw new Error('API error '+resp.status+': '+errText.slice(0,300));
+      var controller=new AbortController();
+      var timeout=setTimeout(function(){ controller.abort(); }, 9000);
+
+      var resp;
+      try{
+        resp=await fetch('/api/full-cycle',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(Object.assign({},data,{part:partName})),
+          signal:controller.signal
+        });
+      }catch(e){
+        clearTimeout(timeout);
+        if(e.name==='AbortError') throw new Error('Part "'+partName+'" timed out. Please try again.');
+        throw e;
+      }
+      clearTimeout(timeout);
+
+      if(!resp.ok){
+        var errText=await resp.text();
+        throw new Error('API error on '+partName+' ('+resp.status+'): '+errText.slice(0,200));
+      }
+
+      var partJson=await resp.json();
+      if(!partJson.success){ throw new Error('Failed on '+partName+': '+(partJson.error||'unknown')); }
+      Object.assign(paid, partJson.data);
     }
 
-    var json=await resp.json();
     clearInterval(mt);
+    var json={success:true, paid:paid};
 
-    if(!json.success||!json.paid) throw new Error(json.error||'Generation failed — please try again.');
+    if(!json.success||!json.paid) throw new Error('Generation failed — please try again.');
 
     document.getElementById('ld').style.display='none';
     document.getElementById('fcStatus').style.display='block';
