@@ -19,9 +19,7 @@ export default async function handler(req, res) {
 
     const prompts = {
       verdict:  buildVerdictPrompt(ctx),
-      evidence: buildEvidencePrompt(ctx),
-      route:    buildRoutePrompt(ctx),
-      prep:     buildPrepPrompt(ctx),
+      repair:   buildRepairPrompt(ctx),
       plan:     buildPlanPrompt(ctx)
     };
 
@@ -30,7 +28,7 @@ export default async function handler(req, res) {
 
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 600,
+      max_tokens: 400,
       temperature: 0.25,
       system: `You are a finance career expert. Be extremely concise — 1 short sentence per field. Never invent content. Return ONLY valid compact JSON, no markdown.`,
       messages: [{ role: "user", content: promptText }]
@@ -72,31 +70,14 @@ Return ONLY this compact JSON (1-2 sentences per field):
 "applicationRiskMap":[{"risk":"[title]","severity":"High","whyItMatters":"[1 sentence]","howToFix":"[1 sentence]"},{"risk":"[2nd]","severity":"High","whyItMatters":"[1 sentence]","howToFix":"[1 sentence]"},{"risk":"[3rd]","severity":"Medium","whyItMatters":"[1 sentence]","howToFix":"[1 sentence]"}]}`;
 }
 
-function buildEvidencePrompt(ctx) {
+function buildRepairPrompt(ctx) {
   return `${ctx.header}
 
-Return ONLY this compact JSON (1-2 sentences per field):
+Return ONLY compact JSON (max 1 sentence per value):
 {"evidenceHierarchy":{"leadWith":[{"evidence":"[item]","whyItLeads":"[1 sentence]","howToUseIt":"[1 sentence]"},{"evidence":"[2nd]","whyItLeads":"[1 sentence]","howToUseIt":"[1 sentence]"}],"supportWith":[{"evidence":"[item]","whyItSupports":"[1 sentence]","howToUseIt":"[1 sentence]"}],"reduceOrCut":[{"evidence":"[item]","whyReduce":"[1 sentence]","whatToDoInstead":"[1 sentence]"}]},
-"cvRepairMap":[{"section":"Experience","currentProblem":"[1 sentence]","whatThisSectionNeedsToProve":"[1 sentence]","repairDirection":"[1 sentence]","exampleDirection":"[1 sentence]","whatNotToDo":"[1 sentence]"},{"section":"Education","currentProblem":"[1 sentence]","whatThisSectionNeedsToProve":"[1 sentence]","repairDirection":"[1 sentence]","exampleDirection":"[1 sentence]","whatNotToDo":"[1 sentence]"}],
-"bulletRepair":[{"cvItem":"[item]","currentIssue":"[1 sentence]","strongerAngle":"[1 sentence]","bulletStructure":"context→action→output","exampleBullet":"[1 sentence]","whyThisWorks":"[1 sentence]"},{"cvItem":"[2nd]","currentIssue":"[1 sentence]","strongerAngle":"[1 sentence]","bulletStructure":"context→action→output","exampleBullet":"[1 sentence]","whyThisWorks":"[1 sentence]"}]}`;
-}
-
-function buildRoutePrompt(ctx) {
-  return `${ctx.header}
-
-Return ONLY this compact JSON (1-2 sentences per field):
-{"routePositioning":{"currentRouteFit":"[1 sentence]","routeRisk":"[1 sentence]","strongerPositioning":"[1 sentence]","alternativeRoutes":[{"route":"[alt]","fit":"Possible","why":"[1 sentence]"}]},
+"bulletRepair":[{"cvItem":"[item]","currentIssue":"[1 sentence]","strongerAngle":"[1 sentence]","bulletStructure":"context→action→output","exampleBullet":"[1 sentence — label if uncertain]","whyThisWorks":"[1 sentence]"},{"cvItem":"[2nd]","currentIssue":"[1 sentence]","strongerAngle":"[1 sentence]","bulletStructure":"context→action→output","exampleBullet":"[1 sentence]","whyThisWorks":"[1 sentence]"}],
 "firmDivisionFit":{"targetFirm":"${ctx.firm}","targetDivision":"${ctx.div}","whatTheFirmWillLike":"[1 sentence]","whatTheFirmWillQuestion":"[1 sentence]","howToMakeFitClearer":"[1 sentence]"},
-"competencyRepair":[{"competency":"Analytical","currentStatus":"[status]","currentEvidence":"[1 sentence]","whatIsMissing":"[1 sentence]","howToStrengthen":"[1 sentence]","interviewRisk":"[1 sentence]"},{"competency":"Commercial","currentStatus":"[status]","currentEvidence":"[1 sentence]","whatIsMissing":"[1 sentence]","howToStrengthen":"[1 sentence]","interviewRisk":"[1 sentence]"},{"competency":"Leadership","currentStatus":"[status]","currentEvidence":"[1 sentence]","whatIsMissing":"[1 sentence]","howToStrengthen":"[1 sentence]","interviewRisk":"[1 sentence]"}]}`;
-}
-
-function buildPrepPrompt(ctx) {
-  return `${ctx.header}
-
-Return ONLY this compact JSON (1-2 sentences per field):
-{"commercialAwarenessPlan":{"currentLevel":"${ctx.commPct}%","risk":"[1 sentence]","priorityTopics":["[t1]","[t2]","[t3]"],"tasks":[{"task":"[task]","whyItMatters":"[1 sentence]","outputToCreate":"[1 sentence]"}],"interviewUse":"[1 sentence]"},
-"numericalTechnicalPlan":{"currentLevel":"${ctx.techPct}%","risk":"[1 sentence]","targetLevelBeforeSubmission":"[1 sentence]","priorityPracticeAreas":["[a1]","[a2]","[a3]"],"practicePlan":[{"task":"[task]","whyItMatters":"[1 sentence]","targetOutput":"[1 sentence]"}]},
-"interviewRiskMap":[{"likelyQuestion":"[q]","whyThisQuestionExposesRisk":"[1 sentence]","weakAnswerPattern":"[1 sentence]","strongAnswerStructure":"[1 sentence]","candidateEvidenceToUse":"[1 sentence]"},{"likelyQuestion":"[q2]","whyThisQuestionExposesRisk":"[1 sentence]","weakAnswerPattern":"[1 sentence]","strongAnswerStructure":"[1 sentence]","candidateEvidenceToUse":"[1 sentence]"},{"likelyQuestion":"[q3]","whyThisQuestionExposesRisk":"[1 sentence]","weakAnswerPattern":"[1 sentence]","strongAnswerStructure":"[1 sentence]","candidateEvidenceToUse":"[1 sentence]"}]}`;
+"interviewRiskMap":[{"likelyQuestion":"[most dangerous question]","whyThisQuestionExposesRisk":"[1 sentence]","weakAnswerPattern":"[1 sentence]","strongAnswerStructure":"[1 sentence]","candidateEvidenceToUse":"[1 sentence]"},{"likelyQuestion":"[2nd]","whyThisQuestionExposesRisk":"[1 sentence]","weakAnswerPattern":"[1 sentence]","strongAnswerStructure":"[1 sentence]","candidateEvidenceToUse":"[1 sentence]"}]}`;
 }
 
 function buildPlanPrompt(ctx) {
