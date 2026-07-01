@@ -703,6 +703,13 @@ function buildResultPage(r, profile, quiz, fcData) {
       +'<button onclick="unlockFullCycle()" style="background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>'
     +'</div>'
 
+    +'<script>'
+    +'var _fc=null;try{_fc=JSON.parse(sessionStorage.getItem("tdesk_fc_pending")||sessionStorage.getItem("tdesk_fc")||"null");}catch(e){}'
+    +'function unlockFullCycle(){'
+    +'if(!_fc||!_fc.result){alert("Assessment data not found. Please run the assessment again.");return;}'
+    +'try{sessionStorage.setItem("tdesk_fc",JSON.stringify(_fc));sessionStorage.removeItem("tdesk_fc_pending");window.location.href="fullcycle.html";}catch(e){alert("Error: "+e.message);}'
+    +'}'
+    +'</scr'+'ipt>'
     +'</div></body></html>';
 }
 
