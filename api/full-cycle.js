@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const MODEL = "claude-sonnet-4-6";
+const MODEL = "claude-haiku-4-5-20251001";
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export default async function handler(req, res) {
@@ -30,9 +30,9 @@ export default async function handler(req, res) {
 
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 1800,
+      max_tokens: 600,
       temperature: 0.25,
-      system: `You are a senior finance career practitioner. Be concise. Never invent deals, clients, outcomes or numbers. Label uncertain bullets "Use only if accurate". Use safe firm language ("may", "likely") never "will fail". Return ONLY compact valid JSON, no markdown, no backticks.`,
+      system: `You are a finance career expert. Be extremely concise — 1 short sentence per field. Never invent content. Return ONLY valid compact JSON, no markdown.`,
       messages: [{ role: "user", content: promptText }]
     });
 
