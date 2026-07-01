@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Desk — Full Cycle Repair Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1A1714;--ink60:rgba(26,23,20,0.6);--ink40:rgba(26,23,20,0.4);--ink08:rgba(26,23,20,0.08);
+  --cream:#F7F3EE;--warm:#F2EDE6;--terra:#A85E0A;--green:#15803D;--red:#DC2626;--amber:#D97706;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.5px solid var(--ink08);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;}
+.logo{font-family:'Fraunces',serif;font-size:18px;color:var(--ink);text-decoration:none;}
+.logo em{color:var(--terra);font-style:italic;}
+.badge{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);background:rgba(168,94,10,0.1);border:0.5px solid rgba(168,94,10,0.3);border-radius:20px;padding:3px 10px;}
+.wrap{max-width:620px;margin:0 auto;padding:80px 20px 80px;}
+.card{background:white;border:0.5px solid var(--ink08);border-radius:12px;padding:20px;margin-bottom:12px;}
+.lbl{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink40);margin-bottom:8px;}
+.sec-title{font-family:'Fraunces',serif;font-size:18px;font-weight:300;letter-spacing:-0.3px;color:var(--ink);margin-bottom:14px;}
+.body{font-size:13px;font-weight:300;color:var(--ink);line-height:1.7;}
+.sub{font-size:12px;color:var(--ink60);line-height:1.6;margin-top:4px;}
+.divider{height:0.5px;background:var(--ink08);margin:12px 0;}
+.sev{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:6px;}
+.sev-h{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
+.sev-m{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
+.sev-l{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
+.tag{display:inline-block;font-size:10px;font-weight:500;background:var(--warm);border:0.5px solid var(--ink08);border-radius:20px;padding:2px 8px;margin:2px 2px 2px 0;color:var(--ink40);}
+.cs{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.cs-s,.cs-e{background:#f0fdf4;color:#16a34a;border:0.5px solid #bbf7d0;}
+.cs-p{background:#fffbeb;color:#d97706;border:0.5px solid #fde68a;}
+.cs-n{background:#fef2f2;color:#dc2626;border:0.5px solid #fecaca;}
+.loading{text-align:center;padding:80px 20px;}
+.spinner{width:40px;height:40px;border:3px solid var(--ink08);border-top-color:var(--terra);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.err{background:#fef2f2;border:0.5px solid #fecaca;border-radius:10px;padding:20px;text-align:center;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">The<em>Desk</em></a>
+  <span class="badge">Full Cycle</span>
+</nav>
+<div id="fcStatus" style="display:none;background:white;border-bottom:0.5px solid var(--ink08);padding:10px 24px;">
+  <div style="max-width:620px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+    <div style="display:flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#16a34a;display:inline-block;"></span><span style="font-size:11px;font-weight:500;color:#16a34a;">Full Cycle active</span></div>
+    <div style="font-size:11px;color:var(--ink40);">·</div>
+    <div style="font-size:11px;color:var(--ink60);">Repair plan unlocked</div>
+    <div style="font-size:11px;color:var(--ink40);">·</div>
+    <div style="font-size:11px;color:var(--ink60);">Repaired CV draft available</div>
+    <div style="font-size:11px;color:var(--ink40);">·</div>
+    <div style="font-size:11px;color:var(--ink60);"><span id="recheckCount" style="font-weight:600;color:var(--terra);">2</span> rechecks remaining</div>
+    <div style="font-size:11px;color:var(--ink40);">·</div>
+    <div style="font-size:11px;color:var(--ink60);">12 months resource access</div>
+  </div>
+</div>
+<div class="wrap" id="wrap">
+  <div class="loading" id="ld">
+    <div class="spinner"></div>
+    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--ink);margin-bottom:6px;" id="lmsg">Building your repair plan...</div>
+    <div style="font-size:12px;color:var(--ink40);">Takes 20–30 seconds. Generating a plan specific to your CV and target firm.</div>
+  </div>
+  <div id="rs" style="display:none;"></div>
+  <div class="err" id="er" style="display:none;"><div style="font-size:14px;font-weight:500;margin-bottom:6px;">Something went wrong</div><div id="em" style="font-size:12px;color:var(--ink60);"></div></div>
+</div>
+<script>var DEMO_PAID = {"paidTitle": "Full Cycle Repair Plan \u2014 James | Goldman Sachs IBD", "planName": "7-Day Repair Plan", "executiveVerdict": {"summary": "This is a fixable borderline application \u2014 the Lazard M&A insight week and Finance Society equity notes give James real IBD-adjacent evidence, but both are currently framed as task completion rather than analytical ownership, and the 60% numerical score is exactly what Goldman's HireVue is designed to catch before a human reads the CV.", "readinessVerdict": "Do not submit this version as-is \u2014 repair the lead evidence and close the numerical gap first.", "mostImportantFix": "Rebuild the Lazard bullet to show what the comparable companies analysis revealed about deal valuation, not just that it was completed.", "submitAdvice": "Repair the CV, reach 75%+ on timed numerical practice, and prepare a commercial story before submitting to Goldman IBD."}, "targetRouteMeaning": {"isRouteRealistic": "Goldman IBD is credible after repair \u2014 the Lazard experience and Finance Society equity work are the right type of evidence for this route.", "routeGap": "The CV shows transaction exposure but not transaction understanding \u2014 Goldman first-rounds will ask James to walk through valuation logic, which the current CV does not evidence.", "whatWouldMakeItCredible": "A rewritten Lazard bullet showing comparable companies reasoning, a numerical score above 75%, and one prepared answer on why Goldman IBD specifically.", "steppingStoneRoute": null}, "applicationRiskMap": [{"risk": "Numerical readiness may fail before the CV is read", "severity": "High", "whyItMatters": "Goldman uses numerical screening early in the process \u2014 a 60% baseline means James may not reach the stage where the Lazard experience becomes visible.", "howToFix": "30 minutes of SHL-style timed numerical practice daily for 3 weeks. Focus on percentages, ratios, data interpretation and basic valuation arithmetic. Do not submit until consistently above 75%."}, {"risk": "Lazard evidence reads as observation, not analysis", "severity": "High", "whyItMatters": "Goldman IBD interviewers will ask James to walk through the comparable companies work \u2014 if the CV only says 'assisted analysts and formatted materials', there is nothing to walk through.", "howToFix": "Rebuild the Lazard bullet around what the comparable companies analysis showed about valuation \u2014 the EV/EBITDA range, which peers were selected, and what the output told the advisory team about deal pricing."}, {"risk": "Commercial awareness gap \u2014 40% is below interview threshold", "severity": "Medium", "whyItMatters": "Goldman IBD interviews typically open with a market or sector question \u2014 a 40% commercial score suggests James cannot yet connect macro events to deal flow or financing conditions.", "howToFix": "Prepare one sector view using the Rolls-Royce and BP equity notes as a starting point \u2014 build a 3-minute answer on why aerospace or energy M&A is active and what is driving deal rationale in that sector."}], "evidenceHierarchy": {"leadWith": [{"evidence": "Lazard M&A insight week \u2014 comparable companies research, pitch materials", "whyItLeads": "This is the only evidence of direct transaction exposure and the closest equivalent to what an IBD analyst does \u2014 it should anchor the entire application.", "howToUseIt": "Lead the Experience section, rebuild the bullet to show valuation reasoning rather than task completion, and use it to answer the 'walk me through a deal' question."}, {"evidence": "Finance Society equity analyst \u2014 monthly notes on Rolls-Royce and BP", "whyItLeads": "Monthly equity notes on listed companies show active market engagement and sector research, which is stronger than passive society membership.", "howToUseIt": "Position after Lazard, name the companies and one specific commercial observation from the notes \u2014 not just that they were written."}], "supportWith": [{"evidence": "Warwick Economics 2:1 predicted with relevant modules", "whyItSupports": "Warwick Economics is a well-represented target school for Goldman IBD \u2014 it supports the application without leading it.", "howToUseIt": "Name any finance, corporate strategy or quantitative modules explicitly \u2014 do not list generic economics modules without context."}], "reduceOrCut": [{"evidence": "Tesco customer assistant (Saturdays 2021-2022)", "whyReduce": "This role does not support the IBD narrative and is taking up space that should be used for the financial evidence.", "whatToDoInstead": "Move to the bottom of the CV as a resilience/reliability signal only, one line, no bullets \u2014 or cut entirely if space is needed."}]}, "bulletRepair": [{"cvItem": "Lazard M&A insight week", "currentIssue": "Currently reads as 'assisted analysts and formatted pitch materials' \u2014 this describes presence, not analysis, and gives Goldman no signal that James understands what the comparable companies work was for.", "strongerAngle": "The bullet should prove that James understands what comparable companies analysis is designed to show \u2014 the trading multiples of selected peers, why those peers were chosen, and what the output implied about deal valuation.", "bulletStructure": "context \u2192 analysis performed \u2192 output it supported \u2192 what it showed", "exampleBullet": "Conducted comparable companies analysis for an M&A advisory mandate, selecting peer group based on revenue mix and capital structure; output informed the EV/EBITDA valuation range presented in the pitch. Use only if accurate.", "whyThisWorks": "This version gives an interviewer something specific to ask about, shows James understands valuation logic, and sets up a credible answer to 'walk me through a deal' \u2014 which will come in the first 10 minutes of any Goldman IBD interview."}, {"cvItem": "Finance Society equity analyst \u2014 Rolls-Royce and BP notes", "currentIssue": "Currently describes the output ('monthly equity notes') without naming any analytical content \u2014 a screener cannot tell whether James has sector conviction or is describing a template exercise.", "strongerAngle": "The bullet should name a specific commercial observation from the coverage \u2014 one view on Rolls-Royce's order book or BP's capital allocation shift \u2014 that shows sector reasoning, not just output production.", "bulletStructure": "coverage \u2192 analytical angle \u2192 one specific observation", "exampleBullet": "Covered Rolls-Royce and BP for Finance Society; monthly notes tracked engine order recovery and its effect on margin outlook, and assessed BP's portfolio shift toward lower-carbon assets and the implied valuation discount. Use only if this reflects the actual content of the notes.", "whyThisWorks": "A Goldman IBD interviewer may ask 'what is your view on energy M&A right now' \u2014 this bullet gives James a credible anchor to build from, and shows that the equity research was analytical rather than descriptive."}], "firmDivisionFit": {"whatTheFirmWillLike": "The Lazard name on the CV will get attention \u2014 Goldman IBD recruiters recognise Lazard as a credible boutique and will treat the insight week as meaningful deal exposure if the bullet justifies it.", "whatTheFirmWillQuestion": "A 60% numerical score, the gap between 'Goldman standard' and Warwick 2:1 predicted, and whether James can defend the Lazard comparable companies work with actual valuation logic.", "howToMakeFitClearer": "Add a one-line cover letter or application answer naming a specific Goldman IBD deal or sector franchise and connecting it to the Rolls-Royce or energy coverage in the equity notes."}, "commercialAwarenessPlan": {"currentLevel": "40% \u2014 weak connection between macro events and deal consequences", "risk": "Goldman IBD interviews typically open with a market or sector question \u2014 James cannot currently connect interest rate movements to M&A volume or financing conditions.", "priorityTopics": ["M&A activity drivers \u2014 rate environment, PE dry powder, strategic consolidation", "Energy sector \u2014 BP, Shell, transition capex and deal rationale", "Aerospace and defence \u2014 Rolls-Royce recovery, defence spending tailwinds"], "tasks": [{"task": "Write a one-page deal note on one recent M&A transaction in energy or aerospace", "whyItMatters": "Goldman IBD will ask 'tell me about a deal you have followed' \u2014 this becomes the answer", "outputToCreate": "300-word note: parties, rationale, valuation method, financing structure"}, {"task": "Prepare a 3-minute answer on 'what is driving M&A in your sector of interest'", "whyItMatters": "Standard Goldman IBD first-round opener \u2014 unprepared answers are immediately visible", "outputToCreate": "Written answer covering macro driver, one deal example, why Goldman has relevant franchise"}], "interviewUse": "The Rolls-Royce and BP equity coverage gives James a sector anchor \u2014 lead with energy or aerospace when asked about commercial interests, name specific companies, and connect to deal activity."}, "numericalTechnicalPlan": {"currentLevel": "60% \u2014 borderline for Goldman HireVue screening", "risk": "Goldman uses numerical testing before a human reviews the application \u2014 60% may not clear the automated threshold.", "targetLevelBeforeSubmission": "Reach 75%+ consistently before submitting \u2014 then 80%+ before HireVue stage.", "priorityPracticeAreas": ["Percentage change and ratio calculations under time pressure", "EV/EBITDA, P/E and basic valuation arithmetic", "Data table interpretation and chart reading"], "practicePlan": [{"task": "30 minutes of SHL-style timed numerical practice daily for 3 weeks", "whyItMatters": "Goldman uses SHL or similar formats \u2014 speed is as important as accuracy", "targetOutput": "Weekly retest score \u2014 target 75% by week 2, 80% by week 3"}]}, "interviewRiskMap": [{"likelyQuestion": "Walk me through the comparable companies work you did at Lazard.", "whyThisQuestionExposesRisk": "The current CV says 'assisted with comparable companies research' \u2014 Goldman will test whether James actually understands what the analysis showed, not just that it was done.", "weakAnswerPattern": "Describing the process ('we looked at similar companies and found their trading multiples') without naming what the output showed or how it informed the pitch.", "strongAnswerStructure": "Name the sector, explain the peer selection criteria, state the EV/EBITDA range the analysis produced, and explain what that implied about the deal valuation \u2014 then connect to what the advisory team did with the output.", "candidateEvidenceToUse": "Lazard M&A insight week comparable companies work \u2014 James needs to revisit the actual analysis before the interview and be able to state the specific output."}, {"likelyQuestion": "Why Goldman Sachs specifically, and why IBD rather than markets or AM?", "whyThisQuestionExposesRisk": "A generic answer ('Goldman has the best deal flow') will not differentiate James from hundreds of applicants with similar CVs \u2014 this question tests conviction and research.", "weakAnswerPattern": "Generic brand statements without reference to a specific Goldman IBD franchise, sector strength or recent deal.", "strongAnswerStructure": "Name one Goldman sector franchise relevant to James's equity coverage (energy or aerospace), reference one recent Goldman deal in that sector, and explain why the advisory role matches what the Lazard experience showed James he wants to do.", "candidateEvidenceToUse": "Rolls-Royce and BP equity coverage as sector anchor, Lazard experience as deal process foundation."}, {"likelyQuestion": "What is your view on M&A activity in the current market?", "whyThisQuestionExposesRisk": "A 40% commercial score suggests James cannot currently connect macro conditions to deal flow \u2014 this question will surface that gap immediately.", "weakAnswerPattern": "Headline observations ('M&A has been slow due to high interest rates') without connecting to specific deal types, financing structures, or sectors.", "strongAnswerStructure": "State one macro driver (rate trajectory, PE deployment pressure, strategic consolidation need), connect to one deal type (LBO, strategic M&A, carve-out), reference one sector where the driver is most visible, and give James's view on deal activity in the next 6 months.", "candidateEvidenceToUse": "Energy sector coverage of BP \u2014 BP's portfolio shift and capital allocation decisions connect directly to M&A rationale and financing conditions."}], "sevenDayActionPlan": [{"day": "Day 1", "focus": "Evidence audit and hierarchy decision", "tasks": ["List every piece of CV evidence and rank by relevance to Goldman IBD", "Identify the two lead items and confirm what analytical output each can evidence"], "deliverable": "Written evidence ranking with lead items confirmed"}, {"day": "Day 2", "focus": "Rebuild Lazard bullet", "tasks": ["Return to the actual comparable companies work and note the specific analytical output", "Write three versions of the bullet \u2014 task / analysis / output \u2014 and choose the strongest"], "deliverable": "Revised Lazard bullet ready for CV"}, {"day": "Day 3", "focus": "Rebuild Finance Society bullet and numerical baseline", "tasks": ["Review the Rolls-Royce and BP notes and identify one specific commercial observation to include", "Complete first timed numerical practice test and record score"], "deliverable": "Revised society bullet + baseline numerical score"}, {"day": "Day 4", "focus": "Commercial awareness \u2014 deal note", "tasks": ["Read one FT or Reuters article on a recent energy or aerospace M&A deal", "Write a 300-word deal note covering parties, rationale, valuation method"], "deliverable": "One deal note ready to reference in interview"}, {"day": "Day 5", "focus": "Route positioning \u2014 why Goldman IBD", "tasks": ["Research one Goldman IBD deal in energy or aerospace in the last 12 months", "Write a 3-minute spoken answer to 'why Goldman, why IBD'"], "deliverable": "Written and spoken answer, tested out loud"}, {"day": "Day 6", "focus": "Interview preparation \u2014 risk questions", "tasks": ["Practise answer to 'walk me through the Lazard comparable companies work'", "Practise answer to 'what is your market view on M&A activity'"], "deliverable": "Both answers practised and timed"}, {"day": "Day 7", "focus": "Final check and submission decision", "tasks": ["Re-run timed numerical test and compare to Day 3 baseline", "Review revised CV against the Goldman IBD evidence checklist"], "deliverable": "Decision: submit this week / wait for higher numerical score"}], "recheckRecommendation": "Recheck after rebuilding the Lazard and Finance Society bullets and reaching 75%+ on numerical practice. Upload the revised CV within 30 days to use one of the two included rechecks."};</script>
+<script>
+var msgs=['Building your repair plan...','Analysing your CV evidence...','Mapping the repair priorities...','Preparing interview risk map...','Writing your 7-day plan...'];
+var mi=0, ml=document.getElementById('lmsg');
+var mt=setInterval(function(){ mi=(mi+1)%msgs.length; ml.textContent=msgs[mi]; },4000);
+
+function h(t,val){ return '<div style="font-size:14px;font-weight:500;color:var(--ink);margin:10px 0 6px;">'+t+'</div>'; }
+function row(label,val,col){
+  return val?'<div style="padding:7px 0;border-bottom:0.5px solid var(--ink08);"><span style="font-size:11px;font-weight:600;color:var(--ink40);text-transform:uppercase;letter-spacing:0.08em;">'+label+'</span><div class="body" style="margin-top:3px;'+(col?'color:'+col+';':'')+'">'+(val||'')+'</div></div>':'';
+}
+function sev(s){ var c=s&&s.toLowerCase()==='high'?'sev-h':s&&s.toLowerCase()==='medium'?'sev-m':'sev-l'; return '<span class="sev '+c+'">'+(s||'')+'</span>'; }
+function cs(s){ var c=s&&(s==='Strong'||s==='Evidenced')?'cs-e':s&&s.includes('Partially')?'cs-p':'cs-n'; return '<span class="cs '+c+'">'+(s||'')+'</span>'; }
+
+function render(paid, profile){
+  var firm=(profile&&profile.targetFirm)||'your target firm';
+  var div2=(profile&&profile.targetDivision)||'finance';
+  var name=paid.paidTitle||'Full Cycle Repair Plan';
+  var ev=paid.executiveVerdict||{};
+  var plan=paid.planName||'7-Day Action Plan';
+  var H='';
+
+  // HEADER
+  H+='<div style="padding:20px 0 16px;">';
+  H+='<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:6px;">Full Cycle Repair Plan</div>';
+  H+='<div style="font-family:\'Fraunces\',serif;font-size:clamp(20px,4vw,28px);font-weight:300;letter-spacing:-0.5px;color:var(--ink);line-height:1.2;margin-bottom:4px;">'+(paid.paidTitle||name)+'</div></div>';
+
+  // 16. REPAIRED CV DRAFT SECTION
+  H+='<div id="cvGenSection" style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">'
+    +'<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:8px;">Section 16 — Repaired CV Draft</div>'
+    +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">Generate your repaired CV draft</div>'
+    +'<div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:14px;line-height:1.6;">Using your Full Cycle repair plan, we will build an editable CV draft based only on your existing evidence. We do not invent experience — we restructure and reframe what you have already done into a stronger application for '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetFirm||firm)+' '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetDivision||div2)+'.</div>'
+    +'<button onclick="generateCV()" id="cvGenBtn" style="background:#E87040;color:white;border:none;border-radius:8px;padding:11px 24px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Generate repaired CV draft →</button>'
+    +'<div id="cvGenStatus" style="display:none;font-size:12px;color:rgba(247,243,238,0.5);text-align:center;padding:10px;"></div>'
+  +'</div>';
+
+  // 1. EXECUTIVE VERDICT
+  H+='<div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">';
+  H+='<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:10px;">Executive Verdict</div>';
+  H+='<div style="font-size:15px;font-weight:300;color:#F7F3EE;line-height:1.65;margin-bottom:12px;">'+(ev.summary||'')+'</div>';
+  if(ev.readinessVerdict) H+='<div style="font-size:12px;color:#E87040;font-weight:500;margin-bottom:6px;">→ '+ev.readinessVerdict+'</div>';
+  if(ev.mostImportantFix) H+='<div style="font-size:12px;color:rgba(247,243,238,0.6);margin-bottom:4px;"><b style="color:rgba(247,243,238,0.9);">Highest-leverage fix:</b> '+ev.mostImportantFix+'</div>';
+  if(ev.submitAdvice) H+='<div style="font-size:12px;color:rgba(247,243,238,0.6);"><b style="color:rgba(247,243,238,0.9);">Submit advice:</b> '+ev.submitAdvice+'</div>';
+  H+='</div>';
+
+  // 2. TARGET ROUTE MEANING
+  var tr=paid.targetRouteMeaning||{};
+  if(tr.isRouteRealistic||tr.routeGap){
+    H+='<div class="card"><div class="lbl">What this means for your target route</div>';
+    H+='<div class="sec-title">Is '+div2+' at '+firm+' realistic right now?</div>';
+    if(tr.isRouteRealistic) H+='<div class="body" style="margin-bottom:8px;">'+tr.isRouteRealistic+'</div>';
+    if(tr.routeGap) H+='<div class="body" style="color:var(--red);margin-bottom:8px;"><b>Gap:</b> '+tr.routeGap+'</div>';
+    if(tr.whatWouldMakeItCredible) H+='<div class="body" style="color:var(--terra);margin-bottom:8px;"><b>What would make it credible:</b> '+tr.whatWouldMakeItCredible+'</div>';
+    if(tr.steppingStoneRoute) H+='<div style="background:var(--warm);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.65;"><b>Stepping-stone route:</b> '+tr.steppingStoneRoute+'</div>';
+    H+='</div>';
+  }
+
+  // 3. APPLICATION RISK MAP
+  if(paid.applicationRiskMap&&paid.applicationRiskMap.length){
+    H+='<div class="card"><div class="lbl">Application Risk Map</div><div class="sec-title">Where this application is most likely to fail</div>';
+    paid.applicationRiskMap.forEach(function(r){
+      H+='<div style="padding:12px 0;border-bottom:0.5px solid var(--ink08);">'+sev(r.severity)+'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;">'+(r.risk||'')+'</div>';
+      H+='<div class="body" style="margin-bottom:6px;">'+(r.whyItMatters||'')+'</div>';
+      if(r.howToFix) H+='<div style="font-size:12px;color:var(--terra);line-height:1.6;"><b>Fix direction:</b> '+r.howToFix+'</div>';
+      H+='</div>';
+    });
+    H+='</div>';
+  }
+
+  // 4. EVIDENCE HIERARCHY
+  if(paid.evidenceHierarchy){
+    var eh=paid.evidenceHierarchy;
+    H+='<div class="card"><div class="lbl">Evidence Hierarchy</div><div class="sec-title">What to lead with, support with, and reduce</div>';
+    function ehSection(items,label,col,icon){
+      if(!items||!items.length) return '';
+      var s='<div style="font-size:12px;font-weight:600;color:'+col+';margin:10px 0 6px;">'+icon+' '+label+'</div>';
+      items.forEach(function(e){
+        s+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);">'
+          +'<div style="font-size:13px;font-weight:500;color:'+col+';">'+(e.evidence||'')+'</div>'
+          +'<div class="sub">'+(e.whyItLeads||e.whyItSupports||e.whyReduce||'')+'</div>'
+          +'<div style="font-size:12px;color:var(--ink40);margin-top:4px;">'+(e.howToUseIt||e.whatToDoInstead||'')+'</div>'
+        +'</div>';
+      });
+      return s;
+    }
+    H+=ehSection(eh.leadWith,'Lead with','var(--green)','🟢');
+    H+=ehSection(eh.supportWith,'Support with','var(--amber)','🟡');
+    H+=ehSection(eh.reduceOrCut,'Reduce or cut','var(--red)','🔴');
+    H+='</div>';
+  }
+
+  // 5. CV REPAIR MAP
+  if(paid.cvRepairMap&&paid.cvRepairMap.length){
+    H+='<div class="card"><div class="lbl">CV Repair Map</div><div class="sec-title">Section-by-section repair plan</div>';
+    paid.cvRepairMap.forEach(function(s){
+      H+='<div style="padding:14px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="font-size:11px;font-weight:600;color:var(--terra);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">'+(s.section||'')+'</div>'
+        +'<div class="body" style="margin-bottom:6px;"><b>Problem:</b> '+(s.currentProblem||'')+'</div>'
+        +'<div class="body" style="margin-bottom:6px;"><b>Needs to prove:</b> '+(s.whatThisSectionNeedsToProve||'')+'</div>'
+        +'<div class="body" style="color:var(--terra);margin-bottom:6px;"><b>Repair:</b> '+(s.repairDirection||'')+'</div>'
+        +(s.exampleDirection?'<div style="font-size:12px;color:var(--ink60);font-style:italic;border-left:2px solid var(--terra);padding-left:10px;margin-bottom:6px;">'+(s.exampleDirection)+'</div>':'')
+        +(s.whatNotToDo?'<div style="font-size:12px;color:var(--red);"><b>Avoid:</b> '+(s.whatNotToDo)+'</div>':'')
+      +'</div>';
+    });
+    H+='</div>';
+  }
+
+  // 6. BULLET REPAIR
+  if(paid.bulletRepair&&paid.bulletRepair.length){
+    H+='<div class="card"><div class="lbl">Bullet Repair</div><div class="sec-title">Your most important CV items — what to change</div>';
+    paid.bulletRepair.forEach(function(b){
+      H+='<div style="background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;">'
+        +'<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px;">'+(b.cvItem||'')+'</div>'
+        +'<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><b>Current issue:</b> '+(b.currentIssue||'')+'</div>'
+        +'<div style="font-size:12px;color:var(--terra);margin-bottom:6px;"><b>Stronger angle:</b> '+(b.strongerAngle||'')+'</div>'
+        +(b.bulletStructure?'<div style="font-size:11px;color:var(--ink40);margin-bottom:8px;">Structure: '+(b.bulletStructure)+'</div>':'')
+        +(b.exampleBullet?'<div style="font-size:12px;color:var(--green);padding:8px 12px;background:white;border-radius:6px;border-left:2px solid var(--green);margin-bottom:6px;">'+(b.exampleBullet)+'</div>':'')
+        +(b.whyThisWorks?'<div style="font-size:12px;color:var(--ink60);">'+(b.whyThisWorks)+'</div>':'')
+      +'</div>';
+    });
+    H+='</div>';
+  }
+
+  // 7. ROUTE POSITIONING
+  if(paid.routePositioning){
+    var rp=paid.routePositioning;
+    H+='<div class="card"><div class="lbl">Route Positioning</div><div class="sec-title">Is this the right route?</div>';
+    if(rp.currentRouteFit) H+='<div class="body" style="margin-bottom:8px;"><b>Current fit:</b> '+rp.currentRouteFit+'</div>';
+    if(rp.routeRisk) H+='<div class="body" style="color:var(--red);margin-bottom:8px;"><b>Risk:</b> '+rp.routeRisk+'</div>';
+    if(rp.strongerPositioning) H+='<div class="body" style="color:var(--terra);margin-bottom:10px;"><b>Stronger positioning:</b> '+rp.strongerPositioning+'</div>';
+    if(rp.alternativeRoutes&&rp.alternativeRoutes.length){
+      H+='<div style="font-size:11px;font-weight:600;color:var(--ink40);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Alternative routes</div>';
+      rp.alternativeRoutes.forEach(function(a){
+        var fc=a.fit==='Strong'?'var(--green)':a.fit==='Possible'?'var(--amber)':'var(--red)';
+        H+='<div style="display:flex;gap:8px;align-items:baseline;padding:6px 0;border-bottom:0.5px solid var(--ink08);">'
+          +'<span class="body">'+(a.route||'')+'</span>'
+          +'<span style="font-size:10px;font-weight:600;color:'+fc+';margin-left:auto;">'+(a.fit||'')+'</span>'
+          +'</div>'+(a.why?'<div class="sub" style="margin-bottom:4px;">'+a.why+'</div>':'');
+      });
+    }
+    H+='</div>';
+  }
+
+  // 8. FIRM/DIVISION FIT
+  if(paid.firmDivisionFit){
+    var ff=paid.firmDivisionFit;
+    H+='<div class="card"><div class="lbl">'+(ff.targetFirm||firm)+' — '+(ff.targetDivision||div2)+' Fit</div>';
+    H+='<div class="sec-title">What the firm will like — and what they will question</div>';
+    if(ff.whatTheFirmWillLike) H+='<div class="body" style="margin-bottom:8px;"><span style="color:var(--green);">✓ Will like:</span> '+ff.whatTheFirmWillLike+'</div>';
+    if(ff.whatTheFirmWillQuestion) H+='<div class="body" style="margin-bottom:8px;"><span style="color:var(--red);">✗ Will question:</span> '+ff.whatTheFirmWillQuestion+'</div>';
+    if(ff.howToMakeFitClearer) H+='<div class="body" style="color:var(--terra);"><b>Make fit clearer:</b> '+ff.howToMakeFitClearer+'</div>';
+    H+='</div>';
+  }
+
+  // 9. COMMERCIAL PLAN
+  if(paid.commercialAwarenessPlan){
+    var cp=paid.commercialAwarenessPlan;
+    H+='<div class="card"><div class="lbl">Commercial Awareness Plan</div><div class="sec-title">How to close the commercial gap before your interview</div>';
+    if(cp.currentLevel) H+='<div class="body" style="margin-bottom:6px;"><b>Current level:</b> '+cp.currentLevel+'</div>';
+    if(cp.risk) H+='<div class="body" style="color:var(--red);margin-bottom:10px;"><b>Risk:</b> '+cp.risk+'</div>';
+    if(cp.priorityTopics&&cp.priorityTopics.length) H+='<div style="margin-bottom:12px;">'+cp.priorityTopics.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div>';
+    if(cp.tasks&&cp.tasks.length) cp.tasks.forEach(function(t){
+      H+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);"><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+(t.task||'')+'</div><div class="sub">'+(t.whyItMatters||'')+'</div>'+(t.outputToCreate?'<div style="font-size:11px;color:var(--terra);margin-top:3px;">Output: '+t.outputToCreate+'</div>':'')+'</div>';
+    });
+    if(cp.interviewUse) H+='<div style="margin-top:10px;font-size:12px;color:var(--terra);">'+cp.interviewUse+'</div>';
+    H+='</div>';
+  }
+
+  // 10. NUMERICAL PLAN
+  if(paid.numericalTechnicalPlan){
+    var np=paid.numericalTechnicalPlan;
+    H+='<div class="card"><div class="lbl">Numerical & Technical Plan</div><div class="sec-title">How to improve before submission</div>';
+    if(np.currentLevel) H+='<div class="body" style="margin-bottom:6px;"><b>Current level:</b> '+np.currentLevel+'</div>';
+    if(np.risk) H+='<div class="body" style="color:var(--red);margin-bottom:6px;"><b>Risk:</b> '+np.risk+'</div>';
+    if(np.targetLevelBeforeSubmission) H+='<div class="body" style="color:var(--green);margin-bottom:10px;"><b>Target:</b> '+np.targetLevelBeforeSubmission+'</div>';
+    if(np.priorityPracticeAreas&&np.priorityPracticeAreas.length) H+='<div style="margin-bottom:12px;">'+np.priorityPracticeAreas.map(function(a){return '<span class="tag">'+a+'</span>';}).join('')+'</div>';
+    if(np.practicePlan&&np.practicePlan.length) np.practicePlan.forEach(function(t){
+      H+='<div style="padding:8px 0;border-bottom:0.5px solid var(--ink08);"><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">'+(t.task||'')+'</div><div class="sub">'+(t.whyItMatters||'')+'</div>'+(t.targetOutput?'<div style="font-size:11px;color:var(--terra);margin-top:3px;">Target: '+t.targetOutput+'</div>':'')+'</div>';
+    });
+    H+='</div>';
+  }
+
+  // 11. INTERVIEW RISK MAP
+  if(paid.interviewRiskMap&&paid.interviewRiskMap.length){
+    H+='<div class="card"><div class="lbl">Interview & HireVue Risk Map</div><div class="sec-title">Questions most likely to expose the gaps in this application</div>';
+    paid.interviewRiskMap.forEach(function(q){
+      H+='<div style="background:var(--warm);border-radius:8px;padding:14px;margin-bottom:10px;">'
+        +'<div style="font-size:14px;font-weight:500;color:var(--ink);font-style:italic;margin-bottom:8px;">"'+(q.likelyQuestion||'')+'"</div>'
+        +'<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><b>Why it exposes risk:</b> '+(q.whyThisQuestionExposesRisk||'')+'</div>'
+        +(q.weakAnswerPattern?'<div style="font-size:12px;color:var(--ink60);margin-bottom:6px;"><b>Weak answer sounds like:</b> '+q.weakAnswerPattern+'</div>':'')
+        +(q.strongAnswerStructure?'<div style="font-size:12px;color:var(--green);margin-bottom:6px;"><b>Strong answer structure:</b> '+q.strongAnswerStructure+'</div>':'')
+        +(q.candidateEvidenceToUse?'<div style="font-size:12px;color:var(--terra);"><b>Your evidence to use:</b> '+q.candidateEvidenceToUse+'</div>':'')
+      +'</div>';
+    });
+    H+='</div>';
+  }
+
+  // 12. COMPETENCY REPAIR
+  if(paid.competencyRepair&&paid.competencyRepair.length){
+    H+='<div class="card"><div class="lbl">Competency Repair</div><div class="sec-title">What each competency needs to become application-grade</div>';
+    paid.competencyRepair.forEach(function(c){
+      H+='<div style="padding:10px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+          +'<div style="font-size:14px;font-weight:500;color:var(--ink);">'+(c.competency||'')+'</div>'
+          +cs(c.currentStatus)
+        +'</div>'
+        +(c.currentEvidence?'<div class="sub" style="margin-bottom:4px;"><b>Evidence:</b> '+c.currentEvidence+'</div>':'')
+        +(c.whatIsMissing?'<div style="font-size:12px;color:var(--red);margin-bottom:4px;"><b>Missing:</b> '+c.whatIsMissing+'</div>':'')
+        +(c.howToStrengthen?'<div style="font-size:12px;color:var(--terra);margin-bottom:4px;"><b>Strengthen:</b> '+c.howToStrengthen+'</div>':'')
+        +(c.interviewRisk?'<div style="font-size:11px;color:var(--ink40);">Interview risk: '+c.interviewRisk+'</div>':'')
+        +(c.shouldItLead?'<div style="font-size:11px;color:var(--ink40);margin-top:3px;">Role: '+c.shouldItLead+'</div>':'')
+      +'</div>';
+    });
+    H+='</div>';
+  }
+
+  // 13. 7-DAY PLAN
+  if(paid.sevenDayActionPlan&&paid.sevenDayActionPlan.length){
+    H+='<div class="card"><div class="lbl">'+plan+'</div><div class="sec-title">What to do before submitting</div>';
+    paid.sevenDayActionPlan.forEach(function(d){
+      H+='<div style="display:flex;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="font-family:\'Fraunces\',serif;font-size:22px;font-weight:300;color:var(--terra);flex-shrink:0;width:44px;text-align:center;">'+(d.day||'').replace('Day ','')+'</div>'
+        +'<div><div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;">'+(d.focus||'')+'</div>'
+        +(d.tasks&&d.tasks.length?'<ul style="list-style:none;">'+d.tasks.map(function(t){return '<li style="font-size:12px;color:var(--ink60);line-height:1.6;padding:2px 0 2px 14px;position:relative;"><span style="position:absolute;left:0;color:var(--terra);">→</span>'+t+'</li>';}).join('')+'</ul>':'')
+        +(d.deliverable?'<div style="font-size:11px;font-weight:500;color:var(--terra);margin-top:4px;">↳ '+d.deliverable+'</div>':'')
+        +'</div></div>';
+    });
+    H+='</div>';
+  }
+
+  // 14. FINAL CHECKLIST
+  if(paid.finalSubmissionChecklist&&paid.finalSubmissionChecklist.length){
+    H+='<div class="card"><div class="lbl">Final Submission Checklist</div><div class="sec-title">Before you click submit</div>';
+    paid.finalSubmissionChecklist.forEach(function(c){
+      H+='<div style="display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--ink08);">'
+        +'<div style="width:18px;height:18px;border:1.5px solid var(--ink08);border-radius:4px;flex-shrink:0;margin-top:2px;"></div>'
+        +'<div><div style="font-size:13px;font-weight:400;color:var(--ink);">'+(c.item||'')+'</div>'
+        +(c.statusNeeded?'<div style="font-size:11px;color:var(--terra);margin-top:2px;">Done = '+c.statusNeeded+'</div>':'')
+        +(c.whyItMatters?'<div class="sub">'+c.whyItMatters+'</div>':'')
+        +'</div></div>';
+    });
+    H+='</div>';
+  }
+
+  // 15. RECHECK
+  if(paid.recheckRecommendation){
+    H+='<div style="background:var(--warm);border-radius:10px;padding:16px 20px;margin-bottom:14px;">'
+      +'<div class="lbl" style="margin-bottom:6px;">Recheck Recommendation</div>'
+      +'<div class="body">'+paid.recheckRecommendation+'</div>'
+    +'</div>';
+  }
+
+  return H;
+}
+
+
+var _fcData = null; // store for CV generation
+
+function generateCV(){
+  var btn=document.getElementById('cvGenBtn');
+  var st=document.getElementById('cvGenStatus');
+  if(!_fcData){ alert('Repair plan data not found. Please try again.'); return; }
+  btn.disabled=true;
+  btn.querySelector('div:last-child').textContent='...';
+  st.style.display='block'; st.textContent='Generating your rewritten CV — takes about 15 seconds...';
+
+  fetch('/api/generate-cv',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(_fcData)
+  }).then(function(r){ return r.json(); }).then(function(json){
+    btn.disabled=false; btn.querySelector('div:last-child').textContent='→';
+    st.style.display='none';
+    if(!json.success||!json.cv){ alert('CV generation failed: '+(json.error||'unknown error')); return; }
+    renderCV(json.cv);
+  }).catch(function(e){
+    btn.disabled=false; btn.querySelector('div:last-child').textContent='→';
+    st.textContent='Error: '+e.message; st.style.color='#dc2626';
+  });
+}
+
+function confLabel(c){
+  var map={
+    'ready':          {l:'Ready to use',        col:'#16a34a',bg:'#f0fdf4',bd:'#bbf7d0'},
+    'if_accurate':    {l:'Use only if accurate', col:'#d97706',bg:'#fffbeb',bd:'#fde68a'},
+    'needs_confirmation':{l:'Needs confirmation',col:'#7c3aed',bg:'#f5f3ff',bd:'#ddd6fe'},
+    'build_first':    {l:'Build evidence first', col:'#dc2626',bg:'#fef2f2',bd:'#fecaca'}
+  };
+  var m=map[c]||map['if_accurate'];
+  return '<span style="font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:'+m.bg+';color:'+m.col+';border:0.5px solid '+m.bd+';white-space:nowrap;">'+m.l+'</span>';
+}
+
+function renderCV(cv){
+  var el=document.getElementById('cvOutput');
+  if(!el){ el=document.createElement('div'); el.id='cvOutput'; el.style.cssText='margin-top:16px;'; document.getElementById('cvGenSection').after?document.getElementById('cvGenSection').insertAdjacentElement('afterend',el):document.getElementById('cvGenSection').parentNode.appendChild(el); }
+
+  var H='<div class="card">';
+  H+='<div class="lbl">Repaired CV Draft</div>';
+  H+='<div style="background:#fffbeb;border:0.5px solid #fde68a;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#92400e;line-height:1.6;">';
+  H+='<b>This is a draft for editing.</b> Review every bullet before submitting. Keep only what accurately reflects your experience. Bullets marked "Use only if accurate" need your verification before use.</div>';
+
+  // LEGEND
+  H+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">';
+  ['ready','if_accurate','needs_confirmation','build_first'].forEach(function(c){ H+=confLabel(c); });
+  H+='</div>';
+
+  // SECTIONS
+  (cv.sections||[]).forEach(function(sec){
+    H+='<div style="margin-bottom:18px;">';
+    H+='<div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra);margin-bottom:8px;border-bottom:1.5px solid var(--terra);padding-bottom:4px;">'+sec.title+'</div>';
+    if(sec.orderNote) H+='<div style="font-size:11px;color:var(--ink40);font-style:italic;margin-bottom:8px;">↑ '+sec.orderNote+'</div>';
+    (sec.items||[]).forEach(function(item){
+      H+='<div style="margin-bottom:12px;">';
+      H+='<div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;">'+(item.heading||'')+'</div>';
+      if(item.subheading) H+='<div style="font-size:12px;color:var(--ink60);margin-bottom:4px;">'+item.subheading+'</div>';
+      if(item.bullets&&item.bullets.length){
+        H+='<ul style="list-style:none;padding:0;margin-top:4px;">';
+        item.bullets.forEach(function(b){
+          var text=typeof b==='string'?b:(b.text||'');
+          var conf=typeof b==='object'?b.confidence:'ready';
+          var note=typeof b==='object'?b.note:'';
+          H+='<li style="font-size:12px;color:var(--ink60);line-height:1.65;margin-bottom:6px;padding-left:12px;position:relative;">';
+          H+='<span style="position:absolute;left:0;color:var(--terra);">–</span>';
+          H+=text;
+          H+=' '+confLabel(conf);
+          if(note) H+='<div style="font-size:11px;color:var(--ink40);margin-top:2px;padding-left:2px;font-style:italic;">'+note+'</div>';
+          H+='</li>';
+        });
+        H+='</ul>';
+      }
+      H+='</div>';
+    });
+    H+='</div>';
+  });
+
+  // WHAT CHANGED AND WHY
+  if(cv.whatChangedAndWhy&&cv.whatChangedAndWhy.length){
+    H+='<div style="background:var(--warm);border-radius:8px;padding:14px;margin-top:10px;">';
+    H+='<div class="lbl" style="margin-bottom:8px;">What changed and why</div>';
+    cv.whatChangedAndWhy.forEach(function(w){
+      H+='<div style="padding:6px 0;border-bottom:0.5px solid var(--ink08);">';
+      H+='<div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px;">'+(w.change||w)+'</div>';
+      if(w.reason) H+='<div style="font-size:11px;color:var(--ink60);">'+w.reason+'</div>';
+      H+='</div>';
+    });
+    H+='</div>';
+  }
+
+  // ACCURACY FLAGS
+  if(cv.accuracyFlags&&cv.accuracyFlags.length){
+    H+='<div style="background:#fffbeb;border:0.5px solid #fde68a;border-radius:8px;padding:12px 14px;margin-top:10px;">';
+    H+='<div class="lbl" style="margin-bottom:6px;color:#d97706;">Accuracy checks — answer these before submitting</div>';
+    cv.accuracyFlags.forEach(function(f){
+      var item=typeof f==='string'?f:(f.item||'');
+      var q=typeof f==='object'?f.question:'';
+      H+='<div style="padding:5px 0;border-bottom:0.5px solid #fde68a;font-size:12px;"><b>'+item+'</b>'+(q?'<div style="color:#92400e;margin-top:2px;">→ '+q+'</div>':'')+'</div>';
+    });
+    H+='</div>';
+  }
+
+  // BUILD FIRST
+  if(cv.buildFirst&&cv.buildFirst.length){
+    H+='<div style="background:#fef2f2;border:0.5px solid #fecaca;border-radius:8px;padding:12px 14px;margin-top:10px;">';
+    H+='<div class="lbl" style="margin-bottom:6px;color:var(--red);">Evidence to build first</div>';
+    cv.buildFirst.forEach(function(b){
+      var gap=typeof b==='string'?b:(b.gap||'');
+      var why=typeof b==='object'?b.why:'';
+      H+='<div style="padding:5px 0;border-bottom:0.5px solid #fecaca;font-size:12px;"><b>'+gap+'</b>'+(why?'<div style="color:#991b1b;margin-top:2px;">'+why+'</div>':'')+'</div>';
+    });
+    H+='</div>';
+  }
+
+  // RECHECK + DOWNLOAD
+  H+='<div style="display:flex;gap:8px;margin-top:14px;">';
+  H+='<button onclick="downloadCV()" style="flex:1;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:11px;font-family:Fraunces,serif;font-size:14px;font-weight:300;cursor:pointer;">Download draft →</button>';
+  H+='<button onclick="runRecheck()" style="flex:1;background:white;color:var(--ink);border:0.5px solid var(--ink08);border-radius:8px;padding:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Upload revised CV for recheck <span style="font-size:10px;color:var(--terra);">(<span id="rc2">2</span> remaining)</span></button>';
+  H+='</div>';
+  H+='</div>';
+
+  el.innerHTML=H;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  window._lastCV=cv;
+}
+
+function runRecheck(){
+  var rc=parseInt(document.getElementById('recheckCount').textContent)||0;
+  if(rc<=0){ alert('No rechecks remaining.'); return; }
+  // MVP: upload a revised CV
+  var input=document.createElement('input');
+  input.type='file'; input.accept='.pdf,.doc,.docx,.txt';
+  input.onchange=function(e){
+    var file=e.target.files[0];
+    if(!file) return;
+    alert('Recheck submitted. This feature is coming soon — you will receive your recheck by email within 24 hours. Rechecks remaining: '+(rc-1));
+    document.getElementById('recheckCount').textContent=(rc-1);
+    document.getElementById('rc2').textContent=(rc-1);
+  };
+  input.click();
+}
+
+function downloadCV(){
+  var cv=window._lastCV; if(!cv) return;
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV — '+(cv.candidateName||'Candidate')+'</title>';
+  html+='<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;font-size:11pt;color:#000;max-width:750px;margin:0 auto;padding:40px 30px;}';
+  html+='.name{font-size:18pt;font-weight:bold;margin-bottom:4px;}.target{font-size:10pt;color:#666;margin-bottom:20px;font-style:italic;}';
+  html+='.sec-title{font-size:10pt;font-weight:bold;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1.5px solid #000;padding-bottom:2px;margin:16px 0 8px;}';
+  html+='.item-head{font-size:11pt;font-weight:bold;}.item-sub{font-size:10pt;color:#444;margin-bottom:3px;}';
+  html+='ul{padding-left:16px;margin-top:3px;}li{font-size:10pt;line-height:1.5;margin-bottom:2px;}';
+  html+='.flag{color:#b45309;}.note{font-size:9pt;color:#666;margin-top:20px;border-top:1px solid #eee;padding-top:10px;}</style></head><body>';
+  html+='<div class="name">'+(cv.candidateName||'')+'</div>';
+  html+='<div class="target">Draft CV for '+(cv.targetRole||'')+'</div>';
+  (cv.sections||[]).forEach(function(sec){
+    html+='<div class="sec-title">'+sec.title+'</div>';
+    (sec.items||[]).forEach(function(item){
+      html+='<div class="item-head">'+(item.heading||'')+'</div>';
+      if(item.subheading) html+='<div class="item-sub">'+item.subheading+'</div>';
+      if(item.bullets&&item.bullets.length){
+        html+='<ul>'+item.bullets.map(function(b){
+          return '<li class="'+(b.indexOf('[Review')>-1?'flag':'')+'">'+b+'</li>';
+        }).join('')+'</ul>';
+      }
+    });
+  });
+  html+='<div class="note">This is a draft CV generated by The Desk Full Cycle. Review every bullet before submitting. Do not include claims that are not accurate. Generated '+(new Date().toLocaleDateString('en-GB'))+'.</div>';
+  html+='</body></html>';
+
+  var blob=new Blob([html],{type:'text/html'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download=(cv.candidateName||'CV').split(' ').join('_')+'_Full_Cycle_Draft.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* DEMO */ document.addEventListener('DOMContentLoaded', async function(){
+  try {
+    var stored=sessionStorage.getItem('tdesk_fc');
+    console.log('tdesk_fc present:', !!stored, '| length:', stored?stored.length:0);
+    if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first, then click the Full Cycle button immediately.');
+    var data=JSON.parse(stored);
+    console.log('data keys:', Object.keys(data).join(','), '| has result:', !!data.result);
+    sessionStorage.removeItem('tdesk_fc');
+
+    // Check data is valid before calling API
+    if(!data.result||!data.result.overallScore){
+      throw new Error('Assessment data is incomplete. Please run your assessment again from rapid.html.');
+    }
+
+    var parts=['verdict','repair','plan'];
+    var partLabels={
+      verdict:'Reading your application...',
+      repair:'Building your repair plan...',
+      plan:'Writing your action plan...'
+    };
+    var paid={};
+
+    for(var i=0;i<parts.length;i++){
+      var partName=parts[i];
+      ml.textContent=partLabels[partName]+' ('+(i+1)+'/'+parts.length+')';
+
+      var controller=new AbortController();
+      var timeout=setTimeout(function(){ controller.abort(); }, 9000);
+
+      var resp;
+      try{
+        resp=await fetch('/api/full-cycle',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(Object.assign({},data,{part:partName})),
+          signal:controller.signal
+        });
+      }catch(e){
+        clearTimeout(timeout);
+        if(e.name==='AbortError') throw new Error('Part "'+partName+'" timed out. Please try again.');
+        throw e;
+      }
+      clearTimeout(timeout);
+
+      if(!resp.ok){
+        var errText=await resp.text();
+        throw new Error('API error on '+partName+' ('+resp.status+'): '+errText.slice(0,200));
+      }
+
+      var partJson=await resp.json();
+      if(!partJson.success){ throw new Error('Failed on '+partName+': '+(partJson.error||'unknown')); }
+      Object.assign(paid, partJson.data);
+    }
+
+    clearInterval(mt);
+    var json={success:true, paid:paid};
+
+    if(!json.success||!json.paid) throw new Error('Generation failed — please try again.');
+
+    document.getElementById('ld').style.display='none';
+    document.getElementById('fcStatus').style.display='block';
+    _fcData=data; // store for CV generation
+    var rs=document.getElementById('rs');
+    rs.innerHTML=render(json.paid, data.profile||{});
+    rs.style.display='block';
+  } // end if(false)
+});
+</script>
+</body>
+</html>
