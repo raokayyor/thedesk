@@ -518,58 +518,86 @@ function setQuizScore(containerId, score, globalSetter){
   btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=score?' on':''); });
 }
 
+function setSelect(id, val){
+  var el=document.getElementById(id);
+  if(!el) return;
+  // Try exact match first
+  for(var i=0;i<el.options.length;i++){
+    if(el.options[i].value===val||el.options[i].text===val){
+      el.selectedIndex=i; return;
+    }
+  }
+  // Try case-insensitive partial match
+  var v=val.toLowerCase();
+  for(var i=0;i<el.options.length;i++){
+    if(el.options[i].text.toLowerCase().indexOf(v)>-1||v.indexOf(el.options[i].text.toLowerCase())>-1){
+      el.selectedIndex=i; return;
+    }
+  }
+  // Fallback: first option
+  el.selectedIndex=0;
+}
+
+var GRADE_MAP={
+  'First predicted':'First Class (predicted)',
+  'First Class predicted':'First Class (predicted)',
+  'First Class (predicted)':'First Class (predicted)',
+  '2:1 predicted':'2:1 (predicted)',
+  '2:1 (predicted)':'2:1 (predicted)',
+  '2:2 predicted':'2:2 (predicted)',
+  '2:2 (predicted)':'2:2 (predicted)',
+  'First':'First Class (predicted)'
+};
+
+var YEAR_MAP={
+  'Final year':'Final Year','Final Year':'Final Year',
+  'Second year':'2nd Year','2nd year':'2nd Year','2nd Year':'2nd Year',
+  'First year':'1st Year','1st year':'1st Year','1st Year':'1st Year',
+  'Graduate':'Graduate'
+};
+
 function generateRandom(){
   var st=document.getElementById('genStatus');
-  if(st){ st.style.display='block'; st.textContent=''; }
+  if(st){ st.style.display='block'; st.textContent='Loading...'; }
   var c=CANDIDATES[Math.floor(Math.random()*CANDIDATES.length)];
 
-  function set(id,val){
-    var el=document.getElementById(id);
-    if(!el) return;
-    el.value=val||'';
-    // Trigger change event for selects
-    el.dispatchEvent(new Event('change'));
-  }
-
-  // Randomise grade slightly around the candidate's base grade
+  // Randomise grade around candidate base
   var gradeVariants={
-    'First predicted':['First predicted','First predicted','2:1 predicted'],
-    'First Class predicted':['First Class predicted','First Class predicted','2:1 predicted'],
-    '2:1 predicted':['2:1 predicted','2:1 predicted','2:1 predicted','First predicted','2:2 predicted'],
-    '2:2 predicted':['2:2 predicted','2:2 predicted','2:1 predicted'],
-    'Upper Second (2:1)':['Upper Second (2:1)','Lower Second (2:2)','First']
+    'First predicted':['First Class (predicted)','First Class (predicted)','2:1 (predicted)'],
+    'First Class predicted':['First Class (predicted)','First Class (predicted)','2:1 (predicted)'],
+    '2:1 predicted':['2:1 (predicted)','2:1 (predicted)','First Class (predicted)','2:2 (predicted)'],
+    '2:2 predicted':['2:2 (predicted)','2:2 (predicted)','2:1 (predicted)'],
+    'First Class (predicted)':['First Class (predicted)','First Class (predicted)','2:1 (predicted)']
   };
   var baseGrade=c.grade||'2:1 predicted';
-  var variants=gradeVariants[baseGrade]||[baseGrade];
-  var grade=variants[Math.floor(Math.random()*variants.length)];
+  var gvars=gradeVariants[baseGrade]||[GRADE_MAP[baseGrade]||'2:1 (predicted)'];
+  var grade=gvars[Math.floor(Math.random()*gvars.length)];
 
-  // Randomise quiz scores based on candidate profile (±1 of typical)
-  var baseComm=c.commScore||Math.floor(Math.random()*2)+2; // 2-3 default
-  var baseTech=c.techScore||Math.floor(Math.random()*2)+3; // 3-4 default
-  var rComm=Math.max(1,Math.min(5,baseComm+Math.floor(Math.random()*3)-1));
-  var rTech=Math.max(1,Math.min(5,baseTech+Math.floor(Math.random()*3)-1));
+  // Randomise quiz scores ±1 from candidate base
+  var baseComm=c.commScore||3;
+  var baseTech=c.techScore||3;
+  var rComm=Math.max(1,Math.min(5,baseComm+(Math.random()>0.6?1:Math.random()<0.3?-1:0)));
+  var rTech=Math.max(1,Math.min(5,baseTech+(Math.random()>0.6?1:Math.random()<0.3?-1:0)));
 
-  // Fill all fields
-  set('firm',c.firm);
-  set('division',c.division);
-  set('uni',c.uni);
-  set('course',c.course);
-  set('year',c.year||'Final year');
-  set('grade',grade);
-  if(document.getElementById('programme')) set('programme',c.programme||'Summer Internship');
+  // Set all fields
+  function setInput(id,val){ var el=document.getElementById(id); if(el) el.value=val||''; }
 
-  // Set quiz scores
+  setInput('firm',c.firm);
+  setSelect('division',c.division);
+  setInput('uni',c.uni);
+  setInput('course',c.course);
+  setSelect('year', YEAR_MAP[c.year||'Final year']||'Final Year');
+  setSelect('grade', grade);
+
+  // Quiz scores
   setQuizScore('comm-btns', rComm, function(n){ commScore=n; });
   setQuizScore('tech-btns', rTech, function(n){ techScore=n; });
 
-  // Set CV text
+  // CV text (replace grade string in CV too)
   var cvEl=document.getElementById('cvText');
-  if(cvEl){
-    // Swap grade in CV text too
-    cvEl.value=(c.cv||'').replace(c.grade||'', grade);
-  }
+  if(cvEl) cvEl.value=(c.cv||'').replace(c.grade||'',grade);
 
-  if(st){ st.textContent='✓ '+c.name+' · '+c.firm+' '+c.division+' · Grade: '+grade+' · Comm: '+rComm+'/5 · Num: '+rTech+'/5'; }
+  if(st){ st.textContent='✓ '+c.name+' · '+c.firm+' · '+grade+' · Comm '+rComm+'/5 · Num '+rTech+'/5'; }
 }
 
 function setScoreBtn(containerId, val){
