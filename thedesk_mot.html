@@ -2583,22 +2583,18 @@ function rotateDyk(){
 }
 // INIT
 // Rapid test hook
-// Rapid test result pickup — check both storage keys
+// Rapid test result pickup
 var _rapidData = (function(){
   try{
-    // Try new compact key first
     var s=sessionStorage.getItem('tdesk_r');
     if(!s) s=sessionStorage.getItem('tdesk_rapid_result');
     if(!s) return null;
     var p=JSON.parse(s);
-    if(!p) return null;
     sessionStorage.removeItem('tdesk_r');
     sessionStorage.removeItem('tdesk_rapid_result');
-    // Handle both formats
-    if(p.result) return p;          // old format: {result, profile, quiz}
-    if(p.overallScore) return {result:p, firm:p.firm||'', div:p.div||'', fS:3, nS:3}; // bare result
-    return null;
-  }catch(e){ return null; }
+    if(!p||!p.result) return null;
+    return p;
+  }catch(e){ console.error('pickup error',e); return null; }
 })();
 
 if(_rapidData){
@@ -3012,7 +3008,22 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
 
-  function copyForGPT(){
+  function unlockFC(){
+  try{
+    var r=window._lastResult;
+    if(!r){ alert('Result not found. Please run the assessment again.'); return; }
+    var fc={
+      result:r,
+      cvText:window._cvText||'',
+      profile:{targetFirm:D.firm,targetDivision:D.div,university:D.uni,course:D.crs,grade:D.gr},
+      quiz:{commercialCorrect:D.fS,technicalCorrect:D.nS}
+    };
+    sessionStorage.setItem('tdesk_fc',JSON.stringify(fc));
+    window.location.href='fullcycle.html';
+  }catch(e){ alert('Error: '+e.message); }
+}
+
+function copyForGPT(){
     var r=window._lastResult;
     if(!r) return;
     var txt='THE DESK — APPLICATION MOT RESULT\n';
