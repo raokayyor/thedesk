@@ -24,7 +24,7 @@ let pdfParse, mammoth;
 export const maxDuration = 60;
 
 const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-haiku-4-5-20251001";
-const CV_MIN_CHARS = 500; // minimum non-whitespace characters
+const CV_MIN_CHARS = 100; // minimum non-whitespace characters
 
 // FIRM_PROCESS — researched, sourced recruitment process steps per firm, mirrored from the frontend.
 // Used to make the diagnostic reference the actual stage a weakness would bite at, not just a score.
