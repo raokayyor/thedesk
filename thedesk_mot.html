@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>The Desk</title></head>
-<body>
-<script>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>The Desk</title></head><body><script>
 (function(){
-  try {
-    var data = sessionStorage.getItem('tdesk_r');
-    if (data) {
-      window.location.replace('/thedesk-result.html');
-    } else {
-      window.location.replace('/assessment-start.html');
-    }
-  } catch(e) {
-    window.location.replace('/assessment-start.html');
+  var params=new URLSearchParams(location.search);
+  if(params.get('preview')==='1'){
+    var profile={name:'Rohan Mehta',university:'University of Warwick',course:'Economics',year:'Final Year',grade:'2:1 (predicted)',targetFirm:'Goldman Sachs',targetDivision:'Investment Banking / IBD',programme:'Summer Internship',track:'Investment Banking / IBD'};
+    var quiz={commercialCorrect:4,commercialTotal:5,technicalCorrect:3,technicalTotal:5};
+    var result={overallScore:68,band:'Borderline',archetype:'Relevant Underdog — Technical Weakness',targetFirm:'Goldman Sachs',targetDivision:'Investment Banking / IBD',killerSentence:'You have more relevant evidence than your headline profile suggests, but technical readiness is the likely failure point.',diagnostic:'The Hawkpoint internship gives this application genuine transaction relevance. The CV currently reads more as exposure to a deal process than evidence of analytical ownership. The application needs a clearer bridge between the existing evidence, commercial finance intent and readiness for this route. The detailed rebuild sits in Full Cycle.',recruiterMayMiss:'The Hawkpoint experience is stronger than the current wording makes it look.',uncomfortableTruth:'The profile is credible enough to attract attention, but not yet sharp enough to survive a strong technical comparison set.',fullCycleFirstFix:'Hawkpoint is the starting point. Full Cycle shows what to do with it before submission.',fullCycleCta:'You have usable material, but it is not yet landing as a Goldman Sachs application. Full Cycle shows what to lead with, what to cut and how to rebuild the profile.',paidHook:'The free MOT identifies where the application leaks points. Full Cycle gives the repair plan.',namedCvDetails:['Hawkpoint Partners corporate finance internship','mid-market sell-side buyer research','Warwick 2nd XI captain','part-time Costa Coffee work'],dimensions:[['Academic Signal',74,'Warwick Economics and a predicted 2:1 clear the credibility bar, but do not differentiate you.'],['Experience',78,'Hawkpoint is relevant evidence and materially improves the first-screen read.'],['Commercial Awareness',76,'Commercial judgement is credible, but needs to hold under interview pressure.'],['Technical Readiness',58,'This is the main screening risk.'],['Positioning',61,'The application has the right ingredients, but the finance story is not immediate.'],['Clarity',69,'Several bullets describe participation rather than impact.']].map(function(x){return{name:x[0],score:x[1],visibleSummary:x[2],lockedDetail:'Full Cycle contains the detailed diagnosis and repair.'}}),priorities:['Strengthen technical readiness','Reposition Hawkpoint','Make motivation more evidenced','Turn generic bullets into outcomes'],priorityGaps:['Technical readiness','Relevant experience is under-framed','Application story is not immediate','Commercial awareness under pressure'].map(function(x,i){return{title:x,visibleRisk:['Your numerical score is below the level you want for a competitive IBD funnel.','Hawkpoint gives genuine relevance but the bullets undersell it.','A recruiter takes too long to infer the route from your evidence.','Headline knowledge needs to translate into deal consequences.'][i],lockedWhyItMatters:'Why this matters is shown in Full Cycle.',lockedFixType:'The repair is shown in Full Cycle.',lockedFullCycleTeaser:'Unlock the detailed rebuild.'}}),competencies:['Leadership','Analytical','Commercial','Communication','Resilience','Teamwork'].map(function(x,i){return{name:x,status:i===2?'Partially evidenced':'Evidenced',visibleReason:'Evidence is present, but its strength and positioning varies.',lockedImprovement:'Full Cycle shows how to strengthen this signal.'}})};
+    sessionStorage.setItem('tdesk_r',JSON.stringify({result:result,name:profile.name,firm:profile.targetFirm,div:profile.targetDivision,uni:profile.university,crs:profile.course,gr:profile.grade,fS:4,nS:3,cvText:'Preview CV',profile:profile,quiz:quiz}));
+    location.replace('/thedesk-result.html');return;
   }
+  try{var data=sessionStorage.getItem('tdesk_r');if(data){location.replace('/thedesk-result.html')}else{location.replace('/assessment-start.html')}}catch(e){location.replace('/assessment-start.html')}
 })();
-</script>
-<noscript><a href="/assessment-start.html">Start The Desk Assessment</a></noscript>
-</body>
-</html>
+</script><noscript><a href="/assessment-start.html">Start The Desk Assessment</a></noscript></body></html>
