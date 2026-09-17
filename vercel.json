@@ -1,11 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/thedesk_mot.html",
-      "permanent": false
-    }
-  ],
   "functions": {
     "api/analyse-mot.js": { "maxDuration": 60 },
     "api/full-cycle.js":  { "maxDuration": 60 },
