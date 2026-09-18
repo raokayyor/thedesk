@@ -42,7 +42,7 @@ body{padding:0 18px}
 .riskTag{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
 .riskWarning{font-family:'Fraunces',serif;font-size:30px;line-height:1.01;margin:9px 0 8px;font-weight:500}
 .riskWarning em{font-style:normal;color:var(--orange)}
-.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 13px}
+.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 14px}.scoreBands div{border-top:1px solid #3a454b;padding-top:7px}.scoreBands span{display:block;font-size:8px;color:#9da7ad}.scoreBands b{display:block;font-size:9.4px;margin-top:2px}.scoreBands .current{border-top:2px solid var(--orange)}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
 .riskCompare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .riskMetric{border-top:1px solid #344047;padding-top:8px}
 .riskMetricTop{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
@@ -191,8 +191,13 @@ body{padding:0 18px}
   </div>
   <div class="heroCol riskPanel">
     <div class="riskTag">Your application risk</div>
-    <div class="riskWarning">67/100 is <em>not</em> a score to feel safe about.</div>
-    <p class="riskContext">At leading banks, overall internship selection rates can be below 1%. A credible application may get looked at. It does not give you much room for weak answers, weak testing or vague evidence.</p>
+    <div class="riskWarning"><em>67/100 = Borderline.</em></div>
+    <p class="riskContext">On The Desk scale, 75+ is where an application starts to look genuinely competitive. 65–74 is borderline: there is enough here to stay in contention, but not enough to feel safe. Below 65, the weaknesses are likely to outweigh the strengths.</p>
+    <div class="scoreBands">
+      <div><span>75+</span><b>Competitive</b></div>
+      <div class="current"><span>65–74</span><b>Borderline</b></div>
+      <div><span>&lt;65</span><b>Weak</b></div>
+    </div>
     <div class="riskCompare">
       <div class="riskMetric"><div class="riskMetricTop"><span>Application readiness</span><b>67</b></div><div class="riskBar"><i style="width:67%"></i></div><small>Credible, but still carrying visible gaps</small></div>
       <div class="riskMetric"><div class="riskMetricTop"><span>Test readiness</span><b>60</b></div><div class="riskBar"><i style="width:60%"></i></div><small>Numerical + commercial / technical</small></div>
