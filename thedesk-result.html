@@ -42,6 +42,7 @@ body{padding:0 18px}
 .riskTag{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
 .riskWarning{font-family:'Fraunces',serif;font-size:30px;line-height:1.01;margin:9px 0 8px;font-weight:500}
 .riskWarning em{font-style:normal;color:var(--orange)}
+.riskWarning span{display:inline-block;margin-top:5px;font-size:22px;color:#fff}
 .riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 14px}.scoreBands div{border-top:1px solid #3a454b;padding-top:7px}.scoreBands span{display:block;font-size:8px;color:#9da7ad}.scoreBands b{display:block;font-size:9.4px;margin-top:2px}.scoreBands .current{border-top:2px solid var(--orange)}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
 .riskCompare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .riskMetric{border-top:1px solid #344047;padding-top:8px}
@@ -191,7 +192,7 @@ body{padding:0 18px}
   </div>
   <div class="heroCol riskPanel">
     <div class="riskTag">Your application risk</div>
-    <div class="riskWarning"><em>67/100 = Borderline.</em></div>
+    <div class="riskWarning"><em>67/100 = Borderline.</em><br><span>This is not a score to feel safe about.</span></div>
     <p class="riskContext">On The Desk scale, 75+ is where an application starts to look genuinely competitive. 65–74 is borderline: there is enough here to stay in contention, but not enough to feel safe. Below 65, the weaknesses are likely to outweigh the strengths.</p>
     <div class="scoreBands">
       <div><span>75+</span><b>Competitive</b></div>
