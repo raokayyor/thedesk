@@ -118,9 +118,34 @@ body{padding:0 18px}
 .footer .brand{font-size:21px}
 .footer small{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#9ba3a8}
 
+.assessmentStrip{display:grid;grid-template-columns:1.45fr repeat(4,1fr);border-bottom:1px solid var(--rule);background:#f8f6f1}
+.assessmentLead,.assessItem{padding:16px 18px;border-right:1px solid var(--rule)}
+.assessmentLead strong{display:block;font-family:'Fraunces',serif;font-size:17px;line-height:1.15;margin-top:6px;font-weight:500}
+.assessItem:last-child{border-right:0}
+.assessItem span{display:block;font-size:7px;letter-spacing:.16em;color:#858b8f;margin-bottom:6px}
+.assessItem b{display:block;font-size:9.5px;line-height:1.2}
+.assessItem small{display:block;font-size:7.8px;line-height:1.3;color:#697076;margin-top:5px}
+.assessItem.score b{color:var(--orange)}
+.testSection{padding:20px 34px 22px;border-bottom:1px solid var(--rule)}
+.testGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.testCard{background:var(--paper);border:1px solid var(--rule);padding:17px 18px}
+.testTop{display:flex;justify-content:space-between;align-items:flex-start}
+.testLabel{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#646c71}
+.testCard h4{font-family:'Fraunces',serif;font-size:29px;margin:5px 0 0;font-weight:500}
+.testMark{font-size:22px;font-weight:700;color:var(--orange)}
+.correctBar{height:5px;background:#e0ddd6;margin:12px 0 13px}
+.correctBar span{display:block;height:100%;background:var(--orange)}
+.testCard p{font-size:9.4px;line-height:1.42;color:#555d62;margin:0 0 12px}
+.testRead{background:#f0ede7;padding:11px 12px;font-size:9px;line-height:1.4;color:#4b5358}
+.testRead b{display:block;font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
+.testCard a{display:block;color:var(--orange);text-decoration:none;font-size:8.5px;line-height:1.35;font-weight:700;margin-top:12px}
+.personalInsight{margin-top:14px;background:var(--black);color:white;padding:16px 18px;display:grid;grid-template-columns:150px 1fr 1.25fr;gap:18px;align-items:center}
+.personalInsight strong{font-family:'Fraunces',serif;font-size:18px;line-height:1.15;font-weight:500}
+.personalInsight p{font-size:8.9px;line-height:1.42;color:#c8ced2;margin:0}
+
 @media(max-width:900px){
  body{padding:0}.page{max-width:none}.header{grid-template-columns:1fr auto;padding:0 20px}.nav{display:none}
- .hero{grid-template-columns:1fr}.heroCol{border-right:0;border-bottom:1px solid var(--rule)}.verdict{padding-right:30px}.verdict:after{display:none}
+ .hero{grid-template-columns:1fr}.assessmentStrip{grid-template-columns:1fr 1fr}.assessmentLead{grid-column:1/-1}.testGrid{grid-template-columns:1fr}.personalInsight{grid-template-columns:1fr}.heroCol{border-right:0;border-bottom:1px solid var(--rule)}.verdict{padding-right:30px}.verdict:after{display:none}
  .scoreMain b{font-size:105px}.cred{grid-template-columns:1fr}.credItem{border-right:0;border-bottom:1px solid var(--rule)}
  .overview{padding:0 20px}.row{grid-template-columns:42px 1fr}.promoBox{grid-column:2}.strengthGrid{grid-template-columns:1fr}
  .section{padding-left:20px;padding-right:20px}.compGrid{grid-template-columns:repeat(2,1fr)}.comp{border-bottom:1px solid var(--rule)}
@@ -165,6 +190,17 @@ body{padding:0 18px}
   <div class="credItem"><div class="credIcon">⌁</div><div><b>Real-world insight.</b><span>Practical advice. Better outcomes.</span></div></div>
 </section>
 
+<section class="assessmentStrip">
+  <div class="assessmentLead">
+    <div class="kicker">Assessment complete</div>
+    <strong>Your result combines your CV, application profile and two short tests.</strong>
+  </div>
+  <div class="assessItem"><span>01</span><b>CV reviewed</b><small>Education, experience, activities and evidence</small></div>
+  <div class="assessItem"><span>02</span><b>Profile assessed</b><small>Barclays · IBD · Summer Internship</small></div>
+  <div class="assessItem score"><span>03</span><b>Numerical · 3/5</b><small>3 correct · 2 missed</small></div>
+  <div class="assessItem score"><span>04</span><b>Commercial / technical · 3/5</b><small>3 correct · 2 missed</small></div>
+</section>
+
 <section class="overview">
   <div class="row">
     <div class="num">01</div>
@@ -200,8 +236,33 @@ body{padding:0 18px}
   </div>
 </section>
 
+<section class="testSection">
+  <div class="sectionHead"><div class="num">03</div><div><h3>What your test results tell us</h3><div class="sub">Your CV is stronger than your current test readiness.</div></div></div>
+  <div class="testGrid">
+    <article class="testCard">
+      <div class="testTop"><div><div class="testLabel">Numerical test</div><h4>3 / 5</h4></div><div class="testMark">60%</div></div>
+      <div class="correctBar"><span style="width:60%"></span></div>
+      <p>You got 3 of 5 correct. The assessment covered percentage change, margins, valuation multiples, net debt and enterprise value.</p>
+      <div class="testRead"><b>Our read</b>You can handle the basics, but the score is not yet strong enough for a timed banking process where accuracy and speed both matter.</div>
+      <a href="/fullcycle.html">🔒 Full Cycle: 100s of timed numerical questions, worked answers and targeted drills →</a>
+    </article>
+    <article class="testCard">
+      <div class="testTop"><div><div class="testLabel">Commercial / technical test</div><h4>3 / 5</h4></div><div class="testMark">60%</div></div>
+      <div class="correctBar"><span style="width:60%"></span></div>
+      <p>You got 3 of 5 correct. The assessment tested rates, equity dilution, EBITDA, strategic buyers and credit risk.</p>
+      <div class="testRead"><b>The important mismatch</b>Your CV mentions DCF, comparables, valuation multiples and M&A research. That evidence is useful — but it also gives an interviewer permission to probe you technically. A 3/5 result suggests the CV is currently ahead of your interview readiness.</div>
+      <a href="/fullcycle.html">🔒 Full Cycle: technical guides, bank-specific prep, question banks and weekly markets briefing →</a>
+    </article>
+  </div>
+  <div class="personalInsight">
+    <div class="kicker">Personalised assessment insight</div>
+    <strong>Amelia, your problem is not a lack of finance evidence. It is converting that evidence into interview-safe knowledge.</strong>
+    <p>Redcliffe and the LVMH valuation project are exactly the experiences that can strengthen a Barclays IBD application. They are also the areas an interviewer is most likely to challenge. Your next preparation should therefore be built around the evidence already on your CV rather than generic finance revision.</p>
+  </div>
+</section>
+
 <section class="section">
-  <div class="sectionHead"><div class="num">03</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work.</div></div></div>
+  <div class="sectionHead"><div class="num">04</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work.</div></div></div>
   <div class="compGrid">
     <div class="comp"><div class="compName">Analytical<br>ability</div><div class="compScore">76</div><p>Strong technical exposure, but show more of your judgement.</p></div>
     <div class="comp"><div class="compName">Teamwork</div><div class="compScore">68</div><p>Evidence is there, but could be clearer and more specific.</p></div>
@@ -222,7 +283,7 @@ body{padding:0 18px}
 </section>
 
 <section class="section">
-  <div class="sectionHead"><div class="num">04</div><div><h3>What should you do next?</h3><div class="sub">One key action you can take now. Then unlock your full plan.</div></div></div>
+  <div class="sectionHead"><div class="num">05</div><div><h3>What should you do next?</h3><div class="sub">One key action you can take now. Then unlock your full plan.</div></div></div>
   <div class="actions">
     <div class="action"><div class="actionIcon">✓</div><div><div class="actionLabel">Do this now (free)</div><b>Strengthen the impact in your strongest analytical bullet.</b><p>Make the conclusion or commercial implication explicit, not just the task and method.</p></div><div class="arrow">›</div></div>
     <div class="action lock"><div class="actionIcon">▣</div><div><div class="actionLabel">Full Cycle unlocks the detail</div><b>Get the exact rewrites, examples and frameworks.</b><p>We’ve identified three Redcliffe bullets, two LVMH bullets and your education section as priorities.</p></div><div class="arrow">›</div></div>
