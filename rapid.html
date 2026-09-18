@@ -364,7 +364,7 @@ async function run(){
       };
       try{
         sessionStorage.setItem('tdesk_r', JSON.stringify(motData));
-        window.location.href='thedesk_mot.html';
+        window.location.href='thedesk-result.html';
       }catch(e){
         status.textContent='Storage error: '+e.message+'. Try again.';
         btn.disabled=false; btn.textContent='Run assessment →';
