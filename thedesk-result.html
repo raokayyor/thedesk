@@ -321,6 +321,246 @@ body{padding:0 18px}
 
 <footer class="footer"><div class="brand">The Desk</div><small>Finance careers. Done properly.</small></footer>
 </div>
-<!-- deploy-refresh -->
+
+<script>
+(function(){
+  // ── helpers ─────────────────────────────────────────────────
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function pips(correct,total){
+    var h='';
+    for(var i=0;i<total;i++) h+='<span class="pip'+(i<correct?' on':'')+'" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+(i<correct?'var(--orange)':'#313b41')+';margin-right:3px;"></span>';
+    return h;
+  }
+  function statusToScore(status){
+    if(!status) return 50;
+    var s = status.toLowerCase();
+    if(s.includes('strong')) return 88;
+    if(s.includes('partially')) return 62;
+    if(s.includes('not yet')) return 38;
+    if(s.includes('evidenced')) return 76;
+    return 50;
+  }
+  function bandClass(score){
+    if(score>=75) return 'hi';
+    if(score>=55) return 'mid';
+    return 'lo';
+  }
+  function setBandHighlight(score){
+    var bands = document.querySelectorAll('.scoreBands > div');
+    bands.forEach(function(b){ b.classList.remove('current'); });
+    if(score>=75 && bands[0]) bands[0].classList.add('current');
+    else if(score>=55 && bands[1]) bands[1].classList.add('current');
+    else if(bands[2]) bands[2].classList.add('current');
+    // Update riskWarning
+    var rw = document.querySelector('.riskWarning em');
+    var bandLabel = score>=75?'Competitive':score>=55?'Borderline':'Weak';
+    if(rw) rw.textContent = score+'/100 = '+bandLabel+'.';
+    // Update riskContext
+    var rc = document.querySelector('.riskContext');
+    if(rc){
+      if(score>=75) rc.textContent = 'On The Desk scale, 75+ is where an application starts to look genuinely competitive. Your score puts you in this range — but the gap to the candidates who receive offers is smaller than it looks.';
+      else if(score>=55) rc.textContent = 'On The Desk scale, 75+ is where an application starts to look genuinely competitive. 65–74 is borderline: there is enough here to stay in contention, but not enough to feel safe. Below 65, the weaknesses are likely to outweigh the strengths.';
+      else rc.textContent = 'On The Desk scale, 75+ is where an application starts to look genuinely competitive. A score below 65 means the weaknesses are likely to outweigh the strengths at first screen. The gaps are specific and fixable — but they need to be fixed before you apply.';
+    }
+  }
+
+  // ── read sessionStorage ──────────────────────────────────────
+  var raw;
+  try { raw = sessionStorage.getItem('tdesk_r'); } catch(e){}
+  if(!raw) return; // no data — leave static demo in place
+
+  var d;
+  try { d = JSON.parse(raw); } catch(e){ return; }
+  var r = d.result;
+  if(!r || !r.overallScore) return;
+
+  // ── HERO — candidate details ─────────────────────────────────
+  var cname = r.candidateName || d.profile && d.profile.name || '';
+  if(cname){
+    var el = document.querySelector('.candidate');
+    if(el) el.textContent = cname;
+  }
+  var role = d.div || d.profile && d.profile.targetDivision || '';
+  var roleEl = document.querySelector('.role');
+  if(roleEl && role) roleEl.textContent = role;
+
+  var bank = d.firm || d.profile && d.profile.targetFirm || '';
+  var bankEl = document.querySelector('.bank');
+  if(bankEl && bank) bankEl.textContent = bank;
+
+  var metaEl = document.querySelector('.meta');
+  if(metaEl){
+    var crs = d.crs || (d.profile && d.profile.course) || '';
+    var gr  = d.gr  || (d.profile && d.profile.grade)  || '';
+    var yr  = d.profile && d.profile.year || '';
+    metaEl.innerHTML = (crs?'<span>'+esc(crs)+'</span>':'')+(yr?'<span>'+esc(yr)+'</span>':'')+'<span>UK</span>';
+  }
+
+  // ── HERO — score ─────────────────────────────────────────────
+  var score = r.overallScore;
+  var scoreEl = document.querySelector('.scoreMain b');
+  if(scoreEl) scoreEl.textContent = score;
+  setBandHighlight(score);
+
+  // ── resultHandoff h2 ─────────────────────────────────────────
+  var handoffH2 = document.querySelector('.resultHandoff h2');
+  if(handoffH2 && cname && r.beingMisreadAs){
+    handoffH2.textContent = cname + ', ' + r.beingMisreadAs.charAt(0).toLowerCase() + r.beingMisreadAs.slice(1);
+  } else if(handoffH2 && r.beingMisreadAs){
+    handoffH2.textContent = r.beingMisreadAs;
+  }
+
+  // ── Section 01 — How competitive ────────────────────────────
+  var rows = document.querySelectorAll('.overview .row');
+  if(rows[0]){
+    var ps = rows[0].querySelectorAll('p');
+    if(r.diagnostic && ps[0]) ps[0].textContent = r.diagnostic;
+    if(r.uncomfortableTruth && ps[1]) ps[1].textContent = r.uncomfortableTruth;
+    if(r.fullCycleCta && ps[2]) ps[2].textContent = '';
+    // promo box
+    var promoStrong = rows[0].querySelector('.promoBox strong');
+    if(promoStrong && r.killerSentence) promoStrong.textContent = r.killerSentence;
+  }
+
+  // ── Section 02 — What's working ─────────────────────────────
+  if(rows[1] && r.dimensions){
+    var strengths = rows[1].querySelectorAll('.strength');
+    var dims = r.dimensions.filter(function(d){ return d.score >= 55; })
+                           .sort(function(a,b){ return b.score-a.score; });
+    dims.slice(0,strengths.length).forEach(function(dim, i){
+      if(strengths[i]){
+        var b = strengths[i].querySelector('b');
+        var p = strengths[i].querySelector('p');
+        if(b) b.textContent = dim.name + ' — ' + (dim.score>=75?'strength':'credible signal');
+        if(p) p.textContent = dim.visibleSummary || '';
+      }
+    });
+    // promoBox
+    var promoStrong2 = rows[1] && rows[1].querySelector('.promoBox strong');
+    if(promoStrong2 && r.recruiterMayMiss) promoStrong2.textContent = r.recruiterMayMiss;
+  }
+
+  // ── Section 03 — Test results ─────────────────────────────────
+  var testCards = document.querySelectorAll('.testCard');
+  var nS = d.nS !== undefined ? d.nS : (d.quiz && d.quiz.technicalCorrect !== undefined ? d.quiz.technicalCorrect : 3);
+  var fS = d.fS !== undefined ? d.fS : (d.quiz && d.quiz.commercialCorrect !== undefined ? d.quiz.commercialCorrect : 3);
+  var nTotal = (d.quiz && d.quiz.technicalTotal) || 5;
+  var fTotal = (d.quiz && d.quiz.commercialTotal) || 5;
+
+  if(testCards[0]){
+    var nPct = Math.round((nS/nTotal)*100);
+    var nH4 = testCards[0].querySelector('h4');
+    var nPct2 = testCards[0].querySelector('.testMark');
+    var nBar = testCards[0].querySelector('.correctBar span');
+    if(nH4) nH4.textContent = nS + ' / ' + nTotal;
+    if(nPct2) nPct2.textContent = nPct + '%';
+    if(nBar) nBar.style.width = nPct + '%';
+    // find Technical Readiness dimension
+    var techDim = r.dimensions && r.dimensions.find(function(d){ return d.name==='Technical Readiness'; });
+    var nBody = testCards[0].querySelector('p');
+    if(nBody && techDim) nBody.textContent = techDim.visibleSummary || '';
+  }
+
+  if(testCards[1]){
+    var fPct = Math.round((fS/fTotal)*100);
+    var fH4 = testCards[1].querySelector('h4');
+    var fPct2 = testCards[1].querySelector('.testMark');
+    var fBar = testCards[1].querySelector('.correctBar span');
+    if(fH4) fH4.textContent = fS + ' / ' + fTotal;
+    if(fPct2) fPct2.textContent = fPct + '%';
+    if(fBar) fBar.style.width = fPct + '%';
+    var commDim = r.dimensions && r.dimensions.find(function(d){ return d.name==='Commercial Awareness'; });
+    var fBody = testCards[1].querySelector('p');
+    if(fBody && commDim) fBody.textContent = commDim.visibleSummary || '';
+  }
+
+  // ── Section 04 — Competency scores ───────────────────────────
+  var compEls = document.querySelectorAll('.comp');
+  // Build score map from dimensions + competencies
+  var dimMap = {};
+  if(r.dimensions) r.dimensions.forEach(function(d){ dimMap[d.name] = d.score; });
+  var compMap = {};
+  if(r.competencies) r.competencies.forEach(function(c){ compMap[c.name] = { score: statusToScore(c.status), reason: c.visibleReason }; });
+
+  var compData = [
+    { label:'Analytical
+ability', score: compMap['Analytical'] ? compMap['Analytical'].score : (dimMap['Academic Signal']||62) },
+    { label:'Teamwork',            score: compMap['Teamwork'] ? compMap['Teamwork'].score : 65 },
+    { label:'Communication',       score: compMap['Communication'] ? compMap['Communication'].score : 65 },
+    { label:'Leadership',          score: compMap['Leadership'] ? compMap['Leadership'].score : 55 },
+    { label:'Resilience',          score: compMap['Resilience'] ? compMap['Resilience'].score : 65 },
+    { label:'Commercial
+awareness', score: dimMap['Commercial Awareness'] || (compMap['Commercial'] ? compMap['Commercial'].score : 60) },
+    { label:'Technical
+readiness',  score: dimMap['Technical Readiness'] || 60 }
+  ];
+
+  // get visible reason for analytical (first free comp)
+  var analyticalComp = r.competencies && r.competencies.find(function(c){ return c.name==='Analytical'; });
+  var analyticalDim  = r.dimensions && r.dimensions.find(function(d){ return d.name==='Academic Signal'; });
+
+  compEls.forEach(function(el, i){
+    if(!compData[i]) return;
+    var nameEl  = el.querySelector('.compName');
+    var scoreEl = el.querySelector('.compScore');
+    if(nameEl)  nameEl.innerHTML = compData[i].label.replace('
+','<br>');
+    if(scoreEl){
+      scoreEl.textContent = compData[i].score;
+      scoreEl.style.color = compData[i].score>=75?'var(--green)':compData[i].score>=55?'var(--amber)':'var(--red)';
+      // define these CSS vars if not present
+    }
+    // free analytical
+    if(i===0 && r.dimensions){
+      var freeP = el.querySelector('.compTeaser');
+      var whyP  = el.querySelector('p');
+      if(whyP && analyticalDim) whyP.innerHTML = '<b>What this shows:</b> ' + esc(analyticalDim.visibleSummary||'');
+      if(freeP && r.fullCycleFirstFix) freeP.innerHTML = '<b>Next step:</b> ' + esc(r.fullCycleFirstFix);
+    } else {
+      // locked comps — update blur text
+      var bwrap = el.querySelector('.blurWrap p');
+      var compKey = ['Analytical','Teamwork','Communication','Leadership','Resilience','Commercial','Technical'][i];
+      var matchComp = r.competencies && r.competencies.find(function(c){ return c.name && c.name.toLowerCase().includes(compKey.toLowerCase()); });
+      if(bwrap && matchComp && matchComp.visibleReason) bwrap.textContent = matchComp.visibleReason;
+    }
+  });
+
+  // ── Section 05 — Next steps ───────────────────────────────────
+  var actions = document.querySelectorAll('.action');
+  // Free action (first)
+  if(actions[0] && r.priorityGaps && r.priorityGaps[0]){
+    var pg0 = r.priorityGaps[0];
+    var ab  = actions[0].querySelector('b');
+    var ap  = actions[0].querySelector('p');
+    if(ab) ab.textContent = pg0.title || '';
+    if(ap) ap.textContent = pg0.visibleRisk || '';
+  }
+  // Locked actions
+  var lockedActions = document.querySelectorAll('.action.lock');
+  if(r.priorityGaps){
+    r.priorityGaps.slice(1).forEach(function(pg, i){
+      if(!lockedActions[i]) return;
+      var lb = lockedActions[i].querySelector('b');
+      var lp = lockedActions[i].querySelector('.lockedTeaser');
+      if(lb) lb.textContent = pg.title || '';
+      if(lp) lp.textContent = pg.visibleRisk || '';
+    });
+  }
+  // Firm-specific locked action label
+  if(bank && lockedActions[3]){
+    var firmLabel = lockedActions[3].querySelector('.actionLabel');
+    if(firmLabel) firmLabel.textContent = bank + ' positioning — Full Cycle';
+  }
+
+  // ── Paywall CTA ──────────────────────────────────────────────
+  var offerIntroP = document.querySelector('.offerIntro p');
+  if(offerIntroP && r.fullCycleCta) offerIntroP.textContent = r.fullCycleCta;
+
+  // ── Page title ───────────────────────────────────────────────
+  document.title = (cname ? cname + ' — ' : '') + 'The Desk Assessment Result';
+
+})();
+</script>
+
 </body>
 </html>
