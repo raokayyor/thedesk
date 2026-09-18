@@ -312,7 +312,13 @@ async function run(){
 
   btn.disabled=true; btn.textContent='Analysing...';
   status.className='status';
+  status.textContent='Running assessment — takes 20–40 seconds...';
   var t=Date.now();
+  var dots=0;
+  var statusTimer=setInterval(function(){
+    var secs=Math.round((Date.now()-t)/1000);
+    status.textContent='Running assessment... '+secs+'s';
+  },1000);
 
   var profile={
     university:document.getElementById('uni').value,
@@ -336,14 +342,19 @@ async function run(){
       fd.append('cvFile',cvFile);
       resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{method:'POST',body:fd});
     } else {
+      var controller=new AbortController();
+      var fetchTimeout=setTimeout(function(){controller.abort();},58000);
       resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({profile,quiz,cv:{fileName:'pasted.txt',text:cvText}})
+        body:JSON.stringify({profile,quiz,cv:{fileName:'pasted.txt',text:cvText}}),
+        signal:controller.signal
       });
+      clearTimeout(fetchTimeout);
     }
 
     data=await resp.json();
+    clearInterval(statusTimer);
     var elapsed=((Date.now()-t)/1000).toFixed(1);
 
     if(data.success && data.result){
@@ -375,8 +386,9 @@ async function run(){
       btn.disabled=false; btn.textContent='Run assessment →';
     }
   } catch(e){
+    clearInterval(statusTimer);
     status.className='status err';
-    status.textContent='Error: '+e.message;
+    status.textContent=e.name==='AbortError'?'Timed out — the assessment took too long. Try again.':'Error: '+e.message;
     btn.disabled=false; btn.textContent='Run assessment →';
   }
 }
