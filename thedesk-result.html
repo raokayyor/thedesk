@@ -3,62 +3,238 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Desk — Application Assessment</title>
+<title>The Desk — Assessment Result</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#f4f1e9;--paper:#fbfaf6;--ink:#101820;--muted:#5d656b;--rule:#d8d3ca;--orange:#ff5a0a;--black:#0d151a;--teal:#3c8b83;--soft:#ece9e3}
-*{box-sizing:border-box}html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}.page{max-width:1180px;margin:0 auto;background:var(--cream)}
-.header{height:66px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:220px 1fr 280px;align-items:center;padding:0 36px}.brand{font-family:'Fraunces',serif;font-size:27px;font-weight:600;line-height:1}.brandSub{font-size:7px;letter-spacing:.19em;text-transform:uppercase;margin-top:5px}.nav{display:flex;justify-content:center;gap:38px}.nav a{font-size:10px;color:var(--ink);text-decoration:none;text-transform:uppercase;letter-spacing:.04em}.proofTop{text-align:right;font-size:8px;line-height:1.5;letter-spacing:.16em;text-transform:uppercase;color:#6b7074}
-.hero{display:grid;grid-template-columns:1.08fr .64fr .9fr;border-bottom:1px solid var(--rule);min-height:270px}.heroCol{padding:35px 32px;border-right:1px solid var(--rule)}.heroCol:last-child{border-right:0}.kicker{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}.candidate{font-family:'Fraunces',serif;font-size:49px;line-height:.98;margin:20px 0 19px;font-weight:500}.role{font-family:'Fraunces',serif;font-size:20px;line-height:1.12;font-weight:500}.bank{font-size:14px;margin-top:4px}.meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:28px;font-size:11px}.meta span{display:flex;gap:7px;align-items:center}.scoreCol{display:flex;align-items:center;justify-content:center}.scoreRing{width:166px;height:166px;border-radius:50%;background:conic-gradient(var(--orange) 0 67%,#dfdad0 67% 100%);display:grid;place-items:center;position:relative}.scoreRing:before{content:"";position:absolute;width:126px;height:126px;border-radius:50%;background:var(--cream)}.scoreInner{position:relative;z-index:1;text-align:center}.scoreInner b{font-family:'Fraunces',serif;font-size:60px;line-height:.9;font-weight:500}.scoreInner span{font-size:18px}.scoreCaption{text-align:center;font-size:8px;letter-spacing:.22em;text-transform:uppercase;margin-top:14px}.verdictTag{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.verdict h2{font-family:'Fraunces',serif;font-size:29px;line-height:1.06;margin:14px 0 12px;font-weight:500}.verdict p{font-size:11.6px;line-height:1.5;color:#424a50;margin:0}.signature{font-family:'Fraunces',serif;font-size:18px;margin-top:16px}.signature small{font-family:'DM Sans',sans-serif;font-size:9px;color:#6e7478;margin-left:6px}
-.cred{display:grid;grid-template-columns:1.2fr 1fr 1fr;background:#efede8;border-bottom:1px solid var(--rule)}.credItem{padding:17px 27px;display:grid;grid-template-columns:32px 1fr;gap:12px;border-right:1px solid var(--rule)}.credItem:last-child{border-right:0}.credIcon{font-size:22px;color:var(--orange)}.credItem b{display:block;font-size:10px;line-height:1.25}.credItem span{font-size:9.5px;line-height:1.35;color:#50575d}
-.middle{display:grid;grid-template-columns:36% 64%}.blackPanel{background:var(--black);color:white;min-height:346px;padding:36px 34px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}.blackPanel:after{content:"";position:absolute;inset:0;background:linear-gradient(130deg,transparent 50%,rgba(255,255,255,.03) 50%)}.blackPanel .mini{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#d7d9da;line-height:1.6}.blackPanel h2{font-family:'Fraunces',serif;font-size:48px;line-height:.98;margin:18px 0 18px;font-weight:500;position:relative;z-index:1}.blackPanel h2 em{font-style:normal;color:var(--orange)}.orangeDash{width:39px;height:3px;background:var(--orange);margin-bottom:14px}.blackPanel .smallLine{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#d7d9da}.overview{padding:0 32px}.overviewRow{display:grid;grid-template-columns:55px 1fr 158px;gap:18px;padding:25px 0;border-bottom:1px solid var(--rule)}.sectionNum{font-family:'Fraunces',serif;font-size:35px;font-weight:600;line-height:1}.overview h3{font-family:'Fraunces',serif;font-size:25px;line-height:1.06;margin:0 0 7px;font-weight:500}.sub{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.overview p{font-size:10.8px;line-height:1.5;color:#515960;margin:14px 0 0}.bottomLine{background:#f7e5d7;padding:16px 16px;align-self:start}.bottomLine .mini{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);font-weight:700}.bottomLine strong{font-family:'Fraunces',serif;display:block;font-size:22px;line-height:1.03;margin-top:14px}.strengthGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px;margin-top:15px}.strength{display:grid;grid-template-columns:18px 1fr;gap:8px}.plus{width:14px;height:14px;border-radius:50%;background:var(--orange);color:white;display:grid;place-items:center;font-size:10px;margin-top:2px}.strength b{font-size:10px}.strength p{font-size:9.5px;line-height:1.35;margin:2px 0 0}.deskNote{background:#ececec;padding:18px}.deskNote .mini{font-size:8px;letter-spacing:.17em;text-transform:uppercase;font-weight:700}.deskNote blockquote{font-family:'Fraunces',serif;font-size:17px;line-height:1.2;font-style:italic;margin:14px 0 0}
-.section{padding:25px 32px;border-top:1px solid var(--rule)}.sectionTitle{display:grid;grid-template-columns:55px 1fr;gap:18px;align-items:start;margin-bottom:15px}.sectionTitle h3{font-family:'Fraunces',serif;font-size:25px;margin:0;font-weight:500}.compGrid{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}.comp{padding:15px 13px 18px;border-right:1px solid var(--rule)}.comp:last-child{border-right:0}.compName{font-family:'Fraunces',serif;font-size:12.5px;line-height:1.12;min-height:29px}.compScore{font-size:22px;color:var(--orange);font-weight:700;margin:11px 0 7px}.comp p{font-size:9.3px;line-height:1.35;color:#535a60;margin:0}.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.action{display:grid;grid-template-columns:31px 1fr 18px;gap:11px;padding:18px 20px;background:#e8f1ef}.action.lock{background:#ece9e5}.actionIcon{width:25px;height:25px;border-radius:50%;background:var(--teal);color:white;display:grid;place-items:center;font-size:12px}.lock .actionIcon{border-radius:4px;background:#707a7d}.actionLabel{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--teal)}.lock .actionLabel{color:#70777b}.action b{display:block;font-size:11px;margin:5px 0 4px}.action p{font-size:9.6px;line-height:1.42;color:#51585d;margin:0}.arrow{font-size:23px;color:var(--orange);align-self:center}
-.offers{background:var(--black);color:white;padding:28px 32px 34px;display:grid;grid-template-columns:1.05fr .88fr .88fr;gap:22px}.offerIntro{padding:9px 20px 8px 0}.offerIntro h2{font-family:'Fraunces',serif;font-size:39px;line-height:1.01;margin:16px 0 15px;font-weight:500}.offerIntro h2 em{font-style:normal;color:var(--orange)}.offerIntro p{font-size:10.5px;line-height:1.5;color:#c7ccd0;max-width:300px}.card{background:#f6f1ea;color:var(--ink);padding:22px 20px;position:relative}.card.dark{background:#101a20;color:white;border:1px solid #5a666d}.badge{position:absolute;top:-10px;left:18px;background:var(--orange);color:white;font-size:8px;letter-spacing:.13em;text-transform:uppercase;padding:5px 10px;font-weight:700}.card h3{font-family:'Fraunces',serif;font-size:23px;line-height:1.05;margin:4px 0 3px}.card .line{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--orange);font-weight:700}.card ul{list-style:none;margin:12px 0 16px;padding:0}.card li{font-size:9.5px;line-height:1.4;margin:5px 0}.card li:before{content:"✓";margin-right:7px}.cta{display:flex;justify-content:space-between;align-items:center;background:var(--orange);color:white;text-decoration:none;font-weight:700;font-size:11px;padding:12px 14px}.dark .cta{background:transparent;border:1px solid #e7eaec}.footer{background:var(--black);border-top:1px solid #2c363d;color:white;display:flex;justify-content:space-between;align-items:center;padding:18px 32px}.footer .brand{font-size:22px}.footer small{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#9ba3a8}
-@media(max-width:900px){.header{grid-template-columns:1fr auto;padding:0 20px}.nav{display:none}.hero{grid-template-columns:1fr}.heroCol{border-right:0;border-bottom:1px solid var(--rule)}.cred{grid-template-columns:1fr}.credItem{border-right:0;border-bottom:1px solid var(--rule)}.middle{grid-template-columns:1fr}.overview{padding:0 20px}.overviewRow{grid-template-columns:45px 1fr}.bottomLine,.deskNote{grid-column:2}.compGrid{grid-template-columns:repeat(2,1fr)}.comp{border-bottom:1px solid var(--rule)}.actions,.offers{grid-template-columns:1fr}.section,.offers{padding-left:20px;padding-right:20px}}
-<style>
-/* Mockup-match refinements */
-.middle{display:block!important}
-.blackPanel{display:none!important}
-.scoreCol{justify-content:center!important}
-.scoreRing{width:auto!important;height:auto!important;border-radius:0!important;background:none!important;display:block!important;position:static!important}
-.scoreRing:before{display:none!important}
-.scoreInner{display:flex!important;align-items:flex-end!important;justify-content:center!important;gap:8px!important}
-.scoreInner b{font-family:'DM Sans',sans-serif!important;font-size:116px!important;line-height:.78!important;font-weight:700!important;letter-spacing:-.075em!important;color:var(--orange)!important}
-.scoreInner span{font-family:'DM Sans',sans-serif!important;font-size:31px!important;line-height:1!important;font-weight:700!important;color:#92979a!important;padding-bottom:8px!important}
-.scoreCaption{font-family:'Fraunces',serif!important;font-size:22px!important;line-height:1!important;letter-spacing:0!important;text-transform:none!important;margin-top:12px!important}
-.fixBand{background:var(--black);color:#fff;margin:0 -32px -25px;padding:22px 32px 24px;display:grid;grid-template-columns:1.05fr repeat(5,1fr);gap:12px;align-items:stretch}
-.fixIntro{padding:6px 20px 6px 0;border-right:1px solid #3a444a}
-.fixIntro .mini{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:700}
-.fixIntro strong{display:block;font-family:'Fraunces',serif;font-size:26px;line-height:1.04;margin-top:10px;font-weight:500}
-.fixTile{border:1px solid #49535a;color:#fff;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 10px;min-height:96px;background:#111b21}
-.fixTile .lockMark{font-size:19px;margin-bottom:8px}
-.fixTile b{font-size:10.5px;line-height:1.25}
-.fixTile span{font-size:8.5px;line-height:1.3;color:#aeb7bd;margin-top:5px}
-.bottomLine,.deskNote{border:1px solid #ead7c7}
-.bottomLine a,.deskNote a{display:inline-block;margin-top:12px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);text-decoration:none}
-@media(max-width:900px){
-  .scoreInner b{font-size:92px!important}
-  .fixBand{grid-template-columns:1fr 1fr;margin-left:-20px;margin-right:-20px}
-  .fixIntro{grid-column:1/-1;border-right:0;border-bottom:1px solid #3a444a;padding-bottom:15px}
+:root{
+  --cream:#f4f1e9;--paper:#fbfaf6;--ink:#101820;--muted:#596168;--rule:#d8d3ca;
+  --orange:#ff5a0a;--black:#0d151a;--teal:#3f8e86;--peach:#f7e5d7;--soft:#eeece7;
 }
-</style></style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#e9e6df;color:var(--ink);font-family:'DM Sans',sans-serif}
+body{padding:0 18px}
+.page{max-width:1120px;margin:0 auto;background:var(--cream);box-shadow:0 0 0 1px rgba(0,0,0,.02)}
+.header{height:58px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:240px 1fr 240px;align-items:center;padding:0 34px}
+.brand{font-family:'Fraunces',serif;font-size:27px;font-weight:600;line-height:1}
+.brandSub{font-size:6.5px;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.nav{display:flex;justify-content:center;gap:34px}
+.nav a{font-size:9px;color:var(--ink);text-decoration:none}
+.proofTop{text-align:right;font-size:7.5px;line-height:1.45;letter-spacing:.15em;text-transform:uppercase;color:#6b7074}
+
+.hero{display:grid;grid-template-columns:31% 28% 41%;min-height:248px;border-bottom:1px solid var(--rule)}
+.heroCol{padding:27px 30px;border-right:1px solid var(--rule)}
+.heroCol:last-child{border-right:0}
+.kicker{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+.candidate{font-family:'Fraunces',serif;font-size:49px;line-height:.96;margin:14px 0 18px;font-weight:500}
+.role{font-family:'Fraunces',serif;font-size:18px;line-height:1.12;font-weight:500}
+.bank{font-size:13px;margin-top:3px}
+.meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;font-size:10px}
+.meta span{display:flex;gap:6px;align-items:center}
+
+.scoreCol{display:flex;align-items:center;justify-content:center;text-align:center}
+.scoreWrap{width:100%}
+.scoreMain{display:flex;align-items:flex-end;justify-content:center;gap:8px}
+.scoreMain b{font-size:134px;line-height:.73;font-weight:700;letter-spacing:-.08em;color:var(--orange)}
+.scoreMain span{font-size:31px;line-height:1;font-weight:700;color:#92979a;padding-bottom:9px}
+.scoreCaption{font-family:'Fraunces',serif;font-size:22px;line-height:1;margin-top:15px}
+
+.verdict{position:relative;overflow:hidden;padding-right:115px}
+.verdict:after{content:"";position:absolute;right:0;top:0;width:98px;height:100%;background:linear-gradient(160deg,#c8cbc8 0 35%,#222a2e 35% 53%,#5e6667 53% 69%,#11191d 69% 100%);opacity:.92}
+.verdictTag{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.verdict h2{font-family:'Fraunces',serif;font-size:27px;line-height:1.05;margin:11px 0 10px;font-weight:500}
+.verdict p{font-size:10.6px;line-height:1.45;color:#424a50;margin:0}
+.signature{font-family:'Fraunces',serif;font-size:17px;margin-top:14px}
+.signature small{font-family:'DM Sans',sans-serif;font-size:8px;color:#6e7478;margin-left:6px}
+
+.cred{display:grid;grid-template-columns:1.2fr 1fr 1fr;background:#efede8;border-bottom:1px solid var(--rule)}
+.credItem{padding:13px 25px;display:grid;grid-template-columns:30px 1fr;gap:11px;border-right:1px solid var(--rule);align-items:center}
+.credItem:last-child{border-right:0}
+.credIcon{font-size:20px}
+.credItem b{display:block;font-size:9.2px;line-height:1.2}
+.credItem span{font-size:8.7px;line-height:1.3;color:#50575d}
+
+.overview{padding:0 34px}
+.row{display:grid;grid-template-columns:54px minmax(0,1fr) 200px;gap:18px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.num{font-family:'Fraunces',serif;font-size:38px;font-weight:600;line-height:.9}
+.row h3,.section h3{font-family:'Fraunces',serif;font-size:26px;line-height:1.04;margin:0 0 5px;font-weight:500}
+.sub{font-size:7.5px;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
+.row p{font-size:10.4px;line-height:1.48;color:#515960;margin:12px 0 0}
+.promoBox{background:var(--peach);border:1px solid #ecd7c7;padding:15px 16px;align-self:start}
+.promoBox .mini{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.promoBox strong{font-family:'Fraunces',serif;display:block;font-size:20px;line-height:1.08;margin-top:12px;font-weight:500}
+.promoBox a{display:inline-block;margin-top:11px;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);text-decoration:none}
+.strengthGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 22px;margin-top:13px}
+.strength{display:grid;grid-template-columns:18px 1fr;gap:8px}
+.plus{width:14px;height:14px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:10px;margin-top:1px}
+.strength b{font-size:9.8px}
+.strength p{font-size:9.1px;line-height:1.33;margin:2px 0 0}
+
+.section{padding:20px 34px 0;border-bottom:1px solid var(--rule)}
+.sectionHead{display:grid;grid-template-columns:54px 1fr;gap:18px;margin-bottom:13px}
+.compGrid{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--rule)}
+.comp{padding:13px 13px 14px;border-right:1px solid var(--rule);min-height:138px}
+.comp:last-child{border-right:0}
+.compName{font-family:'Fraunces',serif;font-size:12px;line-height:1.08;min-height:28px}
+.compScore{font-size:23px;color:var(--orange);font-weight:700;margin:9px 0 6px}
+.comp p{font-size:8.9px;line-height:1.34;color:#535a60;margin:0}
+
+.fixBand{background:var(--black);color:#fff;margin:0 -34px;display:grid;grid-template-columns:1.12fr repeat(5,1fr);gap:10px;padding:18px 34px 20px;align-items:stretch}
+.fixIntro{padding:5px 18px 5px 0;border-right:1px solid #3d474d}
+.fixIntro .mini{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.fixIntro strong{display:block;font-family:'Fraunces',serif;font-size:24px;line-height:1.04;margin-top:8px;font-weight:500}
+.fixTile{border:1px solid #49535a;background:#111b21;color:#fff;text-decoration:none;text-align:center;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:11px 7px}
+.fixTile .lockMark{font-size:17px;margin-bottom:6px}
+.fixTile b{font-size:9.8px;line-height:1.18}
+.fixTile span{font-size:7.5px;line-height:1.25;color:#aeb7bd;margin-top:4px}
+
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:20px}
+.action{display:grid;grid-template-columns:31px 1fr 16px;gap:10px;padding:15px 18px;background:#e8f1ef}
+.action.lock{background:#ece9e5}
+.actionIcon{width:25px;height:25px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12px}
+.lock .actionIcon{border-radius:4px;background:#707a7d}
+.actionLabel{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--teal)}
+.lock .actionLabel{color:#70777b}
+.action b{display:block;font-size:10.4px;margin:4px 0 3px}
+.action p{font-size:8.9px;line-height:1.36;color:#51585d;margin:0}
+.arrow{font-size:21px;color:var(--orange);align-self:center}
+
+.offers{background:var(--black);color:#fff;padding:24px 34px 28px;display:grid;grid-template-columns:1.05fr .88fr .88fr;gap:20px}
+.offerIntro{padding:8px 18px 6px 0}
+.offerIntro h2{font-family:'Fraunces',serif;font-size:35px;line-height:1.01;margin:12px 0 12px;font-weight:500}
+.offerIntro h2 em{font-style:normal;color:var(--orange)}
+.offerIntro p{font-size:9.6px;line-height:1.45;color:#c7ccd0;max-width:285px}
+.card{background:#f6f1ea;color:var(--ink);padding:19px 18px;position:relative}
+.card.dark{background:#101a20;color:#fff;border:1px solid #5a666d}
+.badge{position:absolute;top:-9px;left:16px;background:var(--orange);color:#fff;font-size:7px;letter-spacing:.13em;text-transform:uppercase;padding:4px 9px;font-weight:700}
+.card h3{font-family:'Fraunces',serif;font-size:21px;line-height:1.05;margin:4px 0 3px}
+.card .line{font-size:7.4px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.card ul{list-style:none;margin:10px 0 14px;padding:0}
+.card li{font-size:8.8px;line-height:1.34;margin:4px 0}
+.card li:before{content:"✓";margin-right:6px}
+.cta{display:flex;justify-content:space-between;align-items:center;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;font-size:10px;padding:11px 13px}
+.dark .cta{background:transparent;border:1px solid #e7eaec}
+
+.footer{background:var(--black);border-top:1px solid #2c363d;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 34px}
+.footer .brand{font-size:21px}
+.footer small{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#9ba3a8}
+
+@media(max-width:900px){
+ body{padding:0}.page{max-width:none}.header{grid-template-columns:1fr auto;padding:0 20px}.nav{display:none}
+ .hero{grid-template-columns:1fr}.heroCol{border-right:0;border-bottom:1px solid var(--rule)}.verdict{padding-right:30px}.verdict:after{display:none}
+ .scoreMain b{font-size:105px}.cred{grid-template-columns:1fr}.credItem{border-right:0;border-bottom:1px solid var(--rule)}
+ .overview{padding:0 20px}.row{grid-template-columns:42px 1fr}.promoBox{grid-column:2}.strengthGrid{grid-template-columns:1fr}
+ .section{padding-left:20px;padding-right:20px}.compGrid{grid-template-columns:repeat(2,1fr)}.comp{border-bottom:1px solid var(--rule)}
+ .fixBand{grid-template-columns:1fr 1fr;margin:0 -20px;padding-left:20px;padding-right:20px}.fixIntro{grid-column:1/-1;border-right:0;border-bottom:1px solid #3d474d;padding-bottom:12px}
+ .actions,.offers{grid-template-columns:1fr}.offers{padding-left:20px;padding-right:20px}
+}
+</style>
 </head>
 <body>
 <div class="page">
-<header class="header"><div><div class="brand">The Desk</div><div class="brandSub">Finance careers. Done properly.</div></div><nav class="nav"><a>Assess</a><a>Prepare</a><a>Improve</a><a>Succeed</a></nav><div class="proofTop">Built by finance practitioners<br>for ambitious students.</div></header>
+<header class="header">
+  <div><div class="brand">The Desk</div><div class="brandSub">Finance careers. Done properly.</div></div>
+  <nav class="nav"><a>Assess</a><a>Prepare</a><a>Improve</a><a>Succeed</a></nav>
+  <div class="proofTop">Built by finance practitioners<br>for ambitious students.</div>
+</header>
+
 <section class="hero">
-<div class="heroCol"><div class="kicker">Result of your assessment</div><div class="candidate">Amelia Chen</div><div class="role">Investment Banking Division</div><div class="bank">Barclays</div><div class="meta"><span>◈ Economics (BSc)</span><span>▣ Final year</span><span>⌖ UK</span></div></div>
-<div class="heroCol scoreCol"><div><div class="scoreRing"><div class="scoreInner"><b>67</b><span>/100</span></div></div><div class="scoreCaption">Application readiness</div></div></div>
-<div class="heroCol verdict"><div class="verdictTag">Recruiter verdict</div><h2>“A strong foundation with clear potential.”</h2><p>You show relevant experience, solid technical exposure and credible commercial interest. With some focused improvements, you can be highly competitive for IBD roles.</p><div class="signature">The Desk <small>Recruiter view</small></div></div>
+  <div class="heroCol">
+    <div class="kicker">Result of your assessment</div>
+    <div class="candidate">Amelia Chen</div>
+    <div class="role">Investment Banking Division</div>
+    <div class="bank">Barclays</div>
+    <div class="meta"><span>◈ Economics (BSc)</span><span>▣ Final year</span><span>⌖ UK</span></div>
+  </div>
+  <div class="heroCol scoreCol">
+    <div class="scoreWrap">
+      <div class="scoreMain"><b>67</b><span>/100</span></div>
+      <div class="scoreCaption">Application readiness</div>
+    </div>
+  </div>
+  <div class="heroCol verdict">
+    <div class="verdictTag">Recruiter verdict</div>
+    <h2>“A strong foundation with clear potential.”</h2>
+    <p>You show relevant experience, solid technical exposure and credible commercial interest. With some focused improvements, you can be highly competitive for IBD roles.</p>
+    <div class="signature">The Desk <small>Recruiter view</small></div>
+  </div>
 </section>
-<section class="cred"><div class="credItem"><div class="credIcon">◎</div><div><b>Built by finance practitioners with 40+ years’ combined experience</b><span>Across investment banking, markets and asset management.</span></div></div><div class="credItem"><div class="credIcon">⌂</div><div><b>Former roles across global banks</b><span>Institutional markets and real-world finance experience.</span></div></div><div class="credItem"><div class="credIcon">⌁</div><div><b>Real-world insight.</b><span>Practical advice. Better outcomes.</span></div></div></section>
-<section class="middle"><aside class="blackPanel"><div class="mini">From potential<br>to opportunity.</div><h2>A stronger<br>application<br>builds a<br><em>brighter future.</em></h2><div class="orangeDash"></div><div class="smallLine">Expert insight. Real progress.</div></aside><div class="overview">
-<div class="overviewRow"><div class="sectionNum">01</div><div><h3>How competitive is your application?</h3><div class="sub">You’re in a good position, but there are clear areas to strengthen.</div><p>Your experience, degree and technical exposure give you a credible platform for IBD applications. You’re likely to be considered seriously, but you’ll need to tighten your evidence, demonstrate more impact and strengthen a few key areas to stand out.</p></div><div class="bottomLine"><div class="mini">What Full Cycle answers</div><strong>Why you scored 67 — and exactly what moves it higher.</strong><a href="/fullcycle.html">Unlock the full analysis →</a></div></div>
-<div class="overviewRow"><div class="sectionNum">02</div><div><h3>What’s working well?</h3><div class="sub">Real strengths we can see in your application.</div><div class="strengthGrid"><div class="strength"><div class="plus">+</div><div><b>Relevant experience</b><p>Redcliffe and Tesco give you exposure to financial analysis, client work and commercial environments.</p></div></div><div class="strength"><div class="plus">+</div><div><b>Strong academic background</b><p>Solid degree with relevant modules in Corporate Finance, Financial Accounting and Investment Analysis.</p></div></div><div class="strength"><div class="plus">+</div><div><b>Technical exposure</b><p>Your LVMH valuation project shows genuine interest and initiative in applying finance concepts.</p></div></div><div class="strength"><div class="plus">+</div><div><b>Broader profile</b><p>Mandarin, societies and extracurriculars show well-rounded interests and commitment.</p></div></div></div></div><div class="deskNote"><div class="mini">Locked in Full Cycle</div><blockquote>“Which Redcliffe bullets should change? Which evidence should lead? Which stories should you use for Barclays?”</blockquote><a href="/fullcycle.html">See the detailed fixes →</a></div></div>
-</div></section>
-<section class="section"><div class="sectionTitle"><div class="sectionNum">03</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work.</div></div></div><div class="compGrid"><div class="comp"><div class="compName">Analytical<br>ability</div><div class="compScore">76</div><p>Strong technical exposure, but show more of your judgement.</p></div><div class="comp"><div class="compName">Teamwork</div><div class="compScore">68</div><p>Evidence is there, but could be clearer and more specific.</p></div><div class="comp"><div class="compName">Communication</div><div class="compScore">62</div><p>Solid examples, but needs more structure and impact.</p></div><div class="comp"><div class="compName">Leadership</div><div class="compScore">58</div><p>Some evidence, but limited depth or progression.</p></div><div class="comp"><div class="compName">Resilience</div><div class="compScore">64</div><p>Examples are present, but could be stronger and more personal.</p></div><div class="comp"><div class="compName">Commercial<br>awareness</div><div class="compScore">61</div><p>Good interest, but need to show deeper insight.</p></div><div class="comp"><div class="compName">Technical<br>readiness</div><div class="compScore">66</div><p>Relevant exposure, but more depth needed for interview stage.</p></div></div></section>
-<section class="section"><div class="sectionTitle"><div class="sectionNum">04</div><div><h3>What should you do next?</h3><div class="sub">One key action you can take now. Then unlock your full plan.</div></div></div><div class="actions"><div class="action"><div class="actionIcon">✓</div><div><div class="actionLabel">Do this now (free)</div><b>Strengthen the impact in your strongest analytical bullet.</b><p>Make the conclusion or commercial implication explicit, not just the task and method. This will immediately make your application stronger.</p></div><div class="arrow">›</div></div><div class="action lock"><div class="actionIcon">▣</div><div><div class="actionLabel">Full Cycle unlocks the detail</div><b>Get the exact rewrites, examples and frameworks.</b><p>We’ve identified three Redcliffe bullets, two LVMH bullets and your education section as priorities. See the rewritten versions and why we changed each one.</p></div><div class="arrow">›</div></div></div></section>
-<section class="offers"><div class="offerIntro"><div class="kicker">Take the next step</div><h2>Your application already has potential.<br>Now make it <em>work harder.</em></h2><div class="orangeDash"></div><p>Full Cycle gives you the tools, training and guidance to go from a competitive application to interview-ready.</p></div><article class="card"><div class="badge">Most popular</div><h3>Full Cycle</h3><div class="line">Complete preparation · £79</div><ul><li>Full personalised application review</li><li>Exact CV rewrites and module positioning</li><li>100s of numerical tests and technical guides</li><li>Bank-specific guides</li><li>Commercial-awareness training</li><li>Weekly markets briefing</li><li>Interview questions and model answers</li></ul><a class="cta" href="/fullcycle.html"><span>Unlock Full Cycle — £79</span><span>→</span></a></article><article class="card dark"><h3>Work directly with<br>a finance practitioner</h3><div class="line">1:1 support throughout the process · £3,000</div><ul><li>Everything in Full Cycle</li><li>Direct application review and live feedback</li><li>CV and cover letter working sessions</li><li>Mock interviews and tailored feedback</li><li>Ongoing support through the recruiting cycle</li><li>Limited intake each year</li></ul><a class="cta" href="/mentor.html"><span>Apply for 1:1 — £3,000</span><span>→</span></a></article></section>
+
+<section class="cred">
+  <div class="credItem"><div class="credIcon">◎</div><div><b>Built by finance practitioners with 40+ years’ combined experience</b><span>Across investment banking, markets and asset management.</span></div></div>
+  <div class="credItem"><div class="credIcon">⌂</div><div><b>Former roles across global banks</b><span>Institutional markets and real-world finance experience.</span></div></div>
+  <div class="credItem"><div class="credIcon">⌁</div><div><b>Real-world insight.</b><span>Practical advice. Better outcomes.</span></div></div>
+</section>
+
+<section class="overview">
+  <div class="row">
+    <div class="num">01</div>
+    <div>
+      <h3>How competitive is your application?</h3>
+      <div class="sub">You’re in a good position, but there are clear areas to strengthen.</div>
+      <p>Your experience, degree and technical exposure give you a credible platform for IBD applications. You’re likely to be considered seriously, but you’ll need to tighten your evidence, demonstrate more impact and strengthen a few key areas to stand out.</p>
+    </div>
+    <div class="promoBox">
+      <div class="mini">What Full Cycle answers</div>
+      <strong>Why you scored 67 — and exactly what moves it higher.</strong>
+      <a href="/fullcycle.html">Unlock the full analysis →</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="num">02</div>
+    <div>
+      <h3>What’s working well?</h3>
+      <div class="sub">Real strengths we can see in your application.</div>
+      <div class="strengthGrid">
+        <div class="strength"><div class="plus">+</div><div><b>Relevant experience</b><p>Redcliffe and Tesco give you exposure to financial analysis, client work and commercial environments.</p></div></div>
+        <div class="strength"><div class="plus">+</div><div><b>Strong academic background</b><p>Solid degree with relevant modules in Corporate Finance, Financial Accounting and Investment Analysis.</p></div></div>
+        <div class="strength"><div class="plus">+</div><div><b>Technical exposure</b><p>Your LVMH valuation project shows genuine interest and initiative in applying finance concepts.</p></div></div>
+        <div class="strength"><div class="plus">+</div><div><b>Broader profile</b><p>Mandarin, societies and extracurriculars show well-rounded interests and commitment.</p></div></div>
+      </div>
+    </div>
+    <div class="promoBox">
+      <div class="mini">Locked in Full Cycle</div>
+      <strong>Which evidence should lead — and what should be rewritten?</strong>
+      <a href="/fullcycle.html">See the detailed fixes →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div class="num">03</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work.</div></div></div>
+  <div class="compGrid">
+    <div class="comp"><div class="compName">Analytical<br>ability</div><div class="compScore">76</div><p>Strong technical exposure, but show more of your judgement.</p></div>
+    <div class="comp"><div class="compName">Teamwork</div><div class="compScore">68</div><p>Evidence is there, but could be clearer and more specific.</p></div>
+    <div class="comp"><div class="compName">Communication</div><div class="compScore">62</div><p>Solid examples, but needs more structure and impact.</p></div>
+    <div class="comp"><div class="compName">Leadership</div><div class="compScore">58</div><p>Some evidence, but limited depth or progression.</p></div>
+    <div class="comp"><div class="compName">Resilience</div><div class="compScore">64</div><p>Examples are present, but could be stronger and more personal.</p></div>
+    <div class="comp"><div class="compName">Commercial<br>awareness</div><div class="compScore">61</div><p>Good interest, but need to show deeper insight.</p></div>
+    <div class="comp"><div class="compName">Technical<br>readiness</div><div class="compScore">66</div><p>Relevant exposure, but more depth needed for interview stage.</p></div>
+  </div>
+  <div class="fixBand">
+    <div class="fixIntro"><div class="mini">Unlock the fix</div><strong>Turn the scores above into a targeted preparation plan.</strong></div>
+    <a class="fixTile" href="/fullcycle.html"><div class="lockMark">🔒</div><b>Exact CV rewrites</b><span>Fix weak evidence and passive bullets</span></a>
+    <a class="fixTile" href="/fullcycle.html"><div class="lockMark">🔒</div><b>Leadership evidence</b><span>Build stronger ownership examples</span></a>
+    <a class="fixTile" href="/fullcycle.html"><div class="lockMark">🔒</div><b>Commercial plan</b><span>Weekly markets + question practice</span></a>
+    <a class="fixTile" href="/fullcycle.html"><div class="lockMark">🔒</div><b>Technical guides</b><span>DCF, comps, accounting and valuation</span></a>
+    <a class="fixTile" href="/fullcycle.html"><div class="lockMark">🔒</div><b>Interview frameworks</b><span>Turn your evidence into stronger answers</span></a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div class="num">04</div><div><h3>What should you do next?</h3><div class="sub">One key action you can take now. Then unlock your full plan.</div></div></div>
+  <div class="actions">
+    <div class="action"><div class="actionIcon">✓</div><div><div class="actionLabel">Do this now (free)</div><b>Strengthen the impact in your strongest analytical bullet.</b><p>Make the conclusion or commercial implication explicit, not just the task and method.</p></div><div class="arrow">›</div></div>
+    <div class="action lock"><div class="actionIcon">▣</div><div><div class="actionLabel">Full Cycle unlocks the detail</div><b>Get the exact rewrites, examples and frameworks.</b><p>We’ve identified three Redcliffe bullets, two LVMH bullets and your education section as priorities.</p></div><div class="arrow">›</div></div>
+  </div>
+</section>
+
+<section class="offers">
+  <div class="offerIntro"><div class="kicker">Take the next step</div><h2>Your application has real potential.<br>Now make it <em>work harder.</em></h2><p>Full Cycle gives you the tools, training and guidance to go from a competitive application to interview-ready.</p></div>
+  <article class="card"><div class="badge">Most popular</div><h3>Full Cycle</h3><div class="line">Complete preparation · £79</div><ul><li>Full personalised application review</li><li>Exact CV rewrites and module positioning</li><li>100s of numerical tests and technical guides</li><li>Bank-specific guides</li><li>Commercial-awareness training</li><li>Weekly markets briefing</li><li>Interview questions and model answers</li></ul><a class="cta" href="/fullcycle.html"><span>Unlock Full Cycle — £79</span><span>→</span></a></article>
+  <article class="card dark"><h3>Work directly with<br>a finance practitioner</h3><div class="line">1:1 support throughout the process · £3,000</div><ul><li>Everything in Full Cycle</li><li>Direct application review and live feedback</li><li>CV and cover letter working sessions</li><li>Mock interviews and tailored feedback</li><li>Ongoing support through the recruiting cycle</li><li>Limited intake each year</li></ul><a class="cta" href="/mentor.html"><span>Apply for 1:1 — £3,000</span><span>→</span></a></article>
+</section>
+
 <footer class="footer"><div class="brand">The Desk</div><small>Finance careers. Done properly.</small></footer>
 </div>
 </body>
