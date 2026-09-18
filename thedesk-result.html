@@ -43,15 +43,15 @@ body{padding:0 18px}
 .riskWarning{font-family:'Fraunces',serif;font-size:30px;line-height:1.01;margin:9px 0 8px;font-weight:500}
 .riskWarning em{font-style:normal;color:var(--orange)}
 .riskWarning span{display:inline-block;margin-top:5px;font-size:22px;color:#fff}
-.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 16px}.scoreBands div{border-top:2px solid #3a454b;padding:10px 8px 8px}.scoreBands span{display:block;font-size:12px;font-weight:700;color:#9da7ad}.scoreBands b{display:block;font-size:12px;margin-top:3px;line-height:1.1}.scoreBands .current{border-top:4px solid var(--orange);background:#1a242a}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
-.riskCompare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.riskMetric{border-top:1px solid #344047;padding-top:8px}
-.riskMetricTop{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-.riskMetricTop span{font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:#aeb7bd}
-.riskMetricTop b{font-size:25px;line-height:1;color:var(--orange)}
-.riskBar{height:6px;background:#313b41;margin:7px 0 6px;overflow:hidden}
-.riskBar i{display:block;height:100%;background:var(--orange)}
-.riskMetric small{font-size:8.6px;line-height:1.3;color:#9da7ad}.riskAlert{margin-top:14px;padding-top:14px;border-top:1px solid #39444a;font-family:'Fraunces',serif;font-size:23px;line-height:1.08;font-weight:500;letter-spacing:0;color:#f06a3c}
+.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 22px}.scoreBands div{border-top:3px solid #3a454b;padding:14px 12px 12px;min-height:92px;display:flex;flex-direction:column;justify-content:center}.scoreBands span{display:block;font-size:18px;line-height:1;font-weight:700;color:#9da7ad}.scoreBands b{display:block;font-family:'Fraunces',serif;font-size:18px;margin-top:7px;line-height:1.05;font-weight:500}.scoreBands .current{border-top:5px solid var(--orange);background:#1a242a}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
+
+
+
+
+
+
+
+.riskAlert{margin-top:14px;padding-top:14px;border-top:1px solid #39444a;font-family:'Fraunces',serif;font-size:23px;line-height:1.08;font-weight:500;letter-spacing:0;color:#f06a3c}
 
 
 
@@ -199,11 +199,8 @@ body{padding:0 18px}
       <div class="current"><span>65–74</span><b>Borderline</b></div>
       <div><span>&lt;65</span><b>Weak</b></div>
     </div>
-    <div class="riskCompare">
-      <div class="riskMetric"><div class="riskMetricTop"><span>Application readiness</span><b>67</b></div><div class="riskBar"><i style="width:67%"></i></div><small>Credible, but still carrying visible gaps</small></div>
-      <div class="riskMetric"><div class="riskMetricTop"><span>Test readiness</span><b>60</b></div><div class="riskBar"><i style="width:60%"></i></div><small>Numerical + commercial / technical</small></div>
-    </div>
-    <div class="riskAlert">This is not a score to feel safe about.</div>
+
+    <div class="riskAlert">This is not a score to feel safe about</div>
   </div>
 </section>
 
