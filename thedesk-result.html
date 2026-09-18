@@ -38,13 +38,26 @@ body{padding:0 18px}
 .scoreMain span{font-size:31px;line-height:1;font-weight:700;color:#92979a;padding-bottom:9px}
 .scoreCaption{font-family:'Fraunces',serif;font-size:22px;line-height:1;margin-top:15px}
 
-.verdict{position:relative;overflow:hidden;padding-right:115px}
-.verdict:after{content:"";position:absolute;right:0;top:0;width:98px;height:100%;background:linear-gradient(160deg,#c8cbc8 0 35%,#222a2e 35% 53%,#5e6667 53% 69%,#11191d 69% 100%);opacity:.92}
-.verdictTag{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-.verdict h2{font-family:'Fraunces',serif;font-size:27px;line-height:1.05;margin:11px 0 10px;font-weight:500}
-.verdict p{font-size:10.6px;line-height:1.45;color:#424a50;margin:0}
-.signature{font-family:'Fraunces',serif;font-size:17px;margin-top:14px}
-.signature small{font-family:'DM Sans',sans-serif;font-size:8px;color:#6e7478;margin-left:6px}
+.riskPanel{background:#11191d;color:#fff;padding:24px 26px!important}
+.riskTag{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+.riskPanel h2{font-family:'Fraunces',serif;font-size:24px;line-height:1.02;margin:9px 0 14px;font-weight:500}
+.riskCompare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:13px}
+.riskMetric{border-top:1px solid #344047;padding-top:8px}
+.riskMetricTop{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.riskMetricTop span{font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#aeb7bd}
+.riskMetricTop b{font-size:23px;line-height:1;color:var(--orange)}
+.riskBar{height:5px;background:#313b41;margin:7px 0 5px;overflow:hidden}
+.riskBar i{display:block;height:100%;background:var(--orange)}
+.riskMetric small{font-size:7.5px;color:#9da7ad}
+.riskGap{border:1px solid #465159;padding:10px 11px;margin:12px 0 10px;background:#151f25}
+.riskGapLabel{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:4px}
+.riskGap strong{font-family:'Fraunces',serif;font-size:15px;line-height:1.15;font-weight:500}
+.probeList{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.probeList>div{background:#1a242a;padding:8px 9px}
+.probeList b{display:block;font-size:8.7px}
+.probeList span{display:block;font-size:7.4px;line-height:1.3;color:#9da7ad;margin-top:2px}
+.riskPunch{font-size:9.2px;line-height:1.35;color:#d9dde0;margin-top:11px}
+.riskPunch b{color:#fff}
 
 .overview{padding:0 34px}
 .row{display:grid;grid-template-columns:54px minmax(0,1fr) 200px;gap:18px;padding:22px 0;border-bottom:1px solid var(--rule)}
@@ -176,11 +189,19 @@ body{padding:0 18px}
       <div class="scoreCaption">Application readiness</div>
     </div>
   </div>
-  <div class="heroCol verdict">
-    <div class="verdictTag">Recruiter verdict</div>
-    <h2>“Competitive, but not yet differentiated.”</h2>
-    <p>I would keep reading. The profile is credible — Redcliffe Partners gives you genuine transaction exposure, and the LVMH valuation project gives you something technical to defend. The issue is positioning. The CV currently makes you look more junior than your experience probably is, and the test results suggest you are not yet fully interview-safe.</p>
-    <div class="signature">The Desk <small>Recruiter view</small></div>
+  <div class="heroCol riskPanel">
+    <div class="riskTag">Your application risk</div>
+    <h2>Strong enough to get questioned.<br>Not yet strong enough to feel comfortable answering.</h2>
+    <div class="riskCompare">
+      <div class="riskMetric"><div class="riskMetricTop"><span>CV strength</span><b>67</b></div><div class="riskBar"><i style="width:67%"></i></div><small>Credible profile</small></div>
+      <div class="riskMetric"><div class="riskMetricTop"><span>Interview readiness</span><b>60</b></div><div class="riskBar"><i style="width:60%"></i></div><small>Numerical + technical</small></div>
+    </div>
+    <div class="riskGap"><div class="riskGapLabel">Risk gap</div><strong>Your strongest CV evidence is also the evidence most likely to be tested.</strong></div>
+    <div class="probeList">
+      <div><b>Redcliffe</b><span>Comps · valuation multiples · M&amp;A rationale</span></div>
+      <div><b>LVMH</b><span>DCF · peer selection · assumptions</span></div>
+    </div>
+    <div class="riskPunch">Your CV could get you into the interview.<br><b>The same CV may become the focus of the toughest follow-up questions.</b></div>
   </div>
 </section>
 
