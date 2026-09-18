@@ -366,20 +366,22 @@ body{padding:0 18px}
 
   // ── read sessionStorage ──────────────────────────────────────
   var raw;
-  try { raw = sessionStorage.getItem('tdesk_r'); } catch(e){}
-  if(!raw) return; // no data — leave static demo in place
+  try { raw = sessionStorage.getItem('tdesk_r'); } catch(e){ console.warn('sessionStorage error',e); }
+  console.log('tdesk_r raw:', raw ? raw.substring(0,100)+'...' : 'EMPTY');
+  if(!raw){ console.log('No data — showing demo'); return; }
 
   var d;
   try { d = JSON.parse(raw); } catch(e){ return; }
   var r = d.result;
-  if(!r || !r.overallScore) return;
+  if(!r){ console.warn('No result object in tdesk_r'); return; }
+  if(!r.overallScore){ console.warn('No overallScore in result:', r); return; }
 
   // ── HERO — candidate details ─────────────────────────────────
-  var cname = r.candidateName || d.profile && d.profile.name || '';
-  if(cname){
-    var el = document.querySelector('.candidate');
-    if(el) el.textContent = cname;
-  }
+  // Name — rapid.html doesn't send name, use firm+course as identifier
+  var cname = r.candidateName || (d.profile && d.profile.name) || '';
+  var el = document.querySelector('.candidate');
+  if(el && cname) el.textContent = cname;
+  else if(el && !cname) el.textContent = 'Your Result'; // generic fallback
   var role = d.div || d.profile && d.profile.targetDivision || '';
   var roleEl = document.querySelector('.role');
   if(roleEl && role) roleEl.textContent = role;
