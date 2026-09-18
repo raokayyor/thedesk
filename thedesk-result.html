@@ -43,7 +43,7 @@ body{padding:0 18px}
 .riskWarning{font-family:'Fraunces',serif;font-size:30px;line-height:1.01;margin:9px 0 8px;font-weight:500}
 .riskWarning em{font-style:normal;color:var(--orange)}
 .riskWarning span{display:inline-block;margin-top:5px;font-size:22px;color:#fff}
-.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 14px}.scoreBands div{border-top:1px solid #3a454b;padding-top:7px}.scoreBands span{display:block;font-size:8px;color:#9da7ad}.scoreBands b{display:block;font-size:9.4px;margin-top:2px}.scoreBands .current{border-top:2px solid var(--orange)}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
+.riskContext{font-size:10.2px;line-height:1.42;color:#c4cbd0;margin:0 0 12px}.scoreBands{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 16px}.scoreBands div{border-top:2px solid #3a454b;padding:10px 8px 8px}.scoreBands span{display:block;font-size:12px;font-weight:700;color:#9da7ad}.scoreBands b{display:block;font-size:12px;margin-top:3px;line-height:1.1}.scoreBands .current{border-top:4px solid var(--orange);background:#1a242a}.scoreBands .current span,.scoreBands .current b{color:var(--orange)}
 .riskCompare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .riskMetric{border-top:1px solid #344047;padding-top:8px}
 .riskMetricTop{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
@@ -51,14 +51,14 @@ body{padding:0 18px}
 .riskMetricTop b{font-size:25px;line-height:1;color:var(--orange)}
 .riskBar{height:6px;background:#313b41;margin:7px 0 6px;overflow:hidden}
 .riskBar i{display:block;height:100%;background:var(--orange)}
-.riskMetric small{font-size:8.6px;line-height:1.3;color:#9da7ad}
-.riskStatement{font-family:'Fraunces',serif;font-size:17px;line-height:1.15;margin:8px 0 10px;color:#fff}
-.probeList{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.probeList>div{background:#1a242a;padding:10px 11px}
-.probeList b{display:block;font-size:10px}
-.probeList span{display:block;font-size:9px;line-height:1.35;color:#b4bcc1;margin-top:3px}
-.riskPunch{font-family:'Fraunces',serif;font-size:22px;line-height:1.05;color:#fff;margin-top:13px;padding-top:12px;border-top:1px solid #39444a}
-.riskPunch b{color:#fff;font-weight:500}.riskSource{font-size:6.8px;line-height:1.35;color:#727d83;margin-top:8px}
+.riskMetric small{font-size:8.6px;line-height:1.3;color:#9da7ad}.riskAlert{margin-top:14px;padding-top:14px;border-top:1px solid #39444a;font-size:20px;line-height:1.08;font-weight:800;letter-spacing:.03em;color:#ff4b3e}
+
+
+
+
+
+
+
 
 .overview{padding:0 34px}
 .row{display:grid;grid-template-columns:54px minmax(0,1fr) 200px;gap:18px;padding:22px 0;border-bottom:1px solid var(--rule)}
@@ -192,7 +192,7 @@ body{padding:0 18px}
   </div>
   <div class="heroCol riskPanel">
     <div class="riskTag">Your application risk</div>
-    <div class="riskWarning"><em>67/100 = Borderline.</em><br><span>This is not a score to feel safe about.</span></div>
+    <div class="riskWarning"><em>67/100 = Borderline.</em></div>
     <p class="riskContext">On The Desk scale, 75+ is where an application starts to look genuinely competitive. 65–74 is borderline: there is enough here to stay in contention, but not enough to feel safe. Below 65, the weaknesses are likely to outweigh the strengths.</p>
     <div class="scoreBands">
       <div><span>75+</span><b>Competitive</b></div>
@@ -203,12 +203,7 @@ body{padding:0 18px}
       <div class="riskMetric"><div class="riskMetricTop"><span>Application readiness</span><b>67</b></div><div class="riskBar"><i style="width:67%"></i></div><small>Credible, but still carrying visible gaps</small></div>
       <div class="riskMetric"><div class="riskMetricTop"><span>Test readiness</span><b>60</b></div><div class="riskBar"><i style="width:60%"></i></div><small>Numerical + commercial / technical</small></div>
     </div>
-    <div class="riskStatement">Your strongest CV evidence is also the evidence most likely to be tested.</div>
-    <div class="probeList">
-      <div><b>Redcliffe</b><span>Expect questions on comps, valuation multiples and M&amp;A rationale.</span></div>
-      <div><b>LVMH</b><span>Expect questions on DCF, peer selection, assumptions and valuation judgement.</span></div>
-    </div>
-    <div class="riskPunch"><b>Your CV may become the focus of the toughest follow-up questions.</b></div><div class="riskSource">Competition context: Goldman Sachs reported a sub-1% summer internship selection rate in 2025; JPMorgan reportedly received 630,000 applications for 4,100 internships in 2025. Firmwide figures, not Barclays IBD-specific.</div>
+    <div class="riskAlert">THIS IS NOT A SCORE TO FEEL SAFE ABOUT.</div>
   </div>
 </section>
 
