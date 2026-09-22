@@ -595,13 +595,13 @@ function buildPageFallback(profile, quiz, result) {
       context:words(result.killerSentence || result.diagnostic || "", 28)
     },
     summary:{
-      strapline:words(ps.strapline || result.beingMisreadAs || result.archetype || band, 14),
+      strapline:words(ps.strapline || result.beingMisreadAs || result.archetype || band, 12),
       paragraphs:[
-        sentences(ps.paragraph1 || result.diagnostic || "", 2, 65),
-        sentences(ps.paragraph2 || result.uncomfortableTruth || "", 2, 60),
-        sentences(ps.paragraph3 || result.recruiterMayMiss || "", 2, 40)
+        sentences(ps.paragraph1 || result.diagnostic || "", 2, 50),
+        sentences(ps.paragraph2 || result.uncomfortableTruth || "", 2, 45),
+        sentences(ps.paragraph3 || result.recruiterMayMiss || "", 1, 28)
       ].filter(Boolean),
-      paywallTeaser:words(ps.paywallTeaser || result.fullCycleCta || "", 32)
+      paywallTeaser:words(ps.paywallTeaser || result.fullCycleCta || "", 22)
     },
     strengths,
     tests:{
@@ -960,12 +960,36 @@ DISPLAY LENGTH CONTRACT — THIS IS PART OF THE PRODUCT, NOT OPTIONAL:
 - fullCycleFirstFix: 25-40 words
 - each dimension visibleSummary: 16-28 words
 - each competency visibleReason: 18-32 words
-- pageSummary paragraph1: 45-65 words
-- pageSummary paragraph2: 40-60 words
-- pageSummary paragraph3: 25-40 words
+- pageSummary strapline: 6-12 words
+- pageSummary paragraph1: 35-50 words
+- pageSummary paragraph2: 30-45 words
+- pageSummary paragraph3: 18-28 words
+- pageSummary paywallTeaser: 12-22 words
 - each strength body: 28-42 words
 - freeAction detail: 28-45 words
 - each lockedAction teaser: 22-38 words
+
+SECTION 01 STANDARDISATION — "HOW COMPETITIVE IS YOUR APPLICATION?"
+This section is an EXECUTIVE SUMMARY, not the full diagnosis.
+It must contain only:
+1. what the overall score/band means;
+2. a high-level summary of the application;
+3. exactly ONE personal/named CV detail;
+4. the single broad area holding the application back;
+5. a short bridge to Full Cycle.
+
+Do NOT put any of the following in Section 01:
+- more than one named CV item;
+- exact CV rewrites or wording advice;
+- detailed module positioning;
+- lists of technical topics;
+- specific interview questions or follow-up probes;
+- detailed numerical weak-topic analysis;
+- multiple competency diagnoses;
+- more than one proposed fix.
+
+Those belong in Sections 02-05 or Full Cycle.
+
 Do not fill space. Do not exceed these ranges. Prefer one precise named example over multiple generic examples.
 
 CANDIDATE CV TEXT:
@@ -994,11 +1018,11 @@ QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) 
 "fullCycleFirstFix":"[Direction of first repair area — 1-2 sentences naming CV items. Do not give the actual rewrite or fix language.]",
 "lockedFixPreview":"[What sits inside Full Cycle — creates curiosity. Must feel specific. Must NOT reveal the fix. E.g.: Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story.]",
 "pageSummary":{
- "strapline":"[8-14 words. One sharp judgement, not a paragraph.]",
- "paragraph1":"[45-65 words. Overall competitive read using 1-2 named CV items. Explain what is genuinely helping.]",
- "paragraph2":"[40-60 words. Biggest mismatch or risk, including tests where relevant. No repair plan.]",
- "paragraph3":"[25-40 words. What needs attention next, without giving away the full repair.]",
- "paywallTeaser":"[18-30 words. Specific statement of what Full Cycle would answer.]"
+ "strapline":"[6-12 words. Plain-English overall verdict. No named CV detail here.]",
+ "paragraph1":"[35-50 words. Executive summary of the APPLICATION and what the overall score means on The Desk scale. Say whether the profile is competitive, borderline or weak and why at a high level. Do not give fixes.]",
+ "paragraph2":"[30-45 words. Mention EXACTLY ONE named CV detail that makes this candidate feel personally read. Use it as an example of the strongest signal or the main tension. Do not mention multiple CV examples.]",
+ "paragraph3":"[18-28 words. State the single biggest area holding the application back in broad terms. No exact repair, no detailed technical topics, no bullet rewrites, no interview-question specifics.]",
+ "paywallTeaser":"[12-22 words. Say that Full Cycle shows the detailed repair, without revealing it.]"
 },
 "strengths":[
  {"title":"[3-7 words, ideally includes a named CV item]","body":"[28-42 words. Explain exactly why this evidence helps. No generic praise.]"},
