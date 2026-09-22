@@ -346,11 +346,85 @@ body{padding:0 18px}
     p = r && r.page;
   } catch(e) {}
 
-  if (!r || typeof r.overallScore !== 'number' || !p) {
+  if (!r || typeof r.overallScore !== 'number') {
     try { sessionStorage.removeItem('tdesk_r'); } catch(e) {}
     if (demo) return;
     window.location.replace('/assessment-start.html?refresh=1');
     return;
+  }
+
+  // Backward-compatible adapter: if the API returned the valid assessment
+  // in the older shape, build the page contract here instead of throwing
+  // the user back to the start page.
+  if (!p) {
+    var dims = Array.isArray(r.dimensions) ? r.dimensions : [];
+    var comps = Array.isArray(r.competencies) ? r.competencies : [];
+    function dim(name){ return dims.find(function(x){ return x && x.name===name; }) || {}; }
+    function comp(name){ return comps.find(function(x){ return x && x.name===name; }) || {}; }
+    function compScore(status){
+      var s=String(status||'').toLowerCase();
+      if(s.indexOf('strong')>-1) return 84;
+      if(s.indexOf('partially')>-1) return 62;
+      if(s.indexOf('not yet')>-1) return 44;
+      if(s.indexOf('evidenced')>-1) return 74;
+      return 58;
+    }
+    var oldScore=Math.round(Number(r.overallScore||0));
+    var oldBand=oldScore>=75?'Competitive':oldScore>=65?'Borderline':'Weak';
+    var named=Array.isArray(r.namedCvDetails)?r.namedCvDetails:[];
+    var top=dims.slice().sort(function(a,b){return Number(b.score||0)-Number(a.score||0);}).slice(0,4);
+    while(top.length<4) top.push({name:named[top.length]||'Relevant evidence',visibleSummary:'Relevant evidence is present, but it needs sharper positioning.'});
+    var defs=[
+      ['Analytical ability','Analytical','Academic Signal'],
+      ['Teamwork','Teamwork',null],
+      ['Communication','Communication',null],
+      ['Leadership','Leadership',null],
+      ['Resilience','Resilience',null],
+      ['Commercial awareness','Commercial','Commercial Awareness'],
+      ['Technical readiness','Technical','Technical Readiness']
+    ];
+    p={
+      candidateName:r.candidateName || (d.profile&&d.profile.name) || d.name || '',
+      overallScore:oldScore,
+      band:oldBand,
+      risk:{
+        headline:oldScore+'/100 = '+oldBand,
+        warning:oldBand==='Borderline'?'This is not a score to feel safe about':oldBand==='Competitive'?'Competitive does not mean safe':'This application needs material work before it is competitive',
+        context:r.killerSentence || r.diagnostic || ''
+      },
+      summary:{
+        strapline:r.archetype || oldBand,
+        paragraphs:[r.diagnostic||'',r.uncomfortableTruth||'',r.recruiterMayMiss||''].filter(Boolean),
+        paywallTeaser:r.fullCycleCta||''
+      },
+      strengths:top.map(function(x,i){return {title:x.name||named[i]||'Relevant evidence',evidence:x.visibleSummary||named[i]||'',whyItMatters:''};}),
+      tests:{
+        numerical:{interpretation:'',read:(dim('Technical Readiness').visibleSummary||''),lockedTeaser:'Targeted timed practice and worked answers are inside Full Cycle.'},
+        commercialTechnical:{interpretation:'',read:(dim('Commercial Awareness').visibleSummary||''),lockedTeaser:'Technical guides, commercial preparation and firm-specific work are inside Full Cycle.'}
+      },
+      competencies:defs.map(function(def,i){
+        var di=def[2]?dim(def[2]):null, co=comp(def[1]);
+        return {
+          name:def[0],
+          score:di&&typeof di.score==='number'?Math.round(di.score):compScore(co.status),
+          visibleReason:co.visibleReason||(di&&di.visibleSummary)||'Evidence is limited in the current application.',
+          freeFix:i===0?(r.fullCycleFirstFix||'Make the strongest analytical example show the conclusion, not only the task.'):undefined,
+          lockedImprovement:i===0?undefined:(co.lockedImprovement||'Full Cycle shows how to strengthen and position this evidence.')
+        };
+      }),
+      freeAction:{
+        headline:(r.priorityGaps&&r.priorityGaps[0]&&r.priorityGaps[0].title)||'Make your strongest evidence do more work',
+        detail:r.fullCycleFirstFix||(r.priorityGaps&&r.priorityGaps[0]&&r.priorityGaps[0].visibleRisk)||''
+      },
+      lockedActions:[
+        {category:'CV positioning',headline:'Your strongest evidence is not yet doing enough work',teaser:'Line-by-line review, evidence hierarchy and exact rewrites.'},
+        {category:'Technical readiness',headline:'Your technical claims need to hold up under questioning',teaser:'Likely technical pressure points generated from your own CV.'},
+        {category:'Numerical testing',headline:'Turn your test result into a targeted practice route',teaser:'Timed drills, worked answers and retesting.'},
+        {category:'Firm positioning',headline:'Make the application read specifically for your target firm',teaser:'Firm-specific evidence hierarchy and application guidance.'},
+        {category:'Interview preparation',headline:'Your own CV should generate your interview questions',teaser:'Likely questions, follow-ups and answer frameworks.'}
+      ],
+      fullCycleCta:r.fullCycleCta||'The diagnosis is above. Full Cycle is the repair work.'
+    };
   }
 
   function el(sel){ return document.querySelector(sel); }
