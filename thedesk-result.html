@@ -147,9 +147,9 @@ body{padding:0 18px}
 .testRead b{display:block;font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
 .testCard a{display:block;color:var(--orange);text-decoration:none;font-size:8.5px;line-height:1.35;font-weight:700;margin-top:12px}
 
-.resultHandoff{padding:26px 34px;background:var(--black);color:#fff;display:grid;grid-template-columns:1.35fr .8fr;gap:26px;align-items:start;border-bottom:1px solid #293238}
+.resultHandoff{padding:26px 34px;background:var(--black);color:#fff;display:block;border-bottom:1px solid #293238}
 .resultEyebrow{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:9px}
-.resultHandoff h2{font-family:'Fraunces',serif;font-size:30px;line-height:1.07;font-weight:500;margin:0 0 10px;max-width:700px}
+.resultHandoff h2{font-family:'Fraunces',serif;font-size:30px;line-height:1.07;font-weight:500;margin:0;max-width:900px;color:var(--orange)}
 .resultHandoff p{font-size:10.4px;line-height:1.52;color:#c7ccd0;max-width:720px;margin:0}
 .realityBox{border-left:1px solid #3b454b;padding-left:22px}
 .realityLabel{font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
@@ -199,8 +199,6 @@ body{padding:0 18px}
       <div class="current"><span>65–74</span><b>Borderline</b></div>
       <div><span>&lt;65</span><b>Weak</b></div>
     </div>
-
-    <div class="riskAlert">This is not a score to feel safe about</div>
   </div>
 </section>
 
@@ -453,7 +451,6 @@ body{padding:0 18px}
 
   // RISK
   set('.riskWarning em', score + '/100 = ' + band);
-  set('.riskAlert', (p.risk && p.risk.warning) || (band==='Borderline'?'This is not a score to feel safe about':band==='Competitive'?'Competitive does not mean safe':'This application needs material work before it is competitive'));
   var bands=all('.scoreBands > div');
   bands.forEach(function(b){b.classList.remove('current');});
   var bandIndex=score>=75?0:(score>=65?1:2);
