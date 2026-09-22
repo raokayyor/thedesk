@@ -327,210 +327,172 @@ body{padding:0 18px}
 
 <script>
 (function(){
-  var raw;
-  try{ raw = sessionStorage.getItem('tdesk_r'); }catch(e){}
+  var params = new URLSearchParams(window.location.search);
+  var demo = params.get('demo') === '1' || params.get('demo') === 'amelia';
+  var raw = null;
+  try { raw = sessionStorage.getItem('tdesk_r'); } catch(e) {}
 
-  // DEBUG — show what we have
-  var dbg = document.createElement('div');
-  dbg.style.cssText = 'position:fixed;bottom:10px;right:10px;background:#000;color:#0f0;font-size:10px;padding:8px;max-width:300px;z-index:9999;font-family:monospace;white-space:pre-wrap;';
-  if(!raw){
-    dbg.textContent = 'tdesk_r: EMPTY - showing demo';
-    document.body.appendChild(dbg);
+  // Amelia is now an explicit demo only, never a fallback for a real candidate.
+  if (!raw) {
+    if (demo) return;
+    window.location.replace('/assessment-start.html');
     return;
   }
-  var d, r;
-  try{ d = JSON.parse(raw); r = d.result; }catch(e){
-    dbg.textContent = 'PARSE ERROR: ' + e.message;
-    document.body.appendChild(dbg);
+
+  var d, r, p;
+  try {
+    d = JSON.parse(raw);
+    r = d && d.result;
+    p = r && r.page;
+  } catch(e) {}
+
+  if (!r || typeof r.overallScore !== 'number' || !p) {
+    try { sessionStorage.removeItem('tdesk_r'); } catch(e) {}
+    if (demo) return;
+    window.location.replace('/assessment-start.html?refresh=1');
     return;
   }
-  if(!r || typeof r.overallScore !== 'number'){
-    dbg.textContent = 'NO SCORE\nKeys in d: ' + Object.keys(d||{}).join(',') + '\nKeys in r: ' + Object.keys(r||{}).join(',');
-    document.body.appendChild(dbg);
-    return;
-  }
-  dbg.textContent = 'OK: score=' + r.overallScore + ' firm=' + (d.firm||'?');
-  document.body.appendChild(dbg);
 
-  function set(sel, val){ var el=document.querySelector(sel); if(el && val!==undefined && val!==null) el.textContent = val; }
-  function html(sel, val){ var el=document.querySelector(sel); if(el && val) el.innerHTML = val; }
+  function el(sel){ return document.querySelector(sel); }
+  function all(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function set(sel,val){ var e=el(sel); if(e && val!==undefined && val!==null) e.textContent=String(val); }
+  function setEl(e,val){ if(e && val!==undefined && val!==null) e.textContent=String(val); }
+  function pct(a,b){ return b ? Math.round((a/b)*100) : 0; }
 
-  var score = r.overallScore;
-  var firm  = d.firm || (d.profile && d.profile.targetFirm) || '';
-  var div   = d.div  || (d.profile && d.profile.targetDivision) || '';
-  var uni   = d.uni  || (d.profile && d.profile.university) || '';
-  var crs   = d.crs  || (d.profile && d.profile.course) || '';
-  var gr    = d.gr   || (d.profile && d.profile.grade) || '';
-  var nS    = typeof d.nS === 'number' ? d.nS : 3;
-  var fS    = typeof d.fS === 'number' ? d.fS : 3;
+  var profile = d.profile || {};
+  var score = Number(r.overallScore || p.overallScore || 0);
+  var band = score >= 75 ? 'Competitive' : score >= 65 ? 'Borderline' : 'Weak';
+  var firm = d.firm || profile.targetFirm || '';
+  var division = d.div || profile.targetDivision || '';
+  var course = d.crs || profile.course || '';
+  var grade = d.gr || profile.grade || '';
+  var university = d.uni || profile.university || '';
+  var nScore = typeof d.nS === 'number' ? d.nS : Number((d.quiz||{}).technicalCorrect || 0);
+  var nTotal = Number((d.quiz||{}).technicalTotal || 5);
+  var cScore = typeof d.fS === 'number' ? d.fS : Number((d.quiz||{}).commercialCorrect || 0);
+  var cTotal = Number((d.quiz||{}).commercialTotal || 5);
 
-  // ── HERO ──────────────────────────────────────────────────
-  set('.candidate', r.candidateName || 'Your Result');
-  set('.role', div);
+  // HERO
+  set('.candidate', p.candidateName || profile.name || r.candidateName || 'Your Result');
+  set('.role', division);
   set('.bank', firm);
-
-  var metaEl = document.querySelector('.meta');
-  if(metaEl) metaEl.innerHTML =
-    (crs ? '<span>' + crs + '</span>' : '') +
-    (gr  ? '<span>' + gr  + '</span>' : '') +
-    '<span>UK</span>';
-
-  // Score
-  var scoreB = document.querySelector('.scoreMain b');
-  if(scoreB) scoreB.textContent = score;
-
-  // Risk panel
-  var band = score>=75 ? 'Competitive' : score>=55 ? 'Borderline' : 'Weak';
-  set('.riskWarning em', score + '/100 = ' + band + '.');
-
-  // Score bands highlight
-  var bands = document.querySelectorAll('.scoreBands > div');
-  bands.forEach(function(b){ b.classList.remove('current'); });
-  var idx = score>=75 ? 0 : score>=55 ? 1 : 2;
-  if(bands[idx]) bands[idx].classList.add('current');
-
-  // ── RESULT HANDOFF ────────────────────────────────────────
-  var h2 = document.querySelector('.resultHandoff h2');
-  if(h2 && r.killerSentence) h2.textContent = r.killerSentence;
-
-  var rhP = document.querySelector('.resultHandoff > div:first-child p');
-  if(rhP && r.diagnostic) rhP.textContent = r.diagnostic;
-
-  var realityStrong = document.querySelector('.realityBox strong');
-  if(realityStrong && r.archetype) realityStrong.textContent = r.archetype;
-
-  var realityP = document.querySelector('.realityBox p');
-  if(realityP && r.beingMisreadAs) realityP.textContent = r.beingMisreadAs;
-
-  // ── SECTION 01 — Overview ─────────────────────────────────
-  var overviewPs = document.querySelectorAll('.overview .row:first-child .content p');
-  if(overviewPs[0] && r.diagnostic) overviewPs[0].textContent = r.diagnostic;
-  if(overviewPs[1] && r.uncomfortableTruth) overviewPs[1].textContent = r.uncomfortableTruth;
-
-  var promoStrong0 = document.querySelector('.overview .row:first-child .promoBox strong');
-  if(promoStrong0 && r.fullCycleCta) promoStrong0.textContent = r.fullCycleCta;
-
-  // ── SECTION 02 — Strengths ────────────────────────────────
-  var strengths = document.querySelectorAll('.strengthGrid .strength');
-  if(r.dimensions){
-    var sorted = r.dimensions.slice().sort(function(a,b){ return b.score-a.score; });
-    sorted.forEach(function(dim, i){
-      if(!strengths[i]) return;
-      var b = strengths[i].querySelector('b');
-      var p = strengths[i].querySelector('p');
-      if(b) b.textContent = dim.name;
-      if(p) p.textContent = dim.visibleSummary || '';
+  var meta = el('.meta');
+  if(meta){
+    meta.innerHTML='';
+    [course, grade, university].filter(Boolean).forEach(function(v){
+      var s=document.createElement('span'); s.textContent=v; meta.appendChild(s);
     });
   }
+  var scoreEl=el('.scoreMain b'); if(scoreEl) scoreEl.textContent=score;
 
-  // ── SECTION 03 — Tests ───────────────────────────────────
-  var testCards = document.querySelectorAll('.testCard');
-  if(testCards[0]){
-    var nPct = Math.round((nS/5)*100);
-    var nH4 = testCards[0].querySelector('h4');
-    var nMark = testCards[0].querySelector('.testMark');
-    var nBar = testCards[0].querySelector('.correctBar span');
-    if(nH4) nH4.textContent = nS + ' / 5';
-    if(nMark) nMark.textContent = nPct + '%';
-    if(nBar) nBar.style.width = nPct + '%';
-    var techDim = r.dimensions && r.dimensions.find(function(d){ return d.name === 'Technical Readiness'; });
-    var nP = testCards[0].querySelector('p');
-    if(nP && techDim) nP.textContent = techDim.visibleSummary;
-  }
-  if(testCards[1]){
-    var fPct = Math.round((fS/5)*100);
-    var fH4 = testCards[1].querySelector('h4');
-    var fMark = testCards[1].querySelector('.testMark');
-    var fBar = testCards[1].querySelector('.correctBar span');
-    if(fH4) fH4.textContent = fS + ' / 5';
-    if(fMark) fMark.textContent = fPct + '%';
-    if(fBar) fBar.style.width = fPct + '%';
-    var commDim = r.dimensions && r.dimensions.find(function(d){ return d.name === 'Commercial Awareness'; });
-    var fP = testCards[1].querySelector('p');
-    if(fP && commDim) fP.textContent = commDim.visibleSummary;
+  // RISK
+  set('.riskWarning em', score + '/100 = ' + band);
+  set('.riskAlert', (p.risk && p.risk.warning) || (band==='Borderline'?'This is not a score to feel safe about':band==='Competitive'?'Competitive does not mean safe':'This application needs material work before it is competitive'));
+  var bands=all('.scoreBands > div');
+  bands.forEach(function(b){b.classList.remove('current');});
+  var bandIndex=score>=75?0:(score>=65?1:2);
+  if(bands[bandIndex]) bands[bandIndex].classList.add('current');
+
+  // RESULT HANDOFF: one strong personalised sentence before the detail.
+  var handoff=el('.resultHandoff h2');
+  if(handoff){
+    var candidate = p.candidateName || profile.name || 'Your application';
+    var context = p.risk && p.risk.context ? p.risk.context : (p.summary && p.summary.strapline);
+    handoff.textContent = context ? candidate + ', ' + context.charAt(0).toLowerCase() + context.slice(1) : candidate + ', here is your assessment result';
   }
 
-  // ── SECTION 04 — Competency scores ───────────────────────
-  function statusToScore(s){
-    if(!s) return 55;
-    s = s.toLowerCase();
-    if(s.includes('strong')) return 85;
-    if(s.includes('partially')) return 60;
-    if(s.includes('not yet')) return 38;
-    if(s.includes('evidenced')) return 75;
-    return 55;
-  }
-  var compEls = document.querySelectorAll('.comp');
-  var dimMap = {};
-  if(r.dimensions) r.dimensions.forEach(function(d){ dimMap[d.name] = d; });
-  var compMap = {};
-  if(r.competencies) r.competencies.forEach(function(c){ compMap[c.name] = c; });
-
-  var compDefs = [
-    { label:'Analytical
-ability', key:'Analytical', dim:'Academic Signal' },
-    { label:'Teamwork',            key:'Teamwork',   dim:null },
-    { label:'Communication',       key:'Communication', dim:null },
-    { label:'Leadership',          key:'Leadership', dim:null },
-    { label:'Resilience',          key:'Resilience', dim:null },
-    { label:'Commercial
-awareness', key:'Commercial', dim:'Commercial Awareness' },
-    { label:'Technical
-readiness',  key:'Technical', dim:'Technical Readiness' }
-  ];
-
-  compEls.forEach(function(el, i){
-    var def = compDefs[i]; if(!def) return;
-    var comp = compMap[def.key];
-    var dim  = def.dim ? dimMap[def.dim] : null;
-    var score2 = dim ? dim.score : (comp ? statusToScore(comp.status) : 55);
-    var scoreEl = el.querySelector('.compScore');
-    if(scoreEl){
-      scoreEl.textContent = score2;
-      scoreEl.style.color = score2>=75 ? '#1a6b3a' : score2>=55 ? '#7a4f00' : '#9b2c2c';
+  // SECTION 01
+  var row1=el('.overview .row:first-child');
+  if(row1 && p.summary){
+    var sub=row1.querySelector('.sub'); if(sub) sub.textContent=p.summary.strapline || '';
+    var content=row1.children[1];
+    if(content){
+      all('.overview .row:first-child > div:nth-child(2) > p').forEach(function(x){x.remove();});
+      (p.summary.paragraphs || []).slice(0,3).forEach(function(t){
+        if(!t) return;
+        var pp=document.createElement('p'); pp.textContent=t; content.appendChild(pp);
+      });
     }
-    // Free comp (first) — update visible text
+    var promo=row1.querySelector('.promoBox strong');
+    if(promo) promo.textContent=p.summary.paywallTeaser || ('Why you scored '+score+' — and what moves it higher.');
+  }
+
+  // SECTION 02
+  var strengthEls=all('.strengthGrid .strength');
+  (p.strengths || []).slice(0,4).forEach(function(s,i){
+    var box=strengthEls[i]; if(!box) return;
+    setEl(box.querySelector('b'),s.title || '');
+    var text=[s.evidence,s.whyItMatters].filter(Boolean).join(' ');
+    setEl(box.querySelector('p'),text);
+  });
+  var strengthPromo=el('.overview .row:nth-child(2) .promoBox strong');
+  if(strengthPromo && p.summary && p.summary.paywallTeaser) strengthPromo.textContent=p.summary.paywallTeaser;
+
+  // SECTION 03 TESTS
+  var cards=all('.testCard');
+  function renderTest(card,correct,total,data){
+    if(!card) return;
+    setEl(card.querySelector('h4'),correct+' / '+total);
+    setEl(card.querySelector('.testMark'),pct(correct,total)+'%');
+    var bar=card.querySelector('.correctBar span'); if(bar) bar.style.width=pct(correct,total)+'%';
+    setEl(card.querySelector('p'),data && data.interpretation || '');
+    var read=card.querySelector('.testRead');
+    if(read){
+      var label=read.querySelector('b');
+      var labelText=label ? label.textContent : 'Our read';
+      read.textContent='';
+      var b=document.createElement('b'); b.textContent=labelText; read.appendChild(b);
+      read.appendChild(document.createTextNode(data && data.read || ''));
+    }
+    var link=card.querySelector('a');
+    if(link && data && data.lockedTeaser) link.textContent='🔒 Full Cycle: '+data.lockedTeaser+' →';
+  }
+  renderTest(cards[0],nScore,nTotal,p.tests && p.tests.numerical);
+  renderTest(cards[1],cScore,cTotal,p.tests && p.tests.commercialTechnical);
+
+  // SECTION 04 COMPETENCIES
+  var compEls=all('.compGrid .comp');
+  (p.competencies || []).slice(0,7).forEach(function(c,i){
+    var box=compEls[i]; if(!box) return;
+    var name=box.querySelector('.compName'); if(name) name.textContent=c.name || '';
+    var sc=box.querySelector('.compScore'); if(sc) sc.textContent=Math.round(Number(c.score||0));
     if(i===0){
-      var freeP = el.querySelector('p');
-      if(freeP && dim && dim.visibleSummary) freeP.innerHTML = '<b>What this shows:</b> ' + dim.visibleSummary;
-      var teaser = el.querySelector('.compTeaser');
-      if(teaser && r.fullCycleFirstFix) teaser.innerHTML = '<b>Free fix:</b> ' + r.fullCycleFirstFix;
+      var reason=box.querySelector('p');
+      if(reason){
+        reason.textContent='';
+        var b=document.createElement('b'); b.textContent='What this shows: '; reason.appendChild(b);
+        reason.appendChild(document.createTextNode(c.visibleReason || ''));
+      }
+      var teaser=box.querySelector('.compTeaser');
+      if(teaser){
+        teaser.textContent='';
+        var tb=document.createElement('b'); tb.textContent='Free fix: '; teaser.appendChild(tb);
+        teaser.appendChild(document.createTextNode(c.freeFix || (p.freeAction && p.freeAction.detail) || ''));
+      }
     } else {
-      // Locked — update blur text with real content
-      var blurP = el.querySelector('.blurWrap p');
-      var reason = (comp && comp.visibleReason) || (dim && dim.visibleSummary) || '';
-      if(blurP && reason) blurP.textContent = reason;
+      setEl(box.querySelector('.blurWrap p'),c.visibleReason || c.lockedImprovement || '');
     }
   });
 
-  // ── SECTION 05 — Priority gaps / next steps ───────────────
-  var freeAction = document.querySelector('.action.actionFree, .action:not(.lock)');
-  if(freeAction && r.priorityGaps && r.priorityGaps[0]){
-    var pg = r.priorityGaps[0];
-    var fb = freeAction.querySelector('b');
-    var fp = freeAction.querySelector('p');
-    if(fb) fb.textContent = pg.title || '';
-    if(fp) fp.textContent = pg.visibleRisk || '';
+  // SECTION 05 — exactly one free action + five locked
+  var free=el('.action.actionFree');
+  if(free && p.freeAction){
+    setEl(free.querySelector('b'),p.freeAction.headline || '');
+    setEl(free.querySelector('p'),p.freeAction.detail || '');
   }
+  var locked=all('.action.lock');
+  (p.lockedActions || []).slice(0,5).forEach(function(a,i){
+    var box=locked[i]; if(!box) return;
+    setEl(box.querySelector('.actionLabel'),(a.category || 'Full Cycle')+' — Full Cycle');
+    setEl(box.querySelector('b'),a.headline || '');
+    setEl(box.querySelector('.lockedTeaser, p'),a.teaser || '');
+  });
 
-  var lockedActions = document.querySelectorAll('.action.lock');
-  if(r.priorityGaps){
-    r.priorityGaps.slice(1).forEach(function(pg, i){
-      if(!lockedActions[i]) return;
-      var lb = lockedActions[i].querySelector('b');
-      var lp = lockedActions[i].querySelector('.lockedTeaser, p');
-      if(lb) lb.textContent = pg.title || '';
-      if(lp) lp.textContent = pg.visibleRisk || '';
-    });
-  }
+  // FULL CYCLE BRIDGE
+  var offerP=el('.offerIntro p');
+  if(offerP && p.fullCycleCta) offerP.textContent=p.fullCycleCta;
 
-  // ── OFFER section ─────────────────────────────────────────
-  var offerP = document.querySelector('.offerIntro p');
-  if(offerP && r.fullCycleCta) offerP.textContent = r.fullCycleCta;
-
-  // Page title
-  document.title = (r.candidateName ? r.candidateName + ' — ' : '') + 'The Desk · Your Result';
-
+  document.title=(p.candidateName || profile.name || 'Your Result')+' — The Desk';
 })();
 </script>
 
