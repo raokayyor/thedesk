@@ -338,22 +338,9 @@ export default async function handler(req, res) {
     result.overallScore = finalScore;
     result.band = finalScore >= 75 ? 'Competitive' : finalScore >= 65 ? 'Borderline' : 'Weak';
 
-    try {
-      var pagePrompt = buildResultPagePrompt(profile, quiz, cvText, result);
-      var page = await callClaudePage(pagePrompt);
-      if (isValidPageResult(page)) {
-        page.overallScore = result.overallScore;
-        page.band = result.band;
-        page.candidateName = page.candidateName || result.candidateName || profile.name || '';
-        result.page = page;
-      } else {
-        console.log('PAGE PASS INVALID - using adapter');
-        result.page = buildPageFallback(profile, quiz, result);
-      }
-    } catch (pageErr) {
-      console.error('PAGE PASS FAILED:', pageErr);
-      result.page = buildPageFallback(profile, quiz, result);
-    }
+    // One model call only: map the rich assessment into the fixed page contract
+    // in code so the user is not waiting for a second sequential Claude request.
+    result.page = buildPageFallback(profile, quiz, result);
 
     return res.status(200).json({
       success: true,
