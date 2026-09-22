@@ -601,7 +601,12 @@ function buildPageFallback(profile, quiz, result) {
         sentences(ps.paragraph2 || result.uncomfortableTruth || "", 2, 45),
         sentences(ps.paragraph3 || result.recruiterMayMiss || "", 1, 28)
       ].filter(Boolean),
-      paywallTeaser:words(ps.paywallTeaser || result.fullCycleCta || "", 22)
+      paywallTeaser:
+        band === "Weak"
+          ? "Full Cycle shows what is keeping this at "+score+"/100, what needs strengthening first, and what would move the application toward competitive."
+          : band === "Borderline"
+          ? "Full Cycle shows what is keeping this at "+score+"/100, which weaknesses are holding it back, and what would move it above 75."
+          : "Full Cycle shows what is still limiting this "+score+"/100 application and what needs tightening to make the profile materially stronger."
     },
     strengths,
     tests:{
@@ -1022,7 +1027,7 @@ QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) 
  "paragraph1":"[35-50 words. Executive summary of the APPLICATION and what the overall score means on The Desk scale. Say whether the profile is competitive, borderline or weak and why at a high level. Do not give fixes.]",
  "paragraph2":"[30-45 words. Mention EXACTLY ONE named CV detail that makes this candidate feel personally read. Use it as an example of the strongest signal or the main tension. Do not mention multiple CV examples.]",
  "paragraph3":"[18-28 words. State the single biggest area holding the application back in broad terms. No exact repair, no detailed technical topics, no bullet rewrites, no interview-question specifics.]",
- "paywallTeaser":"[12-22 words. Say that Full Cycle shows the detailed repair, without revealing it.]"
+ "paywallTeaser":"[12-22 words. MUST refer directly to the competitiveness score above: what is keeping the score at its current level, what needs strengthening, and what Full Cycle would repair to move the application toward the next band. Do not jump to a separate topic such as HireVue, interview questions or track choice here.]"
 },
 "strengths":[
  {"title":"[3-7 words, ideally includes a named CV item]","body":"[28-42 words. Explain exactly why this evidence helps. No generic praise.]"},
