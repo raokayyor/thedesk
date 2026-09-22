@@ -1,4 +1,4 @@
-// The Desk — Application MOT Backend
+// The Desk — Free Application Assessment Backend
 // ─────────────────────────────────────────────────────────────────────────────
 // DEPLOYMENT:
 //   Vercel:  place at /api/analyse-mot.js in your project root
@@ -692,7 +692,7 @@ async function callClaude(prompt) {
     model: CLAUDE_MODEL,
     max_tokens: 8000,
     temperature: 0.2,
-    system: "You are a former senior practitioner at an investment bank conducting The Desk Application MOT. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
+    system: "You are a former senior practitioner at an investment bank conducting The Desk Free Application Assessment. Be direct, honest, specific and practitioner-voiced. Respond ONLY with valid JSON — no markdown, no preamble, no explanation.",
     messages: [{ role: "user", content: prompt }],
   });
 
@@ -750,7 +750,7 @@ function buildPrompt(profile, quiz, cvText) {
     ? `FIRM-SPECIFIC PROCESS PERSONALISATION — the candidate's target firm is ${profile.targetFirm}, and we have researched, sourced detail on its actual recruitment process: ${firmProc.distinctiveFact} ${firmProc.numericalStage ? `Its numerical/cognitive screening stage is specifically called "${firmProc.numericalStage}".` : `It does not use a separate standardised numerical test the way some peers do — numerical ability is assessed within ${firmProc.aiInterviewStage} and Superday technical questions instead.`} Its early-stage video interview is called "${firmProc.aiInterviewStage}". If Technical Readiness score is below 70, the technical readiness note MUST reference the specific named stage above (e.g. "At ${profile.targetFirm}, this is exactly what the ${firmProc.numericalStage || firmProc.aiInterviewStage} stage is built to catch") — this is a real, sourced, firm-specific detail, not a generic statement, and it is one of the most important personalisation levers in the whole report. If Commercial Awareness score is below 70, reference that this would surface in the ${firmProc.aiInterviewStage} stage and at Superday. Do NOT use this firm detail if the score is strong — only deploy it as a consequence for a genuine weakness.`
     : `FIRM-SPECIFIC PROCESS PERSONALISATION — no researched process data exists yet for ${profile.targetFirm || "this firm"}. Do not invent specific stage names, test providers, or process details for it. Use only the general track-level language already specified above.`;
 
-  return `You are conducting an Application MOT for a finance student. You are a former practitioner — not a careers adviser, not an AI tool. Your voice is direct, restrained, specific and slightly clinical. Not motivational. Not dramatic. Not generic.
+  return `You are conducting a Free Application Assessment for a finance student. You are a former practitioner — not a careers adviser, not an AI tool. Your voice is direct, restrained, specific and slightly clinical. Not motivational. Not dramatic. Not generic.
 
 CRITICAL: Every candidate must receive ONE PRIMARY ARCHETYPE. This is the most important structural element of the output.
 
