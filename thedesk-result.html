@@ -206,15 +206,7 @@ body{padding:0 18px}
 
 <section class="resultHandoff">
   <div>
-    <div class="resultEyebrow">Your assessment result</div>
-    <h2>Amelia, your application is credible — but the parts helping you most are also the parts most likely to expose you in interview.</h2>
-    
-  </div>
-  <div class="realityBox">
-    <div class="realityLabel">Competition reality</div>
-    <strong>Top-bank internships are brutally selective.</strong>
-    <p>Goldman Sachs accepted fewer than 1 in 100 internship applicants in 2026. JPMorgan reportedly received 630,000 applications for 4,100 internships in 2025. A credible CV gets you into the process; it does not make the rest of the process forgiving.</p>
-    <small>Firmwide internship figures, not Barclays IBD-specific.</small>
+    <h2 class="standingHeadline">This application needs material work before it is competitive</h2>
   </div>
 </section>
 
@@ -467,12 +459,13 @@ body{padding:0 18px}
   var bandIndex=score>=75?0:(score>=65?1:2);
   if(bands[bandIndex]) bands[bandIndex].classList.add('current');
 
-  // RESULT HANDOFF: one strong personalised sentence before the detail.
+  // RESULT HANDOFF: make standing immediately clear.
   var handoff=el('.resultHandoff h2');
   if(handoff){
-    var candidate = p.candidateName || profile.name || 'Your application';
-    var context = p.risk && p.risk.context ? p.risk.context : (p.summary && p.summary.strapline);
-    handoff.textContent = context ? candidate + ', ' + context.charAt(0).toLowerCase() + context.slice(1) : candidate + ', here is your assessment result';
+    handoff.textContent =
+      band==='Competitive' ? 'This application is competitive — but not safe' :
+      band==='Borderline' ? 'This application is borderline and needs strengthening' :
+      'This application needs material work before it is competitive';
   }
 
   // SECTION 01
