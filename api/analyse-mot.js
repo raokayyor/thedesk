@@ -887,6 +887,23 @@ QUALITY CONTROL — before finalising check:
 23. Does the overall result avoid every forbidden hype phrase (dream job, unlock your potential, guaranteed, transform your future, beat the competition, limited time, don't miss out, life-changing, supercharge, elite secrets)?
 24. For the Academic Signal dimension specifically: does the fix field repeat any sentence or clause from the note field? This is a severe quality failure — the note diagnoses, the fix must give a genuinely different, more specific actionable lever, then point to Full Cycle by name for the actual target division and firm. If the fix and note overlap, rewrite the fix from scratch.
 
+DISPLAY LENGTH CONTRACT — THIS IS PART OF THE PRODUCT, NOT OPTIONAL:
+- killerSentence: 16-26 words
+- recruiterMayMiss: 35-55 words total
+- beingMisreadAs: 10-18 words
+- uncomfortableTruth: 22-38 words
+- diagnostic: 45-70 words total
+- fullCycleFirstFix: 25-40 words
+- each dimension visibleSummary: 16-28 words
+- each competency visibleReason: 18-32 words
+- pageSummary paragraph1: 45-65 words
+- pageSummary paragraph2: 40-60 words
+- pageSummary paragraph3: 25-40 words
+- each strength body: 28-42 words
+- freeAction detail: 28-45 words
+- each lockedAction teaser: 22-38 words
+Do not fill space. Do not exceed these ranges. Prefer one precise named example over multiple generic examples.
+
 CANDIDATE CV TEXT:
 """
 ${cvText}
@@ -898,7 +915,7 @@ COMMERCIAL RULE: The free result shows diagnosis only. The repair plan is locked
 - visibleSummary / visibleRisk / visibleReason = short, diagnostic, "what is wrong" only
 - lockedDetail / lockedWhyItMatters / lockedFixType / lockedFullCycleTeaser / lockedImprovement = deeper analysis and repair direction — do NOT give these away in visible fields
 
-QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) namedCvDetails has 3-6 real items (3) exactly 4 priorityGaps (4) exactly 6 competencies (5) not all competencies "Not yet evidenced" unless CV has almost no content (6) Analytical must be at least Partially evidenced if dissertation/research/modelling/quant/coding/numerical 4+/5 exists (7) Communication must be at least Partially evidenced if essay degree/dissertation/customer-facing/society role exists (8) Resilience must be at least Partially evidenced if part-time work/demanding schedule/sport exists (9) visibleSummary is SHORT — one sentence max (10) lockedDetail contains the full analysis
+QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) namedCvDetails has 3-6 real items (3) exactly 4 priorityGaps (4) exactly 7 competencies (5) exactly 4 strengths (6) exactly 5 lockedActions (7) not all competencies "Not yet evidenced" unless CV has almost no content (8) Analytical must be at least Partially evidenced if dissertation/research/modelling/quant/coding/numerical 4+/5 exists (9) Communication must be at least Partially evidenced if essay degree/dissertation/customer-facing/society role exists (10) Resilience must be at least Partially evidenced if part-time work/demanding schedule/sport exists (11) visibleSummary is SHORT — one sentence max (12) lockedDetail contains the full analysis (13) obey every DISPLAY LENGTH below
 
 {
 "overallScore":[integer 0-100. Calibrate fairly — strong profiles with positioning issues should be 60-75, not below 50],
@@ -912,6 +929,30 @@ QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) 
 "diagnostic":"[2-3 sentences. Diagnosis only — what is wrong, named CV details, route consequence. HARD STOP before any solution language. Do NOT write: the fix is, this needs to be reframed, Full Cycle would, the solution is, to repair this. End the sentence at the problem. Good: The internship and dashboard need to show market reasoning, not just task completion. Bad: The fix is to reframe the internship around central bank positioning and yield curve dynamics. The specific concepts and repair direction belong in lockedDetail — never in the free diagnostic.]",
 "fullCycleFirstFix":"[Direction of first repair area — 1-2 sentences naming CV items. Do not give the actual rewrite or fix language.]",
 "lockedFixPreview":"[What sits inside Full Cycle — creates curiosity. Must feel specific. Must NOT reveal the fix. E.g.: Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story.]",
+"pageSummary":{
+ "strapline":"[8-14 words. One sharp judgement, not a paragraph.]",
+ "paragraph1":"[45-65 words. Overall competitive read using 1-2 named CV items. Explain what is genuinely helping.]",
+ "paragraph2":"[40-60 words. Biggest mismatch or risk, including tests where relevant. No repair plan.]",
+ "paragraph3":"[25-40 words. What needs attention next, without giving away the full repair.]",
+ "paywallTeaser":"[18-30 words. Specific statement of what Full Cycle would answer.]"
+},
+"strengths":[
+ {"title":"[3-7 words, ideally includes a named CV item]","body":"[28-42 words. Explain exactly why this evidence helps. No generic praise.]"},
+ {"title":"","body":""},
+ {"title":"","body":""},
+ {"title":"","body":""}
+],
+"freeAction":{
+ "headline":"[6-12 words. One concrete thing to do now.]",
+ "detail":"[28-45 words. Useful and actionable, but not a full rewrite.]"
+},
+"lockedActions":[
+ {"category":"CV positioning","headline":"[7-14 words]","teaser":"[22-38 words. Specific contents of Full Cycle, without revealing the actual fix.]"},
+ {"category":"Technical readiness","headline":"[7-14 words]","teaser":"[22-38 words]"},
+ {"category":"Numerical testing","headline":"[7-14 words]","teaser":"[22-38 words]"},
+ {"category":"Firm positioning","headline":"[7-14 words]","teaser":"[22-38 words]"},
+ {"category":"Interview preparation","headline":"[7-14 words]","teaser":"[22-38 words]"}
+],
 "dimensions":[
 {"name":"Academic Signal","score":[0-100],
  "visibleSummary":"[One sentence. Diagnostic only. E.g.: Strong academic reasoning, but not yet translated into finance-relevant evidence.]",
@@ -956,7 +997,10 @@ QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) 
 {"name":"Resilience","status":"[MUST be at least Partially evidenced if part-time work/demanding schedule/competitive sport exists]",
  "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"},
 {"name":"Teamwork","status":"[MUST be at least Partially evidenced if internship/group project/society/hospitality/sport exists]",
- "visibleReason":"[One sentence]","lockedImprovement":"[Locked]"}
+ "visibleReason":"[18-32 words. Evidence only.]","lockedImprovement":"[22-38 words. Locked.]"},
+{"name":"Technical","status":"[Strong|Evidenced|Partially evidenced|Not yet evidenced]",
+ "visibleReason":"[18-32 words. Reflect both CV technical claims and test performance.]",
+ "lockedImprovement":"[22-38 words. Locked.]"}
 ],
 "fullCycleFit":"[High: score 50-75, credible material, specific fixable weaknesses. Medium: strong needing edge or weak with some material. Low: too weak for FC yet, or already very strong needing only polish]",
 "fullCycleReason":"[1-2 sentences with named CV evidence. Locked direction, not free repair.]",
