@@ -2,785 +2,292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Desk — Rapid CV Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Desk — Assessment Lab</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:system-ui,sans-serif;background:#f5f4f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-.card{background:white;border-radius:12px;padding:28px;max-width:560px;width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.08);}
-h1{font-size:20px;font-weight:600;margin-bottom:4px;}
-.sub{font-size:13px;color:#666;margin-bottom:24px;}
-label{font-size:12px;font-weight:500;color:#444;display:block;margin-bottom:4px;}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-select,input{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;}
-textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:13px;font-family:monospace;min-height:220px;resize:vertical;margin-bottom:6px;}
-.file-btn{display:block;padding:28px 16px;border:2px dashed #ccc;border-radius:10px;font-size:13px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;transition:border-color 0.2s,background 0.2s;}
-.file-btn:hover{border-color:#1a1a1a;color:#1a1a1a;}
-input[type=file]{display:none;}
-.scores{background:#f9f8f6;border-radius:8px;padding:14px;margin-bottom:16px;}
-.scores-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:10px;}
-.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.score-label{font-size:13px;color:#333;}
-.score-btns{display:flex;gap:4px;}
-.sb{width:32px;height:32px;border:1.5px solid #ddd;border-radius:6px;background:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.sb.on{background:#1a1a1a;color:white;border-color:#1a1a1a;}
-.btn{width:100%;padding:14px;background:#1a1a1a;color:white;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;}
-.btn:hover{background:#333;}
-.btn:disabled{background:#999;cursor:not-allowed;}
-.status{font-size:13px;margin-top:12px;text-align:center;color:#666;min-height:20px;}
-.status.err{color:#dc2626;}
-.tip{font-size:11px;color:#999;margin-bottom:14px;}
+:root{--ink:#171717;--muted:#6c6c68;--paper:#f5f1ea;--card:#fffdf9;--line:#ded8cf;--orange:#f06a3c;--green:#247451;--red:#a43f32;--amber:#9a6a1f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,sans-serif}
+.wrap{max-width:1500px;margin:0 auto;padding:28px}
+.top{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:22px}
+h1{font-size:30px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px}
+.panel{background:var(--card);border:1px solid var(--line);padding:18px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:12px}
+label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:5px}
+select,input{width:100%;border:1px solid #d6d0c7;background:#fff;padding:9px 10px;font-size:12px;border-radius:4px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+button{border:0;padding:10px 14px;cursor:pointer;font-weight:700;font-size:12px;border-radius:4px}
+.primary{background:var(--ink);color:#fff}.orange{background:var(--orange);color:#fff}.secondary{background:#ebe6de}.danger{background:#f3dfdb;color:#7f2d24}
+button:disabled{opacity:.45;cursor:not-allowed}
+.statbar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid var(--line);padding:12px}
+.stat b{display:block;font-size:22px}.stat span{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.06em}
+.progress{height:7px;background:#ddd7cf;margin-top:14px;overflow:hidden}.progress>div{height:100%;background:var(--orange);width:0}
+.status{font-size:12px;color:#666;margin-top:8px}
+.tableWrap{background:#fff;border:1px solid var(--line);overflow:auto;max-height:68vh}
+table{width:100%;border-collapse:collapse;font-size:11px;min-width:1250px}
+th{position:sticky;top:0;background:#1c1c1c;color:white;text-align:left;padding:9px 8px;font-size:9px;text-transform:uppercase;letter-spacing:.06em;z-index:2}
+td{padding:8px;border-bottom:1px solid #eee8df;vertical-align:top}
+tr:hover td{background:#fff8f3}
+.cvname{font-weight:700}.tiny{font-size:9px;color:#777}
+.badge{display:inline-block;padding:3px 6px;border-radius:12px;font-size:9px;font-weight:700}
+.Competitive{background:#dbeee4;color:#235c42}.Borderline{background:#f5ead2;color:#7b571d}.Weak{background:#f3ddda;color:#843a31}.error{background:#f3ddda;color:#843a31}
+.openBtn{padding:5px 8px;font-size:9px;background:#222;color:#fff}
+.cvBtn{padding:5px 8px;font-size:9px;background:#ece7df}
+details{font-size:10px;color:#555;max-width:260px}summary{cursor:pointer;font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:30px;z-index:10}
+.modal.open{display:flex}.modalCard{background:#fff;max-width:850px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+.modalHead{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:12px}
+pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height:1.5}
+.note{font-size:11px;line-height:1.5;color:#666;margin-top:10px}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.statbar{grid-template-columns:repeat(2,1fr)}.top{display:block}}
 </style>
 </head>
 <body>
-<div class="card">
-  <h1>Rapid CV Test</h1>
-  <p class="sub">Upload or paste a CV → get the result page instantly.</p>
-
-  <div class="row">
+<div class="wrap">
+  <div class="top">
     <div>
-      <label>Target firm</label>
-      <select id="firm">
-        <option>Goldman Sachs</option>
-        <option>JP Morgan</option>
-        <option>Barclays</option>
-        <option>Lazard</option>
-        <option>Morgan Stanley</option>
-        <option>Rothschild</option>
-        <option>UBS</option>
-      </select>
+      <h1>Assessment Lab</h1>
+      <div class="sub">Generate synthetic finance candidates and stress-test the real Free Application Assessment engine.</div>
     </div>
-    <div>
-      <label>Division</label>
-      <select id="division">
-        <option>Investment Banking / IBD</option>
-        <option>Sales & Trading / Markets</option>
-        <option>Asset Management / Investing</option>
-        <option>General Finance</option>
-      </select>
-    </div>
+    <div class="tiny">Internal testing only · does not affect the public assessment flow</div>
   </div>
 
-  <div class="row">
-    <div>
-      <label>University</label>
-      <input id="uni" value="University of Warwick" placeholder="e.g. LSE">
+  <div class="panel">
+    <div class="grid">
+      <div><label>Batch size</label><select id="count"><option>10</option><option selected>25</option><option>50</option><option>100</option><option>200</option></select></div>
+      <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
+      <div><label>Division</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>General Finance</option></select></div>
+      <div><label>Firm</label><select id="firm"><option value="mixed">Mixed</option><option>Goldman Sachs</option><option>JPMorgan</option><option>Barclays</option><option>Morgan Stanley</option><option>Lazard</option><option>UBS</option><option>Rothschild & Co</option><option>BlackRock</option></select></div>
+      <div><label>Programme</label><select id="programme"><option value="mixed">Mixed</option><option>Summer Internship</option><option>Spring Week</option><option>Graduate Programme</option></select></div>
+      <div><label>Concurrency</label><select id="concurrency"><option>1</option><option selected>2</option><option>3</option></select></div>
     </div>
-    <div>
-      <label>Course</label>
-      <input id="course" value="Economics" placeholder="e.g. Finance">
+    <div class="actions">
+      <button class="secondary" onclick="generateBatch()">1. Generate candidates</button>
+      <button class="orange" id="runBtn" onclick="runBatch()">2. Run live assessments</button>
+      <button class="primary" onclick="exportCSV()">Export CSV</button>
+      <button class="secondary" onclick="copyJSON()">Copy batch JSON</button>
+      <button class="danger" onclick="clearBatch()">Clear</button>
     </div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <div id="status" class="status">Generate a batch first. Live assessments use the production model API, so large batches can take time and incur model usage.</div>
   </div>
 
-  <div class="row">
-    <div>
-      <label>Year</label>
-      <select id="year">
-        <option>1st Year</option>
-        <option>2nd Year</option>
-        <option selected>Final Year</option>
-        <option>Graduate</option>
-      </select>
-    </div>
-    <div>
-      <label>Grade</label>
-      <select id="grade">
-      <option>First Class (predicted)</option>
-      <option>First Class</option>
-      <option>2:1 (predicted)</option>
-      <option>2:1</option>
-      <option>2:2 (predicted)</option>
-      <option>2:2</option>
-      <option>Third</option>
-      <option>Pass</option>
-    </select>
-    </div>
+  <div class="statbar">
+    <div class="stat"><b id="sTotal">0</b><span>Generated</span></div>
+    <div class="stat"><b id="sDone">0</b><span>Assessed</span></div>
+    <div class="stat"><b id="sAvg">—</b><span>Avg score</span></div>
+    <div class="stat"><b id="sComp">0</b><span>Competitive</span></div>
+    <div class="stat"><b id="sBorder">0</b><span>Borderline</span></div>
+    <div class="stat"><b id="sWeak">0</b><span>Weak</span></div>
+    <div class="stat"><b id="sErrors">0</b><span>Errors</span></div>
   </div>
 
-  <div class="scores">
-    <div class="scores-title">Quiz scores (tap to set)</div>
-    <div class="score-row">
-      <div class="score-label">Commercial awareness</div>
-      <div class="score-btns" id="comm-btns"></div>
-    </div>
-    <div class="score-row" style="margin-bottom:0;">
-      <div class="score-label">Numerical reasoning</div>
-      <div class="score-btns" id="tech-btns"></div>
-    </div>
+  <div class="tableWrap">
+    <table>
+      <thead><tr>
+        <th>#</th><th>Candidate</th><th>University / Course</th><th>Grade</th><th>Target</th><th>Tests</th><th>Profile type</th><th>Score</th><th>Band</th><th>Time</th><th>Result</th><th>CV</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
   </div>
-
-  <div style="margin-bottom:20px;">
-    <button type="button" onclick="generateRandom()" style="width:100%;padding:13px;background:#1a1a1a;color:#F7F3EE;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:sans-serif;">⚡ Generate random test candidate</button>
-    <div id="genStatus" style="font-size:11px;color:#15803D;text-align:center;margin-top:8px;display:none;line-height:1.5;"></div>
-  </div>
-  <div style="height:1px;background:#eee;margin-bottom:16px;"></div>
-
-  <label>Upload CV</label>
-  <label class="file-btn" for="cvFile" id="dropZone">📄 Drag & drop your CV here, or click to browse<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">PDF or Word · Max 5MB</span></label>
-  <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none">
-  <label style="display:block;margin-top:12px;">Or paste CV text</label>
-  <p class="tip" style="margin-bottom:6px;">Paste the full text of your CV below for the most reliable read.</p>
-  <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>l lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Desk — Rapid CV Test</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:system-ui,sans-serif;background:#f5f4f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-.card{background:white;border-radius:12px;padding:28px;max-width:560px;width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.08);}
-h1{font-size:20px;font-weight:600;margin-bottom:4px;}
-.sub{font-size:13px;color:#666;margin-bottom:24px;}
-label{font-size:12px;font-weight:500;color:#444;display:block;margin-bottom:4px;}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-select,input{width:100%;border:1px solid #ddd;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:white;}
-textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;font-size:13px;font-family:monospace;min-height:220px;resize:vertical;margin-bottom:6px;}
-.file-btn{display:block;padding:28px 16px;border:2px dashed #ccc;border-radius:10px;font-size:13px;color:#666;cursor:pointer;margin-bottom:14px;text-align:center;width:100%;transition:border-color 0.2s,background 0.2s;}
-.file-btn:hover{border-color:#1a1a1a;color:#1a1a1a;}
-input[type=file]{display:none;}
-.scores{background:#f9f8f6;border-radius:8px;padding:14px;margin-bottom:16px;}
-.scores-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:10px;}
-.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.score-label{font-size:13px;color:#333;}
-.score-btns{display:flex;gap:4px;}
-.sb{width:32px;height:32px;border:1.5px solid #ddd;border-radius:6px;background:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.sb.on{background:#1a1a1a;color:white;border-color:#1a1a1a;}
-.btn{width:100%;padding:14px;background:#1a1a1a;color:white;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;}
-.btn:hover{background:#333;}
-.btn:disabled{background:#999;cursor:not-allowed;}
-.status{font-size:13px;margin-top:12px;text-align:center;color:#666;min-height:20px;}
-.status.err{color:#dc2626;}
-.tip{font-size:11px;color:#999;margin-bottom:14px;}
-</style>
-</head>
-<body>
-<div class="card">
-  <h1>Rapid CV Test</h1>
-  <p class="sub">Upload or paste a CV → get the result page instantly.</p>
-
-  <div class="row">
-    <div>
-      <label>Target firm</label>
-      <select id="firm">
-        <option>Goldman Sachs</option>
-        <option>JP Morgan</option>
-        <option>Barclays</option>
-        <option>Lazard</option>
-        <option>Morgan Stanley</option>
-        <option>Rothschild</option>
-        <option>UBS</option>
-      </select>
-    </div>
-    <div>
-      <label>Division</label>
-      <select id="division">
-        <option>Investment Banking / IBD</option>
-        <option>Sales & Trading / Markets</option>
-        <option>Asset Management / Investing</option>
-        <option>General Finance</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label>University</label>
-      <input id="uni" value="University of Warwick" placeholder="e.g. LSE">
-    </div>
-    <div>
-      <label>Course</label>
-      <input id="course" value="Economics" placeholder="e.g. Finance">
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label>Year</label>
-      <select id="year">
-        <option>1st Year</option>
-        <option>2nd Year</option>
-        <option selected>Final Year</option>
-        <option>Graduate</option>
-      </select>
-    </div>
-    <div>
-      <label>Grade</label>
-      <select id="grade">
-      <option>First Class (predicted)</option>
-      <option>First Class</option>
-      <option>2:1 (predicted)</option>
-      <option>2:1</option>
-      <option>2:2 (predicted)</option>
-      <option>2:2</option>
-      <option>Third</option>
-      <option>Pass</option>
-    </select>
-    </div>
-  </div>
-
-  <div class="scores">
-    <div class="scores-title">Quiz scores (tap to set)</div>
-    <div class="score-row">
-      <div class="score-label">Commercial awareness</div>
-      <div class="score-btns" id="comm-btns"></div>
-    </div>
-    <div class="score-row" style="margin-bottom:0;">
-      <div class="score-label">Numerical reasoning</div>
-      <div class="score-btns" id="tech-btns"></div>
-    </div>
-  </div>
-
-  <label>CV text</label>
-  <p class="tip">Paste full CV text below, or click to upload a file. Text gives the most reliable read.</p>
-  <textarea id="cvText" placeholder="Paste full CV text here..."></textarea>
-  <label class="file-btn" for="cvFile" id="dropZone">📄 Drag & drop your CV here, or click to browse<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">PDF or Word · Max 5MB</span></label>
-  <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
-
-  <button class="btn" onclick="run()" id="runBtn">Run assessment →</button>
-  <div class="status" id="status"></div>
 </div>
 
-<script>
-// Score buttons
-var commScore=3, techScore=3;
-function makeScoreBtns(containerId, getScore, setScore){
-  var c=document.getElementById(containerId);
-  for(var i=1;i<=5;i++){
-    (function(n){
-      var b=document.createElement('button');
-      b.className='sb'+(n===getScore()?' on':'');
-      b.textContent=n;
-      b.onclick=function(){
-        setScore(n);
-        var btns=c.querySelectorAll('.sb');
-        btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=n?' on':''); });
-      };
-      c.appendChild(b);
-    })(i);
-  }
-}
-makeScoreBtns('comm-btns', function(){return commScore;}, function(n){commScore=n;});
-makeScoreBtns('tech-btns', function(){return techScore;}, function(n){techScore=n;});
-
-// Drag and drop
-var dropZone = document.getElementById('dropZone');
-if(dropZone){
-  ['dragenter','dragover'].forEach(function(evt){
-    dropZone.addEventListener(evt, function(e){
-      e.preventDefault();
-      dropZone.style.borderColor='#1a1a1a';
-      dropZone.style.background='#f0f0ec';
-    });
-  });
-  ['dragleave','drop'].forEach(function(evt){
-    dropZone.addEventListener(evt, function(e){
-      e.preventDefault();
-      dropZone.style.borderColor='#ccc';
-      dropZone.style.background='';
-    });
-  });
-  dropZone.addEventListener('drop', function(e){
-    var file = e.dataTransfer.files[0];
-    if(file){ handleFile(file); }
-  });
-}
-
-// File reading
-function handleFile(file){
-  var label=document.getElementById('dropZone');
-  label.innerHTML='📄 <strong>'+file.name+'</strong> ready<br><span style="font-size:11px;color:#999;margin-top:4px;display:block;">Will be sent for text extraction</span>';
-  label.style.borderColor='#1a1a1a';
-  window._cvFile=file;
-  document.getElementById('status').textContent='';
-}
-document.getElementById('cvFile').addEventListener('change', function(e){
-  var file=e.target.files[0]; if(!file) return;
-  handleFile(file);
-});
-
-async function run(){
-  var btn=document.getElementById('runBtn');
-  var status=document.getElementById('status');
-  var cvText=document.getElementById('cvText').value.trim();
-  var cvFile=window._cvFile;
-
-  if(!cvText && !cvFile){
-    status.className='status err';
-    status.textContent='Please paste CV text or upload a file.';
-    return;
-  }
-
-  btn.disabled=true; btn.textContent='Analysing...';
-  status.className='status';
-  status.textContent='Running assessment — takes 20–40 seconds...';
-  var t=Date.now();
-  var dots=0;
-  var statusTimer=setInterval(function(){
-    var secs=Math.round((Date.now()-t)/1000);
-    status.textContent='Running assessment... '+secs+'s';
-  },1000);
-
-  var profile={
-    university:document.getElementById('uni').value,
-    course:document.getElementById('course').value,
-    year:document.getElementById('year').value,
-    grade:document.getElementById('grade').value,
-    targetFirm:document.getElementById('firm').value,
-    targetDivision:document.getElementById('division').value,
-    programme:'Summer Internship',
-    track:document.getElementById('division').value
-  };
-  var quiz={commercialCorrect:commScore,commercialTotal:5,technicalCorrect:techScore,technicalTotal:5};
-
-  try {
-    var resp, data;
-    if(cvFile && !cvText){
-      // Send as multipart
-      var fd=new FormData();
-      fd.append('profile',JSON.stringify(profile));
-      fd.append('quiz',JSON.stringify(quiz));
-      fd.append('cvFile',cvFile);
-      resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{method:'POST',body:fd});
-    } else {
-      var controller=new AbortController();
-      var fetchTimeout=setTimeout(function(){controller.abort();},58000);
-      resp=await fetch('https://thedesk.vercel.app/api/analyse-mot',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({profile,quiz,cv:{fileName:'pasted.txt',text:cvText}}),
-        signal:controller.signal
-      });
-      clearTimeout(fetchTimeout);
-    }
-
-    data=await resp.json();
-    clearInterval(statusTimer);
-    var elapsed=((Date.now()-t)/1000).toFixed(1);
-
-    if(data.success && data.result){
-      status.textContent='✓ Done in '+elapsed+'s — loading result...';
-      // Store for thedesk_mot.html pickup
-      var motData = {
-        result: data.result,
-        firm: profile.targetFirm||'',
-        div: profile.targetDivision||'',
-        uni: profile.university||'',
-        crs: profile.course||'',
-        gr: profile.grade||'',
-        fS: quiz.commercialCorrect||3,
-        nS: quiz.technicalCorrect||3,
-        cvText: cvText||'',
-        profile: profile,
-        quiz: quiz
-      };
-      try{
-        sessionStorage.setItem('tdesk_r', JSON.stringify(motData));
-        window.location.href='thedesk-result.html';
-      }catch(e){
-        status.textContent='Storage error: '+e.message+'. Try again.';
-        btn.disabled=false; btn.textContent='Run assessment →';
-      }
-        } else {
-      status.className='status err';
-      status.textContent='Failed ('+elapsed+'s): '+(data.message||data.error||'unknown error');
-      btn.disabled=false; btn.textContent='Run assessment →';
-    }
-  } catch(e){
-    clearInterval(statusTimer);
-    status.className='status err';
-    status.textContent=e.name==='AbortError'?'Timed out — the assessment took too long. Try again.':'Error: '+e.message;
-    btn.disabled=false; btn.textContent='Run assessment →';
-  }
-}
-</script>
+<div class="modal" id="modal"><div class="modalCard"><div class="modalHead"><h3 id="modalTitle">CV</h3><button onclick="closeModal()">Close</button></div><pre id="modalBody"></pre></div></div>
 
 <script>
-var CANDIDATES = [
-  {name:'James Whitfield',commScore:2,techScore:3,uni:'University of Warwick',course:'Economics',grade:'2:1 predicted',year:'Final year',firm:'Goldman Sachs',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`James Whitfield | Warwick Economics 2:1 predicted
-Experience: Lazard M&A Insight Week June 2024 — assisted analysts with comparable companies research and formatted pitch materials. Finance Society Equity Analyst 2023–present — monthly notes on Rolls-Royce and BP. Tesco Customer Assistant Saturdays 2021-2022.
-Education: University of Warwick BA Economics 2:1 predicted. A-levels: Maths A*, Economics A, History B.
-Skills: Excel, Bloomberg (basic).`},
-
-  {name:'Priya Sharma',commScore:3,techScore:4,uni:'LSE',course:'BSc Finance',grade:'First predicted',year:'Final year',firm:'Morgan Stanley',division:'Sales & Trading / Markets',programme:'Summer Internship',
-   cv:`Priya Sharma | LSE Finance, First Class predicted
-Experience: Barclays Rates Sales Spring Week April 2024 — shadowed desk, attended morning meetings, produced macro summary on G10 central bank divergence. Macro Dashboard Project — built Excel dashboard tracking G10 central bank positioning using Bloomberg data. Markets Society President 2023–present — organised 12 speaker events for 80+ students. Pret a Manger 20hrs/week 2021-2022.
-Education: LSE BSc Finance First predicted. Modules: Financial Economics, Derivatives. A-levels: Maths A*, Economics A*, Further Maths A.
-Certifications: Bloomberg Market Concepts.
-Skills: Python, Excel, Bloomberg Terminal.`},
-
-  {name:'Tom Henderson',commScore:2,techScore:2,uni:'University of Bristol',course:'BA History',grade:'2:2 predicted',year:'Final year',firm:'JP Morgan',division:'Investment Banking / IBD',programme:'Spring Week',
-   cv:`Tom Henderson | Bristol History 2:2 predicted
-Experience: Two-week shadowing at local solicitors firm June 2023 — sat in on client meetings, organised filing. Bristol University Investment Society member 2022–present — following technology sector stocks informally. Waiter at The Ivy Bristol weekends 2022–present — managing section of 6 tables.
-Education: University of Bristol BA History 2:2 predicted. Dissertation: The Role of American Banking in Post-War European Reconstruction. A-levels: History A, English Literature A, Politics B.`},
-
-  {name:'Aisha Okonkwo',commScore:4,techScore:5,uni:'Oxford',course:'BA Philosophy Politics Economics',grade:'First predicted',year:'Final year',firm:'Goldman Sachs',division:'Asset Management / Investing',programme:'Summer Internship',
-   cv:`Aisha Okonkwo | Oxford PPE, First Class predicted
-Experience: KKR Spring Week April 2024 — worked on LBO case study of European logistics business, built three-statement model, contributed to investment committee presentation. Oxford SIB Analyst 2022–present — structured £200k social impact bond with Oxfordshire County Council, built financial model, produced investor reporting. Goldman Sachs IBD Insight Feb 2024 — M&A pitch exercise and financial modelling. Oxford Union Committee 2023–present — logistics and speaker coordination.
-Education: Oxford BA PPE First predicted. A-levels: Mathematics A*, Further Mathematics A*, Economics A.
-Skills: Excel (financial modelling), Python.`},
-
-  {name:'Harry Chen',commScore:3,techScore:5,uni:'University of Manchester',course:'BSc Mathematics',grade:'First predicted',year:'Final year',firm:'Barclays',division:'Quantitative Analysis',programme:'Summer Internship',
-   cv:`Harry Chen | Manchester Mathematics First predicted
-Experience: Optiver Trading Simulation finalist 2024. UCL Algorithmic Trading Society — built momentum strategy in Python, 12% backtested return. Data Science Internship at Manchester NHS Trust summer 2023 — regression models for patient flow. Maths Tutoring 10hrs/week 2022–present.
-Education: University of Manchester BSc Mathematics First predicted. Modules: Probability Theory, Statistical Inference, Numerical Methods. A-levels: Maths A*, Further Maths A*, Physics A*.
-Skills: Python (pandas, numpy, scikit-learn), R, MATLAB, C++ basics.`},
-
-  {name:'Sophie Williams',commScore:4,techScore:4,uni:'Cambridge',course:'BA Economics',grade:'First predicted',year:'Final year',firm:'BlackRock',division:'Asset Management',programme:'Summer Internship',
-   cv:`Sophie Williams | Cambridge Economics, First Class predicted
-Experience: BlackRock Insight Programme March 2024 — portfolio construction exercise, fixed income and equity allocation. Goldman Sachs Markets Insight Feb 2024. Cambridge Investment Society Analyst 2022–present — quarterly equity reports on FTSE 100 healthcare sector, pitched AstraZeneca to 40-person committee. Part-time retail banking assistant Lloyds 15hrs/week 2022-2023.
-Education: Cambridge BA Economics First predicted. Modules: Asset Pricing, Corporate Finance, Game Theory. A-levels: Maths A*, Economics A*, Further Maths A.
-Numerical score: 80%. Commercial score: 80%.`},
-
-  {name:'Alex Turner',commScore:3,techScore:3,uni:'Durham',course:'BA Economics and Finance',grade:'2:1 predicted',year:'Final year',firm:'Citi',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Alex Turner | Durham Economics and Finance 2:1 predicted
-Experience: Citi Freshman Analyst Programme 2023 — M&A case study on consumer goods sector, DCF valuation exercise. Durham Finance Society Vice-President — organised 8 corporate presentations, ran 3 stock pitch competitions. Barclays Virtual Internship (Forage) 2023 — investment banking simulation, comparable companies analysis. Retail sales assistant Gap 2021-2022 weekends.
-Education: Durham BA Economics and Finance 2:1 predicted. Modules: Corporate Finance, Financial Markets. A-levels: Maths A, Economics A, Business A.
-Skills: Excel, PowerPoint, Bloomberg (basic).`},
-
-  {name:'Mei Zhang',commScore:4,techScore:5,uni:'LSE',course:'BSc Statistics',grade:'First predicted',year:'Final year',firm:'Goldman Sachs',division:'Quantitative Strategies',programme:'Summer Internship',
-   cv:`Mei Zhang | LSE Statistics First predicted
-Experience: Jane Street Insight Programme April 2024 — probability and trading games, market making simulation. Citadel Datathon 2024 finalist — built XGBoost model for equity return prediction. LSE Statistics Society President — running quantitative finance reading group for 30 members. Research Assistant to Dr. James (LSE Finance) 2023–present — data cleaning, regression analysis on sovereign debt spreads.
-Education: LSE BSc Statistics First predicted. Modules: Time Series Analysis, Stochastic Processes, Machine Learning. A-levels: Maths A*, Further Maths A*, Physics A*.
-Skills: Python, R, Julia, SQL.`},
-
-  {name:'Oliver Barnes',commScore:2,techScore:2,uni:'University of Bristol',course:'BSc Economics',grade:'2:1 predicted',year:'Second year',firm:'Deutsche Bank',division:'Investment Banking / IBD',programme:'Spring Week',
-   cv:`Oliver Barnes | Bristol Economics 2:1 predicted, second year
-Experience: Bristol University Finance Society member — attending weekly talks. Part-time waiter Revolution Bars 2022–present. Volunteer football coach Under-12s 2021–present.
-Education: University of Bristol BSc Economics 2:1 predicted. First year modules: Microeconomics, Macroeconomics, Statistics.
-Interests: Financial markets, reading FT occasionally, cricket.`},
-
-  {name:'Fatima Al-Rashid',commScore:3,techScore:3,uni:'UCL',course:'BSc Economics',grade:'2:1 predicted',year:'Final year',firm:'JP Morgan',division:'Asset Management',programme:'Summer Internship',
-   cv:`Fatima Al-Rashid | UCL Economics 2:1 predicted
-Experience: Fidelity Insight Programme March 2024 — equity research exercise, investment thesis on UK retail. UCL Finance Society Equity Analyst 2023–present — coverage of FTSE 100 consumer staples sector, monthly reports. HSBC Work Experience 2022 — retail branch, customer service. Tutoring GCSE Maths 6hrs/week 2022–present.
-Education: UCL BSc Economics 2:1 predicted. Modules: Financial Economics, Econometrics. A-levels: Maths A, Economics A*, Business A.
-Skills: Excel, Bloomberg (CFA Level 1 candidate).`},
-
-  {name:'Charlie Robertson',commScore:3,techScore:3,uni:'University of Edinburgh',course:'MA Finance',grade:'2:1 predicted',year:'Final year',firm:'Barclays',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Charlie Robertson | Edinburgh Finance MA 2:1 predicted
-Experience: Barclays Spring Week April 2024 — IBD desk, M&A pitch preparation, met with MDs in leveraged finance. Edinburgh Finance Society President 2023–present — grew membership to 200+, organised 15 corporate presentations. Internship at Scottish boutique advisory firm summer 2023 — conducted industry research, assisted with IM preparation for two transactions. Barista Costa Coffee 2021-2022.
-Education: Edinburgh MA Finance 2:1 predicted. Modules: Investment Banking, M&A Theory. A-levels: Maths A, Economics A, History B.`},
-
-  {name:'Zara Ahmed',commScore:2,techScore:2,uni:"King's College London",course:'BSc Business Management',grade:'2:1 predicted',year:'Final year',firm:'HSBC',division:'Corporate Banking',programme:'Summer Internship',
-   cv:`Zara Ahmed | King's College London Business Management 2:1 predicted
-Experience: HSBC Insight Day 2023. King's Finance Society member. Internship at family business retail startup summer 2022 — social media, stock management. Part-time Sales Assistant Zara 2021-2022.
-Education: King's College London BSc Business Management 2:1 predicted. Modules: Finance, Accounting, Marketing. A-levels: Business A, Economics B, English A.
-Languages: Arabic (fluent), French (conversational).`},
-
-  {name:'Ravi Patel',commScore:3,techScore:5,uni:'Imperial College London',course:'MEng Engineering',grade:'First predicted',year:'Final year',firm:'Jane Street',division:'Quantitative Trading',programme:'Summer Internship',
-   cv:`Ravi Patel | Imperial MEng Electrical Engineering First predicted
-Experience: Jump Trading Insight Programme 2024. IMC Trading Challenge finalist 2024. Built options pricing model in C++ (Black-Scholes + Monte Carlo). HFT research project — implemented VWAP execution algorithm, backtested on LSE tick data. Cisco Software Engineering Internship summer 2023 — network automation, Python.
-Education: Imperial MEng EEE First predicted. Modules: Statistical Signal Processing, Optimisation, Control Theory. A-levels: Maths A*, Further Maths A*, Physics A*, Computing A.
-Skills: C++, Python, Julia, MATLAB, SQL. Competitive programming (Codeforces 1800 rating).`},
-
-  {name:'Lily Harrison',commScore:3,techScore:3,uni:'University of Exeter',course:'BSc Economics',grade:'2:1 predicted',year:'Final year',firm:'Jefferies',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Lily Harrison | Exeter Economics 2:1 predicted
-Experience: Jefferies Insight Programme April 2024 — TMT sector case study, EV/EBITDA valuation exercise. Exeter Investment Society Analyst 2023–present — monthly equity notes on UK tech sector, presented to 25-person committee. JP Morgan Virtual Internship (Forage) 2023. Waitress The Ivy Exeter 2022–present weekends.
-Education: Exeter BSc Economics 2:1 predicted. Modules: Financial Economics, Industrial Organisation. A-levels: Maths A, Economics A, Geography A.
-Skills: Excel, Bloomberg (basic).`},
-
-  {name:'Marcus Johnson',commScore:2,techScore:2,uni:'University of Birmingham',course:'BSc Accounting and Finance',grade:'2:1 predicted',year:'Final year',firm:'Rothschild',division:'Investment Banking / IBD',programme:'Spring Week',
-   cv:`Marcus Johnson | Birmingham Accounting and Finance 2:1 predicted
-Experience: Deloitte Virtual Internship 2023 — financial analysis simulation. Birmingham Finance Society member. Part-time work Lidl 20hrs/week 2020–2023. Treasurer of Birmingham Caribbean Society 2022–2023 — managed £8,000 budget.
-Education: Birmingham BSc Accounting and Finance 2:1 predicted. Modules: Corporate Finance, Auditing, Financial Reporting. A-levels: Maths B, Business A, Economics B.
-Interests: Entrepreneurship, following cryptocurrency markets.`},
-
-  {name:'Niamh OBrien',commScore:4,techScore:4,uni:'University of Bath',course:'BSc Economics',grade:'First predicted',year:'Final year',firm:'Morgan Stanley',division:'Asset Management',programme:'Summer Internship',
-   cv:`Niamh OBrien | Bath Economics First predicted
-Experience: Morgan Stanley Insight Programme March 2024 — portfolio construction exercise, fixed income focus. Bath Investment Society Analyst 2022–present — quarterly reports on European sovereign bonds, presented thesis on ECB policy implications. CFA Institute Research Challenge 2024 participant — equity research report on UK utility company. Library assistant 10hrs/week 2021-2022.
-Education: Bath BSc Economics First predicted. Modules: Monetary Economics, Portfolio Theory, Fixed Income. A-levels: Maths A*, Economics A*, French A.
-Skills: Excel, Bloomberg, CFA Level 1 passed December 2023.`},
-
-  {name:'Sam Davies',commScore:3,techScore:3,uni:'University of York',course:'BA Economics',grade:'2:1 predicted',year:'Final year',firm:'Lazard',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Sam Davies | York Economics 2:1 predicted
-Experience: Lazard Insight Week May 2024 — restructuring case study, worked alongside analysts on creditor analysis and recovery scenarios. York Finance Society Vice-President 2023 — organised 6 speaker events. Volunteer at Citizens Advice Bureau 2022–present — financial guidance to clients. Retail assistant Next 2021-2022.
-Education: York BA Economics 2:1 predicted. Modules: Industrial Economics, Public Finance. A-levels: Maths A, Economics A, Politics A.`},
-
-  {name:'Amara Diallo',commScore:2,techScore:3,uni:'University of Nottingham',course:'BSc Finance',grade:'2:1 predicted',year:'Final year',firm:'Evercore',division:'Investment Banking / IBD',programme:'Spring Week',
-   cv:`Amara Diallo | Nottingham Finance 2:1 predicted
-Experience: Evercore Insight Programme April 2024. Nottingham Finance Society Analyst — equity coverage of FTSE 250 industrials. Deloitte Corporate Finance Virtual Experience 2023. Internship at small accountancy firm summer 2022 — bookkeeping, client reports. Tutor GCSE Economics 5hrs/week.
-Education: Nottingham BSc Finance 2:1 predicted. Modules: Mergers and Acquisitions, Financial Modelling. A-levels: Maths A, Economics A, Business A.`},
-
-  {name:'Elena Marchetti',commScore:4,techScore:4,uni:'Oxford',course:'BA Economics and Management',grade:'First predicted',year:'Final year',firm:'Evercore',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Elena Marchetti | Oxford Economics and Management First predicted
-Experience: Evercore London Insight Week March 2024 — M&A advisory case study on Italian industrials, worked on buyer universe analysis and synergy modelling. Oxford Private Equity Society Vice-President — ran termsheet competition for 50 students, organised 10 PE/VC speaker events. Morgan Stanley IBD Insight Feb 2024 — financial modelling exercise. McKinsey Business Analyst Internship summer 2023 (Italian office) — restructuring project for Italian manufacturer.
-Education: Oxford BA Economics and Management First predicted. A-levels: Mathematics A*, Italian A*, Economics A.
-Languages: Italian (native), Spanish (conversational).
-Skills: Excel, PowerPoint, basic Python.`},
-
-  {name:'Damien Osei',commScore:4,techScore:4,uni:'LSE',course:'BSc Accounting and Finance',grade:'First predicted',year:'Final year',firm:'Goldman Sachs',division:'Sales & Trading / Markets',programme:'Summer Internship',
-   cv:`Damien Osei | LSE Accounting and Finance First predicted
-Experience: Goldman Sachs Securities Division Spring Week April 2024 — rates trading desk, morning meeting participation, position P&L analysis. LSE Systematic Trading Society — backtested mean-reversion strategy on FX pairs in Python, Sharpe ratio 1.4. Bloomberg Global Trading Challenge 2024 finalist. Credit Suisse (now UBS) Virtual Internship 2023.
-Education: LSE BSc Accounting and Finance First predicted. Modules: Derivatives and Risk Management, Fixed Income Securities. A-levels: Maths A*, Further Maths A, Economics A.
-Skills: Python, Excel, Bloomberg Terminal, SQL.
-Certifications: Bloomberg Market Concepts.`},
-
-  {name:'Isla MacPherson',commScore:3,techScore:3,uni:'University of St Andrews',course:'MA International Relations and Economics',grade:'2:1 predicted',year:'Final year',firm:'UBS',division:'Investment Banking / IBD',programme:'Summer Internship',
-   cv:`Isla MacPherson | St Andrews International Relations and Economics 2:1 predicted
-Experience: UBS Insight Programme April 2024 — infrastructure M&A case study. St Andrews Finance and Investment Society President 2023–present — organised annual stock pitch competition with 30 participants. Scottish Enterprise Internship summer 2023 — economic research on FDI into Scotland, report presented to senior management. Part-time work at St Andrews hotel 2021-2022.
-Education: St Andrews MA International Relations and Economics 2:1 predicted. Modules: International Finance, Political Economy. A-levels: Maths A, Economics A, History A.
-Languages: French (conversational).`}
+const U=[
+['University of Oxford','PPE'],['University of Cambridge','Economics'],['LSE','Economics'],['University of Warwick','Economics'],['University College London','Economics'],['University of Bristol','Economics and Finance'],['University of Bath','Accounting and Finance'],['Durham University','Economics'],['University of Nottingham','Finance, Accounting and Management'],['University of Manchester','Economics'],['University of Leeds','Economics and Finance'],['University of Exeter','Economics'],['University of Birmingham','Economics'],['University of Reading','Finance'],['University of York','Economics'],['University of Southampton','Economics'],['University of Sheffield','Economics'],['University of Liverpool','Business Economics'],['University of Sussex','Economics'],['University of Kent','Economics']
 ];
+const FIRMS=['Goldman Sachs','JPMorgan','Barclays','Morgan Stanley','Lazard','UBS','Rothschild & Co','BlackRock'];
+const DIVS=['Investment Banking / IBD','Sales & Trading / Markets','Asset Management / Investing','General Finance'];
+const PROGS=['Summer Internship','Spring Week','Graduate Programme'];
+const GRADES=['First Class (predicted)','2:1 (predicted)','2:1','2:2 (predicted)'];
+const YEARS=['1st Year','2nd Year','Final Year','Graduate'];
+const FIRST=['Aisha','Amelia','Ben','Charlotte','Daniel','Ella','Freddie','Grace','Hannah','Imran','James','Katie','Leo','Maya','Noah','Olivia','Priya','Ravi','Sophie','Tom','Zara'];
+const LAST=['Ahmed','Bennett','Chen','Davies','Evans','Foster','Gupta','Hughes','Iqbal','Jones','Khan','Lewis','Morgan','Patel','Roberts','Shah','Taylor','Walker','Williams','Young'];
 
-function setQuizScore(containerId, score, globalSetter){
-  globalSetter(score);
-  var c=document.getElementById(containerId);
-  if(!c) return;
-  var btns=c.querySelectorAll('.sb');
-  btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=score?' on':''); });
-}
+let batch=[];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const chance=p=>Math.random()<p;
 
-function setSelect(id, val){
-  var el=document.getElementById(id);
-  if(!el) return;
-  // Try exact match first
-  for(var i=0;i<el.options.length;i++){
-    if(el.options[i].value===val||el.options[i].text===val){
-      el.selectedIndex=i; return;
-    }
+function targetSelections(){
+  const d=document.getElementById('division').value;
+  const f=document.getElementById('firm').value;
+  const p=document.getElementById('programme').value;
+  return {
+    division:d==='mixed'?pick(DIVS):d,
+    firm:f==='mixed'?pick(FIRMS):f,
+    programme:p==='mixed'?pick(PROGS):p
   }
-  // Try case-insensitive partial match
-  var v=val.toLowerCase();
-  for(var i=0;i<el.options.length;i++){
-    if(el.options[i].text.toLowerCase().indexOf(v)>-1||v.indexOf(el.options[i].text.toLowerCase())>-1){
-      el.selectedIndex=i; return;
-    }
+}
+function level(){
+  const mix=document.getElementById('mix').value;
+  if(mix==='strong') return Math.random()<.7?'strong':pick(['borderline','weak']);
+  if(mix==='borderline') return Math.random()<.7?'borderline':pick(['strong','weak']);
+  if(mix==='weak') return Math.random()<.7?'weak':pick(['strong','borderline']);
+  return pick(['strong','strong','borderline','borderline','borderline','weak']);
+}
+function makeExperience(div,lvl){
+  const strong=lvl==='strong', weak=lvl==='weak';
+  if(div.includes('Investment Banking')){
+    if(strong) return {role:'Corporate Finance Intern',org:pick(['Redwood Advisory','NorthBridge Partners','Hawthorn Capital']),bullets:['Analysed comparable companies and precedent transactions for live pitch work','Built revenue and EBITDA bridge analysis in Excel','Supported buyer research and presentation materials for senior bankers']};
+    if(weak) return {role:'Retail Assistant',org:pick(['Tesco','John Lewis','Waitrose']),bullets:['Worked weekend shifts alongside university study','Handled customer queries during busy periods','Helped train new starters']};
+    return {role:'Finance Intern',org:pick(['Tesco PLC','Local Corporate Finance Society','University Finance Office']),bullets:['Analysed weekly sales and margin data','Prepared Excel reporting for finance meetings','Researched companies and sector trends']};
   }
-  // Fallback: first option
-  el.selectedIndex=0;
-}
-
-var GRADE_MAP={
-  'First predicted':'First Class (predicted)',
-  'First Class predicted':'First Class (predicted)',
-  'First Class (predicted)':'First Class (predicted)',
-  '2:1 predicted':'2:1 (predicted)',
-  '2:1 (predicted)':'2:1 (predicted)',
-  '2:2 predicted':'2:2 (predicted)',
-  '2:2 (predicted)':'2:2 (predicted)',
-  'First':'First Class (predicted)'
-};
-
-var YEAR_MAP={
-  'Final year':'Final Year','Final Year':'Final Year',
-  'Second year':'2nd Year','2nd year':'2nd Year','2nd Year':'2nd Year',
-  'First year':'1st Year','1st year':'1st Year','1st Year':'1st Year',
-  'Graduate':'Graduate'
-};
-
-function generateRandom(){
-  var st=document.getElementById('genStatus');
-  if(st){ st.style.display='block'; st.textContent='Loading...'; }
-  var c=CANDIDATES[Math.floor(Math.random()*CANDIDATES.length)];
-
-  // Randomise grade around candidate base
-  var gradeVariants={
-    'First predicted':['First Class (predicted)','First Class (predicted)','2:1 (predicted)'],
-    'First Class predicted':['First Class (predicted)','First Class (predicted)','2:1 (predicted)'],
-    '2:1 predicted':['2:1 (predicted)','2:1 (predicted)','First Class (predicted)','2:2 (predicted)'],
-    '2:2 predicted':['2:2 (predicted)','2:2 (predicted)','2:1 (predicted)'],
-    'First Class (predicted)':['First Class (predicted)','First Class (predicted)','2:1 (predicted)']
-  };
-  var baseGrade=c.grade||'2:1 predicted';
-  var gvars=gradeVariants[baseGrade]||[GRADE_MAP[baseGrade]||'2:1 (predicted)'];
-  var grade=gvars[Math.floor(Math.random()*gvars.length)];
-
-  // Randomise quiz scores ±1 from candidate base
-  var baseComm=c.commScore||3;
-  var baseTech=c.techScore||3;
-  var rComm=Math.max(1,Math.min(5,baseComm+(Math.random()>0.6?1:Math.random()<0.3?-1:0)));
-  var rTech=Math.max(1,Math.min(5,baseTech+(Math.random()>0.6?1:Math.random()<0.3?-1:0)));
-
-  // Set all fields
-  function setInput(id,val){ var el=document.getElementById(id); if(el) el.value=val||''; }
-
-  setInput('firm',c.firm);
-  setSelect('division',c.division);
-  setInput('uni',c.uni);
-  setInput('course',c.course);
-  setSelect('year', YEAR_MAP[c.year||'Final year']||'Final Year');
-  setSelect('grade', grade);
-
-  // Quiz scores
-  setQuizScore('comm-btns', rComm, function(n){ commScore=n; });
-  setQuizScore('tech-btns', rTech, function(n){ techScore=n; });
-
-  // CV text (replace grade string in CV too)
-  var cvEl=document.getElementById('cvText');
-  if(cvEl) cvEl.value=(c.cv||'').replace(c.grade||'',grade);
-
-  if(st){ st.textContent='✓ '+c.name+' · '+c.firm+' · '+grade+' · Comm '+rComm+'/5 · Num '+rTech+'/5'; }
-}
-
-function setScoreBtn(containerId, val){
-  var c=document.getElementById(containerId);
-  if(!c) return;
-  var btns=c.querySelectorAll('.sb');
-  btns.forEach(function(btn,idx){ btn.className='sb'+(idx+1<=val?' on':''); });
-}
-function setScore(type, val){
-  if(type==='numer'){ techScore=val; setScoreBtn('tech-btns', val); }
-  if(type==='comm'){  commScore=val; setScoreBtn('comm-btns', val); }
-}
-
-function buildResultPage(r, profile, quiz, fcData) {
-  var firm = profile.targetFirm||'your target firm';
-  var div  = profile.targetDivision||profile.track||'';
-  var name = r.candidateName||'';
-  var sc   = Math.round(r.overallScore||0);
-  var scCol = sc>=70?'#16A34A':sc>=50?'#CA8A04':'#DC2626';
-  var LOCK = '<div style="display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid #ddd;background:#f7f3ee;float:right;"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span style="font-size:9px;color:#888;font-weight:500;">Unlocked in Full Cycle</span></div>';
-  var BLUR = 'filter:blur(4px);user-select:none;pointer-events:none;';
-
-  var dimHTML = (r.dimensions||[]).map(function(d){
-    var dc = d.score>=70?'#16A34A':d.score>=50?'#CA8A04':'#DC2626';
-    return '<div style="background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:8px;">'
-      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
-        +'<b style="font-size:13px;color:#1a1714;">'+d.name+'</b>'
-        +'<span style="font-size:22px;font-weight:300;color:'+dc+';">'+Math.round(d.score)+'</span>'
-      +'</div>'
-      +'<div style="font-size:12px;color:#666;line-height:1.6;margin-bottom:6px;">'+(d.visibleSummary||d.note||'')+'</div>'
-      +(d.lockedDetail
-        ?'<div style="position:relative;"><div style="font-size:12px;color:#333;line-height:1.7;'+BLUR+'min-height:52px;">'+(d.lockedDetail)+'</div>'+LOCK+'</div>'
-        :'')
-    +'</div>';
-  }).join('');
-
-  var gapHTML = (r.priorityGaps||[]).slice(0,4).map(function(g,i){
-    var col = i===0?'#dc2626':'#d97706';
-    var bg  = i===0?'#fef2f2':'#fffbeb';
-    var vis = g.visibleRisk||g.risk||'';
-    var locked = (g.lockedWhyItMatters||g.whyItMatters||'')+' '+(g.lockedFixType||g.fixType||'')+' '+(g.lockedFullCycleTeaser||g.fullCycleTeaser||'Full Cycle has the specific repair plan.');
-    return '<div style="background:'+bg+';border-radius:8px;padding:11px 14px;margin-bottom:7px;">'
-      +'<div style="font-size:13px;font-weight:500;color:'+col+';margin-bottom:4px;">'+(i+1)+'. '+(g.title||'')+'</div>'
-      +(vis?'<div style="font-size:12px;color:#555;margin-bottom:4px;">'+vis+'</div>':'')
-      +'<div style="position:relative;"><div style="font-size:12px;color:#333;line-height:1.65;'+BLUR+'min-height:48px;">'+locked+'</div>'+LOCK+'</div>'
-    +'</div>';
-  }).join('');
-
-  var compHTML = (Array.isArray(r.competencies)?r.competencies:[]).map(function(c){
-    var st = c.status||'Not yet evidenced';
-    var cc = st==='Strong'||st==='Evidenced'?'#16A34A':st==='Partially evidenced'?'#ca8a04':'#dc2626';
-    var vr = c.visibleReason||c.note||'';
-    var li = c.lockedImprovement||'Full Cycle shows how to strengthen this competency for the target route.';
-    return '<div style="padding:10px 0;border-bottom:1px solid #f0f0ee;">'
-      +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">'
-        +'<b style="font-size:13px;color:#1a1714;">'+c.name+'</b>'
-        +'<span style="font-size:11px;font-weight:500;color:'+cc+';">'+st+'</span>'
-      +'</div>'
-      +(vr?'<div style="font-size:12px;color:#666;margin-bottom:4px;">'+vr+'</div>':'')
-      +'<div style="position:relative;"><div style="font-size:12px;color:#333;line-height:1.6;'+BLUR+'">'+li+'</div>'+LOCK+'</div>'
-    +'</div>';
-  }).join('');
-
-  var repairCards = ['Evidence hierarchy','CV repair map','Route positioning','Commercial awareness plan','Numerical and technical plan','Interview risk map','7-day action plan'];
-  var repairTeasers = [
-    'See which parts of your CV should lead, support, or be reduced.',
-    'See which sections need rebuilding before submission.',
-    'See whether your evidence supports the route you are targeting.',
-    'See how to close the commercial gap before your interview.',
-    'See what practice will move your score before the deadline.',
-    'See which questions will expose the gaps in this application.',
-    'See the specific steps to take before submitting.'
-  ];
-  var repairHTML = repairCards.map(function(t,i){
-    return '<div style="padding:11px 0;border-bottom:'+(i<repairCards.length-1?'1px solid #f0f0ee':'none')+';">'
-      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">'
-        +'<b style="font-size:13px;color:#1a1714;">'+t+'</b>'
-        +'<span style="font-size:9px;color:#888;">🔒 Full Cycle</span>'
-      +'</div>'
-      +'<div style="font-size:12px;color:#a85e0a;margin-bottom:3px;">'+repairTeasers[i]+'</div>'
-      +'<div style="font-size:12px;color:#333;'+BLUR+'">Your personalised '+t.toLowerCase()+' is built from your CV, your scores and your target firm. Specific to this application — not generic advice.</div>'
-    +'</div>';
-  }).join('');
-
-  var sc_cta=r.overallScore||0;
-  // Always use safe template for the visible locked plan description — never the model's raw text
-  var safeTarget=firm||'your target firm';
-  var bandCta=sc_cta>=70
-    ?'You have real evidence, but it is not yet sharp enough for '+safeTarget+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
-    :sc_cta>=55
-    ?'You have usable material, but it is not yet landing as a '+safeTarget+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters before submission.'
-    :sc_cta>=40
-    ?'This profile needs work before submitting to '+safeTarget+'. Full Cycle shows what evidence, readiness and structure need to be in place first.'
-    :'This version is not ready to submit. Full Cycle shows what evidence needs building, which gaps matter first, and whether the current route is realistic before you apply.';
-
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-    +'<title>The Desk — MOT Result</title>'
-    +'<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">'
-    +'<style>'
-    +'*{box-sizing:border-box;margin:0;padding:0;}'
-    +'body{font-family:"DM Sans",sans-serif;background:#F7F3EE;color:#1A1714;}'
-    +'.wrap{max-width:580px;margin:0 auto;padding:20px 16px 60px;}'
-    +'.card{background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:10px;}'
-    +'.label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#aaa;margin-bottom:6px;}'
-    +'</style></head><body><div class="wrap">'
-
-    +'<div style="font-family:Fraunces,serif;font-size:16px;margin-bottom:18px;color:#a85e0a;">The<em>Desk</em> — Application MOT <span style="font-size:11px;color:#aaa;font-style:normal;">testing view</span></div>'
-
-    +'<div class="card" style="border-left:4px solid '+scCol+';">'
-      +'<div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:12px;">'
-        +'<div style="font-family:Fraunces,serif;font-size:72px;font-weight:300;line-height:1;color:'+scCol+';">'+sc+'</div>'
-        +'<div style="padding-bottom:8px;">'
-          +'<div style="font-size:15px;font-weight:500;color:#1a1714;">'+(r.band||'')+'</div>'
-          +'<div style="font-size:12px;color:#888;margin-top:2px;">'+(r.archetype||'')+'</div>'
-          +'<div style="font-size:11px;color:#888;margin-top:2px;">'+(firm+(div?' · '+div:''))+'</div>'
-        +'</div>'
-      +'</div>'
-      +(r.killerSentence?'<div style="border-left:3px solid #dc2626;padding:10px 14px;background:#fef2f2;font-size:13px;font-style:italic;line-height:1.65;color:#1a1714;">'+r.killerSentence+'</div>':'')
-    +'</div>'
-
-    +(r.recruiterMayMiss?'<div class="card"><div class="label">What a recruiter may miss in 30 seconds</div><div style="font-size:13px;line-height:1.7;color:#333;">'+r.recruiterMayMiss+'</div></div>':'')
-    +(r.beingMisreadAs?'<div style="background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:10px;"><div class="label" style="color:rgba(255,255,255,0.3);">Being misread as</div><div style="font-size:14px;font-style:italic;color:#F7F3EE;line-height:1.6;">'+r.beingMisreadAs+'</div></div>':'')
-    +(r.uncomfortableTruth?'<div style="background:#1a1a1a;border-radius:12px;padding:14px 18px;margin-bottom:10px;"><div class="label" style="color:rgba(255,255,255,0.3);">The uncomfortable truth</div><div style="font-size:14px;font-style:italic;color:#F7F3EE;line-height:1.6;">'+r.uncomfortableTruth+'</div></div>':'')
-
-    +(r.dimensions&&r.dimensions.length?'<div class="label" style="padding:0 4px;margin-bottom:8px;">6-dimension breakdown</div>'+dimHTML:'')
-
-    +'<div class="card"><div class="label">4 Priority Gaps</div>'+gapHTML+'</div>'
-
-    +'<div class="card" style="background:#f7f3ee;border:1px solid #e0d8ce;"><div class="label">Unlocked in Full Cycle — Your personalised repair plan</div><div style="font-size:12px;color:#a85e0a;margin-bottom:12px;">'+bandCta+'</div>'+repairHTML+'</div>'
-
-    +(compHTML?'<div class="card"><div class="label">Competencies</div>'+compHTML+'</div>':'')
-
-    +(r.diagnostic?'<div class="card"><div class="label">Diagnostic</div><div style="font-size:13px;line-height:1.7;color:#555;">'+r.diagnostic+'</div></div>':'')
-
-    +'<div style="background:#1a1a1a;border-radius:12px;padding:20px;text-align:center;margin-top:16px;">'
-      +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">'+( name?name+', unlock your repair plan before you submit.':'Let\'s get your fixes.')+'</div>'
-      +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Specific to your CV, your scores, and '+safeTarget+' — not generic advice.</div>'
-      +'<button onclick="unlockFullCycle()" style="background:#E87040;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:500;cursor:pointer;">Get Full Cycle — £79 →</button>'
-    +'</div>'
-
-    +'<script>'
-    +'var _fc=null;try{_fc=JSON.parse(sessionStorage.getItem("tdesk_fc_pending")||sessionStorage.getItem("tdesk_fc")||"null");}catch(e){}'
-    +'function unlockFullCycle(){'
-    +'if(!_fc||!_fc.result){alert("Assessment data not found. Please run the assessment again.");return;}'
-    +'try{sessionStorage.setItem("tdesk_fc",JSON.stringify(_fc));sessionStorage.removeItem("tdesk_fc_pending");window.location.href="fullcycle.html";}catch(e){alert("Error: "+e.message);}'
-    +'}'
-    +'</scr'+'ipt>'
-    +'</div></body></html>';
-}
-
-
-
-function unlockFullCycle(){
-  var d=window._lastFCData;
-  if(!d||!d.result){
-    // Fallback: try sessionStorage backup set right after API success
-    try{
-      var backup=sessionStorage.getItem('tdesk_fc_pending');
-      if(backup) d=JSON.parse(backup);
-    }catch(e){}
+  if(div.includes('Sales & Trading')){
+    if(strong) return {role:'Macro Research Intern',org:pick(['Harbour Markets','Atlas Securities','University Trading Fund']),bullets:['Tracked rates, inflation and central-bank expectations','Built yield-curve and FX monitoring dashboards','Presented a weekly market view to the desk']};
+    if(weak) return {role:'Customer Service Assistant',org:pick(['Sainsbury\'s','Boots','Decathlon']),bullets:['Worked in a high-volume customer environment','Managed cash and end-of-day reconciliation','Supported new staff training']};
+    return {role:'Commercial Finance Intern',org:pick(['Tesco PLC','National Grid','BT Group']),bullets:['Analysed revenue and margin variances','Built weekly Excel reporting','Prepared notes on macro drivers affecting the business']};
   }
-  if(!d||!d.result){ alert('Assessment data not found. Please run your assessment again.'); return; }
+  if(div.includes('Asset Management')){
+    if(strong) return {role:'Equity Research Analyst',org:pick(['Student Investment Fund','Arcadia Asset Management','University Investment Society']),bullets:['Built a company valuation using DCF and comparables','Presented an investment thesis and downside risks','Tracked earnings, catalysts and sector news']};
+    if(weak) return {role:'Operations Assistant',org:pick(['Local charity','University library','Retail business']),bullets:['Managed administrative tasks and customer queries','Worked alongside study commitments','Supported team scheduling and reporting']};
+    return {role:'Investment Society Analyst',org:pick(['University Investment Society','Finance Society']),bullets:['Researched listed companies and sector news','Built simple revenue and margin forecasts','Presented a stock idea to society members']};
+  }
+  return {role:strong?'Finance Intern':'Part-time Assistant',org:strong?'FTSE 100 Finance Team':'Local Employer',bullets:strong?['Analysed business performance and financial data','Prepared management reporting in Excel','Presented findings to the finance team']:['Worked alongside university study','Supported customers and colleagues','Handled routine administration']};
+}
+function makeProject(div,lvl){
+  if(div.includes('Investment Banking')) return lvl==='weak'?'University group presentation':'Valuation Project — '+pick(['LVMH','Diageo','Tesco','Unilever']);
+  if(div.includes('Sales & Trading')) return lvl==='weak'?'Economics coursework':'UK Rates & Gilt Market Project';
+  if(div.includes('Asset Management')) return lvl==='weak'?'Economics essay':'Equity Pitch — '+pick(['Nike','LVMH','ASML','Unilever','Microsoft']);
+  return lvl==='weak'?'University coursework':'Corporate Finance Analysis Project';
+}
+function buildCV(c){
+  const e=c.exp, project=c.project;
+  const society=c.level==='weak'?'Member — Economics Society':c.division.includes('Sales')?'Macro Analyst — Trading Society':c.division.includes('Asset')?'Analyst — Investment Society':'Committee Member — Finance Society';
+  const extra=c.level==='strong'?'University sport + part-time work':c.level==='borderline'?'University society + part-time work':'General university societies';
+  return `${c.name}
+${c.university} — ${c.course}, ${c.year}
+Grade: ${c.grade}
+
+EDUCATION
+Relevant modules: ${c.division.includes('Investment')?'Corporate Finance, Financial Accounting, Econometrics, Valuation':c.division.includes('Sales')?'Macroeconomics, Econometrics, Financial Markets, Statistics':c.division.includes('Asset')?'Investments, Corporate Finance, Econometrics, Accounting':'Economics, Statistics, Finance'}
+A Levels: Maths ${c.level==='weak'?'B':'A'}, Economics ${c.level==='strong'?'A*':'A'}, ${pick(['History A','English A','Physics A','Geography A'])}
+
+EXPERIENCE
+${e.org} — ${e.role}
+- ${e.bullets[0]}
+- ${e.bullets[1]}
+- ${e.bullets[2]}
+
+PROJECTS
+${project}
+- ${c.level==='weak'?'Completed academic research and presented findings':c.division.includes('Sales')?'Analysed how inflation surprises and policy expectations affected rates and the yield curve':c.division.includes('Asset')?'Assessed growth drivers, valuation, catalysts and key downside risks':'Analysed valuation, operating performance and relevant transaction or sector benchmarks'}
+- ${c.level==='strong'?'Produced an independent conclusion and defended assumptions in a presentation':'Produced a written conclusion and presented findings'}
+
+ACTIVITIES
+${society}
+${extra}
+
+SKILLS
+Excel, PowerPoint, ${c.level==='strong'?'Bloomberg, Python, financial modelling':'basic financial modelling'}
+
+INTERESTS
+Markets, running, travel, ${pick(['football','netball','cinema','technology','fashion'])}
+
+TARGET ROLE
+${c.firm} — ${c.division} — ${c.programme}`;
+}
+function makeCandidate(i){
+  const [university,course]=pick(U), t=targetSelections(), lvl=level();
+  let grade=lvl==='strong'?pick(['First Class (predicted)','First Class','2:1 (predicted)']):lvl==='weak'?pick(['2:2 (predicted)','2:1 (predicted)','2:1']):pick(['2:1 (predicted)','2:1','First Class (predicted)']);
+  let comm=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
+  let num=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
+  let year=t.programme==='Spring Week'?'1st Year':t.programme==='Graduate Programme'?pick(['Final Year','Graduate']):pick(['2nd Year','Final Year']);
+  const c={id:i+1,name:pick(FIRST)+' '+pick(LAST),university,course,year,grade,firm:t.firm,division:t.division,programme:t.programme,level:lvl,commercial:comm,numerical:num};
+  c.exp=makeExperience(c.division,lvl); c.project=makeProject(c.division,lvl); c.cv=buildCV(c);
+  c.state='pending'; return c;
+}
+function generateBatch(){
+  const n=Number(document.getElementById('count').value);
+  batch=Array.from({length:n},(_,i)=>makeCandidate(i));
+  render(); stats(); document.getElementById('status').textContent=n+' candidates generated. Click Run live assessments.';
+}
+function bandClass(b){return b||''}
+function render(){
+  const body=document.getElementById('rows'); body.innerHTML='';
+  batch.forEach((c,i)=>{
+    const tr=document.createElement('tr');
+    const result=c.result;
+    tr.innerHTML=`<td>${c.id}</td>
+      <td><div class="cvname">${c.name}</div><div class="tiny">${c.programme}</div></td>
+      <td>${c.university}<br><span class="tiny">${c.course}</span></td>
+      <td>${c.grade}</td>
+      <td>${c.firm}<br><span class="tiny">${c.division}</span></td>
+      <td>C ${c.commercial}/5 · N ${c.numerical}/5</td>
+      <td>${c.level}</td>
+      <td>${result?result.overallScore:(c.state==='running'?'…':'—')}</td>
+      <td>${result?'<span class="badge '+bandClass(result.band)+'">'+result.band+'</span>':c.error?'<span class="badge error">Error</span>':'—'}</td>
+      <td>${c.ms?Math.round(c.ms/1000)+'s':'—'}</td>
+      <td>${result?'<button class="openBtn" onclick="openResult('+i+')">Open</button>':c.error?'<details><summary>Error</summary>'+escapeHtml(c.error)+'</details>':'—'}</td>
+      <td><button class="cvBtn" onclick="showCV(${i})">View CV</button></td>`;
+    body.appendChild(tr);
+  });
+}
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function stats(){
+  const done=batch.filter(x=>x.result), scores=done.map(x=>Number(x.result.overallScore||0));
+  document.getElementById('sTotal').textContent=batch.length;
+  document.getElementById('sDone').textContent=done.length;
+  document.getElementById('sAvg').textContent=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
+  document.getElementById('sComp').textContent=done.filter(x=>x.result.band==='Competitive').length;
+  document.getElementById('sBorder').textContent=done.filter(x=>x.result.band==='Borderline').length;
+  document.getElementById('sWeak').textContent=done.filter(x=>x.result.band==='Weak').length;
+  document.getElementById('sErrors').textContent=batch.filter(x=>x.error).length;
+  const finished=done.length+batch.filter(x=>x.error).length;
+  document.getElementById('progressBar').style.width=(batch.length?finished/batch.length*100:0)+'%';
+}
+async function assess(c){
+  c.state='running'; render();
+  const profile={name:c.name,university:c.university,course:c.course,year:c.year,grade:c.grade,targetFirm:c.firm,targetDivision:c.division,programme:c.programme,track:c.division};
+  const quiz={commercialCorrect:c.commercial,commercialTotal:5,technicalCorrect:c.numerical,technicalTotal:5};
+  const t=Date.now();
   try{
-    sessionStorage.setItem('tdesk_fc', JSON.stringify(d));
-    sessionStorage.removeItem('tdesk_fc_pending');
-    window.location.href='fullcycle.html';
-  }catch(e){
-    alert('Error storing data: '+e.message+'. Please try again.');
-  }
+    const resp=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,quiz,cv:{fileName:'synthetic.txt',text:c.cv}})});
+    const txt=await resp.text(); let data;
+    try{data=JSON.parse(txt)}catch(e){throw new Error('Non-JSON response ('+resp.status+')')}
+    if(!resp.ok||!data.success||!data.result) throw new Error(data.message||data.error||'Assessment failed');
+    c.result=data.result;c.profile=profile;c.quiz=quiz;c.state='done';
+  }catch(e){c.error=e.message||String(e);c.state='error'}
+  c.ms=Date.now()-t; stats(); render();
 }
-
+async function runBatch(){
+  if(!batch.length) generateBatch();
+  const pending=batch.filter(x=>!x.result&&!x.error);
+  if(!pending.length){document.getElementById('status').textContent='Nothing left to run.';return}
+  const conc=Number(document.getElementById('concurrency').value);
+  const btn=document.getElementById('runBtn');btn.disabled=true;
+  let next=0;
+  async function worker(){
+    while(next<pending.length){
+      const c=pending[next++];
+      document.getElementById('status').textContent='Running '+(batch.filter(x=>x.result||x.error).length+1)+' of '+batch.length+'…';
+      await assess(c);
+    }
+  }
+  await Promise.all(Array.from({length:Math.min(conc,pending.length)},worker));
+  btn.disabled=false;stats();render();
+  document.getElementById('status').textContent='Batch complete: '+batch.filter(x=>x.result).length+' assessed, '+batch.filter(x=>x.error).length+' errors.';
+}
+function openResult(i){
+  const c=batch[i]; if(!c||!c.result)return;
+  const data={result:c.result,name:c.name,firm:c.firm,div:c.division,uni:c.university,crs:c.course,gr:c.grade,fS:c.commercial,nS:c.numerical,cvText:c.cv,profile:c.profile,quiz:c.quiz};
+  sessionStorage.setItem('tdesk_r',JSON.stringify(data));
+  window.open('/thedesk-result.html?lab='+c.id,'_blank');
+}
+function showCV(i){const c=batch[i];document.getElementById('modalTitle').textContent=c.name+' — '+c.level;document.getElementById('modalBody').textContent=c.cv;document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function clearBatch(){batch=[];render();stats();document.getElementById('status').textContent='Cleared.'}
+function exportCSV(){
+  if(!batch.length)return;
+  const cols=['id','name','university','course','year','grade','firm','division','programme','profile_type','commercial','numerical','score','band','time_seconds','error'];
+  const rows=[cols.join(',')].concat(batch.map(c=>[c.id,c.name,c.university,c.course,c.year,c.grade,c.firm,c.division,c.programme,c.level,c.commercial,c.numerical,c.result?c.result.overallScore:'',c.result?c.result.band:'',c.ms?(c.ms/1000).toFixed(1):'',c.error||''].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thedesk-assessment-lab.csv';a.click();URL.revokeObjectURL(a.href)
+}
+async function copyJSON(){await navigator.clipboard.writeText(JSON.stringify(batch,null,2));document.getElementById('status').textContent='Batch JSON copied.'}
+generateBatch();
 </script>
 </body>
 </html>
