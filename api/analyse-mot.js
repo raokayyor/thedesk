@@ -531,8 +531,41 @@ function buildPageFallback(profile, quiz, result) {
                       band === "Competitive" ? "Competitive does not mean safe" :
                       "This application needs material work before it is competitive";
 
+  function words(text, max) {
+    const arr = String(text || "").trim().split(/\s+/).filter(Boolean);
+    if (arr.length <= max) return arr.join(" ");
+    return arr.slice(0, max).join(" ").replace(/[,:;\-]+$/,"") + "…";
+  }
+
+  function sentences(text, maxSentences, maxWords) {
+    const src = String(text || "").trim();
+    if (!src) return "";
+    const parts = src.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [src];
+    return words(parts.slice(0, maxSentences).join(" ").trim(), maxWords);
+  }
+
+  const ps = result.pageSummary || {};
+  const modelStrengths = Array.isArray(result.strengths) ? result.strengths : [];
+  const modelLocked = Array.isArray(result.lockedActions) ? result.lockedActions : [];
+
   const strengthDims = dims.slice().sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,4);
-  while (strengthDims.length < 4) strengthDims.push({name:named[strengthDims.length] || "Evidence", visibleSummary:"Relevant evidence is present, but the application needs sharper positioning."});
+  const strengths = [];
+  for (let i=0;i<4;i++) {
+    if (modelStrengths[i] && (modelStrengths[i].title || modelStrengths[i].body)) {
+      strengths.push({
+        title: words(modelStrengths[i].title || named[i] || "Relevant evidence", 9),
+        evidence: words(modelStrengths[i].body || "", 42),
+        whyItMatters: ""
+      });
+    } else {
+      const d = strengthDims[i] || {};
+      strengths.push({
+        title: words(named[i] || d.name || "Relevant evidence", 9),
+        evidence: words(d.visibleSummary || "Relevant evidence is present, but it needs sharper positioning.", 38),
+        whyItMatters: ""
+      });
+    }
+  }
 
   const compDefs = [
     ["Analytical ability","Analytical","Academic Signal"],
@@ -544,39 +577,70 @@ function buildPageFallback(profile, quiz, result) {
     ["Technical readiness","Technical","Technical Readiness"]
   ];
 
+  const lockedDefaults = [
+    {category:"CV positioning",headline:"Your strongest evidence is not yet doing enough work",teaser:"Full Cycle gives the evidence hierarchy, line-by-line review and exact rewrites."},
+    {category:"Technical readiness",headline:"Your technical claims need to hold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
+    {category:"Numerical testing",headline:"Turn your test result into a targeted practice route",teaser:"Full Cycle gives timed drills, worked answers and retesting."},
+    {category:"Firm positioning",headline:"Make the application read specifically for "+(profile.targetFirm || "your target firm"),teaser:"Full Cycle prioritises the evidence that travels best for the target firm and division."},
+    {category:"Interview preparation",headline:"Your own CV should generate your interview questions",teaser:"Full Cycle turns your evidence into likely questions, follow-ups and answer frameworks."}
+  ];
+
   return {
     candidateName: result.candidateName || profile.name || "",
     overallScore: score,
     band,
-    risk:{headline:score+"/100 = "+band,warning:riskWarning,context:result.killerSentence || result.diagnostic || ""},
-    summary:{
-      strapline: result.archetype || band,
-      paragraphs:[result.diagnostic || "", result.uncomfortableTruth || "", result.recruiterMayMiss || ""].filter(Boolean),
-      paywallTeaser: result.fullCycleCta || ""
+    risk:{
+      headline:score+"/100 = "+band,
+      warning:riskWarning,
+      context:words(result.killerSentence || result.diagnostic || "", 28)
     },
-    strengths: strengthDims.map((d,i)=>({
-      title: d.name || named[i] || "Relevant evidence",
-      evidence: d.visibleSummary || named[i] || "",
-      whyItMatters: ""
-    })),
+    summary:{
+      strapline:words(ps.strapline || result.beingMisreadAs || result.archetype || band, 14),
+      paragraphs:[
+        sentences(ps.paragraph1 || result.diagnostic || "", 2, 65),
+        sentences(ps.paragraph2 || result.uncomfortableTruth || "", 2, 60),
+        sentences(ps.paragraph3 || result.recruiterMayMiss || "", 2, 40)
+      ].filter(Boolean),
+      paywallTeaser:words(ps.paywallTeaser || result.fullCycleCta || "", 32)
+    },
+    strengths,
     tests:{
-      numerical:{interpretation:n+"/"+nt+" correct",read:(findDim("Technical Readiness").visibleSummary || "Your numerical result needs to be read alongside the technical claims made on the CV."),lockedTeaser:"Full Cycle maps the weak question types and gives you targeted timed practice."},
-      commercialTechnical:{interpretation:cm+"/"+cmt+" correct",read:(findDim("Commercial Awareness").visibleSummary || "Your commercial / technical result shows how comfortably you can defend the finance language used in the application."),lockedTeaser:"Full Cycle adds technical guides, commercial practice and firm-specific preparation."}
+      numerical:{
+        interpretation:words(findDim("Technical Readiness").visibleSummary || (n+"/"+nt+" correct. This result should be read against the technical confidence implied by the CV."), 32),
+        read:words(findDim("Technical Readiness").lockedDetail || findDim("Technical Readiness").visibleSummary || "", 44),
+        lockedTeaser:"Timed numerical practice, worked answers and weak-topic retesting are inside Full Cycle."
+      },
+      commercialTechnical:{
+        interpretation:words(findDim("Commercial Awareness").visibleSummary || (cm+"/"+cmt+" correct. The result shows how comfortably the candidate can connect finance concepts to real commercial consequences."), 32),
+        read:words(findDim("Commercial Awareness").lockedDetail || findDim("Commercial Awareness").visibleSummary || "", 44),
+        lockedTeaser:"Technical guides, commercial preparation and firm-specific question banks are inside Full Cycle."
+      }
     },
     competencies: compDefs.map((def,i)=>{
       const dim = def[2] ? findDim(def[2]) : null;
       const comp = findComp(def[1]);
-      return {name:def[0],score:dim && typeof dim.score==="number" ? Math.round(dim.score) : statusScore(comp.status),visibleReason:(comp.visibleReason || (dim && dim.visibleSummary) || "Evidence is limited in the current application."),freeFix:i===0 ? (result.fullCycleFirstFix || "Make the strongest analytical evidence show the conclusion, not just the task.") : undefined,lockedImprovement:i===0 ? undefined : (comp.lockedImprovement || "Full Cycle shows how to strengthen and position this evidence.")};
+      const score2 = dim && typeof dim.score==="number" ? Math.round(dim.score) : statusScore(comp.status);
+      return {
+        name:def[0],
+        score:score2,
+        visibleReason:words(comp.visibleReason || (dim && dim.visibleSummary) || "Evidence is limited in the current application.", 32),
+        freeFix:i===0 ? words((result.freeAction && result.freeAction.detail) || result.fullCycleFirstFix || "Make the strongest analytical example show the conclusion, not only the task.", 42) : undefined,
+        lockedImprovement:i===0 ? undefined : words(comp.lockedImprovement || "Full Cycle shows how to strengthen and position this evidence.", 34)
+      };
     }),
-    freeAction:{headline:(result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].title) || "Make your strongest evidence do more work",detail:(result.fullCycleFirstFix || (result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].visibleRisk) || "Make one strong example show the judgement or outcome, not only the task.")},
-    lockedActions:[
-      {category:"CV positioning",headline:"Your strongest evidence is not yet doing enough work",teaser:"Full Cycle gives the evidence hierarchy, line-by-line review and exact rewrites."},
-      {category:"Technical readiness",headline:"Your technical claims need to hold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
-      {category:"Numerical testing",headline:"Turn your test result into a targeted practice route",teaser:"Full Cycle gives timed drills, worked answers and retesting."},
-      {category:"Firm positioning",headline:"Make the application read specifically for "+(profile.targetFirm || "your target firm"),teaser:"Full Cycle prioritises the evidence that travels best for the target firm and division."},
-      {category:"Interview preparation",headline:"Your own CV should generate your interview questions",teaser:"Full Cycle turns your evidence into likely questions, follow-ups and answer frameworks."}
-    ],
-    fullCycleCta: result.fullCycleCta || "The diagnosis is above. Full Cycle is the repair work."
+    freeAction:{
+      headline:words((result.freeAction && result.freeAction.headline) || (result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].title) || "Make your strongest evidence do more work", 14),
+      detail:words((result.freeAction && result.freeAction.detail) || result.fullCycleFirstFix || (result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].visibleRisk) || "Make one strong example show the judgement or outcome, not only the task.", 45)
+    },
+    lockedActions: lockedDefaults.map((fallback,i)=>{
+      const m = modelLocked[i] || {};
+      return {
+        category:m.category || fallback.category,
+        headline:words(m.headline || fallback.headline, 16),
+        teaser:words(m.teaser || fallback.teaser, 38)
+      };
+    }),
+    fullCycleCta:words(result.fullCycleCta || "The diagnosis is above. Full Cycle is the repair work.", 40)
   };
 }
 
