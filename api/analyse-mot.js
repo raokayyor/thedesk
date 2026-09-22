@@ -23,7 +23,7 @@ let pdfParse, mammoth;
 
 export const maxDuration = 60;
 
-const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-haiku-4-5-20251001";
+const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-4-6";
 const CV_MIN_CHARS = 100; // minimum non-whitespace characters
 
 // FIRM_PROCESS — researched, sourced recruitment process steps per firm, mirrored from the frontend.
@@ -334,6 +334,27 @@ export default async function handler(req, res) {
 
     // ── END REPAIR ──────────────────────────────────────────────────────────────
 
+    var finalScore = Math.max(0, Math.min(100, Math.round(result.overallScore || 0)));
+    result.overallScore = finalScore;
+    result.band = finalScore >= 75 ? 'Competitive' : finalScore >= 65 ? 'Borderline' : 'Weak';
+
+    try {
+      var pagePrompt = buildResultPagePrompt(profile, quiz, cvText, result);
+      var page = await callClaudePage(pagePrompt);
+      if (isValidPageResult(page)) {
+        page.overallScore = result.overallScore;
+        page.band = result.band;
+        page.candidateName = page.candidateName || result.candidateName || profile.name || '';
+        result.page = page;
+      } else {
+        console.log('PAGE PASS INVALID - using adapter');
+        result.page = buildPageFallback(profile, quiz, result);
+      }
+    } catch (pageErr) {
+      console.error('PAGE PASS FAILED:', pageErr);
+      result.page = buildPageFallback(profile, quiz, result);
+    }
+
     return res.status(200).json({
       success: true,
       source: "claude",
@@ -353,6 +374,223 @@ export default async function handler(req, res) {
     }
     return res.status(500).json({ success: false, source: "error", error: "CLAUDE_FAILED", message: "Assessment could not be completed. Please try again." });
   }
+}
+
+
+async function callClaudePage(prompt) {
+  const response = await anthropic.messages.create({
+    model: CLAUDE_MODEL,
+    max_tokens: 6000,
+    temperature: 0.25,
+    system: "You are the editorial assessment engine for The Desk, a finance recruiting platform. Read the evidence carefully. Be specific, restrained, practitioner-voiced and occasionally critical. Never invent CV facts. Respond ONLY with valid JSON.",
+    messages: [{ role: "user", content: prompt }],
+  });
+  const text = response.content?.[0]?.text || "";
+  const first = text.indexOf("{"), last = text.lastIndexOf("}");
+  if (first === -1 || last === -1) throw new SyntaxError("No JSON in page response");
+  return JSON.parse(text.slice(first, last + 1));
+}
+
+function buildResultPagePrompt(profile, quiz, cvText, assessment) {
+  const nCorrect = Number(quiz.technicalCorrect || 0);
+  const nTotal = Number(quiz.technicalTotal || 5);
+  const cCorrect = Number(quiz.commercialCorrect || 0);
+  const cTotal = Number(quiz.commercialTotal || 5);
+  const score = Math.max(0, Math.min(100, Math.round(assessment.overallScore || 0)));
+  const band = score >= 75 ? "Competitive" : score >= 65 ? "Borderline" : "Weak";
+
+  return `Build the FREE result-page content for this candidate.
+
+This is an editorial pass, NOT a new assessment. The underlying assessment and score are already decided.
+Do not change the overall score or band.
+
+CANDIDATE
+Name: ${profile.name || assessment.candidateName || ""}
+University: ${profile.university || ""}
+Course: ${profile.course || ""}
+Year: ${profile.year || ""}
+Grade: ${profile.grade || ""}
+Target firm: ${profile.targetFirm || ""}
+Target division: ${profile.targetDivision || ""}
+Programme: ${profile.programme || "Summer Internship"}
+
+TESTS
+Numerical: ${nCorrect}/${nTotal}
+Commercial / technical: ${cCorrect}/${cTotal}
+
+FIXED SCORE
+Overall: ${score}/100
+Band: ${band}
+Desk bands: 75+ Competitive; 65-74 Borderline; below 65 Weak.
+
+UNDERLYING ASSESSMENT
+${JSON.stringify(assessment)}
+
+CV TEXT
+"""
+${cvText}
+"""
+
+GOAL
+Make the student think: "They actually read my CV."
+Every meaningful claim must tie to real CV/test evidence. Do not invent employers, projects, modules, societies, achievements, transaction sizes, responsibilities or technical exposure.
+
+FREE/PAID BOUNDARY
+The free page diagnoses clearly and gives ONE genuinely useful free fix.
+The other five next-step routes are locked and should tease substantial content behind Full Cycle.
+
+STYLE
+Senior finance practitioner. Calm, specific, concise, evidence-led, occasionally critical.
+No motivational filler. No generic AI phrases. No fake certainty.
+Do not say a candidate will pass or fail.
+Do not present The Desk score bands as official bank cut-offs.
+
+RETURN EXACTLY THIS JSON SHAPE:
+{
+  "candidateName":"",
+  "overallScore":${score},
+  "band":"${band}",
+  "risk":{
+    "headline":"${score}/100 = ${band}",
+    "warning":"",
+    "context":"1-2 sentences explaining what this score means for THIS candidate, using named CV/test evidence"
+  },
+  "summary":{
+    "strapline":"short high-level judgement",
+    "paragraphs":[
+      "personalised high-level read using named CV evidence",
+      "critical paragraph explaining the biggest mismatch/risk",
+      "short closing paragraph explaining what most needs attention, without giving the full repair"
+    ],
+    "paywallTeaser":"specific sentence explaining what Full Cycle would answer"
+  },
+  "strengths":[
+    {"title":"","evidence":"","whyItMatters":""},
+    {"title":"","evidence":"","whyItMatters":""},
+    {"title":"","evidence":"","whyItMatters":""},
+    {"title":"","evidence":"","whyItMatters":""}
+  ],
+  "tests":{
+    "numerical":{"interpretation":"","read":"","lockedTeaser":""},
+    "commercialTechnical":{"interpretation":"","read":"","lockedTeaser":""}
+  },
+  "competencies":[
+    {"name":"Analytical ability","score":0,"visibleReason":"","freeFix":""},
+    {"name":"Teamwork","score":0,"visibleReason":"","lockedImprovement":""},
+    {"name":"Communication","score":0,"visibleReason":"","lockedImprovement":""},
+    {"name":"Leadership","score":0,"visibleReason":"","lockedImprovement":""},
+    {"name":"Resilience","score":0,"visibleReason":"","lockedImprovement":""},
+    {"name":"Commercial awareness","score":0,"visibleReason":"","lockedImprovement":""},
+    {"name":"Technical readiness","score":0,"visibleReason":"","lockedImprovement":""}
+  ],
+  "freeAction":{"headline":"","detail":"one concrete action the student can take now; useful but not a full rewrite"},
+  "lockedActions":[
+    {"category":"CV positioning","headline":"","teaser":""},
+    {"category":"Technical readiness","headline":"","teaser":""},
+    {"category":"Numerical testing","headline":"","teaser":""},
+    {"category":"Firm positioning","headline":"","teaser":""},
+    {"category":"Interview preparation","headline":"","teaser":""}
+  ],
+  "fullCycleCta":"one personalised sentence connecting the diagnosis to the repair work"
+}
+
+RULES
+- Exactly 4 strengths.
+- Exactly 7 competencies in the specified order.
+- Exactly 5 lockedActions in the specified order.
+- Competency scores measure evidence in the application, not personality.
+- Analytical ability is the only competency that gets a visible free fix.
+- The other six competency improvements stay locked.
+- Mention actual named CV evidence wherever possible.
+- Test commentary must reflect the actual test scores above.
+- If CV technical claims are stronger than test readiness, call out that mismatch explicitly.
+- Do not repeat the same paragraph in multiple sections.
+- For Borderline use warning exactly: "This is not a score to feel safe about"
+- For Competitive use: "Competitive does not mean safe"
+- For Weak use: "This application needs material work before it is competitive"
+- JSON only.`;
+}
+
+function isValidPageResult(page) {
+  if (!page || typeof page !== "object") return false;
+  if (!page.risk || !page.summary || !page.tests) return false;
+  if (!Array.isArray(page.summary.paragraphs) || page.summary.paragraphs.length < 2) return false;
+  if (!Array.isArray(page.strengths) || page.strengths.length !== 4) return false;
+  if (!Array.isArray(page.competencies) || page.competencies.length !== 7) return false;
+  if (!page.freeAction || !Array.isArray(page.lockedActions) || page.lockedActions.length !== 5) return false;
+  return true;
+}
+
+function statusScore(status) {
+  const s = String(status || "").toLowerCase();
+  if (s.includes("strong")) return 84;
+  if (s.includes("evidenced") && !s.includes("partially") && !s.includes("not yet")) return 74;
+  if (s.includes("partially")) return 62;
+  if (s.includes("not yet")) return 44;
+  return 58;
+}
+
+function buildPageFallback(profile, quiz, result) {
+  const dims = Array.isArray(result.dimensions) ? result.dimensions : [];
+  const comps = Array.isArray(result.competencies) ? result.competencies : [];
+  const findDim = (name) => dims.find(d => d && d.name === name) || {};
+  const findComp = (name) => comps.find(d => d && d.name === name) || {};
+  const named = Array.isArray(result.namedCvDetails) ? result.namedCvDetails : [];
+  const n = Number(quiz.technicalCorrect || 0), nt = Number(quiz.technicalTotal || 5);
+  const cm = Number(quiz.commercialCorrect || 0), cmt = Number(quiz.commercialTotal || 5);
+  const score = Math.round(result.overallScore || 0);
+  const band = score >= 75 ? "Competitive" : score >= 65 ? "Borderline" : "Weak";
+  const riskWarning = band === "Borderline" ? "This is not a score to feel safe about" :
+                      band === "Competitive" ? "Competitive does not mean safe" :
+                      "This application needs material work before it is competitive";
+
+  const strengthDims = dims.slice().sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,4);
+  while (strengthDims.length < 4) strengthDims.push({name:named[strengthDims.length] || "Evidence", visibleSummary:"Relevant evidence is present, but the application needs sharper positioning."});
+
+  const compDefs = [
+    ["Analytical ability","Analytical","Academic Signal"],
+    ["Teamwork","Teamwork",null],
+    ["Communication","Communication",null],
+    ["Leadership","Leadership",null],
+    ["Resilience","Resilience",null],
+    ["Commercial awareness","Commercial","Commercial Awareness"],
+    ["Technical readiness","Technical","Technical Readiness"]
+  ];
+
+  return {
+    candidateName: result.candidateName || profile.name || "",
+    overallScore: score,
+    band,
+    risk:{headline:score+"/100 = "+band,warning:riskWarning,context:result.killerSentence || result.diagnostic || ""},
+    summary:{
+      strapline: result.archetype || band,
+      paragraphs:[result.diagnostic || "", result.uncomfortableTruth || "", result.recruiterMayMiss || ""].filter(Boolean),
+      paywallTeaser: result.fullCycleCta || ""
+    },
+    strengths: strengthDims.map((d,i)=>({
+      title: d.name || named[i] || "Relevant evidence",
+      evidence: d.visibleSummary || named[i] || "",
+      whyItMatters: ""
+    })),
+    tests:{
+      numerical:{interpretation:n+"/"+nt+" correct",read:(findDim("Technical Readiness").visibleSummary || "Your numerical result needs to be read alongside the technical claims made on the CV."),lockedTeaser:"Full Cycle maps the weak question types and gives you targeted timed practice."},
+      commercialTechnical:{interpretation:cm+"/"+cmt+" correct",read:(findDim("Commercial Awareness").visibleSummary || "Your commercial / technical result shows how comfortably you can defend the finance language used in the application."),lockedTeaser:"Full Cycle adds technical guides, commercial practice and firm-specific preparation."}
+    },
+    competencies: compDefs.map((def,i)=>{
+      const dim = def[2] ? findDim(def[2]) : null;
+      const comp = findComp(def[1]);
+      return {name:def[0],score:dim && typeof dim.score==="number" ? Math.round(dim.score) : statusScore(comp.status),visibleReason:(comp.visibleReason || (dim && dim.visibleSummary) || "Evidence is limited in the current application."),freeFix:i===0 ? (result.fullCycleFirstFix || "Make the strongest analytical evidence show the conclusion, not just the task.") : undefined,lockedImprovement:i===0 ? undefined : (comp.lockedImprovement || "Full Cycle shows how to strengthen and position this evidence.")};
+    }),
+    freeAction:{headline:(result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].title) || "Make your strongest evidence do more work",detail:(result.fullCycleFirstFix || (result.priorityGaps && result.priorityGaps[0] && result.priorityGaps[0].visibleRisk) || "Make one strong example show the judgement or outcome, not only the task.")},
+    lockedActions:[
+      {category:"CV positioning",headline:"Your strongest evidence is not yet doing enough work",teaser:"Full Cycle gives the evidence hierarchy, line-by-line review and exact rewrites."},
+      {category:"Technical readiness",headline:"Your technical claims need to hold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
+      {category:"Numerical testing",headline:"Turn your test result into a targeted practice route",teaser:"Full Cycle gives timed drills, worked answers and retesting."},
+      {category:"Firm positioning",headline:"Make the application read specifically for "+(profile.targetFirm || "your target firm"),teaser:"Full Cycle prioritises the evidence that travels best for the target firm and division."},
+      {category:"Interview preparation",headline:"Your own CV should generate your interview questions",teaser:"Full Cycle turns your evidence into likely questions, follow-ups and answer frameworks."}
+    ],
+    fullCycleCta: result.fullCycleCta || "The diagnosis is above. Full Cycle is the repair work."
+  };
 }
 
 // ── File text extraction ──────────────────────────────────────────────────────
