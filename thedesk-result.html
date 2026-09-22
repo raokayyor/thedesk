@@ -490,7 +490,11 @@ body{padding:0 18px}
     setEl(box.querySelector('p'),text);
   });
   var strengthPromo=el('.overview .row:nth-child(2) .promoBox strong');
-  if(strengthPromo && p.summary && p.summary.paywallTeaser) strengthPromo.textContent=p.summary.paywallTeaser;
+  if(strengthPromo){
+    var sNames=(p.strengths||[]).slice(0,2).map(function(s){ return s && s.title; }).filter(Boolean);
+    var strengthRef=sNames.length ? sNames.join(' and ') : 'your strongest evidence';
+    strengthPromo.textContent='Full Cycle shows how to make '+strengthRef+' carry more weight — what to foreground, what is being undersold, and how to turn those strengths into a stronger application.';
+  }
 
   // SECTION 03 TESTS
   var cards=all('.testCard');
