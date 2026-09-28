@@ -426,8 +426,8 @@ body{padding:0 18px}
   var profile = d.profile || {};
   var score = Number(r.overallScore || p.overallScore || 0);
   var band = score >= 75 ? 'Competitive' : score >= 65 ? 'Borderline' : 'Weak';
-  var firm = d.firm || profile.targetFirm || '';
-  var division = d.div || profile.targetDivision || '';
+  var division = d.div || d.sector || profile.targetSector || profile.targetDivision || profile.track || '';
+  var programme = d.programme || profile.programme || '';
   var course = d.crs || profile.course || '';
   var grade = d.gr || profile.grade || '';
   var university = d.uni || profile.university || '';
@@ -439,7 +439,7 @@ body{padding:0 18px}
   // HERO
   set('.candidate', p.candidateName || profile.name || r.candidateName || 'Your Result');
   set('.role', division);
-  set('.bank', firm);
+  set('.bank', programme);
   var meta = el('.meta');
   if(meta){
     meta.innerHTML='';
