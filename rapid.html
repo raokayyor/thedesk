@@ -57,7 +57,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
     <div class="grid">
       <div><label>Batch size</label><select id="count"><option>10</option><option selected>25</option><option>50</option><option>100</option><option>200</option></select></div>
       <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
-      <div><label>Target sector / route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>Corporate Banking</option><option>Accounting / Audit</option><option>Consulting / Advisory</option><option>General Finance</option></select></div>
+      <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>Corporate Banking</option><option>Accounting / Audit</option><option>Consulting / Advisory</option><option>General Finance</option></select></div>
       <div><label>Programme</label><select id="programme"><option value="mixed">Mixed</option><option>Summer Internship</option><option>Spring Week</option><option>Graduate Programme</option></select></div>
       <div><label>Concurrency</label><select id="concurrency"><option>1</option><option selected>2</option><option>3</option></select></div>
     </div>
@@ -113,8 +113,14 @@ const chance=p=>Math.random()<p;
 function targetSelections(){
   const d=document.getElementById('division').value;
   const p=document.getElementById('programme').value;
+  const primary=d==='mixed'?pick(DIVS):d;
+  const alternatives=DIVS.filter(x=>x!==primary);
+  const second=chance(.75)?pick(alternatives):'';
+  const third=second&&chance(.5)?pick(alternatives.filter(x=>x!==second)):'';
   return {
-    division:d==='mixed'?pick(DIVS):d,
+    division:primary,
+    division2:second,
+    division3:third,
     programme:p==='mixed'?pick(PROGS):p
   }
 }
@@ -192,7 +198,7 @@ function makeCandidate(i){
   let comm=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
   let num=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
   let year=t.programme.includes('Spring Week')?'1st Year':t.programme==='Graduate Programme'?pick(['Final Year','Graduate']):t.programme.includes('Industrial Placement')?'2nd Year / Penultimate Year':pick(['2nd Year / Penultimate Year','Final Year']);
-  const c={id:i+1,name:pick(FIRST)+' '+pick(LAST),university,course,year,grade,division:t.division,programme:t.programme,level:lvl,commercial:comm,numerical:num};
+  const c={id:i+1,name:pick(FIRST)+' '+pick(LAST),university,course,year,grade,division:t.division,division2:t.division2,division3:t.division3,programme:t.programme,level:lvl,commercial:comm,numerical:num};
   c.exp=makeExperience(c.division,lvl); c.project=makeProject(c.division,lvl); c.cv=buildCV(c);
   c.state='pending'; return c;
 }
@@ -211,7 +217,7 @@ function render(){
       <td><div class="cvname">${c.name}</div><div class="tiny">${c.programme}</div></td>
       <td>${c.university}<br><span class="tiny">${c.course}</span></td>
       <td>${c.grade}</td>
-      <td>${c.division}<br><span class="tiny">${c.programme}</span></td>
+      <td>${c.division}<br><span class="tiny">${[c.division2,c.division3].filter(Boolean).join(' · ')||'No secondary route'}</span></td>
       <td>C ${c.commercial}/5 · N ${c.numerical}/5</td>
       <td>${c.level}</td>
       <td>${result?result.overallScore:(c.state==='running'?'…':'—')}</td>
@@ -237,7 +243,7 @@ function stats(){
 }
 async function assess(c){
   c.state='running'; render();
-  const profile={name:c.name,university:c.university,course:c.course,year:c.year,grade:c.grade,targetSector:c.division,targetDivision:c.division,programme:c.programme,track:c.division};
+  const profile={name:c.name,university:c.university,course:c.course,year:c.year,grade:c.grade,targetSector:c.division,targetSector2:c.division2,targetSector3:c.division3,targetDivision:c.division,programme:c.programme,track:c.division};
   const quiz={commercialCorrect:c.commercial,commercialTotal:5,technicalCorrect:c.numerical,technicalTotal:5};
   const t=Date.now();
   try{
@@ -269,7 +275,7 @@ async function runBatch(){
 }
 function openResult(i){
   const c=batch[i]; if(!c||!c.result)return;
-  const data={result:c.result,name:c.name,sector:c.division,div:c.division,programme:c.programme,uni:c.university,crs:c.course,gr:c.grade,fS:c.commercial,nS:c.numerical,cvText:c.cv,profile:c.profile,quiz:c.quiz};
+  const data={result:c.result,name:c.name,sector:c.division,sector2:c.division2,sector3:c.division3,div:c.division,programme:c.programme,uni:c.university,crs:c.course,gr:c.grade,fS:c.commercial,nS:c.numerical,cvText:c.cv,profile:c.profile,quiz:c.quiz};
   sessionStorage.setItem('tdesk_r',JSON.stringify(data));
   window.open('/thedesk-result.html?lab='+c.id,'_blank');
 }
@@ -278,8 +284,8 @@ function closeModal(){document.getElementById('modal').classList.remove('open')}
 function clearBatch(){batch=[];render();stats();document.getElementById('status').textContent='Cleared.'}
 function exportCSV(){
   if(!batch.length)return;
-  const cols=['id','name','university','course','year','grade','sector','programme','profile_type','commercial','numerical','score','band','time_seconds','error'];
-  const rows=[cols.join(',')].concat(batch.map(c=>[c.id,c.name,c.university,c.course,c.year,c.grade,c.division,c.programme,c.level,c.commercial,c.numerical,c.result?c.result.overallScore:'',c.result?c.result.band:'',c.ms?(c.ms/1000).toFixed(1):'',c.error||''].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')));
+  const cols=['id','name','university','course','year','grade','primary_sector','secondary_sector','third_sector','programme','profile_type','commercial','numerical','score','band','time_seconds','error'];
+  const rows=[cols.join(',')].concat(batch.map(c=>[c.id,c.name,c.university,c.course,c.year,c.grade,c.division,c.division2,c.division3,c.programme,c.level,c.commercial,c.numerical,c.result?c.result.overallScore:'',c.result?c.result.band:'',c.ms?(c.ms/1000).toFixed(1):'',c.error||''].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')));
   const blob=new Blob([rows.join('\n')],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thedesk-assessment-lab.csv';a.click();URL.revokeObjectURL(a.href)
 }
 async function copyJSON(){await navigator.clipboard.writeText(JSON.stringify(batch,null,2));document.getElementById('status').textContent='Batch JSON copied.'}
