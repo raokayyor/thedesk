@@ -58,7 +58,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
       <div><label>Batch size</label><select id="count"><option>10</option><option selected>25</option><option>50</option><option>100</option><option>200</option></select></div>
       <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
       <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>Corporate Banking</option><option>Accounting / Audit</option><option>Consulting / Advisory</option><option>General Finance</option></select></div>
-      <div><label>Programme</label><select id="programme"><option value="mixed">Mixed</option><option>Summer Internship</option><option>Spring Week</option><option>Graduate Programme</option></select></div>
+      <div><label>Programme / stage</label><select id="programme"><option value="mixed">Mixed</option><option>Spring Week / Insight Programme</option><option>Summer Internship</option><option>Industrial Placement / Year in Industry</option><option>Graduate Programme</option><option>Off-cycle Internship</option></select></div>
       <div><label>Concurrency</label><select id="concurrency"><option>1</option><option selected>2</option><option>3</option></select></div>
     </div>
     <div class="actions">
@@ -277,7 +277,7 @@ function openResult(i){
   const c=batch[i]; if(!c||!c.result)return;
   const data={result:c.result,name:c.name,sector:c.division,sector2:c.division2,sector3:c.division3,div:c.division,programme:c.programme,uni:c.university,crs:c.course,gr:c.grade,fS:c.commercial,nS:c.numerical,cvText:c.cv,profile:c.profile,quiz:c.quiz};
   sessionStorage.setItem('tdesk_r',JSON.stringify(data));
-  window.open('/thedesk-result.html?lab='+c.id,'_blank');
+  window.open('/thedesk-result.html?lab=1?lab='+c.id,'_blank');
 }
 function showCV(i){const c=batch[i];document.getElementById('modalTitle').textContent=c.name+' — '+c.level;document.getElementById('modalBody').textContent=c.cv;document.getElementById('modal').classList.add('open')}
 function closeModal(){document.getElementById('modal').classList.remove('open')}
