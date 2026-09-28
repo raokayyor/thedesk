@@ -393,7 +393,9 @@ University: ${profile.university || ""}
 Course: ${profile.course || ""}
 Year: ${profile.year || ""}
 Grade: ${profile.grade || ""}
-Target sector / route: ${profile.targetSector || profile.targetDivision || profile.track || ""}
+1st-choice sector / route: ${profile.targetSector || profile.targetDivision || profile.track || ""}
+2nd choice: ${profile.targetSector2 || ""}
+3rd choice: ${profile.targetSector3 || ""}
 Route: ${profile.targetSector || profile.targetDivision || profile.track || ""}
 Programme: ${profile.programme || "Summer Internship"}
 
@@ -722,7 +724,7 @@ function isValidResult(result, cvRequired) {
 
 // ── Prompt builder ────────────────────────────────────────────────────────────
 function buildPrompt(profile, quiz, cvText) {
-  const track = profile.track || "General Finance";
+  const track = profile.targetSector || profile.track || "General Finance";
 
   const weights = {
     "Investment Banking / IBD":        "Academic 15%, Experience 20%, Commercial 15%, Technical 20%, Positioning 20%, Clarity 10%",
@@ -748,9 +750,12 @@ function buildPrompt(profile, quiz, cvText) {
   const nPct = Math.round(((quiz.technicalCorrect || 0) / (quiz.technicalTotal || 5)) * 100);
 
   const targetSector = profile.targetSector || profile.targetDivision || profile.track || "General Finance";
+  const targetSector2 = profile.targetSector2 || "";
+  const targetSector3 = profile.targetSector3 || "";
   const stage = profile.programme || "Not provided";
   const year = profile.year || "Not provided";
-  const sectorInstruction = `SECTOR-FIRST PERSONALISATION — assess primarily against ${targetSector}. Do not assume a named employer is the candidate's exclusive target and do not invent firm-specific recruiting stages. The selected route and application stage matter more than any employer name that may appear in the CV.`;
+  const secondaryRoutes = [targetSector2,targetSector3].filter(Boolean);
+  const sectorInstruction = `ROUTE PRIORITY — score and diagnose the candidate primarily against their 1st-choice route: ${targetSector}. Treat 2nd/3rd choices only as secondary context: ${secondaryRoutes.length ? secondaryRoutes.join(" | ") : "none selected"}. Do not average the routes together and do not lower the primary-route score simply because the student is applying broadly. If secondary routes reveal a materially different fit, you may mention that briefly, but the overall score must answer: how competitive is this candidate for the 1st-choice route at this stage?`;
 
 
   return `You are conducting a Free Application Assessment for a finance student. You are a former practitioner — not a careers adviser, not an AI tool. Your voice is direct, restrained, specific and slightly clinical. Not motivational. Not dramatic. Not generic.
@@ -782,7 +787,7 @@ Default: "Your profile has credible signals, but the strongest evidence still ne
 
 CANDIDATE DATA:
 University: ${profile.university || "Not provided"} | Course: ${profile.course || "Not provided"} | Year: ${profile.year || "Not provided"} | Grade: ${profile.grade || "Not provided"}
-Target sector / route: ${profile.targetSector || profile.targetDivision || profile.track || "Not provided"} | Programme: ${profile.programme || "Not provided"}
+1st-choice sector / route: ${profile.targetSector || profile.targetDivision || profile.track || "Not provided"} | 2nd choice: ${profile.targetSector2 || "Not selected"} | 3rd choice: ${profile.targetSector3 || "Not selected"} | Programme: ${profile.programme || "Not provided"}
 Commercial quiz: ${quiz.commercialCorrect || 0}/${quiz.commercialTotal || 5} (${fPct}%) | Numerical: ${quiz.technicalCorrect || 0}/${quiz.technicalTotal || 5} (${nPct}%)
 
 ${sectorInstruction}
