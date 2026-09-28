@@ -25,7 +25,8 @@ body{padding:0 18px}
 .heroCol{padding:27px 30px;border-right:1px solid var(--rule)}
 .heroCol:last-child{border-right:0}
 .kicker{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
-.candidate{font-family:'Fraunces',serif;font-size:49px;line-height:.96;margin:14px 0 18px;font-weight:500}
+.candidate{font-family:'Fraunces',serif;font-size:49px;line-height:.96;margin:14px 0 8px;font-weight:500}
+.universityHero{font-size:12px;font-weight:700;letter-spacing:.02em;margin:0 0 16px;color:#30373b}
 .role{font-family:'Fraunces',serif;font-size:18px;line-height:1.12;font-weight:500}
 .bank{font-size:13px;margin-top:3px}
 .meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;font-size:10px}
@@ -180,6 +181,7 @@ body{padding:0 18px}
   <div class="heroCol">
     <div class="kicker">Result of your assessment</div>
     <div class="candidate">Amelia Chen</div>
+    <div class="universityHero">University of Bristol</div>
     <div class="role">Investment Banking Division</div>
     <div class="bank">Barclays</div>
     <div class="meta"><span>◈ Economics (BSc)</span><span>▣ Final year</span><span>⌖ UK</span></div>
@@ -437,13 +439,14 @@ body{padding:0 18px}
   var cTotal = Number((d.quiz||{}).commercialTotal || 5);
 
   // HERO
-  set('.candidate', p.candidateName || profile.name || r.candidateName || 'Your Result');
+  set('.candidate', profile.name || d.name || p.candidateName || r.candidateName || 'Your Result');
+  set('.universityHero', university);
   set('.role', division);
   set('.bank', programme);
   var meta = el('.meta');
   if(meta){
     meta.innerHTML='';
-    [course, grade, university].filter(Boolean).forEach(function(v){
+    [course, grade].filter(Boolean).forEach(function(v){
       var s=document.createElement('span'); s.textContent=v; meta.appendChild(s);
     });
   }
