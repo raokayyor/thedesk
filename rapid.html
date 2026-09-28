@@ -197,7 +197,7 @@ function makeCandidate(i){
   let grade=lvl==='strong'?pick(['First Class (predicted)','First Class','2:1 (predicted)']):lvl==='weak'?pick(['2:2 (predicted)','2:1 (predicted)','2:1']):pick(['2:1 (predicted)','2:1','First Class (predicted)']);
   let comm=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
   let num=lvl==='strong'?ri(4,5):lvl==='weak'?ri(1,3):ri(2,4);
-  let year=t.programme.includes('Spring Week')?'1st Year':t.programme==='Graduate Programme'?pick(['Final Year','Graduate']):t.programme.includes('Industrial Placement')?'2nd Year / Penultimate Year':pick(['2nd Year / Penultimate Year','Final Year']);
+  let year=t.programme.includes('Spring Week')?'1st Year':t.programme==='Graduate Programme'?pick(['Final Year','Graduate']):t.programme.includes('Industrial Placement')?'2nd Year / Penultimate Year':t.programme==='Summer Internship'?(chance(.85)?'2nd Year / Penultimate Year':'Final Year'):pick(['2nd Year / Penultimate Year','Final Year','Graduate']);
   const c={id:i+1,name:pick(FIRST)+' '+pick(LAST),university,course,year,grade,division:t.division,division2:t.division2,division3:t.division3,programme:t.programme,level:lvl,commercial:comm,numerical:num};
   c.exp=makeExperience(c.division,lvl); c.project=makeProject(c.division,lvl); c.cv=buildCV(c);
   c.state='pending'; return c;
