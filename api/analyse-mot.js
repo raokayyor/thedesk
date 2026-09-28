@@ -543,6 +543,13 @@ function buildPageFallback(profile, quiz, result) {
   }
 
   const ps = result.pageSummary || {};
+  function alignBandLanguage(text) {
+    let out = String(text || "");
+    out = out.replace(/\b(?:Weak|Borderline|Competitive)\s+band\b/gi, band+" band");
+    out = out.replace(/\b(?:Weak|Borderline|Competitive)\s+on The Desk scale\b/gi, band+" on The Desk scale");
+    out = out.replace(/\bscores?\s+\d{1,3}\b/gi, "scores "+score);
+    return out;
+  }
   const modelStrengths = Array.isArray(result.strengths) ? result.strengths : [];
   const modelLocked = Array.isArray(result.lockedActions) ? result.lockedActions : [];
 
@@ -595,9 +602,9 @@ function buildPageFallback(profile, quiz, result) {
     summary:{
       strapline:words(ps.strapline || result.beingMisreadAs || result.archetype || band, 12),
       paragraphs:[
-        sentences(ps.paragraph1 || result.diagnostic || "", 2, 50),
-        sentences(ps.paragraph2 || result.uncomfortableTruth || "", 2, 45),
-        sentences(ps.paragraph3 || result.recruiterMayMiss || "", 1, 28)
+        sentences(alignBandLanguage(ps.paragraph1 || result.diagnostic || ""), 2, 50),
+        sentences(alignBandLanguage(ps.paragraph2 || result.uncomfortableTruth || ""), 2, 45),
+        sentences(alignBandLanguage(ps.paragraph3 || result.recruiterMayMiss || ""), 1, 28)
       ].filter(Boolean),
       paywallTeaser:
         band === "Weak"
