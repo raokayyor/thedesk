@@ -509,9 +509,9 @@ function isValidPageResult(page) {
 function statusScore(status) {
   const s = String(status || "").toLowerCase();
   if (s.includes("strong")) return 84;
-  if (s.includes("evidenced") && !s.includes("partially") && !s.includes("not yet")) return 74;
-  if (s.includes("partially")) return 62;
-  if (s.includes("not yet")) return 44;
+  if (s.includes("evidenced") && !s.includes("partially") && !s.includes("not yet") && !s.includes("insufficient")) return 74;
+  if (s.includes("partially")) return 65;
+  if (s.includes("not yet") || s.includes("insufficient") || s.includes("under-evidenced")) return 55;
   return 58;
 }
 
@@ -579,7 +579,7 @@ function buildPageFallback(profile, quiz, result) {
     {category:"CV positioning",headline:"Your strongest evidence is not yet doing enough work",teaser:"Full Cycle gives the evidence hierarchy, line-by-line review and exact rewrites."},
     {category:"Technical readiness",headline:"Your technical claims need to hold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
     {category:"Numerical testing",headline:"Turn your test result into a targeted practice route",teaser:"Full Cycle gives timed drills, worked answers and retesting."},
-    {category:"Firm positioning",headline:"Make the application read specifically for "+(profile.targetFirm || "your target firm"),teaser:"Full Cycle prioritises the evidence that travels best for the target firm and division."},
+    {category:"Route positioning",headline:"Make the application read specifically for "+(profile.targetSector || profile.targetDivision || "your first-choice route"),teaser:"Full Cycle prioritises the evidence that travels best for the first-choice route, then adapts it for individual firms."},
     {category:"Interview preparation",headline:"Your own CV should generate your interview questions",teaser:"Full Cycle turns your evidence into likely questions, follow-ups and answer frameworks."}
   ];
 
@@ -919,6 +919,7 @@ STAGE CALIBRATION — MANDATORY:
 - 2nd Year / Penultimate + Summer Internship: expect clearer route evidence, stronger finance/adjacent experience, more developed technical/commercial readiness and better CV positioning.
 - Final Year / Graduate Programme: apply the highest evidence standard. Expect stronger ownership, clearer outcomes, role-specific preparation and more defensible competency evidence.
 - Industrial Placement / Off-cycle: calibrate between internship and graduate level according to year and prior experience.
+- Programme-year fit matters. Spring/Insight is normally an early-university application; Summer Internship is normally second/penultimate-year, although some employers also accept final-year students; Graduate Programme is normally final-year/graduate. Do not mark an otherwise valid candidate down just because a less-common combination exists, but explicitly notice the combination and judge against the actual programme they selected.
 - A strong early-stage candidate can score 75+ even if their CV is not as developed as a final-year candidate's CV. The score answers 'how competitive is this application for THIS stage and route?', not 'how complete is this person as a finance professional?'.
 
 EVIDENCE CONFIDENCE — MANDATORY:
@@ -927,6 +928,18 @@ EVIDENCE CONFIDENCE — MANDATORY:
 - Do NOT assign a competency below 55 solely because the CV lacks detail. Scores below 50 require actual negative evidence, a material contradiction, or clearly poor demonstrated performance.
 - Committee roles, sport, sustained part-time work, customer-facing work and internships are legitimate evidence sources. Their presence should trigger investigation/partial credit even when outcomes are not quantified.
 - CV presentation weaknesses can reduce Positioning/Clarity without pretending the candidate's underlying ability is weak.
+
+FINAL PRACTITIONER JUDGEMENT — MANDATORY:
+After scoring the dimensions, step away from the rubric and read the candidate as a whole, as a senior finance practitioner would.
+Ask:
+- How strong is this candidate relative to people applying at this exact year/stage?
+- Are there unusually strong signals that deserve more weight than a mechanical rubric would give them?
+- Are apparent weaknesses genuine weaknesses, or merely under-evidenced areas?
+- Do the test results strengthen or contradict the CV?
+- Is this fundamentally a weak candidate, or a credible candidate whose application is poorly positioned?
+- Does the final score and band actually match the narrative you are about to write?
+The dimension scores are evidence and guardrails, not a calculator that determines the headline. Use judgement. If the component evidence is mostly strong and the only major weakness is positioning, do not label the whole candidate Weak unless you can point to a specific material reason.
+Before returning JSON, perform one final consistency check: if the narrative says "above average", "strong academic signal", "relevant experience", or "perfect/strong tests" but the overall score is below 65, either justify that Weak score with a concrete material weakness or revise the overall score upward.
 
 SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
@@ -1037,8 +1050,8 @@ COMMERCIAL RULE: The free result shows diagnosis only. The repair plan is locked
 QUALITY CHECKS before returning: (1) killer sentence names real CV evidence (2) namedCvDetails has 3-6 real items (3) exactly 4 priorityGaps (4) exactly 7 competencies (5) exactly 4 strengths (6) exactly 5 lockedActions (7) not all competencies "Not yet evidenced" unless CV has almost no content (8) Analytical must be at least Partially evidenced if dissertation/research/modelling/quant/coding/numerical 4+/5 exists (9) Communication must be at least Partially evidenced if essay degree/dissertation/customer-facing/society role exists (10) Resilience must be at least Partially evidenced if part-time work/demanding schedule/sport exists (11) visibleSummary is SHORT — one sentence max (12) lockedDetail contains the full analysis (13) obey every DISPLAY LENGTH below
 
 {
-"overallScore":[integer 0-100. Calibrate fairly — strong profiles with positioning issues should be 60-75, not below 50],
-"band":"[MUST be exactly: Strong, Competitive, Borderline, Weak, or Not yet ready. 85+=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready]",
+"overallScore":[integer 0-100. This is the FINAL holistic practitioner judgement after considering stage, route, evidence quality, tests, positioning and contradictions. Do not mechanically average dimensions.],
+"band":"[MUST be exactly: Competitive, Borderline, or Weak. 75+=Competitive, 65-74=Borderline, below 65=Weak]",
 "archetype":"[3-7 words. Clean, human, memorable. E.g.: Credible IBD Candidate Technical Risk | Strong Raw Material Weak Framing | Early-Stage Evidence Gap | Commercially Curious Not Yet Interview-Ready | Elite but Unfocused]",
 "killerSentence":"[One sharp sentence: strongest named CV evidence + hidden risk + route consequence. Must name a real CV item. Must not give the repair.]",
 "namedCvDetails":["[3-6 specific named items from this CV — employer names, project titles, society roles, module names. Do not invent.]"],
