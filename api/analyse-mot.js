@@ -142,11 +142,8 @@ export default async function handler(req, res) {
     // ── POST-PARSE REPAIR ──────────────────────────────────────────────────────
 
     // 1. Normalise band
-    var validBands2 = ['Strong','Competitive','Borderline','Weak','Not yet ready'];
-    if (!validBands2.includes(result.band)) {
-      var sc2 = result.overallScore || 0;
-      result.band = sc2>=85?'Strong':sc2>=70?'Competitive':sc2>=55?'Borderline':sc2>=40?'Weak':'Not yet ready';
-    }
+    var sc2 = Number(result.overallScore || 0);
+    result.band = sc2 >= 75 ? 'Competitive' : sc2 >= 65 ? 'Borderline' : 'Weak';
 
     // 2. Ensure priorityGaps always has exactly 4 with correct fields
     var namedD = result.namedCvDetails || [];
@@ -170,9 +167,9 @@ export default async function handler(req, res) {
           lockedFixType: 'Surface the strongest signals and reframe around outcomes.',
           lockedFullCycleTeaser: 'Full Cycle would identify what to lead with.' },
         { title: 'Technical readiness'+(( techD.score||50) < 70?' — below screening threshold':' — maintain under pressure'),
-          visibleRisk: 'Technical score of '+Math.round(techD.score||50)+'/100 '+(( techD.score||50) < 70?'is a screening risk at this firm.':'must hold under real timed conditions.'),
+          visibleRisk: 'Technical score of '+Math.round(techD.score||50)+'/100 '+(( techD.score||50) < 70?'is a screening risk at this route.':'must hold under real timed conditions.'),
           lockedWhyItMatters: 'Most tier-1 banks use automated numerical screening before a human reads the application.',
-          lockedFixType: 'Targeted timed numerical practice on the specific question types used at this firm.',
+          lockedFixType: 'Targeted timed numerical practice on the specific question types used at this route.',
           lockedFullCycleTeaser: 'Full Cycle gives you unlimited timed SHL, Korn Ferry and Cubiks practice.' },
         { title: 'Commercial awareness — connecting events to deal consequences',
           visibleRisk: 'Commercial score of '+Math.round(commD.score||50)+'/100 suggests market awareness at headline level with a gap in deal-consequence reasoning.',
@@ -297,14 +294,13 @@ export default async function handler(req, res) {
     // Sanitise and apply template for fullCycleCta
     var ctaSanitised = sanitiseFreeField(result.fullCycleCta);
     var sc4 = result.overallScore || 0;
-    var firmName = (result.targetFirm || '').trim();
-    var routeName = (result.targetDivision || result.track || '').trim();
-    var safeCtaFirm = firmName || 'your target firm';
+    var routeName = (result.targetSector || result.targetDivision || result.track || profile.targetSector || profile.targetDivision || profile.track || '').trim();
+    var safeRoute = routeName || 'your target finance route';
     result.fullCycleCta = ctaSanitised || (
-      sc4 >= 70
-        ? 'You have real evidence, but it is not yet sharp enough for '+safeCtaFirm+'. Full Cycle shows what to lead with, what to reduce, and how to rebuild the profile before submission.'
-        : sc4 >= 55
-        ? 'You have usable material, but it is not yet landing as a '+safeCtaFirm+' application. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
+      sc4 >= 75
+        ? 'You have real evidence for '+safeRoute+'. Full Cycle shows what to lead with, what to reduce, and how to sharpen the application before submission.'
+        : sc4 >= 65
+        ? 'You have usable material for '+safeRoute+', but it is not yet landing consistently. Full Cycle shows what to lead with, what to cut, and how to rebuild the profile around the evidence that matters.'
         : sc4 >= 40
         ? 'This profile needs work before submitting to competitive finance roles. Full Cycle shows what evidence, readiness and structure need to be in place first.'
         : 'This version is not ready to submit. Full Cycle shows what evidence needs building, which gaps matter first, and whether the current route is realistic before you apply.'
@@ -397,8 +393,8 @@ University: ${profile.university || ""}
 Course: ${profile.course || ""}
 Year: ${profile.year || ""}
 Grade: ${profile.grade || ""}
-Target firm: ${profile.targetFirm || ""}
-Target division: ${profile.targetDivision || ""}
+Target sector / route: ${profile.targetSector || profile.targetDivision || profile.track || ""}
+Route: ${profile.targetSector || profile.targetDivision || profile.track || ""}
 Programme: ${profile.programme || "Summer Internship"}
 
 TESTS
@@ -732,6 +728,9 @@ function buildPrompt(profile, quiz, cvText) {
     "Investment Banking / IBD":        "Academic 15%, Experience 20%, Commercial 15%, Technical 20%, Positioning 20%, Clarity 10%",
     "Sales & Trading / Markets":       "Academic 15%, Experience 15%, Commercial 25%, Technical 25%, Positioning 10%, Clarity 10%",
     "Asset Management / Investing":    "Academic 15%, Experience 20%, Commercial 25%, Technical 15%, Positioning 15%, Clarity 10%",
+    "Corporate Banking":              "Academic 15%, Experience 20%, Commercial 20%, Technical 15%, Positioning 20%, Clarity 10%",
+    "Accounting / Audit":              "Academic 20%, Experience 20%, Commercial 15%, Technical 15%, Positioning 20%, Clarity 10%",
+    "Consulting / Advisory":           "Academic 20%, Experience 20%, Commercial 20%, Technical 10%, Positioning 20%, Clarity 10%",
     "General Finance":                 "Academic 20%, Experience 20%, Commercial 15%, Technical 15%, Positioning 20%, Clarity 10%",
   }[track] || "Academic 20%, Experience 20%, Commercial 15%, Technical 15%, Positioning 20%, Clarity 10%";
 
@@ -739,16 +738,20 @@ function buildPrompt(profile, quiz, cvText) {
     "Investment Banking / IBD":     `use "transaction exposure", "valuation", "deal rationale", "financing conditions", "analytical ownership", "first-round technicals"`,
     "Sales & Trading / Markets":    `use "market instinct", "rates", "FX", "volatility", "speed of reasoning", "risk/reward", "client flow"`,
     "Asset Management / Investing": `use "investment judgement", "thesis", "fundamentals", "valuation", "sector view", "downside risk", "portfolio thinking"`,
+    "Corporate Banking":           `use "credit judgement", "cash flow", "leverage", "client understanding", "financing needs", "commercial judgement"`,
+    "Accounting / Audit":           `use "accounting judgement", "financial statements", "controls", "accuracy", "client work", "professional judgement"`,
+    "Consulting / Advisory":        `use "structured problem solving", "commercial judgement", "client communication", "analysis", "recommendation", "ownership"`,
     "General Finance":              `use broader language around financial credibility, direction and commercial understanding`,
   }[track] || `use broader language around financial credibility, direction and commercial understanding`;
 
   const fPct = Math.round(((quiz.commercialCorrect || 0) / (quiz.commercialTotal || 5)) * 100);
   const nPct = Math.round(((quiz.technicalCorrect || 0) / (quiz.technicalTotal || 5)) * 100);
 
-  const firmProc = FIRM_PROCESS[profile.targetFirm];
-  const firmProcessInstruction = firmProc
-    ? `FIRM-SPECIFIC PROCESS PERSONALISATION — the candidate's target firm is ${profile.targetFirm}, and we have researched, sourced detail on its actual recruitment process: ${firmProc.distinctiveFact} ${firmProc.numericalStage ? `Its numerical/cognitive screening stage is specifically called "${firmProc.numericalStage}".` : `It does not use a separate standardised numerical test the way some peers do — numerical ability is assessed within ${firmProc.aiInterviewStage} and Superday technical questions instead.`} Its early-stage video interview is called "${firmProc.aiInterviewStage}". If Technical Readiness score is below 70, the technical readiness note MUST reference the specific named stage above (e.g. "At ${profile.targetFirm}, this is exactly what the ${firmProc.numericalStage || firmProc.aiInterviewStage} stage is built to catch") — this is a real, sourced, firm-specific detail, not a generic statement, and it is one of the most important personalisation levers in the whole report. If Commercial Awareness score is below 70, reference that this would surface in the ${firmProc.aiInterviewStage} stage and at Superday. Do NOT use this firm detail if the score is strong — only deploy it as a consequence for a genuine weakness.`
-    : `FIRM-SPECIFIC PROCESS PERSONALISATION — no researched process data exists yet for ${profile.targetFirm || "this firm"}. Do not invent specific stage names, test providers, or process details for it. Use only the general track-level language already specified above.`;
+  const targetSector = profile.targetSector || profile.targetDivision || profile.track || "General Finance";
+  const stage = profile.programme || "Not provided";
+  const year = profile.year || "Not provided";
+  const sectorInstruction = `SECTOR-FIRST PERSONALISATION — assess primarily against ${targetSector}. Do not assume a named employer is the candidate's exclusive target and do not invent firm-specific recruiting stages. The selected route and application stage matter more than any employer name that may appear in the CV.`;
+
 
   return `You are conducting a Free Application Assessment for a finance student. You are a former practitioner — not a careers adviser, not an AI tool. Your voice is direct, restrained, specific and slightly clinical. Not motivational. Not dramatic. Not generic.
 
@@ -779,8 +782,11 @@ Default: "Your profile has credible signals, but the strongest evidence still ne
 
 CANDIDATE DATA:
 University: ${profile.university || "Not provided"} | Course: ${profile.course || "Not provided"} | Year: ${profile.year || "Not provided"} | Grade: ${profile.grade || "Not provided"}
-Target: ${profile.targetFirm || "Not provided"} | Division: ${profile.targetDivision || "Not provided"} | Programme: ${profile.programme || "Not provided"}
+Target sector / route: ${profile.targetSector || profile.targetDivision || profile.track || "Not provided"} | Programme: ${profile.programme || "Not provided"}
 Commercial quiz: ${quiz.commercialCorrect || 0}/${quiz.commercialTotal || 5} (${fPct}%) | Numerical: ${quiz.technicalCorrect || 0}/${quiz.technicalTotal || 5} (${nPct}%)
+
+${sectorInstruction}
+STAGE CONTEXT: Year = ${year}. Application stage = ${stage}. You MUST explicitly calibrate the scoring standard to this combination before assigning the overall score.
 
 CV UPLOADED AND TEXT PROVIDED BELOW. You MUST reference at least one named item from it: actual employer name, society name, project title, module name, stock pitch company, role title, A-level subject, or qualification. Generic phrases such as "your finance experience", "your project", "your society" or "your CV" are NOT acceptable and fail quality control. This named reference MUST appear inside the diagnostic field or the highestLeverage field itself — it is NOT enough for it to only appear in the separate namedCvDetails list. Set namedCvDetails array with the named items you reference. Set specificSignalNoticed to the single most distinctive named item used in the diagnostic — the same detail, not a different one. If no named detail could be confidently extracted, set specificSignalNoticed to "Not enough named finance evidence extracted."
 
@@ -839,11 +845,11 @@ Weights: ${weights}
 TRACK-SPECIFIC LANGUAGE REQUIRED:
 ${trackLanguage}
 
-${firmProcessInstruction}
+${sectorInstruction}
 
 DEGREE INTERPRETATION — the course named in CANDIDATE DATA is a signal, not just an academic input. Name the actual degree in the Academic Signal note (never say "your course"). EVERY degree — including Finance, Economics, Accounting, Business and Management Sciences — must get a genuine, specific comment on what that subject actually trains and how recruiters generally read it in the NOTE field. No degree gets "directly relevant, no further comment needed" as a free pass — even the most finance-aligned degrees are broad enough that recruiters want to know which strand the candidate leaned into, so there is always something specific to say. You must have a genuine, specific opinion on ANY degree named, even obscure or unlisted ones — never fall back to vague filler; reason about what the actual discipline trains and how a banking recruiter would plausibly read it.
 
-CRITICAL — THE FIX FIELD MUST NOT REPEAT THE NOTE. The note diagnoses (what the degree signals and how recruiters read it). The fix must do something DIFFERENT: give ONE concrete, actionable LEVER specific to that degree — typically naming the TYPE of module, project, or coursework strand the candidate should highlight (e.g. for a generic Business/Management degree: "naming the specific modules — strategy, finance, operations or quantitative methods — that sat within the degree"; for Engineering: "naming the specific technical or quantitative modules and projects, not just the degree title"; for History: "naming the specific dissertation or research project that best demonstrates evidence-based argument-building"). This lever must be worded NOTICEABLY differently from the note's diagnostic sentence — reusing the same clause or sentence between note and fix is a severe quality failure. After the lever, close the fix with an explicit pointer to the paid product that names the candidate's ACTUAL target division and firm from CANDIDATE DATA, e.g. "Full Cycle shows you exactly how to present that for [target division] at [target firm]." Do not explain the actual repositioning itself — only name the lever and point to where the "how" gets answered. Use this logic, adapted to the actual degree named, with particular depth on UK business school degree titles since these are the most common among applicants:
+CRITICAL — THE FIX FIELD MUST NOT REPEAT THE NOTE. The note diagnoses (what the degree signals and how recruiters read it). The fix must do something DIFFERENT: give ONE concrete, actionable LEVER specific to that degree — typically naming the TYPE of module, project, or coursework strand the candidate should highlight (e.g. for a generic Business/Management degree: "naming the specific modules — strategy, finance, operations or quantitative methods — that sat within the degree"; for Engineering: "naming the specific technical or quantitative modules and projects, not just the degree title"; for History: "naming the specific dissertation or research project that best demonstrates evidence-based argument-building"). This lever must be worded NOTICEABLY differently from the note's diagnostic sentence — reusing the same clause or sentence between note and fix is a severe quality failure. After the lever, close the fix with an explicit pointer to the paid product that names the candidate's ACTUAL target sector / route and application stage from CANDIDATE DATA, e.g. "Full Cycle shows you exactly how to present that for [target division] at [target firm]." Do not explain the actual repositioning itself — only name the lever and point to where the "how" gets answered. Use this logic, adapted to the actual degree named, with particular depth on UK business school degree titles since these are the most common among applicants:
 
 UK BUSINESS SCHOOL DEGREES (treat each as a distinct, specific title — do not collapse them all into "Business"):
 Accounting and Finance: the closest thing to a default finance degree recruiters see — directly relevant, but so common that the title alone does no differentiating work; modules and specialism need to be named.
@@ -900,7 +906,22 @@ CV SIGNAL EXTRACTION — A-LEVELS, EXTRACURRICULARS, WORK EXPERIENCE: beyond the
 PLACEMENT — A-levels: if A-level subjects are named in the CV, add ONE additional sentence to the end of the Academic Signal note naming the specific subjects and giving a genuine read of what they signal for this track. Add a corresponding clause to the Academic Signal fix field naming the specific subject and the hook, e.g. "we show you how to present your Chemistry A-level as a relevant signal for this track."
 PLACEMENT — extracurriculars and work experience: name the single most distinctive item found (the one a screener would notice first or find most memorable — do not list everything) as an additional sentence in the Experience Relevance note, with a genuine specific read of what it signals. Add a corresponding hook to the Experience Relevance fix field. If both a notable extracurricular and a notable piece of work experience exist, you may reference both, but keep each to one short clause.
 
-SCORING: Each dimension 0-100. Apply track weights. Bands: 85-100=Strong, 70-84=Competitive, 55-69=Borderline, 40-54=Weak, below 40=Not yet ready. Lead with band then score.
+SCORING: Each dimension 0-100. Apply route weights. CANONICAL DESK BANDS: 75-100=Competitive, 65-74=Borderline, below 65=Weak. There is no separate Strong or Not Yet Ready band in the customer-facing score. Lead with the canonical band then score.
+
+STAGE CALIBRATION — MANDATORY:
+- Benchmark the candidate against applicants at the SAME career stage, not against a final-year or graduate standard.
+- 1st Year + Spring Week / Insight: judge potential, academic signal, curiosity, transferable evidence and early finance exposure. A formal finance internship is unusual and should receive substantial positive credit; lack of one is not itself a major penalty. Do not expect graduate-level technical depth, deal ownership or leadership.
+- 2nd Year / Penultimate + Summer Internship: expect clearer route evidence, stronger finance/adjacent experience, more developed technical/commercial readiness and better CV positioning.
+- Final Year / Graduate Programme: apply the highest evidence standard. Expect stronger ownership, clearer outcomes, role-specific preparation and more defensible competency evidence.
+- Industrial Placement / Off-cycle: calibrate between internship and graduate level according to year and prior experience.
+- A strong early-stage candidate can score 75+ even if their CV is not as developed as a final-year candidate's CV. The score answers 'how competitive is this application for THIS stage and route?', not 'how complete is this person as a finance professional?'.
+
+EVIDENCE CONFIDENCE — MANDATORY:
+- Distinguish weak evidence from missing evidence.
+- If leadership, resilience, teamwork or communication are not described in enough detail, label them under-evidenced / insufficient evidence rather than assuming the candidate lacks the competency.
+- Do NOT assign a competency below 55 solely because the CV lacks detail. Scores below 50 require actual negative evidence, a material contradiction, or clearly poor demonstrated performance.
+- Committee roles, sport, sustained part-time work, customer-facing work and internships are legitimate evidence sources. Their presence should trigger investigation/partial credit even when outcomes are not quantified.
+- CV presentation weaknesses can reduce Positioning/Clarity without pretending the candidate's underlying ability is weak.
 
 SCORING SIGNALS:
 Experience: relevant internship +20, spring week +15, finance society leadership +10, stock pitch/modelling +8, adjacent experience +5. Adjustments: quantified bullets +5, commercial framing +5, ownership evidence +5, generic bullets -5, no outcomes -5, irrelevant to track -8.
@@ -954,7 +975,7 @@ QUALITY CONTROL — before finalising check:
 21. Do wastedEvidence and missedOpportunity both reference the SAME named detail as the diagnostic and specificSignalNoticed?
 22. Is likelyRejectionReason a short, sober phrase rather than a full paragraph or an absolute claim?
 23. Does the overall result avoid every forbidden hype phrase (dream job, unlock your potential, guaranteed, transform your future, beat the competition, limited time, don't miss out, life-changing, supercharge, elite secrets)?
-24. For the Academic Signal dimension specifically: does the fix field repeat any sentence or clause from the note field? This is a severe quality failure — the note diagnoses, the fix must give a genuinely different, more specific actionable lever, then point to Full Cycle by name for the actual target division and firm. If the fix and note overlap, rewrite the fix from scratch.
+24. For the Academic Signal dimension specifically: does the fix field repeat any sentence or clause from the note field? This is a severe quality failure — the note diagnoses, the fix must give a genuinely different, more specific actionable lever, then point to Full Cycle by name for the actual target sector / route and application stage. If the fix and note overlap, rewrite the fix from scratch.
 
 DISPLAY LENGTH CONTRACT — THIS IS PART OF THE PRODUCT, NOT OPTIONAL:
 - killerSentence: 16-26 words
