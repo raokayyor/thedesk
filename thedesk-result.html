@@ -257,6 +257,33 @@ body{padding:0 18px}
   .footer{padding:18px}
 }
 
+
+/* --- Section 04 compact/readability pass --- */
+.overview .row > div:nth-child(2) > p,
+.strength p,
+.testCard p,
+.testRead,
+.action p,
+.card li{font-size:10.2px;line-height:1.5}
+
+.compGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;border-top:0}
+.comp{min-height:0;padding:12px 12px 11px;border:1px solid #ddd8cf!important;border-radius:10px;box-shadow:none}
+.compName{font-size:11px;line-height:1.05;min-height:auto}
+.compScore{font-size:20px;margin:6px 0 4px}
+.comp p{font-size:9.5px;line-height:1.38}
+.compTeaser{font-size:9.2px;line-height:1.38;margin-top:7px;padding-top:7px}
+.blurWrap{min-height:50px}
+.blurWrap span{font-size:8px;line-height:1.25;padding:5px 6px}
+.sectionHead .sub{font-size:9.5px}
+
+@media(max-width:900px){
+  .compGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .compGrid{grid-template-columns:1fr}
+  .comp{padding:12px}
+}
+
 </style>
 </head>
 <body>
