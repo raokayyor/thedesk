@@ -26,6 +26,27 @@ export const maxDuration = 60;
 const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-4-6";
 const CV_MIN_CHARS = 100; // minimum non-whitespace characters
 
+// Internal calibration for typical UK front-office recruiting visibility.
+// This is a recruiting-access signal, not a measure of intelligence or potential.
+// It may influence Academic Signal modestly, but must never determine the final band.
+function universityRecruitingContext(name) {
+  const u=String(name||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+  const inList=(arr)=>arr.some(x=>u.includes(x));
+  if(inList(["university of oxford","university of cambridge","london school of economics","lse","imperial college","university college london","ucl","university of warwick"])){
+    return {score:95,band:"Core recruiting university",weight:"strong positive",text:"This university typically has one of the strongest direct pipelines into UK banking and markets. It is a positive signal, but it does not substitute for relevant evidence or interview readiness."};
+  }
+  if(inList(["university of bristol","durham university","university of bath","university of nottingham","university of exeter","university of manchester","university of edinburgh","king s college london","king's college london","university of st andrews"])){
+    return {score:84,band:"Strong recruiting university",weight:"positive",text:"This university is well represented in UK finance recruiting and gives the application a credible academic signal, although the direct pipeline is generally less concentrated than the core target group."};
+  }
+  if(inList(["university of southampton","university of leeds","university of birmingham","university of york","university of sheffield","university of liverpool","university of reading","university of sussex","queen mary","lancaster university","loughborough university","newcastle university","cardiff university","university of glasgow","university of strathclyde"])){
+    return {score:72,band:"Credible recruiting university",weight:"neutral to positive",text:"This university is credible, but the name alone carries less recruiting weight than the most heavily targeted institutions. Strong experience, tests and positioning matter more."};
+  }
+  if(inList(["keele university","university of keele"])){
+    return {score:55,band:"Less-established finance pipeline",weight:"needs compensation",text:"This university has a less established direct pipeline into large front-office finance programmes. That is not a barrier, but the application needs stronger evidence elsewhere to compete."};
+  }
+  return {score:62,band:"Less-established direct pipeline",weight:"needs compensation",text:"This university is not one of the most heavily targeted UK finance recruiting institutions. That does not rule the candidate out; it means experience, test performance, commercial awareness and positioning need to do more of the work."};
+}
+
 // FIRM_PROCESS — researched, sourced recruitment process steps per firm, mirrored from the frontend.
 // Used to make the diagnostic reference the actual stage a weakness would bite at, not just a score.
 // Batch 1 (researched June 2026). Extend batch by batch — each entry must be grounded in real sourcing.
@@ -516,6 +537,7 @@ function statusScore(status) {
 }
 
 function buildPageFallback(profile, quiz, result) {
+  const uniContext = universityRecruitingContext(profile.university);
   const dims = Array.isArray(result.dimensions) ? result.dimensions : [];
   const comps = Array.isArray(result.competencies) ? result.competencies : [];
   const findDim = (name) => dims.find(d => d && d.name === name) || {};
@@ -594,6 +616,12 @@ function buildPageFallback(profile, quiz, result) {
     candidateName: result.candidateName || profile.name || "",
     overallScore: score,
     band,
+    universityContext:{
+      university: profile.university || "",
+      score: uniContext.score,
+      band: uniContext.band,
+      text: uniContext.text
+    },
     risk:{
       headline:score+"/100 = "+band,
       warning:riskWarning,
@@ -732,6 +760,7 @@ function isValidResult(result, cvRequired) {
 // ── Prompt builder ────────────────────────────────────────────────────────────
 function buildPrompt(profile, quiz, cvText) {
   const track = profile.targetSector || profile.track || "General Finance";
+  const uniContext = universityRecruitingContext(profile.university);
 
   const weights = {
     "Investment Banking / IBD":        "Academic 15%, Experience 20%, Commercial 15%, Technical 20%, Positioning 20%, Clarity 10%",
@@ -766,6 +795,14 @@ function buildPrompt(profile, quiz, cvText) {
 
 
   return `You are conducting a Free Application Assessment for a finance student. You are a former practitioner — not a careers adviser, not an AI tool. Your voice is direct, restrained, specific and slightly clinical. Not motivational. Not dramatic. Not generic.
+
+UNIVERSITY RECRUITING CONTEXT — INTERNAL CALIBRATION:
+University: ${profile.university || "Not provided"}
+Recruiting access score: ${uniContext.score}/100
+Context band: ${uniContext.band}
+Interpretation: ${uniContext.text}
+Use this as ONE input to Academic Signal and the holistic judgement. The university signal may move Academic Signal by at most about 8 points versus an otherwise identical candidate and should normally move the overall judgement by no more than about 4 points on its own. Never let university name override strong evidence, test performance or relevant experience. A less-targeted university is a hurdle to compensate for, not a reason to reject the candidate. A core-target university is an advantage, not a guarantee.
+The first high-level diagnostic MUST name the university and explain, in one sentence, whether it helps, is broadly neutral, or means the rest of the application needs to work harder.
 
 CRITICAL: Every candidate must receive ONE PRIMARY ARCHETYPE. This is the most important structural element of the output.
 
