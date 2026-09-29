@@ -284,6 +284,38 @@ body{padding:0 18px}
   .comp{padding:12px}
 }
 
+
+/* --- Lock state, spacing and practitioner proof --- */
+.compLocked .blurWrap{min-height:44px;display:flex;align-items:center}
+.compLocked .blurWrap p{display:none!important}
+.compLocked .blurWrap span{position:static;transform:none;display:block;width:100%;background:#f1ece4;border:1px solid #ddd4c7;border-radius:8px;padding:9px 10px;text-align:left;font-size:8.5px;line-height:1.3;color:#8d4a27}
+
+.testSection .sectionHead{margin-bottom:8px}
+.testSection .sectionHead h3{margin-bottom:2px}
+.testSection .sectionHead .sub{line-height:1.15}
+
+.practitionerStrip{background:#0f171c;color:#fff;border-top:1px solid #28343a;border-bottom:1px solid #28343a;padding:18px 34px;display:grid;grid-template-columns:155px 1fr;gap:22px;align-items:center}
+.practitionerLabel{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.practitionerCopy{display:flex;align-items:baseline;gap:18px}
+.practitionerCopy strong{font-family:'Fraunces',serif;font-size:20px;line-height:1.08;font-weight:500}
+.practitionerCopy span{font-size:9.6px;line-height:1.45;color:#c7ced2;max-width:520px}
+
+.offers{background:#0f171c!important;color:#fff!important;border-top:0!important}
+.offerIntro h2{color:#fff}
+.offerIntro p{color:#c6cdd1!important}
+.offers .kicker{color:var(--orange)}
+.offers .card:not(.dark){background:#f8f4ec;color:var(--ink);border-color:#d8d0c4}
+.offers .card.dark{background:#182228;color:#fff;border-color:#344149}
+.footer{background:#0f171c!important;color:#fff!important;border-top:1px solid #28343a!important}
+.footer small{color:#9ca6ab!important}
+
+@media(max-width:700px){
+  .practitionerStrip{grid-template-columns:1fr;padding:18px;gap:7px}
+  .practitionerCopy{display:block}
+  .practitionerCopy strong{display:block;font-size:20px;margin-bottom:7px}
+  .practitionerCopy span{font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -291,7 +323,7 @@ body{padding:0 18px}
 <header class="header">
   <div><div class="brand">The Desk</div><div class="brandSub">Finance careers. Done properly.</div></div>
   <nav class="nav"><a>Assess</a><a>Prepare</a><a>Improve</a><a>Succeed</a></nav>
-  <div class="proofTop">Built by finance practitioners<br>for ambitious students.</div>
+  <div class="proofTop">Built by finance professionals<br>with 20+ years across banking &amp; markets.</div>
 </header>
 
 <section class="hero">
@@ -405,6 +437,14 @@ body{padding:0 18px}
   </div>
   <div class="fixBand">
     <div class="fixIntro"><div class="mini">Before you submit</div><strong>A strong candidate can still get rejected by a weak application. Don’t let that be you.</strong></div>
+  </div>
+</section>
+
+<section class="practitionerStrip">
+  <div class="practitionerLabel">Behind The Desk</div>
+  <div class="practitionerCopy">
+    <strong>Real finance professionals. 20+ years across banking and markets.</strong>
+    <span>The assessment framework comes from practitioner experience. If you need more than the diagnosis, you can work directly with us.</span>
   </div>
 </section>
 
