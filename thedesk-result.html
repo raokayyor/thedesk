@@ -164,6 +164,99 @@ body{padding:0 18px}
  .fixBand{margin:0 -20px;padding-left:20px;padding-right:20px}.fixIntro{padding:0}
  .actions,.offers{grid-template-columns:1fr}.offers{padding-left:20px;padding-right:20px}
 }
+
+/* --- Editorial polish pass: closer to approved mockup --- */
+.page{border-radius:0 0 18px 18px;overflow:hidden}
+.heroCol,.scoreCol,.riskPanel{padding-top:30px;padding-bottom:30px}
+.riskPanel{border-radius:0 0 0 18px}
+.overview,.section,.testSection{background:linear-gradient(180deg,#f8f5ee 0%,#f4f1e9 100%)}
+.row{padding:22px 0;gap:22px}
+.promoBox{border-radius:12px;background:#f7e7dc;border-color:#ead7c9;padding:14px 15px}
+.strengthGrid{gap:16px 28px}
+.plus{width:18px;height:18px;font-size:11px}
+.testGrid{gap:16px}
+.testCard{border-radius:14px;background:#fffdfa;border-color:#d8d3ca;padding:18px 20px;box-shadow:0 5px 18px rgba(16,24,32,.035)}
+.testRead{border-radius:10px;background:#f1eee7}
+.section{padding-top:24px}
+.sectionHead{margin-bottom:16px}
+.compGrid{gap:10px;border-top:0}
+.comp{border:1px solid #ded9d0!important;border-radius:12px;background:#fffdfa;min-height:142px;padding:15px 14px;box-shadow:0 4px 14px rgba(16,24,32,.025)}
+.compFree{background:#f7f3ec}
+.compTeaser{border-top:1px solid #dfd9cf}
+.blurWrap span{border-radius:8px;background:rgba(248,245,238,.94)}
+.actions{gap:14px}
+.action{border-radius:14px;border:1px solid #d9d4cb;box-shadow:0 5px 16px rgba(16,24,32,.025);padding:17px 18px;align-items:start}
+.actionFree{background:#eaf4f1}
+.action.lock{background:#f0eee9}
+.actionIcon{margin-top:1px}
+.actionLabel{font-size:7.8px}
+.action b{font-family:'Fraunces',serif;font-size:16px;line-height:1.15;font-weight:500;margin:5px 0 5px}
+.action p{font-size:9.1px;line-height:1.45}
+.fullCycleAction{min-height:126px}
+.lockedScope{gap:7px 16px;margin-top:10px}
+.lockedScope li{font-size:8.2px}
+.fixBand{margin-top:18px;padding:22px 34px;background:#10181d}
+.fixIntro{max-width:880px}
+.fixIntro strong{font-size:25px;line-height:1.08}
+.offers{padding-top:32px;padding-bottom:34px;gap:16px}
+.offerIntro h2{font-size:42px;line-height:.97}
+.card{border-radius:14px;padding:22px 20px;box-shadow:0 6px 18px rgba(16,24,32,.04)}
+.card.dark{border-radius:14px}
+.badge{border-radius:999px;top:-10px}
+.cta{border-radius:9px}
+.dark .cta{border-radius:9px}
+.footer{background:#f8f5ee;color:var(--ink);border-top:1px solid #d9d3c9}
+.footer small{color:#61686c}
+
+/* Mobile: intentionally redesigned, not just stacked */
+@media(max-width:700px){
+  body{padding:0;background:#f4f1e9}
+  .page{border-radius:0;box-shadow:none}
+  .header{height:auto;min-height:62px;padding:12px 18px}
+  .brand{font-size:24px}
+  .proofTop{display:none}
+  .hero{display:block}
+  .heroCol{padding:24px 20px!important;border-right:0}
+  .candidate{font-size:42px;line-height:.98;margin-top:10px}
+  .universityHero{font-size:11px;margin-bottom:12px}
+  .role{font-size:17px}
+  .bank{font-size:12px}
+  .meta{margin-top:16px;gap:12px}
+  .scoreCol{padding:24px 20px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .scoreMain b{font-size:104px}
+  .scoreMain span{font-size:25px}
+  .scoreCaption{font-size:20px;margin-top:10px}
+  .riskPanel{border-radius:0;padding:24px 20px!important}
+  .riskWarning{font-size:26px}
+  .scoreBands{grid-template-columns:1fr 1fr 1fr;gap:7px}
+  .scoreBands div{min-height:76px;padding:10px 8px}
+  .scoreBands span{font-size:15px}.scoreBands b{font-size:14px}
+  .resultHandoff{padding:20px}
+  .resultHandoff h2{font-size:26px}
+  .overview{padding:0 18px}
+  .row{grid-template-columns:38px 1fr;gap:12px;padding:20px 0}
+  .num{font-size:30px}
+  .row h3,.section h3{font-size:24px}
+  .promoBox{grid-column:1/-1;margin-left:50px}
+  .strengthGrid{grid-template-columns:1fr;gap:14px}
+  .testSection,.section{padding-left:18px;padding-right:18px}
+  .testGrid{grid-template-columns:1fr}
+  .compGrid{grid-template-columns:1fr 1fr;gap:8px}
+  .comp{min-height:132px;padding:13px 12px}
+  .compName{font-size:11px}
+  .compScore{font-size:21px}
+  .actions{grid-template-columns:1fr}
+  .action{min-height:auto}
+  .fixBand{margin-left:-18px;margin-right:-18px;padding:22px 18px}
+  .fixIntro strong{font-size:24px}
+  .offers{grid-template-columns:1fr;padding:26px 18px 30px}
+  .offerIntro{padding:0 0 8px}
+  .offerIntro h2{font-size:38px;max-width:360px}
+  .offerIntro p{max-width:100%;font-size:10px}
+  .card{padding:22px 18px}
+  .footer{padding:18px}
+}
+
 </style>
 </head>
 <body>
