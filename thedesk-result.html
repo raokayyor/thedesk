@@ -258,96 +258,24 @@ body{padding:0 18px}
 }
 
 
-/* --- Section 04 compact/readability pass --- */
-.overview .row > div:nth-child(2) > p,
-.strength p,
-.testCard p,
-.testRead,
-.action p,
-.card li{font-size:10.2px;line-height:1.5}
 
-.compGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;border-top:0}
-.comp{min-height:0;padding:12px 12px 11px;border:1px solid #ddd8cf!important;border-radius:10px;box-shadow:none}
-.compName{font-size:11px;line-height:1.05;min-height:auto}
-.compScore{font-size:20px;margin:6px 0 4px}
-.comp p{font-size:9.5px;line-height:1.38}
-.compTeaser{font-size:9.2px;line-height:1.38;margin-top:7px;padding-top:7px}
-.blurWrap{min-height:50px}
-.blurWrap span{font-size:8px;line-height:1.25;padding:5px 6px}
-.sectionHead .sub{font-size:9.5px}
-
-@media(max-width:900px){
-  .compGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:520px){
-  .compGrid{grid-template-columns:1fr}
-  .comp{padding:12px}
-}
-
-
-
-/* --- Final result-page typography + lock cleanup --- */
-.row h3,.section h3,.testSection h3{
-  font-family:'Fraunces',serif;
-  font-size:26px;
-  line-height:1.04;
-  font-weight:500;
-  margin:0 0 4px;
-}
-.sub,.sectionHead .sub{
-  font-size:9px;
-  line-height:1.2;
-  font-weight:700;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  color:#555d62;
-}
-.sectionHead{margin-bottom:10px}
-.testSection .sectionHead{margin-bottom:10px}
-
-.row p,
-.strength p,
-.testCard p,
-.testRead,
-.action p,
-.card li{
-  color:#2f383e;
-}
-.overview .row > div:nth-child(2) > p{
-  font-size:10.8px;
-  line-height:1.55;
-}
-.strength p,.testCard p,.testRead,.action p,.card li{
-  font-size:10px;
-  line-height:1.48;
-}
-.strength b{font-size:10.2px}
-.testLabel,.actionLabel,.promoBox .mini{color:#4c555b}
-
-/* Keep the compact competency layout the user preferred.
-   Locked cards show the lock message only — no fake blurred copy behind it. */
+/* --- Section 04 restored --- */
+.compGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border-top:1px solid var(--rule)}
+.comp{padding:13px 13px 14px;border:0;border-right:1px solid var(--rule);border-radius:0;box-shadow:none;min-height:138px}
+.comp:last-child{border-right:0}
+.compName{font-family:'Fraunces',serif;font-size:12px;line-height:1.08;min-height:28px}
+.compScore{font-size:23px;color:var(--orange);font-weight:700;margin:9px 0 6px}
+.comp p{font-size:8.9px;line-height:1.34;color:#30393f;margin:0}
+.compTeaser{font-size:8.6px;line-height:1.4;margin-top:10px;padding-top:9px;border-top:1px solid var(--rule)}
+.compLocked .blurWrap{position:relative;min-height:68px}
 .compLocked .blurWrap p{display:none!important}
-.compLocked .blurWrap{
-  min-height:46px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.compLocked .blurWrap span{
-  position:static;
-  transform:none;
-  width:100%;
-  background:transparent;
-  padding:4px 2px;
-  text-align:center;
-  font-size:8.3px;
-  line-height:1.3;
-  font-weight:700;
-  color:var(--orange);
-}
-.comp p{color:#30393f}
+.compLocked .blurWrap span{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);font-size:7.6px;line-height:1.3;font-weight:700;color:var(--orange);background:transparent;padding:6px 4px;text-align:center}
 
-/* Final CTA stays in the dark palette from the reference. */
+/* Keep page copy readable without changing the section hierarchy. */
+.row p{color:#30393f}
+.strength p,.testCard p,.testRead,.action p{color:#30393f}
+.sub,.sectionHead .sub{color:#4f585e}
+
 .offers{background:#0f171c!important;color:#fff!important;border-top:0!important}
 .offerIntro h2{color:#fff}
 .offerIntro p{color:#c6cdd1!important}
@@ -356,6 +284,14 @@ body{padding:0 18px}
 .offers .card.dark{background:#182228;color:#fff;border-color:#344149}
 .footer{background:#0f171c!important;color:#fff!important;border-top:1px solid #28343a!important}
 .footer small{color:#9ca6ab!important}
+
+@media(max-width:900px){
+  .compGrid{grid-template-columns:repeat(2,1fr)}
+  .comp{border-bottom:1px solid var(--rule)}
+}
+@media(max-width:520px){
+  .compGrid{grid-template-columns:1fr}
+}
 
 </style>
 </head>
