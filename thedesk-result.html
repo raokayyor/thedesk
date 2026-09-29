@@ -293,6 +293,87 @@ body{padding:0 18px}
   .compGrid{grid-template-columns:1fr}
 }
 
+
+/* --- Human City cue + one-row competencies --- */
+.compGrid{
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:8px;
+  border-top:0;
+  overflow:visible;
+}
+.comp{
+  border:1px solid #ded8ce!important;
+  border-radius:11px;
+  min-height:132px;
+  padding:12px 11px;
+  background:#fbf8f2;
+}
+.comp:last-child{border-right:1px solid #ded8ce!important}
+.compFree{background:#fffaf3}
+.compName{min-height:26px}
+.compScore{font-size:22px;margin:7px 0 5px}
+.compLocked .blurWrap{min-height:52px}
+.compLocked .blurWrap span{
+  top:50%;
+  background:transparent;
+  padding:4px 2px;
+  font-size:7.7px;
+  line-height:1.28;
+}
+.compLocked .blurWrap p{display:none!important}
+
+.mentorCard{
+  padding:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.25fr) minmax(120px,.75fr);
+  overflow:hidden;
+  min-height:100%;
+}
+.mentorContent{
+  padding:20px 18px;
+  display:flex;
+  flex-direction:column;
+}
+.humanCue{
+  font-size:7px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:var(--orange);
+  margin:1px 0 7px;
+}
+.mentorPortrait{
+  min-height:100%;
+  background:
+    linear-gradient(180deg,rgba(15,23,28,.02),rgba(15,23,28,.35)),
+    url('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=85') center 20%/cover no-repeat;
+}
+.mentorCard .cta{margin-top:auto}
+.mentorCard h3{font-size:20px}
+
+@media(max-width:900px){
+  .compGrid{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:6px;
+    scroll-snap-type:x proximity;
+  }
+  .comp{
+    flex:0 0 150px;
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:700px){
+  .mentorCard{grid-template-columns:1fr 118px}
+  .mentorContent{padding:18px 16px}
+  .mentorPortrait{min-height:260px}
+}
+@media(max-width:480px){
+  .mentorCard{grid-template-columns:1fr}
+  .mentorPortrait{min-height:210px;order:-1;background-position:center 16%}
+}
+
 </style>
 </head>
 <body>
@@ -420,7 +501,16 @@ body{padding:0 18px}
 <section class="offers">
   <div class="offerIntro"><div class="kicker">Take the next step</div><h2>Your application has real potential.<br><em>Now make it work harder.</em></h2><p>Use the diagnosis above to turn the application into something sharper before you submit.</p></div>
   <article class="card"><div class="badge">Most popular</div><h3>Full Cycle</h3><div class="line">Complete preparation · £79</div><ul><li>Personalised application review</li><li>Exact CV rewrites</li><li>Numerical and technical practice</li><li>Route and firm positioning</li><li>Commercial-awareness training</li><li>Interview preparation</li></ul><a class="cta" href="/fullcycle.html"><span>Unlock Full Cycle — £79</span><span>→</span></a></article>
-  <article class="card dark"><h3>Work 1:1 with a finance professional<br>with 20+ years’ experience</h3><div class="line">1:1 support · £3,000</div><ul><li>Everything in Full Cycle</li><li>Live application review</li><li>CV and cover letter working sessions</li><li>Mock interviews</li><li>Ongoing feedback through the cycle</li></ul><a class="cta" href="/mentor.html"><span>Apply for 1:1 — £3,000</span><span>→</span></a></article>
+  <article class="card dark mentorCard">
+  <div class="mentorContent">
+    <div class="humanCue">20+ years across banking &amp; markets</div>
+    <h3>Work 1:1 with a finance professional</h3>
+    <div class="line">1:1 support · £3,000</div>
+    <ul><li>Everything in Full Cycle</li><li>Live application review</li><li>CV and cover letter working sessions</li><li>Mock interviews</li><li>Ongoing feedback through the cycle</li></ul>
+    <a class="cta" href="/mentor.html"><span>Apply for 1:1 — £3,000</span><span>→</span></a>
+  </div>
+  <div class="mentorPortrait" role="img" aria-label="Finance professional portrait"></div>
+</article>
 </section>
 
 <footer class="footer"><div class="brand">The Desk</div><small>Finance careers. Done properly.</small></footer>
