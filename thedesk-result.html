@@ -374,6 +374,91 @@ body{padding:0 18px}
   .mentorPortrait{min-height:210px;order:-1;background-position:center 16%}
 }
 
+
+/* --- Conversion path: weakest-first + 67-to-75 --- */
+.scorePath{
+  margin:14px 0 20px;
+  padding:18px 20px 16px;
+  border:1px solid #d9d2c7;
+  border-radius:14px;
+  background:#fffaf3;
+}
+.scorePathHead{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:22px;
+  align-items:end;
+}
+.scorePathEyebrow{
+  font-size:7.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:var(--orange);
+}
+.scorePath h4{
+  font-family:'Fraunces',serif;
+  font-size:34px;
+  line-height:1;
+  font-weight:500;
+  margin:6px 0 0;
+}
+.scorePathHead p{
+  margin:0;
+  font-size:9.2px;
+  line-height:1.45;
+  color:#4e575c;
+}
+.scorePathSteps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:14px 0 13px;
+}
+.pathStep{
+  position:relative;
+  min-height:78px;
+  padding:12px 42px 11px 12px;
+  border-radius:10px;
+  background:#f1ede5;
+}
+.pathStep b{display:block;font-size:10px;margin-bottom:4px}
+.pathStep span{display:block;font-size:8.7px;line-height:1.35;color:#465057}
+.pathStep em{
+  position:absolute;
+  right:10px;
+  top:10px;
+  font-style:normal;
+  font-size:17px;
+  font-weight:700;
+  color:var(--orange);
+}
+.scorePathBar{
+  height:8px;
+  border-radius:999px;
+  background:#ddd7ce;
+  overflow:hidden;
+}
+.scorePathBar span{
+  display:block;
+  width:75%;
+  height:100%;
+  border-radius:999px;
+  background:var(--orange);
+}
+.scorePathFoot{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:7px;
+  font-size:8px;
+  color:#4b5459;
+}
+@media(max-width:700px){
+  .scorePathHead{grid-template-columns:1fr}
+  .scorePathSteps{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -475,17 +560,34 @@ body{padding:0 18px}
   </section>
 
 <section class="section">
-  <div class="sectionHead"><div class="num">04</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work.</div></div></div>
+  <div class="sectionHead"><div class="num">04</div><div><h3>Where are you weakest?</h3><div class="sub">The areas that need the most work — weakest first.</div></div></div>
   <div class="compGrid">
-    <div class="comp compFree"><div class="compName">Analytical<br>ability</div><div class="compScore">76</div><p><b>Why this scores well:</b> Redcliffe and the LVMH project both show genuine analytical exposure — comparables, valuation multiples, DCF and M&amp;A research. The weakness is that the CV tells us what you did more clearly than what you concluded.</p><div class="compTeaser"><b>Free fix:</b> on your strongest analytical bullet, add the conclusion or commercial implication. Show what the analysis told you, not just the task you completed.</div></div>
-    <div class="comp compLocked"><div class="compName">Teamwork</div><div class="compScore">72</div><div class="blurWrap"><p>Evidence is there across Redcliffe, society work and hospitality, but it needs a clearer example and stronger proof of your role within the team.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
-    <div class="comp compLocked"><div class="compName">Communication</div><div class="compScore">74</div><div class="blurWrap"><p>Presentations and customer-facing work are credible; the strongest example needs to be selected and framed around impact.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
-    <div class="comp compLocked"><div class="compName">Leadership</div><div class="compScore">61</div><div class="blurWrap"><p>Training staff helps, but there is limited depth, ownership or progression in the evidence currently shown.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
-    <div class="comp compLocked"><div class="compName">Resilience</div><div class="compScore">79</div><div class="blurWrap"><p>Working alongside study is a real strength and currently under-used in the application narrative.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
-    <div class="comp compLocked"><div class="compName">Commercial<br>awareness</div><div class="compScore">64</div><div class="blurWrap"><p>Good interest and research exposure, but deeper explanation is needed to show judgement rather than recognition.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
-    <div class="comp compLocked"><div class="compName">Technical<br>readiness</div><div class="compScore">62</div><div class="blurWrap"><p>DCF and comps exposure is relevant, but the 3/5 test result shows more depth is needed before interview.</p><span>🔒 Full Cycle: see what this score could cost you — and the fix</span></div></div>
+    <div class="comp compFree"><div class="compName">Leadership</div><div class="compScore">61</div><p><b>What this shows:</b> Training staff is useful evidence, but the application does not yet show enough ownership, decision-making or progression.</p><div class="compTeaser"><b>Free fix:</b> reframe the staff-training example around what you personally owned, changed or improved — not simply that you helped.</div></div>
+    <div class="comp compLocked"><div class="compName">Technical<br>readiness</div><div class="compScore">62</div><div class="blurWrap"><p></p><span>Technical: your CV currently promises more depth than the 3/5 test proves. 🔒 Unlock the repair plan</span></div></div>
+    <div class="comp compLocked"><div class="compName">Commercial<br>awareness</div><div class="compScore">64</div><div class="blurWrap"><p></p><span>Commercial: you recognise the concepts, but the judgement is still thin. 🔒 See what to build</span></div></div>
+    <div class="comp compLocked"><div class="compName">Teamwork</div><div class="compScore">72</div><div class="blurWrap"><p></p><span>Teamwork: the evidence is there, but your own contribution is not yet obvious. 🔒 See the reframe</span></div></div>
+    <div class="comp compLocked"><div class="compName">Communication</div><div class="compScore">74</div><div class="blurWrap"><p></p><span>Communication: credible evidence, but the strongest example is not doing enough work. 🔒 See the fix</span></div></div>
+    <div class="comp compLocked"><div class="compName">Analytical<br>ability</div><div class="compScore">76</div><div class="blurWrap"><p></p><span>Analytical: strong raw evidence; the missing piece is the conclusion you reached. 🔒 See the rewrite</span></div></div>
+    <div class="comp compLocked"><div class="compName">Resilience</div><div class="compScore">79</div><div class="blurWrap"><p></p><span>Resilience: a real strength that is under-used in the application. 🔒 See where to deploy it</span></div></div>
   </div>
-  </section>
+
+  <div class="scorePath">
+    <div class="scorePathHead">
+      <div>
+        <div class="scorePathEyebrow">Your route to competitive</div>
+        <h4><span class="pathCurrent">67</span> → <span class="pathTarget">75+</span></h4>
+      </div>
+      <p>This is the gap we would work on first. The uplift is an assessment estimate, not a guaranteed score.</p>
+    </div>
+    <div class="scorePathSteps">
+      <div class="pathStep"><b>Leadership reframe</b><span>Make ownership and outcome explicit.</span><em>+3</em></div>
+      <div class="pathStep"><b>Technical preparation</b><span>Bring interview readiness up to the level your CV implies.</span><em>+3</em></div>
+      <div class="pathStep"><b>Commercial positioning</b><span>Move from recognising concepts to explaining judgement.</span><em>+2</em></div>
+    </div>
+    <div class="scorePathBar"><span></span></div>
+    <div class="scorePathFoot"><b>67 Borderline</b><b>75+ Competitive</b></div>
+  </div>
+</section>
 
 <section class="section nextStepSection">
   <div class="sectionHead"><div class="num">05</div><div><h3>What should you do next?</h3><div class="sub">Start with one thing. We’ve mapped the rest.</div></div></div>
@@ -725,7 +827,8 @@ body{padding:0 18px}
 
   // SECTION 04 COMPETENCIES
   var compEls=all('.compGrid .comp');
-  (p.competencies || []).slice(0,7).forEach(function(c,i){
+  var sortedComps=(p.competencies || []).slice(0,7).sort(function(a,b){ return Number(a.score||0)-Number(b.score||0); });
+  sortedComps.forEach(function(c,i){
     var box=compEls[i]; if(!box) return;
     var name=box.querySelector('.compName'); if(name) name.textContent=c.name || '';
     var sc=box.querySelector('.compScore'); if(sc) sc.textContent=Math.round(Number(c.score||0));
@@ -740,12 +843,45 @@ body{padding:0 18px}
       if(teaser){
         teaser.textContent='';
         var tb=document.createElement('b'); tb.textContent='Free fix: '; teaser.appendChild(tb);
-        teaser.appendChild(document.createTextNode(c.freeFix || (p.freeAction && p.freeAction.detail) || ''));
+        teaser.appendChild(document.createTextNode(c.freeFix || (p.freeAction && p.freeAction.detail) || 'Strengthen the weakest area first.'));
       }
     } else {
-      setEl(box.querySelector('.blurWrap p'),c.visibleReason || c.lockedImprovement || '');
+      var lock=box.querySelector('.blurWrap span');
+      var reasonText=String(c.visibleReason || c.lockedImprovement || 'This area needs stronger evidence.');
+      var shortReason=reasonText.split(/[.!?]/)[0];
+      if(shortReason.length>88) shortReason=shortReason.slice(0,85)+'…';
+      if(lock) lock.textContent=(c.name || 'This area')+': '+shortReason+'. 🔒 Unlock the fix';
     }
   });
+
+  // SCORE PATH: current score to competitive threshold, based on the three weakest dimensions.
+  var path=el('.scorePath');
+  if(path){
+    var target=75;
+    var gap=Math.max(0,target-score);
+    setEl(path.querySelector('.pathCurrent'),score);
+    setEl(path.querySelector('.pathTarget'),score>=target?'Competitive':'75+');
+    var weakest=sortedComps.slice(0,3);
+    var steps=all('.scorePathSteps .pathStep');
+    var shares=[];
+    if(gap>0){
+      var a=Math.ceil(gap*0.38), b=Math.ceil(gap*0.34), c=Math.max(0,gap-a-b);
+      if(c===0 && gap>2){ c=1; if(a>b) a--; else b--; }
+      shares=[a,b,c];
+    } else shares=[0,0,0];
+    weakest.forEach(function(w,idx){
+      var step=steps[idx]; if(!step) return;
+      setEl(step.querySelector('b'),w.name || 'Priority');
+      var txt=String(w.visibleReason || w.lockedImprovement || 'Strengthen this area.');
+      setEl(step.querySelector('span'),txt);
+      setEl(step.querySelector('em'),gap>0?('+'+shares[idx]):'✓');
+    });
+    var bar=path.querySelector('.scorePathBar span');
+    if(bar) bar.style.width=Math.max(8,Math.min(100,(score/target)*100))+'%';
+    var foot=all('.scorePathFoot b');
+    if(foot[0]) foot[0].textContent=score+' '+band;
+    if(foot[1]) foot[1].textContent='75+ Competitive';
+  }
 
   // SECTION 05 — one free action + one locked Full Cycle action
   var free=el('.action.actionFree');
