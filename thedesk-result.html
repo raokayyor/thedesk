@@ -375,19 +375,20 @@ body{padding:0 18px}
 }
 
 
-/* --- Conversion path: weakest-first + 67-to-75 --- */
-.scorePathSection{padding:16px 34px 4px;border-bottom:1px solid var(--rule);background:#f7f2e9}.scorePathSection .scorePath{margin:0}.scorePath{
-  margin:14px 0 20px;
-  padding:18px 20px 16px;
-  border:1px solid #d9d2c7;
-  border-radius:14px;
-  background:#fffaf3;
+/* --- Editorial improvement priorities --- */
+.scorePathSection{
+  padding:22px 34px 24px;
+  border-bottom:1px solid var(--rule);
+  background:#f7f2e9;
+}
+.scorePath{
+  display:grid;
+  grid-template-columns:minmax(220px,.8fr) minmax(0,1.6fr);
+  gap:34px;
+  margin:0;
 }
 .scorePathHead{
-  display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:22px;
-  align-items:end;
+  padding-right:18px;
 }
 .scorePathEyebrow{
   font-size:7.5px;
@@ -398,67 +399,109 @@ body{padding:0 18px}
 }
 .scorePath h4{
   font-family:'Fraunces',serif;
-  font-size:34px;
+  font-size:38px;
   line-height:1;
   font-weight:500;
-  margin:6px 0 0;
+  margin:7px 0 10px;
 }
 .scorePathHead p{
   margin:0;
-  font-size:9.2px;
-  line-height:1.45;
+  font-size:9.4px;
+  line-height:1.5;
   color:#4e575c;
+  max-width:270px;
 }
 .scorePathSteps{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin:14px 0 13px;
+  margin:0;
+  border-top:1px solid #cfc8bd;
 }
 .pathStep{
-  position:relative;
-  min-height:78px;
-  padding:12px 42px 11px 12px;
-  border-radius:10px;
-  background:#f1ede5;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr);
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #cfc8bd;
+  background:transparent;
+  min-height:0;
 }
-.pathStep b{display:block;font-size:10px;margin-bottom:4px}
-.pathStep span{display:block;font-size:8.7px;line-height:1.35;color:#465057}
-.pathStep em{
-  position:absolute;
-  right:10px;
-  top:10px;
-  font-style:normal;
-  font-size:17px;
-  font-weight:700;
+.pathStep:before{
+  font-family:'Fraunces',serif;
+  font-size:18px;
+  line-height:1;
   color:var(--orange);
 }
-.scorePathBar{
-  height:8px;
-  border-radius:999px;
-  background:#ddd7ce;
-  overflow:hidden;
-}
-.scorePathBar span{
+.pathStep:nth-child(1):before{content:"01"}
+.pathStep:nth-child(2):before{content:"02"}
+.pathStep:nth-child(3):before{content:"03"}
+.pathStep b{
   display:block;
-  width:75%;
-  height:100%;
-  border-radius:999px;
-  background:var(--orange);
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  line-height:1.12;
+  margin-bottom:3px;
+  font-weight:500;
 }
-.rewritePreview{margin-top:12px;background:#11191d;color:#fff;padding:14px 15px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}.rewritePreview .before,.rewritePreview .after{font-size:8.4px;line-height:1.42}.rewritePreview .before{color:#c8ced2}.rewritePreview .after{color:#fff}.rewritePreview b{display:block;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:5px}.rewriteMask{display:inline-block;position:relative;margin-left:3px;min-width:120px;color:transparent;user-select:none}.rewriteMask:before{content:"commercial implication and buyer rationale";color:#fff;filter:blur(5px);opacity:.55}.rewriteMask:after{content:"Unlock the rest";position:absolute;left:6px;top:0;color:var(--orange);filter:none;opacity:1;font-weight:700;font-size:7.4px;letter-spacing:.02em}.scorePathFoot{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:7px;
-  font-size:8px;
-  color:#4b5459;
+.pathStep span{
+  display:block;
+  font-size:8.8px;
+  line-height:1.42;
+  color:#465057;
+}
+.pathStep em{display:none}
+.scorePathBar,.scorePathFoot{display:none}
+.rewritePreview{
+  grid-column:2;
+  margin-top:2px;
+  background:#11191d;
+  color:#fff;
+  padding:12px 14px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  align-items:start;
+}
+.rewritePreview .before,.rewritePreview .after{font-size:8.4px;line-height:1.42}
+.rewritePreview .before{color:#c8ced2}
+.rewritePreview .after{color:#fff}
+.rewritePreview b{
+  display:block;
+  font-size:7px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--orange);
+  margin-bottom:5px
+}
+.rewriteMask{
+  display:inline-block;
+  position:relative;
+  margin-left:3px;
+  min-width:120px;
+  color:transparent;
+  user-select:none
+}
+.rewriteMask:before{
+  content:"commercial implication and buyer rationale";
+  color:#fff;
+  filter:blur(5px);
+  opacity:.55
+}
+.rewriteMask:after{
+  content:"Unlock the rest";
+  position:absolute;
+  left:6px;
+  top:0;
+  color:var(--orange);
+  filter:none;
+  opacity:1;
+  font-weight:700;
+  font-size:7.4px;
+  letter-spacing:.02em
 }
 @media(max-width:700px){
-  .scorePathHead{grid-template-columns:1fr}
-  .scorePathSteps{grid-template-columns:1fr}
+  .scorePath{grid-template-columns:1fr;gap:16px}
+  .scorePathHead{padding-right:0}
+  .rewritePreview{grid-column:1;grid-template-columns:1fr}
 }
-
 </style>
 </head>
 <body>
@@ -502,24 +545,22 @@ body{padding:0 18px}
   </div>
 </section>
 <section class="scorePathSection">
-<div class="scorePath">
+  <div class="scorePath">
     <div class="scorePathHead">
-      <div>
-        <div class="scorePathEyebrow">Your route to competitive</div>
-        <h4><span class="pathCurrent">67</span> → <span class="pathTarget">75+</span></h4>
+      <div class="scorePathEyebrow">What needs to change</div>
+      <h4><span class="pathCurrent">67</span> is close.<br>It isn’t safe.</h4>
+      <p>These are the three things we would address before you submit. The score is an assessment, not a guarantee.</p>
+    </div>
+    <div>
+      <div class="scorePathSteps">
+        <div class="pathStep"><div><b>CV rewrite — Redcliffe + LVMH</b><span>Make the strongest evidence show judgement and ownership immediately.</span><em>High</em></div></div>
+        <div class="pathStep"><div><b>Technical preparation</b><span>Bring interview readiness up to the level your CV implies.</span><em>High</em></div></div>
+        <div class="pathStep"><div><b>Leadership reframe</b><span>Turn existing evidence into clear ownership and outcome.</span><em>Med</em></div></div>
       </div>
-      <p>This is the gap we would work on first. The uplift is an assessment estimate, not a guaranteed score.</p>
-    </div>
-    <div class="scorePathSteps">
-      <div class="pathStep"><b>CV rewrite — Redcliffe + LVMH</b><span>Make the strongest evidence show judgement and ownership immediately.</span><em>High</em></div>
-      <div class="pathStep"><b>Technical preparation</b><span>Bring interview readiness up to the level your CV implies.</span><em>High</em></div>
-      <div class="pathStep"><b>Leadership reframe</b><span>Turn existing evidence into clear ownership and outcome.</span><em>Med</em></div>
-    </div>
-    <div class="scorePathBar"><span></span></div>
-    <div class="scorePathFoot"><b>67 Borderline</b><b>75+ Competitive</b></div>
-    <div class="rewritePreview">
-      <div class="before"><b>Now</b>Supported buyer research, comparable-company analysis and presentation materials.</div>
-      <div class="after"><b>Rewritten</b>Built the comps set for a mid-market sale, showing <span class="rewriteMask">the commercial implication and buyer rationale</span></div>
+      <div class="rewritePreview">
+        <div class="before"><b>Now</b>Supported buyer research, comparable-company analysis and presentation materials.</div>
+        <div class="after"><b>Rewritten</b>Built the comps set for a mid-market sale, showing <span class="rewriteMask">the commercial implication and buyer rationale</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -859,7 +900,7 @@ body{padding:0 18px}
     var target=75;
     var gap=Math.max(0,target-score);
     setEl(path.querySelector('.pathCurrent'),score);
-    setEl(path.querySelector('.pathTarget'),score>=target?'Competitive':'75+');
+    setEl(path.querySelector('.pathCurrent'),score);
     var weakest=sortedComps.slice(0,2);
     var steps=all('.scorePathSteps .pathStep');
     var strengthName=((p.strengths||[])[0] && (p.strengths||[])[0].title) || 'Strongest CV evidence';
@@ -884,11 +925,7 @@ body{padding:0 18px}
       setEl(step.querySelector('span'),txt);
       setEl(step.querySelector('em'),gap>0?('+'+shares[idx+1]):'✓');
     });
-    var bar=path.querySelector('.scorePathBar span');
-    if(bar) bar.style.width=Math.max(8,Math.min(100,(score/target)*100))+'%';
-    var foot=all('.scorePathFoot b');
-    if(foot[0]) foot[0].textContent=score+' '+band;
-    if(foot[1]) foot[1].textContent='75+ Competitive';
+
     var rw=path.querySelector('.rewritePreview');
     if(rw && (p.strengths||[]).length){
       var strongest=p.strengths[0]||{};
