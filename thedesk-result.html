@@ -746,6 +746,114 @@ body{padding:0 18px}
   .path75Move{grid-template-columns:12px minmax(0,1fr)}
   .path75Impact{grid-column:2}
 }
+
+/* --- Missed-concepts test section --- */
+.testSection{
+  padding:26px 34px 24px;
+  background:#fffdfa!important;
+  border-bottom:1px solid var(--rule)
+}
+.testSection .sectionHead{margin-bottom:14px}
+.testSection .sectionHead h3{font-size:27px}
+.testSummary{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:14px
+}
+.testSummaryCard{
+  padding:12px 14px;
+  border-radius:10px;
+  background:#f1ede6;
+  border:1px solid #e2dcd1
+}
+.testSummaryCard span{
+  display:block;
+  font-size:7.6px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#6c7479;
+  margin-bottom:4px
+}
+.testSummaryCard b{
+  display:block;
+  font-size:22px;
+  line-height:1;
+  font-weight:700
+}
+.missedList{border-top:1px solid #e2dcd1}
+.missedRow{
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid #e9e3da
+}
+.missedX{
+  width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#f7e7d7;
+  color:var(--orange);
+  font-size:12px;
+  font-weight:700
+}
+.missedTopic{font-size:10.2px;line-height:1.3;font-weight:600}
+.missedType{
+  display:block;
+  margin-top:2px;
+  font-size:7px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#7d8589;
+  font-weight:500
+}
+.missedAnswer{
+  display:flex;
+  gap:5px;
+  align-items:center;
+  font-size:7.8px;
+  color:#626a6f;
+  white-space:nowrap
+}
+.missedAnswer:before{content:"▣";font-size:9px}
+.testSell{
+  margin-top:14px;
+  padding:12px 14px;
+  background:#11191d;
+  color:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:center
+}
+.testSell strong{
+  display:block;
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  line-height:1.18;
+  font-weight:500
+}
+.testSell p{
+  margin:4px 0 0;
+  font-size:8.2px;
+  line-height:1.4;
+  color:#c7cdd0
+}
+.testSell a{
+  color:#fff;
+  background:var(--orange);
+  text-decoration:none;
+  font-size:8.2px;
+  font-weight:700;
+  padding:10px 12px
+}
+@media(max-width:700px){
+  .testSummary{grid-template-columns:1fr 1fr}
+  .missedRow{grid-template-columns:26px 1fr}
+  .missedAnswer{grid-column:2}
+  .testSell{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -834,22 +942,20 @@ body{padding:0 18px}
 </section>
 
 <section class="testSection">
-  <div class="sectionHead"><div class="num">03</div><div><h3>Your quick readiness screens</h3><div class="sub">These are signals, not full psychometric assessments.</div></div></div>
-  <div class="testGrid">
-    <article class="testCard">
-      <div class="testTop"><div><div class="testLabel">Numerical screen</div><h4>3 / 5</h4></div><div class="testMark">60%</div></div>
-      <div class="correctBar"><span style="width:60%"></span></div>
-      <p>Workable, but not comfortable.</p>
-      <div class="testRead"><b>Our read</b>The screen suggests more timed repetition is needed before this feels interview-safe.</div>
-      <a href="/fullcycle.html">Full Cycle: full numerical assessment + targeted drills →</a>
-    </article>
-    <article class="testCard">
-      <div class="testTop"><div><div class="testLabel">Commercial / technical screen</div><h4>3 / 5</h4></div><div class="testMark">60%</div></div>
-      <div class="correctBar"><span style="width:60%"></span></div>
-      <p>You understand the basics. The question is whether you can explain and defend them under interview pressure.</p>
-      <div class="testRead"><b>The mismatch</b>Your CV creates permission to probe valuation, comps and M&amp;A. This screen suggests more depth is needed.</div>
-      <a href="/fullcycle.html">Full Cycle: deeper technical assessment + role-specific prep →</a>
-    </article>
+  <div class="sectionHead"><div class="num">03</div><div><h3>The 4 questions you got wrong.</h3><div class="sub">The score matters less than knowing exactly what broke down.</div></div></div>
+  <div class="testSummary">
+    <div class="testSummaryCard"><span>Numerical</span><b class="numScore">3 / 5</b></div>
+    <div class="testSummaryCard"><span>Commercial / technical</span><b class="commScore">3 / 5</b></div>
+  </div>
+  <div class="missedList">
+    <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">EV / EBITDA valuation</div><span class="missedType">Numerical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
+    <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">Margin change in percentage points</div><span class="missedType">Numerical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
+    <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">Strategic buyer in M&amp;A</div><span class="missedType">Commercial / technical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
+    <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">Credit spreads and credit risk</div><span class="missedType">Commercial / technical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
+  </div>
+  <div class="testSell">
+    <div><strong>Full Cycle teaches the concepts you actually missed.</strong><p>Worked answer → explanation → targeted drills → retest.</p></div>
+    <a href="/fullcycle.html">Fix these gaps →</a>
   </div>
 </section>
 
@@ -1067,27 +1173,31 @@ body{padding:0 18px}
     if(ev) chip.appendChild(document.createTextNode(' — '+ev));
   });
 
-  // SECTION 03 TESTS
-  var cards=all('.testCard');
-  function renderTest(card,correct,total,data){
-    if(!card) return;
-    setEl(card.querySelector('h4'),correct+' / '+total);
-    setEl(card.querySelector('.testMark'),pct(correct,total)+'%');
-    var bar=card.querySelector('.correctBar span'); if(bar) bar.style.width=pct(correct,total)+'%';
-    setEl(card.querySelector('p'),data && data.interpretation || '');
-    var read=card.querySelector('.testRead');
-    if(read){
-      var label=read.querySelector('b');
-      var labelText=label ? label.textContent : 'Our read';
-      read.textContent='';
-      var b=document.createElement('b'); b.textContent=labelText; read.appendChild(b);
-      read.appendChild(document.createTextNode(data && data.read || ''));
+  // SECTION 03 TESTS — show the actual missed concepts captured in the assessment.
+  var testSection=el('.testSection');
+  if(testSection){
+    setEl(testSection.querySelector('.numScore'),nScore+' / '+nTotal);
+    setEl(testSection.querySelector('.commScore'),cScore+' / '+cTotal);
+    var missed=(d.quiz && Array.isArray(d.quiz.missed)) ? d.quiz.missed : [];
+    var missedList=testSection.querySelector('.missedList');
+    var heading=testSection.querySelector('.sectionHead h3');
+    if(heading) heading.textContent=missed.length ? ('The '+missed.length+' question'+(missed.length===1?'':'s')+' you got wrong.') : 'Your quick test results.';
+    if(missedList && missed.length){
+      missedList.innerHTML='';
+      missed.forEach(function(m){
+        var row=document.createElement('div'); row.className='missedRow';
+        var x=document.createElement('div'); x.className='missedX'; x.textContent='×';
+        var mid=document.createElement('div');
+        var topic=document.createElement('div'); topic.className='missedTopic'; topic.textContent=m.topic||m.question||'Missed concept';
+        var type=document.createElement('span'); type.className='missedType'; type.textContent=m.section||'';
+        mid.appendChild(topic); mid.appendChild(type);
+        var ans=document.createElement('div'); ans.className='missedAnswer'; ans.textContent='Worked answer · Full Cycle';
+        row.appendChild(x); row.appendChild(mid); row.appendChild(ans); missedList.appendChild(row);
+      });
+    } else if(missedList){
+      missedList.innerHTML='<div class="missedRow"><div class="missedX">•</div><div><div class="missedTopic">Detailed missed-question feedback will appear on new assessments.</div><span class="missedType">Retake to capture individual topics</span></div></div>';
     }
-    var link=card.querySelector('a');
-    if(link && data && data.lockedTeaser) link.textContent='🔒 Full Cycle: '+data.lockedTeaser+' →';
   }
-  renderTest(cards[0],nScore,nTotal,p.tests && p.tests.numerical);
-  renderTest(cards[1],cScore,cTotal,p.tests && p.tests.commercialTechnical);
 
   // SECTION 04 COMPETENCIES
   var sortedComps=(p.competencies || []).slice(0,7).sort(function(a,b){ return Number(a.score||0)-Number(b.score||0); });
