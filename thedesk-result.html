@@ -854,6 +854,141 @@ body{padding:0 18px}
   .missedAnswer{grid-column:2}
   .testSell{grid-template-columns:1fr}
 }
+
+/* --- Option A editorial presentation --- */
+.verdictSection{
+  display:block;
+  padding:28px 34px 26px;
+  background:#fffdfa;
+  border-bottom:1px solid var(--rule)
+}
+.verdictKicker,.cvFixKicker,.testsKicker{
+  font-size:7.4px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--orange);
+  font-weight:700;
+  margin-bottom:7px
+}
+.verdictSection h3{
+  font-family:'Fraunces',serif;
+  font-size:31px;
+  line-height:1.05;
+  margin:0 0 10px;
+  font-weight:500
+}
+.verdictLead{
+  font-family:'Fraunces',serif;
+  font-size:20px;
+  line-height:1.22;
+  margin:0 0 10px;
+  max-width:820px
+}
+.verdictCopy{
+  font-size:9.5px;
+  line-height:1.52;
+  color:#50585d;
+  max-width:860px
+}
+.verdictCopy p{margin:0 0 8px}
+.path75Section{
+  padding:27px 34px 24px;
+  background:#fffdfa;
+  border-bottom:1px solid var(--rule)
+}
+.path75Section h2{font-size:30px;margin-bottom:14px}
+.path75Track{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) 48px;
+  gap:12px;
+  align-items:center;
+  margin:2px 0 6px
+}
+.path75TrackScore{
+  font-family:'Fraunces',serif;
+  font-size:24px;
+  line-height:1;
+  font-weight:500
+}
+.path75TrackScore small{
+  display:block;
+  font-family:'DM Sans',sans-serif;
+  font-size:7px;
+  color:#6a7277;
+  margin-top:4px
+}
+.path75TrackScore.target{text-align:right}
+.path75Moves{margin-top:14px}
+.path75Move{
+  grid-template-columns:26px minmax(0,1fr) auto;
+  padding:11px 0
+}
+.path75StepNo{
+  width:22px;height:22px;border-radius:50%;
+  border:1px solid #d7cec2;
+  display:grid;place-items:center;
+  font-size:8px;font-weight:700;color:var(--orange);
+  background:#fbf5ed
+}
+.path75Move b{font-size:10px}
+.path75Move small{font-size:7.7px}
+.path75Impact{
+  padding:4px 7px;
+  border-radius:7px;
+  background:#f7e8d8;
+  color:var(--orange)
+}
+.proofSection{
+  padding:26px 34px 24px;
+  background:#fffdfa;
+  border-bottom:1px solid var(--rule)
+}
+.proofHead{display:block;margin-bottom:10px}
+.proofHead h3{font-size:27px;margin-bottom:5px}
+.proofIntro{
+  font-size:9.3px;
+  line-height:1.5;
+  color:#555d62;
+  max-width:830px;
+  margin-bottom:13px
+}
+.proofCompare{border-radius:10px;overflow:hidden}
+.proofFooter{
+  margin-top:11px;
+  border:1px solid #e5c6a7;
+  background:#fff8f1;
+  padding:10px 12px;
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+  font-size:8.3px
+}
+.proofFooter a{color:var(--orange);font-weight:700;text-decoration:none}
+.testSection{padding:26px 34px 24px}
+.testSection .sectionHead{display:block;margin-bottom:12px}
+.testSection .sectionHead h3{font-size:27px;margin:0 0 5px}
+.testIntro{
+  font-size:9.2px;
+  line-height:1.48;
+  color:#555d62;
+  margin-bottom:13px;
+  max-width:820px
+}
+.testSummaryCard{background:#f5f2ec;border:0}
+.missedRow{padding:10px 0}
+.testSell{
+  background:#fff8f1;
+  color:var(--ink);
+  border:1px solid #e5c6a7;
+  border-radius:9px
+}
+.testSell p{color:#60686d}
+.testSell a{background:transparent;color:var(--orange);padding:0}
+@media(max-width:700px){
+  .path75Track{grid-template-columns:42px minmax(0,1fr) 42px}
+  .proofFooter{align-items:flex-start;flex-direction:column}
+}
 </style>
 </head>
 <body>
@@ -896,53 +1031,48 @@ body{padding:0 18px}
 </section>
 
 <section class="verdictSection">
-  <div class="num">01</div>
-  <div>
-    <h3>Our recruiter read</h3>
-    <div class="verdictLead">Your CV is currently stronger than your interview readiness.</div>
-    <div class="verdictCopy">The raw material is there. The problem is that your strongest evidence is not yet doing enough work for you, while the technical claims on the CV create questions you need to be ready to defend.</div>
+  <div class="verdictKicker">Our HR recruiter read</div>
+  <h3>A strong profile that isn’t yet fully convincing.</h3>
+  <div class="verdictLead">There is enough here for a recruiter to keep reading, but not yet enough to feel completely comfortable progressing the application.</div>
+  <div class="verdictCopy">
+    <p>You have strong academics, relevant finance exposure and credible analytical evidence. Redcliffe and the LVMH valuation give you material that can support an investment-banking application.</p>
+    <p>The weakness is presentation and readiness. Your strongest experience currently reads more like a list of tasks than evidence of judgement or ownership, while the technical content on the CV creates questions an interviewer is likely to probe. Your test results suggest some of those areas are not yet secure.</p>
+    <p>This is not a case of needing a completely different profile. The application needs sharper evidence, clearer positioning and more confidence on the technical concepts you are already signalling on the page.</p>
   </div>
 </section>
 
 <section class="path75Section">
   <div class="path75Eyebrow">Your path</div>
   <h2>From <span class="path75Current">67</span> to 75+ in three moves.</h2>
-  <div class="path75Bar">
-    <div class="path75Base"></div>
-    <div class="path75Gain1"></div>
-    <div class="path75Gain2"></div>
-    <div class="path75Gain3"></div>
+  <div class="path75Track">
+    <div class="path75TrackScore"><span class="path75Now">67</span><small>Now</small></div>
+    <div class="path75Bar">
+      <div class="path75Base"></div><div class="path75Gain1"></div><div class="path75Gain2"></div><div class="path75Gain3"></div>
+    </div>
+    <div class="path75TrackScore target">75+<small>Competitive</small></div>
   </div>
-  <div class="path75Labels"><span>Now <span class="path75Now">67</span></span><b>Target 75+ · Competitive</b></div>
   <div class="path75Moves">
-    <div class="path75Move">
-      <div class="path75Dot"></div>
-      <div><b>Rewrite Redcliffe to show conclusions</b><small class="free">Free preview below</small></div>
-      <div class="path75Impact">Biggest lever</div>
-    </div>
-    <div class="path75Move">
-      <div class="path75Dot"></div>
-      <div><b>Close the technical gap: EV, multiples</b><small>🔒 Full Cycle</small></div>
-      <div class="path75Impact">High impact</div>
-    </div>
-    <div class="path75Move">
-      <div class="path75Dot"></div>
-      <div><b>Make your LVMH view defensible</b><small>🔒 Full Cycle</small></div>
-      <div class="path75Impact">High impact</div>
-    </div>
+    <div class="path75Move"><div class="path75StepNo">1</div><div><b>Rewrite Redcliffe to show conclusions</b><small class="free">Free preview below</small></div><div class="path75Impact">Biggest lever</div></div>
+    <div class="path75Move"><div class="path75StepNo">2</div><div><b>Close the technical gap: EV, multiples</b><small>Full Cycle</small></div><div class="path75Impact">High impact</div></div>
+    <div class="path75Move"><div class="path75StepNo">3</div><div><b>Make your LVMH view defensible</b><small>Full Cycle</small></div><div class="path75Impact">High impact</div></div>
   </div>
 </section>
 
 <section class="proofSection">
-  <div class="proofHead"><div class="num">02</div><div><h3>One example</h3><div class="sub">Enough to show you what we mean — not the whole rewrite.</div></div></div>
+  <div class="cvFixKicker">CV fixes</div>
+  <div class="proofHead"><h3>What we would change in your CV.</h3></div>
+  <div class="proofIntro">We’ve identified several places where your experience could be written more strongly to show impact, judgement and commercial relevance. Here is one example from Redcliffe.</div>
   <div class="proofCompare">
-    <div class="proofCol before"><div class="mini">Your current wording</div><strong>Redcliffe Partners</strong><p>Supported buyer research, comparable-company analysis and presentation materials.</p></div>
-    <div class="proofCol after"><div class="mini">Where we would take it</div><strong>Redcliffe Partners</strong><p>Built the comps set for a mid-market sale, helping identify <span class="proofLock">the commercial conclusion and why it mattered</span></p></div>
+    <div class="proofCol before"><div class="mini">Current wording</div><strong>Redcliffe Partners</strong><p>Supported buyer research, comparable-company analysis and presentation materials.</p></div>
+    <div class="proofCol after"><div class="mini">Stronger direction</div><strong>Redcliffe Partners</strong><p>Built the comps set for a mid-market sale, helping identify <span class="proofLock">the commercial conclusion and why it mattered</span></p></div>
   </div>
+  <div class="proofFooter"><span><b>More CV fixes identified:</b> evidence hierarchy, technical positioning and how your strongest experience is framed.</span><a href="/fullcycle.html">See all CV fixes in Full Cycle →</a></div>
 </section>
 
 <section class="testSection">
-  <div class="sectionHead"><div class="num">03</div><div><h3>The 4 questions you got wrong.</h3><div class="sub">The score matters less than knowing exactly what broke down.</div></div></div>
+  <div class="testsKicker">Your test results</div>
+  <div class="sectionHead"><h3>The concepts you need to understand.</h3><div class="sub">You scored 3/5 in each quick screen.</div></div>
+  <div class="testIntro">These are the concepts behind the questions you missed. They matter because the same ideas can come up again in numerical tests, technical interviews and discussions based on your own CV.</div>
   <div class="testSummary">
     <div class="testSummaryCard"><span>Numerical</span><b class="numScore">3 / 5</b></div>
     <div class="testSummaryCard"><span>Commercial / technical</span><b class="commScore">3 / 5</b></div>
@@ -953,10 +1083,7 @@ body{padding:0 18px}
     <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">Strategic buyer in M&amp;A</div><span class="missedType">Commercial / technical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
     <div class="missedRow"><div class="missedX">×</div><div><div class="missedTopic">Credit spreads and credit risk</div><span class="missedType">Commercial / technical</span></div><div class="missedAnswer">Worked answer · Full Cycle</div></div>
   </div>
-  <div class="testSell">
-    <div><strong>Full Cycle teaches the concepts you actually missed.</strong><p>Worked answer → explanation → targeted drills → retest.</p></div>
-    <a href="/fullcycle.html">Fix these gaps →</a>
-  </div>
+  <div class="testSell"><div><strong>Full Cycle explains each concept and then tests it again.</strong><p>Worked answers, explanations, targeted drills and a retest.</p></div><a href="/fullcycle.html">See the worked answers →</a></div>
 </section>
 
 <section class="section competencySection">
@@ -1153,14 +1280,19 @@ body{padding:0 18px}
       'This application needs material work before it is competitive';
   }
 
-  // RECRUITER VERDICT
+  // HR RECRUITER READ
   var verdict=el('.verdictSection');
   if(verdict && p.summary){
     var lead=verdict.querySelector('.verdictLead');
     var copy=verdict.querySelector('.verdictCopy');
     var paras=(p.summary.paragraphs||[]).filter(Boolean);
-    if(lead) lead.textContent=paras[0] || p.summary.strapline || '';
-    if(copy) copy.textContent=paras[1] || '';
+    if(lead) lead.textContent=p.summary.strapline || paras[0] || '';
+    if(copy){
+      copy.innerHTML='';
+      paras.slice(0,3).forEach(function(t){
+        var pp=document.createElement('p'); pp.textContent=t; copy.appendChild(pp);
+      });
+    }
   }
 
   // COMPACT STRENGTHS
@@ -1181,7 +1313,7 @@ body{padding:0 18px}
     var missed=(d.quiz && Array.isArray(d.quiz.missed)) ? d.quiz.missed : [];
     var missedList=testSection.querySelector('.missedList');
     var heading=testSection.querySelector('.sectionHead h3');
-    if(heading) heading.textContent=missed.length ? ('The '+missed.length+' question'+(missed.length===1?'':'s')+' you got wrong.') : 'Your quick test results.';
+    if(heading) heading.textContent=missed.length ? 'The concepts you need to understand.' : 'Your test results.';
     if(missedList && missed.length){
       missedList.innerHTML='';
       missed.forEach(function(m){
