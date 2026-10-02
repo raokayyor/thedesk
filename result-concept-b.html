@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Desk — Editorial Result Concept B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3eee4;
+  --paper:#fbf7ef;
+  --ink:#171614;
+  --muted:#5f5a52;
+  --rule:#d9d1c5;
+  --accent:#ad5d20;
+  --accent2:#d99662;
+  --soft:#f0e9de;
+  --soft2:#f8efe6;
+  --dark:#24221f;
+  --sage:#8f9787;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 12% 6%,rgba(255,255,255,.7),transparent 28%),
+    linear-gradient(180deg,#f5f0e7 0%,#eee7da 100%);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 24px 54px}
+.sheet{
+  background:var(--paper);
+  border:1px solid rgba(116,99,78,.18);
+  box-shadow:0 24px 70px rgba(70,51,31,.11);
+}
+.header{
+  padding:24px 34px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--rule)
+}
+.logo{font-family:Newsreader,Georgia,serif;font-size:29px;font-weight:600;letter-spacing:-.02em}
+.headerNote{font:600 10px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:28px;
+  align-items:end;
+  padding:42px 46px 36px;
+  border-bottom:1px solid var(--rule)
+}
+.kicker{
+  font:600 11px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:10px
+}
+.hero h1,.section h2,.cta h2{
+  font-family:Newsreader,Georgia,serif;
+  font-weight:500;
+  letter-spacing:-.025em;
+}
+.hero h1{font-size:50px;line-height:.98;margin:0}
+.meta{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.55}
+.score{text-align:right}
+.score strong{font:600 76px/.85 "IBM Plex Mono",monospace;letter-spacing:-.08em}
+.score span{display:block;margin-top:10px;color:var(--accent);font:600 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+
+.section{
+  padding:38px 46px;
+  border-bottom:1px solid var(--rule)
+}
+.sectionNo{
+  display:flex;align-items:center;gap:10px;
+  font:600 10px "IBM Plex Mono",monospace;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:10px
+}
+.sectionNo b{color:var(--accent)}
+.section h2{font-size:37px;line-height:1.04;margin:0 0 12px}
+.section p{font-size:15px;line-height:1.63;color:var(--muted);margin:0 0 10px}
+.hrGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:38px}
+.hrAside{border-left:1px solid var(--rule);padding-left:28px}
+.asideTitle{font-family:Newsreader,Georgia,serif;font-size:21px;margin-bottom:12px}
+.asideList{display:flex;flex-direction:column;gap:10px}
+.asideItem{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:13px;line-height:1.42}
+.dot{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--soft2);display:grid;place-items:center;
+  color:var(--accent);font-weight:700;font-size:11px
+}
+.asideRule{height:1px;background:var(--rule);margin:16px 0}
+
+.pathTop{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:18px}
+.pathIntro{font-size:13px!important;max-width:420px;text-align:right}
+.progress{
+  display:grid;grid-template-columns:58px minmax(0,1fr) 64px;
+  gap:14px;align-items:center;margin-bottom:22px
+}
+.pScore{font:600 28px "IBM Plex Mono",monospace}
+.pScore small{display:block;font:400 10px Inter,sans-serif;color:var(--muted);margin-top:4px}
+.pScore.end{text-align:right}
+.bar{height:15px;background:#e9e2d7;border-radius:99px;overflow:hidden;display:flex}
+.base{width:67%;background:#c6b8a7}.g1{width:4%;background:var(--accent)}.g2{width:2%;background:#c7b9a8}.g3{width:2%;background:#6e706f}
+.moves{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}
+.move{padding:20px 24px 0 0;position:relative}
+.move+ .move{border-left:1px solid var(--rule);padding-left:24px}
+.moveNum{font-family:Newsreader,Georgia,serif;font-size:32px;color:var(--accent2);margin-bottom:4px}
+.move h3{font-family:Newsreader,Georgia,serif;font-size:22px;line-height:1.06;margin:0 0 8px;font-weight:500}
+.move p{font-size:13px;line-height:1.5;margin-bottom:8px}
+.badge{display:inline-block;padding:5px 8px;background:var(--soft2);color:var(--accent);border-radius:6px;font-size:11px;font-weight:600}
+.free{display:block;margin-top:8px;color:var(--accent);font-size:12px;font-weight:600}
+
+.cvGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
+.cvText p{max-width:480px}
+.compare{display:grid;grid-template-columns:1fr 36px 1fr;align-items:stretch}
+.cvBox{border:1px solid var(--rule);padding:18px;background:#f8f5ef}
+.cvBox.after{background:#f8eadf;border-color:#ebc8aa}
+.cvBox .mini{font:600 9px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.cvBox.after .mini{color:var(--accent)}
+.cvBox p{font-size:13px;line-height:1.5;color:var(--ink);margin:0}
+.arrow{display:grid;place-items:center;font-family:Newsreader,Georgia,serif;font-size:30px;color:var(--accent)}
+.lockRow{
+  margin-top:14px;border:1px solid #e7c8aa;background:#fff8f1;
+  padding:12px 14px;display:flex;justify-content:space-between;gap:18px;align-items:center
+}
+.lockRow span{font-size:12px;line-height:1.45;color:var(--muted)}
+.lockRow a{font-size:12px;color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+
+.testGrid{display:grid;grid-template-columns:.65fr 1.35fr;gap:26px}
+.scoreCards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.testScore{background:var(--soft);padding:15px 16px}
+.testScore span{display:block;font-size:12px;color:var(--muted)}
+.testScore b{display:block;margin-top:4px;font:600 28px "IBM Plex Mono",monospace}
+.questions{border-top:1px solid var(--rule)}
+.qrow{
+  display:grid;grid-template-columns:28px 1fr auto;
+  gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)
+}
+.qnum{width:24px;height:24px;border-radius:50%;background:var(--soft2);color:var(--accent);display:grid;place-items:center;font:600 11px "IBM Plex Mono",monospace}
+.qtext{font-size:13px}
+.qans{font-size:11px;color:var(--muted)}
+.testSell{margin-top:14px;padding:12px 14px;background:#fff7ee;border:1px solid #e7c8aa;display:flex;justify-content:space-between;gap:18px;align-items:center}
+.testSell span{font-size:12px;color:var(--muted)}
+.testSell a{font-size:12px;font-weight:600;color:var(--accent);text-decoration:none}
+
+.compWrap{display:grid;grid-template-columns:.78fr 1.22fr;gap:34px;align-items:end}
+.compIntro p{max-width:420px}
+.bars{display:flex;flex-direction:column;gap:10px}
+.compRow{display:grid;grid-template-columns:150px 1fr 36px;gap:10px;align-items:center}
+.compRow span{font-size:12px}
+.compBar{height:8px;background:#ece6dd;border:1px solid #d7d0c5}
+.compBar i{display:block;height:100%;background:#8f918e}
+.compRow.weak .compBar i{background:#d5895d}
+.compRow b{font:500 12px "IBM Plex Mono",monospace;text-align:right}
+.compRow.weak b{color:var(--accent)}
+
+.cta{
+  margin:30px 34px 34px;
+  background:linear-gradient(90deg,#26231f,#181817);
+  color:#fff;padding:24px 28px;
+  display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center
+}
+.cta .kicker{margin-bottom:6px}
+.cta h2{font-size:30px;margin:0 0 7px}
+.cta p{color:#cfc8bf;font-size:13px;line-height:1.5;margin:0}
+.cta a{background:#fff5ea;color:#201e1a;text-decoration:none;font-weight:600;padding:13px 18px;font-size:13px}
+
+@media(max-width:860px){
+  .wrap{padding:0}.sheet{border:0;box-shadow:none}
+  .hero,.section{padding-left:22px;padding-right:22px}
+  .hero,.hrGrid,.cvGrid,.testGrid,.compWrap{grid-template-columns:1fr}
+  .score{text-align:left}
+  .hrAside{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:20px}
+  .pathTop{grid-template-columns:1fr}.pathIntro{text-align:left}
+  .moves{grid-template-columns:1fr}.move+ .move{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:20px;margin-top:16px}
+  .compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg);height:38px}
+  .cta{grid-template-columns:1fr;margin:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="sheet">
+  <header class="header">
+    <div class="logo">The Desk</div>
+    <div class="headerNote">Application Assessment</div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="kicker">Result of your assessment</div>
+      <h1>Amelia Hart</h1>
+      <div class="meta">University of Bath · Accounting & Finance · Final Year<br>Investment Banking / IBD · Graduate Programme</div>
+    </div>
+    <div class="score"><strong>67</strong><span>Borderline</span></div>
+  </section>
+
+  <section class="section">
+    <div class="sectionNo"><b>01</b> Our HR recruiter read</div>
+    <div class="hrGrid">
+      <div>
+        <h2>A strong profile, but not yet fully convincing.</h2>
+        <p>You have relevant experience, strong academics and evidence of analytical ability. There is enough here for a recruiter to keep reading and enough substance to justify serious consideration.</p>
+        <p>The issue is how the evidence currently lands. Redcliffe shows relevant exposure, but the wording undersells the impact of your work and does not yet show enough judgement or ownership. Your CV also points toward valuation and M&A topics that an interviewer is likely to probe in more depth.</p>
+        <p>Your quick test results suggest some of those concepts are not yet secure. That creates a gap between how strong the CV looks on paper and how confident you may feel defending it under interview pressure.</p>
+        <p>This is not a weak profile. It is a credible one that needs sharper evidence, clearer positioning and stronger technical preparation.</p>
+      </div>
+      <aside class="hrAside">
+        <div class="asideTitle">What stands out</div>
+        <div class="asideList">
+          <div class="asideItem"><div class="dot">✓</div><div>Strong academic background and relevant experience.</div></div>
+          <div class="asideItem"><div class="dot">✓</div><div>Clear analytical ability and genuine finance exposure.</div></div>
+          <div class="asideItem"><div class="dot">✓</div><div>Enough raw material for a competitive application.</div></div>
+        </div>
+        <div class="asideRule"></div>
+        <div class="asideTitle">What could be stronger</div>
+        <div class="asideList">
+          <div class="asideItem"><div class="dot">–</div><div>Redcliffe impact needs to be clearer.</div></div>
+          <div class="asideItem"><div class="dot">–</div><div>Technical knowledge needs more depth.</div></div>
+          <div class="asideItem"><div class="dot">–</div><div>Positioning needs to feel more deliberate.</div></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="pathTop">
+      <div>
+        <div class="sectionNo"><b>02</b> Your path</div>
+        <h2>From 67 to 75+ in three moves.</h2>
+      </div>
+      <p class="pathIntro">Focus on these three areas and you could move this application into a much stronger competitive range.</p>
+    </div>
+    <div class="progress">
+      <div class="pScore">67<small>Now</small></div>
+      <div class="bar"><div class="base"></div><div class="g1"></div><div class="g2"></div><div class="g3"></div></div>
+      <div class="pScore end">75+<small>Target · Competitive</small></div>
+    </div>
+    <div class="moves">
+      <div class="move">
+        <div class="moveNum">01</div>
+        <h3>Rewrite Redcliffe to show conclusions</h3>
+        <span class="badge">Biggest lever</span>
+        <p>Turn your experience into clearer evidence of impact and commercial judgement.</p>
+        <span class="free">Free preview below →</span>
+      </div>
+      <div class="move">
+        <div class="moveNum">02</div>
+        <h3>Close the technical gap: EV, multiples</h3>
+        <span class="badge">High impact</span>
+        <p>Build confidence in the concepts recruiters are most likely to test.</p>
+      </div>
+      <div class="move">
+        <div class="moveNum">03</div>
+        <h3>Make your LVMH view defensible</h3>
+        <span class="badge">High impact</span>
+        <p>Develop a structured, evidence-based view you can explain under pressure.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionNo"><b>03</b> CV fixes</div>
+    <div class="cvGrid">
+      <div class="cvText">
+        <h2>What we would change in your CV.</h2>
+        <p>We’ve identified several places where your experience could be written more strongly to show impact, judgement and commercial relevance. Here is one example from Redcliffe.</p>
+      </div>
+      <div>
+        <div class="compare">
+          <div class="cvBox">
+            <div class="mini">Your current CV</div>
+            <p>Supported buyer research and comparable-company analysis.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="cvBox after">
+            <div class="mini">Our suggested version</div>
+            <p>Analysed a comparable-company set for a potential acquisition, identifying key valuation drivers and supporting the investment view presented to the client.</p>
+          </div>
+        </div>
+        <div class="lockRow">
+          <span><b>See more rewritten versions, line-by-line changes and what to cut.</b><br>Included in Full Cycle.</span>
+          <a href="/fullcycle.html">See all CV fixes →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionNo"><b>04</b> Your test results</div>
+    <h2>The 4 concepts you need to understand.</h2>
+    <p>You answered 6/10 questions correctly. These are the four concepts behind the questions you missed and should understand before interviews.</p>
+    <div class="testGrid">
+      <div class="scoreCards">
+        <div class="testScore"><span>Numerical</span><b>3/5</b></div>
+        <div class="testScore"><span>Commercial / technical</span><b>3/5</b></div>
+      </div>
+      <div class="questions">
+        <div class="qrow"><div class="qnum">1</div><div class="qtext">Enterprise value vs equity value</div><div class="qans">Worked answer</div></div>
+        <div class="qrow"><div class="qnum">2</div><div class="qtext">Margin change under time pressure</div><div class="qans">Worked answer</div></div>
+        <div class="qrow"><div class="qnum">3</div><div class="qtext">Why multiples differ across sectors</div><div class="qans">Worked answer</div></div>
+        <div class="qrow"><div class="qnum">4</div><div class="qtext">Explaining a deal’s rationale</div><div class="qans">Worked answer</div></div>
+      </div>
+    </div>
+    <div class="testSell">
+      <span><b>Full Cycle explains each concept, gives you worked examples, targeted drills and a retest.</b></span>
+      <a href="/fullcycle.html">See worked answers →</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionNo"><b>05</b> Your competency breakdown</div>
+    <div class="compWrap">
+      <div class="compIntro">
+        <h2>Your strengths and areas to improve.</h2>
+        <p>How you currently perform across the seven areas recruiters care about most.</p>
+      </div>
+      <div class="bars">
+        <div class="compRow weak"><span>Leadership</span><div class="compBar"><i style="width:61%"></i></div><b>61</b></div>
+        <div class="compRow weak"><span>Technical readiness</span><div class="compBar"><i style="width:62%"></i></div><b>62</b></div>
+        <div class="compRow weak"><span>Commercial awareness</span><div class="compBar"><i style="width:64%"></i></div><b>64</b></div>
+        <div class="compRow"><span>Teamwork</span><div class="compBar"><i style="width:72%"></i></div><b>72</b></div>
+        <div class="compRow"><span>Communication</span><div class="compBar"><i style="width:74%"></i></div><b>74</b></div>
+        <div class="compRow"><span>Analytical ability</span><div class="compBar"><i style="width:76%"></i></div><b>76</b></div>
+        <div class="compRow"><span>Resilience</span><div class="compBar"><i style="width:79%"></i></div><b>79</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <div class="kicker">Full Cycle · £79 one-off</div>
+      <h2>Get the full report and start improving.</h2>
+      <p>All CV fixes, worked answers, targeted practice, interview preparation and a re-assessment before you submit.</p>
+    </div>
+    <a href="/fullcycle.html">Get Full Cycle for £79 →</a>
+  </section>
+</div>
+</div>
+</body>
+</html>
