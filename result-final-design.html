@@ -192,7 +192,39 @@ body{background:var(--cream);font-family:Arial,sans-serif}
 .pathhead h2{font-size:33px}.pathhead p{max-width:365px}.pathbarrow{margin-top:7px}.moves{margin-top:14px}.no{font-style:normal}
 .ctaintro h2{font-size:35.5px;letter-spacing:-1.5px;max-width:375px}.cta{grid-template-rows:236px}.orange-rule{margin-top:22px}.ctaintro p{margin-top:16px}.offer{min-height:0}.offer li{font-size:10.8px}.offer ul{margin-top:8px}.offer h3{font-size:23px}
 }
-@media(max-width:760px){.hero{grid-template-columns:1fr}.readtop{width:100%}.hcol{border-right:0}.comps{grid-template-columns:repeat(2,minmax(0,1fr))}.comp span{overflow-wrap:anywhere}.footerlinks{gap:8px}.footer .logo{font-size:24px}.moves,.cv,.tests,.compsec{min-width:0}.pathbarrow{grid-template-columns:30px minmax(0,1fr) 80px}.ps.end small{font-size:10px}.ctaintro h2{font-size:34px}.nav2{gap:8px}}@media(max-width:760px){.tc{grid-template-columns:1fr;height:auto}.tbox .ticks{width:133px}.qlist{min-width:0}.q{grid-template-columns:25px minmax(0,1fr) 100px}.qa{gap:8px}.qt{overflow-wrap:anywhere}.cvleft h2,.testleft h2{font-size:30px}}</style>
+@media(max-width:760px){.hero{grid-template-columns:1fr}.readtop{width:100%}.hcol{border-right:0}.comps{grid-template-columns:repeat(2,minmax(0,1fr))}.comp span{overflow-wrap:anywhere}.footerlinks{gap:8px}.footer .logo{font-size:24px}.moves,.cv,.tests,.compsec{min-width:0}.pathbarrow{grid-template-columns:30px minmax(0,1fr) 80px}.ps.end small{font-size:10px}.ctaintro h2{font-size:34px}.nav2{gap:8px}}@media(max-width:760px){.tc{grid-template-columns:1fr;height:auto}.tbox .ticks{width:133px}.qlist{min-width:0}.q{grid-template-columns:25px minmax(0,1fr) 100px}.qa{gap:8px}.qt{overflow-wrap:anywhere}.cvleft h2,.testleft h2{font-size:30px}}
+/* Editorial revision: readable hierarchy and content-led spacing. */
+body{font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+.section{border-bottom:0;position:relative}
+.section:after{content:"";position:absolute;bottom:0;left:49px;right:49px;height:1px;background:var(--line)}
+.section:nth-of-type(n){height:auto;padding-top:20px;padding-bottom:20px}
+.pathhead h2,.cvleft h2,.testleft h2,.compintro h2{font-family:Georgia,serif;font-size:32px;line-height:1.1;font-weight:400;letter-spacing:-1px;white-space:normal}
+.kicker{font-size:10px;line-height:1.3;letter-spacing:1.7px;margin-bottom:6px}
+.move h3{white-space:normal;line-height:1.25;min-height:40px;font-size:16px}
+.move p,.cvleft p,.testleft p,.compintro p{font-size:13px;line-height:1.45;color:#536076}
+.moves{margin-top:23px}.pathbarrow{margin-top:14px}
+.cv{align-items:stretch}.card{height:auto;min-height:114px}.card p{line-height:1.4}.cvleft p{margin-bottom:0}.lock{margin-top:14px!important;font-size:12px;line-height:1.4;height:auto;min-height:34px}
+.readtop{width:301px;padding-right:0}.readtop h2{font-size:28px;line-height:1.05;letter-spacing:-.8px;white-space:normal;margin-bottom:10px}
+.readtop p{font-size:12px;line-height:1.35;margin-bottom:8px}.fearline{font-size:16px;line-height:1.25;white-space:normal;max-width:245px}.sign{margin-top:6px}
+.hero{height:278px}.building{height:278px;background-size:100% 100%}
+.tests{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;row-gap:12px;align-items:start}
+.testleft h2{margin:0 0 6px}.testleft p{margin:0;max-width:440px}.tc{margin:4px 0 0;height:74px;gap:16px}.tbox{padding:12px 16px}.tbox span{font-size:13px}.testscore{gap:14px}.tbox .ticks{max-width:100%;width:120px}.testscore b{font-size:28px}
+.concept-heading{grid-column:1/-1;font:600 14px/1.4 Arial,sans-serif;margin:0;color:var(--ink)}
+.qlist{gap:6px 20px;grid-template-rows:36px 36px}.q{grid-template-columns:28px minmax(0,1fr) 105px;gap:10px;padding:0 10px}.qt{font-size:12px;line-height:1.25}.qa{font-size:10px;gap:10px}.qn{font-size:15px}
+.compsec{display:block}.compintro{display:grid;grid-template-columns:1fr 1fr;column-gap:32px;align-items:center}.compintro .kicker{grid-column:1/-1}.compintro h2{font-size:30px;margin:0;max-width:480px}.compintro p{margin:0;max-width:460px}
+.comps{margin-top:18px;gap:9px;grid-template-columns:repeat(7,minmax(0,1fr))}
+.comp,.comp.weak{height:auto;min-height:190px;padding:12px 10px;position:static;background:#f4f2ed;border:1px solid #e4e1db;border-radius:4px;display:flex;flex-direction:column}
+.comp.weak{background:#fff0e5;border-color:#ffd1b4}.comp-score{display:flex;align-items:baseline;gap:3px}.comp b{font-size:25px;line-height:1.1}.comp-score small{font:10px Arial;color:#72767c;margin:0}
+.comp h3{font:400 12px/1.25 Arial,sans-serif;margin:8px 0;min-height:30px;overflow-wrap:normal}.comp-status{font-size:9px;line-height:1.3;color:#5b6671;margin-bottom:8px}.weak .comp-status{color:#b74013;font-weight:600}
+.comp .ticks{position:static;width:100%;height:7px;margin:0 0 10px;background:repeating-linear-gradient(90deg,transparent 0 8px,#f4f2ed 8px 10px),linear-gradient(90deg,#d27843 var(--score),#d7d8d9 var(--score))}.comp:first-child .ticks{background:linear-gradient(90deg,#405b53 var(--score),#d7d8d9 var(--score))}
+.comp p{font:11px/1.45 Arial,sans-serif;color:#536076;margin:0;padding-top:8px;border-top:1px solid #e1ddd7}.comp p strong{font-weight:600;color:#24313c}
+.offer li{font-size:11px;line-height:17px}.offer ul{margin-top:8px;margin-bottom:8px}.cta{height:auto;grid-template-rows:minmax(246px,auto);padding-top:22px;padding-bottom:22px}
+@media(max-width:760px){
+.section:nth-of-type(n){padding:20px}.section:after{left:20px;right:20px}.hero{height:auto}.readtop{width:auto;padding:20px}.building{display:none}.readtop p{max-width:420px}.fearline{max-width:none}.moves{margin-top:16px}.move h3{min-height:0}
+.tests,.compintro{grid-template-columns:1fr}.tc{height:auto;grid-template-columns:1fr 1fr;gap:10px}.tbox{min-width:0;padding:12px}.testscore{gap:10px}.tbox .ticks{width:65px}.qlist{grid-template-columns:1fr;grid-template-rows:auto;grid-auto-flow:row}.q{height:auto;min-height:42px;grid-template-columns:25px minmax(0,1fr) 92px}.qa{gap:5px}.compintro p{margin-top:12px}.comps{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.comp,.comp.weak{min-height:170px}.comp h3{min-height:0}.comp p{font-size:12px}.cta{grid-template-rows:auto}.offer li{white-space:normal}.cvleft h2,.testleft h2,.compintro h2{font-size:29px}.lock{gap:14px}.card{min-height:0}
+}
+
+@media(min-width:761px){.ctaintro h2{font-size:34px;max-width:100%;letter-spacing:-1.4px}}</style>
 </head>
 <body>
 <div class="page">
@@ -224,8 +256,8 @@ body{background:var(--cream);font-family:Arial,sans-serif}
   </div>
   <div class="hcol readtop">
     <div class="kicker" style="color:#48545b">Our HR recruiter read</div>
-    <h2>A strong foundation,<br>but not yet convincing.</h2>
-    <p>There is enough here for a recruiter to keep reading, but not enough to feel fully comfortable progressing the application. You have relevant finance exposure, a credible academic base and evidence of initiative, but key areas are still under-presented and may get exposed in interview.</p>
+    <h2>Your application is<br>at risk of rejection.</h2>
+    <p>At 67/100, your application is borderline. Relevant finance experience is not enough if you cannot show clear impact, explain the technical basics and defend your commercial views. Leave these gaps unresolved and you risk losing the recruiter before interview — or being exposed during it.</p>
     <div class="fearline">This is not a score to feel safe about.</div>
     <div class="sign">The Desk</div>
   </div>
@@ -265,15 +297,16 @@ body{background:var(--cream);font-family:Arial,sans-serif}
 <section class="section">
   <div class="tests">
     <div class="testleft">
-      <div class="kicker">Your test results</div>
-      <h2>The 4 concepts you need to understand.</h2>
-      <p>You answered 6/10 questions correctly. These are the four concepts you got wrong and will need to understand for interviews.</p>
+      <div class="kicker">Your assessment</div>
+      <h2>Test results</h2>
+      <p>You answered 6 out of 10 questions correctly. The four missed concepts below are your next areas to work on.</p>
       </div><div class="tc">
         <div class="tbox"><span>Numerical</span><div class="testscore"><b>3/5</b><div class="ticks"></div></div></div>
         <div class="tbox"><span>Commercial / technical</span><div class="testscore"><b>3/5</b><div class="ticks"></div></div></div>
       </div>
+    <h3 class="concept-heading">Four concepts to fix before interview</h3>
     <div class="qlist">
-      <div class="q"><div class="qn">1</div><div class="qt">Enterprise value vs equity value</div><div class="qa"><span class="padlock" aria-hidden="true"></span> Worked answer</div></div>
+      <div class="q"><div class="qn">1</div><div class="qt">Enterprise value (EV) vs equity value</div><div class="qa"><span class="padlock" aria-hidden="true"></span> Worked answer</div></div>
       <div class="q"><div class="qn">2</div><div class="qt">Margin change under time pressure</div><div class="qa"><span class="padlock" aria-hidden="true"></span> Worked answer</div></div>
       <div class="q"><div class="qn">3</div><div class="qt">Why multiples differ across sectors</div><div class="qa"><span class="padlock" aria-hidden="true"></span> Worked answer</div></div>
       <div class="q"><div class="qn">4</div><div class="qt">Explaining a deal’s rationale</div><div class="qa"><span class="padlock" aria-hidden="true"></span> Worked answer</div></div>
@@ -282,23 +315,23 @@ body{background:var(--cream);font-family:Arial,sans-serif}
   <div class="lock"><span class="padlock" aria-hidden="true"></span> &nbsp; Full Cycle explains each concept, gives you worked examples, targeted drills and a retest.</div>
 </section>
 
-<section class="section">
+<section class="section competency-section">
   <div class="compsec">
     <div class="compintro">
       <div class="kicker">Your 7 competencies</div>
-      <h2>Where you are strongest<br>and where to focus.</h2>
-      <p>Your three lowest-scoring areas are the biggest opportunities to improve your overall score, while your other four are holding up well.</p>
+      <h2>What your application shows — and what to strengthen.</h2>
+      <p>These scores assess how clearly your application demonstrates each competency. The three highlighted areas are your priorities; each card shows what we would help you improve.</p>
     </div>
     <div class="comps">
-      <div class="comp"><b>76</b><span>Analytical ability</span><div class="ticks"></div></div>
-      <div class="comp"><b>68</b><span>Teamwork</span><div class="ticks"></div></div>
-      <div class="comp weak"><b>62</b><span>Communication</span><div class="ticks"></div></div>
-      <div class="comp weak"><b>58</b><span>Leadership</span><div class="ticks"></div></div>
-      <div class="comp"><b>64</b><span>Resilience</span><div class="ticks"></div></div>
-      <div class="comp weak"><b>61</b><span>Commercial awareness</span><div class="ticks"></div></div>
-      <div class="comp"><b>66</b><span>Technical readiness</span><div class="ticks"></div></div>
-    </div>
-  </div>
+<article class="comp"><div class="comp-score"><b>76</b><small>/100</small></div><h3>Analytical ability</h3><div class="comp-status">Strongest area</div><div class="ticks" aria-hidden="true" style="--score:76%"></div><p><strong>Next step:</strong> Keep your analysis tied to a clear conclusion.</p></article>
+<article class="comp"><div class="comp-score"><b>68</b><small>/100</small></div><h3>Teamwork</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:68%"></div><p><strong>Next step:</strong> Show your contribution to the team’s result.</p></article>
+<article class="comp weak"><div class="comp-score"><b>62</b><small>/100</small></div><h3>Communication</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:62%"></div><p><strong>Fix:</strong> Make your CV points concise and outcome-led.</p></article>
+<article class="comp weak"><div class="comp-score"><b>58</b><small>/100</small></div><h3>Leadership</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:58%"></div><p><strong>Fix:</strong> Show a decision you owned and its impact.</p></article>
+<article class="comp"><div class="comp-score"><b>64</b><small>/100</small></div><h3>Resilience</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:64%"></div><p><strong>Next step:</strong> Explain a setback and how you responded.</p></article>
+<article class="comp weak"><div class="comp-score"><b>61</b><small>/100</small></div><h3>Commercial awareness</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:61%"></div><p><strong>Fix:</strong> Support your LVMH view with evidence.</p></article>
+<article class="comp"><div class="comp-score"><b>66</b><small>/100</small></div><h3>Technical readiness</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:66%"></div><p><strong>Next step:</strong> Practise EV, multiples and deal rationale.</p></article>
+</div>
+</div>
 </section>
 
 <section class="cta">
