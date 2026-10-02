@@ -375,7 +375,7 @@ body{padding:0 18px}
 }
 
 
-/* --- Editorial improvement priorities --- */
+/* --- Side-by-side application improvement section --- */
 .scorePathSection{
   padding:22px 34px 24px;
   border-bottom:1px solid var(--rule);
@@ -411,18 +411,78 @@ body{padding:0 18px}
   color:#4e575c;
   max-width:270px;
 }
-.scorePathSteps{
+.rewriteCompare{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:1px solid #d2ccc2;
+  background:#fffdfa;
+  margin-bottom:12px;
+}
+.rewriteCol{
+  padding:14px 15px 15px;
+  min-height:118px;
+}
+.rewriteCol + .rewriteCol{
+  border-left:1px solid #d2ccc2;
+  background:#f3eee6;
+}
+.rewriteCol b{
+  display:block;
+  font-size:7px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#727a7f;
+  margin-bottom:6px;
+}
+.rewriteCol strong{
+  display:block;
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  line-height:1.2;
+  margin-bottom:5px;
+  font-weight:500;
+}
+.rewriteCol p{
   margin:0;
-  border-top:1px solid #cfc8bd;
+  font-size:8.7px;
+  line-height:1.42;
+  color:#4d555a;
+}
+.rewriteCol.after p{color:#1c2429}
+.rewriteMask{
+  display:inline-block;
+  position:relative;
+  margin-left:3px;
+  min-width:118px;
+  color:transparent;
+  user-select:none
+}
+.rewriteMask:before{
+  content:"commercial implication and buyer rationale";
+  color:#1c2429;
+  filter:blur(5px);
+  opacity:.5
+}
+.rewriteMask:after{
+  content:"Unlock the rest";
+  position:absolute;
+  left:6px;
+  top:0;
+  color:var(--orange);
+  filter:none;
+  opacity:1;
+  font-weight:700;
+  font-size:7.3px
+}
+.scorePathSteps{
+  border-top:1px solid #cbc5bb;
 }
 .pathStep{
   display:grid;
   grid-template-columns:34px minmax(0,1fr);
   gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid #cfc8bd;
-  background:transparent;
-  min-height:0;
+  padding:11px 0;
+  border-bottom:1px solid #cbc5bb;
 }
 .pathStep:before{
   font-family:'Fraunces',serif;
@@ -436,71 +496,24 @@ body{padding:0 18px}
 .pathStep b{
   display:block;
   font-family:'Fraunces',serif;
-  font-size:15px;
+  font-size:14.5px;
   line-height:1.12;
   margin-bottom:3px;
   font-weight:500;
 }
 .pathStep span{
   display:block;
-  font-size:8.8px;
-  line-height:1.42;
+  font-size:8.7px;
+  line-height:1.4;
   color:#465057;
 }
 .pathStep em{display:none}
 .scorePathBar,.scorePathFoot{display:none}
-.rewritePreview{
-  grid-column:2;
-  margin-top:2px;
-  background:#11191d;
-  color:#fff;
-  padding:12px 14px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  align-items:start;
-}
-.rewritePreview .before,.rewritePreview .after{font-size:8.4px;line-height:1.42}
-.rewritePreview .before{color:#c8ced2}
-.rewritePreview .after{color:#fff}
-.rewritePreview b{
-  display:block;
-  font-size:7px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--orange);
-  margin-bottom:5px
-}
-.rewriteMask{
-  display:inline-block;
-  position:relative;
-  margin-left:3px;
-  min-width:120px;
-  color:transparent;
-  user-select:none
-}
-.rewriteMask:before{
-  content:"commercial implication and buyer rationale";
-  color:#fff;
-  filter:blur(5px);
-  opacity:.55
-}
-.rewriteMask:after{
-  content:"Unlock the rest";
-  position:absolute;
-  left:6px;
-  top:0;
-  color:var(--orange);
-  filter:none;
-  opacity:1;
-  font-weight:700;
-  font-size:7.4px;
-  letter-spacing:.02em
-}
 @media(max-width:700px){
   .scorePath{grid-template-columns:1fr;gap:16px}
   .scorePathHead{padding-right:0}
-  .rewritePreview{grid-column:1;grid-template-columns:1fr}
+  .rewriteCompare{grid-template-columns:1fr}
+  .rewriteCol + .rewriteCol{border-left:0;border-top:1px solid #d2ccc2}
 }
 </style>
 </head>
@@ -547,19 +560,27 @@ body{padding:0 18px}
 <section class="scorePathSection">
   <div class="scorePath">
     <div class="scorePathHead">
-      <div class="scorePathEyebrow">What needs to change</div>
+      <div class="scorePathEyebrow">What will move you closer to competitive?</div>
       <h4><span class="pathCurrent">67</span> is close.<br>It isn’t safe.</h4>
-      <p>These are the three things we would address before you submit. The score is an assessment, not a guarantee.</p>
+      <p>The diagnosis is free. Full Cycle shows you exactly how to make each change.</p>
     </div>
     <div>
-      <div class="scorePathSteps">
-        <div class="pathStep"><div><b>CV rewrite — Redcliffe + LVMH</b><span>Make the strongest evidence show judgement and ownership immediately.</span><em>High</em></div></div>
-        <div class="pathStep"><div><b>Technical preparation</b><span>Bring interview readiness up to the level your CV implies.</span><em>High</em></div></div>
-        <div class="pathStep"><div><b>Leadership reframe</b><span>Turn existing evidence into clear ownership and outcome.</span><em>Med</em></div></div>
+      <div class="rewriteCompare">
+        <div class="rewriteCol before">
+          <b>Your current wording</b>
+          <strong>Redcliffe Partners</strong>
+          <p>Supported buyer research, comparable-company analysis and presentation materials.</p>
+        </div>
+        <div class="rewriteCol after">
+          <b>A stronger version</b>
+          <strong>Redcliffe Partners</strong>
+          <p>Built the comps set for a mid-market sale, showing <span class="rewriteMask">the commercial implication and buyer rationale</span></p>
+        </div>
       </div>
-      <div class="rewritePreview">
-        <div class="before"><b>Now</b>Supported buyer research, comparable-company analysis and presentation materials.</div>
-        <div class="after"><b>Rewritten</b>Built the comps set for a mid-market sale, showing <span class="rewriteMask">the commercial implication and buyer rationale</span></div>
+      <div class="scorePathSteps">
+        <div class="pathStep"><div><b>Rewrite the CV where the experience is undersold</b><span>Same experience. Stronger evidence of judgement, ownership and outcome.</span><em></em></div></div>
+        <div class="pathStep"><div><b>Close the technical gap</b><span>Your screen suggests the interview risk is higher than the CV currently implies.</span><em></em></div></div>
+        <div class="pathStep"><div><b>Reframe leadership evidence</b><span>You have examples, but they need to read as ownership rather than participation.</span><em></em></div></div>
       </div>
     </div>
   </div>
@@ -926,19 +947,15 @@ body{padding:0 18px}
       setEl(step.querySelector('em'),gap>0?('+'+shares[idx+1]):'✓');
     });
 
-    var rw=path.querySelector('.rewritePreview');
+    var rw=path.querySelector('.rewriteCompare');
     if(rw && (p.strengths||[]).length){
       var strongest=p.strengths[0]||{};
-      var before=rw.querySelector('.before');
-      if(before){
-        before.textContent='';
-        var bb=document.createElement('b'); bb.textContent='Now'; before.appendChild(bb);
-        before.appendChild(document.createTextNode(String(strongest.evidence||strongest.title||'Your strongest CV evidence').slice(0,115)));
-      }
-      var after=rw.querySelector('.after');
-      if(after){
-        after.innerHTML='<b>Rewritten</b>Lead with '+String(strongest.title||'the strongest experience')+' and make the judgement / outcome explicit <span class="rewriteMask">the full rewritten bullet</span>';
-      }
+      var before=rw.querySelector('.before p');
+      var beforeTitle=rw.querySelector('.before strong');
+      var afterTitle=rw.querySelector('.after strong');
+      if(before) before.textContent=String(strongest.evidence||strongest.title||'Your strongest CV evidence').slice(0,130);
+      if(beforeTitle) beforeTitle.textContent=String(strongest.title||'Strongest CV evidence');
+      if(afterTitle) afterTitle.textContent=String(strongest.title||'Strongest CV evidence');
     }
   }
 
