@@ -224,7 +224,33 @@ body{font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
 .tests,.compintro{grid-template-columns:1fr}.tc{height:auto;grid-template-columns:1fr 1fr;gap:10px}.tbox{min-width:0;padding:12px}.testscore{gap:10px}.tbox .ticks{width:65px}.qlist{grid-template-columns:1fr;grid-template-rows:auto;grid-auto-flow:row}.q{height:auto;min-height:42px;grid-template-columns:25px minmax(0,1fr) 92px}.qa{gap:5px}.compintro p{margin-top:12px}.comps{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.comp,.comp.weak{min-height:170px}.comp h3{min-height:0}.comp p{font-size:12px}.cta{grid-template-rows:auto}.offer li{white-space:normal}.cvleft h2,.testleft h2,.compintro h2{font-size:29px}.lock{gap:14px}.card{min-height:0}
 }
 
-@media(min-width:761px){.ctaintro h2{font-size:34px;max-width:100%;letter-spacing:-1.4px}}</style>
+@media(min-width:761px){.ctaintro h2{font-size:34px;max-width:100%;letter-spacing:-1.4px}}
+/* Competency overview and standalone assessment warning. */
+.warning-strip{background:#0c1418;color:#ff661f;text-align:center;padding:15px 24px;font:400 23px/1.25 Georgia,serif;letter-spacing:-.4px}
+.competency-heading{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:22px}
+.competency-heading h2{font:400 32px/1.1 Georgia,serif;letter-spacing:-1px;margin:0}
+.competency-heading p{font:13px/1.5 Arial,sans-serif;color:#536076;margin:0;max-width:440px}
+.competency-overview{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid #d9d7d2;border-bottom:1px solid #d9d7d2;padding:18px 0;gap:0}
+.competency-item{padding:0 16px;border-right:1px solid #dedbd6;min-width:0}.competency-item:first-child{padding-left:0}.competency-item:last-child{padding-right:0;border-right:0}
+.competency-item>span{font:12px/1.35 Arial,sans-serif;min-height:34px;display:block;color:#26323c}.competency-item>div:not(.competency-meter){display:flex;align-items:baseline;gap:4px;margin-top:9px}
+.competency-item strong{font:400 31px/1 Georgia,serif;letter-spacing:-1px}.competency-item small{font:10px Arial,sans-serif;color:#777b80}.competency-item.priority strong{color:#d74b16}
+.competency-meter{height:3px;margin-top:14px;background:linear-gradient(90deg,#586b64 var(--score),#dddcd7 var(--score))}.priority .competency-meter{background:linear-gradient(90deg,#dc6b38 var(--score),#dddcd7 var(--score))}
+.competency-focus{margin-top:20px}.focus-label{font:600 12px/1.4 Arial,sans-serif;color:#24313c;margin-bottom:14px}
+.focus-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}.focus-items article{border-right:1px solid #dedbd6;padding-right:22px}.focus-items article:last-child{border-right:0;padding-right:0}
+.focus-title{display:flex;align-items:baseline;gap:12px}.focus-title>span{font:italic 24px Georgia,serif;color:#d2763c}.focus-title h3{font:400 17px/1.3 Georgia,serif;margin:0;letter-spacing:-.3px}.focus-title small{font:11px Arial,sans-serif;color:#777b80;margin-left:5px;white-space:nowrap}
+.focus-items p{font:13px/1.5 Arial,sans-serif;color:#536076;margin:8px 0 0 36px}
+@media(max-width:760px){
+.top{height:64px}.logo{font-size:28px}.nav2 .pill{font-size:12px;padding:9px 14px}
+.hcol{margin:0;padding:24px 20px}.person{border-bottom:1px solid #dedbd6}.person h1{margin-top:10px;margin-bottom:20px;font-size:42px}.meta{gap:18px}
+.scorecol{padding:24px 20px;border-bottom:1px solid #dedbd6}.score{font-size:96px;line-height:.9}.scorelabel{margin-top:10px}.risk{max-width:360px}.scale{max-width:360px;grid-template-columns:repeat(3,1fr);margin-bottom:0}.readtop{margin:0;padding:24px 20px}.readtop h2{font-size:30px}.readtop p{font-size:14px;line-height:1.5}.sign{margin-top:8px}
+.warning-strip{font-size:21px;padding:18px 25px;line-height:1.3}.pathhead h2{font-size:30px}.pathhead p{font-size:13px;line-height:1.5;padding-left:0;border:0}.move h3{font-size:18px}.move p{font-size:14px;line-height:1.5}.moves{margin-top:22px}.move,.move+.move{padding:18px 0}.no{font-size:32px}
+.cvleft p,.testleft p{font-size:14px;line-height:1.5}.card{padding:16px}.card p{font-size:14px;line-height:1.5}.lock{font-size:12px;padding:10px 12px}.tbox span{font-size:12px}.q{grid-template-columns:25px minmax(0,1fr);padding:10px;gap:5px 12px}.qt{font-size:13px}.qa{grid-column:2;font-size:11px}.qa .padlock{transform:scale(.65);margin-left:0}.qlist{gap:8px}.qn{align-self:start}.concept-heading{font-size:14px;margin-top:3px}
+.competency-heading{grid-template-columns:1fr;gap:12px;margin-bottom:20px}.competency-heading h2{font-size:30px}.competency-heading p{font-size:14px;line-height:1.5}
+.competency-overview{grid-template-columns:1fr;padding:0;border-bottom:0}.competency-item,.competency-item:first-child,.competency-item:last-child{padding:14px 0;border-right:0;border-bottom:1px solid #dedbd6;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 20px}.competency-item>span{min-height:0;font-size:14px}.competency-item>div:not(.competency-meter){margin:0}.competency-item strong{font-size:27px}.competency-meter{grid-column:1/-1;margin:0;height:3px}
+.competency-focus{margin-top:24px}.focus-label{font-size:13px;margin-bottom:6px}.focus-items{grid-template-columns:1fr;gap:0}.focus-items article,.focus-items article:last-child{border-right:0;padding:16px 0;border-bottom:1px solid #dedbd6}.focus-items article:last-child{border-bottom:0}.focus-title h3{font-size:19px}.focus-items p{font-size:14px;line-height:1.5}.focus-title small{font-size:12px}.ctaintro p{font-size:14px;line-height:1.5}.offer h3{font-size:28px}.offer li{font-size:13px;line-height:1.5}.offer ul{margin-top:12px;margin-bottom:16px}.offer{padding:18px}.offer.dark{padding:18px}.offer.dark h3{font-size:28px}.oline{font-size:10px}.btn{height:auto;padding:12px;font-size:16px}.footer{height:auto;min-height:70px;flex-wrap:wrap;gap:12px;padding:16px 20px}.footerlinks{font-size:11px;gap:14px}
+}
+
+</style>
 </head>
 <body>
 <div class="page">
@@ -258,11 +284,12 @@ body{font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
     <div class="kicker" style="color:#48545b">Our HR recruiter read</div>
     <h2>Your application is<br>at risk of rejection.</h2>
     <p>At 67/100, your application is borderline. Relevant finance experience is not enough if you cannot show clear impact, explain the technical basics and defend your commercial views. Leave these gaps unresolved and you risk losing the recruiter before interview — or being exposed during it.</p>
-    <div class="fearline">This is not a score to feel safe about.</div>
     <div class="sign">The Desk</div>
   </div>
   <div class="building" role="img" aria-label="London financial district skyscrapers. Higher standards, brighter careers."></div>
 </section>
+
+<div class="warning-strip">This is not a score to feel safe about.</div>
 
 <section class="section">
   <div class="pathhead">
@@ -316,22 +343,21 @@ body{font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
 </section>
 
 <section class="section competency-section">
-  <div class="compsec">
-    <div class="compintro">
-      <div class="kicker">Your 7 competencies</div>
-      <h2>What your application shows — and what to strengthen.</h2>
-      <p>These scores assess how clearly your application demonstrates each competency. The three highlighted areas are your priorities; each card shows what we would help you improve.</p>
-    </div>
-    <div class="comps">
-<article class="comp"><div class="comp-score"><b>76</b><small>/100</small></div><h3>Analytical ability</h3><div class="comp-status">Strongest area</div><div class="ticks" aria-hidden="true" style="--score:76%"></div><p><strong>Next step:</strong> Keep your analysis tied to a clear conclusion.</p></article>
-<article class="comp"><div class="comp-score"><b>68</b><small>/100</small></div><h3>Teamwork</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:68%"></div><p><strong>Next step:</strong> Show your contribution to the team’s result.</p></article>
-<article class="comp weak"><div class="comp-score"><b>62</b><small>/100</small></div><h3>Communication</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:62%"></div><p><strong>Fix:</strong> Make your CV points concise and outcome-led.</p></article>
-<article class="comp weak"><div class="comp-score"><b>58</b><small>/100</small></div><h3>Leadership</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:58%"></div><p><strong>Fix:</strong> Show a decision you owned and its impact.</p></article>
-<article class="comp"><div class="comp-score"><b>64</b><small>/100</small></div><h3>Resilience</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:64%"></div><p><strong>Next step:</strong> Explain a setback and how you responded.</p></article>
-<article class="comp weak"><div class="comp-score"><b>61</b><small>/100</small></div><h3>Commercial awareness</h3><div class="comp-status">Priority fix</div><div class="ticks" aria-hidden="true" style="--score:61%"></div><p><strong>Fix:</strong> Support your LVMH view with evidence.</p></article>
-<article class="comp"><div class="comp-score"><b>66</b><small>/100</small></div><h3>Technical readiness</h3><div class="comp-status">Build on this</div><div class="ticks" aria-hidden="true" style="--score:66%"></div><p><strong>Next step:</strong> Practise EV, multiples and deal rationale.</p></article>
+  <div class="competency-heading"><div><div class="kicker">Your 7 competencies</div><h2>Where you stand.</h2></div><p>Analytical ability is your strongest area. Leadership, commercial awareness and communication need the most attention.</p></div>
+  <div class="competency-overview" aria-label="Competency scores out of 100">
+<div class="competency-item"><span>Analytical ability</span><div><strong>76</strong><small>/100</small></div><div class="competency-meter" style="--score:76%" aria-hidden="true"></div></div>
+<div class="competency-item"><span>Teamwork</span><div><strong>68</strong><small>/100</small></div><div class="competency-meter" style="--score:68%" aria-hidden="true"></div></div>
+<div class="competency-item priority"><span>Communication</span><div><strong>62</strong><small>/100</small></div><div class="competency-meter" style="--score:62%" aria-hidden="true"></div></div>
+<div class="competency-item priority"><span>Leadership</span><div><strong>58</strong><small>/100</small></div><div class="competency-meter" style="--score:58%" aria-hidden="true"></div></div>
+<div class="competency-item"><span>Resilience</span><div><strong>64</strong><small>/100</small></div><div class="competency-meter" style="--score:64%" aria-hidden="true"></div></div>
+<div class="competency-item priority"><span>Commercial awareness</span><div><strong>61</strong><small>/100</small></div><div class="competency-meter" style="--score:61%" aria-hidden="true"></div></div>
+<div class="competency-item"><span>Technical readiness</span><div><strong>66</strong><small>/100</small></div><div class="competency-meter" style="--score:66%" aria-hidden="true"></div></div>
 </div>
-</div>
+  <div class="competency-focus"><div class="focus-label">What we would work on first</div><div class="focus-items">
+    <article><div class="focus-title"><span>01</span><h3>Leadership <small>58/100</small></h3></div><p>Show a decision you owned. Explain what changed because you took the lead.</p></article>
+    <article><div class="focus-title"><span>02</span><h3>Commercial awareness <small>61/100</small></h3></div><p>Turn your LVMH opinion into a view you can defend with evidence and a clear commercial argument.</p></article>
+    <article><div class="focus-title"><span>03</span><h3>Communication <small>62/100</small></h3></div><p>Rewrite your experience around conclusions and results, so a recruiter can see the point quickly.</p></article>
+  </div></div>
 </section>
 
 <section class="cta">
