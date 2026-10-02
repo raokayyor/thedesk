@@ -663,6 +663,89 @@ body{padding:0 18px}
   .competencySection .compGrid{display:flex;overflow-x:auto;gap:0}
   .competencySection .comp{flex:0 0 155px}
 }
+
+/* --- 67 to 75+ path --- */
+.path75Section{
+  padding:28px 34px 24px;
+  background:#fffdfa;
+  border-bottom:1px solid var(--rule);
+}
+.path75Eyebrow{
+  font-size:7.4px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--orange);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.path75Section h2{
+  font-family:'Fraunces',serif;
+  font-size:34px;
+  line-height:1.04;
+  font-weight:500;
+  margin:0 0 16px;
+}
+.path75Bar{
+  display:flex;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#e8e2d8;
+}
+.path75Base{background:#c7bfb2;width:67%}
+.path75Gain1{background:#c7611a;width:4%}
+.path75Gain2{background:#dc8750;width:2%}
+.path75Gain3{background:#ebb08c;width:2%}
+.path75Labels{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:7px;
+  font-size:7.8px;
+  letter-spacing:.05em;
+  color:#625e58;
+}
+.path75Labels b{color:var(--orange)}
+.path75Moves{margin-top:18px;border-top:1px solid #ddd6cc}
+.path75Move{
+  display:grid;
+  grid-template-columns:13px minmax(0,1fr) auto;
+  gap:13px;
+  align-items:start;
+  padding:13px 0;
+  border-bottom:1px solid #e6dfd5;
+}
+.path75Dot{
+  width:9px;height:9px;border-radius:3px;margin-top:4px;background:var(--orange)
+}
+.path75Move:nth-child(2) .path75Dot{opacity:.78}
+.path75Move:nth-child(3) .path75Dot{opacity:.55}
+.path75Move b{
+  display:block;
+  font-size:10.2px;
+  line-height:1.25;
+  margin-bottom:3px
+}
+.path75Move small{
+  display:block;
+  font-size:7.8px;
+  line-height:1.35;
+  color:#656d72
+}
+.path75Move small.free{color:var(--orange);font-weight:700}
+.path75Impact{
+  font-size:8px;
+  font-weight:700;
+  color:#4a5155;
+  white-space:nowrap;
+  padding-top:1px
+}
+@media(max-width:700px){
+  .path75Section{padding:24px 20px 22px}
+  .path75Section h2{font-size:29px}
+  .path75Move{grid-template-columns:12px minmax(0,1fr)}
+  .path75Impact{grid-column:2}
+}
 </style>
 </head>
 <body>
@@ -713,12 +796,32 @@ body{padding:0 18px}
   </div>
 </section>
 
-<section class="riskSection">
-  <div class="riskTitle"><h3>The three things most likely to hurt this application</h3><span>Before you submit</span></div>
-  <div class="riskList">
-    <div class="riskItem"><div class="riskNo">01</div><b>Your strongest experience is not carrying the CV</b><p>Relevant experience is present, but the wording shows activity more clearly than judgement, ownership and outcome.</p></div>
-    <div class="riskItem"><div class="riskNo">02</div><b>Your CV may be ahead of your technical readiness</b><p>The experience on the page gives an interviewer permission to probe. The quick screen suggests that could become a problem.</p></div>
-    <div class="riskItem"><div class="riskNo">03</div><b>Your leadership evidence reads too passively</b><p>There is evidence to work with, but it does not yet sound like you owned, changed or drove something.</p></div>
+<section class="path75Section">
+  <div class="path75Eyebrow">Your path</div>
+  <h2>From <span class="path75Current">67</span> to 75+ in three moves.</h2>
+  <div class="path75Bar">
+    <div class="path75Base"></div>
+    <div class="path75Gain1"></div>
+    <div class="path75Gain2"></div>
+    <div class="path75Gain3"></div>
+  </div>
+  <div class="path75Labels"><span>Now <span class="path75Now">67</span></span><b>Target 75+ · Competitive</b></div>
+  <div class="path75Moves">
+    <div class="path75Move">
+      <div class="path75Dot"></div>
+      <div><b>Rewrite Redcliffe to show conclusions</b><small class="free">Free preview below</small></div>
+      <div class="path75Impact">Biggest lever</div>
+    </div>
+    <div class="path75Move">
+      <div class="path75Dot"></div>
+      <div><b>Close the technical gap: EV, multiples</b><small>🔒 Full Cycle</small></div>
+      <div class="path75Impact">High impact</div>
+    </div>
+    <div class="path75Move">
+      <div class="path75Dot"></div>
+      <div><b>Make your LVMH view defensible</b><small>🔒 Full Cycle</small></div>
+      <div class="path75Impact">High impact</div>
+    </div>
   </div>
 </section>
 
@@ -1011,19 +1114,27 @@ body{padding:0 18px}
     }
   });
 
-  // THREE RISKS + ONE PROOF EXAMPLE
-  var riskItems=all('.riskItem');
+  // 67 -> 75+ PATH + ONE PROOF EXAMPLE
+  var path75=el('.path75Section');
   var strongest=(p.strengths||[])[0]||{};
   var weakest3=sortedComps.slice(0,3);
-  if(riskItems[0]){
-    setEl(riskItems[0].querySelector('b'),'Your strongest experience is not carrying the CV');
-    setEl(riskItems[0].querySelector('p'),String(strongest.evidence||strongest.whyItMatters||'The strongest evidence is present, but it is not yet doing enough work for you.'));
+  if(path75){
+    setEl(path75.querySelector('.path75Current'),score);
+    setEl(path75.querySelector('.path75Now'),score);
+    var base=path75.querySelector('.path75Base');
+    if(base) base.style.width=Math.max(0,Math.min(75,score))+'%';
+    var moves=all('.path75Move');
+    if(moves[0]){
+      var sName=String(strongest.title||'your strongest CV evidence');
+      setEl(moves[0].querySelector('b'),'Rewrite '+sName+' to show conclusions');
+    }
+    if(moves[1] && weakest3[0]){
+      setEl(moves[1].querySelector('b'),'Close the '+String(weakest3[0].name||'technical')+' gap');
+    }
+    if(moves[2] && weakest3[1]){
+      setEl(moves[2].querySelector('b'),'Make your '+String(weakest3[1].name||'commercial')+' evidence defensible');
+    }
   }
-  weakest3.slice(0,2).forEach(function(w,idx){
-    var ri=riskItems[idx+1]; if(!ri) return;
-    setEl(ri.querySelector('b'),idx===0?'Your CV may be ahead of your readiness':'Your weakest evidence is too passive');
-    setEl(ri.querySelector('p'),String(w.visibleReason||w.lockedImprovement||'This is one of the clearest areas to strengthen before submission.'));
-  });
 
   var proof=el('.proofCompare');
   if(proof && strongest){
