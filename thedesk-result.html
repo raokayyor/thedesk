@@ -601,6 +601,68 @@ body{padding:0 18px}
   .pressureRow{grid-template-columns:48px 1fr}
   .pressureBody{grid-column:2}
 }
+
+/* --- Restored seven-competency assessment strip --- */
+.competencySection{padding:22px 34px 24px;background:#f5f1e9}
+.competencySection .sectionHead{margin-bottom:14px}
+.competencySection .compGrid{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  border-top:1px solid #cfc8bd;
+  border-bottom:1px solid #cfc8bd;
+  background:#fffdfa;
+}
+.competencySection .comp{
+  display:block;
+  padding:14px 13px 15px;
+  border-right:1px solid #d8d1c7;
+  min-height:168px;
+  background:transparent!important;
+}
+.competencySection .comp:last-child{border-right:0}
+.competencySection .compName{
+  font-family:'Fraunces',serif;
+  font-size:12.5px;
+  line-height:1.08;
+  min-height:32px
+}
+.competencySection .compScore{
+  font-size:27px;
+  line-height:1;
+  color:var(--orange);
+  font-weight:700;
+  margin:11px 0 9px
+}
+.competencySection .comp p{
+  font-size:8.5px;
+  line-height:1.38;
+  color:#51595e;
+  margin:0
+}
+.competencySection .compTeaser{
+  margin-top:11px;
+  padding-top:9px;
+  border-top:1px solid #e3ddd4;
+  font-size:7.7px;
+  line-height:1.36;
+  color:#30383d
+}
+.competencySection .compTeaser b{color:var(--orange)}
+.competencySection .compWeak{background:#fbf3eb!important}
+.competencySection .compStrong .compScore{color:#30383d}
+.competencySection .compStrong:after{
+  content:"Holding up";
+  display:inline-block;
+  margin-top:10px;
+  font-size:6.7px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#7a8286
+}
+@media(max-width:900px){
+  .competencySection .compGrid{display:flex;overflow-x:auto;gap:0}
+  .competencySection .comp{flex:0 0 155px}
+}
 </style>
 </head>
 <body>
@@ -689,25 +751,15 @@ body{padding:0 18px}
 </section>
 
 <section class="section competencySection">
-  <div class="sectionHead"><div class="num">04</div><div><h3>How your application reads across the seven signals</h3><div class="sub">Three pressure points. Four areas already holding up.</div></div></div>
-  <div class="competencyLayout">
-    <div class="pressurePanel">
-      <div class="panelHead"><div><div class="eyebrow">Pressure points</div><h4>Where the application is most exposed</h4></div><span>Fix these first</span></div>
-      <div class="pressureList">
-        <div class="pressureRow"><div class="pressureScore">61</div><div class="pressureName">Leadership</div><div class="pressureBody"><p>Training staff is useful evidence, but the application does not yet show enough ownership or progression.</p><div class="pressureFix"><b>Full Cycle:</b> the exact reframe we would use to turn participation into ownership.</div></div></div>
-        <div class="pressureRow"><div class="pressureScore">62</div><div class="pressureName">Technical readiness</div><div class="pressureBody"><p>Your CV currently promises more depth than the quick screen proves.</p><div class="pressureFix"><b>Full Cycle:</b> the deeper assessment and targeted preparation built around the gaps we found.</div></div></div>
-        <div class="pressureRow"><div class="pressureScore">64</div><div class="pressureName">Commercial awareness</div><div class="pressureBody"><p>You recognise the concepts, but the judgement behind them is not yet strong enough.</p><div class="pressureFix"><b>Full Cycle:</b> the questions and commercial work we would use to build that judgement.</div></div></div>
-      </div>
-    </div>
-    <div class="supportPanel">
-      <div class="panelHead"><div><div class="eyebrow">Holding up well</div><h4>Evidence we would keep</h4></div><span>4 signals</span></div>
-      <div class="supportList">
-        <div class="supportRow"><div class="supportTop"><b>Teamwork</b><span>72</span></div><p>Credible evidence. Your contribution is visible enough to support the application.</p></div>
-        <div class="supportRow"><div class="supportTop"><b>Communication</b><span>74</span></div><p>Good supporting evidence, especially where you explain or influence rather than just participate.</p></div>
-        <div class="supportRow"><div class="supportTop"><b>Analytical ability</b><span>76</span></div><p>Strong raw material from finance work and valuation evidence.</p></div>
-        <div class="supportRow"><div class="supportTop"><b>Resilience</b><span>79</span></div><p>A genuine strength. It should support the story rather than dominate it.</p></div>
-      </div>
-    </div>
+  <div class="sectionHead"><div class="num">04</div><div><h3>Where your application is strongest — and where it is exposed</h3><div class="sub">Seven competencies. Weakest first.</div></div></div>
+  <div class="compGrid">
+    <div class="comp compWeak"><div class="compName">Leadership</div><div class="compScore">61</div><p>Evidence exists, but ownership is unclear.</p><div class="compTeaser"><b>Full Cycle:</b> exact reframe for this evidence.</div></div>
+    <div class="comp compWeak"><div class="compName">Technical readiness</div><div class="compScore">62</div><p>Your CV currently promises more depth than the quick screen proves.</p><div class="compTeaser"><b>Full Cycle:</b> deeper assessment + targeted prep.</div></div>
+    <div class="comp compWeak"><div class="compName">Commercial awareness</div><div class="compScore">64</div><p>You recognise the concepts, but the judgement is still thin.</p><div class="compTeaser"><b>Full Cycle:</b> exact preparation plan.</div></div>
+    <div class="comp compStrong"><div class="compName">Teamwork</div><div class="compScore">72</div><p>Credible evidence. Your contribution is visible enough to support the application.</p></div>
+    <div class="comp compStrong"><div class="compName">Communication</div><div class="compScore">74</div><p>Good supporting evidence, especially where you explain or influence rather than just participate.</p></div>
+    <div class="comp compStrong"><div class="compName">Analytical ability</div><div class="compScore">76</div><p>Strong raw material from finance work and valuation evidence.</p></div>
+    <div class="comp compStrong"><div class="compName">Resilience</div><div class="compScore">79</div><p>A genuine strength. It supports the story rather than needing repair.</p></div>
   </div>
 </section>
 
@@ -936,25 +988,27 @@ body{padding:0 18px}
 
   // SECTION 04 COMPETENCIES
   var sortedComps=(p.competencies || []).slice(0,7).sort(function(a,b){ return Number(a.score||0)-Number(b.score||0); });
-  var pressureRows=all('.pressureRow');
-  sortedComps.slice(0,3).forEach(function(c,i){
-    var row=pressureRows[i]; if(!row) return;
-    setEl(row.querySelector('.pressureScore'),Math.round(Number(c.score||0)));
-    setEl(row.querySelector('.pressureName'),c.name||'');
-    setEl(row.querySelector('.pressureBody p'),c.visibleReason||'');
-    var fix=row.querySelector('.pressureFix');
-    if(fix){
-      fix.textContent='';
-      var b=document.createElement('b'); b.textContent='Full Cycle: '; fix.appendChild(b);
-      fix.appendChild(document.createTextNode(c.lockedImprovement||c.freeFix||'the exact preparation and rewrite we would use for this area.'));
+  var compEls=all('.competencySection .comp');
+  sortedComps.forEach(function(c,i){
+    var box=compEls[i]; if(!box) return;
+    setEl(box.querySelector('.compName'),c.name||'');
+    setEl(box.querySelector('.compScore'),Math.round(Number(c.score||0)));
+    setEl(box.querySelector('p'),c.visibleReason||'');
+    box.classList.toggle('compWeak',i<3);
+    box.classList.toggle('compStrong',i>=3);
+    var teaser=box.querySelector('.compTeaser');
+    if(i<3){
+      if(!teaser){
+        teaser=document.createElement('div');
+        teaser.className='compTeaser';
+        box.appendChild(teaser);
+      }
+      teaser.textContent='';
+      var b=document.createElement('b'); b.textContent='Full Cycle: '; teaser.appendChild(b);
+      teaser.appendChild(document.createTextNode(c.lockedImprovement||c.freeFix||'the exact fix we would make for this area.'));
+    } else if(teaser){
+      teaser.remove();
     }
-  });
-  var supportRows=all('.supportRow');
-  sortedComps.slice(3,7).forEach(function(c,i){
-    var row=supportRows[i]; if(!row) return;
-    setEl(row.querySelector('.supportTop b'),c.name||'');
-    setEl(row.querySelector('.supportTop span'),Math.round(Number(c.score||0)));
-    setEl(row.querySelector('p'),c.visibleReason||'Credible evidence in the current application.');
   });
 
   // THREE RISKS + ONE PROOF EXAMPLE
