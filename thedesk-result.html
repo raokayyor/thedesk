@@ -570,6 +570,37 @@ body{padding:0 18px}
   .comp{grid-template-columns:1fr 50px}.comp p,.comp .blurWrap{grid-column:1/-1}
   .repairBand{grid-template-columns:1fr}
 }
+
+/* --- Premium competency review --- */
+.competencySection{padding:24px 34px 26px;background:#f5f1e9}
+.competencySection .sectionHead{margin-bottom:16px}
+.competencyLayout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.7fr);gap:18px}
+.pressurePanel,.supportPanel{border:1px solid #d2cbc0;background:#fffdfa}
+.panelHead{padding:13px 15px 11px;border-bottom:1px solid #d2cbc0;display:flex;justify-content:space-between;align-items:end;gap:14px}
+.panelHead .eyebrow{font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.panelHead h4{font-family:'Fraunces',serif;font-size:19px;line-height:1.05;margin:4px 0 0;font-weight:500}
+.panelHead span{font-size:7.5px;color:#777f83}
+.pressureList{padding:0 15px}
+.pressureRow{display:grid;grid-template-columns:52px minmax(120px,.55fr) minmax(0,1.25fr);gap:14px;padding:14px 0;border-bottom:1px solid #ded8ce;align-items:start}
+.pressureRow:last-child{border-bottom:0}
+.pressureScore{font-size:29px;line-height:1;color:var(--orange);font-weight:700}
+.pressureName{font-family:'Fraunces',serif;font-size:14.5px;line-height:1.08}
+.pressureBody p{margin:0;font-size:8.9px;line-height:1.42;color:#4d565b}
+.pressureFix{margin-top:7px;padding-top:7px;border-top:1px solid #ebe5dc;font-size:7.8px;line-height:1.35;color:#2f393e}
+.pressureFix b{color:var(--orange)}
+.supportList{padding:0 14px}
+.supportRow{padding:13px 0;border-bottom:1px solid #ded8ce}
+.supportRow:last-child{border-bottom:0}
+.supportTop{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.supportTop b{font-family:'Fraunces',serif;font-size:13.5px;font-weight:500}
+.supportTop span{font-size:18px;color:var(--orange);font-weight:700}
+.supportRow p{margin:4px 0 0;font-size:8.4px;line-height:1.38;color:#596166}
+.sectionSignal{display:inline-block;margin-left:8px;padding:3px 7px;border:1px solid #d7d0c5;font-size:6.7px;letter-spacing:.1em;text-transform:uppercase;color:#6d7579}
+@media(max-width:760px){
+  .competencyLayout{grid-template-columns:1fr}
+  .pressureRow{grid-template-columns:48px 1fr}
+  .pressureBody{grid-column:2}
+}
 </style>
 </head>
 <body>
@@ -658,15 +689,25 @@ body{padding:0 18px}
 </section>
 
 <section class="section competencySection">
-  <div class="sectionHead"><div class="num">04</div><div><h3>Your evidence scorecard</h3><div class="sub">What the application currently proves — weakest first.</div></div></div>
-  <div class="compGrid">
-    <div class="comp compFree"><div class="compName">Leadership</div><div class="compScore">61</div><p>Evidence exists, but ownership is unclear.</p><div class="compTeaser"><b>Full Cycle:</b> exact reframe for the weakest evidence.</div></div>
-    <div class="comp compLocked"><div class="compName">Technical readiness</div><div class="compScore">62</div><div class="blurWrap"><p>CV currently promises more depth than the screen proves.</p><span>Full Cycle: exact repair plan</span></div></div>
-    <div class="comp compLocked"><div class="compName">Commercial awareness</div><div class="compScore">64</div><div class="blurWrap"><p>Concepts are recognised; judgement needs development.</p><span>Full Cycle: exact repair plan</span></div></div>
-    <div class="comp compLocked"><div class="compName">Teamwork</div><div class="compScore">72</div><div class="blurWrap"><p>Credible evidence.</p><span></span></div></div>
-    <div class="comp compLocked"><div class="compName">Communication</div><div class="compScore">74</div><div class="blurWrap"><p>Credible evidence.</p><span></span></div></div>
-    <div class="comp compLocked"><div class="compName">Analytical ability</div><div class="compScore">76</div><div class="blurWrap"><p>Strong evidence.</p><span></span></div></div>
-    <div class="comp compLocked"><div class="compName">Resilience</div><div class="compScore">79</div><div class="blurWrap"><p>Strong evidence.</p><span></span></div></div>
+  <div class="sectionHead"><div class="num">04</div><div><h3>How your application reads across the seven signals</h3><div class="sub">Three pressure points. Four areas already holding up.</div></div></div>
+  <div class="competencyLayout">
+    <div class="pressurePanel">
+      <div class="panelHead"><div><div class="eyebrow">Pressure points</div><h4>Where the application is most exposed</h4></div><span>Fix these first</span></div>
+      <div class="pressureList">
+        <div class="pressureRow"><div class="pressureScore">61</div><div class="pressureName">Leadership</div><div class="pressureBody"><p>Training staff is useful evidence, but the application does not yet show enough ownership or progression.</p><div class="pressureFix"><b>Full Cycle:</b> the exact reframe we would use to turn participation into ownership.</div></div></div>
+        <div class="pressureRow"><div class="pressureScore">62</div><div class="pressureName">Technical readiness</div><div class="pressureBody"><p>Your CV currently promises more depth than the quick screen proves.</p><div class="pressureFix"><b>Full Cycle:</b> the deeper assessment and targeted preparation built around the gaps we found.</div></div></div>
+        <div class="pressureRow"><div class="pressureScore">64</div><div class="pressureName">Commercial awareness</div><div class="pressureBody"><p>You recognise the concepts, but the judgement behind them is not yet strong enough.</p><div class="pressureFix"><b>Full Cycle:</b> the questions and commercial work we would use to build that judgement.</div></div></div>
+      </div>
+    </div>
+    <div class="supportPanel">
+      <div class="panelHead"><div><div class="eyebrow">Holding up well</div><h4>Evidence we would keep</h4></div><span>4 signals</span></div>
+      <div class="supportList">
+        <div class="supportRow"><div class="supportTop"><b>Teamwork</b><span>72</span></div><p>Credible evidence. Your contribution is visible enough to support the application.</p></div>
+        <div class="supportRow"><div class="supportTop"><b>Communication</b><span>74</span></div><p>Good supporting evidence, especially where you explain or influence rather than just participate.</p></div>
+        <div class="supportRow"><div class="supportTop"><b>Analytical ability</b><span>76</span></div><p>Strong raw material from finance work and valuation evidence.</p></div>
+        <div class="supportRow"><div class="supportTop"><b>Resilience</b><span>79</span></div><p>A genuine strength. It should support the story rather than dominate it.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -894,34 +935,26 @@ body{padding:0 18px}
   renderTest(cards[1],cScore,cTotal,p.tests && p.tests.commercialTechnical);
 
   // SECTION 04 COMPETENCIES
-  var compEls=all('.compGrid .comp');
   var sortedComps=(p.competencies || []).slice(0,7).sort(function(a,b){ return Number(a.score||0)-Number(b.score||0); });
-  sortedComps.forEach(function(c,i){
-    var box=compEls[i]; if(!box) return;
-    var name=box.querySelector('.compName'); if(name) name.textContent=c.name || '';
-    var sc=box.querySelector('.compScore'); if(sc) sc.textContent=Math.round(Number(c.score||0));
-    var reason=box.querySelector('p');
-    if(reason) setEl(reason,c.visibleReason || c.lockedImprovement || '');
-    var teaser=box.querySelector('.compTeaser');
-    var lock=box.querySelector('.blurWrap span');
-    if(i===0 && teaser){
-      teaser.textContent='';
-      var tb=document.createElement('b'); tb.textContent='Free fix: '; teaser.appendChild(tb);
-      teaser.appendChild(document.createTextNode(c.freeFix || (p.freeAction && p.freeAction.detail) || 'Strengthen the weakest area first.'));
+  var pressureRows=all('.pressureRow');
+  sortedComps.slice(0,3).forEach(function(c,i){
+    var row=pressureRows[i]; if(!row) return;
+    setEl(row.querySelector('.pressureScore'),Math.round(Number(c.score||0)));
+    setEl(row.querySelector('.pressureName'),c.name||'');
+    setEl(row.querySelector('.pressureBody p'),c.visibleReason||'');
+    var fix=row.querySelector('.pressureFix');
+    if(fix){
+      fix.textContent='';
+      var b=document.createElement('b'); b.textContent='Full Cycle: '; fix.appendChild(b);
+      fix.appendChild(document.createTextNode(c.lockedImprovement||c.freeFix||'the exact preparation and rewrite we would use for this area.'));
     }
-    if(lock){
-      if(i<=2){
-        var reasonText=String(c.lockedImprovement || c.freeFix || c.visibleReason || 'This area needs stronger evidence.');
-        var shortReason=reasonText.split(/[.!?]/)[0];
-        if(shortReason.length>88) shortReason=shortReason.slice(0,85)+'…';
-        lock.textContent='Full Cycle: '+shortReason+'. 🔒 Exact fix';
-      } else {
-        lock.textContent='';
-        lock.style.display='none';
-        box.classList.remove('compLocked');
-        box.classList.add('compFree');
-      }
-    }
+  });
+  var supportRows=all('.supportRow');
+  sortedComps.slice(3,7).forEach(function(c,i){
+    var row=supportRows[i]; if(!row) return;
+    setEl(row.querySelector('.supportTop b'),c.name||'');
+    setEl(row.querySelector('.supportTop span'),Math.round(Number(c.score||0)));
+    setEl(row.querySelector('p'),c.visibleReason||'Credible evidence in the current application.');
   });
 
   // THREE RISKS + ONE PROOF EXAMPLE
