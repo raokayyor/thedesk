@@ -305,7 +305,21 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 .skill-unlock{gap:0;font-size:12px;color:#a44c26}.answer-link{color:#596575;text-decoration:none;gap:7px}.q{grid-template-columns:28px minmax(0,1fr) 110px}
 @media(max-width:760px){.fullcycle-prompt{grid-template-columns:1fr;gap:14px;padding:18px}.fullcycle-prompt h3{font-size:21px}.fullcycle-prompt p{font-size:15px}.prompt-link{justify-self:start;white-space:normal;font-size:15px}.skill-unlock{font-size:13px}.q{grid-template-columns:25px minmax(0,1fr)}.answer-link{grid-column:2;justify-self:start;font-size:12px}}
 
-.section:after{background:#b7b2aa}.warning-strip{border-radius:16px;padding:12px 28px}.warning-label{margin-bottom:5px}.cta{border-radius:18px;margin-bottom:16px}@media(max-width:760px){.warning-strip{border-radius:14px;padding:13px 20px}.cta{border-radius:16px}}.skill-step{flex:0}.skill-step p{margin-bottom:0}.competency-section .fullcycle-prompt{margin-top:20px}</style>
+.section:after{background:#b7b2aa}.warning-strip{border-radius:16px;padding:12px 28px}.warning-label{margin-bottom:5px}.cta{border-radius:18px;margin-bottom:16px}@media(max-width:760px){.warning-strip{border-radius:14px;padding:13px 20px}.cta{border-radius:16px}}.skill-step{flex:0}.skill-step p{margin-bottom:0}.competency-section .fullcycle-prompt{margin-top:20px}
+/* Paired recruiter view and screening readiness preview. */
+.screening-strip{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;padding:24px 30px;border-radius:16px;text-align:left;gap:28px}
+.hr-panel{display:flex;flex-direction:column;justify-content:center;padding:8px 19px;border-right:1px solid #37434a}
+.hr-panel .warning-label{margin-bottom:14px}.hr-panel p{font-size:26px;line-height:1.4;letter-spacing:-.4px}
+.algo-panel{display:grid;grid-template-columns:minmax(0,1fr) 170px;align-items:center;gap:16px}
+.algo-copy .warning-label{font-size:12px;letter-spacing:1px;line-height:1.4;margin-bottom:10px;color:#ff7b3b}
+.algo-copy h3{font-size:20px;line-height:1.3;letter-spacing:-.3px;font-weight:400;color:#f4f0e8;margin:0 0 10px}
+.algo-copy p{font-family:var(--body-font);font-size:13px;line-height:1.5;color:#bfc7ca;margin:0 0 10px}
+.algo-copy small{display:block;font-family:var(--body-font);font-size:10px;line-height:1.4;color:#929ea4}
+.algo-gauge svg{display:block;width:100%;height:auto}.gauge-labels{display:flex;justify-content:space-between;gap:15px;font-family:var(--body-font);font-size:10px;line-height:1.3;color:#aab5b9;margin-top:-8px}.gauge-note{font-family:var(--body-font);font-size:11px;text-align:center;color:#aab5b9;margin-top:12px}
+@media(max-width:760px){.screening-strip{grid-template-columns:1fr;padding:22px 20px;gap:22px}.hr-panel{padding:0 0 22px;border-right:0;border-bottom:1px solid #37434a}.hr-panel p{font-size:24px}.hr-panel p br{display:none}.hr-panel .warning-label{margin-bottom:10px}.algo-panel{grid-template-columns:minmax(0,1fr) 140px;gap:14px}.algo-copy h3{font-size:20px}.algo-copy p{font-size:13px}.algo-copy .warning-label{font-size:12px}.gauge-labels{font-size:9px}.gauge-note{font-size:10px}}
+@media(max-width:360px){.algo-panel{grid-template-columns:1fr}.algo-gauge{width:180px;margin:4px auto 0}}
+
+</style>
 </head>
 <body>
 <div class="page">
@@ -343,7 +357,13 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
   </div>
 </section>
 
-<div class="warning-strip"><div class="warning-label">HR View</div><p>“This is not a score to feel safe about.”</p></div>
+<div class="warning-strip screening-strip">
+  <div class="hr-panel"><div class="warning-label">HR View</div><p>“This is not a score<br>to feel safe about.”</p></div>
+  <div class="algo-panel">
+    <div class="algo-copy"><div class="warning-label">ALGO screening readiness</div><h3>Is your CV clear to<br>screening software?</h3><p>Check readability, role relevance and evidence before you submit.</p><small>Not a prediction of a bank’s screening decision.</small></div>
+    <div class="algo-gauge"><svg viewBox="0 0 180 106" role="img" aria-label="Screening readiness dial. Not yet assessed; no score or needle shown."><path d="M18 86 A72 72 0 0 1 162 86" fill="none" stroke="#344048" stroke-width="12" stroke-linecap="round"/><path d="M18 86 A72 72 0 0 1 162 86" fill="none" stroke="#82908d" stroke-width="2" stroke-dasharray="2 13"/><circle cx="90" cy="86" r="4" fill="#7e898d"/><text x="90" y="67" text-anchor="middle" fill="#f4f0e8" font-size="14" font-family="Arial,sans-serif">Not yet assessed</text></svg><div class="gauge-labels"><span>Needs attention</span><span>Ready</span></div><div class="gauge-note">Checks not yet run</div></div>
+  </div>
+</div>
 
 <section class="section">
   <div class="pathhead">
