@@ -379,7 +379,9 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
  .fullcycle-prompt:not(:has(.prompt-link)){grid-template-columns:1fr}
 /* Keep each offer compact rather than stretching to its neighbour. */
 .cta{align-items:start;grid-template-rows:auto}.offer .btn{margin-top:10px}.offer.dark .offer-price{color:#fff;margin-left:0}.offer.dark .offer-price span{color:#bdc7cb}.competency-locked{min-height:46px}
-.result-heading{font-size:28px;letter-spacing:1.2px}@media(max-width:760px){.result-heading{font-size:25px}}.score-pedigree{font-family:var(--body-font);font-size:14px;line-height:1.4;color:#536076;margin:0 0 10px;font-weight:500;max-width:250px}.hero{height:auto;min-height:300px}@media(max-width:760px){.score-pedigree{font-size:15px;max-width:100%}} </style>
+.result-heading{font-size:28px;letter-spacing:1.2px}@media(max-width:760px){.result-heading{font-size:25px}}.score-pedigree{font-family:var(--body-font);font-size:14px;line-height:1.4;color:#536076;margin:0 0 10px;font-weight:500;max-width:250px}.hero{height:auto;min-height:300px}@media(max-width:760px){.score-pedigree{font-size:15px;max-width:100%}} 
+.hero{grid-template-columns:27% 34% 39%;align-items:start;height:auto}.hero .scorecol{background:#f0eee8;border:1px solid #dfdcd4;border-radius:12px;padding:18px 16px;margin:0 10px;min-width:0}.scorecol .scorelabel{margin:0 0 12px;font-size:11px;letter-spacing:1px}.scorecol .score{font-size:88px;line-height:1}.scorecol .risk{font-size:15px;line-height:1.4;margin-top:12px}.score-breakdown{margin-top:16px;display:grid;gap:12px}.score-component{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 8px;font-family:var(--body-font);font-size:12px;line-height:1.3}.score-component strong{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}.component-bar{grid-column:1/-1;height:4px;background:#dcd9d1;border-radius:3px;overflow:hidden}.component-bar i{display:block;height:100%;background:#d87840}.score-origin{font-size:12px;line-height:1.45;color:#637077;margin:16px 0 12px}.score-origin a{display:inline-block;color:#394b55;text-decoration:underline;white-space:nowrap}.scorecol .scale{font-size:11px;gap:6px;margin-top:0}.scale small{display:block;font-size:9px;margin-top:3px}.footer{flex-wrap:wrap;height:auto}.automated-disclosure{width:100%;font-size:12px;line-height:1.5;color:#aebac0;margin:8px 0 0}@media(max-width:760px){.hero{grid-template-columns:1fr}.hero .scorecol{margin:16px 0;padding:22px 20px}.score-component{font-size:14px}.scorecol .scorelabel{font-size:12px}.score-origin{font-size:13px}}
+</style>
 </head>
 <body>
 <div class="page">
@@ -399,22 +401,20 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
       <div><span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 2v6m8-6v6M7 14h2m3 0h2m3 0h2M7 18h2m3 0h2m3 0h2" stroke="currentColor" stroke-width="2"/></svg></span><span>Final year &nbsp;&nbsp;&nbsp; <svg class="location" viewBox="0 0 24 24"><path d="M12 22S5 14 5 9a7 7 0 0 1 14 0c0 5-7 13-7 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg> UK</span></div>
     </div>
   </div>
-  <div class="hcol scorecol">
-    <p class="score-pedigree">Built on over 20 years of finance and markets experience.</p>
-    <div class="score">67<small>/100</small></div>
-    <div class="scorelabel">Application readiness</div>
-    <div class="risk"><div class="risktitle">Your application risk</div>Borderline — 8 points short of competitive</div>
-    <div class="scale">
-      <div><b>Below 65</b>Weak</div>
-      <div><b>65–74</b>Borderline</div>
-      <div><b style="color:#1d6f67">75+</b>Competitive</div>
-    </div>
-  </div>
-  <div class="hcol readtop">
+  <div class="hcol scorecol" data-state="sample">
+<div class="scorelabel">YOUR APPLICATION READINESS</div>
+<div class="score" data-assessment-field="readinessScore">67<small>/100</small></div>
+<div class="risk">Borderline · 8 points below our competitive benchmark</div>
+<!-- Sample component values: replace from the assessment engine. -->
+<div class="score-breakdown"><div class="score-component" data-component="application" data-score="28" data-max="40"><span>CV &amp; application evidence</span><strong>28 / 40</strong><div class="component-bar" aria-hidden="true"><i style="width:70.0%"></i></div></div><div class="score-component" data-component="competency" data-score="18" data-max="25"><span>Competency evidence</span><strong>18 / 25</strong><div class="component-bar" aria-hidden="true"><i style="width:72.0%"></i></div></div><div class="score-component" data-component="numerical" data-score="9" data-max="15"><span>Numerical test</span><strong>9 / 15</strong><div class="component-bar" aria-hidden="true"><i style="width:60.0%"></i></div></div><div class="score-component" data-component="technical" data-score="12" data-max="20"><span>Commercial &amp; technical</span><strong>12 / 20</strong><div class="component-bar" aria-hidden="true"><i style="width:60.0%"></i></div></div></div>
+<p class="score-origin">Scored against a framework built by former MDs with 20+ years in markets. <a href="/how-we-score.html">How we score →</a></p>
+<div class="scale"><div><b>Below 65</b>Weak</div><div><b>65–74</b>Borderline</div><div><b style="color:#1d6f67">75+</b>Competitive<small>Our benchmark</small></div></div>
+</div>
+<div class="hcol readtop">
     <div class="kicker" style="color:#48545b">How a desk would read this</div>
     <h2>Your application is<br>at risk of rejection.</h2>
     <p>Your Redcliffe experience gives you something relevant to work with, but “supported the investment team” does not explain your contribution. Your LVMH view also needs evidence you can defend. Add the gaps in EV and valuation multiples, and there are clear weaknesses to address before you submit or interview.</p>
-    <p class="assessment-provenance">Scored against a framework built by former MDs.</p>
+    
   </div>
 </section>
 
@@ -523,7 +523,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
   </div>
 </section>
 
-<footer class="footer"><div class="logo">The Desk</div><div class="footer-tag">Finance careers. Done properly.</div><div class="footerlinks"><span>About</span><span>Contact</span><span>Terms</span><span>Privacy</span></div></footer>
+<footer class="footer"><div class="logo">The Desk</div><div class="footer-tag">Finance careers. Done properly.</div><div class="footerlinks"><span>About</span><span>Contact</span><span>Terms</span><span>Privacy</span></div><p class="automated-disclosure">This assessment is automated. It is The Desk’s own readiness score, not a bank’s decision or a prediction of an offer.</p></footer>
 </div>
 </body>
 </html>
