@@ -366,6 +366,15 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 .leadership-gap{border-color:#d8885d!important;box-shadow:inset 0 3px 0 #d36a32}.skill-status{min-height:29px}.paid-depth{font-size:15px;line-height:1.5;color:#536076;margin:20px 0 0;max-width:860px}.midpage-offer{margin-top:10px}
 @media(max-width:760px){.nav2 .pill{font-size:12px;padding:10px 12px}.logo{font-size:26px}.logo small{font-size:6px;letter-spacing:1px}.top{gap:12px}.answer-link{font-size:14px}.qlist{grid-template-rows:auto}.q{padding:12px}.card.orange{min-height:0}.paid-depth{font-size:15px}.move-headroom{font-size:13px}}
 
+
+/* Competency evidence preview and paid guidance. */
+.move-headroom[data-points=""]{display:none}
+.skill-card{gap:0}.skill-reason{font-family:var(--body-font);font-size:13px;line-height:1.45;color:#536076;margin:0 0 13px;min-height:96px}.skill-status{margin-bottom:10px}
+.competency-locked{display:flex;align-items:flex-start;gap:7px;border-top:1px solid #dedbd4;padding-top:13px;margin-top:auto;font-family:var(--body-font);font-size:12px;font-weight:600;line-height:1.45;text-decoration:none;color:#4d5961;min-height:70px}
+.competency-locked svg{width:13px;height:15px;flex:0 0 13px;margin-top:2px}.competency-locked:hover{text-decoration:underline}.competency-locked:focus-visible{outline:2px solid #db682e;outline-offset:4px}.competency-locked.leadership-link{color:#c44b16}
+.skill-step{margin-top:auto}.skill-step>span{font-size:11px}.skill-step p{font-size:13px}.practitioner-difference{font-family:var(--body-font);font-size:14px;line-height:1.5;color:#f1f0ea;margin:12px 0 8px}.cta{grid-template-rows:minmax(420px,auto)}
+@media(max-width:760px){.skill-reason{font-size:14px;min-height:0;margin-bottom:15px}.competency-locked{font-size:13px;min-height:65px}.practitioner-difference{font-size:15px}.cta{grid-template-rows:auto}}
+
 </style>
 </head>
 <body>
@@ -400,11 +409,11 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
     <div class="kicker" style="color:#48545b">How a desk would read this</div>
     <h2>Your application is<br>at risk of rejection.</h2>
     <p>Your Redcliffe experience gives you something relevant to work with, but “supported the investment team” does not explain your contribution. Your LVMH view also needs evidence you can defend. Add the gaps in EV and valuation multiples, and there are clear weaknesses to address before you submit or interview.</p>
-    <p class="assessment-provenance">Assessment framework developed by former MDs. Automated assessment; no individual practitioner review.</p>
+    <p class="assessment-provenance">Scored against a framework built by former MDs.</p>
   </div>
 </section>
 
-<div class="warning-strip hr-strip"><div class="warning-label">Desk view</div><p>“This is not a score to feel safe about.”</p></div>
+<div class="warning-strip hr-strip"><div class="warning-label">Desk view</div><p>This is not a score to feel safe about.</p></div>
 
 
 <section class="section">
@@ -465,15 +474,15 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 </section>
 
 <section class="section competency-section">
-  <div class="competency-heading"><div><div class="kicker">Your 7 competencies</div><h2>Where you stand.</h2></div><p>Your scores show where you are strongest and where to focus. Full Cycle helps you turn the next steps below into stronger application and interview evidence.</p></div>
+  <div class="competency-heading"><div><div class="kicker">Your 7 competencies</div><h2>Where you stand.</h2></div><p>Your scores are below. The fix for each is in Full Cycle.</p></div>
   <div class="competency-cards">
-<article class="skill-card"><div class="skill-score"><strong>76</strong><small>/100</small></div><h3>Analytical ability</h3><div class="skill-status">Your strongest area</div><div class="skill-meter" style="--score:76%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Keep your analysis tied to a clear conclusion.</p></div></article>
-<article class="skill-card"><div class="skill-score"><strong>68</strong><small>/100</small></div><h3>Teamwork</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:68%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Show your contribution to the team’s result.</p></div></article>
-<article class="skill-card priority"><div class="skill-score"><strong>62</strong><small>/100</small></div><h3>Communication</h3><div class="skill-status">Priority area</div><div class="skill-meter" style="--score:62%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Make your CV points concise and outcome-led.</p></div></article>
-<article class="skill-card priority leadership-gap"><div class="skill-score"><strong>58</strong><small>/100</small></div><h3>Leadership</h3><div class="skill-status">Biggest evidence gap</div><div class="skill-meter" style="--score:58%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Prepare to explain your leadership contribution: a decision you owned, your actions and the impact you can support.</p></div></article>
-<article class="skill-card"><div class="skill-score"><strong>64</strong><small>/100</small></div><h3>Resilience</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:64%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Explain a setback and how you responded.</p></div></article>
-<article class="skill-card priority"><div class="skill-score"><strong>61</strong><small>/100</small></div><h3>Commercial awareness</h3><div class="skill-status">Priority area</div><div class="skill-meter" style="--score:61%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Support your LVMH view with evidence.</p></div></article>
-<article class="skill-card"><div class="skill-score"><strong>66</strong><small>/100</small></div><h3>Technical readiness</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:66%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Practise EV, multiples and deal rationale.</p></div></article>
+<article class="skill-card"><div class="skill-score"><strong>76</strong><small>/100</small></div><h3>Analytical ability</h3><div class="skill-status">Your strongest area</div><p class="skill-reason">Your research and analysis provide the clearest evidence of this competency.</p><div class="skill-meter" style="--score:76%" aria-hidden="true"></div><div class="skill-step"><span>How to evidence this · sample</span><p>Keep your analysis tied to a clear conclusion.</p></div></article>
+<article class="skill-card"><div class="skill-score"><strong>68</strong><small>/100</small></div><h3>Teamwork</h3><div class="skill-status">Build on this</div><p class="skill-reason">Team experience is visible, but your individual contribution needs clearer evidence.</p><div class="skill-meter" style="--score:68%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
+<article class="skill-card priority"><div class="skill-score"><strong>62</strong><small>/100</small></div><h3>Communication</h3><div class="skill-status">Priority area</div><p class="skill-reason">Your CV describes tasks more clearly than it explains conclusions and results.</p><div class="skill-meter" style="--score:62%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
+<article class="skill-card priority leadership-gap"><div class="skill-score"><strong>58</strong><small>/100</small></div><h3>Leadership</h3><div class="skill-status">Biggest evidence gap</div><p class="skill-reason">The application needs a clearer example of a decision you owned and its impact.</p><div class="skill-meter" style="--score:58%" aria-hidden="true"></div><a class="competency-locked leadership-link" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
+<article class="skill-card"><div class="skill-score"><strong>64</strong><small>/100</small></div><h3>Resilience</h3><div class="skill-status">Build on this</div><p class="skill-reason">Your response to setbacks needs a more specific example and outcome.</p><div class="skill-meter" style="--score:64%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
+<article class="skill-card priority"><div class="skill-score"><strong>61</strong><small>/100</small></div><h3>Commercial awareness</h3><div class="skill-status">Priority area</div><p class="skill-reason">Your LVMH view needs stronger evidence and a defensible commercial argument.</p><div class="skill-meter" style="--score:61%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
+<article class="skill-card"><div class="skill-score"><strong>66</strong><small>/100</small></div><h3>Technical readiness</h3><div class="skill-status">Build on this</div><p class="skill-reason">The missed EV and valuation questions reveal gaps in your technical preparation.</p><div class="skill-meter" style="--score:66%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>How to evidence this — in Full Cycle</span></a></article>
 </div>
 
 </section>
@@ -495,7 +504,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
   </div>
   <div class="offer dark">
     <h3>Work with one of our specialist finance practitioners</h3>
-    <div class="oline" style="color:#fff">1:1 support throughout · £3,000</div><p class="specialist-choice">Choose a specialist in banking, accounting or asset management.</p>
+    <div class="oline" style="color:#fff">1:1 support throughout · £3,000</div><p class="practitioner-difference">This assessment is automated. 1:1 puts a practitioner on your application.</p><p class="specialist-choice">Choose a specialist in banking, accounting or asset management.</p>
     <ul>
       <li>Everything in Full Cycle</li><li>Direct application review and live feedback</li><li>CV and cover letter working sessions</li><li>Mock interviews and tailored feedback</li><li>Ongoing support through the recruiting cycle</li><li>Limited intake each year</li>
     </ul>
