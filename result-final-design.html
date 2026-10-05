@@ -356,6 +356,16 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 .offer-price{font-family:var(--body-font);font-size:35px;font-weight:600;line-height:1.2;color:#17232b;margin:8px 5px 0}.offer-price span{font-size:12px;font-weight:400;color:#637077}.cta{grid-template-rows:minmax(370px,auto)}
 @media(max-width:760px){.midpage-offer{grid-template-columns:1fr;padding:22px 20px;margin:20px 20px 8px;gap:20px}.midpage-offer h2{font-size:27px}.midpage-price>strong{font-size:42px}.midpage-price .btn{width:100%}.cta{grid-template-rows:auto}.risk{font-size:17px}.preview-deliverables{display:grid;gap:7px}.rewrite-evidence{font-size:14px}}
 
+
+/* Evidence-led preview and clearly identified Full Cycle depth. */
+.nav2 .pill{text-decoration:none;white-space:nowrap;font-family:var(--body-font);font-size:14px;padding:10px 17px}.nav{gap:29px}
+.assessment-provenance{font-size:12px!important;line-height:1.4!important;color:#657177!important;margin-top:14px!important}.readtop .kicker{line-height:1.4}
+.evidence-gap{color:#a9441b;font-weight:600}.card.orange{min-height:180px}.card.orange .mini{line-height:1.4}.rewrite-evidence{font-size:14px;line-height:1.5}
+.move-headroom{display:block;font-family:var(--body-font);font-size:12px;color:#68716f;margin-top:8px}.moves .move p{margin-top:8px}
+.qlist{grid-template-rows: minmax(58px,auto) minmax(58px,auto)}.q{grid-template-columns:28px minmax(0,1fr);gap:5px 12px;padding:10px 12px}.qt{font-size:14px}.answer-link{grid-column:2;font-family:var(--body-font);font-size:14px;font-weight:600;color:#bd4c1b;gap:8px;justify-self:start}.qn{align-self:start;grid-row:1/3}
+.leadership-gap{border-color:#d8885d!important;box-shadow:inset 0 3px 0 #d36a32}.skill-status{min-height:29px}.paid-depth{font-size:15px;line-height:1.5;color:#536076;margin:20px 0 0;max-width:860px}.midpage-offer{margin-top:10px}
+@media(max-width:760px){.nav2 .pill{font-size:12px;padding:10px 12px}.logo{font-size:26px}.logo small{font-size:6px;letter-spacing:1px}.top{gap:12px}.answer-link{font-size:14px}.qlist{grid-template-rows:auto}.q{padding:12px}.card.orange{min-height:0}.paid-depth{font-size:15px}.move-headroom{font-size:13px}}
+
 </style>
 </head>
 <body>
@@ -363,7 +373,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 <header class="top">
   <div class="logo">The Desk<small>Finance careers. Done properly.</small></div>
   <nav class="nav"><span>Assess</span><span>Learn</span><span>Get Hired</span><span>For Universities</span><span>About</span></nav>
-  <div class="nav2"><span>⌕</span><span>My account</span><span class="pill">Get started →</span></div>
+  <div class="nav2"><span>⌕</span><span>My account</span><a class="pill" href="/fullcycle.html">Explore Full Cycle — £79</a></div>
 </header>
 
 <div class="result-heading">YOUR RESULT</div><section class="hero">
@@ -387,14 +397,14 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
     </div>
   </div>
   <div class="hcol readtop">
-    <div class="kicker" style="color:#48545b">Our HR recruiter read</div>
+    <div class="kicker" style="color:#48545b">How a desk would read this</div>
     <h2>Your application is<br>at risk of rejection.</h2>
     <p>Your Redcliffe experience gives you something relevant to work with, but “supported the investment team” does not explain your contribution. Your LVMH view also needs evidence you can defend. Add the gaps in EV and valuation multiples, and there are clear weaknesses to address before you submit or interview.</p>
-    <div class="sign">The Desk</div>
+    <p class="assessment-provenance">Assessment framework developed by former MDs. Automated assessment; no individual practitioner review.</p>
   </div>
 </section>
 
-<div class="warning-strip hr-strip"><div class="warning-label">HR View</div><p>“This is not a score to feel safe about.”</p></div>
+<div class="warning-strip hr-strip"><div class="warning-label">Desk view</div><p>“This is not a score to feel safe about.”</p></div>
 
 
 <section class="section">
@@ -407,10 +417,10 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
     <div class="bar"><div class="fill"></div><div class="dot d1">1</div><div class="dot d2">2</div><div class="dot d3">3</div></div>
     <div class="ps end">75+<small>Target · Competitive</small></div>
   </div>
-  <div class="moves">
-    <div class="move"><div class="no">01</div><div><h3>Rewrite Redcliffe to show conclusions</h3><span class="badge">Biggest lever</span><p>Turn your experience into clear impact and commercial judgement.</p></div></div>
-    <div class="move"><div class="no">02</div><div><h3>Close the technical gap: EV, multiples</h3><span class="badge">High impact</span><p>Build confidence in the key concepts recruiters test in interview.</p></div></div>
-    <div class="move"><div class="no">03</div><div><h3>Make your LVMH view defensible</h3><span class="badge">High impact</span><p>Develop a structured, evidence-based view you can discuss with confidence.</p></div></div>
+  <div class="moves" data-assessment-field="priorityMoves">
+    <div class="move"><div class="no">01</div><div><h3>Rewrite Redcliffe to show conclusions</h3><span class="badge">Biggest lever</span><span class="move-headroom" data-component="experience" data-points="" aria-label="Component points not yet calculated">Points available: —</span><p>Turn your experience into clear impact and commercial judgement.</p></div></div>
+    <div class="move"><div class="no">02</div><div><h3>Close the technical gap: EV, multiples</h3><span class="badge">High impact</span><span class="move-headroom" data-component="technical" data-points="" aria-label="Component points not yet calculated">Points available: —</span><p>Build confidence in the key concepts recruiters test in interview.</p></div></div>
+    <div class="move"><div class="no">03</div><div><h3>Make your LVMH view defensible</h3><span class="badge">High impact</span><span class="move-headroom" data-component="commercial" data-points="" aria-label="Component points not yet calculated">Points available: —</span><p>Develop a structured, evidence-based view you can discuss with confidence.</p></div></div>
   </div>
 </section>
 
@@ -422,19 +432,11 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
       <p>We’ve identified several places where your experience could be written more strongly to show impact, judgement and commercial relevance.</p><p>This includes your Redcliffe experience, the way you position technical skills, and how you present your interests and motivations.</p>
     </div>
     <div class="card"><div class="mini">Current version</div><p>“Supported the investment team with research and analysis on potential transactions.”</p></div>
-    <span class="rewrite-arrow" aria-hidden="true">→</span><div class="card orange"><div class="mini" style="color:#bd540d">Example rewrite</div><p>Researched and analysed potential transactions to support the investment team.</p></div>
+    <span class="rewrite-arrow" aria-hidden="true">→</span><div class="card orange"><div class="mini" style="color:#bd540d">What your bullet needs to show</div><p>Analysed <span class="evidence-gap">[sector]</span> targets for <span class="evidence-gap">[transaction type]</span>, using <span class="evidence-gap">[analysis performed]</span> to identify <span class="evidence-gap">[supported conclusion]</span>.</p></div>
   </div>
-  <p class="rewrite-evidence">This preview uses only the facts in the original bullet. Your full rewrite needs evidence of what you analysed, contributed and concluded.</p>
+  <p class="rewrite-evidence">This is a structure, not a finished rewrite. Fill each gap only with evidence from your experience. Full Cycle helps turn those supported details into your repaired CV draft.</p>
 
 </section>
-
-<div class="algo-screening-block">
-  <div class="algo-panel">
-    <div class="algo-copy"><div class="warning-label">ATS screening readiness</div><h3>Is your CV or application clear to screening software?</h3><p><strong class="screening-finding">61/100 · Needs attention</strong> Your experience is relevant, but the evidence of contribution and impact needs to be clearer.</p><small>Illustrative demo score. Live screening checks are not connected. Not a bank’s screening decision.</small></div>
-    <div class="algo-gauge"><svg viewBox="0 0 220 136" role="img" aria-label="Illustrative ATS screening readiness result: 61 out of 100. Demo score, not a bank screening prediction."><path d="M22.01 104.94 A88 88 0 0 1 38.19 55.13" fill="none" stroke="#df655d" stroke-width="14"/><path d="M39.43 53.42 A88 88 0 0 1 81.80 22.64" fill="none" stroke="#e58b48" stroke-width="14"/><path d="M83.81 21.99 A88 88 0 0 1 136.19 21.99" fill="none" stroke="#e3b74e" stroke-width="14"/><path d="M138.20 22.64 A88 88 0 0 1 180.57 53.42" fill="none" stroke="#a1bb68" stroke-width="14"/><path d="M181.81 55.13 A88 88 0 0 1 197.99 104.94" fill="none" stroke="#58a58c" stroke-width="14"/><line x1="22.00" y1="106.00" x2="34.00" y2="106.00" stroke="#e0e5e3" stroke-width="2"/><line x1="23.08" y1="92.23" x2="29.01" y2="93.17" stroke="#809196" stroke-width="1"/><line x1="26.31" y1="78.81" x2="32.01" y2="80.66" stroke="#809196" stroke-width="1"/><line x1="31.59" y1="66.05" x2="36.94" y2="68.77" stroke="#809196" stroke-width="1"/><line x1="38.81" y1="54.27" x2="43.66" y2="57.80" stroke="#809196" stroke-width="1"/><line x1="47.77" y1="43.77" x2="56.26" y2="52.26" stroke="#e0e5e3" stroke-width="2"/><line x1="58.27" y1="34.81" x2="61.80" y2="39.66" stroke="#809196" stroke-width="1"/><line x1="70.05" y1="27.59" x2="72.77" y2="32.94" stroke="#809196" stroke-width="1"/><line x1="82.81" y1="22.31" x2="84.66" y2="28.01" stroke="#809196" stroke-width="1"/><line x1="96.23" y1="19.08" x2="97.17" y2="25.01" stroke="#809196" stroke-width="1"/><line x1="110.00" y1="18.00" x2="110.00" y2="30.00" stroke="#e0e5e3" stroke-width="2"/><line x1="123.77" y1="19.08" x2="122.83" y2="25.01" stroke="#809196" stroke-width="1"/><line x1="137.19" y1="22.31" x2="135.34" y2="28.01" stroke="#809196" stroke-width="1"/><line x1="149.95" y1="27.59" x2="147.23" y2="32.94" stroke="#809196" stroke-width="1"/><line x1="161.73" y1="34.81" x2="158.20" y2="39.66" stroke="#809196" stroke-width="1"/><line x1="172.23" y1="43.77" x2="163.74" y2="52.26" stroke="#e0e5e3" stroke-width="2"/><line x1="181.19" y1="54.27" x2="176.34" y2="57.80" stroke="#809196" stroke-width="1"/><line x1="188.41" y1="66.05" x2="183.06" y2="68.77" stroke="#809196" stroke-width="1"/><line x1="193.69" y1="78.81" x2="187.99" y2="80.66" stroke="#809196" stroke-width="1"/><line x1="196.92" y1="92.23" x2="190.99" y2="93.17" stroke="#809196" stroke-width="1"/><line x1="198.00" y1="106.00" x2="186.00" y2="106.00" stroke="#e0e5e3" stroke-width="2"/><text x="46.00" y="110.00" text-anchor="middle" fill="#aebac0" font-size="10" font-family="Arial,sans-serif">0</text><text x="64.75" y="64.75" text-anchor="middle" fill="#aebac0" font-size="10" font-family="Arial,sans-serif">25</text><text x="110.00" y="46.00" text-anchor="middle" fill="#aebac0" font-size="10" font-family="Arial,sans-serif">50</text><text x="155.25" y="64.75" text-anchor="middle" fill="#aebac0" font-size="10" font-family="Arial,sans-serif">75</text><text x="174.00" y="110.00" text-anchor="middle" fill="#aebac0" font-size="10" font-family="Arial,sans-serif">100</text><text x="110" y="94" text-anchor="middle" fill="#f4f0e8" font-size="34" font-family="Arial,sans-serif">61</text><text x="110" y="128" text-anchor="middle" fill="#d2d9dc" font-size="13" font-family="Arial,sans-serif">Needs attention</text></svg><div class="gauge-labels"><span>Needs attention</span><span>Ready</span></div></div>
-  </div>
-</div>
-
 
 <div class="midpage-offer">
   <div><div class="kicker">Your result is the starting point</div><h2>See the gaps. Get the repair plan.</h2><p>You’ve seen a preview. Full Cycle adds your full application review, CV rewrites, worked answers and a personalised preparation plan.</p><div class="preview-deliverables"><span>Repaired CV draft</span><span>Worked answers &amp; preparation</span><span>Two rechecks within 30 days</span></div></div>
@@ -453,10 +455,10 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
       </div>
     <h3 class="concept-heading">Your missed concepts · full worked answers in Full Cycle</h3>
     <div class="qlist">
-      <div class="q"><div class="qn">1</div><div class="qt">Enterprise value (EV) vs equity value</div><a class="qa answer-link" href="/fullcycle.html">Worked answer <span aria-hidden="true">→</span></a></div>
-      <div class="q"><div class="qn">2</div><div class="qt">Margin change under time pressure</div><a class="qa answer-link" href="/fullcycle.html">Worked answer <span aria-hidden="true">→</span></a></div>
-      <div class="q"><div class="qn">3</div><div class="qt">Why multiples differ across sectors</div><a class="qa answer-link" href="/fullcycle.html">Worked answer <span aria-hidden="true">→</span></a></div>
-      <div class="q"><div class="qn">4</div><div class="qt">Explaining a deal’s rationale</div><a class="qa answer-link" href="/fullcycle.html">Worked answer <span aria-hidden="true">→</span></a></div>
+      <div class="q"><div class="qn">1</div><div class="qt">Enterprise value (EV) vs equity value</div><a class="qa answer-link" href="/fullcycle.html">View worked answer in Full Cycle <span aria-hidden="true">→</span></a></div>
+      <div class="q"><div class="qn">2</div><div class="qt">Margin change under time pressure</div><a class="qa answer-link" href="/fullcycle.html">View worked answer in Full Cycle <span aria-hidden="true">→</span></a></div>
+      <div class="q"><div class="qn">3</div><div class="qt">Why multiples differ across sectors</div><a class="qa answer-link" href="/fullcycle.html">View worked answer in Full Cycle <span aria-hidden="true">→</span></a></div>
+      <div class="q"><div class="qn">4</div><div class="qt">Explaining a deal’s rationale</div><a class="qa answer-link" href="/fullcycle.html">View worked answer in Full Cycle <span aria-hidden="true">→</span></a></div>
     </div>
   </div>
 
@@ -468,7 +470,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 <article class="skill-card"><div class="skill-score"><strong>76</strong><small>/100</small></div><h3>Analytical ability</h3><div class="skill-status">Your strongest area</div><div class="skill-meter" style="--score:76%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Keep your analysis tied to a clear conclusion.</p></div></article>
 <article class="skill-card"><div class="skill-score"><strong>68</strong><small>/100</small></div><h3>Teamwork</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:68%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Show your contribution to the team’s result.</p></div></article>
 <article class="skill-card priority"><div class="skill-score"><strong>62</strong><small>/100</small></div><h3>Communication</h3><div class="skill-status">Priority area</div><div class="skill-meter" style="--score:62%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Make your CV points concise and outcome-led.</p></div></article>
-<article class="skill-card priority"><div class="skill-score"><strong>58</strong><small>/100</small></div><h3>Leadership</h3><div class="skill-status">Priority area</div><div class="skill-meter" style="--score:58%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Show a decision you owned and its impact.</p></div></article>
+<article class="skill-card priority leadership-gap"><div class="skill-score"><strong>58</strong><small>/100</small></div><h3>Leadership</h3><div class="skill-status">Biggest evidence gap</div><div class="skill-meter" style="--score:58%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Prepare to explain your leadership contribution: a decision you owned, your actions and the impact you can support.</p></div></article>
 <article class="skill-card"><div class="skill-score"><strong>64</strong><small>/100</small></div><h3>Resilience</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:64%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Explain a setback and how you responded.</p></div></article>
 <article class="skill-card priority"><div class="skill-score"><strong>61</strong><small>/100</small></div><h3>Commercial awareness</h3><div class="skill-status">Priority area</div><div class="skill-meter" style="--score:61%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Support your LVMH view with evidence.</p></div></article>
 <article class="skill-card"><div class="skill-score"><strong>66</strong><small>/100</small></div><h3>Technical readiness</h3><div class="skill-status">Build on this</div><div class="skill-meter" style="--score:66%" aria-hidden="true"></div><div class="skill-step"><span>Next step</span><p>Practise EV, multiples and deal rationale.</p></div></article>
