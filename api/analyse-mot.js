@@ -17,6 +17,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
+import { assessAtsReadiness } from "../lib/ats-readiness.mjs";
 
 // Lazy-load heavy extractors so cold start is fast
 let pdfParse, mammoth;
@@ -111,13 +112,10 @@ export default async function handler(req, res) {
 
   try {
     let profile, quiz, cvText, cvFileName;
+    let targetKeywords = [];
     const contentType = req.headers["content-type"] || "";
 
-    // ── Parse request ─────────────────────────────────────────────────────
-    if (contentType.includes("multipart/form-data")) {
-      // File upload path
-      const { fields, files } = await parseMultipart(req);
-      profile = JSON.parse(fields.profile?.[0] || fields.profile || "{}");
+    // ── Parse request ──────────────────────────rgetKeywords = JSON.parse(fields.targetKeywords?.[0] || fields.targetKeywords || "[]");
       quiz    = JSON.parse(fields.quiz?.[0]    || fields.quiz    || "{}");
       const file = files.cvFile?.[0] || files.cvFile;
       cvFileName = file?.originalFilename || file?.name || "unknown";
@@ -126,6 +124,7 @@ export default async function handler(req, res) {
       // JSON path (cv.text already extracted or pasted)
       const body = req.body || {};
       profile    = body.profile || {};
+      targetKeywords = body.targetKeywords || [];
       quiz       = body.quiz    || {};
       cvText     = String((body.cv && body.cv.text) ? body.cv.text : "").trim();
       cvFileName = (body.cv && body.cv.fileName) || "";
@@ -137,137 +136,7 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         source: "error",
-        error: "CV_TEXT_EXTRACTION_FAILED",
-        message: "We could not read enough text from this CV. Please upload a clearer PDF, Word document, or paste your CV text directly.",
-      });
-    }
-    if (!hasUsableCvText(cvText)) {
-      return res.status(400).json({
-        success: false,
-        source: "error",
-        error: "CV_TEXT_NOT_RECOGNISABLE",
-        message: "This does not look like a complete CV — make sure education, experience and skills sections are included, then try again.",
-      });
-    }
-
-    // ── Build prompt and call Claude ──────────────────────────────────────
-    const prompt = buildPrompt(profile, quiz, cvText);
-    let result   = await callClaude(prompt);
-
-    // ── Validation ───────────────────────────────────────────────────────────
-    if (!isValidResult(result, false)) {
-      console.log("VALIDATION FAIL - keys:", Object.keys(result||{}));
-      return res.status(422).json({ success: false, source: "error", error: "INVALID_RESULT", message: "Assessment could not be completed. Please try again." });
-    }
-
-    // ── POST-PARSE REPAIR ──────────────────────────────────────────────────────
-
-    // 1. Normalise band
-    var sc2 = Number(result.overallScore || 0);
-    result.band = sc2 >= 75 ? 'Competitive' : sc2 >= 65 ? 'Borderline' : 'Weak';
-
-    // 2. Ensure priorityGaps always has exactly 4 with correct fields
-    var namedD = result.namedCvDetails || [];
-    var diagT = ((result.diagnostic||'')+(result.killerSentence||'')+ namedD.join(' ')).toLowerCase();
-    var dims4 = result.dimensions || [];
-    var pgOk = Array.isArray(result.priorityGaps) && result.priorityGaps.length === 4
-            && result.priorityGaps.every(function(g){ return g && g.title; });
-    if (!pgOk) {
-      var techD = dims4.find(function(d){ return d.name==='Technical Readiness'; }) || {};
-      var commD = dims4.find(function(d){ return d.name==='Commercial Awareness'; }) || {};
-      var pris2 = result.priorities || [];
-      result.priorityGaps = [
-        { title: pris2[0] || 'Application positioning needs work',
-          visibleRisk: 'The CV is not yet translating evidence into a clear first-screen story.',
-          lockedWhyItMatters: 'Screeners spend under 30 seconds on first pass.',
-          lockedFixType: 'Reframe around the target route using the strongest named evidence.',
-          lockedFullCycleTeaser: 'Full Cycle would rebuild the application story.' },
-        { title: pris2[1] || 'Evidence present but under-framed',
-          visibleRisk: 'The strongest CV signals are not landing clearly with a screener.',
-          lockedWhyItMatters: 'Evidence buried in generic descriptions reads as participation, not ownership.',
-          lockedFixType: 'Surface the strongest signals and reframe around outcomes.',
-          lockedFullCycleTeaser: 'Full Cycle would identify what to lead with.' },
-        { title: 'Technical readiness'+(( techD.score||50) < 70?' — below screening threshold':' — maintain under pressure'),
-          visibleRisk: 'Technical score of '+Math.round(techD.score||50)+'/100 '+(( techD.score||50) < 70?'is a screening risk at this route.':'must hold under real timed conditions.'),
-          lockedWhyItMatters: 'Most tier-1 banks use automated numerical screening before a human reads the application.',
-          lockedFixType: 'Targeted timed numerical practice on the specific question types used at this route.',
-          lockedFullCycleTeaser: 'Full Cycle gives you unlimited timed SHL, Korn Ferry and Cubiks practice.' },
-        { title: 'Commercial awareness — connecting events to deal consequences',
-          visibleRisk: 'Commercial score of '+Math.round(commD.score||50)+'/100 suggests market awareness at headline level with a gap in deal-consequence reasoning.',
-          lockedWhyItMatters: 'Interviewers test whether you can connect a macro event to deal flow.',
-          lockedFixType: 'Build a framework for connecting current events to the target sectors.',
-          lockedFullCycleTeaser: 'Full Cycle includes weekly market briefings and commercial awareness primers.' }
-      ];
-      console.log('REPAIR: rebuilt priorityGaps');
-    }
-    // Migrate old field names to new ones
-    result.priorityGaps.forEach(function(g){
-      if (!g.visibleRisk && g.risk) g.visibleRisk = g.risk;
-      if (!g.lockedWhyItMatters && g.whyItMatters) g.lockedWhyItMatters = g.whyItMatters;
-      if (!g.lockedFixType && g.fixType) g.lockedFixType = g.fixType;
-      if (!g.lockedFullCycleTeaser && g.fullCycleTeaser) g.lockedFullCycleTeaser = g.fullCycleTeaser;
-    });
-
-    // 3. Migrate dimension notes to visibleSummary/lockedDetail
-    dims4.forEach(function(d){
-      if (d.note && !d.visibleSummary) {
-        var sentences = d.note.split(/\.\s+/);
-        d.visibleSummary = sentences[0] + '.';
-        d.lockedDetail = sentences.slice(1).join('. ');
-        if (!d.lockedDetail) d.lockedDetail = d.note;
-      }
-    });
-
-    // 4. Repair competencies
-    var allComp = Array.isArray(result.competencies) && result.competencies.length === 6;
-    if (allComp) {
-      var allNotEv = result.competencies.every(function(c){ return c.status === 'Not yet evidenced'; });
-      result.competencies.forEach(function(c){
-        // Migrate old fields
-        if (!c.visibleReason && c.note) c.visibleReason = c.note;
-        if (!c.lockedImprovement) c.lockedImprovement = 'Full Cycle shows how to strengthen and position this competency for the target route.';
-
-        if (allNotEv) {
-          if (c.name === 'Analytical' && (( diagT.indexOf('dissert')>-1)||( diagT.indexOf('research')>-1)||( diagT.indexOf('model')>-1)||( diagT.indexOf('quant')>-1)||( diagT.indexOf('python')>-1)||( diagT.indexOf('valuat')>-1)||( diagT.indexOf('analy')>-1))) {
-            c.status = 'Partially evidenced';
-            c.visibleReason = 'Research or technical work shows analytical potential, but not yet finance-specific analysis.';
-          }
-          if (c.name === 'Communication' && (( diagT.indexOf('dissert')>-1)||( diagT.indexOf('essay')>-1)||( diagT.indexOf('history')>-1)||( diagT.indexOf('waiter')>-1)||( diagT.indexOf('customer')>-1)||( diagT.indexOf('society')>-1))) {
-            c.status = 'Partially evidenced';
-            c.visibleReason = 'Written and customer-facing experience suggests communication ability, but not yet as a deliberate signal.';
-          }
-          if (c.name === 'Resilience' && (( diagT.indexOf('waiter')>-1)||( diagT.indexOf('barista')>-1)||( diagT.indexOf('tesco')>-1)||( diagT.indexOf('retail')>-1)||( diagT.indexOf('part-time')>-1)||( diagT.indexOf('part time')>-1)||( diagT.indexOf('hrs')>-1))) {
-            c.status = 'Partially evidenced';
-            c.visibleReason = 'Sustained work alongside study shows reliability under pressure, though not yet a finance signal.';
-          }
-          if (c.name === 'Teamwork' && (( diagT.indexOf('society')>-1)||( diagT.indexOf('team')>-1)||( diagT.indexOf('waiter')>-1)||( diagT.indexOf('group')>-1)||( diagT.indexOf('intern')>-1))) {
-            c.status = 'Partially evidenced';
-            c.visibleReason = 'Work and activity context shows some team exposure, but not yet a named collaborative signal.';
-          }
-          if (c.name === 'Leadership' && (( diagT.indexOf('president')>-1)||( diagT.indexOf('captain')>-1)||( diagT.indexOf('committee')>-1)||( diagT.indexOf('chair')>-1)||( diagT.indexOf('head')>-1))) {
-            c.status = 'Evidenced';
-            c.visibleReason = 'Leadership role present. Needs named outcomes to land clearly.';
-          }
-        }
-      });
-    } else {
-      result.competencies = [
-        {name:'Leadership',status:'Not yet evidenced',visibleReason:'No clear ownership or committee role is visible yet.',lockedImprovement:'Full Cycle identifies whether existing experience can show ownership, or whether new evidence is needed.'},
-        {name:'Analytical',status:(diagT.indexOf('dissert')>-1||diagT.indexOf('model')>-1||diagT.indexOf('quant')>-1)?'Partially evidenced':'Not yet evidenced',visibleReason:'Research or technical work shows potential but not yet finance-specific analysis.',lockedImprovement:'Full Cycle shows how to position this without overstating it.'},
-        {name:'Commercial',status:'Not yet evidenced',visibleReason:'Interest in finance is visible but active commercial reasoning is not yet evidenced.',lockedImprovement:'Full Cycle identifies what commercial evidence to build before applying.'},
-        {name:'Communication',status:'Partially evidenced',visibleReason:'Written and customer-facing experience suggests communication ability.',lockedImprovement:'Full Cycle shows how to translate this into application evidence.'},
-        {name:'Resilience',status:(diagT.indexOf('waiter')>-1||diagT.indexOf('barista')>-1||diagT.indexOf('retail')>-1||diagT.indexOf('part')>-1)?'Partially evidenced':'Not yet evidenced',visibleReason:'Work experience shows reliability, but not yet positioned as a finance signal.',lockedImprovement:'Full Cycle shows where this supports the application.'},
-        {name:'Teamwork',status:'Partially evidenced',visibleReason:'Work and activity context shows team exposure, but not yet a named signal.',lockedImprovement:'Full Cycle identifies whether this is enough or whether a stronger example is needed.'}
-      ];
-      console.log('REPAIR: rebuilt competencies from scratch');
-    }
-
-    // 5. Ensure new narrative fields have fallback values
-    var top2 = namedD[0] || 'key experience';
-    if (!result.recruiterMayMiss) result.recruiterMayMiss = 'The strongest signal in this CV is '+top2+', but it may currently read as participation rather than evidence of judgement.';
-    if (!result.beingMisreadAs) result.beingMisreadAs = 'You are being read as interested in this route, but not yet ready for it.';
-    if (!result.uncomfortableTruth) result.uncomfortableTruth = 'The problem is not the quality of the experience. It is that the application makes the recruiter work too hard to find the right signals.';
-    if (!result.fullCycleFirstFix) result.fullCycleFirstFix = 'Full Cycle would start by rebuilding the application around '+top2+'.';
+        error: "CV_TEXT_EXn around '+top2+'.';
     if (!result.lockedFixPreview) result.lockedFixPreview = 'Locked in Full Cycle: the rewritten evidence hierarchy, the stronger version of the lead CV bullets, and the route-specific application story.';
     if (!result.fullCycleCta) {
       var sc3 = result.overallScore || 0;
@@ -358,6 +227,10 @@ export default async function handler(req, res) {
     // One model call only: map the rich assessment into the fixed page contract
     // in code so the user is not waiting for a second sequential Claude request.
     result.page = buildPageFallback(profile, quiz, result);
+
+    // Deterministic CV text check. No additional LLM call or invented ATS score.
+    result.atsReadiness = assessAtsReadiness({ cvText, profile, targetKeywords });
+    result.page.atsReadiness = result.atsReadiness;
 
     return res.status(200).json({
       success: true,
@@ -588,25 +461,7 @@ function buildPageFallback(profile, quiz, result) {
       const d = strengthDims[i] || {};
       strengths.push({
         title: words(named[i] || d.name || "Relevant evidence", 9),
-        evidence: words(d.visibleSummary || "Relevant evidence is present, but it needs sharper positioning.", 38),
-        whyItMatters: ""
-      });
-    }
-  }
-
-  const compDefs = [
-    ["Analytical ability","Analytical","Academic Signal"],
-    ["Teamwork","Teamwork",null],
-    ["Communication","Communication",null],
-    ["Leadership","Leadership",null],
-    ["Resilience","Resilience",null],
-    ["Commercial awareness","Commercial","Commercial Awareness"],
-    ["Technical readiness","Technical","Technical Readiness"]
-  ];
-
-  const lockedDefaults = [
-    {category:"CV positioning",headline:"Your strongest evidence is not yet doing enough work",teaser:"Full Cycle gives the evidence hierarchy, line-by-line review and exact rewrites."},
-    {category:"Technical readiness",headline:"Your technical claims need to hold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
+        evidence: words(d.visibleSummary || "Relevant evidence is preshold up under questioning",teaser:"Full Cycle maps the likely technical pressure points from your own CV."},
     {category:"Numerical testing",headline:"Turn your test result into a targeted practice route",teaser:"Full Cycle gives timed drills, worked answers and retesting."},
     {category:"Route positioning",headline:"Make the application read specifically for "+(profile.targetSector || profile.targetDivision || "your first-choice route"),teaser:"Full Cycle prioritises the evidence that travels best for the first-choice route, then adapts it for individual firms."},
     {category:"Interview preparation",headline:"Your own CV should generate your interview questions",teaser:"Full Cycle turns your evidence into likely questions, follow-ups and answer frameworks."}
