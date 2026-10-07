@@ -189,7 +189,7 @@ function render(paid, profile){
         +'<div style="font-size:12px;color:var(--terra);margin-bottom:6px;"><b>Stronger angle:</b> '+(b.strongerAngle||'')+'</div>'
         +(b.bulletStructure?'<div style="font-size:11px;color:var(--ink40);margin-bottom:8px;">Structure: '+(b.bulletStructure)+'</div>':'')
         +(b.originalBullet?'<div class="body original-quote"><b>Original:</b> '+b.originalBullet+'</div>':'')
-        +(b.exampleBullet?'<div style="font-size:12px;color:var(--green);padding:8px 12px;background:white;border-radius:6px;border-left:2px solid var(--green);margin-bottom:6px;">'+(b.exampleBullet)+'</div>':'')
+        +(b.exampleBullet?'<div style="font-size:12px;color:var(--green);padding:8px 12px;background:white;border-radius:6px;border-left:2px solid var(--green);margin-bottom:6px;">'+'<b>Rewritten:</b> '+(b.exampleBullet)+'</div>':'')
         +(b.questionsToConfirm?'<div class="body"><b>Confirm before submission:</b> '+b.questionsToConfirm.join(' · ')+'</div>':'')
         +(b.whyThisWorks?'<div style="font-size:12px;color:var(--ink60);">'+(b.whyThisWorks)+'</div>':'')
       +'</div>';
@@ -293,7 +293,7 @@ function render(paid, profile){
 
   if(paid.competencyRepair){
     H+='<section class="card"><div class="lbl">Competency preparation</div><h2 class="sec-title">Turn your experience into evidence</h2>';
-    paid.competencyRepair.forEach(function(c){H+='<article class="repair-item"><h3>'+c.name+' · '+c.score+'/100</h3><p class="body"><b>Evidence:</b> '+c.evidence+'</p><p class="body"><b>Answer structure:</b> '+c.answerStructure+'</p><blockquote class="body">'+c.sampleAnswer+'</blockquote><p class="body"><b>Next action:</b> '+c.nextAction+'</p></article>';}); H+='</section>';
+    paid.competencyRepair.forEach(function(c){H+='<article class="repair-item"><h3>'+c.name+' · '+c.score+'/100</h3><p class="body"><b>Evidence:</b> '+c.evidence+'</p><p class="body"><b>Answer structure:</b> '+c.answerStructure+'</p><p class="sub"><b>Answer starting point — confirmed CV facts:</b> Adapt this to the question and your own voice; add outcomes only if you can verify them.</p><blockquote class="body">'+c.sampleAnswer+'</blockquote><p class="body"><b>Next action:</b> '+c.nextAction+'</p></article>';}); H+='</section>';
   }
   if(paid.atsReadiness){
     var a=paid.atsReadiness;H+='<section class="card"><div class="lbl">ATS repair checklist</div><h2 class="sec-title">'+(a.score===null?'Partial check':a.score+'/100')+' · CV text readiness</h2>';
@@ -489,7 +489,7 @@ function downloadCV(){
       if(item.subheading) html+='<div class="item-sub">'+item.subheading+'</div>';
       if(item.bullets&&item.bullets.length){
         html+='<ul>'+item.bullets.map(function(b){
-          return '<li class="'+(b.indexOf('[Review')>-1?'flag':'')+'">'+b+'</li>';
+          return '<li class="'+((typeof b==='object' && b.confidence!=='ready')?'flag':'')+'">'+(typeof b==='string'?b:(b.text||''))+'</li>';
         }).join('')+'</ul>';
       }
     });
@@ -512,16 +512,16 @@ document.addEventListener('DOMContentLoaded', async function(){
       var snapshot=await fetch('/samples/amelia-report.json').then(function(r){if(!r.ok) throw new Error('Sample report unavailable');return r.json();});
       clearInterval(mt);document.getElementById('ld').style.display='none';
       var rs=document.getElementById('rs');
-      rs.innerHTML='<section class="sample-banner"><b>Amelia Chen · fictional sample</b><p>This report was generated through the Full Cycle report endpoint from one complete sample CV. It illustrates the output; it is not a customer assessment.</p><a href="/samples/amelia-input.json">View the supplied sample CV and assessment data →</a><br><a href="/result-final-design.html">Back to assessment preview →</a></section>'+render(snapshot.paid,snapshot.profile);
+      rs.innerHTML='<section class="sample-banner"><b>Amelia Chen · fictional sample</b><p>This is a fictional candidate, not a customer testimonial. The report and ATS checks were produced through the live Full Cycle endpoints from her sample CV. Her readiness and competency scores are supplied sample assessment inputs.</p><a href="/samples/amelia-input.json">View the supplied sample CV and assessment data →</a><br><a href="/result-final-design.html">Back to assessment preview →</a></section>'+render(snapshot.paid,snapshot.profile);
       rs.style.display='block';
       var cvSection=document.getElementById('cvGenSection');
       cvSection.innerHTML='<div class="lbl" style="color:#ff8555">Evidence-backed editable draft</div><h2 style="color:white">Your CV, with the selected repairs applied</h2><p style="color:#ccd1d3;font-size:13px;margin:10px 0">Review the draft against your experience before submitting.</p><button id="sampleDraftButton" class="draft-button">Show repaired sample CV →</button><div id="sampleDraft" hidden></div>';
-      document.getElementById('sampleDraftButton').onclick=function(){var el=document.getElementById('sampleDraft');el.hidden=!el.hidden;el.textContent=snapshot.repairedCvDraft;};
+      document.getElementById('sampleDraftButton').onclick=function(){var el=document.getElementById('sampleDraft');el.hidden=!el.hidden;el.textContent=snapshot.repairedCvDraft;if(snapshot.cv) renderCV(snapshot.cv);};
       return;
     }
     var stored=sessionStorage.getItem('tdesk_fc');
     console.log('tdesk_fc present:', !!stored, '| length:', stored?stored.length:0);
-    if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first, then click the Full Cycle button immediately.');
+    if(!stored){clearInterval(mt);document.getElementById('ld').style.display='none';var target=document.getElementById('rs');target.innerHTML='<section class="card"><h1 class="sec-title">Your Full Cycle review</h1><p class="body">Start with your assessment so the report can use your CV, chosen route and test results.</p><p style="margin-top:16px"><a href="/rapid.html">Assess my application →</a></p><p style="margin-top:16px"><a href="/fullcycle-amelia.html">See Amelia’s fictional sample review →</a></p></section>';target.style.display='block';return;}
     var data=JSON.parse(stored);
     console.log('data keys:', Object.keys(data).join(','), '| has result:', !!data.result);
     // Retain input so a failed section can be retried.
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', async function(){
       ml.textContent=partLabels[partName]+' ('+(i+1)+'/'+parts.length+')';
 
       var controller=new AbortController();
-      var timeout=setTimeout(function(){ controller.abort(); }, 70000);
+      var timeout=setTimeout(function(){ controller.abort(); }, 330000);
 
       var resp;
       try{

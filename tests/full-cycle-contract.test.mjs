@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {buildContext,buildPartPrompt,parsePart} from '../lib/full-cycle-contract.mjs';
+import {buildContext,buildPartPrompt,parsePart,getPartSchema} from '../lib/full-cycle-contract.mjs';
 const cv='Education\nUniversity 2025\nExperience\nResearched 12 software companies. Presented comparison table.\nSkills\nExcel and valuation.';
 const ctx=buildContext({overallScore:0},cv,{name:'A'}, {technicalCorrect:0});
 assert.equal(ctx.result.overallScore,0); assert.equal(ctx.quiz.technicalCorrect,0);
@@ -10,6 +10,11 @@ assert.throws(()=>parsePart('{"bulletRepair":', 'repair',cv));
 const bullet={originalBullet:'Researched 12 software companies.',exampleBullet:'Researched 12 software companies and presented a comparison table.',factsUsed:['Researched 12 software companies.','Presented comparison table.']};
 const repair={bulletRepair:[bullet,bullet,bullet],competencyRepair:Array(7).fill({}),interviewRiskMap:Array(3).fill({})};
 assert(parsePart(JSON.stringify(repair),'repair',cv));
+const sourceRepair={...repair,bulletRepair:[{...bullet,originalBullet:'E4',factsUsed:['E4','E6']},bullet,bullet],competencyRepair:Array.from({length:7},()=>({evidenceSourceIds:['E4']}))};
+const resolved=parsePart(JSON.stringify(sourceRepair),'repair',cv);
+assert.equal(resolved.bulletRepair[0].originalBullet,bullet.originalBullet+' Presented comparison table.');
+assert.equal(resolved.competencyRepair[0].sampleAnswer,'I researched 12 software companies. I presented comparison table.');
+assert(getPartSchema('repair',ctx).properties.bulletRepair.items.properties.originalBullet.enum.includes('E4'));
 repair.bulletRepair[0]={...bullet,exampleBullet:'Researched 99 companies.'};
 assert.throws(()=>parsePart(JSON.stringify(repair),'repair',cv),/unsupported number/);
 repair.bulletRepair[0]={...bullet,originalBullet:'Invented quote'};
