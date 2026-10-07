@@ -3,7 +3,7 @@ import { buildContext, buildPartPrompt, parsePart, getPartSchema, REPORT_VERSION
 import { assessAtsReadiness } from '../lib/ats-readiness.mjs';
 import { WORKED_ANSWERS } from '../lib/worked-answers.mjs';
 
-export const maxDuration = 120;
+export const maxDuration = 300;
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = process.env.FULL_CYCLE_MODEL || 'claude-sonnet-4-6';
 
