@@ -407,6 +407,8 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 /* Balance all three result columns and make score bands legible. */
 @media(min-width:761px){.hero{align-items:stretch;gap:20px;padding-bottom:24px}.hero .hcol{height:auto;align-self:stretch}.hero .person{display:flex;flex-direction:column;padding:8px 0 18px}.hero .person h1{margin-bottom:24px}.hero .person .meta{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:22px;padding-bottom:8px}.hero .scorecol{display:flex;flex-direction:column;align-self:stretch;padding:18px 16px}.hero .scorecol .scale{margin-top:auto;padding-top:20px}.hero .scoring-explanation{padding-top:18px;padding-bottom:0}.hero .scorecol .score{font-size:94px}.hero .scorecol .risk{margin-bottom:18px}}
 .hero .scorecol .scale{font-size:13px;line-height:1.45;gap:8px}.hero .scorecol .scale b{font-size:14px;font-weight:600;display:block;margin-bottom:3px}.hero .scorecol .scale>div{padding-left:8px}.hero .scorecol .scale>div:first-child{padding-left:0}.hero .scorecol .scale>div:nth-child(2){background:#ffe8dc;border-radius:4px;padding:5px 6px}.hero .scorecol .scale>div:nth-child(2) b{color:#b74912}@media(max-width:760px){.hero .scorecol .scale{font-size:14px;margin-top:18px}.hero .scorecol .scale b{font-size:15px}}
+
+.route-assessment{margin-top:22px;padding-top:16px;border-top:1px solid #dedbd6}.route-label{font-family:var(--body-font);font-size:11px;line-height:1.4;letter-spacing:.8px;text-transform:uppercase;font-weight:600;color:#6b7478}.hero .route-assessment h2{font-size:21px;line-height:1.25;font-weight:400;letter-spacing:-.3px;margin:8px 0}.route-assessment p{font-family:var(--body-font);font-size:13px;line-height:1.5;color:#536076;margin:0}@media(min-width:761px){.hero .person .meta{flex:0;gap:18px;padding-bottom:0}.hero .person{padding-bottom:0}.route-assessment{margin-top:auto;padding-top:14px}.hero .person .meta+.route-assessment{margin-top:20px}}@media(max-width:760px){.route-assessment p{font-size:14px}.hero .route-assessment h2{font-size:23px}}
 </style>
 </head>
 <body>
@@ -427,6 +429,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
       <div><span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 2v6m8-6v6M7 14h2m3 0h2m3 0h2M7 18h2m3 0h2m3 0h2" stroke="currentColor" stroke-width="2"/></svg></span><span>Final year &nbsp;&nbsp;&nbsp; <svg class="location" viewBox="0 0 24 24"><path d="M12 22S5 14 5 9a7 7 0 0 1 14 0c0 5-7 13-7 13Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg> UK</span></div>
     </div>
 
+<div class="route-assessment" data-assessment-field="targetRoute"><div class="route-label">Assessed for your chosen route</div><h2 data-route-field="name">Investment Banking</h2><p data-route-field="description">Scored against The Desk’s criteria for investment banking applications.</p></div>
   </div>
   <div class="hcol scorecol" data-state="sample">
 <div class="scorelabel">YOUR APPLICATION READINESS</div>
