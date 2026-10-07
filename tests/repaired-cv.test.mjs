@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {buildRepairedCv} from '../lib/repaired-cv.mjs';
+const cv='Sam\nContact: sam@example.com\nEDUCATION\nUniversity 2025\nEXPERIENCE\nResearched 12 companies.\nPresented findings.\nTrained 3 colleagues.\nSKILLS\nExcel and valuation.';
+const sources=['Researched 12 companies.','Presented findings.','Trained 3 colleagues.'];
+const paid={bulletRepair:sources.map(originalBullet=>({originalBullet,exampleBullet:originalBullet+' Used Excel.',factsUsed:[originalBullet,'Excel and valuation.']})),competencyRepair:Array(7).fill({}),interviewRiskMap:Array(3).fill({})};
+const draft=buildRepairedCv({cvText:cv,paid,profile:{name:'Sam'}});
+assert(draft.sourceText.includes('Contact: sam@example.com'));
+assert(draft.sourceText.includes('University 2025'));
+assert(draft.sourceText.includes('Researched 12 companies. Used Excel.'));
+assert.equal(draft.sections.length,4);
+assert.throws(()=>buildRepairedCv({cvText:cv,paid:{}}));
+console.log('Repaired CV checks passed: validated source replacements, retained facts and contact details, rejected incomplete plan.');
