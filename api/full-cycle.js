@@ -38,6 +38,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ success:true, part, version:REPORT_VERSION, data });
   } catch (e) {
     console.error('full-cycle generation failed', e.name);
-    return res.status(502).json({ success:false, error:'We could not produce a complete, validated report section. Please retry.' });
+    return res.status(502).json({ success:false, error:'We could not produce a complete, validated report section. Please retry.', category:e.status ? 'provider_'+e.status : (e.name === 'Error' ? 'validation_or_configuration' : e.name) });
   }
 }
