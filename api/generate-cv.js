@@ -1,14 +1,15 @@
 import {buildRepairedCv} from '../lib/repaired-cv.mjs';
 import {assessAtsReadiness} from '../lib/ats-readiness.mjs';
-export default function handler(req,res) {
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type');
-  if(req.method==='OPTIONS')return res.status(200).end();
+import {ownedRecord,hasAccess,sameOrigin,apiFailure} from '../lib/report-store.mjs';
+export default async function handler(req,res) {
   if(req.method!=='POST')return res.status(405).json({success:false,error:'Use POST'});
+  if(!sameOrigin(req,res))return;
   try {
-    const cv=buildRepairedCv(req.body);
-    const atsReadiness=assessAtsReadiness({cvText:cv.sourceText,profile:req.body.profile,targetKeywords:req.body.targetKeywords});
+    const row=await ownedRecord(req,res,req.body?.assessmentId);
+    if(!row||!await hasAccess(row))return res.status(402).json({error:'Full Cycle purchase required.'});
+    if(!row.report.repair)return res.status(409).json({error:'Prepare your repair report first.'});
+    const cv=buildRepairedCv({...row.input,paid:row.report.repair});
+    const atsReadiness=assessAtsReadiness({cvText:cv.sourceText,profile:row.input.profile});
     return res.status(200).json({success:true,cv,atsReadiness});
-  } catch(e) {return res.status(400).json({success:false,error:e.message});}
+  } catch(e) {return apiFailure(res,e);}
 }

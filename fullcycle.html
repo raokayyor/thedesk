@@ -353,7 +353,7 @@ function generateCV(){
 
   fetch('/api/generate-cv',{
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(_fcData)
+    body:JSON.stringify({assessmentId:_fcData.assessmentId})
   }).then(function(r){ return r.json(); }).then(function(json){
     btn.disabled=false; btn.textContent='Generate my repaired CV →';
     st.style.display='none';
@@ -469,7 +469,7 @@ function renderCV(cv){
   window._lastCV=cv;
 }
 
-function runRecheck(){ window.location.href='/rapid.html'; }
+function runRecheck(){if(!_fcData?.recheck?.remaining){alert('Your two rechecks are available for 30 days after purchase.');return;}window.location.href='/assessment.html?recheck='+encodeURIComponent(_fcData.recheck.rootId);}
 
 function downloadCV(){
   var cv=window._lastCV; if(!cv) return;
@@ -519,9 +519,14 @@ document.addEventListener('DOMContentLoaded', async function(){
       document.getElementById('sampleDraftButton').onclick=function(){var el=document.getElementById('sampleDraft');el.hidden=!el.hidden;el.textContent=snapshot.repairedCvDraft;if(snapshot.cv) renderCV(snapshot.cv);};
       return;
     }
-    var stored=sessionStorage.getItem('tdesk_fc');
+    var assessmentId=new URLSearchParams(location.search).get('id');
+    if(!assessmentId){clearInterval(mt);document.getElementById('ld').style.display='none';document.getElementById('rs').innerHTML='<section class="card"><h1>Start with your free assessment</h1><p>Your report uses your own CV, route and test answers.</p><a href="/assessment-start.html">Assess my application →</a><br><a href="/fullcycle-amelia.html">See the fictional sample →</a></section>';document.getElementById('rs').style.display='block';return;}
+    var checkoutSession=new URLSearchParams(location.search).get('session_id');
+    if(checkoutSession){var verification=await fetch('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:assessmentId,sessionId:checkoutSession})});var verified=await verification.json();if(!verification.ok)throw new Error(verified.error||'Payment not verified.');history.replaceState(null,'','/fullcycle.html?id='+assessmentId);}
+    var saved=await fetch('/api/assessment-result?id='+encodeURIComponent(assessmentId));var savedData=await saved.json();if(!saved.ok)throw new Error(savedData.error);if(!savedData.paid){location.href='/result-final-design.html?id='+assessmentId;return;}
+    var stored=JSON.stringify({assessmentId:assessmentId,result:savedData.result,profile:savedData.profile,quiz:savedData.quiz,recheck:savedData.recheck});
     console.log('tdesk_fc present:', !!stored, '| length:', stored?stored.length:0);
-    if(!stored){clearInterval(mt);document.getElementById('ld').style.display='none';var target=document.getElementById('rs');target.innerHTML='<section class="card"><h1 class="sec-title">Your Full Cycle review</h1><p class="body">Start with your assessment so the report can use your CV, chosen route and test results.</p><p style="margin-top:16px"><a href="/rapid.html">Assess my application →</a></p><p style="margin-top:16px"><a href="/fullcycle-amelia.html">See Amelia’s fictional sample review →</a></p></section>';target.style.display='block';return;}
+    if(!stored){clearInterval(mt);document.getElementById('ld').style.display='none';var target=document.getElementById('rs');target.innerHTML='<section class="card"><h1 class="sec-title">Your Full Cycle review</h1><p class="body">Start with your assessment so the report can use your CV, chosen route and test results.</p><p style="margin-top:16px"><a href="/assessment-start.html">Assess my application →</a></p><p style="margin-top:16px"><a href="/fullcycle-amelia.html">See Amelia’s fictional sample review →</a></p></section>';target.style.display='block';return;}
     var data=JSON.parse(stored);
     console.log('data keys:', Object.keys(data).join(','), '| has result:', !!data.result);
     // Retain input so a failed section can be retried.
@@ -551,7 +556,7 @@ document.addEventListener('DOMContentLoaded', async function(){
         resp=await fetch('/api/full-cycle',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(Object.assign({},data,{part:partName})),
+          body:JSON.stringify({assessmentId:assessmentId,part:partName}),
           signal:controller.signal
         });
       }catch(e){
