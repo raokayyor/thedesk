@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {buildContext,buildPartPrompt,parsePart} from '../lib/full-cycle-contract.mjs';
+const cv='Education\nUniversity 2025\nExperience\nResearched 12 software companies. Presented comparison table.\nSkills\nExcel and valuation.';
+const ctx=buildContext({overallScore:0},cv,{name:'A'}, {technicalCorrect:0});
+assert.equal(ctx.result.overallScore,0); assert.equal(ctx.quiz.technicalCorrect,0);
+assert(buildPartPrompt('repair',ctx).includes(cv.replaceAll('\n','\\n')));
+assert.throws(()=>buildContext({overallScore:66},''));
+assert.throws(()=>buildPartPrompt('bogus',ctx));
+assert.throws(()=>parsePart('{"bulletRepair":', 'repair',cv));
+const bullet={originalBullet:'Researched 12 software companies.',exampleBullet:'Researched 12 software companies and presented a comparison table.',factsUsed:['Researched 12 software companies.','Presented comparison table.']};
+const repair={bulletRepair:[bullet,bullet,bullet],competencyRepair:Array(7).fill({}),interviewRiskMap:Array(3).fill({})};
+assert(parsePart(JSON.stringify(repair),'repair',cv));
+repair.bulletRepair[0]={...bullet,exampleBullet:'Researched 99 companies.'};
+assert.throws(()=>parsePart(JSON.stringify(repair),'repair',cv),/unsupported number/);
+repair.bulletRepair[0]={...bullet,originalBullet:'Invented quote'};
+assert.throws(()=>parsePart(JSON.stringify(repair),'repair',cv),/quote source/);
+assert.throws(()=>parsePart('{"sevenDayActionPlan":[]}', 'plan',cv));
+console.log('Report contract tests passed: full CV, zero scores, incomplete JSON, missing fields, unsupported quotes and numbers.');

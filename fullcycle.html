@@ -36,6 +36,8 @@ nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.
 .spinner{width:40px;height:40px;border:3px solid var(--ink08);border-top-color:var(--terra);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .err{background:#fef2f2;border:0.5px solid #fecaca;border-radius:10px;padding:20px;text-align:center;}
+
+.sample-banner{background:#fff0e4;padding:22px;border:1px solid #f2d3bc;border-radius:12px;margin:20px 0}.sample-banner p{font-size:14px;line-height:1.6;margin:8px 0}.sample-banner a{font-size:13px;color:#a44818;line-height:1.8}.repair-item{padding:18px 0;border-bottom:1px solid #dfdad3}.repair-item h3{font-size:20px;margin-bottom:10px}.repair-item p{margin:8px 0}.repair-item blockquote{margin:12px 0;padding:12px;border-left:3px solid #e87040;background:#f7f3ee}.repair-item ol{padding-left:20px}.repair-item details{margin-top:12px;font-size:13px}.original-quote{margin-bottom:10px;padding:10px;background:white}.draft-button{margin-top:10px;background:#e87040;color:white;border:0;border-radius:6px;padding:12px;font:inherit;cursor:pointer}#sampleDraft{white-space:pre-wrap;line-height:1.6;background:white;color:#182127;padding:20px;margin-top:16px;font-size:14px} .body,.sub{overflow-wrap:anywhere}@media print{nav,.sample-banner a,button{display:none}.card{break-inside:avoid}.wrap{padding:0}}
 </style>
 </head>
 <body>
@@ -51,7 +53,7 @@ nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.
     <div style="font-size:11px;color:var(--ink40);">·</div>
     <div style="font-size:11px;color:var(--ink60);">Repaired CV draft available</div>
     <div style="font-size:11px;color:var(--ink40);">·</div>
-    <div style="font-size:11px;color:var(--ink60);"><span id="recheckCount" style="font-weight:600;color:var(--terra);">2</span> rechecks remaining</div>
+    <div style="font-size:11px;color:var(--ink60);">Your repair plan</div>
     <div style="font-size:11px;color:var(--ink40);">·</div>
     <div style="font-size:11px;color:var(--ink60);">12 months resource access</div>
   </div>
@@ -77,7 +79,14 @@ function row(label,val,col){
 function sev(s){ var c=s&&s.toLowerCase()==='high'?'sev-h':s&&s.toLowerCase()==='medium'?'sev-m':'sev-l'; return '<span class="sev '+c+'">'+(s||'')+'</span>'; }
 function cs(s){ var c=s&&(s==='Strong'||s==='Evidenced')?'cs-e':s&&s.includes('Partially')?'cs-p':'cs-n'; return '<span class="cs '+c+'">'+(s||'')+'</span>'; }
 
+function safeReport(value){
+  if(typeof value==='string') return value.replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+  if(Array.isArray(value)) return value.map(safeReport);
+  if(value && typeof value==='object') return Object.fromEntries(Object.entries(value).map(function(e){return [e[0],safeReport(e[1])];}));
+  return value;
+}
 function render(paid, profile){
+  paid=safeReport(paid); profile=safeReport(profile || {});
   var firm=(profile&&profile.targetFirm)||'your target firm';
   var div2=(profile&&profile.targetDivision)||'finance';
   var name=paid.paidTitle||'Full Cycle Repair Plan';
@@ -90,9 +99,9 @@ function render(paid, profile){
   H+='<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra);margin-bottom:6px;">Full Cycle Repair Plan</div>';
   H+='<div style="font-family:\'Fraunces\',serif;font-size:clamp(20px,4vw,28px);font-weight:300;letter-spacing:-0.5px;color:var(--ink);line-height:1.2;margin-bottom:4px;">'+(paid.paidTitle||name)+'</div></div>';
 
-  // 16. REPAIRED CV DRAFT SECTION
+  // REPAIRED CV DRAFT SECTION
   H+='<div id="cvGenSection" style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:12px;">'
-    +'<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:8px;">Section 16 — Repaired CV Draft</div>'
+    +'<div style="font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:8px;">Your repaired CV draft</div>'
     +'<div style="font-family:Fraunces,serif;font-size:18px;font-weight:300;color:#F7F3EE;margin-bottom:6px;">Generate your repaired CV draft</div>'
     +'<div style="font-size:12px;color:rgba(247,243,238,0.45);margin-bottom:14px;line-height:1.6;">Using your Full Cycle repair plan, we will build an editable CV draft based only on your existing evidence. We do not invent experience — we restructure and reframe what you have already done into a stronger application for '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetFirm||firm)+' '+(paid.firmDivisionFit&&paid.firmDivisionFit.targetDivision||div2)+'.</div>'
     +'<button onclick="generateCV()" id="cvGenBtn" style="background:#E87040;color:white;border:none;border-radius:8px;padding:11px 24px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Generate repaired CV draft →</button>'
@@ -179,7 +188,9 @@ function render(paid, profile){
         +'<div style="font-size:12px;color:var(--red);margin-bottom:6px;"><b>Current issue:</b> '+(b.currentIssue||'')+'</div>'
         +'<div style="font-size:12px;color:var(--terra);margin-bottom:6px;"><b>Stronger angle:</b> '+(b.strongerAngle||'')+'</div>'
         +(b.bulletStructure?'<div style="font-size:11px;color:var(--ink40);margin-bottom:8px;">Structure: '+(b.bulletStructure)+'</div>':'')
+        +(b.originalBullet?'<div class="body original-quote"><b>Original:</b> '+b.originalBullet+'</div>':'')
         +(b.exampleBullet?'<div style="font-size:12px;color:var(--green);padding:8px 12px;background:white;border-radius:6px;border-left:2px solid var(--green);margin-bottom:6px;">'+(b.exampleBullet)+'</div>':'')
+        +(b.questionsToConfirm?'<div class="body"><b>Confirm before submission:</b> '+b.questionsToConfirm.join(' · ')+'</div>':'')
         +(b.whyThisWorks?'<div style="font-size:12px;color:var(--ink60);">'+(b.whyThisWorks)+'</div>':'')
       +'</div>';
     });
@@ -279,6 +290,17 @@ function render(paid, profile){
     H+='</div>';
   }
 
+
+  if(paid.competencyRepair){
+    H+='<section class="card"><div class="lbl">Competency preparation</div><h2 class="sec-title">Turn your experience into evidence</h2>';
+    paid.competencyRepair.forEach(function(c){H+='<article class="repair-item"><h3>'+c.name+' · '+c.score+'/100</h3><p class="body"><b>Evidence:</b> '+c.evidence+'</p><p class="body"><b>Answer structure:</b> '+c.answerStructure+'</p><blockquote class="body">'+c.sampleAnswer+'</blockquote><p class="body"><b>Next action:</b> '+c.nextAction+'</p></article>';}); H+='</section>';
+  }
+  if(paid.atsReadiness){
+    var a=paid.atsReadiness;H+='<section class="card"><div class="lbl">ATS repair checklist</div><h2 class="sec-title">'+(a.score===null?'Partial check':a.score+'/100')+' · CV text readiness</h2>';
+    a.components.forEach(function(c){H+='<p class="body"><b>'+c.component.replace(/([A-Z])/g,' $1')+'</b> '+c.earned+'/'+c.max+'</p>';});
+    H+='<p class="body"><b>Matched role terms:</b> '+(a.matchedKeywords.join(', ')||'None')+'</p><p class="body"><b>Terms to review:</b> '+(a.missingKeywords.join(', ')||'No missing dictionary terms')+'</p><p class="body">Only add terms you can support. A keyword match does not prove proficiency or guarantee a screening outcome.</p></section>';
+  }
+  if(paid.workedAnswers){H+='<section class="card"><div class="lbl">Worked answers and retest</div><h2 class="sec-title">Understand the concepts you missed</h2>';paid.workedAnswers.forEach(function(a){H+='<article class="repair-item"><h3>'+a.concept+'</h3><p class="body">'+a.question+'</p><p class="body"><b>Answer:</b> '+a.answer+'</p><ol>'+a.steps.map(function(x){return '<li class="body">'+x+'</li>';}).join('')+'</ol><p class="body"><b>Common trap:</b> '+a.trap+'</p><p class="body"><b>Try it:</b> '+a.drill+'</p><details><summary>Show retest answer</summary><p class="body">'+a.drillAnswer+'</p></details></article>';});H+='</section>';}
   // 13. 7-DAY PLAN
   if(paid.sevenDayActionPlan&&paid.sevenDayActionPlan.length){
     H+='<div class="card"><div class="lbl">'+plan+'</div><div class="sec-title">What to do before submitting</div>';
@@ -326,19 +348,19 @@ function generateCV(){
   var st=document.getElementById('cvGenStatus');
   if(!_fcData){ alert('Repair plan data not found. Please try again.'); return; }
   btn.disabled=true;
-  btn.querySelector('div:last-child').textContent='...';
+  btn.textContent='Generating…';
   st.style.display='block'; st.textContent='Generating your rewritten CV — takes about 15 seconds...';
 
   fetch('/api/generate-cv',{
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify(_fcData)
   }).then(function(r){ return r.json(); }).then(function(json){
-    btn.disabled=false; btn.querySelector('div:last-child').textContent='→';
+    btn.disabled=false; btn.textContent='Generate my repaired CV →';
     st.style.display='none';
     if(!json.success||!json.cv){ alert('CV generation failed: '+(json.error||'unknown error')); return; }
     renderCV(json.cv);
   }).catch(function(e){
-    btn.disabled=false; btn.querySelector('div:last-child').textContent='→';
+    btn.disabled=false; btn.textContent='Generate my repaired CV →';
     st.textContent='Error: '+e.message; st.style.color='#dc2626';
   });
 }
@@ -355,6 +377,7 @@ function confLabel(c){
 }
 
 function renderCV(cv){
+  cv=safeReport(cv);
   var el=document.getElementById('cvOutput');
   if(!el){ el=document.createElement('div'); el.id='cvOutput'; el.style.cssText='margin-top:16px;'; document.getElementById('cvGenSection').after?document.getElementById('cvGenSection').insertAdjacentElement('afterend',el):document.getElementById('cvGenSection').parentNode.appendChild(el); }
 
@@ -437,7 +460,7 @@ function renderCV(cv){
   // RECHECK + DOWNLOAD
   H+='<div style="display:flex;gap:8px;margin-top:14px;">';
   H+='<button onclick="downloadCV()" style="flex:1;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:11px;font-family:Fraunces,serif;font-size:14px;font-weight:300;cursor:pointer;">Download draft →</button>';
-  H+='<button onclick="runRecheck()" style="flex:1;background:white;color:var(--ink);border:0.5px solid var(--ink08);border-radius:8px;padding:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Upload revised CV for recheck <span style="font-size:10px;color:var(--terra);">(<span id="rc2">2</span> remaining)</span></button>';
+  H+='<button onclick="runRecheck()" style="flex:1;background:white;color:var(--ink);border:0.5px solid var(--ink08);border-radius:8px;padding:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">Start a fresh assessment →</button>';
   H+='</div>';
   H+='</div>';
 
@@ -446,21 +469,7 @@ function renderCV(cv){
   window._lastCV=cv;
 }
 
-function runRecheck(){
-  var rc=parseInt(document.getElementById('recheckCount').textContent)||0;
-  if(rc<=0){ alert('No rechecks remaining.'); return; }
-  // MVP: upload a revised CV
-  var input=document.createElement('input');
-  input.type='file'; input.accept='.pdf,.doc,.docx,.txt';
-  input.onchange=function(e){
-    var file=e.target.files[0];
-    if(!file) return;
-    alert('Recheck submitted. This feature is coming soon — you will receive your recheck by email within 24 hours. Rechecks remaining: '+(rc-1));
-    document.getElementById('recheckCount').textContent=(rc-1);
-    document.getElementById('rc2').textContent=(rc-1);
-  };
-  input.click();
-}
+function runRecheck(){ window.location.href='/rapid.html'; }
 
 function downloadCV(){
   var cv=window._lastCV; if(!cv) return;
@@ -498,15 +507,27 @@ function downloadCV(){
 
 document.addEventListener('DOMContentLoaded', async function(){
   try {
+    var sampleMode=window.location.pathname.includes('fullcycle-amelia') || new URLSearchParams(location.search).get('sample')==='amelia';
+    if(sampleMode){
+      var snapshot=await fetch('/samples/amelia-report.json').then(function(r){if(!r.ok) throw new Error('Sample report unavailable');return r.json();});
+      clearInterval(mt);document.getElementById('ld').style.display='none';
+      var rs=document.getElementById('rs');
+      rs.innerHTML='<section class="sample-banner"><b>Amelia Chen · fictional sample</b><p>This report was generated through the Full Cycle report endpoint from one complete sample CV. It illustrates the output; it is not a customer assessment.</p><a href="/samples/amelia-input.json">View the supplied sample CV and assessment data →</a><br><a href="/result-final-design.html">Back to assessment preview →</a></section>'+render(snapshot.paid,snapshot.profile);
+      rs.style.display='block';
+      var cvSection=document.getElementById('cvGenSection');
+      cvSection.innerHTML='<div class="lbl" style="color:#ff8555">Evidence-backed editable draft</div><h2 style="color:white">Your CV, with the selected repairs applied</h2><p style="color:#ccd1d3;font-size:13px;margin:10px 0">Review the draft against your experience before submitting.</p><button id="sampleDraftButton" class="draft-button">Show repaired sample CV →</button><div id="sampleDraft" hidden></div>';
+      document.getElementById('sampleDraftButton').onclick=function(){var el=document.getElementById('sampleDraft');el.hidden=!el.hidden;el.textContent=snapshot.repairedCvDraft;};
+      return;
+    }
     var stored=sessionStorage.getItem('tdesk_fc');
     console.log('tdesk_fc present:', !!stored, '| length:', stored?stored.length:0);
     if(!stored) throw new Error('No Full Cycle data found. Please run your assessment first, then click the Full Cycle button immediately.');
     var data=JSON.parse(stored);
     console.log('data keys:', Object.keys(data).join(','), '| has result:', !!data.result);
-    sessionStorage.removeItem('tdesk_fc');
+    // Retain input so a failed section can be retried.
 
     // Check data is valid before calling API
-    if(!data.result||!data.result.overallScore){
+    if(!data.result||!Number.isFinite(data.result.overallScore)){
       throw new Error('Assessment data is incomplete. Please run your assessment again from rapid.html.');
     }
 
@@ -523,7 +544,7 @@ document.addEventListener('DOMContentLoaded', async function(){
       ml.textContent=partLabels[partName]+' ('+(i+1)+'/'+parts.length+')';
 
       var controller=new AbortController();
-      var timeout=setTimeout(function(){ controller.abort(); }, 9000);
+      var timeout=setTimeout(function(){ controller.abort(); }, 70000);
 
       var resp;
       try{
@@ -557,7 +578,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 
     document.getElementById('ld').style.display='none';
     document.getElementById('fcStatus').style.display='block';
-    _fcData=data; // store for CV generation
+    _fcData=Object.assign({},data,{paid:json.paid}); // reuse validated repairs for CV generation
     var rs=document.getElementById('rs');
     rs.innerHTML=render(json.paid, data.profile||{});
     rs.style.display='block';
