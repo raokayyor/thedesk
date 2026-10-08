@@ -244,14 +244,16 @@ function stats(){
 async function assess(c){
   c.state='running'; render();
   const profile={name:c.name,university:c.university,course:c.course,year:c.year,grade:c.grade,targetSector:c.division,targetSector2:c.division2,targetSector3:c.division3,targetDivision:c.division,programme:c.programme,track:c.division};
-  const quiz={commercialCorrect:c.commercial,commercialTotal:5,technicalCorrect:c.numerical,technicalTotal:5};
+  const correct={commercial:[0,0,0,0,0],numerical:[1,2,2,1,1]};
+  const makeAnswers=(group,count)=>correct[group].map((answer,i)=>i<count?answer:(answer+1)%4);
+  const answers={commercial:makeAnswers('commercial',c.commercial),numerical:makeAnswers('numerical',c.numerical)};
   const t=Date.now();
   try{
-    const resp=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,quiz,cv:{fileName:'synthetic.txt',text:c.cv}})});
+    const resp=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,consent:true,cv:{fileName:'synthetic.txt',text:c.cv}})});
     const txt=await resp.text(); let data;
     try{data=JSON.parse(txt)}catch(e){throw new Error('Non-JSON response ('+resp.status+')')}
     if(!resp.ok||!data.success||!data.result) throw new Error(data.message||data.error||'Assessment failed');
-    c.result=data.result;c.profile=profile;c.quiz=quiz;c.state='done';
+    c.result=data.result;c.profile=profile;c.quiz=data.quiz;c.assessmentId=data.id;c.state='done';
   }catch(e){c.error=e.message||String(e);c.state='error'}
   c.ms=Date.now()-t; stats(); render();
 }
@@ -275,9 +277,7 @@ async function runBatch(){
 }
 function openResult(i){
   const c=batch[i]; if(!c||!c.result)return;
-  const data={result:c.result,name:c.name,sector:c.division,sector2:c.division2,sector3:c.division3,div:c.division,programme:c.programme,uni:c.university,crs:c.course,gr:c.grade,fS:c.commercial,nS:c.numerical,cvText:c.cv,profile:c.profile,quiz:c.quiz};
-  sessionStorage.setItem('tdesk_r',JSON.stringify(data));
-  window.open('/thedesk-result.html?lab=1?lab='+c.id,'_blank');
+  window.open('/result-final-design.html?id='+encodeURIComponent(c.assessmentId),'_blank');
 }
 function showCV(i){const c=batch[i];document.getElementById('modalTitle').textContent=c.name+' — '+c.level;document.getElementById('modalBody').textContent=c.cv;document.getElementById('modal').classList.add('open')}
 function closeModal(){document.getElementById('modal').classList.remove('open')}
