@@ -127,14 +127,14 @@ details .reveal{margin:0 14px 14px}
 <body>
 <header class="top">
   <a class="logo" href="/">The Desk<small>Finance careers. Done properly.</small></a>
-  <nav class="hub-nav" aria-label="Main navigation"><a href="/assessment-start.html">Assess</a><a href="/test-hub.html" aria-current="page">Learn</a><a href="/fullcycle.html">Explore Full Cycle — £79</a></nav>
+  <nav class="hub-nav" aria-label="Main navigation"><a href="/assessment-start.html">Assess</a><a href="/test-hub.html" aria-current="page">Learn</a><a href="/fullcycle-amelia.html">Explore Full Cycle — £79</a></nav>
 </header>
 <main id="app"><p class="lede">Loading questions…</p></main><footer class="hub-footer">The Desk · Finance careers. Done properly.<p>Practice results help you choose what to work on. They are separate from your application readiness score.</p><a href="/assessment-start.html">Assess your application →</a></footer>
 
 <script>
 (function(){
 "use strict";
-var ROUTES=[["accounting_audit","Accounting / Audit"],["investment_banking","Investment Banking"],["asset_management","Asset Management"],["markets","Sales & Trading / Markets"]];
+var ROUTES=[["commercial_general","General Finance"],["accounting_audit","Accounting / Audit"],["investment_banking","Investment Banking"],["asset_management","Asset Management"],["markets","Sales & Trading / Markets"]];
 var DATA={numerical:[],technical:[]};
 var S={type:"numerical",route:"accounting_audit",len:10,mode:"practice",topic:"all"};
 var T=null; // current test
@@ -289,7 +289,7 @@ function boot(d){
   if(p.get("topic"))S.topic=p.get("topic");
   if(!["numerical","technical"].includes(S.type))S.type="numerical";if(!ROUTES.some(function(r){return r[0]===S.route}))S.route="accounting_audit";
   renderSetup();
-  var id=p.get("assessmentId");if(id&&/^[a-f0-9]{40}$/.test(id)){fetch('/api/assessment-result?id='+encodeURIComponent(id)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(result){assessmentContext={id:id,profile:result.profile};var routes={'Accounting / Audit':'accounting_audit','Investment Banking / IBD':'investment_banking','Asset Management / Investing':'asset_management','Sales & Trading / Markets':'markets'};if(routes[result.profile.targetSector])S.route=routes[result.profile.targetSector];renderSetup()}).catch(function(){})}
+  var id=p.get("assessmentId");if(id&&/^[a-f0-9]{48}$/.test(id)){fetch('/api/assessment-result?id='+encodeURIComponent(id)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(result){assessmentContext={id:id,profile:result.profile};var routes={'General Finance':'commercial_general','Accounting / Audit':'accounting_audit','Investment Banking / IBD':'investment_banking','Asset Management / Investing':'asset_management','Sales & Trading / Markets':'markets'};if(routes[result.profile.targetSector])S.route=routes[result.profile.targetSector];renderSetup()}).catch(function(){})}
 }
 if(window.TH_DATA){boot(window.TH_DATA)}
 else{Promise.all(["data/numerical.json","data/technical.json"].map(function(u){return fetch(u).then(function(r){if(!r.ok)throw 0;return r.json()})}))
