@@ -413,6 +413,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 /* Mobile reading order: name, score, candidate details, route, breakdown. */
 @media(max-width:760px){.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}.hero .person{display:contents}.hero .person h1{grid-row:1;margin:0;font-size:36px}.hero .scorecol{grid-row:2;margin:0}.hero .person .meta{grid-row:3;padding:0;gap:14px}.hero .route-assessment{grid-row:4;margin:0;padding-top:16px}.hero .scoring-explanation{grid-row:5}.hero .person .meta+.route-assessment{margin-top:0}}
 .ats-score-label{font-size:14px;color:#d0d9de;margin-top:14px}.ats-result-score{margin-top:4px}.algo-copy .ats-target-note{font-size:14px;line-height:1.5;color:#becbd2;margin:8px 0 12px}.footer{border-radius:18px;margin-top:20px;padding:24px 36px;min-height:110px;gap:16px 24px}.footerlinks{font-size:12px;gap:22px}.automated-disclosure{margin:0;padding-top:14px;border-top:1px solid #303a3e;font-size:12px;line-height:1.5}@media(max-width:600px){.footer{padding:22px 20px}.footerlinks{margin-left:0;flex-wrap:wrap;gap:18px}.footer .logo{width:100%}}
+.section-title-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin-bottom:12px}.section-title-row h2{margin-bottom:0}.section-score{display:inline-block;font-family:var(--body-font);font-size:21px;font-weight:700;line-height:1.2;color:#ff5100;white-space:nowrap}.competency-heading .section-title-row{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -469,9 +470,9 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 
 <section class="section">
   <div class="cv">
-    <div class="cvleft"><div class="cv-source" hidden></div>
+    <div class="cvleft">
       <div class="kicker">CV fixes</div>
-      <h2>What we would change in your CV.</h2>
+      <div class="section-title-row"><h2>What we would change in your CV.</h2><span class="section-score cv-section-score" aria-label="CV and application evidence score">—/30</span></div>
       <p>We’ve identified several places where your experience could be written more strongly to show impact, judgement and commercial relevance.</p><p>This includes your Redcliffe experience, the way you position technical skills, and how you present your interests and motivations.</p>
     </div>
     <div class="card"><div class="mini">Current version</div><p>“Supported the investment team with research and analysis on potential transactions.”</p></div>
@@ -514,7 +515,7 @@ h1,h2,h3,.logo,.sign,.no,.warning-strip{font-family:var(--heading-font)!importan
 
 
 <section class="section competency-section">
-  <div class="competency-heading"><div><div class="kicker">Your 7 competencies</div><h2>Where you stand.</h2></div><p>Your scores show how clearly your application demonstrates each competency. Stronger evidence starts with specific examples of what you did and the difference it made.</p></div>
+  <div class="competency-heading"><div><div class="kicker">Your 7 competencies</div><div class="section-title-row"><h2>Where you stand.</h2><span class="section-score competency-section-score" aria-label="Competency evidence score">—/25</span></div></div><p>Your scores show how clearly your application demonstrates each competency. Stronger evidence starts with specific examples of what you did and the difference it made.</p></div>
   <div class="competency-cards">
 <article class="skill-card"><div class="skill-score"><strong>76</strong><small>/100</small></div><h3>Analytical ability</h3><div class="skill-status">Your strongest area</div><p class="skill-reason">Your research and analysis provide the clearest evidence of this competency.</p><div class="skill-meter" style="--score:76%" aria-hidden="true"></div><div class="skill-step"><span>How to evidence this · sample</span><p>Keep your analysis tied to a clear conclusion.</p></div></article>
 <article class="skill-card"><div class="skill-score"><strong>68</strong><small>/100</small></div><h3>Teamwork</h3><div class="skill-status">Build on this</div><p class="skill-reason">Team experience is visible, but your individual contribution needs clearer evidence.</p><div class="skill-meter" style="--score:68%" aria-hidden="true"></div><a class="competency-locked" href="/fullcycle.html"><svg viewBox="0 0 20 22" aria-hidden="true"><rect x="3" y="9" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 13v4" stroke="currentColor" stroke-width="1.6"/></svg><span>Unlock the fix →</span></a></article>
