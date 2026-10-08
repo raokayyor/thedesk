@@ -64,7 +64,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
     <div class="actions">
       <button class="secondary" onclick="generateBatch()">1. Generate candidates</button>
       <button class="orange" id="runBtn" onclick="runBatch()">2. Run live assessments</button>
-      <button class="primary" onclick="exportCSV()">Export CSV</button>
+      <button class="secondary" onclick="queueFailed()">Queue failed tests</button><button class="primary" onclick="exportCSV()">Export CSV</button>
       <button class="secondary" onclick="copyJSON()">Copy test data</button><button class="secondary" onclick="downloadBackup()">Download test backup</button><label class="secondary" style="display:inline-block">Restore backup<input type="file" accept=".json" onchange="restoreBackup(event)" style="display:block"></label>
       <button class="danger" onclick="clearBatch()">Clear</button>
     </div>
@@ -221,6 +221,7 @@ function makeCandidate(i){
   c.state='pending'; return c;
 }
 function generateBatch(){
+  if(batch.length&&!confirm('Replace the displayed candidates? Download a test backup first to keep this batch.'))return;
   const n=Number(document.getElementById('count').value);
   batch=Array.from({length:n},(_,i)=>makeCandidate(i));
   saveBatch();render(); stats(); document.getElementById('status').textContent=n+' candidates generated. Click Run live assessments.';
@@ -293,6 +294,10 @@ async function runBatch(){
   await Promise.all(Array.from({length:Math.min(conc,pending.length)},worker));
   btn.disabled=false;stats();render();
   saveBatch();document.getElementById('status').textContent=(blocked?'Rate limit reached. Remaining CVs are saved; no further requests were sent. ':'Batch complete: ')+batch.filter(x=>x.result).length+' assessed, '+batch.filter(x=>x.error).length+' errors.';
+}
+function queueFailed(){
+ let count=0;batch.forEach(c=>{if(!c.result&&c.error){c.previousAttempts=[...(c.previousAttempts||[]),{error:c.error,ms:c.ms,savedAt:new Date().toISOString()}];delete c.error;delete c.rateLimited;c.state='pending';count++;}});
+ saveBatch();render();stats();document.getElementById('status').textContent=count+' failed tests queued. Nothing has been rerun. Run live assessments only when the rate limit has reset; new assessments use model credits.';
 }
 function openResult(i){
   const c=batch[i]; if(!c||!c.result)return;
