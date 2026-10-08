@@ -55,7 +55,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
 
   <div class="panel">
     <div class="grid">
-      <div><label>Batch size</label><select id="count"><option>10</option><option selected>25</option><option>50</option><option>100</option><option>200</option></select></div>
+      <div><label>Batch size</label><select id="count"><option selected>1</option><option>10</option><option>25</option><option>50</option><option>100</option><option>200</option></select></div>
       <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
       <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>Corporate Banking</option><option>Accounting / Audit</option><option>Consulting / Advisory</option><option>General Finance</option></select></div>
       <div><label>Programme / stage</label><select id="programme"><option value="mixed">Mixed</option><option>Spring Week / Insight Programme</option><option>Summer Internship</option><option>Industrial Placement / Year in Industry</option><option>Graduate Programme</option><option>Off-cycle Internship</option></select></div>
@@ -243,7 +243,7 @@ function render(){
       <td>${result?'<span class="badge '+bandClass(result.band)+'">'+result.band+'</span>':c.error?'<span class="badge error">Error</span>':'—'}</td>
       <td>${c.ms?Math.round(c.ms/1000)+'s':'—'}</td>
       <td>${result?'<button class="openBtn" onclick="openResult('+i+')">Open</button>':c.error?'<details><summary>Error</summary>'+escapeHtml(c.error)+'</details>':'—'}</td>
-      <td><button class="cvBtn" onclick="showCV(${i})">View CV</button></td>`;
+      <td><button class="cvBtn" onclick="showCV(${i})">View CV</button>${!result?'<button class="singleRunBtn" onclick="runOne('+i+')" '+(labRunning?'disabled':'')+'>Run this test</button>':''}</td>`;
     body.appendChild(tr);
   });
 }
@@ -277,12 +277,29 @@ async function assess(c){
   }catch(e){c.error=e.message||String(e);c.state='error'}
   c.ms=Date.now()-t;saveBatch(); stats(); render();
 }
+let labRunning=false;
+async function runOne(i){
+ if(labRunning)return;
+ const c=batch[i];if(!c||c.result)return;
+ labRunning=true;const btn=document.getElementById('runBtn');btn.disabled=true;
+ try{
+ const session=await fetch('/api/assessment-session',{method:'POST'});
+ if(!session.ok)throw Error('Could not initialise the test session.');
+ if(c.error)c.previousAttempts=[...(c.previousAttempts||[]),{error:c.error,ms:c.ms,savedAt:new Date().toISOString()}];
+ delete c.error;delete c.rateLimited;saveBatch();
+ document.getElementById('status').textContent='Running only '+c.name+'…';
+ await assess(c);
+ document.getElementById('status').textContent=c.result?'Single test complete: '+c.name+'. Other candidates were not run.':c.name+': '+c.error;
+ }catch(e){document.getElementById('status').textContent=e.message;}
+ finally{labRunning=false;btn.disabled=false;render();stats();}
+}
 async function runBatch(){
+  if(labRunning)return;
   if(!batch.length) generateBatch();
   const pending=batch.filter(x=>!x.result&&!x.error);
   if(!pending.length){document.getElementById('status').textContent='Nothing left to run.';return}
   const session=await fetch('/api/assessment-session',{method:'POST'});if(!session.ok){document.getElementById('status').textContent='Could not initialise the test session. No assessments were started.';return;}
-  const conc=Number(document.getElementById('concurrency').value);
+  labRunning=true;const conc=Number(document.getElementById('concurrency').value);
   const btn=document.getElementById('runBtn');btn.disabled=true;
   let next=0,blocked=false;
   async function worker(){
@@ -293,7 +310,7 @@ async function runBatch(){
     }
   }
   await Promise.all(Array.from({length:Math.min(conc,pending.length)},worker));
-  btn.disabled=false;stats();render();
+  labRunning=false;btn.disabled=false;stats();render();
   saveBatch();document.getElementById('status').textContent=(blocked?'Rate limit reached. Remaining CVs are saved; no further requests were sent. ':'Batch complete: ')+batch.filter(x=>x.result).length+' assessed, '+batch.filter(x=>x.error).length+' errors.';
 }
 function queueFailed(){
