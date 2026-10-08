@@ -24,7 +24,7 @@ export default async function handler(req,res){
   await initStore();const h=owner(req,res,true);
   // Assessment quotas temporarily disabled for owner testing.
   const catalog=getEvidenceCatalog(cvText),ids=catalog.map(x=>x.id),contract=schema(shape);
-  const namedDetails=[...new Set(catalog.filter(x=>!/^\s*[-•]/.test(x.quote)&&/—|–|project|dissertation|society|club|network|coursework|university/i.test(x.quote)).map(x=>x.quote.split(/\s+[—–]\s+|,\s*|\s+\d{4}\b/)[0].trim()).filter(x=>x.length>=4&&x!==profile.name))];
+  const namedDetails=[...new Set(catalog.filter(x=>!/^\s*[-•]/.test(x.quote)&&/—|–|project|dissertation|society|club|network|coursework|university/i.test(x.quote)).map(x=>x.quote.split(/\s+[—–]\s+|,\s*|\s+\d{4}\b/)[0].trim()).filter(x=>x.length>=4&&x!==profile.name&&!/^(projects?|education|experience|skills|activities|interests|employment|work experience)$/i.test(x)&&x!==profile.university))];
   if(!namedDetails.length)namedDetails.push(...catalog.filter(x=>x.quote.trim().split(/\s+/).length>=6).slice(0,8).map(x=>x.quote.replace(/^\s*[-•]\s*/,'').split(/\s+/).slice(0,6).join(' ')));
   if(namedDetails.length){contract.properties.summaryDetail.enum=namedDetails;contract.properties.priorities.items.properties.detail.enum=namedDetails;contract.properties.competencies.items.properties.detail.enum=['',...namedDetails];}
   for(const [key,count] of Object.entries({applicationCriteria:6,competencies:7,priorities:3})){contract.properties[key].minItems=count;contract.properties[key].maxItems=count;}

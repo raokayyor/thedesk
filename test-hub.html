@@ -148,7 +148,7 @@ function mmss(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 
 function uniqueQuestions(qs){var seen={};return qs.filter(function(q){var key=q.question+JSON.stringify(q.table||null);if(seen[key])return false;seen[key]=true;return true})}
-function offer(){var id=new URLSearchParams(location.search).get("assessmentId");return '<section class="hub-offer"><div><p class="kicker">Your knowledge is one part of the application</p><h2>Know the answer. Show why you belong.</h2><p>Full Cycle connects your CV gaps and test results to a repaired CV draft, interview preparation and a personal study plan, with two rechecks in 30 days.</p></div><a href="/fullcycle.html'+(id?"?id="+encodeURIComponent(id):"")+'">Explore Full Cycle — £79 →</a></section>'}
+function offer(){var id=new URLSearchParams(location.search).get("assessmentId");var href=id?'/result-final-design.html?id='+encodeURIComponent(id)+'#full-cycle-offer':'/fullcycle-amelia.html';return '<section class="hub-offer"><div><p class="kicker">Your knowledge is one part of the application</p><h2>Know the answer. Show why you belong.</h2><p>Full Cycle connects your CV gaps and test results to a repaired CV draft, interview preparation and a personal study plan, with two rechecks in 30 days.</p></div><a href="'+href+'">'+(id?'Get your repair plan — £79 →':'See what Full Cycle adds — £79 →')+'</a></section>'}
 function pool(){
   var p=S.type==="numerical"?DATA.numerical:DATA.technical.filter(function(q){return q.route===S.route||q.route==="commercial_general"});
   if(S.topic!=="all")p=p.filter(function(q){return q.topic===S.topic});
@@ -176,11 +176,12 @@ function seg(name,items){
 function renderSetup(){
   clearInterval(tick);
   var topics=topicsFor();
-  if(S.topic!=="all"&&topics.indexOf(S.topic)<0)S.topic="all";
+  var unavailable=S.topic!=="all"&&topics.indexOf(S.topic)<0;
+  if(unavailable)S.topic="all";
   var hist=store("th_history")||[];
   var techCount=DATA.technical.length,numCount=DATA.numerical.length;
   app.innerHTML=
-   contextHtml()+'<p class="kicker">Prepare for your next application</p><h1>Close the gaps before the real test.</h1>'+
+   contextHtml()+(unavailable?'<p class="assessment-context">That topic is not available for this route. Choose a topic below or practise a mixed test.</p>':'')+'<p class="kicker">Prepare for your next application</p><h1>Close the gaps before the real test.</h1>'+
    '<p class="lede">Bank-style questions under time pressure. Every answer comes with the working and a plain-English explanation of the concept behind it.</p>'+
    '<div class="setup">'+
     '<div class="field"><span>Test</span>'+seg("type",[["numerical","Numerical reasoning","Data, percentages, ratios"],["technical","Technical knowledge","Concepts for your route"]])+'</div>'+
