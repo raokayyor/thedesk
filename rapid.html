@@ -281,6 +281,7 @@ async function runBatch(){
   if(!batch.length) generateBatch();
   const pending=batch.filter(x=>!x.result&&!x.error);
   if(!pending.length){document.getElementById('status').textContent='Nothing left to run.';return}
+  const session=await fetch('/api/assessment-session',{method:'POST'});if(!session.ok){document.getElementById('status').textContent='Could not initialise the test session. No assessments were started.';return;}
   const conc=Number(document.getElementById('concurrency').value);
   const btn=document.getElementById('runBtn');btn.disabled=true;
   let next=0,blocked=false;
@@ -301,7 +302,11 @@ function queueFailed(){
 }
 function openResult(i){
   const c=batch[i]; if(!c||!c.result)return;
-  window.open('/result-final-design.html?id='+encodeURIComponent(c.assessmentId),'_blank');
+  const result={...c.result,competencies:c.result.competencies.map(({nextStep,...skill})=>({...skill,...(skill.name==='Analytical ability'?{nextStep}:{} )}))};
+  const q=c.quiz||{},quiz={commercialCorrect:q.commercialCorrect??c.commercial,numericalCorrect:q.numericalCorrect??c.numerical,missed:q.missed||[]};
+  const profile=c.profile||{name:c.name,university:c.university,course:c.course,year:c.year,targetSector:c.division,programme:c.programme};
+  const saved={result,profile,quiz,fictionalLab:true};
+  window.open('/result-final-design.html?id='+encodeURIComponent(c.assessmentId)+'#lab='+encodeURIComponent(JSON.stringify(saved)),'_blank');
 }
 function showCV(i){const c=batch[i];document.getElementById('modalTitle').textContent=c.name+' — '+c.level;document.getElementById('modalBody').textContent=c.cv;document.getElementById('modal').classList.add('open')}
 function closeModal(){document.getElementById('modal').classList.remove('open')}
