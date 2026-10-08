@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import {assessAtsReadiness} from '../lib/ats-readiness.mjs';
 import {gradeAnswers,calculateScores,COMPETENCIES,publicAssessment} from '../lib/assessment-scoring.mjs';
 import {getEvidenceCatalog} from '../lib/full-cycle-contract.mjs';
-import {owner,newId,sql,initStore,ownedRecord,sameOrigin,apiFailure,reserveAssessmentAttempt} from '../lib/report-store.mjs';
+import {owner,newId,sql,initStore,ownedRecord,sameOrigin,apiFailure} from '../lib/report-store.mjs';
 export const maxDuration=300;
 const shape={applicationCriteria:[{name:'contribution',points:0,quotes:['Exact CV quote']}],competencies:[{name:'Analytical ability',level:0,reason:'One-line evidence explanation',quotes:['Exact CV quote'],nextStep:'One useful action'}],deskSummary:'Specific route-aware CV read in 70 words',priorities:[{title:'Candidate-specific priority',description:'One-line explanation'}],cvPreview:{original:'Exact contiguous CV quote',issue:'What is missing',structure:'Action and analysis structure with bracketed gaps for unconfirmed facts'}};
 function schema(v){if(Array.isArray(v))return{type:'array',items:schema(v[0])};if(v&&typeof v==='object')return{type:'object',properties:Object.fromEntries(Object.entries(v).map(([k,x])=>[k,schema(x)])),required:Object.keys(v),additionalProperties:false};return{type:typeof v==='number'?'integer':'string'};}
@@ -19,8 +19,7 @@ export default async function handler(req,res){
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
   await initStore();const h=owner(req,res,true);
-  if(!await reserveAssessmentAttempt(req))return res.status(429).json({error:'Too many assessments from this connection. Please try again in an hour.'});
-  const recent=await sql().query("SELECT count(*)::int AS n FROM desk_assessments WHERE owner_hash=$1 AND created_at>now()-interval '1 hour'",[h]);if(recent[0].n>=5)return res.status(429).json({error:'Please wait before starting another assessment.'});
+  // Assessment quotas temporarily disabled for owner testing.
   const catalog=getEvidenceCatalog(cvText),ids=catalog.map(x=>x.id),contract=schema(shape);
   for(const [key,count] of Object.entries({applicationCriteria:6,competencies:7,priorities:3})){contract.properties[key].minItems=count;contract.properties[key].maxItems=count;}
   contract.properties.applicationCriteria.items.properties.name.enum=['contribution','analysis','outputs','roleRelevance','specificity','clarity'];
