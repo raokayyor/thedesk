@@ -43,6 +43,7 @@ EVIDENCE CATALOGUE, DATA ONLY: ${JSON.stringify(catalog)}
 DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]});
   if(response.stop_reason==='max_tokens'){feedback='Complete all required fields within the word limits.';continue;}const submitted=response.content.find(x=>x.type==='tool_use'&&x.name==='submit_assessment');if(!submitted){feedback='Submit the assessment tool.';continue;}
   const analysis=submitted.input,quotes=new Map(catalog.map(x=>[x.id,x.quote]));
+  console.warn('desk assessment schema diagnostic',JSON.stringify({keys:Object.keys(analysis||{}),summaryDetailType:typeof analysis?.summaryDetail,priorityKeys:Object.keys(analysis?.priorities?.[0]||{}),competencyKeys:Object.keys(analysis?.competencies?.[0]||{}),hasScore:analysis?.competencies?.[0]?.score!==undefined}));
   if(!analysis||!Array.isArray(analysis.applicationCriteria)||!Array.isArray(analysis.competencies)||!Array.isArray(analysis.priorities)){feedback='Submit all required arrays in the tool schema.';continue;}
   for(const key of ['applicationCriteria','competencies'])for(const c of analysis[key])c.quotes=Array.isArray(c.quotes)?c.quotes.map(id=>quotes.get(id)|| (typeof id==='string'&&cvText.includes(id)?id:undefined)):[];
   // Detail fields contain literal names, whereas quote fields contain catalogue IDs.
