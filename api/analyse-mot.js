@@ -50,7 +50,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]});
   analysis.cvPreview=anchoredCvPreview(analysis.cvPreview,cvText);
   const errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
-  if(errors.length){feedback=errors.join(' ');result=null;continue;}
+  if(errors.length){feedback=errors.join(' ');console.warn('desk assessment quality retry',JSON.stringify({attempt:attempt+1,errors}));result=null;continue;}
   break;
   }
   if(!result)throw new Error('Assessment quality checks failed. Please retry.');
