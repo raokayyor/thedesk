@@ -10,7 +10,9 @@ async function submitAssessment(){
  if(!document.getElementById('processingConsent').checked){status.textContent='Confirm processing consent on the CV step.';return;}
  const value=id=>document.getElementById(id)?.value.trim()||'';
  const profile={name:value('name'),university:value('uni'),course:value('course'),year:value('year'),grade:value('grade'),targetSector:value('sector1'),targetDivision:value('sector1'),programme:value('programme'),targetFirm:value('targetFirm')};
+ if(!window.routeQuizReady||!selectedBankId){status.textContent="Complete the test for your chosen route first.";return;}
  const answers={commercial:Array.from({length:5},(_,i)=>Number(document.querySelector(`input[name="c${i}"]:checked`)?.value??-1)),numerical:Array.from({length:5},(_,i)=>Number(document.querySelector(`input[name="n${i}"]:checked`)?.value??-1))};
  btn.disabled=true;btn.textContent='Assessing your application…';status.textContent='Checking your evidence, ATS readiness and test answers. This may take a minute.';
- try{const r=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,consent:true,cv:{text:value('cvText')},recheckOf:new URLSearchParams(location.search).get('recheck')||undefined})});const j=await r.json();if(!r.ok||!j.success)throw new Error(j.error||'Assessment unavailable. Please retry.');location.href='/result-final-design.html?id='+encodeURIComponent(j.id);}catch(e){status.textContent=e.message;btn.disabled=false;btn.textContent='Generate my assessment →';}
+ try{const r=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,questionBankId:selectedBankId,consent:true,cv:{text:value('cvText')},recheckOf:new URLSearchParams(location.search).get('recheck')||undefined})});const j=await r.json();if(!r.ok||!j.success)throw new Error(j.error||'Assessment unavailable. Please retry.');location.href='/result-final-design.html?id='+encodeURIComponent(j.id);}catch(e){status.textContent=e.message;btn.disabled=false;btn.textContent='Generate my assessment →';}
 }
+
