@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Desk Test Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one working column (max 760px) under The Desk header; setup → question → results swap in place. */
+:root{
+  --bg:#faf8f3; --paper:#fffdfa; --soft:#f1ede6; --line:#dedad3;
+  --ink:#0d1620; --muted:#5a6572; --orange:#e8510f; --orange-soft:#fde9de;
+  --good:#1f6f5c; --good-soft:#e1f1ec; --bad:#b3361f; --bad-soft:#fbe5df;
+  --dark:#0f171b; --on-dark:#eef1f2;
+  --display:"EB Garamond",Georgia,"Times New Roman",serif;
+  --body:"Source Sans 3",Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10171c; --paper:#162028; --soft:#1c2730; --line:#2c3843;
+  --ink:#eef1f2; --muted:#a3adb5; --orange:#ff7a3d; --orange-soft:#3a2418;
+  --good:#5cc4a6; --good-soft:#15302a; --bad:#ff8a72; --bad-soft:#3a1c17;
+  --dark:#0a1014; --on-dark:#eef1f2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171c; --paper:#162028; --soft:#1c2730; --line:#2c3843;
+  --ink:#eef1f2; --muted:#a3adb5; --orange:#ff7a3d; --orange-soft:#3a2418;
+  --good:#5cc4a6; --good-soft:#15302a; --bad:#ff8a72; --bad-soft:#3a1c17;
+  --dark:#0a1014; --on-dark:#eef1f2; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--paper)}
+.logo{font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1;text-decoration:none;color:var(--ink)}
+.logo small{display:block;font-family:var(--body);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.top .tag{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+
+main{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin:0 0 6px}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,38px);line-height:1.15}
+h2{font-size:24px;line-height:1.25}
+.lede{color:var(--muted);max-width:60ch;margin:10px 0 0}
+
+/* setup */
+.setup{display:grid;gap:22px;margin-top:26px}
+.field{display:grid;gap:8px}
+.field>span{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:10px 14px;cursor:pointer;font-weight:600;min-width:0}
+.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.seg button small{display:block;font-weight:400;font-size:13px;opacity:.75}
+select{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:10px 12px;max-width:100%}
+.stats{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.start{justify-self:start;border:0;background:var(--orange);color:#fff;font-weight:700;font-size:17px;padding:13px 26px;border-radius:6px;cursor:pointer}
+.start:hover{filter:brightness(.95)}
+.history{border-top:1px solid var(--line);padding-top:18px}
+.history ul{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.history li{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.history li b{color:var(--ink);font-weight:600}
+
+/* question */
+.qbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.qcount{font-size:14px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 9px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;padding:5px 10px;border-radius:6px;background:var(--soft)}
+.timer.over{background:var(--orange-soft);color:var(--orange)}
+.progress{height:4px;background:var(--soft);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.progress i{display:block;height:100%;background:var(--orange);transition:width .2s}
+.qtext{font-family:var(--display);font-size:21px;line-height:1.4;margin:0 0 18px}
+.tablewrap{overflow-x:auto;margin:0 0 18px}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px;min-width:260px;background:var(--paper)}
+caption{text-align:left;font-weight:700;font-size:13px;color:var(--muted);padding-bottom:6px}
+th,td{border:1px solid var(--line);padding:7px 12px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{background:var(--soft);font-weight:600}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:13px 14px;cursor:pointer;font-size:16px;font-variant-numeric:tabular-nums}
+.opt:hover:not(:disabled){border-color:var(--muted)}
+.opt .k{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--soft);font-weight:700;font-size:13px}
+.opt.sel{border-color:var(--ink)}
+.opt.sel .k{background:var(--ink);color:var(--bg)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{background:var(--good);color:var(--paper)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:var(--paper)}
+.opt:disabled{cursor:default}
+.calc{font-size:13px;color:var(--muted);margin-top:12px}
+
+.reveal{margin-top:20px;border-left:3px solid var(--orange);background:var(--paper);padding:16px 18px;border-radius:0 8px 8px 0;display:grid;gap:12px}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
+.reveal h3{font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.reveal ol{margin:0;padding-left:20px;font-variant-numeric:tabular-nums}
+.reveal p{margin:0}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:11px 18px;font-weight:600;cursor:pointer}
+.btn.primary{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.4;cursor:default}
+.dots{display:flex;flex-wrap:wrap;gap:5px;margin-top:18px}
+.dots button{width:28px;height:28px;border-radius:5px;border:1px solid var(--line);background:var(--paper);font-size:12px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.dots button.done{background:var(--soft)}
+.dots button.cur{border-color:var(--ink)}
+
+/* results */
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:14px 0 4px}
+.score b{font-family:var(--body);font-size:64px;font-weight:700;line-height:1;color:var(--orange);font-variant-numeric:tabular-nums}
+.score span{color:var(--muted);font-size:18px}
+.topics{display:grid;gap:10px;margin:22px 0}
+.trow{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:4px 12px;align-items:center;font-size:15px}
+.trow .bar{grid-column:1/-1;height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
+.trow .bar i{display:block;height:100%;background:var(--good)}
+.trow .bar i.low{background:var(--orange)}
+.trow em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.missed{display:grid;gap:10px;margin-top:10px}
+details{border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+summary{cursor:pointer;padding:12px 14px;font-weight:600;list-style-position:inside}
+details .reveal{margin:0 14px 14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.note{font-size:13px;color:var(--muted);margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.top{max-width:1130px;margin:auto;padding:22px 48px;background:transparent}.logo{font-weight:400;font-size:32px}.logo small{font-weight:400;font-size:10px;letter-spacing:0}.hub-nav{display:flex;gap:24px;align-items:center;font-size:14px}.hub-nav a{color:var(--ink);text-decoration:none}.hub-nav a:last-child{background:var(--dark);color:white;border-radius:999px;padding:12px 18px;font-weight:600}main{max-width:1030px;padding:40px 30px 70px}.setup{border:1px solid var(--line);border-radius:18px;padding:28px;background:var(--paper)}.seg button{border-radius:10px}.start,.btn{border-radius:8px}.qtext{font-size:30px;line-height:1.25}.opts{max-width:800px}.opt{border-radius:12px}.hub-offer{margin-top:30px;border:1px solid #ffc6a8;border-radius:16px;padding:24px;background:var(--orange-soft);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}.hub-offer p{margin:10px 0;font-size:15px;color:var(--muted)}.hub-offer h2{font-size:27px}.hub-offer a{display:inline-block;background:var(--orange);color:#fff;border-radius:8px;padding:12px 20px;text-decoration:none;font-weight:600;white-space:nowrap}.hub-footer{max-width:970px;margin:0 auto 24px;border-radius:18px;padding:24px 30px;background:var(--dark);color:#bbc8ce;font-size:13px}.hub-footer a{color:#fff}.assessment-context{padding:16px 20px;background:var(--soft);border-radius:12px;margin:0 0 24px;font-size:14px}.assessment-context a{color:var(--ink);font-weight:600}@media(max-width:650px){.top{padding:18px 20px;flex-wrap:wrap}.hub-nav{gap:16px;flex-wrap:wrap;font-size:13px}.hub-nav a:last-child{padding:9px 12px}main{padding:28px 20px 48px}.setup{padding:20px}.qtext{font-size:25px}.hub-offer{grid-template-columns:1fr}.hub-footer{margin:0 20px 20px}.score b{font-size:52px}}</style>
+
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="/">The Desk<small>Finance careers. Done properly.</small></a>
+  <nav class="hub-nav" aria-label="Main navigation"><a href="/assessment-start.html">Assess</a><a href="/test-hub.html" aria-current="page">Learn</a><a href="/fullcycle.html">Explore Full Cycle — £79</a></nav>
+</header>
+<main id="app"><p class="lede">Loading questions…</p></main><footer class="hub-footer">The Desk · Finance careers. Done properly.<p>Practice results help you choose what to work on. They are separate from your application readiness score.</p><a href="/assessment-start.html">Assess your application →</a></footer>
+
+<script>
+(function(){
+"use strict";
+var ROUTES=[["accounting_audit","Accounting / Audit"],["investment_banking","Investment Banking"],["asset_management","Asset Management"],["markets","Sales & Trading / Markets"]];
+var DATA={numerical:[],technical:[]};
+var S={type:"numerical",route:"accounting_audit",len:10,mode:"practice",topic:"all"};
+var T=null; // current test
+var app=document.getElementById("app");
+var tick=null;var assessmentContext=null;
+function contextHtml(){if(!assessmentContext)return "";return '<div class="assessment-context">Practising for your '+esc(assessmentContext.profile.targetSector)+' application · <a href="/result-final-design.html?id='+encodeURIComponent(assessmentContext.id)+'">Return to your assessment result →</a></div>'}
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function mmss(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function uniqueQuestions(qs){var seen={};return qs.filter(function(q){var key=q.question+JSON.stringify(q.table||null);if(seen[key])return false;seen[key]=true;return true})}
+function offer(){var id=new URLSearchParams(location.search).get("assessmentId");return '<section class="hub-offer"><div><p class="kicker">Your knowledge is one part of the application</p><h2>Know the answer. Show why you belong.</h2><p>Full Cycle connects your CV gaps and test results to a repaired CV draft, interview preparation and a personal study plan, with two rechecks in 30 days.</p></div><a href="/fullcycle.html'+(id?"?id="+encodeURIComponent(id):"")+'">Explore Full Cycle — £79 →</a></section>'}
+function pool(){
+  var p=S.type==="numerical"?DATA.numerical:DATA.technical.filter(function(q){return q.route===S.route||q.route==="commercial_general"});
+  if(S.topic!=="all")p=p.filter(function(q){return q.topic===S.topic});
+  return uniqueQuestions(p);
+}
+function topicsFor(){
+  var p=S.type==="numerical"?DATA.numerical:DATA.technical.filter(function(q){return q.route===S.route||q.route==="commercial_general"});
+  var seen={};p.forEach(function(q){seen[q.topic]=(seen[q.topic]||0)+1});
+  return Object.keys(seen).sort();
+}
+// Draw a varied set: spread across topics before repeating one.
+function draw(p,n,onlyTopics){
+  if(onlyTopics)p=p.filter(function(q){return onlyTopics.indexOf(q.topic)>-1});
+  var by={};shuffle(p.slice()).forEach(function(q){(by[q.topic]=by[q.topic]||[]).push(q)});
+  var keys=shuffle(Object.keys(by)),out=[],i=0;
+  while(out.length<n&&keys.length){var k=keys[i%keys.length];var q=by[k].pop();if(q)out.push(q);else{keys.splice(i%keys.length,1);continue}i++}
+  return out;
+}
+
+/* ---------- setup ---------- */
+function seg(name,items){
+  return '<div class="seg" role="group">'+items.map(function(it){
+    return '<button type="button" data-set="'+name+'" data-val="'+it[0]+'" aria-pressed="'+(String(S[name])===String(it[0]))+'">'+esc(it[1])+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</button>'}).join("")+'</div>';
+}
+function renderSetup(){
+  clearInterval(tick);
+  var topics=topicsFor();
+  if(S.topic!=="all"&&topics.indexOf(S.topic)<0)S.topic="all";
+  var hist=store("th_history")||[];
+  var techCount=DATA.technical.length,numCount=DATA.numerical.length;
+  app.innerHTML=
+   contextHtml()+'<p class="kicker">Prepare for your next application</p><h1>Close the gaps before the real test.</h1>'+
+   '<p class="lede">Bank-style questions under time pressure. Every answer comes with the working and a plain-English explanation of the concept behind it.</p>'+
+   '<div class="setup">'+
+    '<div class="field"><span>Test</span>'+seg("type",[["numerical","Numerical reasoning","Data, percentages, ratios"],["technical","Technical knowledge","Concepts for your route"]])+'</div>'+
+    (S.type==="technical"?'<div class="field"><span>Route</span>'+seg("route",ROUTES)+'</div>':'')+
+    '<div class="field"><label for="topic"><span style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Focus</span></label>'+
+     '<select id="topic"><option value="all">All topics (mixed)</option>'+topics.map(function(t){return '<option'+(t===S.topic?' selected':'')+'>'+esc(t)+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><span>Length</span>'+seg("len",[[10,"10 questions"],[20,"20 questions"],[30,"30 questions"]])+'</div>'+
+    '<div class="field"><span>Mode</span>'+seg("mode",[["practice","Practice","See the answer after each question"],["timed","Timed test","Answers at the end, like the real thing"]])+'</div>'+
+    '<button class="start" id="go" type="button">Start '+(S.mode==="timed"?"timed test":"practice")+' →</button>'+
+    '<p class="stats">'+numCount.toLocaleString()+' numerical and '+techCount.toLocaleString()+' technical questions in the bank.</p>'+
+    (hist.length?'<div class="history"><span class="kicker" style="color:var(--muted)">Your recent tests</span><ul>'+hist.slice(0,5).map(function(h){
+      return '<li><span>'+esc(h.label)+'</span><b>'+h.score+'/'+h.n+' · '+Math.round(h.score/h.n*100)+'%</b></li>'}).join("")+'</ul></div>':'')+
+   '</div>'+offer();
+  app.querySelectorAll("[data-set]").forEach(function(b){b.onclick=function(){var k=b.dataset.set,v=b.dataset.val;S[k]=(k==="len")?+v:v;if(k==="type"||k==="route")S.topic="all";renderSetup()}});
+  document.getElementById("topic").onchange=function(e){S.topic=e.target.value};
+  document.getElementById("go").onclick=function(){start()};
+}
+
+/* ---------- test ---------- */
+function start(onlyTopics){
+  var qs=draw(pool(),S.len,onlyTopics);
+  if(!qs.length){app.insertAdjacentHTML("beforeend",'<p class="lede">No questions match that focus yet. Choose "All topics".</p>');return}
+  var total=qs.reduce(function(a,q){return a+(q.timeSec||60)},0);
+  T={qs:qs,i:0,ans:qs.map(function(){return null}),started:Date.now(),qStarted:Date.now(),limit:S.mode==="timed"?total:null,mode:S.mode,
+     label:(S.type==="numerical"?"Numerical":ROUTES.filter(function(r){return r[0]===S.route})[0][1])+(S.topic!=="all"?" · "+S.topic:"")+" · "+(S.mode==="timed"?"timed":"practice")};
+  renderQ();
+  clearInterval(tick);tick=setInterval(updTimer,500);
+}
+function updTimer(){
+  var el=document.getElementById("timer");if(!el||!T)return;
+  if(T.mode==="timed"){var left=T.limit-(Date.now()-T.started)/1000;el.textContent=mmss(left)+" left";el.classList.toggle("over",left<60);if(left<=0)finish()}
+  else{var q=T.qs[T.i],used=(Date.now()-T.qStarted)/1000,guide=q.timeSec||60;el.textContent=mmss(used)+" / "+mmss(guide);el.classList.toggle("over",used>guide)}
+}
+function tableHtml(t){
+  return '<div class="tablewrap"><table><caption>'+esc(t.title)+'</caption><thead><tr>'+t.columns.map(function(c){return '<th>'+esc(c)+'</th>'}).join("")+
+   '</tr></thead><tbody>'+t.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+esc(typeof c==="number"?c.toLocaleString():c)+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div>';
+}
+function revealHtml(q,picked){
+  var ok=picked===q.answer;
+  return '<div class="reveal">'+
+    (picked===undefined?'':'<p class="verdict '+(ok?'ok':'no')+'">'+(picked===null?'Not answered. ':ok?'Correct. ':'Not quite. ')+'The answer is '+esc(q.options[q.answer])+'.</p>')+
+    (q.working&&q.working.length?'<div><h3>Working</h3><ol>'+q.working.map(function(w){return '<li>'+esc(w)+'</li>'}).join("")+'</ol></div>':'')+
+    '<div><h3>The concept</h3><p>'+esc(q.concept)+'</p></div>'+
+    (q.trap?'<div><h3>Watch out for</h3><p>'+esc(q.trap)+'</p></div>':'')+
+  '</div>';
+}
+function renderQ(){
+  var q=T.qs[T.i],n=T.qs.length,picked=T.ans[T.i],practiceDone=T.mode==="practice"&&picked!==null;
+  var cls=function(j){
+    if(practiceDone){if(j===q.answer)return" right";if(j===picked)return" wrong";return""}
+    return picked===j?" sel":"";
+  };
+  app.innerHTML=
+   '<div class="qbar"><span class="qcount">Question '+(T.i+1)+' of '+n+'</span><span class="chip">'+esc(q.topic)+'</span><span class="timer" id="timer"></span></div>'+
+   '<div class="progress"><i style="width:'+((T.i)/n*100)+'%"></i></div>'+
+   (q.table?tableHtml(q.table):'')+
+   '<p class="qtext">'+esc(q.question)+'</p>'+
+   '<div class="opts">'+q.options.map(function(o,j){return '<button type="button" class="opt'+cls(j)+'" data-j="'+j+'"'+(practiceDone?' disabled':'')+'><span class="k">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span></button>'}).join("")+'</div>'+
+   (q.section==="numerical"?'<p class="calc">A calculator is allowed, as in most bank numerical tests.</p>':'')+
+   (practiceDone?revealHtml(q,picked):'')+
+   '<div class="nav">'+
+    (T.mode==="timed"?'<button class="btn" id="prev" type="button"'+(T.i===0?' disabled':'')+'>← Previous</button>':'<button class="btn" id="quit" type="button">End test</button>')+
+    (T.i<n-1?'<button class="btn primary" id="next" type="button"'+(T.mode==="practice"&&!practiceDone?' disabled':'')+'>Next question →</button>'
+            :'<button class="btn primary" id="fin" type="button"'+(T.mode==="practice"&&!practiceDone?' disabled':'')+'>See results →</button>')+
+   '</div>'+
+   (T.mode==="timed"?'<div class="dots" aria-label="Jump to question">'+T.qs.map(function(_,k){return '<button type="button" data-k="'+k+'" class="'+(T.ans[k]!==null?'done':'')+(k===T.i?' cur':'')+'">'+(k+1)+'</button>'}).join("")+'</div>':'');
+  app.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){T.ans[T.i]=+b.dataset.j;renderQ()}});
+  var nx=document.getElementById("next");if(nx)nx.onclick=function(){T.i++;T.qStarted=Date.now();renderQ()};
+  var pv=document.getElementById("prev");if(pv)pv.onclick=function(){T.i--;renderQ()};
+  var fn=document.getElementById("fin");if(fn)fn.onclick=finish;
+  var qt=document.getElementById("quit");if(qt)qt.onclick=finish;
+  app.querySelectorAll(".dots button").forEach(function(b){b.onclick=function(){T.i=+b.dataset.k;renderQ()}});
+  updTimer();window.scrollTo(0,0);
+}
+function finish(){
+  clearInterval(tick);
+  var answered=T.mode==="practice"?T.qs.filter(function(_,k){return T.ans[k]!==null}).length:T.qs.length;
+  var qs=T.qs.slice(0,answered||T.qs.length);
+  var score=qs.filter(function(q,k){return T.ans[k]===q.answer}).length;
+  var secs=(Date.now()-T.started)/1000;
+  var by={};qs.forEach(function(q,k){var t=by[q.topic]=by[q.topic]||{n:0,c:0};t.n++;if(T.ans[k]===q.answer)t.c++});
+  var missed=qs.map(function(q,k){return{q:q,k:k}}).filter(function(x){return T.ans[x.k]!==x.q.answer});
+  var hist=store("th_history")||[];hist.unshift({label:T.label,score:score,n:qs.length,at:Date.now()});store("th_history",hist.slice(0,20));
+  var pctv=qs.length?Math.round(score/qs.length*100):0;
+  app.innerHTML=
+   '<p class="kicker">Your result</p><h1>'+esc(T.label)+'</h1>'+
+   '<div class="score"><b>'+score+'/'+qs.length+'</b><span>'+pctv+'% · '+mmss(secs)+' taken</span></div>'+
+   '<p class="lede">'+(pctv>=80?'Strong. Push the difficulty with a timed test or a new focus.':pctv>=60?'Solid base. The topics in orange are where marks are leaking.':'These are the gaps to close before a real test. Work through the explanations below, then practise your missed topics.')+'</p>'+
+   '<div class="topics">'+Object.keys(by).sort(function(a,b){return by[a].c/by[a].n-by[b].c/by[b].n}).map(function(t){var r=by[t].c/by[t].n;
+     return '<div class="trow"><span>'+esc(t)+'</span><em>'+by[t].c+'/'+by[t].n+'</em><div class="bar"><i class="'+(r<.7?'low':'')+'" style="width:'+Math.max(4,r*100)+'%"></i></div></div>'}).join("")+'</div>'+
+   (missed.length?'<h2>What you missed</h2><div class="missed">'+missed.map(function(x){
+      return '<details><summary>'+esc(x.q.question)+'</summary>'+(x.q.table?'<div style="margin:0 14px">'+tableHtml(x.q.table)+'</div>':'')+revealHtml(x.q,T.ans[x.k])+'</details>'}).join("")+'</div>':'')+
+   '<div class="actions">'+(missed.length?'<button class="btn primary" id="again" type="button">Practise missed topics →</button>':'')+'<button class="btn" id="new" type="button">New test</button></div>'+
+   offer()+'<p class="note">Practice scores show where you are now. They are not a prediction of a bank\'s test result.</p>';
+  var ag=document.getElementById("again");if(ag)ag.onclick=function(){var tp=[];missed.forEach(function(x){if(tp.indexOf(x.q.topic)<0)tp.push(x.q.topic)});S.mode="practice";start(tp)};
+  document.getElementById("new").onclick=renderSetup;
+  window.scrollTo(0,0);
+}
+
+/* ---------- boot ---------- */
+function boot(d){
+  DATA=d;
+  var p=new URLSearchParams(location.search);
+  if(p.get("type"))S.type=p.get("type");
+  if(p.get("route"))S.route=p.get("route");
+  if(p.get("topic"))S.topic=p.get("topic");
+  if(!["numerical","technical"].includes(S.type))S.type="numerical";if(!ROUTES.some(function(r){return r[0]===S.route}))S.route="accounting_audit";
+  renderSetup();
+  var id=p.get("assessmentId");if(id&&/^[a-f0-9]{40}$/.test(id)){fetch('/api/assessment-result?id='+encodeURIComponent(id)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(result){assessmentContext={id:id,profile:result.profile};var routes={'Accounting / Audit':'accounting_audit','Investment Banking / IBD':'investment_banking','Asset Management / Investing':'asset_management','Sales & Trading / Markets':'markets'};if(routes[result.profile.targetSector])S.route=routes[result.profile.targetSector];renderSetup()}).catch(function(){})}
+}
+if(window.TH_DATA){boot(window.TH_DATA)}
+else{Promise.all(["data/numerical.json","data/technical.json"].map(function(u){return fetch(u).then(function(r){if(!r.ok)throw 0;return r.json()})}))
+  .then(function(r){boot({numerical:r[0],technical:r[1]})})
+  .catch(function(){app.innerHTML='<p class="lede">The question bank could not be loaded. Refresh the page to try again.</p>'})}
+})();
+</script>
+
+</body>
+</html>
