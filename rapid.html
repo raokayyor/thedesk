@@ -57,7 +57,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
     <div class="grid">
       <div><label>Batch size</label><select id="count"><option selected>1</option><option>10</option><option>25</option><option>50</option><option>100</option><option>200</option></select></div>
       <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
-      <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option>Corporate Banking</option><option>Accounting / Audit</option><option>Consulting / Advisory</option><option>General Finance</option></select></div>
+      <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option disabled>Corporate Banking — bank pending</option><option>Accounting / Audit</option><option disabled>Consulting / Advisory — bank pending</option><option>General Finance</option></select></div>
       <div><label>Programme / stage</label><select id="programme"><option value="mixed">Mixed</option><option>Spring Week / Insight Programme</option><option>Summer Internship</option><option>Industrial Placement / Year in Industry</option><option>Graduate Programme</option><option>Off-cycle Internship</option></select></div>
       <div><label>Concurrency</label><select id="concurrency"><option>1</option><option selected>2</option><option>3</option></select></div>
     </div>
@@ -98,7 +98,8 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
 const U=[
 ['University of Oxford','PPE'],['University of Cambridge','Economics'],['LSE','Economics'],['University of Warwick','Economics'],['University College London','Economics'],['University of Bristol','Economics and Finance'],['University of Bath','Accounting and Finance'],['Durham University','Economics'],['University of Nottingham','Finance, Accounting and Management'],['University of Manchester','Economics'],['University of Leeds','Economics and Finance'],['University of Exeter','Economics'],['University of Birmingham','Economics'],['University of Reading','Finance'],['University of York','Economics'],['University of Southampton','Economics'],['University of Sheffield','Economics'],['University of Liverpool','Business Economics'],['University of Sussex','Economics'],['University of Kent','Economics']
 ];
-const DIVS=['Investment Banking / IBD','Sales & Trading / Markets','Asset Management / Investing','Corporate Banking','Accounting / Audit','Consulting / Advisory','General Finance'];
+const DIVS=['Investment Banking / IBD','Sales & Trading / Markets','Asset Management / Investing','Accounting / Audit','General Finance'];
+const routeBanks=import('/lib/question-banks.mjs');
 const PROGS=['Spring Week / Insight Programme','Summer Internship','Industrial Placement / Year in Industry','Graduate Programme','Off-cycle Internship'];
 const GRADES=['First Class (predicted)','2:1 (predicted)','2:1','2:2 (predicted)'];
 const YEARS=['1st Year','2nd Year','Final Year','Graduate'];
@@ -263,12 +264,13 @@ function stats(){
 async function assess(c){
   c.state='running'; saveBatch();render();
   const profile={name:c.name,university:c.university,course:c.course,year:c.year,grade:c.grade,targetSector:c.division,targetSector2:c.division2,targetSector3:c.division3,targetDivision:c.division,programme:c.programme,track:c.division};
-  const correct={commercial:[0,0,0,0,0],numerical:[1,2,2,1,1]};
-  const makeAnswers=(group,count)=>correct[group].map((answer,i)=>i<count?answer:(answer+1)%4);
-  const answers={commercial:makeAnswers('commercial',c.commercial),numerical:makeAnswers('numerical',c.numerical)};
   const t=Date.now();
   try{
-    const resp=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,consent:true,cv:{fileName:'synthetic.txt',text:c.cv}})});
+    const {questionsForRoute}=await routeBanks;
+    const bank=questionsForRoute(profile.targetSector);
+    const makeAnswers=(group,count)=>bank[group].map((question,i)=>i<count?question.answer:(question.answer+1)%question.options.length);
+    const answers={commercial:makeAnswers('commercial',c.commercial),numerical:makeAnswers('numerical',c.numerical)};
+    const resp=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,questionBankId:bank.id,consent:true,cv:{fileName:'synthetic.txt',text:c.cv}})});
     const txt=await resp.text(); let data;
     try{data=JSON.parse(txt)}catch(e){throw new Error('Non-JSON response ('+resp.status+')')}
     if(resp.status===429)c.rateLimited=true;
