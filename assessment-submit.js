@@ -15,7 +15,7 @@ async function submitAssessment(){
  if(answers.commercial.concat(answers.numerical).some(a=>a<0||a>3)){status.textContent='Answer all ten test questions before continuing.';return;}
  if(!value('cvText')){status.textContent='Add your CV before continuing.';return;}
  btn.disabled=true;btn.textContent='Assessing your application…';status.textContent='Checking your evidence, ATS readiness and test answers. This may take a minute.';
- window.assessmentLoading.show();
+ window.assessmentLoading.show(profile.targetSector);
  try{const r=await fetch('/api/analyse-mot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile,answers,questionBankId:selectedBankId,consent:true,cv:{text:value('cvText')},recheckOf:new URLSearchParams(location.search).get('recheck')||undefined})});const j=await r.json();if(!r.ok||!j.success)throw new Error(j.error||'Assessment unavailable. Please retry.');window.assessmentLoading.complete();location.href='/result-final-design.html?id='+encodeURIComponent(j.id);}catch(e){window.assessmentLoading.hide();status.textContent=e.message;btn.disabled=false;btn.textContent='Generate my assessment →';}
 }
 
