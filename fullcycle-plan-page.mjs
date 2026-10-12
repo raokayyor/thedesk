@@ -1,0 +1,14 @@
+import {fullCyclePlan} from '/lib/fullcycle-plan.mjs';
+const params=new URLSearchParams(location.search),sample=params.get('sample'),id=params.get('id');
+const set=(sel,text)=>{document.querySelector(sel).textContent=text;};
+let data,preview=false;
+try{
+ if(['elliot','emily','amelia'].includes(sample)){const response=await fetch('/samples/'+(sample==='amelia'?'amelia-report':sample+'-report')+'.json');if(!response.ok)throw Error('Sample unavailable.');data=await response.json();preview=true;}
+ else {const lab=new URLSearchParams(location.hash.slice(1)).get('lab');if(lab){const parsed=JSON.parse(lab);if(parsed.fictionalLab===true&&parsed.result&&parsed.profile){data=parsed;preview=true;}}if(!data){if(!id||!/^[a-f0-9]{48}$/.test(id))throw Error('Open this plan from your assessment result.');const response=await fetch('/api/assessment-result?id='+encodeURIComponent(id));data=await response.json();if(!response.ok)throw Error(data.error||'Result unavailable in this browser.');}}
+ const plan=fullCyclePlan(data.result);set('#title',plan.title);set('#intro',plan.intro);set('#personal',data.profile.name+' · '+data.profile.targetSector+' · Your plan focuses first on '+({application:'CV evidence',numerical:'numerical preparation',technical:'commercial and technical preparation',competency:'competency examples',ats:'CV screening readiness'}[plan.focus]||'your preparation')+'.');
+ for(const text of plan.items){const li=document.createElement('li');li.textContent=text;document.querySelector('#benefits').append(li);}
+ document.querySelector('#back').href='/result-final-design.html'+(sample?'?sample='+encodeURIComponent(sample):'?id='+encodeURIComponent(id)+location.hash);
+ document.querySelector('#previewNotice').hidden=!preview;
+ for(const button of document.querySelectorAll('.checkout')){if(preview){button.textContent='Start your own free assessment →';button.onclick=()=>location.href='/assessment-start.html';}else if(data.paid){button.textContent='Open your unlocked Full Cycle report →';button.onclick=()=>location.href='/fullcycle.html?id='+encodeURIComponent(id);}else button.onclick=async()=>{const buttons=[...document.querySelectorAll('.checkout')];buttons.forEach(b=>b.disabled=true);document.querySelectorAll('.status').forEach(e=>e.textContent='Opening secure checkout…');try{const response=await fetch('/api/start-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});const checkout=await response.json();if(!response.ok||!checkout.url)throw Error(checkout.error||'Checkout unavailable. Please retry.');location.href=checkout.url;}catch(error){buttons.forEach(b=>b.disabled=false);document.querySelectorAll('.status').forEach(e=>e.textContent=error.message);}};}
+ document.querySelector('#content').hidden=false;
+}catch(error){set('#error',error.message);document.querySelector('#error').hidden=false;}finally{document.querySelector('#loading').hidden=true;}
