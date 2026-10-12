@@ -8,6 +8,16 @@ try{
  const plan=fullCyclePlan(data.result);set('#title',plan.title);set('#intro',plan.intro);set('#personal',data.profile.name+' · '+data.profile.targetSector+' · Your plan focuses first on '+({application:'CV evidence',numerical:'numerical preparation',technical:'commercial and technical preparation',competency:'competency examples',ats:'CV screening readiness'}[plan.focus]||'your preparation')+'.');
  const path=document.createElement('p');path.className='muted';path.textContent=plan.path.join(' → ');document.querySelector('#intro').after(path);
  for(const text of plan.items){const li=document.createElement('li');li.textContent=text;document.querySelector('#benefits').append(li);}
+
+ set('#next-title',data.profile.name.split(' ')[0]+'’s next steps');
+ const addStep=(title,body,quote)=>{const card=document.createElement('article');card.className='card';const h=document.createElement('h3');h.textContent=title;const p=document.createElement('p');p.textContent=body;card.append(h,p);if(quote){const q=document.createElement('blockquote');q.textContent=quote;card.append(q);}document.querySelector('#next-steps').append(card);};
+ const priority=data.result.priorities?.[0];
+ addStep('01 · Start with your evidence',priority?.description||'Work through your strongest example and make your individual contribution clear.',data.result.cvPreview?.original);
+ const missed=data.quiz?.missed||[];
+ const topics=[...new Set(missed.map(m=>m.topic))].slice(0,3);
+ const weakest=[...(data.result.competencies||[])].sort((a,b)=>a.score-b.score)[0];
+ addStep('02 · Prepare for '+data.profile.targetSector,topics.length?'Begin with '+topics.join(', ')+'. Use worked explanations, then practise under time pressure.':weakest?'Practise explaining your '+weakest.name.toLowerCase()+' evidence in interview. Use a specific example from your CV.':'Practise questions from your CV and explain your decisions clearly.');
+ addStep('03 · Recheck your readiness','Update your CV after working through the feedback, then use your two rechecks within 30 days. Your result will reflect the evidence and test answers you submit.');
  document.querySelector('#back').href='/result-final-design.html'+(sample?'?sample='+encodeURIComponent(sample):'?id='+encodeURIComponent(id)+location.hash);
  document.querySelector('#previewNotice').hidden=!preview;
  if(preview){document.querySelector('#previewNotice').textContent='Design preview · Illustrative practitioner photos · Payment is disabled for this sample.';const photos=['https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces','https://images.unsplash.com/photo-1560250097-0b93528c311a?w=120&h=120&fit=crop&crop=faces','https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces'];document.querySelectorAll('.practitioner-avatar').forEach((el,i)=>{const img=document.createElement('img');img.src=photos[i];img.alt='';el.replaceChildren(img);});}
