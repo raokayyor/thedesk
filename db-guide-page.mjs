@@ -22,3 +22,6 @@ mountProfileExample();
 
 import {mountGuideExtras} from './db-guide-extras.mjs';
 mountGuideExtras();
+
+import {mountDeskLayout} from './db-desk-layout.mjs';
+mountDeskLayout();
