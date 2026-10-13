@@ -25,3 +25,6 @@ mountGuideExtras();
 
 import {mountDeskLayout} from './db-desk-layout.mjs';
 mountDeskLayout();
+
+import {mountDbPractitioner} from './db-practitioner.mjs';
+mountDbPractitioner();
