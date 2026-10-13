@@ -1,0 +1,2 @@
+import {sql,sameOrigin,apiFailure} from '../lib/report-store.mjs';
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store');if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;const token=req.body?.token;if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token))return res.status(400).json({success:false,error:'This leave-list link is invalid.'});try{await sql().query('DELETE FROM desk_briefing_subscribers WHERE unsubscribe_token=$1',[token]);return res.json({success:true});}catch(e){return apiFailure(res,e);}}
