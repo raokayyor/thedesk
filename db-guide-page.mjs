@@ -19,3 +19,6 @@ document.getElementById('askForm').onsubmit=e=>{e.preventDefault();ask(document.
 
 import {mountProfileExample} from './db-profile-example.mjs';
 mountProfileExample();
+
+import {mountGuideExtras} from './db-guide-extras.mjs';
+mountGuideExtras();
