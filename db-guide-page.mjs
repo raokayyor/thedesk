@@ -3,7 +3,7 @@ import {DB_SOURCES,DB_PROGRAMMES,DB_ROLES,DB_INTERVIEW} from './data/db-guide.mj
 import {BANK_LOGOS} from './data/bank-logos.mjs';
 const params=new URLSearchParams(location.search),id=params.get('id'),sample=params.get('sample');
 const query=id&&/^[a-f0-9]{48}$/.test(id)?'?id='+encodeURIComponent(id):['emily','elliot','amelia'].includes(sample)?'?sample='+encodeURIComponent(sample):'';
-document.querySelectorAll('[data-context]').forEach(a=>a.href=a.getAttribute('href')+query+location.hash);document.querySelectorAll('[data-fullcycle]').forEach(a=>a.href=query?'/fullcycle-plan.html'+query+location.hash:'/assessment-start.html');document.getElementById('dbLogo').src=BANK_LOGOS['Deutsche Bank'];
+document.querySelectorAll('[data-context]').forEach(a=>a.href=a.getAttribute('href')+query+location.hash);document.querySelectorAll('[data-fullcycle]').forEach(a=>a.href=query?'/fullcycle-plan.html'+query+location.hash:'/assessment-start.html');document.getElementById('dbLogo').src='/assets/db-mark.svg';
 const create=(tag,text,cls)=>{const el=document.createElement(tag);if(text!=null)el.textContent=text;if(cls)el.className=cls;return el;};
 function link(text,url){const a=create('a',text);a.href=url;a.target='_blank';a.rel='noopener';return a;}
 const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
