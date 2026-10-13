@@ -139,7 +139,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   .count{margin-left:0;width:100%}
 }
 .tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
-</style>
+.prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n</style>
 
 </head>
 <body>
@@ -156,12 +156,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
     <div class="checked">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
     <div class="stats" id="stats"></div>
     <div class="insight" id="insight"></div>
-    <div class="mode" role="group" aria-label="View as">
-      <button type="button" id="mFree" aria-pressed="true">Free view</button>
-      <button type="button" id="mFc" aria-pressed="false">Preparation preview</button>
-    </div>
-    <div class="mode-note" id="modeNote">Browse deadlines and save applications. Preparation preview uses fictional examples, not your readiness score.</div>
-    <div id="strategy"></div><p class="storage-note">Your shortlist and application stages are saved on this browser only.</p><button class="btn export" id="exportList" type="button">Export my application list</button><p id="saveNotice" role="status" aria-live="polite"></p>
+<p class="storage-note">Your shortlist and application stages are saved on this browser only.</p><button class="btn export" id="exportList" type="button">Export my application list</button><p id="saveNotice" role="status" aria-live="polite"></p>
   </section>
 
   <div class="filters" role="group" aria-label="Filters">
@@ -418,24 +413,7 @@ function whenHtml(p){
   return'<div class="when"><b>Open</b><span>No deadline published'+(p.rolling?" · rolling":"")+'<br>Apply early</span></div>';
 }
 function lockHtml(p){
-  return'<div class="prep"><span class="lock"><b>Preparation preview:</b> example practice for '+esc(testPrep(p))+', video interview questions from your CV, and your “why '+esc(p.firm)+'” draft.</span><a href="#" data-unlock="1">Explore the preparation preview →</a></div>';
-}
-function fcHtml(p){
-  var sc=EX.byArea[p.area]||EX.overall, fx=EX.fixes[p.area]||EX.fixes["Multiple divisions"];
-  return'<div class="fc">'+
-   '<div><h4>Your readiness for this role</h4><div class="score">'+sc+'<small> /100</small></div><p style="margin-top:6px">'+(sc>=75?"Competitive. Focus on the interview.":sc>=65?"Borderline. Two fixes before you apply:":"Below benchmark. Fix these first:")+'</p><ol>'+fx.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol></div>'+
-   '<div><h4>Prepare for '+esc(p.firm)+'</h4><ul><li>Practice set: '+esc(testPrep(p))+'</li><li>Video interview: 10 questions your CV will trigger, timed</li><li>“Why '+esc(p.firm)+'?”: draft from your CV, gaps marked <span class="gap">[your reason]</span></li><li>Practitioner guidance: scope and availability to be confirmed</li></ul></div>'+
-   '<div><h4>Your countdown</h4><ol>'+plan(p).map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol></div>'+
-  '</div>';
-}
-function strategyHtml(){return MODE!=="fc"?"":'<div class="strategy"><div class="example">Fictional preparation example · '+esc(EX.name)+'</div><h3>Explore preparation for each programme</h3><p>The example scores below are illustrative. They are not firm-specific assessments of your CV, and no automated alerts are provided by this tracker.</p><a href="'+esc(fullCycleUrl)+'">Explore your Full Cycle preparation →</a></div>';}
-function setMode(m){
-  MODE=m;
-  document.getElementById("mFree").setAttribute("aria-pressed",String(m==="free"));
-  document.getElementById("mFc").setAttribute("aria-pressed",String(m==="fc"));
-  document.getElementById("modeNote").textContent=m==="free"?"Browse deadlines and save applications. Preparation preview uses fictional examples.":"Preview using our example student, "+EX.name+". These scores and fixes are illustrative only; they are not calculated for you or endorsed by a firm.";
-  document.getElementById("strategy").innerHTML=strategyHtml();
-  render();
+ return '<div class="prep"><div class="lock"><b>Prepare for this application with Full Cycle.</b><br>Your rewritten CV, competency answer drafts, interview preparation, numerical and technical practice, and two readiness rechecks.</div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle — £79 →</a></div>';
 }
 function render(){
   var rows=cur().filter(function(p){
@@ -471,23 +449,23 @@ function render(){
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
       (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
-      (s==="open"&&p.entry==="open"?(MODE==="free"?lockHtml(p):fcHtml(p)):'')+'</article>';
+      (s==="open"&&p.entry==="open"?lockHtml(p):'')+'</article>';
   }).join("");
   L.querySelectorAll("button[data-k]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-k");if(mine[k])delete mine[k];else mine[k]={stage:"Shortlisted"};save();render()}});
   L.querySelectorAll("select[data-stage]").forEach(function(select){select.onchange=function(){mine[select.dataset.stage]={stage:select.value};save()}});
-  L.querySelectorAll("a[data-unlock]").forEach(function(a){a.onclick=function(e){e.preventDefault();setMode("fc");window.scrollTo({top:0,behavior:"smooth"})}});
+
 }
 function setSector(x){
   SECTOR=x;EX=EXS[x];
   document.getElementById("sBB").setAttribute("aria-pressed",String(x==="bb"));
   document.getElementById("sB4").setAttribute("aria-pressed",String(x==="big4"));
   fFirm.value="all";fDiv.value="all";
-  drawTop();setMode(MODE);
+  drawTop();render();
 }
 document.getElementById("sBB").onclick=function(){setSector("bb")};
 document.getElementById("sB4").onclick=function(){setSector("big4")};
-document.getElementById("mFree").onclick=function(){setMode("free")};
-document.getElementById("mFc").onclick=function(){setMode("fc")};
+
+
 [fFirm,fDiv,fStatus,fEntry,fMine].forEach(function(el){el.onchange=render});
 document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
 if(contextSample==="emily")setSector("big4");else{drawTop();render();}
