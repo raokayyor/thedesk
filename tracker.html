@@ -425,9 +425,11 @@ function prepItems(p){
  return items;
 }
 function roleTabsHtml(p,i){
+ if(p.firm==='Deutsche Bank')return '<div class="role-tabs"><a class="role-tab" href="/deutsche-bank.html#roles">What is this role?</a><a class="role-tab" href="/deutsche-bank.html#programmes">DB programme insights →</a></div>';
  return '<div class="role-tabs" role="group" aria-label="Upcoming programme guides"><button type="button" class="role-tab" disabled>What is this role? · Coming soon</button><button type="button" class="role-tab" disabled>'+esc(firmLabel(p))+' graduate programme insights · Coming soon</button></div>';
 }
 function lockHtml(p){
+ if(p.firm==='Deutsche Bank')return '<div class="prep"><div class="lock"><b>The Desk · DB interview guide</b><div class="prep-topics"><span>Why Deutsche Bank / why your division</span><span>Recorded-video interview practice</span><span>Ability tests and situational judgement</span></div><p class="prep-support">Programme dates, role insights, DB news and interview practice.</p></div><a href="/deutsche-bank.html#interviews">Explore the DB guide →</a></div>';
  return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+' with Full Cycle.</b><div class="prep-topics">'+prepItems(p).map(function(item){return '<span>'+esc(item)+'</span>'}).join("")+'</div><p class="prep-support">Alongside your CV rewrite, competency answer drafts and readiness rechecks.</p></div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle →</a></div>';
 }
 function render(){
