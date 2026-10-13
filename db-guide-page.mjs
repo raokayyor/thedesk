@@ -1,5 +1,5 @@
 import {mountDbNewsFeed} from './db-news-feed.mjs';
-import {DB_SOURCES,DB_PROGRAMMES,DB_ROLES,DB_INTERVIEW,answerAboutDb} from './data/db-guide.mjs';
+import {DB_SOURCES,DB_PROGRAMMES,DB_ROLES,DB_INTERVIEW} from './data/db-guide.mjs';
 import {BANK_LOGOS} from './data/bank-logos.mjs';
 const params=new URLSearchParams(location.search),id=params.get('id'),sample=params.get('sample');
 const query=id&&/^[a-f0-9]{48}$/.test(id)?'?id='+encodeURIComponent(id):['emily','elliot','amelia'].includes(sample)?'?sample='+encodeURIComponent(sample):'';
@@ -13,9 +13,6 @@ document.querySelectorAll('[data-programme]').forEach(b=>b.onclick=()=>renderPro
 const roleList=document.getElementById('roleList');for(const role of DB_ROLES){const article=create('article');article.id='role-'+role.id;article.append(create('h3',role.name),create('p',role.plain));const ul=create('ul');role.tasks.forEach(task=>ul.append(create('li',task)));article.append(ul,create('p',role.prep,'role-prep'),link('Read official programme details ↗',role.source));roleList.append(article);}
 const select=document.getElementById('interviewCategory');[...new Set(DB_INTERVIEW.map(q=>q.category))].forEach(c=>select.append(create('option',c)));function renderQuestions(){const list=document.getElementById('questionList');list.replaceChildren();DB_INTERVIEW.filter(q=>select.value==='All'||q.category===select.value).forEach(q=>{const details=create('details'),summary=create('summary');summary.append(create('span',q.category,'category'),document.createTextNode(q.question));details.append(summary,create('p',q.hint));list.append(details);});}select.onchange=renderQuestions;renderQuestions();
 mountDbNewsFeed();
-
-function ask(question){const box=document.getElementById('askAnswer');box.replaceChildren();box.hidden=false;const answers=answerAboutDb(question);if(!answers.length){box.append(create('h3','Not confirmed in this guide'),create('p','I cannot confirm that from this guide. Check DB’s official programme information or ask a more specific question about dates, roles or preparation.'),link('Open DB’s application FAQ ↗',DB_SOURCES.faq));return;}for(const answer of answers){const article=create('article');article.append(create('h3',answer.title),create('p',answer.answer),link('Check the official source ↗',answer.source));const a=create('a','Explore this guide section ↓');a.href='#'+answer.target;article.append(create('p'));article.append(a);box.append(article);}}
-document.getElementById('askForm').onsubmit=e=>{e.preventDefault();ask(document.getElementById('dbQuestion').value);};document.querySelectorAll('[data-question]').forEach(b=>b.onclick=()=>{document.getElementById('dbQuestion').value=b.dataset.question;ask(b.dataset.question);});
 
 import {mountProfileExample} from './db-profile-example.mjs';
 mountProfileExample();
