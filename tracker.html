@@ -140,7 +140,8 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
 }
 .tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
 .prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n.role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.role-tab{font:600 13px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 11px;cursor:pointer}.role-tab[aria-expanded="true"]{background:var(--soft);border-color:var(--ink)}.role-info{border-top:1px solid var(--line);padding:14px 0 4px}.role-info h3{font:500 19px var(--display);margin:0 0 8px}.role-info p{font-size:14px;margin:0 0 10px}.role-info a{font-size:13px;font-weight:600}.role-info .role-note{font-size:12px;color:var(--muted)}.role-info[hidden]{display:none}.prep-topics{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:7px}.prep-topics span{font-size:13px}.prep-topics span:before{content:"✓";margin-right:6px;color:var(--accent)}.prep-support{font-size:12px;color:var(--muted);margin:8px 0 0}
-.role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}\n</style>
+.role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}\n.row,.fcard,.insight,.stat,.prep,.role-info{border-radius:12px}.btn,.role-tab,.sectors button,.filters select,.application-stage select{border-radius:8px}.row{overflow:hidden}
+</style>
 
 </head>
 <body>
@@ -148,7 +149,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   <a class="logo" href="/" style="text-decoration:none">The Desk<small>Finance careers. Done properly.</small></a>
   <nav class="tabs" aria-label="Site navigation"><a href="/assessment-start.html">Assess your readiness</a><a id="backToPlan" href="/assessment-start.html">Full Cycle</a><span class="on">Graduate 2027</span></nav>
 </div></header>
-<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button></nav>
+<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button><button type="button" id="sIN" aria-pressed="false">Insurance</button></nav>
 
 <main class="wrap">
   <section class="hero">
@@ -163,8 +164,8 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   <div class="filters" role="group" aria-label="Filters">
     <label for="fFirm">Firm</label><select id="fFirm"></select>
     <label for="fDiv">Area</label><select id="fDiv"></select>
-    <label for="fStatus">Status</label>
-    <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
+    <label for="fType">Programme type</label><select id="fType"><option value="all">All types</option></select><label for="fStatus">Status</label>
+    <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="notyet">Not open yet</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
     <label class="toggle"><input type="checkbox" id="fEntry"> Open to anyone only</label>
     <label class="toggle"><input type="checkbox" id="fMine"> My list</label>
     <span class="count" id="count"></span>
@@ -301,6 +302,86 @@ P=P.concat([
  {sector:"big4",firm:"KPMG",name:"Accounting Advisory and Assurance",area:"Audit & Assurance",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA","No visa sponsorship"]),
   note:"Open status couldn't be read from KPMG's vacancy search. KPMG can't sponsor visas for this programme.",url:"https://www.kpmgcareers.co.uk/graduate/audit/accounting-advisory-and-assurance/",src:"kpmgcareers.co.uk"}
 ]);
+var IZ={steps:["Online application","Strengths, behaviour and numerical test","Job simulation + video interview (Cappfinity)","Final assessment"]};
+var IW={steps:["Apply with CV","Online test + video interview","Assessment centre"]};
+var IA={steps:["Application review","Online assessment (5 days)","Video interview","Assessment centre from mid-January"]};
+var IB={steps:["Apply","Behavioural, numerical and verbal tests","Meet the Team assessment centre"]};
+var IL={steps:["Online application","Strengths, numerical tests + video interview","Coaching call","Assessment centre"]};
+P=P.concat([
+ {sector:"ins",type:"Graduate",firm:"Zurich",name:"Business Management Graduate Programme",area:"Underwriting",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:IZ.steps,elig:["2:1, 96 UCAS","No visa sponsorship","£30,600 + £3,200 London"],
+  note:"27-month rotation across underwriting and claims, studying for ACII. London, Farnborough, Croydon, Swindon or Glasgow. You can apply to only one Zurich programme.",url:"https://www.careers.zurich.com/job/London-Business-Management-Graduate-Programme-2027-%28London%29-GB-L/1371810657/",src:"careers.zurich.com"},
+ {sector:"ins",type:"Graduate",firm:"Zurich",name:"Accounting Graduate Programme",area:"Finance",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:IZ.steps,elig:["2:1, 96 UCAS","No visa sponsorship","£30,600"],
+  note:"Three one-year rotations studying ACCA or CIMA. Swindon or Whiteley.",url:"https://www.careers.zurich.com/job/Swindon-Accounting-Graduate-Programme-2027-%28Swindon%29-GB-W/1371739357/",src:"careers.zurich.com"},
+ {sector:"ins",type:"Summer internship",firm:"Zurich",name:"Actuarial (General Insurance) Summer Internship",area:"Actuarial",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","A in A-level Maths, 128 UCAS","No visa sponsorship"],
+  note:"10 weeks from June 2027. Zurich's actuarial graduate scheme isn't running in 2027, so this is the actuarial way in this cycle.",url:"https://www.careers.zurich.com/job/London-Actuarial-%28General-Insurance%29-Summer-Internship-2027-GB-L/1371809957/",src:"careers.zurich.com"},
+ {sector:"ins",type:"Placement",firm:"Zurich",name:"Actuarial (General Insurance) Industrial Placement",area:"Actuarial",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","A in A-level Maths, 128 UCAS","£24,969"],
+  note:"One year from June 2027. London, Farnborough, Birmingham or Whiteley.",url:"https://www.careers.zurich.com/job/London-Actuarial-%28General-Insurance%29-Industrial-Placement-Programme-2027-GB-L/1371809857/",src:"careers.zurich.com"},
+ {sector:"ins",type:"Placement",firm:"Zurich",name:"Accounting Industrial Placement",area:"Finance",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","No visa sponsorship"],
+  note:"Swindon or Whiteley. Listed on Zurich's internships page with the same 18 October close.",url:"https://www.zurich.co.uk/careers/internships",src:"zurich.co.uk"},
+ {sector:"ins",type:"Summer internship",firm:"WTW",name:"Corporate Risk & Broking Internship · London",area:"Broking",status:"open",closes:"2026-10-19",rolling:false,entry:"open",steps:IW.steps,elig:["Penultimate year","On course for 2:1, any subject"],
+  note:"8 weeks. Strong interns can be offered the graduate programme. One WTW application per year.",url:"https://careers.wtwco.com/jobs/2027-corporate-risk-broking-internship-programme-london-london-england-united-kingdom",src:"careers.wtwco.com"},
+ {sector:"ins",type:"Graduate",firm:"WTW",name:"Actuarial Insurance Consulting Graduate Programme · P&C",area:"Actuarial",status:"open",closes:"2026-10-19",rolling:false,entry:"open",steps:IW.steps,elig:["2:1, A in A-level Maths","136+ UCAS"],
+  note:"London, Reigate or Cambridge, studying IFoA exams. At least 4 days a week in the office.",url:"https://careers.wtwco.com/jobs/2027-actuarial-insurance-consulting-graduate-programme-property-casualty-london-reigate-cambridge-london-england-united-kingdom-reigate-cambridge",src:"careers.wtwco.com"},
+ {sector:"ins",type:"Graduate",firm:"Aon",name:"Graduate Programme · Commercial Risk and Reinsurance Broking",area:"Broking",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["2:1, any subject","CII Level 4 Diploma"],
+  note:"London, starting 1 September 2027. Aon reviews on a rolling basis and may close early.",url:"https://jobs.aon.com/jobs/107780",src:"jobs.aon.com"},
+ {sector:"ins",type:"Graduate",firm:"Aon",name:"Graduate Programme · Insurance Actuarial Consulting & Reinsurance Analytics",area:"Actuarial",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["2:1"],
+  note:"London. Same process and early-close warning as Aon's broking scheme.",url:"https://jobs.aon.com/jobs/107781",src:"jobs.aon.com"},
+ {sector:"ins",type:"Summer internship",firm:"Aon",name:"Summer Internship · Insurance Actuarial Consulting & Reinsurance Analytics",area:"Actuarial",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["Penultimate year, numerate degree","A in A-level Maths"],
+  note:"9 weeks, paid, from 21 June 2027. London.",url:"https://jobs.aon.com/jobs/107790",src:"jobs.aon.com"},
+ {sector:"ins",type:"Graduate",firm:"Beazley",name:"Specialty Underwriting Graduate Scheme",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
+  note:"London, September 2027. A 2:2 bar makes this one of the most accessible underwriting schemes in London.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
+ {sector:"ins",type:"Graduate",firm:"Beazley",name:"Cyber Underwriting Graduate Scheme",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
+  note:"London. One application portal covers all Beazley 2027 schemes.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
+ {sector:"ins",type:"Graduate",firm:"Beazley",name:"Property and Marine, Aviation & Political Risks Underwriting Schemes",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
+  note:"Two separate London schemes through the same portal.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
+ {sector:"ins",type:"Graduate",firm:"Beazley",name:"Actuarial Graduate Scheme",area:"Actuarial",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:1, numerical subject","£33,000 + bonus"],
+  note:"Birmingham, September 2027.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
+ {sector:"ins",type:"Graduate",firm:"Legal & General",name:"Graduate Actuarial Programme",area:"Actuarial",status:"notyet",expect:"Usually opens in October",rolling:true,entry:"open",steps:IL.steps,elig:["2:1, numerate subject","Some visa sponsorship"],
+  note:"L&G graduate roles mostly open in October with no closing date, so apply on day one. London or Hove.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
+ {sector:"ins",type:"Graduate",firm:"Legal & General",name:"Graduate Scheme · Risk and Compliance",area:"Risk",status:"notyet",expect:"Usually opens in October",rolling:true,entry:"open",steps:IL.steps,elig:["2:1"],
+  note:"Investment, Accounting and Distribution graduate tracks also run.",url:"https://careers.legalandgeneral.com/graduate-scheme",src:"careers.legalandgeneral.com"},
+ {sector:"ins",type:"Summer internship",firm:"Legal & General",name:"Summer Internship · Actuarial, Investment, Risk, Accounting",area:"Actuarial",status:"notyet",expect:"Opens in November",rolling:true,entry:"open",steps:IL.steps,elig:["Penultimate year, on track for 2:1","No visa sponsorship"],
+  note:"8 weeks in London. No fixed deadline.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
+ {sector:"ins",type:"Placement",firm:"Legal & General",name:"Year in Industry",area:"Finance",status:"notyet",expect:"Opens in November",rolling:true,entry:"open",steps:IL.steps,elig:["Sandwich-year students","On track for 2:1"],
+  note:"12–13 months in London, Cardiff or Hove.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
+ {sector:"ins",type:"Summer internship",firm:"AXA XL",name:"Summer Internship",area:"Underwriting",status:"notyet",expect:"Opens in November",rolling:false,entry:"open",steps:["Apply via AXA XL careers"],elig:["Penultimate or final year"],
+  note:"8 weeks, paid, July–August, in London or Ipswich: underwriting, claims, pricing and more.",url:"https://axaxl.com/about-us/careers-at-axa-xl/early-careers-at-axa-xl",src:"axaxl.com"},
+ {sector:"ins",type:"Graduate",firm:"Chubb",name:"International Chubb Associate Program",area:"Underwriting",status:"notyet",expect:"Opens in November",rolling:false,entry:"open",steps:["Online application"],elig:["Recent graduates or up to 2 years' experience"],
+  note:"Two-year programme from September 2027. Join Chubb's Talent Network to be told when it opens.",url:"https://about.chubb.com/careers/early-careers/europe-middle-east-africa-careers/international-chubb-associate-program.html",src:"about.chubb.com"},
+ {sector:"ins",type:"Graduate",firm:"Lloyd's of London",name:"Insurance Graduate Programme",area:"Underwriting",status:"notyet",expect:"Last cycle opened in January",rolling:false,entry:"open",steps:["Strengths-based online assessment","Video interview","Assessment centre at Lloyd's"],elig:["2:1, any subject","£33,790"],
+  note:"27 months across the Corporation and the Lloyd's market, studying ACII. One application per person per season.",url:"https://www.lloyds.com/about-lloyds/careers/early-careers/graduates/insurance-graduate-scheme",src:"lloyds.com"},
+ {sector:"ins",type:"Graduate",firm:"Lloyd's of London",name:"Actuarial Graduate Programme",area:"Actuarial",status:"notyet",expect:"Last cycle opened in January",rolling:false,entry:"open",steps:["Strengths-based online assessment","Video interview","Assessment centre"],elig:["2:1, numerate degree","£38,000"],
+  note:"24 months, rotational, permanent contract, studying IFoA exams.",url:"https://www.lloyds.com/about-lloyds/careers/early-careers/graduates/actuarial-graduate-scheme",src:"lloyds.com"},
+ {sector:"ins",type:"Graduate",firm:"Aviva",name:"Actuarial Graduate Pathway",area:"Actuarial",status:"notyet",expect:"2027 intake not posted yet",rolling:false,entry:"open",steps:["Apply online","Situational Strengths + Numerical Reasoning tests","Video interview","Assessment day"],elig:["STEM or numerical degree","B in A-level Maths","No visa sponsorship"],
+  note:"Bristol, Norwich or York, studying IFoA exams. The 2026 intake paid £34,200.",url:"https://careers.aviva.co.uk/early-careers/graduates/actuarial-graduate-pathway/",src:"careers.aviva.co.uk"},
+ {sector:"ins",type:"Graduate",firm:"Aviva",name:"Pricing, Underwriting and Claims Graduate Pathways",area:"Underwriting",status:"notyet",expect:"2027 intake not posted yet",rolling:false,entry:"open",steps:["Apply online","Situational Strengths + Numerical Reasoning tests","Video interview","Assessment day"],elig:["Any degree (London Pricing needs STEM)","No visa sponsorship"],
+  note:"Two-year pathways across Norwich, London, Leeds, York, Birmingham and Bristol. The 2026 intake paid £33,200.",url:"https://careers.aviva.co.uk/early-careers/graduates/underwriting-graduate-pathway/",src:"careers.aviva.co.uk"},
+ {sector:"ins",type:"Graduate",firm:"Allianz UK",name:"Underwriting, Actuarial and Finance Graduate Schemes",area:"Underwriting",status:"unconfirmed",rolling:false,entry:"open",steps:["Online application","Online tests (some roles)","Video interview","Assessment centre"],elig:["Degree, or graduated within 3 years"],
+  note:"Allianz says applications run September to December, but no 2027 adverts were live when we checked.",url:"https://careers.allianz.com/gb/en/graduate-schemes-uk",src:"careers.allianz.com"},
+ {sector:"ins",type:"Graduate",firm:"Marsh",name:"Graduate Programme · UK & Ireland",area:"Broking",status:"unconfirmed",rolling:false,entry:"open",steps:[],elig:["2:1","No visa sponsorship"],
+  note:"Two-year, permanent, non-rotational programme from September. Marsh's job search couldn't be read when we checked.",url:"https://careers.marsh.com/eu/en/marsh-uki-graduate-programs",src:"careers.marsh.com"},
+ {sector:"ins",type:"Graduate",firm:"Munich Re",name:"Actuarial Graduate Trainee Programme",area:"Actuarial",status:"closed",closes:null,rolling:false,entry:"open",steps:["Application + CV","Online test","Competency interview","Assessment centre","Final round with senior leaders"],elig:["2:1, numerate degree","Visa sponsorship offered"],
+  note:"Filled for this cycle. The window usually runs September to October, so set a reminder for next year.",url:"https://careers.munichre.com/munichre-actuarial-graduate-trainee-programme",src:"careers.munichre.com"}
+]);
+P.forEach(function(p){if(!p.type)p.type="Graduate"});
+var FIRMS_IN=[
+ ["Zurich","You can apply to only one Zurich programme. No visa sponsorship: you need indefinite UK right to work and 3 years' UK residence. Tests are run by Cappfinity, including a job simulation."],
+ ["WTW","One WTW application per year. Online test and video interview, then an assessment centre. Strong interns can be offered the graduate programme."],
+ ["Aon","Reviews applications on a rolling basis and may close before 7 December. Assessment centres run from mid-January."],
+ ["Beazley","One portal for every 2027 scheme. Underwriting schemes take a 2:2 in any subject, and Beazley publishes a £33,000 salary plus bonus."],
+ ["Legal & General","Graduate roles usually open in October and internships in November, with no closing dates, so apply on the first day."],
+ ["Lloyd's of London","The last cycle opened in January, with assessment centres in March and April. One application per person per season."],
+ ["Aviva","No visa sponsorship. 2027 graduate roles weren't posted when we checked; 2026 salaries were £33,200–£34,200."],
+ ["RSA (Intact)","RSA's careers site now redirects to Intact Insurance UK. Graduate and internship applications are currently closed."]
+];
+var EXS_INS={name:"Ben",overall:59,
+  byArea:{"Finance":64,"Broking":58,"Actuarial":52,"Underwriting":60,"Claims":62,"Risk":57},
+  fixes:{"Finance":["Add the method and result to your corporate finance project","Practise accruals and prepayments"],
+         "Broking":["Show a client conversation from your part-time job","Explain how a broker earns its money"],
+         "Actuarial":["Lead with your strongest maths result","Practise probability and compound interest"],
+         "Underwriting":["Turn your Finance Society role into a decision you made","Explain how an insurer prices a risk"],
+         "Claims":["Show how you handled a customer problem","Practise reading a policy wording"],
+         "Risk":["Add a risk you spotted in your project","Practise the basics of risk and return"]}};
 var FIRMS_B4=[
  ["PwC","One application per intake year across every PwC graduate programme, so choose your business area carefully. SHL tests cover numerical, inductive and deductive reasoning, then a video interview and a virtual assessment centre."],
  ["Deloitte","One application per programme per year, and programmes close early when full. After the online assessment there's a Job Simulation with recorded video answers, then an in-person final stage."],
@@ -312,6 +393,7 @@ var EXS={bb:null,big4:{name:"Emily",overall:85,
   fixes:{"Audit & Assurance":["Prepare to explain your £3,100 cut-off finding","Practise explaining your decision when the speaker cancelled"],
          "Tax":["Show an interest in tax beyond your module","Practise explaining VAT and corporation tax simply"],
          "Deals & Advisory":["Add the client and business context to your Vale Accountancy work","Practise valuation basics: enterprise value and multiples"]}}};
+EXS.ins=EXS_INS;
 var SECTOR="bb";
 function cur(){return P.filter(function(p){return p.sector===SECTOR})}
 var FIRMS=[
@@ -362,11 +444,12 @@ function fmt(s){var x=d(s);return x?x.toLocaleDateString("en-GB",{day:"numeric",
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function st(p){
   if(p.status==="unconfirmed")return"unconfirmed";
+  if(p.status==="notyet")return"notyet";
   var n=days(p.closes);
   if(p.status==="closed"||(n!==null&&n<0))return"closed";
   return"open";
 }
-function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;if(s==="open")return 500;if(s==="unconfirmed")return 800;return 1000+(-(n||0))}
+function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;if(s==="open")return 500;if(s==="notyet")return 700;if(s==="unconfirmed")return 800;return 1000+(-(n||0))}
 var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}");if(stored&&typeof stored==="object"&&!Array.isArray(stored))mine=stored}catch(e){}
 function save(){try{localStorage.setItem("desk_mylist",JSON.stringify(mine));document.getElementById("saveNotice").textContent="Saved on this browser."}catch(e){document.getElementById("saveNotice").textContent="This browser could not save your changes. Export your list to keep a copy."}}
 function key(p){return p.firm+"|"+p.name}
@@ -385,7 +468,17 @@ document.getElementById("stats").innerHTML=
  '<div class="stat hot"><b>'+soon.length+'</b><span>closing within 21 days</span></div>'+
  '<div class="stat"><b>'+openEntry.length+'</b><span>open to anyone</span></div>'+
  '<div class="stat"><b>'+interns.length+'</b><span>for the bank\'s own interns only</span></div>';
-document.getElementById("insight").innerHTML='<p>Of the <b>'+open.length+'</b> London graduate roles open right now, <b>'+interns.length+'</b> are only for that bank\'s own summer interns. At the bulge brackets, the graduate job is usually won a year earlier, in the summer internship.</p><a href="https://www.jpmorganchase.com/careers/explore-opportunities/programs" target="_blank" rel="noopener">Explore internship programmes ↗</a>';
+document.getElementById("insight").innerHTML='<p>Of the <b>'+open.length+'</b> London graduate roles open right now, <b>'+interns.length+'</b> are only for that bank\'s own summer interns. At the bulge brackets, the graduate job is usually won a year earlier, in the summer internship.</p><a href="/assessment-start.html">See 2027 summer internships →</a>';
+}else if(SECTOR==="ins"){
+var notyet=C.filter(function(p){return st(p)==="notyet"});
+var paid=C.filter(function(p){return (p.elig||[]).some(function(e){return e.indexOf("£")>-1})});
+document.getElementById("stats").innerHTML=
+ '<div class="stat"><b>'+open.length+'</b><span>open now</span></div>'+
+ '<div class="stat hot"><b>'+soon.length+'</b><span>closing within 21 days</span></div>'+
+ '<div class="stat"><b>'+notyet.length+'</b><span>not open yet</span></div>'+
+ '<div class="stat"><b>'+paid.length+'</b><span>with a published salary</span></div>';
+var week=open.filter(function(p){var n=days(p.closes);return n!==null&&n<=7});
+document.getElementById("insight").innerHTML='<p><b>'+week.length+'</b> insurance programmes close within a week, most of them at Zurich and WTW. Check each scheme’s eligibility and application limit before applying.</p><a href="/assessment-start.html">Check my readiness now →</a>';
 }else{
 document.getElementById("stats").innerHTML=
  '<div class="stat"><b>'+open.length+'</b><span>open now</span></div>'+
@@ -394,21 +487,26 @@ document.getElementById("stats").innerHTML=
  '<div class="stat"><b>1</b><span>PwC application per year, across every programme</span></div>';
 document.getElementById("insight").innerHTML='<p>None of the Big 4 publish a closing date. They recruit <b>until places are filled</b>, so a strong application in October has more seats to compete for than the same one in February.</p><a href="/assessment-start.html">Check my readiness now →</a>';
 }
-document.getElementById("kick").textContent=SECTOR==="bb"?"Deadline tracker · Bulge bracket · London":"Deadline tracker · Big 4 accountancy · UK";
-document.getElementById("h1").textContent=SECTOR==="bb"?"2027 graduate programmes, checked against each bank's own site.":"2027 Big 4 graduate schemes, with official application links.";
-document.getElementById("fh").textContent=SECTOR==="bb"?"How each bank hires":"How each Big 4 firm hires";
-document.getElementById("firmNotes").innerHTML=(SECTOR==="bb"?FIRMS:FIRMS_B4).map(function(f){return'<div class="fcard"><b>'+esc(f[0])+'</b><p>'+esc(f[1])+'</p></div>'}).join("");
+var T={bb:["Deadline tracker · Bulge bracket · London","2027 graduate programmes, checked against each bank's own site.","How each bank hires",FIRMS],
+       big4:["Deadline tracker · Big 4 accountancy · UK","2027 Big 4 graduate schemes, checked against each firm's own site.","How each Big 4 firm hires",FIRMS_B4],
+       ins:["Deadline tracker · Insurance · UK","Insurance graduate schemes, internships and placements for 2027.","How each insurer hires",FIRMS_IN]}[SECTOR];
+document.getElementById("kick").textContent=T[0];
+document.getElementById("h1").textContent=T[1];
+document.getElementById("fh").textContent=T[2];
+document.getElementById("firmNotes").innerHTML=T[3].map(function(f){return'<div class="fcard"><b>'+esc(f[0])+'</b><p>'+esc(f[1])+'</p></div>'}).join("");
 opts(fFirm,Array.from(new Set(C.map(function(p){return p.firm}).concat(SECTOR==="bb"?["Morgan Stanley","Bank of America","UBS"]:[]))).sort(),"All firms");
 opts(fDiv,Array.from(new Set(C.map(function(p){return p.area}))).sort(),"All areas");
+opts(fType,Array.from(new Set(C.map(function(p){return p.type}))).sort(),"All types");
 }
 
 // filters
-var fFirm=document.getElementById("fFirm"),fDiv=document.getElementById("fDiv"),fStatus=document.getElementById("fStatus"),fEntry=document.getElementById("fEntry"),fMine=document.getElementById("fMine");
+var fFirm=document.getElementById("fFirm"),fDiv=document.getElementById("fDiv"),fStatus=document.getElementById("fStatus"),fEntry=document.getElementById("fEntry"),fMine=document.getElementById("fMine"),fType=document.getElementById("fType");
 function opts(el,arr,label){el.innerHTML='<option value="all">'+label+'</option>'+arr.map(function(v){return'<option>'+esc(v)+'</option>'}).join("")}
 
 function whenHtml(p){
   var s=st(p),n=days(p.closes);
   if(s==="closed")return'<div class="when"><b>Closed</b><span>'+(p.closes?"Closed "+fmt(p.closes):"")+'</span></div>';
+  if(s==="notyet")return'<div class="when"><b>Not open yet</b><span>'+esc(p.expect||"Check the firm site for updates")+'</span></div>';
   if(s==="unconfirmed")return'<div class="when"><b>Not confirmed</b><span>Check the firm\'s site</span></div>';
   if(n!==null)return'<div class="when'+(n<=21?" urgent":"")+'"><b>'+(n===0?"Closes today":n===1?"Closes tomorrow":"Closes in "+n+" days")+'</b><span>'+fmt(p.closes)+(p.rolling?" · may close early":"")+'</span></div>';
   return'<div class="when"><b>Open</b><span>No deadline published'+(p.rolling?" · rolling":"")+'<br>Apply early</span></div>';
@@ -429,7 +527,7 @@ function roleTabsHtml(p,i){
  return '<div class="role-tabs" role="group" aria-label="Upcoming programme guides"><button type="button" class="role-tab" disabled>What is this role? · Coming soon</button><button type="button" class="role-tab" disabled>'+esc(firmLabel(p))+' graduate programme insights · Coming soon</button></div>';
 }
 function lockHtml(p){
- if(p.firm==='Deutsche Bank')return '<div class="prep"><div class="lock"><b>The Desk · DB interview guide</b><div class="prep-topics"><span>Why Deutsche Bank / why your division</span><span>Recorded-video interview practice</span><span>Ability tests and situational judgement</span></div><p class="prep-support">Programme dates, role insights, DB news and interview practice.</p></div><a href="/deutsche-bank.html#interviews">Explore the DB guide →</a></div>';
+ if(p.firm==='Deutsche Bank')return '<div class="prep"><div class="lock"><b>The Desk · DB interview guide</b><div class="prep-topics"><span>Why Deutsche Bank / why your division</span><span>Recorded-video interview practice</span><span>Ability tests and situational judgement</span></div><p class="prep-support">Programme dates, role insights, DB news and interview practice.</p></div><a href="/deutsche-bank.html">Explore the DB guide →</a></div>';
  return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+' with Full Cycle.</b><div class="prep-topics">'+prepItems(p).map(function(item){return '<span>'+esc(item)+'</span>'}).join("")+'</div><p class="prep-support">Alongside your CV rewrite, competency answer drafts and readiness rechecks.</p></div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle →</a></div>';
 }
 function render(){
@@ -441,6 +539,8 @@ function render(){
     if(fStatus.value==="soon"&&!(s==="open"&&n!==null&&n<=21))return false;
     if(fStatus.value==="closed"&&s!=="closed")return false;
     if(fStatus.value==="unconfirmed"&&s!=="unconfirmed")return false;
+    if(fStatus.value==="notyet"&&s!=="notyet")return false;
+    if(fType.value!=="all"&&p.type!==fType.value)return false;
     if(fEntry.checked&&p.entry!=="open")return false;
     if(fMine.checked&&!mine[key(p)])return false;
     return true;
@@ -455,14 +555,14 @@ function render(){
   }
   L.innerHTML=rows.map(function(p,i){
     var s=st(p),k=key(p),saved=!!mine[k];
-    var chips='<span class="chip">'+esc(p.area)+'</span>'+
+    var chips='<span class="chip">'+esc(p.type)+'</span><span class="chip">'+esc(p.area)+'</span>'+
       (p.entry==="open"?'<span class="chip open">Open to anyone</span>':p.entry==="interns"?'<span class="chip warn">Bank\'s own interns only</span>':'')+
       (p.elig||[]).map(function(e){return'<span class="chip">'+esc(e)+'</span>'}).join("");
     return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
       '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
       '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
-      '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
+      '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"||s==="notyet"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
       (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
@@ -477,14 +577,16 @@ function setSector(x){
   SECTOR=x;EX=EXS[x];
   document.getElementById("sBB").setAttribute("aria-pressed",String(x==="bb"));
   document.getElementById("sB4").setAttribute("aria-pressed",String(x==="big4"));
-  fFirm.value="all";fDiv.value="all";
+  document.getElementById("sIN").setAttribute("aria-pressed",String(x==="ins"));
+  fFirm.value="all";fDiv.value="all";fType.value="all";
   drawTop();render();
 }
 document.getElementById("sBB").onclick=function(){setSector("bb")};
 document.getElementById("sB4").onclick=function(){setSector("big4")};
+document.getElementById("sIN").onclick=function(){setSector("ins")};
 
 
-[fFirm,fDiv,fStatus,fEntry,fMine].forEach(function(el){el.onchange=render});
+[fFirm,fDiv,fStatus,fEntry,fMine,fType].forEach(function(el){el.onchange=render});
 document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
 if(contextSample==="emily")setSector("big4");else{drawTop();render();}
 })();
