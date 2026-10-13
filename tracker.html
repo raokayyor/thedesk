@@ -140,7 +140,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
 }
 .tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
 .prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n.role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.role-tab{font:600 13px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 11px;cursor:pointer}.role-tab[aria-expanded="true"]{background:var(--soft);border-color:var(--ink)}.role-info{border-top:1px solid var(--line);padding:14px 0 4px}.role-info h3{font:500 19px var(--display);margin:0 0 8px}.role-info p{font-size:14px;margin:0 0 10px}.role-info a{font-size:13px;font-weight:600}.role-info .role-note{font-size:12px;color:var(--muted)}.role-info[hidden]{display:none}.prep-topics{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:7px}.prep-topics span{font-size:13px}.prep-topics span:before{content:"✓";margin-right:6px;color:var(--accent)}.prep-support{font-size:12px;color:var(--muted);margin:8px 0 0}
-</style>
+.role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}\n</style>
 
 </head>
 <body>
@@ -424,25 +424,8 @@ function prepItems(p){
  items.push("Why "+p.firm+" / why "+p.area);
  return items;
 }
-function roleBrief(p){
- if(p.firm==="Deutsche Bank"&&p.name.indexOf("Chief Risk")>=0)return "Help identify and measure risks across the bank, analyse market developments and risk exposures, and communicate findings to support risk-management decisions.";
- if(/Quantitative/.test(p.name))return "Use mathematics, programming and data analysis to develop tools for valuation, trading or risk management.";
- var descriptions={"Investment Banking":"Support corporate financing and transaction work through financial analysis, valuation and client materials.","Markets":"Support trading, sales or structuring teams by following markets, analysing products and helping serve clients.","Risk":"Analyse exposures and risk drivers so the firm can understand and manage financial and operational risks.","Corporate & Commercial":"Support banking relationships with businesses, including lending analysis, client research and financing needs.","Research":"Analyse companies, sectors or markets and explain findings that help inform investment decisions.","Wealth & Asset Management":"Support investment analysis or advice for clients, including portfolios, markets and client needs.","Audit & Assurance":"Examine financial records and supporting evidence to help assess whether accounts are reliable.","Tax":"Help analyse tax obligations and advise on the tax implications of business activities.","Deals & Advisory":"Support transactions and business decisions through due diligence, valuation or financial analysis.","Multiple divisions":"The work depends on the division you choose. Compare its responsibilities and eligibility before applying."};
- return descriptions[p.area]||"Read the programme description to understand the team, graduate responsibilities and skills required.";
-}
-function programmeBrief(p){
- if(p.firm==="Deutsche Bank"&&p.name.indexOf("Chief Risk")>=0)return "The London 2027 Chief Risk Office programme runs for 12 months, starts in July 2027 and includes rotations across CRO functions, technical training and one-to-one mentoring.";
- return p.firm+"'s "+p.name+". The imported programme information lists "+((p.steps||[]).length?(p.steps||[]).join(" → "):"stages to confirm on the official firm page")+".";
-}
 function roleTabsHtml(p,i){
- var roleId="role-info-"+i,insightId="programme-info-"+i,db=p.firm==="Deutsche Bank",source=db?"https://db.recsolu.com/jobs/wPkxWntNQUbHi1hCr4r_KQ?job_board_id=DT5zqeU-qZM-ltrVsIvR9Q":p.url;
- var insight=programmeBrief(p);
- if(db)insight+=" DB's official application FAQ describes situational judgement, a behavioural questionnaire, an ability test and a pre-recorded video interview. Follow the instructions in your invitation.";
- return '<div class="role-tabs" role="group" aria-label="Explore this programme">'+
- '<button type="button" class="role-tab" data-info="'+roleId+'" aria-expanded="false" aria-controls="'+roleId+'">What is this role?</button>'+
- '<button type="button" class="role-tab" data-info="'+insightId+'" aria-expanded="false" aria-controls="'+insightId+'">'+esc(firmLabel(p))+' graduate programme insights</button></div>'+
- '<div class="role-info" id="'+roleId+'" hidden><h3>'+esc(p.area)+' · In plain English</h3><p>'+esc(roleBrief(p))+'</p><p class="role-note">Exact responsibilities depend on the team and programme.</p><a href="'+esc(p.url)+'" target="_blank" rel="noopener">Read the official role description ↗</a></div>'+
- '<div class="role-info" id="'+insightId+'" hidden><h3>'+esc(firmLabel(p))+' · Programme overview</h3><p>'+esc(insight)+'</p><a href="'+esc(db?"https://careers.db.com/students-graduates/your-application/faq/index":source)+'" target="_blank" rel="noopener">Read official programme information ↗</a><p><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle preparation →</a></p></div>';
+ return '<div class="role-tabs" role="group" aria-label="Upcoming programme guides"><button type="button" class="role-tab" disabled>What is this role? · Coming soon</button><button type="button" class="role-tab" disabled>'+esc(firmLabel(p))+' graduate programme insights · Coming soon</button></div>';
 }
 function lockHtml(p){
  return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+' with Full Cycle.</b><div class="prep-topics">'+prepItems(p).map(function(item){return '<span>'+esc(item)+'</span>'}).join("")+'</div><p class="prep-support">Alongside your CV rewrite, competency answer drafts and readiness rechecks.</p></div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle →</a></div>';
