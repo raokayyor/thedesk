@@ -9,6 +9,7 @@ try{
  const path=document.createElement('p');path.className='muted';path.textContent=plan.path.join(' → ');document.querySelector('#intro').after(path);
  for(const text of plan.items){const li=document.createElement('li');li.textContent=text;document.querySelector('#benefits').append(li);}
 
+ const trackerUrl='/tracker.html'+(sample?'?sample='+encodeURIComponent(sample):id?'?id='+encodeURIComponent(id):'')+location.hash;document.querySelectorAll('#trackerLink,#trackerFeatureLink').forEach(link=>link.href=trackerUrl);
  document.querySelector('#back').href='/result-final-design.html'+(sample?'?sample='+encodeURIComponent(sample):'?id='+encodeURIComponent(id)+location.hash);
  document.querySelector('#previewNotice').hidden=!preview;
  if(preview){document.querySelector('#previewNotice').textContent='Design preview · Illustrative practitioner photos · Payment is disabled for this sample.';const photos=['https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces','https://images.unsplash.com/photo-1560250097-0b93528c311a?w=120&h=120&fit=crop&crop=faces','https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces'];document.querySelectorAll('.practitioner-avatar').forEach((el,i)=>{if(!photos[i])return;const img=document.createElement('img');img.src=photos[i];img.alt='';el.replaceChildren(img);});}

@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;background:var(--cream);border-bottom:0.
 <body>
 <nav>
   <a href="index.html" class="logo">The<em>Desk</em></a>
-  <span class="badge">Full Cycle</span>
+  <a id="applicationTracker" href="/tracker.html" style="font-size:14px;margin-left:auto;text-decoration:none">Application tracker →</a><span class="badge">Full Cycle</span>
 </nav>
 <div id="fcStatus" style="display:none;background:white;border-bottom:0.5px solid var(--ink08);padding:10px 24px;">
   <div style="max-width:620px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
@@ -86,6 +86,7 @@ function safeReport(value){
   return value;
 }
 function render(paid, profile){
+  var trackerParams=new URLSearchParams(location.search);document.getElementById("applicationTracker").href="/tracker.html"+(trackerParams.get("id")?"?id="+encodeURIComponent(trackerParams.get("id")):trackerParams.get("sample")?"?sample="+encodeURIComponent(trackerParams.get("sample")):"");
   paid=safeReport(paid); profile=safeReport(profile || {});
   var firm=(profile&&profile.targetFirm)||'your target firm';
   var div2=(profile&&profile.targetDivision)||'finance';

@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Desk — Application tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: summary strip, one insight, filter bar, then a single column of programme rows sorted by urgency. */
+:root{
+  --bg:#f7f4ee; --paper:#fffdfa; --soft:#efe9df; --line:#e0d9cd;
+  --ink:#0d1620; --muted:#5a6572; --accent:#d9480f; --accent-soft:#fde6d8;
+  --open:#1f6f5c; --open-soft:#e2f1ea; --warn:#b45309; --warn-soft:#fdeccc;
+  --closed:#6b7480; --closed-soft:#eceae6; --dark:#0d1620; --on-dark:#f4f1ea;
+  --display:"Lora",Georgia,serif; --body:"Source Sans 3",Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10171c; --paper:#162028; --soft:#1d2831; --line:#2b3742;
+  --ink:#eef1f2; --muted:#a4aeb6; --accent:#ff7a3d; --accent-soft:#3a2418;
+  --open:#5cc4a6; --open-soft:#15302a; --warn:#f2b45a; --warn-soft:#3a2d14;
+  --closed:#8d979f; --closed-soft:#22292f; --dark:#0a1014; --on-dark:#eef1f2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171c; --paper:#162028; --soft:#1d2831; --line:#2b3742;
+  --ink:#eef1f2; --muted:#a4aeb6; --accent:#ff7a3d; --accent-soft:#3a2418;
+  --open:#5cc4a6; --open-soft:#15302a; --warn:#f2b45a; --warn-soft:#3a2d14;
+  --closed:#8d979f; --closed-soft:#22292f; --dark:#0a1014; --on-dark:#eef1f2; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+a{color:var(--ink)} a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px}
+header.top{background:var(--paper);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:16px}
+.logo{font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.logo small{display:block;font-family:var(--body);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;font-size:14px}
+.tabs span{padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.sectors{display:flex;gap:8px;flex-wrap:wrap;padding-block:16px 0}
+.sectors button{font:inherit;font-size:15px;font-weight:700;padding:9px 16px;border-radius:4px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.sectors button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tabs span.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+.hero{padding-block:32px 8px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(30px,5vw,44px);line-height:1.08;letter-spacing:-.02em;margin:8px 0 0;text-wrap:balance}
+.checked{font-size:14px;color:var(--muted);margin-top:8px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.stat{background:var(--paper);border:1px solid var(--line);padding:14px 16px}
+.stat b{display:block;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.stat.hot b{color:var(--accent)}
+
+.insight{margin-top:16px;background:var(--dark);color:var(--on-dark);padding:18px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.insight p{margin:0;max-width:62ch}
+.insight b{color:var(--accent)}
+.insight a{color:var(--on-dark);font-weight:600;white-space:nowrap}
+
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px;padding-block:12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.filters label{font-size:13px;font-weight:600;color:var(--muted)}
+select{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:7px 10px;max-width:100%}
+.toggle{display:flex;align-items:center;gap:6px;font-size:15px;cursor:pointer}
+.count{margin-left:auto;font-size:14px;color:var(--muted)}
+
+.list{display:grid;gap:12px;margin-block:18px 40px}
+.row{background:var(--paper);border:1px solid var(--line);display:grid;grid-template-columns:150px minmax(0,1fr) 200px;gap:0}
+.row.closed{opacity:.6}
+.when{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.when b{font-size:20px;line-height:1.15;font-variant-numeric:tabular-nums}
+.when span{font-size:13px;color:var(--muted)}
+.when.urgent b{color:var(--accent)}
+.main{padding:16px 18px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.firm{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.main h2{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.25;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.chip.open{background:var(--open-soft);color:var(--open)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.closed{background:var(--closed-soft);color:var(--closed)}
+.chip.accent{background:var(--accent-soft);color:var(--accent)}
+.steps{display:flex;flex-wrap:wrap;gap:4px 0;font-size:14px;color:var(--muted);padding:0;margin:0;list-style:none}
+.steps li::after{content:"→";margin:0 7px;color:var(--line)}
+.steps li:last-child::after{content:""}
+.note{font-size:14px;color:var(--ink);margin:0}
+.src{font-size:12.5px;color:var(--muted)}
+.side{padding:16px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:8px;justify-content:center}
+.btn{display:block;text-align:center;text-decoration:none;font-weight:700;font-size:15px;padding:10px 12px;border-radius:4px;border:1px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{color:#fff;filter:brightness(.95)}
+.btn.saved{background:var(--ink);color:var(--bg)}
+.ready{font-size:13px;text-align:center;color:var(--accent);font-weight:600;text-decoration:none}
+
+.firms{margin-block:8px 48px}
+.firms h3{font-family:var(--display);font-weight:500;font-size:26px;margin:0 0 4px}
+.firms > p{color:var(--muted);margin:0 0 14px}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fcard{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+.fcard b{font-size:16px}
+.fcard p{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;color:var(--muted)}
+.empty{padding:28px;text-align:center;color:var(--muted);background:var(--paper);border:1px dashed var(--line)}
+
+/* Free vs Full Cycle view */
+.mode{display:flex;gap:0;border:1px solid var(--ink);border-radius:999px;overflow:hidden;margin-top:18px;width:max-content;max-width:100%}
+.mode button{font:inherit;font-size:14px;font-weight:700;padding:8px 16px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.mode-note{font-size:13px;color:var(--muted);margin-top:6px}
+.prep{grid-column:1/-1;border-top:1px dashed var(--line);padding:12px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--soft)}
+.prep .lock{font-size:14px;color:var(--ink);flex:1 1 380px}
+.prep .lock b{color:var(--accent)}
+.prep a{font-size:14px;font-weight:700;color:var(--accent);white-space:nowrap}
+.fc{grid-column:1/-1;border-top:1px solid var(--line);background:var(--dark);color:var(--on-dark);padding:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.fc h4{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.fc p,.fc li{font-size:14px;line-height:1.5;color:var(--on-dark);margin:0}
+.fc ol,.fc ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.fc .score{font-size:30px;font-weight:700;line-height:1;color:var(--on-dark)}
+.fc .score small{font-size:14px;font-weight:400;opacity:.7}
+.fc .gap{background:rgba(255,122,61,.18);padding:0 3px}
+.fc a{color:var(--on-dark);font-weight:600}
+.strategy{margin-top:16px;background:var(--paper);border:2px solid var(--accent);padding:18px 20px}
+.strategy h3{font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 4px}
+.strategy > p{margin:0 0 10px;color:var(--muted);font-size:15px}
+.strategy ol{margin:0;padding-left:20px;display:grid;gap:8px}
+.strategy li{font-size:15px}
+.strategy li b{color:var(--ink)}
+.strategy .tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:6px}
+.tag.go{background:var(--open-soft);color:var(--open)} .tag.fix{background:var(--warn-soft);color:var(--warn)} .tag.hold{background:var(--closed-soft);color:var(--closed)}
+.example{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:760px){.fc{grid-template-columns:1fr}}
+
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:1fr}
+  .when{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .side{border-left:0;border-top:1px solid var(--line);flex-direction:row;flex-wrap:wrap}
+  .side .btn{flex:1 1 140px}
+  .fgrid{grid-template-columns:1fr}
+  .count{margin-left:0;width:100%}
+}
+.tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/" style="text-decoration:none">The Desk<small>Finance careers. Done properly.</small></a>
+  <nav class="tabs" aria-label="Site navigation"><a href="/assessment-start.html">Assess your readiness</a><a id="backToPlan" href="/assessment-start.html">Full Cycle</a><span class="on">Graduate 2027</span></nav>
+</div></header>
+<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button></nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker" id="kick">Deadline tracker · Bulge bracket · London</div>
+    <h1 id="h1">2027 graduate programmes, with official application links.</h1>
+    <div class="checked">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
+    <div class="stats" id="stats"></div>
+    <div class="insight" id="insight"></div>
+    <div class="mode" role="group" aria-label="View as">
+      <button type="button" id="mFree" aria-pressed="true">Free view</button>
+      <button type="button" id="mFc" aria-pressed="false">Preparation preview</button>
+    </div>
+    <div class="mode-note" id="modeNote">Browse deadlines and save applications. Preparation preview uses fictional examples, not your readiness score.</div>
+    <div id="strategy"></div><p class="storage-note">Your shortlist and application stages are saved on this browser only.</p><button class="btn export" id="exportList" type="button">Export my application list</button><p id="saveNotice" role="status" aria-live="polite"></p>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label for="fFirm">Firm</label><select id="fFirm"></select>
+    <label for="fDiv">Area</label><select id="fDiv"></select>
+    <label for="fStatus">Status</label>
+    <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
+    <label class="toggle"><input type="checkbox" id="fEntry"> Open to anyone only</label>
+    <label class="toggle"><input type="checkbox" id="fMine"> My list</label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <section class="firms">
+    <h3 id="fh">How each bank hires</h3>
+    <p>Rules that change how you apply, from each firm's own careers pages.</p>
+    <div class="fgrid" id="firmNotes"></div>
+  </section>
+</main>
+
+<footer><div class="wrap">Programme dates, eligibility and process notes are imported from the supplied 13 October 2026 snapshot; they have not all been independently reverified. Firms can close roles early or change dates without notice, so always confirm on the firm's page before you apply. "Not confirmed" is the source tracker’s status; it does not mean the role is not running.</div></footer>
+
+<script>
+(function(){
+"use strict";
+var CHECKED="2026-10-13";
+var P=[
+ {firm:"Deutsche Bank",name:"Graduate Programme · Chief Risk Office",area:"Risk",status:"open",opens:"2026-10-05",closes:"2026-10-18",rolling:true,entry:"open",
+  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1","Graduating Jan 2026–Jul 2027"],
+  note:"Closes 18 October at 11:59pm. DB may close early with 48 hours' notice, and you get one UK application per season.",
+  url:"https://db.recsolu.com/external/requisitions/wPkxWntNQUbHi1hCr4r_KQ",src:"careers.db.com"},
+ {firm:"Barclays",name:"Quantitative Analytics Associate Graduate Programme",area:"Markets",status:"open",opens:"2026-09-09",closes:"2026-10-31",rolling:true,entry:"open",
+  steps:["Application","Online assessment","Interview / assessment centre"],elig:["Master's or PhD by June 2027","Visa sponsorship available"],
+  note:"Master's level. Barclays warns it may close before 31 October if volumes are high.",
+  url:"https://search.jobs.barclays/job/london/2027-quantitative-analytics-associate-graduate-programme-london/13015/100411086288",src:"search.jobs.barclays"},
+ {firm:"Barclays",name:"Banking Graduate Programme",area:"Investment Banking",status:"open",opens:"2026-08-29",closes:null,rolling:null,entry:"open",
+  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
+  note:"February or July 2027 start. No closing date published, so apply early.",
+  url:"https://search.jobs.barclays/job/london/banking-graduate-programme-2027-london/13015/99885319536",src:"search.jobs.barclays"},
+ {firm:"Barclays",name:"Capital Markets Graduate Programme",area:"Investment Banking",status:"open",opens:"2026-08-29",closes:null,rolling:null,entry:"open",
+  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
+  note:"February or July 2027 start. No closing date published.",
+  url:"https://search.jobs.barclays/job/london/capital-markets-graduate-programme-2027-london/13015/99885319584",src:"search.jobs.barclays"},
+ {firm:"Barclays",name:"Sales, Trading and Structuring Graduate Programme",area:"Markets",status:"open",opens:"2026-09-10",closes:null,rolling:null,entry:"open",
+  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
+  note:"Desks across Credit, Equities, FX, Rates and Securitised Products. No closing date published.",
+  url:"https://search.jobs.barclays/job/london/sales-trading-and-structuring-graduate-programme-2027-london/13015/100425237424",src:"search.jobs.barclays"},
+ {firm:"Barclays",name:"UK Corporate Banking Graduate Programme",area:"Corporate & Commercial",status:"open",opens:"2026-09-01",closes:null,rolling:null,entry:"open",
+  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
+  note:"August 2027 start. Also advertised for Leeds and Birmingham.",
+  url:"https://search.jobs.barclays/job/london/uk-corporate-banking-graduate-programme-2027-london/13015/100032500656",src:"search.jobs.barclays"},
+ {firm:"Citi",name:"Markets · Sales and Trading Full Time Analyst",area:"Markets",status:"open",opens:"2026-09-04",closes:null,rolling:true,entry:"open",
+  steps:["Online application"],elig:["2:1 expected or achieved","Strong Excel; VBA/Python helps"],
+  note:"Rolling hiring and no published deadline. Open to anyone, not only Citi interns.",
+  url:"https://jobs.citi.com/job/london/markets-sales-and-trading-full-time-analyst-london-united-kingdom-2027/287/100186099392",src:"jobs.citi.com"},
+ {firm:"Citi",name:"Banking · Commercial Banking Full Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-10-01",closes:null,rolling:true,entry:"open",
+  steps:["Online application"],elig:["Predicted or achieved 2:1","Graduating 2026 or 2027"],
+  note:"Citi asks you to apply early because of high application volumes. July 2027 start.",
+  url:"https://jobs.citi.com/job/london/banking-commercial-banking-full-time-analyst-london-united-kingdom-2027/287/100996355040",src:"jobs.citi.com"},
+ {firm:"Citi",name:"Banking · Investment Banking Full Time Analyst",area:"Investment Banking",status:"open",opens:"2026-09-03",closes:null,rolling:true,entry:"interns",
+  steps:["Online application","Interviews","Background checks"],elig:["2026 Citi summer interns only","2:1 expected or achieved"],
+  note:"Conversion route for Citi's own 2026 summer interns. Not open to new applicants.",
+  url:"https://jobs.citi.com/job/london/banking-investment-banking-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-citi-su/287/100133501280",src:"jobs.citi.com"},
+ {firm:"Citi",name:"Banking · Corporate Banking Full Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-09-03",closes:null,rolling:true,entry:"interns",
+  steps:["Online application","Interviews","Background checks"],elig:["2026 London summer interns only","2:1"],
+  note:"Conversion route for Citi's 2026 London summer interns.",
+  url:"https://jobs.citi.com/job/london/banking-corporate-banking-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-london-s/287/100133501264",src:"jobs.citi.com"},
+ {firm:"Citi",name:"Banking · Financing Full Time Analyst",area:"Investment Banking",status:"open",opens:"2026-09-07",closes:null,rolling:true,entry:"interns",
+  steps:["Online application","Interviews","Background checks"],elig:["2026 Citi summer interns only","2:1"],
+  note:"Conversion route for Citi's 2026 summer interns.",
+  url:"https://jobs.citi.com/job/london/banking-financing-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-citi-summer-inte/287/100295995232",src:"jobs.citi.com"},
+ {firm:"Citi",name:"Services · Full-Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-09-21",closes:null,rolling:null,entry:"interns",
+  steps:["Online application"],elig:["2026 summer intern converts only","2:1"],
+  note:"Conversion route for Citi's 2026 summer interns.",
+  url:"https://jobs.citi.com/job/london/services-full-time-analyst-uk-london-2027-2026-summer-intern-converts-only/287/100771374032",src:"jobs.citi.com"},
+ {firm:"Deutsche Bank",name:"Graduate Programme · Investment Banking & Capital Markets",area:"Investment Banking",status:"closed",opens:"2026-09-07",closes:"2026-10-11",rolling:null,entry:"open",
+  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1"],
+  note:"Closed on 11 October. Note it for next year: DB's windows are short.",
+  url:"https://careers.db.com/students-graduates/Search-Programmes/#/graduate/",src:"careers.db.com"},
+ {firm:"Deutsche Bank",name:"Graduate Programme · Fixed Income & Currencies",area:"Markets",status:"closed",opens:"2026-09-07",closes:"2026-09-13",rolling:null,entry:"open",
+  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1"],
+  note:"Open for one week only, 7–13 September. Next year, be ready before it opens.",
+  url:"https://careers.db.com/students-graduates/Search-Programmes/#/graduate/",src:"careers.db.com"},
+ {firm:"Barclays",name:"Risk Analyst Graduate Programme",area:"Risk",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"unknown",
+  steps:[],elig:[],note:"Listed on Barclays' site, but the page would not load when we checked. Confirm on Barclays' site.",
+  url:"https://search.jobs.barclays/job/london/2027-risk-analyst-graduate-programme-london/13015/100411085712",src:"search.jobs.barclays"},
+ {firm:"Goldman Sachs",name:"New Analyst Programme (EMEA)",area:"Multiple divisions",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","HireVue video interview","Superday"],elig:["Final-year students and recent graduates","Summer 2027 start"],
+  note:"Apply by division. Maximum four applications per recruiting year. London dates could not be read from GS's portal.",
+  url:"https://www.goldmansachs.com/careers/students/programs-and-internships/emea/new-analyst-programme",src:"goldmansachs.com"},
+ {firm:"J.P. Morgan",name:"Investment Banking Full-Time Analyst",area:"Investment Banking",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","Interviews (may include recorded video)"],elig:[],
+  note:"Programme page is live; London availability and dates could not be read from J.P. Morgan's portal.",
+  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/investment-banking-fulltime-analyst",src:"jpmorganchase.com"},
+ {firm:"J.P. Morgan",name:"Markets Full-Time Analyst",area:"Markets",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","Interviews (may include recorded video)"],elig:[],
+  note:"A 2027 posting exists; its location and dates could not be read.",
+  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/markets-fulltime-analyst",src:"jpmorganchase.com"},
+ {firm:"J.P. Morgan",name:"Markets Research Full-Time Analyst",area:"Research",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","Interviews"],elig:[],note:"A 2027 posting exists; its location and dates could not be read.",
+  url:"https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210763120",src:"jpmc.fa.oraclecloud.com"},
+ {firm:"J.P. Morgan",name:"Global Private Bank Analyst Program",area:"Wealth & Asset Management",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","Interviews"],elig:[],note:"Two tracks: Advisor and Investment Solutions. London availability not confirmed.",
+  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/wealth-management-fulltime-analyst",src:"jpmorganchase.com"},
+ {firm:"J.P. Morgan",name:"Risk Management Full-Time Analyst",area:"Risk",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
+  steps:["Online application","Interviews"],elig:[],note:"London availability and dates not confirmed.",
+  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/risk-fulltime-analyst",src:"jpmorganchase.com"}
+];
+
+P.forEach(function(p){p.sector="bb"});
+var D4={steps:["Apply online","Immersive Online Assessment","Job Simulation (video)","Final Stage Assessment in person"],elig:["Predicted 2:1, any degree","No A-level or GCSE requirement for most"]};
+var PW={steps:["Apply online","SHL tests: numerical, inductive, deductive","Video interview","Virtual assessment centre","Business assessment"],elig:["Any degree","No UCAS requirement stated"]};
+var EY4={steps:["Application","Realistic Job Preview","Online assessment","Behavioural skills test","EY Experience Day","Final interview"],elig:["GCSE 4/C English & Maths","3 A-levels or equivalent","No degree class requirement"]};
+var KP={steps:["Explore & Apply","Skills + 36-min Cognitive test","Video interview (6 questions)","Launch Pad + final interview"],elig:["2:1, 120 UCAS, GCSE 5/B","Contextual: apply if a few grades short"]};
+P=P.concat([
+ {sector:"big4",firm:"PwC",name:"Graduate Audit, Accounting, Tax and Finance · Audit",area:"Audit & Assurance",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or ICAS CA"]),
+  note:"One application per intake year across ALL PwC graduate programmes. London and regional offices. September 2027 start, no deferrals.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/audit-accounting-tax-finance.html",src:"pwc.co.uk"},
+ {sector:"big4",firm:"PwC",name:"Graduate Audit, Accounting, Tax and Finance · Tax",area:"Tax",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or ICAS CA"]),
+  note:"Same application as Audit: you choose Tax as your preference. Preference is considered, not guaranteed.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/audit-accounting-tax-finance.html",src:"pwc.co.uk"},
+ {sector:"big4",firm:"PwC",name:"Graduate Advisory and Consulting · Deals",area:"Deals & Advisory",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or CFA"]),
+  note:"Deals (M&A, restructuring) sits inside the wider Advisory scheme and uses your one PwC application.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/advisory-consulting.html",src:"pwc.co.uk"},
+ {sector:"big4",firm:"Deloitte",name:"Audit & Assurance Graduate Programme",area:"Audit & Assurance",status:"open",opens:"2026-09-28",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig.concat(["ACA or CA"]),
+  note:"London and about 20 other UK offices. Deloitte closes programmes early when volumes are high. One application per programme per year. September start.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-audit-assurance.html",src:"deloitte.com/uk"},
+ {sector:"big4",firm:"Deloitte",name:"Tax Consulting Graduate Programme",area:"Tax",status:"open",opens:"2026-09-28",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig,
+  note:"Multiple UK offices. Closes early when full. Skip the Tax Technology adverts if you want a tax role.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-tax-consulting.html",src:"deloitte.com/uk"},
+ {sector:"big4",firm:"Deloitte",name:"Advisory Graduate Programme · Mergers & Acquisitions",area:"Deals & Advisory",status:"open",opens:"2026-10-05",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig,
+  note:"Split into team adverts: Corporate Finance, Transaction Services, Valuations, Restructuring. Pick one carefully: one application per programme per year.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-opportunities-in-advisory.html",src:"deloitte.com/uk"},
+ {sector:"big4",firm:"EY",name:"Audit Graduate Programme",area:"Audit & Assurance",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
+  note:"London plus 11 UK offices for September 2027; London also has an April 2027 intake. EY closes once places are filled.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
+ {sector:"big4",firm:"EY",name:"Tax Graduate Programme",area:"Tax",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
+  note:"London plus 7 UK offices. September 2027 start. Closes once places are filled.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
+ {sector:"big4",firm:"EY",name:"EY-Parthenon · Valuation Graduate Programme",area:"Deals & Advisory",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
+  note:"London and Manchester. September 2027 start.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
+ {sector:"big4",firm:"EY",name:"EY-Parthenon · Capital & Debt Advisory Graduate Programme",area:"Deals & Advisory",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig,
+  note:"London. Two-year programme from September 2027.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
+ {sector:"big4",firm:"KPMG",name:"Audit Graduate Programme",area:"Audit & Assurance",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA (CA in Scotland)","Visa sponsorship: London only"]),
+  note:"Launch Pad assessment days run from 17 November, so the 2027 cycle is under way. Open status couldn't be read from KPMG's vacancy search.",url:"https://www.kpmgcareers.co.uk/graduate/audit/audit/",src:"kpmgcareers.co.uk"},
+ {sector:"big4",firm:"KPMG",name:"Tax Graduate Programme",area:"Tax",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA (CA in Scotland)","Visa sponsorship: London only"]),
+  note:"Open status couldn't be read from KPMG's vacancy search. You can switch programme before you formally apply, not after.",url:"https://www.kpmgcareers.co.uk/graduate/tax-law/tax/",src:"kpmgcareers.co.uk"},
+ {sector:"big4",firm:"KPMG",name:"Accounting Advisory and Assurance",area:"Audit & Assurance",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA","No visa sponsorship"]),
+  note:"Open status couldn't be read from KPMG's vacancy search. KPMG can't sponsor visas for this programme.",url:"https://www.kpmgcareers.co.uk/graduate/audit/accounting-advisory-and-assurance/",src:"kpmgcareers.co.uk"}
+]);
+var FIRMS_B4=[
+ ["PwC","One application per intake year across every PwC graduate programme, so choose your business area carefully. SHL tests cover numerical, inductive and deductive reasoning, then a video interview and a virtual assessment centre."],
+ ["Deloitte","One application per programme per year, and programmes close early when full. After the online assessment there's a Job Simulation with recorded video answers, then an in-person final stage."],
+ ["EY","One EY application every 6 months. A rejection means waiting 6 months to reapply. No degree class or UCAS requirement; GCSE 4/C in English and Maths and 3 A-levels or equivalent."],
+ ["KPMG","2:1, 120 UCAS points and GCSE 5/B, applied contextually. A 36-minute timed cognitive test and a 6-question pre-recorded video interview, then a half-day Launch Pad with offers within 2 working days."]
+];
+var EXS={bb:null,big4:{name:"Emily",overall:85,
+  byArea:{"Audit & Assurance":85,"Tax":76,"Deals & Advisory":71},
+  fixes:{"Audit & Assurance":["Prepare to explain your £3,100 cut-off finding","Practise explaining your decision when the speaker cancelled"],
+         "Tax":["Show an interest in tax beyond your module","Practise explaining VAT and corporation tax simply"],
+         "Deals & Advisory":["Add the client and business context to your Vale Accountancy work","Practise valuation basics: enterprise value and multiples"]}}};
+var SECTOR="bb";
+function cur(){return P.filter(function(p){return p.sector===SECTOR})}
+var FIRMS=[
+ ["Goldman Sachs","Up to four applications per recruiting year, then the rest are withdrawn automatically. First round is a HireVue video interview; the final round is a Superday of 2–5 interviews."],
+ ["J.P. Morgan","Applications are reviewed on a rolling basis, and only locations currently hiring appear on its application site. An optional virtual work experience on Forage doesn't affect decisions."],
+ ["Morgan Stanley","No 2027 London graduate posting could be confirmed on Morgan Stanley's site when we checked. Watch its careers search for London postings."],
+ ["Bank of America","No 2027 London full-time analyst posting was found. London hiring runs through 2027 summer internships, and the London IB summer role closed on 4 October 2026."],
+ ["Citi","Most London 2027 banking analyst roles are conversion routes for Citi's own 2026 summer interns. Open to new applicants: Markets Sales & Trading and Commercial Banking."],
+ ["Barclays","Two short interactive online assessments, then a 2–3 stage assessment centre including a motivational interview with a senior leader. Visa sponsorship is available on these programmes."],
+ ["Deutsche Bank","One UK application per season. Online tests must be done within 96 hours. Roles can close early with 48 hours' notice, and windows are short: Markets was open for one week."],
+ ["UBS","One UK programme application per academic year. Verbal, numerical and inductive reasoning tests plus a culture-match test, done within 7 days with no retakes. London 2027 postings could not be confirmed when we checked."]
+];
+
+var londonParts=new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());var calendar={};londonParts.forEach(function(p){calendar[p.type]=p.value});var today=new Date(Date.UTC(+calendar.year,+calendar.month-1,+calendar.day));
+var MODE="free";var contextParams=new URLSearchParams(location.search),contextId=contextParams.get("id"),contextSample=contextParams.get("sample");var contextQuery=contextId&&/^[a-f0-9]{48}$/.test(contextId)?"?id="+encodeURIComponent(contextId):["emily","elliot","amelia"].includes(contextSample)?"?sample="+encodeURIComponent(contextSample):"";var fullCycleUrl=contextQuery?"/fullcycle-plan.html"+contextQuery+location.hash:"/assessment-start.html";document.getElementById("backToPlan").href=fullCycleUrl;
+// Example students for the Full Cycle preview.
+var EX=EXS.bb={name:"Amelia",overall:66,
+  byArea:{"Investment Banking":66,"Markets":61,"Risk":74,"Corporate & Commercial":72,"Research":63,"Wealth & Asset Management":69,"Multiple divisions":66},
+  fixes:{"Investment Banking":["Rewrite your Redcliffe bullet to show what you concluded","Practise enterprise value vs equity value"],
+         "Markets":["Add one market view you can defend in 60 seconds","Timed numerical practice: you scored 3/5"],
+         "Risk":["Show the judgement in your LVMH sensitivity analysis","Practise credit risk basics"],
+         "Corporate & Commercial":["Lead with client-facing work from your hospitality job","Explain how a bank lends to a mid-sized company"],
+         "Research":["Turn your LVMH view into a one-page pitch","Practise why multiples differ across sectors"],
+         "Wealth & Asset Management":["Prepare a view on one asset class","Practise portfolio basics: diversification and fees"],
+         "Multiple divisions":["Choose your division and tailor the CV to it","Practise enterprise value vs equity value"]}};
+function testPrep(p){
+  var f=p.firm;
+  if(f==="Deutsche Bank")return"DB's online tests (96 hours to complete) and pre-recorded video interview";
+  if(f==="Barclays")return"Barclays' two interactive online assessments and the motivational interview at assessment centre";
+  if(f==="Goldman Sachs")return"Goldman's HireVue first round and Superday";
+  if(f==="UBS")return"UBS's verbal, numerical and inductive tests (7 days, no retakes)";
+  if(f==="Citi")return"Citi's interviews and the numerical basics for "+p.area;
+  if(f==="PwC")return"PwC's SHL numerical, inductive and deductive tests and video interview";
+  if(f==="Deloitte")return"Deloitte's Immersive Online Assessment and Job Simulation";
+  if(f==="EY")return"EY's online assessment, behavioural skills test and Experience Day";
+  if(f==="KPMG")return"KPMG's 36-minute Cognitive test and pre-recorded video interview";
+  return p.firm+"'s video interview and online tests";
+}
+function plan(p){
+  var n=days(p.closes);
+  if(n!==null&&n<=7)return["Today: make your 2 CV fixes","Tomorrow: timed practice for this bank's tests","Next day: finish your “why "+p.firm+"” answer","Submit with a day to spare"];
+  if(n!==null)return["This week: make your 2 CV fixes and recheck","Next week: practise this bank's tests","Then: finish your “why "+p.firm+"” answer","Submit at least 5 days before "+fmt(p.closes)];
+  return["Rolling or no deadline: aim to submit within 2 weeks","Week 1: CV fixes and recheck","Week 2: test practice and your “why "+p.firm+"” answer"];
+}
+function d(s){if(!s)return null;var p=s.split("-");return new Date(Date.UTC(+p[0],+p[1]-1,+p[2]))}
+function days(s){var x=d(s);return x?Math.round((x-today)/864e5):null}
+function fmt(s){var x=d(s);return x?x.toLocaleDateString("en-GB",{day:"numeric",month:"short",timeZone:"UTC"}):""}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function st(p){
+  if(p.status==="unconfirmed")return"unconfirmed";
+  var n=days(p.closes);
+  if(p.status==="closed"||(n!==null&&n<0))return"closed";
+  return"open";
+}
+function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;if(s==="open")return 500;if(s==="unconfirmed")return 800;return 1000+(-(n||0))}
+var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}");if(stored&&typeof stored==="object"&&!Array.isArray(stored))mine=stored}catch(e){}
+function save(){try{localStorage.setItem("desk_mylist",JSON.stringify(mine));document.getElementById("saveNotice").textContent="Saved on this browser."}catch(e){document.getElementById("saveNotice").textContent="This browser could not save your changes. Export your list to keep a copy."}}
+function key(p){return p.firm+"|"+p.name}
+
+// stats + insight
+function drawTop(){
+var C=cur();
+var open=C.filter(function(p){return st(p)==="open"});
+var openEntry=open.filter(function(p){return p.entry==="open"});
+var soon=open.filter(function(p){var n=days(p.closes);return n!==null&&n<=21});
+var interns=open.filter(function(p){return p.entry==="interns"});
+var noDate=open.filter(function(p){return !p.closes});
+if(SECTOR==="bb"){
+document.getElementById("stats").innerHTML=
+ '<div class="stat"><b>'+open.length+'</b><span>open now in London</span></div>'+
+ '<div class="stat hot"><b>'+soon.length+'</b><span>closing within 21 days</span></div>'+
+ '<div class="stat"><b>'+openEntry.length+'</b><span>open to anyone</span></div>'+
+ '<div class="stat"><b>'+interns.length+'</b><span>for the bank\'s own interns only</span></div>';
+document.getElementById("insight").innerHTML='<p>Of the <b>'+open.length+'</b> London graduate roles open right now, <b>'+interns.length+'</b> are only for that bank\'s own summer interns. At the bulge brackets, the graduate job is usually won a year earlier, in the summer internship.</p><a href="https://www.jpmorganchase.com/careers/explore-opportunities/programs" target="_blank" rel="noopener">Explore internship programmes ↗</a>';
+}else{
+document.getElementById("stats").innerHTML=
+ '<div class="stat"><b>'+open.length+'</b><span>open now</span></div>'+
+ '<div class="stat hot"><b>'+noDate.length+'</b><span>with no closing date: they fill up</span></div>'+
+ '<div class="stat"><b>4</b><span>firms, each with its own application limit</span></div>'+
+ '<div class="stat"><b>1</b><span>PwC application per year, across every programme</span></div>';
+document.getElementById("insight").innerHTML='<p>None of the Big 4 publish a closing date. They recruit <b>until places are filled</b>, so a strong application in October has more seats to compete for than the same one in February.</p><a href="/assessment-start.html">Check my readiness now →</a>';
+}
+document.getElementById("kick").textContent=SECTOR==="bb"?"Deadline tracker · Bulge bracket · London":"Deadline tracker · Big 4 accountancy · UK";
+document.getElementById("h1").textContent=SECTOR==="bb"?"2027 graduate programmes, checked against each bank's own site.":"2027 Big 4 graduate schemes, with official application links.";
+document.getElementById("fh").textContent=SECTOR==="bb"?"How each bank hires":"How each Big 4 firm hires";
+document.getElementById("firmNotes").innerHTML=(SECTOR==="bb"?FIRMS:FIRMS_B4).map(function(f){return'<div class="fcard"><b>'+esc(f[0])+'</b><p>'+esc(f[1])+'</p></div>'}).join("");
+opts(fFirm,Array.from(new Set(C.map(function(p){return p.firm}).concat(SECTOR==="bb"?["Morgan Stanley","Bank of America","UBS"]:[]))).sort(),"All firms");
+opts(fDiv,Array.from(new Set(C.map(function(p){return p.area}))).sort(),"All areas");
+}
+
+// filters
+var fFirm=document.getElementById("fFirm"),fDiv=document.getElementById("fDiv"),fStatus=document.getElementById("fStatus"),fEntry=document.getElementById("fEntry"),fMine=document.getElementById("fMine");
+function opts(el,arr,label){el.innerHTML='<option value="all">'+label+'</option>'+arr.map(function(v){return'<option>'+esc(v)+'</option>'}).join("")}
+
+function whenHtml(p){
+  var s=st(p),n=days(p.closes);
+  if(s==="closed")return'<div class="when"><b>Closed</b><span>'+(p.closes?"Closed "+fmt(p.closes):"")+'</span></div>';
+  if(s==="unconfirmed")return'<div class="when"><b>Not confirmed</b><span>Check the firm\'s site</span></div>';
+  if(n!==null)return'<div class="when'+(n<=21?" urgent":"")+'"><b>'+(n===0?"Closes today":n===1?"Closes tomorrow":"Closes in "+n+" days")+'</b><span>'+fmt(p.closes)+(p.rolling?" · may close early":"")+'</span></div>';
+  return'<div class="when"><b>Open</b><span>No deadline published'+(p.rolling?" · rolling":"")+'<br>Apply early</span></div>';
+}
+function lockHtml(p){
+  return'<div class="prep"><span class="lock"><b>Preparation preview:</b> example practice for '+esc(testPrep(p))+', video interview questions from your CV, and your “why '+esc(p.firm)+'” draft.</span><a href="#" data-unlock="1">Explore the preparation preview →</a></div>';
+}
+function fcHtml(p){
+  var sc=EX.byArea[p.area]||EX.overall, fx=EX.fixes[p.area]||EX.fixes["Multiple divisions"];
+  return'<div class="fc">'+
+   '<div><h4>Your readiness for this role</h4><div class="score">'+sc+'<small> /100</small></div><p style="margin-top:6px">'+(sc>=75?"Competitive. Focus on the interview.":sc>=65?"Borderline. Two fixes before you apply:":"Below benchmark. Fix these first:")+'</p><ol>'+fx.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol></div>'+
+   '<div><h4>Prepare for '+esc(p.firm)+'</h4><ul><li>Practice set: '+esc(testPrep(p))+'</li><li>Video interview: 10 questions your CV will trigger, timed</li><li>“Why '+esc(p.firm)+'?”: draft from your CV, gaps marked <span class="gap">[your reason]</span></li><li>Practitioner guidance: scope and availability to be confirmed</li></ul></div>'+
+   '<div><h4>Your countdown</h4><ol>'+plan(p).map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol></div>'+
+  '</div>';
+}
+function strategyHtml(){return MODE!=="fc"?"":'<div class="strategy"><div class="example">Fictional preparation example · '+esc(EX.name)+'</div><h3>Explore preparation for each programme</h3><p>The example scores below are illustrative. They are not firm-specific assessments of your CV, and no automated alerts are provided by this tracker.</p><a href="'+esc(fullCycleUrl)+'">Explore your Full Cycle preparation →</a></div>';}
+function setMode(m){
+  MODE=m;
+  document.getElementById("mFree").setAttribute("aria-pressed",String(m==="free"));
+  document.getElementById("mFc").setAttribute("aria-pressed",String(m==="fc"));
+  document.getElementById("modeNote").textContent=m==="free"?"Browse deadlines and save applications. Preparation preview uses fictional examples.":"Preview using our example student, "+EX.name+". These scores and fixes are illustrative only; they are not calculated for you or endorsed by a firm.";
+  document.getElementById("strategy").innerHTML=strategyHtml();
+  render();
+}
+function render(){
+  var rows=cur().filter(function(p){
+    var s=st(p),n=days(p.closes);
+    if(fFirm.value!=="all"&&p.firm!==fFirm.value)return false;
+    if(fDiv.value!=="all"&&p.area!==fDiv.value)return false;
+    if(fStatus.value==="open"&&s!=="open")return false;
+    if(fStatus.value==="soon"&&!(s==="open"&&n!==null&&n<=21))return false;
+    if(fStatus.value==="closed"&&s!=="closed")return false;
+    if(fStatus.value==="unconfirmed"&&s!=="unconfirmed")return false;
+    if(fEntry.checked&&p.entry!=="open")return false;
+    if(fMine.checked&&!mine[key(p)])return false;
+    return true;
+  }).sort(function(a,b){return rank(a)-rank(b)});
+  document.getElementById("count").textContent=rows.length+" programme"+(rows.length===1?"":"s");
+  var L=document.getElementById("list");
+  if(!rows.length){
+    var f=fFirm.value,msg="No programmes match these filters.";
+    if(f!=="all"&&!cur().some(function(p){return p.firm===f}))msg="No 2027 London graduate posting could be confirmed on "+f+"'s site. See how they hire below.";
+    if(fMine.checked&&!Object.keys(mine).length)msg="Your list is empty. Use “Add to my list” on any programme.";
+    L.innerHTML='<div class="empty">'+esc(msg)+'</div>';return;
+  }
+  L.innerHTML=rows.map(function(p){
+    var s=st(p),k=key(p),saved=!!mine[k];
+    var chips='<span class="chip">'+esc(p.area)+'</span>'+
+      (p.entry==="open"?'<span class="chip open">Open to anyone</span>':p.entry==="interns"?'<span class="chip warn">Bank\'s own interns only</span>':'')+
+      (p.elig||[]).map(function(e){return'<span class="chip">'+esc(e)+'</span>'}).join("");
+    return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
+      '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
+      (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
+      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div></div>'+
+      '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
+      '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
+      (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
+      (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
+      (s==="open"&&p.entry==="open"?(MODE==="free"?lockHtml(p):fcHtml(p)):'')+'</article>';
+  }).join("");
+  L.querySelectorAll("button[data-k]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-k");if(mine[k])delete mine[k];else mine[k]={stage:"Shortlisted"};save();render()}});
+  L.querySelectorAll("select[data-stage]").forEach(function(select){select.onchange=function(){mine[select.dataset.stage]={stage:select.value};save()}});
+  L.querySelectorAll("a[data-unlock]").forEach(function(a){a.onclick=function(e){e.preventDefault();setMode("fc");window.scrollTo({top:0,behavior:"smooth"})}});
+}
+function setSector(x){
+  SECTOR=x;EX=EXS[x];
+  document.getElementById("sBB").setAttribute("aria-pressed",String(x==="bb"));
+  document.getElementById("sB4").setAttribute("aria-pressed",String(x==="big4"));
+  fFirm.value="all";fDiv.value="all";
+  drawTop();setMode(MODE);
+}
+document.getElementById("sBB").onclick=function(){setSector("bb")};
+document.getElementById("sB4").onclick=function(){setSector("big4")};
+document.getElementById("mFree").onclick=function(){setMode("free")};
+document.getElementById("mFc").onclick=function(){setMode("fc")};
+[fFirm,fDiv,fStatus,fEntry,fMine].forEach(function(el){el.onchange=render});
+document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
+if(contextSample==="emily")setSector("big4");else{drawTop();render();}
+})();
+</script>
+
+</body>
+</html>
