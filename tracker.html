@@ -139,7 +139,8 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   .count{margin-left:0;width:100%}
 }
 .tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
-.prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n</style>
+.prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n.role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.role-tab{font:600 13px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 11px;cursor:pointer}.role-tab[aria-expanded="true"]{background:var(--soft);border-color:var(--ink)}.role-info{border-top:1px solid var(--line);padding:14px 0 4px}.role-info h3{font:500 19px var(--display);margin:0 0 8px}.role-info p{font-size:14px;margin:0 0 10px}.role-info a{font-size:13px;font-weight:600}.role-info .role-note{font-size:12px;color:var(--muted)}.role-info[hidden]{display:none}.prep-topics{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:7px}.prep-topics span{font-size:13px}.prep-topics span:before{content:"✓";margin-right:6px;color:var(--accent)}.prep-support{font-size:12px;color:var(--muted);margin:8px 0 0}
+</style>
 
 </head>
 <body>
@@ -412,8 +413,39 @@ function whenHtml(p){
   if(n!==null)return'<div class="when'+(n<=21?" urgent":"")+'"><b>'+(n===0?"Closes today":n===1?"Closes tomorrow":"Closes in "+n+" days")+'</b><span>'+fmt(p.closes)+(p.rolling?" · may close early":"")+'</span></div>';
   return'<div class="when"><b>Open</b><span>No deadline published'+(p.rolling?" · rolling":"")+'<br>Apply early</span></div>';
 }
+function firmLabel(p){return p.firm==="Deutsche Bank"?"DB":p.firm;}
+function prepItems(p){
+ if(p.firm==="Deutsche Bank")return ["Numeracy and ability-test practice","Situational judgement","Behavioural questions","Pre-recorded video interview","Why Deutsche Bank / why "+p.area];
+ var steps=(p.steps||[]).join(" ").toLowerCase(),items=[];
+ if(/assessment|test|cognitive|numerical/.test(steps))items.push("Numerical and assessment practice");
+ if(/video|hirevue|job simulation/.test(steps))items.push("Recorded video interview preparation");
+ else if(/interview/.test(steps))items.push("Interview preparation");
+ if(/assessment centre|superday|launch pad|final stage/.test(steps))items.push("Final-stage interview and assessment preparation");
+ items.push("Why "+p.firm+" / why "+p.area);
+ return items;
+}
+function roleBrief(p){
+ if(p.firm==="Deutsche Bank"&&p.name.indexOf("Chief Risk")>=0)return "Help identify and measure risks across the bank, analyse market developments and risk exposures, and communicate findings to support risk-management decisions.";
+ if(/Quantitative/.test(p.name))return "Use mathematics, programming and data analysis to develop tools for valuation, trading or risk management.";
+ var descriptions={"Investment Banking":"Support corporate financing and transaction work through financial analysis, valuation and client materials.","Markets":"Support trading, sales or structuring teams by following markets, analysing products and helping serve clients.","Risk":"Analyse exposures and risk drivers so the firm can understand and manage financial and operational risks.","Corporate & Commercial":"Support banking relationships with businesses, including lending analysis, client research and financing needs.","Research":"Analyse companies, sectors or markets and explain findings that help inform investment decisions.","Wealth & Asset Management":"Support investment analysis or advice for clients, including portfolios, markets and client needs.","Audit & Assurance":"Examine financial records and supporting evidence to help assess whether accounts are reliable.","Tax":"Help analyse tax obligations and advise on the tax implications of business activities.","Deals & Advisory":"Support transactions and business decisions through due diligence, valuation or financial analysis.","Multiple divisions":"The work depends on the division you choose. Compare its responsibilities and eligibility before applying."};
+ return descriptions[p.area]||"Read the programme description to understand the team, graduate responsibilities and skills required.";
+}
+function programmeBrief(p){
+ if(p.firm==="Deutsche Bank"&&p.name.indexOf("Chief Risk")>=0)return "The London 2027 Chief Risk Office programme runs for 12 months, starts in July 2027 and includes rotations across CRO functions, technical training and one-to-one mentoring.";
+ return p.firm+"'s "+p.name+". The imported programme information lists "+((p.steps||[]).length?(p.steps||[]).join(" → "):"stages to confirm on the official firm page")+".";
+}
+function roleTabsHtml(p,i){
+ var roleId="role-info-"+i,insightId="programme-info-"+i,db=p.firm==="Deutsche Bank",source=db?"https://db.recsolu.com/jobs/wPkxWntNQUbHi1hCr4r_KQ?job_board_id=DT5zqeU-qZM-ltrVsIvR9Q":p.url;
+ var insight=programmeBrief(p);
+ if(db)insight+=" DB's official application FAQ describes situational judgement, a behavioural questionnaire, an ability test and a pre-recorded video interview. Follow the instructions in your invitation.";
+ return '<div class="role-tabs" role="group" aria-label="Explore this programme">'+
+ '<button type="button" class="role-tab" data-info="'+roleId+'" aria-expanded="false" aria-controls="'+roleId+'">What is this role?</button>'+
+ '<button type="button" class="role-tab" data-info="'+insightId+'" aria-expanded="false" aria-controls="'+insightId+'">'+esc(firmLabel(p))+' graduate programme insights</button></div>'+
+ '<div class="role-info" id="'+roleId+'" hidden><h3>'+esc(p.area)+' · In plain English</h3><p>'+esc(roleBrief(p))+'</p><p class="role-note">Exact responsibilities depend on the team and programme.</p><a href="'+esc(p.url)+'" target="_blank" rel="noopener">Read the official role description ↗</a></div>'+
+ '<div class="role-info" id="'+insightId+'" hidden><h3>'+esc(firmLabel(p))+' · Programme overview</h3><p>'+esc(insight)+'</p><a href="'+esc(db?"https://careers.db.com/students-graduates/your-application/faq/index":source)+'" target="_blank" rel="noopener">Read official programme information ↗</a><p><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle preparation →</a></p></div>';
+}
 function lockHtml(p){
- return '<div class="prep"><div class="lock"><b>Prepare for this application with Full Cycle.</b><br>Your rewritten CV, competency answer drafts, interview preparation, numerical and technical practice, and two readiness rechecks.</div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle — £79 →</a></div>';
+ return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+' with Full Cycle.</b><div class="prep-topics">'+prepItems(p).map(function(item){return '<span>'+esc(item)+'</span>'}).join("")+'</div><p class="prep-support">Alongside your CV rewrite, competency answer drafts and readiness rechecks.</p></div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle →</a></div>';
 }
 function render(){
   var rows=cur().filter(function(p){
@@ -436,7 +468,7 @@ function render(){
     if(fMine.checked&&!Object.keys(mine).length)msg="Your list is empty. Use “Add to my list” on any programme.";
     L.innerHTML='<div class="empty">'+esc(msg)+'</div>';return;
   }
-  L.innerHTML=rows.map(function(p){
+  L.innerHTML=rows.map(function(p,i){
     var s=st(p),k=key(p),saved=!!mine[k];
     var chips='<span class="chip">'+esc(p.area)+'</span>'+
       (p.entry==="open"?'<span class="chip open">Open to anyone</span>':p.entry==="interns"?'<span class="chip warn">Bank\'s own interns only</span>':'')+
@@ -444,13 +476,14 @@ function render(){
     return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
       '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
-      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div></div>'+
+      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
       '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
       (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
       (s==="open"&&p.entry==="open"?lockHtml(p):'')+'</article>';
   }).join("");
+  L.querySelectorAll("button[data-info]").forEach(function(button){button.onclick=function(){var parent=button.closest(".main"),target=document.getElementById(button.dataset.info),show=target.hidden;parent.querySelectorAll(".role-info").forEach(function(panel){panel.hidden=true});parent.querySelectorAll("button[data-info]").forEach(function(tab){tab.setAttribute("aria-expanded","false")});if(show){target.hidden=false;button.setAttribute("aria-expanded","true")}}});
   L.querySelectorAll("button[data-k]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-k");if(mine[k])delete mine[k];else mine[k]={stage:"Shortlisted"};save();render()}});
   L.querySelectorAll("select[data-stage]").forEach(function(select){select.onchange=function(){mine[select.dataset.stage]={stage:select.value};save()}});
 
