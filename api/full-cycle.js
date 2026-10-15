@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { buildContext, buildPartPrompt, parsePart, getPartSchema, REPORT_VERSION } from '../lib/full-cycle-contract.mjs';
+import { buildContext, buildPartPrompt, parsePart, getPartSchema, lintReport, REPORT_VERSION } from '../lib/full-cycle-contract.mjs';
+import { buildThirtyDayPlan } from '../lib/thirty-day-plan.mjs';
 import { assessAtsReadiness } from '../lib/ats-readiness.mjs';
 import {ownedRecord,hasAccess,sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
 
@@ -28,15 +29,22 @@ export default async function handler(req, res) {
     if (!submitted) throw new Error('Missing structured report');
     const text = JSON.stringify(submitted.input);
     const data = parsePart(text, part, ctx.cvText);
+    const lint = lintReport(data, ctx);
+    if (lint.notes.length) console.warn('full-cycle lint', JSON.stringify({part, notes: lint.notes}));
+    if (part === 'verdict') data.profileWarnings = ctx.facts?.profile?.warnings || [];
     if (part === 'repair') {
       const supplied = new Map((result.competencies || []).map(c => [c.name,c.score]));
       for (const c of data.competencyRepair) {
         if (!supplied.has(c.name) || c.score !== supplied.get(c.name)) throw new Error('Competency scores must match original assessment');
       }
+      const rejectedDrafts=data.competencyRepair.filter(c=>c.draftRejected).map(c=>({competency:c.name,reason:c.draftRejected}));
+      if(rejectedDrafts.length)console.warn('full-cycle draft checks',JSON.stringify(rejectedDrafts));
       data.atsReadiness = result.atsReadiness;
     }
     if (part === 'plan') {
       data.workedAnswers=quiz.workedAnswers||[];
+      const verdictFirm=ctx.firmProcess;
+      data.weeksTwoToFour=buildThirtyDayPlan({quiz,profile,firm:verdictFirm,interviewQuestions:row.report?.repair?.interviewRiskMap||[]});
     }
     await sql().query("UPDATE desk_assessments SET report=jsonb_set(report,ARRAY[$1],$2::jsonb),generation_lease=generation_lease-$1 WHERE id=$3",[part,JSON.stringify(data),row.id]);
     return res.status(200).json({ success:true, part, version:REPORT_VERSION, data });
