@@ -1,0 +1,28 @@
+import {FIRM_GUIDES} from '/data/firm-guides.mjs';
+import {BANK_LOGOS} from '/data/bank-logos.mjs';
+const q=new URLSearchParams(location.search),id=/^[a-f0-9]{48}$/.test(q.get('id')||'')?q.get('id'):'',sample=q.get('dashboard')==='sample';
+const context=id?'?id='+encodeURIComponent(id):sample?'?dashboard=sample':'';
+const dashboard=(sample?'/fullcycle-report-v3-test.html':id?'/fullcycle.html?id='+encodeURIComponent(id):'/assessment-start.html')+(id||sample?'#prep':'');
+const index=[{name:'Deutsche Bank',slug:'deutsche-bank',category:'Banking'},...FIRM_GUIDES];
+const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
+const anchor=(text,href,cls)=>{const a=el('a',text,cls);a.href=href;return a;};
+function addFirm(name,status){if(!id&&!sample){location.href='/assessment-start.html';return;}try{const key='desk-prep-'+(sample?'sample':id);let values=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(values))values=[];values=Array.from(new Set([...values,name])).filter(n=>index.some(f=>f.name===n));localStorage.setItem(key,JSON.stringify(values));status.textContent=name+' prep added to your dashboard.';}catch{status.textContent='Your browser could not save this firm. Please allow local storage and retry.';}}
+document.querySelectorAll('[data-guide-hub]').forEach(a=>a.href='/graduate-programmes.html'+context);
+document.querySelectorAll('[data-dashboard]').forEach(a=>{a.href=dashboard;a.textContent=id||sample?'My dashboard →':'Start an assessment →';});
+const root=document.getElementById('guideHub');
+if(root){
+ if(id||sample){const box=el('section',null,'guide-add');box.id='add-firm';box.append(el('div','Your dashboard','kicker'),el('h2','Add a firm to your prep'),el('p','Only the firms you add appear in Prep. Saving a guide does not run AI or purchase anything.'));
+ const select=el('select');select.setAttribute('aria-label','Choose firm');for(const f of index){const o=el('option',f.name);o.value=f.name;select.append(o);}const btn=el('button','Add to my dashboard','btn'),status=el('p');status.setAttribute('role','status');btn.onclick=()=>addFirm(select.value,status);box.append(select,btn,status,anchor('Back to my dashboard →',dashboard));root.append(box);}
+ for(const category of ['Banking','Accounting & professional services','Insurance','Asset management']){root.append(el('h2',category,'hub-category'));const grid=el('div',null,'bank-grid');for(const f of index.filter(f=>f.category===category)){const tile=anchor('', '/'+f.slug+'.html'+context,'bank-tile unlocked');if(BANK_LOGOS[f.name]){const img=el('img');img.src=BANK_LOGOS[f.name];img.alt=f.name;tile.append(img);}else tile.append(el('span',f.name.split(/[\s\/&]+/).filter(Boolean).map(w=>w[0]).join('').slice(0,3).toUpperCase(),'firm-initial'));tile.append(el('h3',f.name),el('span','Explore guide →','tile-status'));grid.append(tile);}root.append(grid);}
+}else{
+ const firm=FIRM_GUIDES.find(f=>f.slug===document.body.dataset.firm);if(!firm)throw Error('Guide unavailable');document.title=firm.name+' guide | The Desk';
+ document.getElementById('firmName').textContent=firm.name+' guide.';document.getElementById('firmCategory').textContent='The Desk · '+firm.category;document.getElementById('firmAbout').textContent=firm.about;
+ const actions=document.getElementById('firmActions'),status=el('p');status.setAttribute('role','status');const add=el('button','Add '+firm.name+' prep to my dashboard','btn');add.onclick=()=>addFirm(firm.name,status);actions.append(add,anchor('Official careers and programme information ↗',firm.source));actions.after(status);
+ document.getElementById('firmFocus').textContent=firm.focus;
+ const roles=document.getElementById('firmRoles');for(const role of firm.roles){const card=el('article',null,'guide-card');card.append(el('h3',role.name),el('p',role.plain));const d=el('details'),s=el('summary','What would I actually do?');d.append(s,el('p',role.day));const ul=el('ul');role.tasks.forEach(t=>ul.append(el('li',t)));d.append(ul,el('p','Useful strengths: '+role.skills));card.append(d);roles.append(card);}
+ document.getElementById('firmExercise').textContent=firm.exercise;document.getElementById('firmPrompt').textContent=firm.prompt;
+ const sources=document.getElementById('firmSources');sources.append(anchor(firm.sourceLabel+' ↗',firm.source));for(const [title,url]of firm.extraSources)sources.append(el('br'),anchor(title+' ↗',url));sources.append(el('p','Sources reviewed '+firm.checked+'. Follow the exact vacancy and invitation for eligibility, deadlines, assessment stages and adjustments.','fine'));
+ const prep=document.getElementById('paidPrep');if(id){try{const response=await fetch('/api/firm-guide?id='+encodeURIComponent(id)+'&firm='+encodeURIComponent(firm.slug));if(response.ok){const data=await response.json();prep.replaceChildren(el('div','Full Cycle · '+firm.name+' prep','kicker'),el('h2','Build a reason you can defend.'));for(const task of data.tasks){const article=el('article',null,'guide-card');article.append(el('h3',task.title),el('p',task.detail));prep.append(article);}prep.append(el('p','These are independent preparation exercises, not questions promised by the employer. Nothing here changes your assessment score.','fine'));}else document.getElementById('paidStatus').textContent=response.status===402?'Open this guide from a paid Full Cycle assessment to unlock the prep pack.':'We could not check access. Return to your dashboard and reopen the guide.';}catch{document.getElementById('paidStatus').textContent='Could not check access. Please retry from your dashboard.';}}
+}
+
+
