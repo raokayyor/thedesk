@@ -1,0 +1,968 @@
+{
+  "sample": true,
+  "preview": false,
+  "generatedAt": "2026-10-15T11:32:50.878Z",
+  "reportVersion": "full-cycle-v3",
+  "provenance": {
+    "assessment": "Live free assessment endpoint, fictional Amelia CV, 3/5 numerical and 3/5 commercial/technical.",
+    "report": "Live Full Cycle v3 endpoint after a Stripe test-mode payment. No hand-written draft answers added.",
+    "payment": "Stripe sandbox only; no real charge."
+  },
+  "profile": {
+    "name": "Amelia Chen",
+    "year": "Final Year",
+    "grade": "2:1 (predicted)",
+    "course": "Economics (BSc)",
+    "programme": "Graduate Programme",
+    "targetFirm": "Barclays",
+    "university": "University of Bristol",
+    "targetSector": "Investment Banking / IBD",
+    "targetDivision": "Investment Banking / IBD"
+  },
+  "result": {
+    "band": "Borderline",
+    "weights": {
+      "ats": 10,
+      "numerical": 15,
+      "technical": 20,
+      "competency": 25,
+      "application": 30
+    },
+    "breakdown": {
+      "ats": 9,
+      "numerical": 9,
+      "technical": 12,
+      "competency": 13,
+      "application": 23
+    },
+    "cvPreview": {
+      "original": "Supported the investment team with research and analysis on potential transactions.",
+      "source": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+      "issue": "Supported the investment team with research and analysis on potential transactions. The scope, method and main conclusion are missing, so the reader cannot judge the depth of your analysis.",
+      "structure": "Supported the investment team with research and analysis on potential transactions. [Confirm: your personal contribution, method and output.]"
+    },
+    "priorities": [
+      {
+        "title": "Sharpen your LVMH valuation conclusion",
+        "description": "The LVMH valuation shows method and sensitivity but no stated view, leaving your analytical judgement invisible."
+      },
+      {
+        "title": "Close core technical gaps before applications",
+        "description": "Missed WACC and free cash flow questions at Redcliffe Partners level will surface in technical interviews and written tests."
+      },
+      {
+        "title": "Build a recorded commercial view from Economics Society",
+        "description": "Economics Society talks give exposure but no documented market view, leaving Commercial awareness unsupported beyond coursework."
+      }
+    ],
+    "targetFirm": "Barclays",
+    "deskSummary": "Your Redcliffe Partners screen and LVMH valuation show genuine hands-on analytical work at the right technical level. The main gaps are an absent investment conclusion in the valuation, limited evidence of commercial judgement beyond the tasks set, and missed quiz concepts in WACC, free cash flow and numerical accuracy that matter at interview.",
+    "atsReadiness": {
+      "band": "Ready to refine",
+      "score": 86,
+      "status": "assessed",
+      "version": "desk-ats-v1",
+      "assessedMax": 100,
+      "limitations": [
+        "Text-only check: original PDF layout, columns, tables and reading order are not verified.",
+        "This is The Desk’s readiness heuristic, not a bank pass mark or rejection probability."
+      ],
+      "keywordSource": "desk_route_dictionary",
+      "weightedContribution": {
+        "max": 10,
+        "score": 86,
+        "earned": 9,
+        "component": "ats",
+        "appliedToOverall": true
+      }
+    },
+    "competencies": [
+      {
+        "name": "Analytical ability",
+        "score": 72,
+        "reason": "The LVMH valuation shows DCF, trading comparables, peer benchmarking and sensitivity testing, but states no investment conclusion or view on relative value.",
+        "nextStep": "What did your LVMH sensitivity range imply about whether the market price looked stretched or fair?"
+      },
+      {
+        "name": "Teamwork",
+        "score": 52,
+        "reason": "At Pho House you trained 3 colleagues and coordinated a payment correction with the shift lead, but no team outcome or follow-up is recorded."
+      },
+      {
+        "name": "Communication",
+        "score": 63,
+        "reason": "At Redcliffe Partners you presented a comparison table and selection rationale to an associate, but format, audience reaction and follow-up are not recorded."
+      },
+      {
+        "name": "Leadership",
+        "score": 42,
+        "reason": "At Pho House you trained 3 new colleagues on procedures, a concrete personal action, but no outcome or ongoing responsibility is described."
+      },
+      {
+        "name": "Resilience",
+        "score": 31,
+        "reason": "Working 12 hours per week alongside university shows sustained commitment, but no pressure, setback or adaptive response is described."
+      },
+      {
+        "name": "Commercial awareness",
+        "score": 48,
+        "reason": "Economics Society attendance and Corporate Finance modules show exposure to commercial topics, but no applied market view or business insight is recorded."
+      },
+      {
+        "name": "Technical readiness",
+        "score": 66,
+        "reason": "The LVMH valuation confirms DCF and trading comparables in Excel; missed quiz questions on WACC, FCF and numerical concepts leave gaps in core technical foundations."
+      }
+    ],
+    "overallScore": 66,
+    "candidateName": "Amelia Chen",
+    "scoringVersion": "desk-readiness-v3"
+  },
+  "quiz": {
+    "commercialCorrect": 3,
+    "commercialTotal": 5,
+    "numericalCorrect": 3,
+    "numericalTotal": 5,
+    "missed": [
+      {
+        "topic": "WACC",
+        "section": "commercial",
+        "questionId": "T0038"
+      },
+      {
+        "topic": "Free cash flow",
+        "section": "commercial",
+        "questionId": "T0039"
+      },
+      {
+        "topic": "Percentage change",
+        "section": "numerical",
+        "questionId": "N0001"
+      },
+      {
+        "topic": "Margin change in percentage points",
+        "section": "numerical",
+        "questionId": "N0111"
+      }
+    ]
+  },
+  "paid": {
+    "firmPrep": {
+      "whyThisFirm": "I want to work in investment banking because I want to apply the analytical skills I have been building in practice — screening 12 UK software companies for a prospective acquisition at Redcliffe Partners and building a DCF and trading-comparables model for my LVMH project. [confirm: what specifically drew you to Barclays over other banks — e.g. a deal, a division, a person you met, or something from an employer talk at the Economics Society?] The graduate programme structure, which I understand includes a motivational interview with a senior leader as part of the assessment centre, appeals to me because [confirm: your specific reason]. I want to develop within a firm that offers [confirm: specific Barclays capability or culture point you have researched on their site].",
+      "assessmentPrep": [
+        "For the two short interactive online assessments (per the October 2026 tracker snapshot — confirm format on the official vacancy): practise timed numerical reasoning under exam conditions, focusing on percentage change and margin calculations, and review WACC and free cash flow definitions until you can explain them aloud without notes.",
+        "For the motivational interview with a senior leader at the assessment centre: prepare a clear, specific answer to 'Why Barclays IBD?' that connects your Redcliffe Partners acquisition screen and LVMH valuation to the division's work — confirm which specific Barclays IBD teams or recent activity you will reference.",
+        "For the 2–3 stage assessment centre (confirm exact stages and format on your official assessment invitation): prepare STAR-structured answers for all seven competencies, with particular attention to Leadership and Resilience, which are your lowest-scoring areas."
+      ],
+      "questionsToResearch": [
+        "What is the exact format and time limit of each of the two online assessments — check the official vacancy and any assessment invitation you receive, as the tracker snapshot is unverified.",
+        "Does the graduate programme you are applying to offer visa sponsorship for your specific nationality and circumstances — the tracker notes sponsorship is available on these programmes, but confirm on the official vacancy page.",
+        "Which specific IBD teams or product groups are open to graduate applicants in this cycle — check the Barclays careers site for the current vacancy listing."
+      ]
+    },
+    "paidTitle": "Amelia Chen — Barclays IBD Graduate Programme, Full Cycle Report",
+    "profileWarnings": [],
+    "executiveVerdict": {
+      "summary": "You score 66/100 (Borderline), needing 9 more points to reach competitive band. Your Redcliffe Partners acquisition screen and LVMH DCF show genuine hands-on analytical work at the right level. Three gaps hold you back: the LVMH valuation states no investment view, leaving your judgement invisible; your competency score of 13/25 is the single largest drag; and your technical gaps in WACC, free cash flow and numerical accuracy will surface in Barclays' online assessments. All three are fixable before submission.",
+      "submitAdvice": "Before submitting: (1) add an investment conclusion to the LVMH bullet, (2) drill your four missed quiz concepts until you can explain each aloud without notes, and (3) draft at least one written commercial view from a recent market event. Do not submit until steps 1 and 2 are complete. No score outcome is guaranteed.",
+      "mostImportantFix": "Add a stated investment view to your LVMH valuation bullet — what did your sensitivity range imply about whether the market price looked stretched or fair? This directly lifts your Analytical ability and application specificity scores.",
+      "readinessVerdict": "66/100 — Borderline. Scores: CV & application 23/30, ATS 9/10, Competency 13/25, Numerical 9/15, Commercial & technical 12/20."
+    },
+    "applicationRiskMap": [
+      {
+        "risk": "LVMH valuation bullet states no investment view",
+        "howToFix": "Revisit your sensitivity output: what did the 3%/5%/7% revenue growth range imply about the implied enterprise value versus the market price at the time? Add one sentence stating your conclusion — e.g. what the range suggested about relative value — and note the assumption that drove it most. Confirm the exact figures from your own model before adding them.",
+        "severity": "High",
+        "whyItMatters": "Your CV records that you 'did not make a live investment recommendation,' so a reader cannot see your analytical judgement — the core skill IBD roles assess. This suppresses your Analytical ability score (currently 72) and application specificity."
+      },
+      {
+        "risk": "Competency score 13/25 is the largest single points gap",
+        "howToFix": "Write a STAR answer for each of the seven competencies using the evidence in your CV. For Leadership and Resilience, use your Pho House experience (12 hours per week alongside university, training 3 colleagues, handling the duplicate-payment incident) and add context you can confirm — e.g. what pressure you were under during that busy service and what you did next.",
+        "severity": "High",
+        "whyItMatters": "Competency is weighted at 25 points — the highest single weight after CV & application. At 13/25 you are leaving the most recoverable points on the table. Leadership (42) and Resilience (31) are the weakest sub-scores, and both have thin CV evidence."
+      },
+      {
+        "risk": "Four missed quiz concepts will recur in Barclays' online assessments",
+        "howToFix": "Drill each missed concept using the worked answers supplied: explain WACC, unlevered FCF, percentage change (old value as base) and margin change in percentage points aloud without notes. Repeat until you can answer each in under 60 seconds. Do this before the online assessments, not after.",
+        "severity": "Medium",
+        "whyItMatters": "You scored 3/5 numerical and 3/5 commercial, missing WACC, Free cash flow, Percentage change and Margin change in percentage points. Barclays' process (per the October 2026 tracker snapshot) includes two short interactive online assessments where these concepts are likely to appear. Confirm the exact format on the official vacancy."
+      }
+    ],
+    "targetRouteMeaning": {
+      "routeGap": "No stated investment conclusion in your valuation work, a competency score of 13/25, and four missed technical concepts leave your analytical judgement and commercial awareness under-evidenced relative to competitive candidates.",
+      "isRouteRealistic": "Realistic but not yet competitive. You have a relevant corporate finance internship at Redcliffe Partners (July–August 2025), a DCF and trading-comparables project, and a predicted 2:1 in Economics from Bristol — all credible foundations for an IBD graduate application.",
+      "steppingStoneRoute": null,
+      "whatWouldMakeItCredible": "A revised LVMH bullet that states what your sensitivity range implied about valuation; a written commercial view on a current market topic you can defend at interview; and competency answers that use the STAR structure with specific actions drawn from your Redcliffe and Pho House experience."
+    },
+    "atsReadiness": {
+      "band": "Ready to refine",
+      "score": 86,
+      "status": "assessed",
+      "version": "desk-ats-v1",
+      "components": [
+        {
+          "max": 25,
+          "checks": [
+            {
+              "id": "usableText",
+              "passed": true,
+              "explanation": "At least 300 readable characters extracted."
+            },
+            {
+              "id": "cleanExtraction",
+              "passed": true,
+              "explanation": "Fewer than 1% replacement characters."
+            }
+          ],
+          "earned": 25,
+          "component": "textReadability"
+        },
+        {
+          "max": 25,
+          "checks": [
+            {
+              "id": "education",
+              "passed": true,
+              "explanation": "Recognisable education heading."
+            },
+            {
+              "id": "experience",
+              "passed": true,
+              "explanation": "Recognisable experience or projects heading."
+            },
+            {
+              "id": "skills",
+              "passed": true,
+              "explanation": "Recognisable skills heading."
+            }
+          ],
+          "earned": 25,
+          "component": "sectionStructure"
+        },
+        {
+          "max": 15,
+          "checks": [
+            {
+              "id": "email",
+              "passed": true,
+              "explanation": "Readable email address; contact details are not returned."
+            },
+            {
+              "id": "dates",
+              "passed": true,
+              "explanation": "Recognisable year dates for chronology."
+            }
+          ],
+          "earned": 15,
+          "component": "contactAndChronology"
+        },
+        {
+          "max": 35,
+          "checks": [
+            {
+              "id": "valuation",
+              "passed": true,
+              "explanation": "Term appears in extracted text; occurrence does not prove experience or skill."
+            },
+            {
+              "id": "financial modelling",
+              "passed": true,
+              "explanation": "Term appears in extracted text; occurrence does not prove experience or skill."
+            },
+            {
+              "id": "financial analysis",
+              "passed": true,
+              "explanation": "Term appears in extracted text; occurrence does not prove experience or skill."
+            },
+            {
+              "id": "due diligence",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            },
+            {
+              "id": "mergers and acquisitions",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            }
+          ],
+          "earned": 21,
+          "component": "targetRoleTerms"
+        }
+      ],
+      "assessedMax": 100,
+      "limitations": [
+        "Text-only check: original PDF layout, columns, tables and reading order are not verified.",
+        "This is The Desk’s readiness heuristic, not a bank pass mark or rejection probability."
+      ],
+      "keywordSource": "desk_route_dictionary",
+      "matchedKeywords": [
+        "valuation",
+        "financial modelling",
+        "financial analysis"
+      ],
+      "missingKeywords": [
+        "due diligence",
+        "mergers and acquisitions"
+      ],
+      "suggestedActions": [
+        "Review missing role terms. Add them only where supported by your actual experience; do not stuff keywords."
+      ],
+      "weightedContribution": {
+        "max": 10,
+        "score": 86,
+        "earned": 9,
+        "component": "ats",
+        "appliedToOverall": true
+      }
+    },
+    "bulletRepair": [
+      {
+        "cvItem": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+        "factsUsed": [
+          "Supported the investment team with research and analysis on potential transactions.",
+          "Researched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed."
+        ],
+        "currentIssue": "Generic job-description phrase — states no personal action, method, or output. A reader learns nothing about what you did or produced.",
+        "whyThisWorks": "Moves the specific facts from E8 into the opening line, removing the vague 'supported' framing and making your personal contribution visible without inventing any new claim.",
+        "exampleBullet": "Screened 12 UK software companies against an acquisition brief, collecting revenue and EBITDA from public sources in an Excel comparison table and flagging 4 recurring-revenue businesses for further review — presented findings to an associate.",
+        "strongerAngle": "Replace with the specific screen task that the next bullet already describes: the number of companies, the data collected, and the filter applied.",
+        "originalBullet": "Supported the investment team with research and analysis on potential transactions.",
+        "bulletStructure": "Action (what you did) → method (how you did it) → output (what you produced and for whom)",
+        "questionsToConfirm": [
+          "Was the acquisition screen your primary task, or one of several during the internship?",
+          "Did the associate give any feedback on your flagged companies or table?"
+        ]
+      },
+      {
+        "cvItem": "LVMH valuation — University Corporate Finance project, 2025",
+        "factsUsed": [
+          "LVMH valuation — University Corporate Finance project, 2025",
+          "Built a DCF and trading-comparables valuation in Excel using public annual-report data. Compared LVMH with 3 luxury-sector peers. Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Identified dependence on growth and margin assumptions; did not make a live investment recommendation."
+        ],
+        "currentIssue": "The bullet describes method and sensitivity testing but records no analytical conclusion — your judgement is invisible, which is the main gap flagged in your Analytical ability score.",
+        "whyThisWorks": "Retains every confirmed fact from E13 and adds a placeholder for the one missing element (your conclusion) rather than inventing a view — the question prompts you to supply the real answer.",
+        "exampleBullet": "Built a DCF and trading-comparables valuation in Excel using public annual-report data; compared LVMH with 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%. Sensitivity analysis showed valuation was; presented findings to a 4-person seminar team.",
+        "strongerAngle": "Add the view your sensitivity range implied about LVMH's valuation relative to its market price, even if qualified as a coursework finding.",
+        "originalBullet": "Built a DCF and trading-comparables valuation in Excel using public annual-report data. Compared LVMH with 3 luxury-sector peers. Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Identified dependence on growth and margin assumptions; did not make a live investment recommendation.",
+        "bulletStructure": "Method (DCF + comparables) → sensitivity tested → conclusion or view → audience and format",
+        "questionsToConfirm": [
+          "What did your DCF and comparables range imply about LVMH's market price — did it look stretched, fair, or undervalued relative to peers?",
+          "Did your seminar team or tutor give feedback on your sensitivity assumptions?"
+        ]
+      },
+      {
+        "cvItem": "Pho House — Part-time Team Member, September 2023–present",
+        "factsUsed": [
+          "Pho House — Part-time Team Member, September 2023–present",
+          "Worked 12 hours per week alongside university. Trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction. No monetary saving or complaint-resolution rate was recorded."
+        ],
+        "currentIssue": "The bullet lists three separate facts (hours, training, payment correction) without showing the link between them — the resilience and initiative angle is buried.",
+        "whyThisWorks": "Preserves every confirmed fact from E10, reorders for impact (commitment first, then specific actions), and adds a question to surface any feedback that could strengthen the result step.",
+        "exampleBullet": "Worked 12 hours per week alongside full-time study; trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction.",
+        "strongerAngle": "Lead with the sustained commitment (12 hours per week alongside university), then show the two concrete actions (training colleagues, correcting the payment) as evidence of reliability and attention to detail.",
+        "originalBullet": "Worked 12 hours per week alongside university. Trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction. No monetary saving or complaint-resolution rate was recorded.",
+        "bulletStructure": "Context (hours alongside study) → action 1 (trained colleagues) → action 2 (spotted and escalated payment error) → what this shows",
+        "questionsToConfirm": [
+          "Did your shift lead or manager comment on how you handled the duplicate payment?",
+          "Were you given any additional responsibility at Pho House after training the 3 colleagues — for example, covering shifts or checking their work?"
+        ]
+      }
+    ],
+    "firmDivisionFit": {
+      "targetFirm": "Barclays",
+      "targetDivision": "Investment Banking / IBD",
+      "howToMakeFitClearer": "Prepare a specific 'why Barclays IBD' answer that connects your recurring-revenue screen work to the types of transactions IBD advises on [confirm: have you researched recent Barclays IBD deals or sector focus areas?]. Check the official vacancy for the exact programme name, eligibility criteria, and assessment format — the tracker snapshot (imported October 2026) notes two online assessments then a 2–3 stage assessment centre including a motivational interview; confirm these details on the official invitation. Visa sponsorship is noted as available on these programmes in the tracker — verify on the official vacancy.",
+      "whatTheFirmWillLike": "Your Redcliffe Partners acquisition screen (12 companies, EBITDA data, 4 flagged) and LVMH DCF with trading comparables show hands-on use of the core IBD toolkit. Predicted 2:1 in Economics with Corporate Finance and Financial Accounting modules is a relevant academic base. Working 12 hours per week alongside university signals sustained commitment.",
+      "whatTheFirmWillQuestion": "Your competency score is 13/25 and commercial awareness scores 48 — the motivational interview with a senior leader will probe your market view and 'why Barclays IBD' specifically. Your technical gaps (confirmed by your quiz results) may surface in the online assessments. Economics Society membership with no committee role or recorded output leaves leadership evidence thin."
+    },
+    "competencyRepair": [
+      {
+        "name": "Analytical ability",
+        "score": 72,
+        "evidence": "LVMH DCF and trading-comparables valuation; Redcliffe Partners acquisition screen of 12 UK software companies",
+        "nextAction": "Write one paragraph stating what your LVMH sensitivity range implied about whether the stock looked stretched or fair — bring this to any interview as your conclusion.",
+        "draftAnswer": "In my Corporate Finance module I was asked to value LVMH using public data. I built a DCF and a trading-comparables model in Excel, pulled annual-report figures for LVMH and three luxury-sector peers, and tested revenue growth assumptions of three, five and seven per cent. What I found was that the valuation was highly sensitive to the growth rate — a two-percentage-point shift moved the output materially [confirm: by how much, approximately?]. I presented the sensitivity range and my reasoning to my four-person seminar team and flagged that the result depended heavily on margin assumptions. At Redcliffe Partners I applied a similar structured approach, screening 12 software companies against an acquisition brief and flagging four based on their recurring-revenue models. I've learned that being explicit about what drives your numbers — and what could break your conclusion — is as important as the model itself. [confirm: what view did your LVMH range imply about market price?]",
+        "draftStatus": "draft",
+        "sampleAnswer": "I built a DCF and trading-comparables valuation in Excel using public annual-report data. I compared LVMH with 3 luxury-sector peers. I tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team.",
+        "sourceEvidence": [
+          "Built a DCF and trading-comparables valuation in Excel using public annual-report data. Compared LVMH with 3 luxury-sector peers. Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Identified dependence on growth and margin assumptions; did not make a live investment recommendation.",
+          "Researched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed."
+        ],
+        "answerStructure": "Situation: university Corporate Finance project on LVMH. Action: built DCF and trading comparables, tested three growth scenarios, compared three peers. Result: sensitivity range presented to seminar team; identified dependence on growth and margin assumptions. Reflection: what this taught you about analytical judgement under uncertainty.",
+        "evidenceSourceIds": [
+          "E13",
+          "E8"
+        ]
+      },
+      {
+        "name": "Teamwork",
+        "score": 52,
+        "evidence": "Pho House: trained 3 new colleagues on ordering and till procedures; helped process a duplicate-payment correction with the shift lead",
+        "nextAction": "Ask your Pho House manager if they would confirm in a reference that you trained new colleagues and handled the payment issue — this gives you a result to cite.",
+        "draftAnswer": "At Pho House I work around twelve hours a week alongside my degree. When three new colleagues joined, I walked them through the ordering system and till procedures so they could work independently during service. The moment that tested teamwork most was during a busy shift when I spotted a duplicate payment on the till. Rather than trying to fix it myself, I flagged it immediately to the shift lead and then helped process the correction together. [confirm: was the correction completed before the customer left?] What I took from that is that in a fast-moving environment, knowing when to escalate and when to act yourself is the difference between a small problem and a bigger one. I think that translates directly to a banking team where accuracy under pressure matters. [confirm: did your manager give any feedback on how you handled this?]",
+        "draftStatus": "draft",
+        "sampleAnswer": "I worked 12 hours per week alongside university. I trained 3 new colleagues on ordering and till procedures. During one busy service, I spotted a duplicate payment, informed the shift lead and helped process the correction.",
+        "sourceEvidence": [
+          "Worked 12 hours per week alongside university. Trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction. No monetary saving or complaint-resolution rate was recorded."
+        ],
+        "answerStructure": "Situation: busy restaurant shift with new colleagues. Action: trained three colleagues on procedures; spotted a payment error and worked with the shift lead to correct it. Result: correction processed [confirm: any outcome recorded?]. Reflection: what working across a team under pressure taught you.",
+        "evidenceSourceIds": [
+          "E10"
+        ]
+      },
+      {
+        "name": "Communication",
+        "score": 63,
+        "evidence": "Presented acquisition screen comparison table and selection reasons to an associate at Redcliffe Partners; presented LVMH valuation sensitivity to a 4-person seminar team",
+        "nextAction": "Recall and write down any verbal feedback the Redcliffe associate gave — even one sentence of reaction strengthens your result step in interviews.",
+        "draftAnswer": null,
+        "draftStatus": "unavailable",
+        "sampleAnswer": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief. I presented the comparison table and selection reasons to an associate. I built a DCF and trading-comparables valuation in Excel using public annual-report data.",
+        "draftRejected": "unsupported claim: led",
+        "sourceEvidence": [
+          "Researched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed.",
+          "Built a DCF and trading-comparables valuation in Excel using public annual-report data. Compared LVMH with 3 luxury-sector peers. Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Identified dependence on growth and margin assumptions; did not make a live investment recommendation."
+        ],
+        "answerStructure": "Situation: Redcliffe Partners internship, presenting findings to an associate. Action: structured the comparison table, explained the four flagged companies and the recurring-revenue rationale. Result: associate received the output [confirm: any feedback or follow-up?]. Reflection: what tailoring communication to a professional audience taught you.",
+        "evidenceSourceIds": [
+          "E8",
+          "E13"
+        ]
+      },
+      {
+        "name": "Leadership",
+        "score": 42,
+        "evidence": "Pho House: trained 3 new colleagues on ordering and till procedures",
+        "nextAction": "Confirm with your manager whether you were formally asked to train colleagues or took this on yourself — the distinction matters for a leadership answer.",
+        "draftAnswer": "At Pho House, when three new colleagues joined, there wasn't a formal induction process [confirm: was there a structured induction, or did you step in informally?]. I took it on myself to walk each of them through the ordering system and till procedures before their first busy shift. I wanted to make sure they could handle service without needing to stop and ask basic questions at the wrong moment. [confirm: did your manager ask you to do this, or did you volunteer?] It was a small thing, but I think leadership at an early stage is often about spotting what needs doing and doing it without waiting to be told. I'm looking to build on that — for example, I'm considering whether I can take on a more active role in my Economics Society this term [confirm: have you approached the committee about this?].",
+        "draftStatus": "draft",
+        "sampleAnswer": "I trained 3 new colleagues on ordering and till procedures.",
+        "sourceEvidence": [
+          "Worked 12 hours per week alongside university. Trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction. No monetary saving or complaint-resolution rate was recorded."
+        ],
+        "answerStructure": "Situation: new colleagues joining Pho House with no prior training. Action: took responsibility for walking them through ordering and till procedures. Result: colleagues able to work during service [confirm: any outcome or feedback?]. Reflection: what this taught you about taking initiative without being asked.",
+        "evidenceSourceIds": [
+          "E10"
+        ]
+      },
+      {
+        "name": "Resilience",
+        "score": 31,
+        "evidence": "Worked 12 hours per week at Pho House alongside full-time university study from September 2023 to present",
+        "nextAction": "Identify one specific period — an exam week, a project deadline — when the dual commitment was hardest, and prepare a two-sentence description of how you managed it.",
+        "draftAnswer": "Since September 2023 I've worked twelve hours a week at Pho House while studying full-time for my Economics degree. There have been periods — particularly around exam season and when I was completing the LVMH valuation project — where I had to manage both at the same time. [confirm: can you describe a specific week or period when the pressure was highest and what you did to get through it?] I didn't reduce my hours at work during those periods [confirm: is that accurate?], which meant I had to be disciplined about how I used my study time. I think the habit of working to a deadline while managing something else running in parallel is directly relevant to a banking environment where multiple workstreams run at once. What I've learned is that the key is being honest early when something is at risk, rather than waiting until it's a problem. [confirm: is there a specific example of a setback or difficult period you can add here?]",
+        "draftStatus": "draft",
+        "sampleAnswer": "I worked 12 hours per week alongside university. During one busy service, I spotted a duplicate payment, informed the shift lead and helped process the correction.",
+        "sourceEvidence": [
+          "Worked 12 hours per week alongside university. Trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction. No monetary saving or complaint-resolution rate was recorded.",
+          "University of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics."
+        ],
+        "answerStructure": "Situation: sustained part-time work alongside a demanding degree. Action: maintained both commitments over [confirm: how many terms?]. Result: continuing to do both [confirm: any academic or work achievement during this period?]. Reflection: what managing competing demands taught you about working under pressure.",
+        "evidenceSourceIds": [
+          "E10",
+          "E4"
+        ]
+      },
+      {
+        "name": "Commercial awareness",
+        "score": 48,
+        "evidence": "Economics Society attendance at employer talks, 2024–2026; BSc Economics modules including Corporate Finance and Financial Accounting; Redcliffe Partners acquisition screen",
+        "nextAction": "Pick one sector or company you follow and write three bullet points on a recent development and what it means for valuation or deal activity — bring this to the motivational interview.",
+        "draftAnswer": "My clearest example of applying commercial thinking is from the Redcliffe Partners internship. When screening twelve UK software companies, I used the recurring-revenue model as the filter because the acquisition brief was looking for businesses with predictable cash flows — that's a commercial judgement, not just a data exercise. I flagged four companies on that basis and explained the reasoning to an associate. [confirm: did you form a view on why recurring revenue mattered to the acquirer's strategy?] Outside that, I've attended employer talks through the Economics Society and studied Corporate Finance and Financial Accounting at Bristol, which has given me grounding in how businesses are valued and how capital structure affects returns. I'm currently working to build a more current market view [confirm: are you following any specific sector or company, and do you have a formed opinion you could discuss at interview?].",
+        "draftStatus": "draft",
+        "sampleAnswer": "I recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. I flagged 4 companies for further review because their recurring revenue models matched the screen brief. No transaction completion or client outcome was confirmed.",
+        "sourceEvidence": [
+          "Researched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed.",
+          "Economics Society — Member, 2024–2026. Attended employer talks. No committee position."
+        ],
+        "answerStructure": "Situation: building commercial awareness through coursework and exposure. Action: applied sector knowledge in the Redcliffe screen (recurring-revenue models as a filter). Result: flagged 4 companies on commercial grounds. Reflection: what you are doing now to develop a current market view.",
+        "evidenceSourceIds": [
+          "E8",
+          "E15"
+        ]
+      },
+      {
+        "name": "Technical readiness",
+        "score": 66,
+        "evidence": "LVMH DCF and trading-comparables valuation in Excel; Redcliffe Partners EBITDA screen; BSc modules in Corporate Finance and Financial Accounting",
+        "nextAction": "Drill your technical gaps using the worked answers provided — explain each concept aloud without notes, then attempt two timed practice questions per concept before your online assessments.",
+        "draftAnswer": "Technically, my strongest evidence is the LVMH valuation I built for my Corporate Finance module. I constructed a DCF using public annual-report data, ran a trading-comparables analysis against three luxury-sector peers, and stress-tested revenue growth at three, five and seven per cent. I also built an EBITDA comparison table in Excel at Redcliffe Partners to screen twelve software companies. So I'm comfortable with the core valuation toolkit — DCF, trading comps, sensitivity analysis. [confirm: have you also covered LBO or precedent transactions in your coursework?] I'm aware I have gaps to close, particularly in areas tested in written assessments, and I'm working through those now using practice questions and worked examples. My Excel skills cover the modelling I've done so far; I'm building speed and accuracy on numerical calculations. [confirm: have you timed yourself on practice numerical tests recently?]",
+        "draftStatus": "draft",
+        "sampleAnswer": "I built a DCF and trading-comparables valuation in Excel using public annual-report data. I tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Excel, financial analysis, financial modelling, valuation, research, presentation.",
+        "sourceEvidence": [
+          "Built a DCF and trading-comparables valuation in Excel using public annual-report data. Compared LVMH with 3 luxury-sector peers. Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team. Identified dependence on growth and margin assumptions; did not make a live investment recommendation.",
+          "Excel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin."
+        ],
+        "answerStructure": "Situation: technical finance tasks in internship and coursework. Action: built DCF, trading comparables, EBITDA screen. Result: outputs delivered. Reflection: where you are still building — your technical gaps — and what you are doing about it.",
+        "evidenceSourceIds": [
+          "E13",
+          "E17"
+        ]
+      }
+    ],
+    "interviewRiskMap": [
+      {
+        "likelyQuestion": "Walk me through your LVMH valuation — what was your conclusion?",
+        "weakAnswerPattern": "Describing the method (DCF, comparables, sensitivity) without stating any view on what the numbers implied — this confirms the gap the interviewer suspected.",
+        "strongAnswerStructure": "State the method briefly (one sentence), then move immediately to what your sensitivity range implied about LVMH's market price [confirm: stretched, fair, or below peers?], then explain which assumption drove the result most and why that matters for an investor.",
+        "candidateEvidenceToUse": "DCF and trading-comparables model in Excel; 3 luxury-sector peers; revenue growth assumptions of 3%, 5% and 7%; identified dependence on growth and margin assumptions (E13)",
+        "whyThisQuestionExposesRisk": "Your CV explicitly states 'did not make a live investment recommendation', so an interviewer reading it will probe whether you can form and defend an analytical view, which is a core IBD skill."
+      },
+      {
+        "likelyQuestion": "Tell me about a time you worked under pressure or had to manage competing demands.",
+        "weakAnswerPattern": "Saying 'I balanced work and university' without naming a specific week, deadline or moment when it was genuinely hard — this reads as a generic claim rather than evidence.",
+        "strongAnswerStructure": "Name a specific period (e.g. exam week or LVMH project deadline) when both commitments peaked simultaneously [confirm: which term was hardest?], describe one concrete thing you did differently to manage it, and end with what you learned about working under pressure.",
+        "candidateEvidenceToUse": "12 hours per week at Pho House alongside university (E10); LVMH valuation project, 2025 (E13); BSc Economics final year (E4)",
+        "whyThisQuestionExposesRisk": "Resilience scores 31 — the lowest competency score. Your CV records sustained dual commitment (12 hours per week alongside university) but no specific pressure moment or adaptive response, which leaves this answer structurally incomplete."
+      },
+      {
+        "likelyQuestion": "Why Barclays, and why Investment Banking specifically?",
+        "weakAnswerPattern": "Citing Barclays' size or brand, or describing IBD generically as 'advising companies on transactions' — this is indistinguishable from any other candidate's answer.",
+        "strongAnswerStructure": "Connect your Redcliffe acquisition screen experience to the type of advisory work IBD does; name one aspect of Barclays' IBD practice that interests you [confirm: have you researched a specific sector team, recent transaction, or Barclays IBD initiative?]; then state what you want to learn or contribute in the role.",
+        "candidateEvidenceToUse": "Redcliffe Partners acquisition screen: 12 UK software companies, recurring-revenue filter, 4 flagged (E8); LVMH valuation (E13); Economics modules (E4)",
+        "whyThisQuestionExposesRisk": "The motivational interview with a senior leader (per the tracker snapshot) will test whether your interest in IBD is grounded in specific knowledge of Barclays or is generic. Your CV records no Barclays-specific research or deal knowledge."
+      }
+    ],
+    "evidenceHierarchy": {
+      "leadWith": [
+        {
+          "evidence": "Redcliffe Partners acquisition screen: 12 UK software companies researched, 4 flagged, comparison table presented to an associate",
+          "howToUseIt": "Open every competency answer and your 'why finance' narrative with this example; name the method (EBITDA screen, recurring-revenue filter) before the output",
+          "whyItLeads": "This is your only professional finance experience and shows a real analytical output delivered in a commercial setting — the closest evidence you have to IBD work"
+        },
+        {
+          "evidence": "LVMH DCF and trading-comparables valuation: 3 peers, 3 revenue growth scenarios, sensitivity presented to a 4-person seminar team",
+          "howToUseIt": "Use to answer technical and analytical questions; add your own view on what the sensitivity range implied about LVMH's market price [confirm: what conclusion did you draw?]",
+          "whyItLeads": "Demonstrates two valuation methodologies and sensitivity analysis in Excel — directly relevant to IBD technical questions"
+        }
+      ],
+      "reduceOrCut": [
+        {
+          "evidence": "Supported the investment team with research and analysis on potential transactions.",
+          "whyReduce": "This opening line is a generic job-description phrase that adds no information about what you personally did or produced",
+          "whatToDoInstead": "Replace with the specific screen task: 12 companies, EBITDA data, 4 flagged — the detail is already in the next bullet"
+        },
+        {
+          "evidence": "Economics Society — Member, 2024–2026. Attended employer talks. No committee position.",
+          "whyReduce": "Passive membership with no output or view recorded scores near zero for commercial awareness; it currently confirms absence of initiative",
+          "whatToDoInstead": "Add one concrete output: a written market view, a talk you organised, or a study-group session you ran [confirm: did you do any of these?]. If none, consider whether to include it at all"
+        }
+      ],
+      "supportWith": [
+        {
+          "evidence": "Pho House: 12 hours per week alongside university, trained 3 new colleagues, spotted and helped correct a duplicate payment",
+          "howToUseIt": "Use for teamwork, resilience and integrity competencies only; be specific about the action you took (informed the shift lead, helped process the correction) rather than the outcome",
+          "whyItSupports": "Provides teamwork, communication and resilience evidence where finance examples are thin; the duplicate-payment episode is a concrete problem-solving moment"
+        },
+        {
+          "evidence": "BSc Economics modules: Corporate Finance, Financial Accounting, Econometrics; predicted 2:1",
+          "howToUseIt": "Cite modules to back up technical vocabulary; do not use as a primary example — pair with Redcliffe or LVMH evidence",
+          "whyItSupports": "Confirms academic grounding in relevant theory and supports technical answers when professional examples are limited"
+        }
+      ]
+    },
+    "workedAnswers": [
+      {
+        "trap": "Check the definition and units before choosing an answer.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further."
+        ],
+        "answer": "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further.",
+        "concept": "WACC",
+        "question": "Why is the cost of debt usually lower than the cost of equity?",
+        "drillAnswer": "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further."
+      },
+      {
+        "trap": "Check the definition and units before choosing an answer.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value."
+        ],
+        "answer": "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value.",
+        "concept": "Free cash flow",
+        "question": "Unlevered free cash flow is cash flow:",
+        "drillAnswer": "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value."
+      },
+      {
+        "trap": "Dividing by the new value instead of the old one.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Change = £252m − £225m = £27m",
+          "Divide by the starting value: 27 ÷ 225 = 0.1200",
+          "= 12.0%"
+        ],
+        "answer": "Change = £252m − £225m = £27m Divide by the starting value: 27 ÷ 225 = 0.1200 = 12.0% Percentage change always uses the starting value as the base: (new − old) ÷ old. Dividing by the new value instead of the old one.",
+        "concept": "Percentage change",
+        "question": "Operating costs move from £225m to £252m. What is the percentage change?",
+        "drillAnswer": "Change = £252m − £225m = £27m Divide by the starting value: 27 ÷ 225 = 0.1200 = 12.0% Percentage change always uses the starting value as the base: (new − old) ÷ old. Dividing by the new value instead of the old one."
+      },
+      {
+        "trap": "Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Old margin = 15.2 ÷ 190 = 8.0%",
+          "New margin = 22 ÷ 200 = 11.0%",
+          "Change = 11 − 8 = 3.0 percentage points"
+        ],
+        "answer": "Old margin = 15.2 ÷ 190 = 8.0% New margin = 22 ÷ 200 = 11.0% Change = 11 − 8 = 3.0 percentage points A margin is a percentage, so a change in margin is quoted in percentage points (pp), not percent. Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference.",
+        "concept": "Margin change in percentage points",
+        "question": "Revenue grows from £190m to £200m and operating profit from £15.2m to £22m. By how much does the operating margin change?",
+        "drillAnswer": "Old margin = 15.2 ÷ 190 = 8.0% New margin = 22 ÷ 200 = 11.0% Change = 11 − 8 = 3.0 percentage points A margin is a percentage, so a change in margin is quoted in percentage points (pp), not percent. Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference."
+      }
+    ],
+    "weeksTwoToFour": [
+      {
+        "week": "Week 2",
+        "focus": "Make your technical gaps automatic",
+        "sessions": [
+          {
+            "href": "/test-hub.html",
+            "label": "Drill: WACC",
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice.",
+            "minutes": 20
+          },
+          {
+            "href": "/test-hub.html",
+            "label": "Drill: Free cash flow",
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice.",
+            "minutes": 20
+          },
+          {
+            "href": "/test-hub.html",
+            "label": "Drill: Percentage change",
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice.",
+            "minutes": 20
+          },
+          {
+            "href": "/test-hub.html?type=numerical&topic=Margin%20change%20in%20percentage%20points",
+            "label": "Drill: Margin change in percentage points",
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice.",
+            "minutes": 20
+          },
+          {
+            "href": "/test-hub.html?type=numerical",
+            "label": "Timed numerical set",
+            "detail": "One mixed set in timed mode, three times this week. Note your time per question.",
+            "minutes": 20
+          }
+        ],
+        "deliverable": "Each gap topic at 9/10 or better, twice, in practice mode."
+      },
+      {
+        "week": "Week 3",
+        "focus": "Interview out loud",
+        "sessions": [
+          {
+            "href": "#interview",
+            "label": "Answer your interview questions aloud",
+            "detail": "Record yourself answering 3 questions with the 90-second timer, then compare with the strong answer.",
+            "minutes": 45
+          },
+          {
+            "href": "#competencies",
+            "label": "Say your competency answers",
+            "detail": "Say your two lowest competency answers without notes. Fill in every [confirm] first.",
+            "minutes": 40
+          },
+          {
+            "href": "/test-hub.html?type=technical&route=investment_banking",
+            "label": "Route technical set",
+            "detail": "Two 10-question sets for your route, in timed mode.",
+            "minutes": 30
+          },
+          {
+            "href": "#firm",
+            "label": "Barclays: prepare for its process",
+            "detail": "Check the official vacancy and your assessment invitation against the dated process notes, then prepare for the confirmed stages.",
+            "minutes": 30
+          }
+        ],
+        "deliverable": "Recordings of you answering all the interview questions, and a confident answer for your two weakest competencies."
+      },
+      {
+        "week": "Week 4",
+        "focus": "Recheck, then apply",
+        "sessions": [
+          {
+            "href": "#submit",
+            "label": "Recheck 1",
+            "detail": "Upload your updated CV and retake the tests. See what moved.",
+            "minutes": 20
+          },
+          {
+            "href": "#ask",
+            "label": "Ask your practitioner question",
+            "detail": "Ask about whatever the recheck still shows as weak.",
+            "minutes": 10
+          },
+          {
+            "href": "#firm",
+            "label": "Review your firm motivation",
+            "detail": "Practise your answer aloud and check every firm-specific claim against its official website.",
+            "minutes": 30
+          },
+          {
+            "href": "/tracker.html",
+            "label": "Check deadlines and submit when ready",
+            "detail": "Check the live deadline on the employer’s site. Bring this forward if it falls before Week 4; do not delay a suitable application just to finish the plan.",
+            "minutes": 30
+          }
+        ],
+        "deliverable": "Application submitted, with one recheck left for your next application."
+      }
+    ],
+    "sevenDayActionPlan": [
+      {
+        "day": "Day 1",
+        "focus": "Rewrite the Redcliffe Partners opening bullet",
+        "tasks": [
+          "Draft a replacement for 'Supported the investment team with research and analysis on potential transactions' that names your specific task (acquisition screen), method (Excel comparison table) and output (4 flagged companies presented to an associate).",
+          "Check the rewrite against E7 and E8 to confirm every fact is sourced; mark anything unconfirmed with [confirm: …]."
+        ],
+        "minutes": 45,
+        "deliverable": "One revised Redcliffe bullet saved in a tracked-changes document, with no invented metrics."
+      },
+      {
+        "day": "Day 2",
+        "focus": "Add an investment view to the LVMH valuation entry",
+        "tasks": [
+          "Review your original LVMH model and note what your sensitivity range (3%, 5%, 7% growth) implied about the market price — write one sentence capturing that view.",
+          "If you cannot confirm a view from your notes, draft the bullet with [confirm: implied valuation range vs. market price at time of project] as a placeholder."
+        ],
+        "minutes": 40,
+        "deliverable": "One revised LVMH project bullet that includes your analytical conclusion or a clearly marked placeholder."
+      },
+      {
+        "day": "Day 3",
+        "focus": "Drill your technical gaps",
+        "tasks": [
+          "Work through all four missed quiz concepts using the supplied worked answers: explain each aloud without looking at the answer, then write the definition in your own words.",
+          "Attempt two fresh practice questions per concept (WACC, free cash flow, percentage change, margin change in pp) from a free resource such as Investopedia or a past numerical test."
+        ],
+        "minutes": 60,
+        "deliverable": "Four hand-written definition cards (one per missed concept) and a note of which practice questions you got right."
+      },
+      {
+        "day": "Day 4",
+        "focus": "Build a documented commercial view",
+        "tasks": [
+          "Read one recent article on a sector relevant to Barclays IBD (e.g. UK M&A activity, a named deal in the news) and write three bullet points: what happened, why it matters to a bank, and what you would want to know next.",
+          "Connect this view to your Economics Society attendance (E15) and Corporate Finance module (E4) so you have a concrete example for commercial-awareness questions."
+        ],
+        "minutes": 45,
+        "deliverable": "A 150-word written commercial view saved as a reference document for interview prep."
+      },
+      {
+        "day": "Day 5",
+        "focus": "Practise competency answers aloud",
+        "tasks": [
+          "Record yourself answering the Analytical Ability and Teamwork competency drafts from this report using STARR structure; play back and check you are not inventing facts beyond the CV.",
+          "Revise any sentence where you cannot point to a source in the evidence catalogue; replace with [confirm: …] or remove."
+        ],
+        "minutes": 50,
+        "deliverable": "Two recorded answers under 3 minutes each, with a written note of any facts you need to confirm before the assessment centre."
+      },
+      {
+        "day": "Day 6",
+        "focus": "Verify Barclays process details and prepare motivational interview",
+        "tasks": [
+          "Check the official Barclays vacancy and any assessment invitation you have received to confirm: number of online assessments, assessment centre stages, and visa sponsorship eligibility for your programme — the tracker snapshot is unverified.",
+          "Draft your 'why Barclays IBD' answer using the firmPrep guidance, connecting your Redcliffe screen work and LVMH valuation to the role; mark personal motivation with [confirm: …]."
+        ],
+        "minutes": 45,
+        "deliverable": "A verified process checklist (stages confirmed vs. tracker) and a written 'why this firm' draft under 140 words."
+      },
+      {
+        "day": "Day 7",
+        "focus": "Final CV and application review",
+        "tasks": [
+          "Read the full CV against the finalSubmissionChecklist below; tick each item or flag it as outstanding.",
+          "Run a keyword check: confirm 'due diligence' and 'mergers and acquisitions' appear only if your experience genuinely supports them; do not add them otherwise."
+        ],
+        "minutes": 40,
+        "deliverable": "A completed checklist with every item marked Pass or [Action needed], ready to submit or action before deadline."
+      }
+    ],
+    "recheckRecommendation": "Recheck after you have: (1) replaced the Redcliffe opening bullet with sourced detail, (2) added a confirmed analytical conclusion to the LVMH entry, (3) completed a fresh timed practice test covering WACC, free cash flow, percentage change and margin change in pp, and (4) recorded and reviewed at least two competency answers aloud. A recheck at that point will reflect genuine evidence improvements, not the same inputs. No score outcome is guaranteed.",
+    "finalSubmissionChecklist": [
+      {
+        "item": "Redcliffe Partners opening bullet replaced",
+        "statusNeeded": "The vague 'Supported the investment team' line must be replaced with a bullet naming the acquisition screen, the Excel comparison table, and the 4 companies flagged — all sourced from E7/E8.",
+        "whyItMatters": "The original line is the CV's weakest sentence and the source of the lowest application sub-score; leaving it in wastes your strongest experience."
+      },
+      {
+        "item": "LVMH valuation includes an analytical conclusion or confirmed placeholder",
+        "statusNeeded": "The entry must state what your sensitivity range implied about value, or carry a clearly marked [confirm: …] placeholder — not simply end at 'did not make a live investment recommendation'.",
+        "whyItMatters": "Analytical judgement is invisible without a stated view; the competency score for Analytical Ability is 72 and the absence of a conclusion is the cited reason."
+      },
+      {
+        "item": "All four technical gap concepts drilled and self-tested",
+        "statusNeeded": "You must be able to explain WACC, free cash flow, percentage change and margin change in pp aloud without notes before any online assessment or interview.",
+        "whyItMatters": "You scored 9/15 numerical and 12/20 commercial & technical; these four missed concepts are the documented source of lost points."
+      },
+      {
+        "item": "Barclays process details confirmed against official vacancy",
+        "statusNeeded": "Number of online assessment stages, assessment centre format, and visa sponsorship eligibility must be verified on the official vacancy or invitation — not assumed from the tracker snapshot.",
+        "whyItMatters": "The tracker is an unverified October 2026 snapshot; acting on wrong process details risks missing a stage or misunderstanding eligibility."
+      },
+      {
+        "item": "Keywords 'due diligence' and 'mergers and acquisitions' reviewed",
+        "statusNeeded": "Add these terms only if your actual experience supports them; do not insert them solely to pass an ATS check.",
+        "whyItMatters": "The ATS check flagged both as missing, but adding unsupported keywords creates a factual inconsistency that interviewers can probe."
+      },
+      {
+        "item": "Commercial view documented with a specific sector example",
+        "statusNeeded": "At least one written paragraph connecting a real market event to your Economics Society or coursework background, ready to cite in the motivational interview.",
+        "whyItMatters": "Commercial awareness scores 48/100 and is currently unsupported by any applied market view beyond attendance at talks."
+      },
+      {
+        "item": "Competency answers confirmed against CV evidence",
+        "statusNeeded": "Every sentence in your spoken STARR answers must map to a source in the evidence catalogue or be marked [confirm: …]; no invented metrics or outcomes.",
+        "whyItMatters": "Competency scores 13/25; fabricated detail in an interview answer is a disqualification risk and undermines the genuine strength of your Redcliffe and LVMH examples."
+      }
+    ]
+  },
+  "cv": {
+    "candidateName": "Amelia Chen",
+    "targetRole": "Investment Banking / IBD at Barclays",
+    "sourceText": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nScreened 12 UK software companies against an acquisition brief, collecting revenue and EBITDA from public sources in an Excel comparison table and flagging 4 recurring-revenue businesses for further review — presented findings to an associate.\nResearched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed.\nPho House — Part-time Team Member, September 2023–present\nWorked 12 hours per week alongside full-time study; trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using public annual-report data; compared LVMH with 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%. Sensitivity analysis showed valuation was; presented findings to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks. No committee position.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
+    "sections": [
+      {
+        "title": "Contact",
+        "items": [
+          {
+            "heading": "Email: amelia@example.com",
+            "subheading": "",
+            "bullets": []
+          }
+        ]
+      },
+      {
+        "title": "Education",
+        "items": [
+          {
+            "heading": "University of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.",
+            "subheading": "",
+            "bullets": []
+          }
+        ]
+      },
+      {
+        "title": "Experience",
+        "items": [
+          {
+            "heading": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Screened 12 UK software companies against an acquisition brief, collecting revenue and EBITDA from public sources in an Excel comparison table and flagging 4 recurring-revenue businesses for further review — presented findings to an associate.",
+                "confidence": "needs_confirmation",
+                "rewritten": true,
+                "note": "Answer the 2 confirm questions before you submit."
+              },
+              {
+                "text": "Researched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              }
+            ]
+          },
+          {
+            "heading": "Pho House — Part-time Team Member, September 2023–present",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Worked 12 hours per week alongside full-time study; trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction.",
+                "confidence": "needs_confirmation",
+                "rewritten": true,
+                "note": "Answer the 2 confirm questions before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Projects",
+        "items": [
+          {
+            "heading": "LVMH valuation — University Corporate Finance project, 2025",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Built a DCF and trading-comparables valuation in Excel using public annual-report data; compared LVMH with 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%. Sensitivity analysis showed valuation was; presented findings to a 4-person seminar team.",
+                "confidence": "needs_confirmation",
+                "rewritten": true,
+                "note": "Answer the 2 confirm questions before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Activities",
+        "items": [
+          {
+            "heading": "Economics Society — Member, 2024–2026. Attended employer talks. No committee position.",
+            "subheading": "",
+            "bullets": []
+          }
+        ]
+      },
+      {
+        "title": "Skills",
+        "items": [
+          {
+            "heading": "Excel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
+            "subheading": "",
+            "bullets": []
+          }
+        ]
+      }
+    ],
+    "whatChangedAndWhy": [
+      {
+        "change": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+        "reason": "Moves the specific facts from E8 into the opening line, removing the vague 'supported' framing and making your personal contribution visible without inventing any new claim."
+      },
+      {
+        "change": "LVMH valuation — University Corporate Finance project, 2025",
+        "reason": "Retains every confirmed fact from E13 and adds a placeholder for the one missing element (your conclusion) rather than inventing a view — the question prompts you to supply the real answer."
+      },
+      {
+        "change": "Pho House — Part-time Team Member, September 2023–present",
+        "reason": "Preserves every confirmed fact from E10, reorders for impact (commitment first, then specific actions), and adds a question to surface any feedback that could strengthen the result step."
+      }
+    ],
+    "accuracyFlags": [
+      {
+        "item": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+        "question": "Was the acquisition screen your primary task, or one of several during the internship?"
+      },
+      {
+        "item": "Redcliffe Partners — Corporate Finance Intern, July–August 2025",
+        "question": "Did the associate give any feedback on your flagged companies or table?"
+      },
+      {
+        "item": "LVMH valuation — University Corporate Finance project, 2025",
+        "question": "What did your DCF and comparables range imply about LVMH's market price — did it look stretched, fair, or undervalued relative to peers?"
+      },
+      {
+        "item": "LVMH valuation — University Corporate Finance project, 2025",
+        "question": "Did your seminar team or tutor give feedback on your sensitivity assumptions?"
+      },
+      {
+        "item": "Pho House — Part-time Team Member, September 2023–present",
+        "question": "Did your shift lead or manager comment on how you handled the duplicate payment?"
+      },
+      {
+        "item": "Pho House — Part-time Team Member, September 2023–present",
+        "question": "Were you given any additional responsibility at Pho House after training the 3 colleagues — for example, covering shifts or checking their work?"
+      }
+    ],
+    "removed": [],
+    "buildFirst": []
+  },
+  "repairedCvDraft": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nScreened 12 UK software companies against an acquisition brief, collecting revenue and EBITDA from public sources in an Excel comparison table and flagging 4 recurring-revenue businesses for further review — presented findings to an associate.\nResearched 12 UK software companies for a prospective acquisition screen. Recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. Flagged 4 companies for further review because their recurring revenue models matched the screen brief. Presented the comparison table and selection reasons to an associate. No transaction completion or client outcome was confirmed.\nPho House — Part-time Team Member, September 2023–present\nWorked 12 hours per week alongside full-time study; trained 3 new colleagues on ordering and till procedures. During one busy service, spotted a duplicate payment, informed the shift lead and helped process the correction.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using public annual-report data; compared LVMH with 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%. Sensitivity analysis showed valuation was; presented findings to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks. No committee position.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin."
+}
