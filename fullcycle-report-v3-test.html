@@ -418,21 +418,18 @@ function restore(){try{var v=localStorage.getItem(KEY);if(v){var o=JSON.parse(v)
 var SECTIONS=[
   {id:"overview",t:"Overview"},
   {id:"cv",t:"Your CV"},
-  {id:"application",t:"Application risks"},
+  {id:"ats",t:"ATS check"},
   {id:"interview",t:"Interview questions"},
   {id:"competencies",t:"Competency answers"},
   {id:"technical",t:"Technical gaps"},
-  {id:"ats",t:"ATS check"},
+  {id:"application",t:"Application readiness"},
   {id:"plan",t:"7-day plan"},
+  {id:"prep",t:"Prep"},
   {id:"submit",t:"Before you submit"},
   {id:"ask",t:"Ask a practitioner"}
 ];
 
 function render(R){
-  if(R.paid&&R.paid.firmPrep&&!SECTIONS.some(function(s){return s.id==="firm";})){
-    var at=SECTIONS.findIndex(function(s){return s.id==="interview";});
-    SECTIONS.splice(at+1,0,{id:"firm",t:((R.profile||{}).targetFirm||"Firm")+" prep"});
-  }
   if(R.paid&&R.paid.weeksTwoToFour){SECTIONS.forEach(function(s){if(s.id==="plan")s.t="30-day plan";});}
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
@@ -559,7 +556,7 @@ function render(R){
       '<div class="sup"><div class="hd">Support with</div>'+items(E.supportWith,"howToUseIt")+'</div>'+
       '<div class="cutc"><div class="hd">Cut or reduce</div>'+items(E.reduceOrCut,"whatToDoInstead")+'</div>'+
     '</div>'+
-    '<h2 class="mt48">How '+esc(F.targetFirm||"the firm")+' will read you.</h2>'+
+    '<h2 class="mt48">How your evidence supports your target role.</h2>'+
     '<div class="fit mt24"><div class="card like"><h3>They’ll like</h3><p style="margin:10px 0 0;color:var(--ink2)">'+h(F.whatTheFirmWillLike)+'</p></div><div class="card ques"><h3>They’ll question</h3><p style="margin:10px 0 0;color:var(--ink2)">'+h(F.whatTheFirmWillQuestion)+'</p></div></div>'+
     '<div class="card mt24"><div class="label">Make the fit obvious</div><p style="margin:0;color:var(--ink2)">'+h(F.howToMakeFitClearer)+'</p><div class="label mt16">Your biggest route gap</div><p style="margin:0;color:var(--ink2)">'+h(T.routeGap)+'</p><div class="label mt16">What would close it</div><p style="margin:0;color:var(--ink2)">'+h(T.whatWouldMakeItCredible)+'</p></div>';
   })();
@@ -646,18 +643,8 @@ function render(R){
         '<label class="tick"><input type="checkbox" data-done="'+id+'"'+(on?' checked':'')+'> Done</label></div></div>';
     }).join("")+'</div>'+
     ((P.weeksTwoToFour||[]).length?'<h2 class="mt48">Weeks 2 to 4</h2><p class="lede">Built from your gaps and your target firm. Each session links straight to the right practice.</p><div class="weeks">'+P.weeksTwoToFour.map(function(w){
-      return '<div class="card week"><div class="eyebrow">'+esc(w.week)+'</div><h3 class="mt8">'+esc(w.focus)+'</h3><div class="mt16">'+(w.sessions||[]).map(function(s){return '<div class="sess"><div><a href="'+esc(safeLink(s.href))+'">'+esc(s.label)+'</a><p>'+esc(s.detail)+'</p></div><span class="mute num">'+(s.minutes||"")+' min</span></div>';}).join("")+'</div><div class="deliv" style="margin-top:14px"><b>By the end</b><span>'+esc(w.deliverable)+'</span></div></div>';
+      return '<div class="card week"><div class="eyebrow">'+esc(w.week)+'</div><h3 class="mt8">'+esc(w.focus)+'</h3><div class="mt16">'+(w.sessions||[]).filter(function(s){return s.href!=="#firm";}).map(function(s){return '<div class="sess"><div><a href="'+esc(safeLink(s.href))+'">'+esc(s.label)+'</a><p>'+esc(s.detail)+'</p></div><span class="mute num">'+(s.minutes||"")+' min</span></div>';}).join("")+'</div><div class="deliv" style="margin-top:14px"><b>By the end</b><span>'+esc(w.deliverable)+'</span></div></div>';
     }).join("")+'</div>':'');
-  })();
-
-  /* FIRM PREP */
-  (function(){
-    var F=P.firmPrep;if(!F)return;
-    var firm=(R.profile||{}).targetFirm||"the firm";
-    S.firm='<div class="eyebrow">'+esc(firm)+' prep</div><h2 class="mt8">Get ready for '+esc(firm)+'’s process.</h2>'+
-      '<div class="grid2 mt32"><div><div class="label">“Why '+esc(firm)+'?”: your answer skeleton</div><div class="draft" style="margin-top:0">'+h(F.whyThisFirm).replace(/\[confirm:\s*([^\]]+)\]/gi,'<span class="cf">$1</span>')+'</div></div>'+
-      '<div><div class="label">Prepare for each stage</div><ol class="prio">'+(F.assessmentPrep||[]).map(function(a){return'<li><div><p style="margin:0;color:var(--ink)">'+h(a)+'</p></div></li>';}).join("")+'</ol>'+
-      ((F.questionsToResearch||[]).length?'<div class="label mt24">Check on '+esc(firm)+'’s own site</div><ul style="margin:0;padding-left:18px;color:var(--ink2)">'+F.questionsToResearch.map(function(q){return'<li>'+h(q)+'</li>';}).join("")+'</ul>':'')+'</div></div>';
   })();
 
   /* SUBMIT */
@@ -682,6 +669,13 @@ function render(R){
     '<p class="foot">This report uses AI to apply The Desk framework to your CV and test answers. Scores are The Desk’s readiness measure, not a bank’s pass mark.'+(R.sample?' Amelia Chen is a fictional sample candidate.':'')+'</p>';
   })();
 
+  /* Firm guide shortcuts are opt-in; the target firm never auto-adds one. */
+  var prepKey='desk-prep-'+(R.sample?'sample':R.id),prepFirms=[];
+  try{prepFirms=JSON.parse(localStorage.getItem(prepKey)||'[]');if(!Array.isArray(prepFirms))prepFirms=[];}catch(e){}
+  prepFirms=prepFirms.filter(function(n){return typeof n==='string'&&n.length<80;});
+  var addFirmUrl='/graduate-programmes.html'+(R.sample?'?dashboard=sample':'?id='+encodeURIComponent(R.id||''))+'#add-firm';
+  S.prep='<div class="eyebrow">Prep</div><h2 class="mt8">Your firm guides.</h2><p class="lede">Add the firms you want to prepare for. Your CV, ATS and competency work stays in your report.</p><a class="btn or" href="'+esc(addFirmUrl)+'">Add firm →</a><div class="grid2 mt24">'+prepFirms.map(function(f,i){var available=f==='Deutsche Bank',url=available?'/deutsche-bank.html'+(R.sample?'':'?id='+encodeURIComponent(R.id||'')):'/graduate-programmes.html'+(R.sample?'?dashboard=sample':'?id='+encodeURIComponent(R.id||''));return '<div class="card"><h3>'+esc(f)+' prep</h3><p>'+ (available?'Explore the bank and programme guide.':'Guide coming soon. Your firm is saved here.')+'</p><a href="'+esc(url)+'">'+(available?'Open guide →':'View application guides →')+'</a><button class="btn ghost" data-remove-firm="'+i+'" style="margin-left:12px">Remove</button></div>';}).join('')+'</div>';
+
   /* mount */
   var main=document.getElementById("main"),nav=document.getElementById("nav");
   main.innerHTML=SECTIONS.map(function(s,i){
@@ -696,6 +690,7 @@ function render(R){
 
 function wire(R,S){
   var P=R.paid;
+  document.querySelectorAll('[data-remove-firm]').forEach(function(button){button.onclick=function(){try{var key='desk-prep-'+(R.sample?'sample':R.id),firms=JSON.parse(localStorage.getItem(key)||'[]');firms.splice(Number(button.dataset.removeFirm),1);localStorage.setItem(key,JSON.stringify(firms));location.reload();}catch(e){button.textContent='Please retry';}};});
   var recheckButton=document.getElementById('startRecheck');if(recheckButton)recheckButton.onclick=function(){if(!R.sample&&R.recheck&&R.recheck.remaining)location.href='/assessment.html?recheck='+encodeURIComponent(R.recheck.rootId);};
   var questionForm=document.getElementById('practitionerQuestion');if(questionForm&&!R.sample)questionForm.onsubmit=async function(event){event.preventDefault();var button=questionForm.querySelector('button'),message=document.getElementById('questionStatus');button.disabled=true;message.textContent='Submitting your question…';try{var response=await fetch('/api/practitioner-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:activeAssessmentId,email:document.getElementById('practitionerEmail').value,question:document.getElementById('practitionerText').value,publish:false})});var answer=await response.json();if(!response.ok&&!(response.status===409&&answer.questionId))throw Error(answer.error||'Please retry.');var link=document.createElement('a');link.href='/practitioner-answer.html?id='+encodeURIComponent(answer.questionId);link.textContent='Open your private question and reply page →';message.replaceChildren(link);}catch(error){message.textContent=error.message;button.disabled=false;}};
   function show(){
@@ -811,5 +806,7 @@ load().then(render).catch(function(e){document.getElementById("main").innerHTML=
 </script>
 </body>
 </html>
+
+
 
 

@@ -77,10 +77,11 @@ assert(weeks[1].sessions.some(s=>s.href.includes('route=investment_banking')));
 // Prompt carries the v3 rules and the facts; firmPrep only when a firm process exists
 const c2=buildContext({overallScore:71,band:'Borderline',breakdown:{technical:12},weights:{technical:20}},cv,{name:'Amelia Chen',targetFirm:'Barclays',year:'1st Year',programme:'Summer Internship'},{});
 const prompt=buildPartPrompt('verdict',c2);
-assert(prompt.includes('WRITING RULES (v3)') && prompt.includes('Commercial & technical 12/20') && prompt.includes('motivational interview'));
-assert(getPartSchema('verdict',c2).properties.firmPrep);
+assert(prompt.includes('WRITING RULES (v3)') && prompt.includes('Commercial & technical 12/20') && !prompt.includes('Two short interactive online assessments'));
+assert(!getPartSchema('verdict',c2).properties.firmPrep);
 const c3=buildContext({overallScore:71},cv,{name:'A',targetFirm:'Unknown Ltd'},{});
 assert(!getPartSchema('verdict',c3).properties.firmPrep);
 console.log('Full Cycle v3 checks passed: profile mismatch, score labels, intensifiers, STAR drafts, confirm placeholders, cut lines, firm process, 30-day plan.');
+
 
 
