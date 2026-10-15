@@ -49,7 +49,7 @@ assert.match(validateDraftAnswer(good.replace('I was asked to train them','I led
 const bullet={originalBullet:'E7',factsUsed:['E7','E3'],exampleBullet:'Maintained 12 hours per week alongside university [CONFIRM: across how many terms?]; trained 3 new colleagues.',questionsToConfirm:[]};
 const parsed=parsePart(JSON.stringify({bulletRepair:[bullet,{...bullet},{...bullet}],competencyRepair:Array.from({length:7},()=>({name:'Leadership',evidenceSourceIds:['E7'],draftAnswer:good})),interviewRiskMap:Array(3).fill({})}),'repair',cv);
 assert(!/CONFIRM/i.test(parsed.bulletRepair[0].exampleBullet));
-assert.equal(parsed.bulletRepair[0].exampleBullet,'Maintained 12 hours per week alongside university; trained 3 new colleagues.');
+assert.equal(parsed.bulletRepair[0].exampleBullet,cv.split('\n').filter(x=>x.trim())[6]);
 assert.equal(parsed.bulletRepair[0].questionsToConfirm[0],'Across how many terms?');
 // Same draft reused across competencies is kept only once
 assert.equal(parsed.competencyRepair.filter(c=>c.draftAnswer).length,1);
@@ -82,3 +82,5 @@ assert(getPartSchema('verdict',c2).properties.firmPrep);
 const c3=buildContext({overallScore:71},cv,{name:'A',targetFirm:'Unknown Ltd'},{});
 assert(!getPartSchema('verdict',c3).properties.firmPrep);
 console.log('Full Cycle v3 checks passed: profile mismatch, score labels, intensifiers, STAR drafts, confirm placeholders, cut lines, firm process, 30-day plan.');
+
+

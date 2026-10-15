@@ -438,7 +438,7 @@ function render(R){
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
   document.getElementById("sampleTag").textContent=R.preview?'V3 design preview':'Sample report';
-  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional student · Live v3 engine test.</strong> This report was generated through the real free assessment and paid Full Cycle endpoints after a Stripe test-mode payment. No hand-written answers were added. This test exposed missing wording in one CV bullet and unconfirmed detail in a STAR draft. Review copy only — not ready for submission. Payment, practitioner submission and rechecks are disabled in this public copy. <a href="/assessment-start.html">Start your own assessment →</a>';
+  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional student · Live v3 engine test.</strong> This report was generated through the real free assessment and paid Full Cycle endpoints after a Stripe test-mode payment. No hand-written answers were added. Validation updated: the incomplete CV rewrite now uses the original source text, and the unsupported leadership draft has been withheld. Source evidence and confirmation questions remain available. Review all claims before submission. Payment, practitioner submission and rechecks are disabled in this public copy. <a href="/assessment-start.html">Start your own assessment →</a>';
   document.getElementById("dlTop").disabled=false;
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
@@ -811,3 +811,5 @@ load().then(render).catch(function(e){document.getElementById("main").innerHTML=
 </script>
 </body>
 </html>
+
+

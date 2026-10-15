@@ -11,7 +11,7 @@ const MODEL = process.env.FULL_CYCLE_MODEL || 'claude-sonnet-4-6';
 export default async function handler(req, res) {
   if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
   const part=req.body?.part||'verdict';if(!['verdict','repair','plan'].includes(part))return res.status(400).json({error:'Unknown report section.'});
-  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await hasAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});if(row.report[part])return res.json({success:true,part,data:row.report[part],cached:true});
+  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await hasAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});if(row.report[part])return res.json({success:true,part,data:part==='repair'?parsePart(JSON.stringify(row.report[part]),part,row.input.cvText):row.report[part],cached:true});
   const lease=await sql().query("UPDATE desk_assessments SET generation_lease=jsonb_set(generation_lease,ARRAY[$1],to_jsonb($2::bigint)) WHERE id=$3 AND COALESCE((generation_lease->>$1)::bigint,0)<$2::bigint-360000 RETURNING id",[part,Date.now(),row.id]);if(!lease.length)return res.status(409).json({error:'This section is being prepared. Please wait and retry.'});}catch(e){return apiFailure(res,e);}
   const {result,input:{cvText,profile,quiz}}=row;
   let ctx, prompt;
@@ -55,3 +55,4 @@ export default async function handler(req, res) {
     return res.status(502).json({ success:false, error:'We could not produce a complete, validated report section. Please retry.', category:/credit balance|billing/i.test(e.message || '') ? 'provider_billing' : /model/i.test(e.message || '') ? 'provider_model' : e.status ? 'provider_'+e.status : (e.name === 'Error' ? 'validation_or_configuration' : e.name) });
   }
 }
+
