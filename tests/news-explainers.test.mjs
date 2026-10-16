@@ -10,6 +10,8 @@ const client={messages:{create:async req=>{calls++;const sources=JSON.parse(req.
 const prior=globalThis.fetch;globalThis.fetch=async()=>{fetches++;return new Response('<article><p>'+text.repeat(3)+'</p></article>',{headers:{'content-type':'text/html'}});};
 try{const item={url:'https://www.example.com/news/loan',title:'A manufacturer funds new equipment'};const a=await explainNews([item],'https://www.example.com/news',{db,client});assert.equal(a[0].explanation,summary);const b=await explainNews([item],'https://www.example.com/news',{db,client});assert.equal(b[0].explanationStatus,'ready');assert.equal(calls,1);assert.equal(fetches,1);
  const c=await explainNews([{...item,url:'https://evil.example/private'}],'https://www.example.com/news',{db:{query:async q=>q.startsWith('INSERT')?[{}]:[]},client});assert.equal(c[0].explanation,null);assert.equal(fetches,1);assert.equal(calls,1);
+ let attempts=0;const retryClient={messages:{create:async req=>{attempts++;const content=JSON.parse(req.messages[0].content);const source=Array.isArray(content)?content[0]:content.articles[0];return {stop_reason:'tool_use',content:[{type:'tool_use',name:'submit_explainers',input:{items:[{id:source.id,explanation:attempts===1?'Too long '.repeat(60):summary}]}}]};}}};
+ const retried=await explainNews([{...item,url:'https://www.example.com/news/retry'}],'https://www.example.com/news',{db:{query:async q=>q.startsWith('INSERT')?[{}]:[]},client:retryClient});assert.equal(attempts,2);assert.equal(retried[0].explanation,summary);
 }finally{globalThis.fetch=prior;}
 console.log('PASS article-body extraction, specific explanations, persistent reuse, and blocked off-domain article requests');
 

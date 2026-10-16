@@ -1,5 +1,5 @@
 import {explainNews} from '../lib/news-explainers.mjs';
 import {DB_RSS_URL,parseDbNews} from '../lib/db-news.mjs';
-export const maxDuration=120;
+export const maxDuration=180;
 export default async function handler(req,res){if(req.method!=='GET')return res.status(405).end();try{const response=await fetch(DB_RSS_URL,{signal:AbortSignal.timeout(10000),headers:{Accept:'application/rss+xml, application/xml'}});if(!response.ok)throw Error('Feed unavailable');const items=parseDbNews(await response.text());if(!items.length)throw Error('Feed empty');res.setHeader('Cache-Control','public, s-maxage=900, stale-while-revalidate=3600');return res.status(200).json({source:'Deutsche Bank official newsroom',sourceUrl:DB_RSS_URL,checkedAt:new Date().toISOString(),items:await explainNews(items,DB_RSS_URL)});}catch{return res.status(503).json({error:'DB news is temporarily unavailable.',sourceUrl:'https://www.db.com/media/'});}}
 
