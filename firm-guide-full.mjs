@@ -10,6 +10,14 @@ export async function renderFullFirmGuide({id,sample,context,dashboard,el,anchor
  function person(p){const figure=el('figure'),img=el('img');img.src='/assets/illustrative/'+p[4]+'-placeholder.jpg';img.alt='Illustrative portrait of '+p[0];const caption=el('figcaption');caption.append(el('strong',p[0]),el('span',p[1],'specialism'),el('span',p[2]),el('span',p[3],'fine'));figure.append(img,caption);return figure;}
  const hero=firm.category==='Banking'?PEOPLE.slice(0,4):[PEOPLE[4],PEOPLE[1],PEOPLE[0],PEOPLE[2]];hero.forEach(p=>$('heroPeople').append(person(p)));hero.forEach(p=>$('supportPeople').append(person(p)));PEOPLE.forEach(p=>$('allPeople').append(person(p)));
  const sources=$('firmSources');sources.append(anchor('Official programme and careers information ↗',firm.source));for(const [title,url]of firm.extraSources)sources.append(el('br'),anchor(title+' ↗',url));sources.append(el('p','Guide sources reviewed '+firm.checked+'. Programme dates and news show their own source dates.','fine'));
+ if(firm.slug==='goldman-sachs'){
+  const quote=el('aside',null,'guide-equity-strip');quote.setAttribute('aria-label','Goldman Sachs share price');
+  const intro=el('div');intro.append(el('strong','Goldman Sachs share price'),el('p','GS · NYSE · USD'),el('p','Provider data may be delayed or end-of-day.','fine'),anchor('Goldman Sachs investor relations ↗','https://www.goldmansachs.com/investor-relations/'));
+  const container=el('div',null,'tradingview-widget-container'),widget=el('div',null,'tradingview-widget-container__widget');
+  widget.textContent='Loading GS quote…';container.append(widget,anchor('GS price and timestamp by TradingView ↗','https://www.tradingview.com/symbols/NYSE-GS/'));
+  const script=document.createElement('script');script.src='https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';script.async=true;script.textContent=JSON.stringify({symbol:'NYSE:GS',width:'100%',isTransparent:true,colorTheme:'light',locale:'en'});
+  script.onerror=()=>{widget.textContent='Quote unavailable. Open the TradingView link below.';};container.append(script);quote.append(intro,container);$('firmNews').before(quote);
+ }
  const category=firm.category;const faqs=[
  ['Why '+firm.name+' rather than another firm?',firm.focus+' Pick one specific detail from official material and connect it to something you have done or learnt.'],
  ['Do I need a finance degree?','Check the exact programme requirements. Research, data analysis, writing, teamwork and customer-facing work can provide relevant evidence from many degrees. Interest in a sector can guide your research, but does not guarantee a team or client assignment.'],
