@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ success:true, part, version:REPORT_VERSION, data });
   } catch (e) {
     await sql().query('UPDATE desk_assessments SET generation_lease=generation_lease-$1 WHERE id=$2',[part,row.id]).catch(()=>{});
-    const validationReasons=['Incomplete verdict','Incomplete repair','Rewrite must quote source CV','Rewrite has unsupported evidence quotes','Rewrite adds unsupported number','Incomplete preparation plan','Competency scores must match original assessment','Missing structured report'];
+    const validationReasons=['Incomplete evidence review','Invalid evidence review','Incomplete verdict','Incomplete repair','Rewrite must quote source CV','Rewrite has unsupported evidence quotes','Rewrite adds unsupported number','Incomplete preparation plan','Competency scores must match original assessment','Missing structured report'];
     console.error('full-cycle generation failed', validationReasons.includes(e.message) ? e.message : e.name);
     return res.status(502).json({ success:false, error:'We could not produce a complete, validated report section. Please retry.', category:/credit balance|billing/i.test(e.message || '') ? 'provider_billing' : /model/i.test(e.message || '') ? 'provider_model' : e.status ? 'provider_'+e.status : (e.name === 'Error' ? 'validation_or_configuration' : e.name) });
   }
