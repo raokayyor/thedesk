@@ -12,3 +12,10 @@ Preview-only rollout. The interactive Alex demo uses fictional public inputs and
 
 Validation: source binding/estimates/unknowns and unchanged-score tests; API ownership/origin/revision/probe-cache/generation-conflict checks; full demo flow and mobile browser check. Existing Full Cycle v3 and output-safety regressions remain passing. Real paid-path verification is recorded separately after preview deployment.
 
+## Evidence-first report changes
+
+New reports assess all seven competencies but do not require seven invented spoken answers. Missing examples can have null drafts and specific recruiter questions. All sources used by an answer should be cited (up to six); quantities are checked against those sources. The interview selection includes work experience when available.
+
+A separate Claude review checks every generated CV bullet and available competency answer against the original CV and confirmed details. Incomplete or malformed reviews fail generation; unsupported drafts are withheld and replaced by a question. This remains model-assisted checking, not independent verification or a guarantee against hallucinations. It adds latency and a provider call to report generation.
+
+Unchanged CV bullets are explicitly marked as needing details and are not counted as successful rewrites. Finished bullets must use confirmed facts with questions kept separately. Existing saved reports are not silently regenerated or upgraded to reviewed status.
