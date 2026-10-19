@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import {variants} from './deep-dive-variants.mjs';
+import {confirmedDraft,hasUnsupportedSpecificClaim} from '../lib/confirmed-draft.mjs';
 import assert from 'node:assert/strict';
 import {applyEvidenceReview,reviewItems,reviewGeneratedEvidence} from '../lib/evidence-review.mjs';
 import {buildRepairedCv} from '../lib/repaired-cv.mjs';
@@ -18,3 +21,5 @@ const mocked={messages:{create:async request=>{assert.deepEqual(request.tools[0]
 const partial={...unchanged,bulletRepair:[unchanged.bulletRepair[0],{...unchanged.bulletRepair[0],exampleBullet:"Compared 999 prices."}]};assert.throws(()=>parsePart(JSON.stringify(partial),"repair",cv),/unsupported number/);const safe=parsePart(JSON.stringify(partial),"repair",cv,null,{allowPartial:true});assert.equal(safe.bulletRepair.length,1);assert.equal(safe.cvEvidenceGaps.length,1);assert(!JSON.stringify(safe.bulletRepair).includes("999"));console.log("PASS unsupported rewrite withheld per item without weakening strict validation");
 
 const verbose=report();applyEvidenceReview(verbose,[{id:"bullet-0",supported:false,reason:"Explanation ".repeat(80),question:"What prices did you compare?"},{id:"competency-0",supported:false,reason:"No outcome",question:"Long question ".repeat(80)}]);assert(verbose.bulletRepair[0].reviewReason.length<=400);assert(verbose.competencyRepair[0].nextAction.length<=450);assert.equal(verbose.competencyRepair[0].draftAnswer,null);console.log("PASS verbose reviewer explanations cannot block safe withholding");
+
+const demo=JSON.parse(fs.readFileSync(new URL("../samples/experience-interview-demo.json",import.meta.url)));const cases=variants(demo.cvText);assert.equal(confirmedDraft("Analytical ability",cases[0].experience),null);assert(confirmedDraft("Analytical ability",cases[1].experience).text.includes("12 primary"));assert.equal(confirmedDraft("Leadership",cases[1].experience),null);assert(hasUnsupportedSpecificClaim("Corrected it before close","Checked tills at close."));assert(!hasUnsupportedSpecificClaim("Checked it before close","I checked it before close."));assert.equal(parsePart(JSON.stringify(safe),"repair",cv,null,{allowPartial:true}).cvEvidenceGaps.length,1);console.log("PASS grounded analytical fallback, no forced leadership, timing guard and persistent gap flags");
