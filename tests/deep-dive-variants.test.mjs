@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {variants} from './deep-dive-variants.mjs';
+import {confirmedEvidence} from '../lib/experience-interview.mjs';
+const cv=JSON.parse(fs.readFileSync(new URL('../samples/experience-interview-demo.json',import.meta.url))).cvText;
+const rows=variants(cv);assert.equal(rows.length,3);
+const evidence=rows.map(r=>confirmedEvidence(r.experience));
+assert(evidence[0].every(e=>!e.quote.includes('12 primary')));
+assert(evidence[1].some(e=>e.id==='C1_scope'&&e.quote.includes('12 primary')));
+assert(evidence[2].some(e=>e.id==='C1_scope'&&e.quote.startsWith('Approximate estimate:')));
+assert(rows.every(r=>r.experience.examples[0].sourceQuote===rows[0].experience.examples[0].sourceQuote));
+assert(evidence[0].every(e=>!e.quote.includes('8 texts')));
+assert(evidence[1].every(e=>!e.quote.includes('8 texts')));
+console.log('PASS identical CV source, isolated variant facts, missing quantities stay absent, estimates labelled');

@@ -303,8 +303,9 @@ h3{font-size:20px;line-height:1.3;margin:0}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
 .report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
+<link rel="stylesheet" href="/fullcycle-build-screen.css">
 </head>
-<body>
+<body class="is-building">
 <header class="top"><div class="top-in">
   <a class="logo" href="/">The <i>Desk</i></a>
   <span class="top-meta" id="topMeta"></span>
@@ -358,8 +359,8 @@ var ATS_NAMES={textReadability:"Readable text",sectionStructure:"Section heading
 var LABELS={ats:"ATS",numerical:"Numerical",technical:"Commercial & technical",competency:"Competency",application:"CV & application"};
 
 /* ---------- load ---------- */
-var activeAssessmentId=null;
-function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;}
+var activeAssessmentId=null,buildScreen=null;
+function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;if(buildScreen)buildScreen.message(text);}
 async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok)throw new Error(data.error||'This step could not complete. Please retry.');return data;}
 async function load(){
  var params=new URLSearchParams(location.search),id=params.get('id');
@@ -367,20 +368,22 @@ async function load(){
  if(sample){var preview=await api('/samples/amelia-report-v3-preview.json');preview.sample=true;preview.preview=true;return preview;}
  if(!id||!/^[a-f0-9]{48}$/.test(id))throw new Error('Open Full Cycle from your paid assessment, or view the fictional sample below.');
  activeAssessmentId=id;
+ var buildModule=await import('/fullcycle-build-screen.mjs');buildScreen=buildModule.mountBuildScreen(document.getElementById('main'),{id:id});buildScreen.stage('evidence','active');
  var session=params.get('session_id');
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
  if(!saved.paid)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
  if(!saved.experience?.completedAt&&!Object.keys(saved.report||{}).length){location.replace('/fullcycle-experience.html?id='+encodeURIComponent(id));return null;}
+ buildScreen.stage('evidence','done');
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
-  var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
-  var section=saved.report&&saved.report[part];
+  var part=parts[i];var section=saved.report&&saved.report[part];buildScreen.stage(part,'active');status((section?'Opening your saved ':'Preparing your ')+part+' section…');
   if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}finally{clearTimeout(timeout);}}
-  Object.assign(paid,section);
+  Object.assign(paid,section);buildScreen.stage(part,'done');
  }
- status('Building your CV from validated repairs…');
+ buildScreen.stage('cv','active');status('Assembling your CV from the saved repairs…');
  var draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});
+ buildScreen.stage('cv','done');
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
 
@@ -432,6 +435,7 @@ var SECTIONS=[
 ];
 
 function render(R){
+ document.body.classList.remove('is-building');
   if(R.paid&&R.paid.weeksTwoToFour){SECTIONS.forEach(function(s){if(s.id==="plan")s.t="30-day plan";});}
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
@@ -586,8 +590,8 @@ function render(R){
     var sorted=src.slice().sort(function(a,b){return a.score-b.score;});
     var lowest=sorted[0]&&sorted[0].score;
     S.competencies=
-    '<div class="eyebrow">Competency answers</div><h2 class="mt8">All seven competencies, weakest first.</h2>'+
-    '<p class="lede">Each one has the evidence you already have, the answer structure to use, and the one thing to add. Open any row.</p>'+
+    '<div class="eyebrow">Competency answers</div><h2 class="mt8">Your competency evidence, weakest first.</h2>'+
+    '<p class="lede">Finished answers appear where your evidence supports them. For gaps, answer the recruiter question before building a draft.</p>'+
     '<div class="mt32">'+sorted.map(function(c,i){
       var L=lvl[c.name]||Math.round(c.score/25),low=c.score===lowest;
       var star=splitStar(c.answerStructure||"");
@@ -597,7 +601,7 @@ function render(R){
         '<div class="comp-b"><div class="label">What you have</div><div style="color:var(--ink2)">'+h(c.evidence)+'</div>'+
         (star?'<div class="star">'+star.map(function(s){return'<div><b>'+esc(s.k)+'</b>'+h(s.v)+'</div>';}).join("")+'</div>':'<p>'+h(c.answerStructure)+'</p>')+
         (c.draftAnswer?'<div class="label mt16">Your draft answer. Say it out loud, then fill the yellow gaps</div><div class="draft">'+h(c.draftAnswer).replace(/\[confirm:\s*([^\]]+)\]/gi,'<span class="cf">$1</span>')+'</div>'
-          :'<div class="label mt16">Your raw material, from your CV</div><div class="raw" style="margin-top:0">'+h(c.sampleAnswer)+'</div>')+
+          :'<div class="label mt16">More evidence needed before drafting this answer</div><div class="raw" style="margin-top:0">'+h(c.sampleAnswer)+'</div>')+
         '<div class="next"><b>Add this →</b><span>'+h(c.nextAction)+'</span></div></div></div>';
     }).join("")+'</div>';
   })();
@@ -812,11 +816,10 @@ function wire(R,S){
 }
 
 document.getElementById('dlTop').disabled=true;
-load().then(function(result){if(result)render(result);}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+load().then(function(result){if(result)render(result);}).catch(function(e){if(buildScreen){buildScreen.fail(e.name==='AbortError'?'This section took too long. Your completed sections are saved; retry to continue.':e.message);return;}document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 </body>
 </html>
-
 
 

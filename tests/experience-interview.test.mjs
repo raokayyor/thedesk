@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {defaultInterview,validateExperience,confirmedEvidence,cvPoints,experienceRequired} from '../lib/experience-interview.mjs';
+import {defaultInterview,validateExperience,confirmedEvidence,cvPoints,experienceRequired,stableExperienceText} from '../lib/experience-interview.mjs';
 import {buildContext,buildPartPrompt,getPartSchema,parsePart} from '../lib/full-cycle-contract.mjs';
 import {buildRepairedCv} from '../lib/repaired-cv.mjs';
 const original='Compared supplier quotes and presented the options to the committee.';
@@ -15,3 +15,4 @@ const wrong={...payload,bulletRepair:[{...payload.bulletRepair[0],originalBullet
 assert(buildRepairedCv({cvText:cv,paid:payload,experience:normal}).sourceText.includes('about 18'));assert(experienceRequired({input:{},report:{}}));assert(!experienceRequired({input:{experience:normal},report:{}}));assert(!experienceRequired({input:{},report:{repair:{}}}));
 console.log('PASS paid interview source binding, unknown exclusion, estimate labels, background evidence, score preservation, original CV replacement and legacy access');
 
+const reordered=JSON.parse(JSON.stringify(normal,(_k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).reverse().map(k=>[k,v[k]])):v));assert.equal(stableExperienceText(normal),stableExperienceText(reordered));console.log('PASS JSONB property-order independence for follow-up completion');
