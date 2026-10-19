@@ -371,6 +371,7 @@ async function load(){
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
  if(!saved.paid)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
+ if(!saved.experience?.completedAt&&!Object.keys(saved.report||{}).length){location.replace('/fullcycle-experience.html?id='+encodeURIComponent(id));return null;}
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
   var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
@@ -388,13 +389,13 @@ function safeLink(value){var s=String(value||'');return /^\/(?!\/)|^#[a-z][a-z0-
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 var EMAP={};
 function buildEvidenceMap(R){
- EMAP={};(R.paid.competencyRepair||[]).forEach(function(c){(c.evidenceSourceIds||[]).forEach(function(id){EMAP[id]='your cited CV evidence';});});
+ EMAP={};(R.paid.competencyRepair||[]).forEach(function(c){(c.evidenceSourceIds||[]).forEach(function(id){EMAP[id]='your cited experience evidence';});});
 }
 /* Replace internal evidence codes (E7, E8/E13) with plain words */
 function clean(s){
   s=String(s==null?"":s);
-  s=s.replace(/\bE\d{1,2}(?:\s*(?:\/|,|and|or)\s*E\d{1,2})*\b/g,function(m){
-    var ids=m.match(/E\d{1,2}/g),seen={},out=[];
+  s=s.replace(/\b(?:E\d+|C\d+_[a-z]+|B_[a-z]+|F_Q\d+)\b/g,function(m){
+    var ids=m.match(/E\d+|C\d+_[a-z]+|B_[a-z]+|F_Q\d+/g),seen={},out=[];
     ids.forEach(function(id){var l=EMAP[id]||("your CV");if(!seen[l]){seen[l]=1;out.push(l);}});
     return out.join(" and ");
   });
@@ -437,6 +438,7 @@ function render(R){
   document.getElementById("sampleTag").hidden=!R.sample;
   document.getElementById("sampleTag").textContent=R.preview?'V3 design preview':'Sample report';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
+  if(!R.sample){var experienceLink=document.createElement('a');experienceLink.className='btn';experienceLink.href='/fullcycle-experience.html?id='+encodeURIComponent(R.id);experienceLink.textContent='Review experience details';document.getElementById('nav').after(experienceLink);}
   document.getElementById("dlTop").disabled=false;
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
@@ -810,7 +812,7 @@ function wire(R,S){
 }
 
 document.getElementById('dlTop').disabled=true;
-load().then(render).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+load().then(function(result){if(result)render(result);}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 </body>

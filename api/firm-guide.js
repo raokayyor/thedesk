@@ -5,7 +5,7 @@ export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');if(req.method!=='GET')return res.status(405).end();
  const firm=FIRM_GUIDES.find(f=>f.slug===req.query.firm);if(!firm)return res.status(404).json({error:'Guide unavailable.'});
  try{const row=await ownedRecord(req,res,req.query.id);if(!row||!await hasAccess(row))return res.status(402).json({error:'Open from your paid Full Cycle assessment.'});
- const repair=row.report?.repair?parsePart(JSON.stringify(row.report.repair),'repair',row.input.cvText):null;
+ const repair=row.report?.repair?parsePart(JSON.stringify(row.report.repair),'repair',row.input.cvText,row.input.experience):null;
  const profile=row.input.profile||{};
  return res.json({firm:firm.name,profile:{name:profile.name,university:profile.university,course:profile.course},score:row.result.overallScore,currentTarget:profile.targetFirm,
  evidence:(repair?.bulletRepair||[]).slice(0,2).map(b=>b.originalBullet),

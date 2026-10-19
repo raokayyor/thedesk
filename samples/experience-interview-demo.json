@@ -1,0 +1,157 @@
+{
+  "profile": {
+    "name": "Alex Morgan",
+    "university": "Loughborough University",
+    "course": "English BA",
+    "year": "Final Year",
+    "targetSector": "General Finance",
+    "targetDivision": "General Finance",
+    "programme": "Graduate Programme",
+    "targetFirm": "HSBC"
+  },
+  "cvText": "Alex Morgan\nEmail: alex.sample@example.com\nEDUCATION\nLoughborough University — BA English, 2023–2026. Predicted 2:1.\nEXPERIENCE\nCampus Bar — Team Member, 2024–present\nServed customers during evening shifts and checked till totals with the supervisor at close.\nWhen an order was entered twice, checked the receipt and asked the supervisor to correct it.\nWorked with colleagues to prioritise outstanding orders during busy periods.\nACTIVITIES\nLiterature Society — Events Volunteer, 2025\nCompared room availability and prices for a reading event and recorded options in a spreadsheet.\nPresented the options to the society committee; the committee selected the venue.\nHelped organise sign-in on the day and answered attendees’ questions.\nPROJECTS\nEnglish dissertation, 2026\nCompared three authors’ treatment of unreliable narration and documented sources in an evidence table.\nRevised the argument after tutor feedback and presented the revised structure to a seminar group.\nSKILLS\nResearch, written communication, Excel spreadsheets, teamwork. No finance internship or financial modelling project.",
+  "revision": 0,
+  "draft": null,
+  "completed": null,
+  "hasReport": false,
+  "interviewPrepared": true,
+  "interview": {
+    "version": "experience-interview-v1",
+    "points": [
+      {
+        "id": "E7",
+        "quote": "Served customers during evening shifts and checked till totals with the supervisor at close.",
+        "heading": "Campus Bar — Team Member, 2024–present",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E8",
+        "quote": "When an order was entered twice, checked the receipt and asked the supervisor to correct it.",
+        "heading": "Campus Bar — Team Member, 2024–present",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E9",
+        "quote": "Worked with colleagues to prioritise outstanding orders during busy periods.",
+        "heading": "Campus Bar — Team Member, 2024–present",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E12",
+        "quote": "Compared room availability and prices for a reading event and recorded options in a spreadsheet.",
+        "heading": "Literature Society — Events Volunteer, 2025",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Talk me through your steps, tools and assumptions. Why did you choose that approach, and how did you check it?",
+          "finding": "What did the analysis actually show? State the finding or output, including any limitations; a calculation or correction can be an outcome.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E13",
+        "quote": "Presented the options to the society committee; the committee selected the venue.",
+        "heading": "Literature Society — Events Volunteer, 2025",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E14",
+        "quote": "Helped organise sign-in on the day and answered attendees’ questions.",
+        "heading": "Literature Society — Events Volunteer, 2025",
+        "critique": "This describes support. Let’s establish your own actions, the scope of the work and what your contribution produced.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E17",
+        "quote": "Compared three authors’ treatment of unreliable narration and documented sources in an evidence table.",
+        "heading": "PROJECTS",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Talk me through your steps, tools and assumptions. Why did you choose that approach, and how did you check it?",
+          "finding": "What did the analysis actually show? State the finding or output, including any limitations; a calculation or correction can be an outcome.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      },
+      {
+        "id": "E18",
+        "quote": "Revised the argument after tutor feedback and presented the revised structure to a seminar group.",
+        "heading": "PROJECTS",
+        "critique": "Let’s unpack this point into your own actions, the method, the scale and an outcome you can defend.",
+        "questions": {
+          "ownership": "What did you personally do on this task? Separate your actions from your team’s work and your supervisor’s decisions.",
+          "scope": "What was the scale: how many items, records, companies, people or hours? What period does the number cover, and where does it come from?",
+          "method": "Walk me through what you actually did, in order. Which tools, instructions or checks did you use?",
+          "finding": "What did you produce, identify or change? Describe something observable rather than saying it was successful.",
+          "outcome": "Who saw or used your work, and what happened afterwards? What can you personally confirm, and what do you not know?",
+          "challenge": "Was there a real difficulty, disagreement or decision? What happened and how did you respond? If there was none, say so.",
+          "learning": "What did you actually learn or do differently afterwards? Use your own view; you do not need a dramatic lesson.",
+          "correction": "Is any wording, date, quantity or responsibility in the quoted CV point inaccurate or overstated? State the correction, or choose not applicable."
+        }
+      }
+    ],
+    "selectedIds": [
+      "E17",
+      "E7",
+      "E12"
+    ],
+    "preparedBy": "question-framework"
+  }
+}
