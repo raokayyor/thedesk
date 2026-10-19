@@ -303,8 +303,9 @@ h3{font-size:20px;line-height:1.3;margin:0}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
 .report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
+<link rel="stylesheet" href="/fullcycle-build-screen.css">
 </head>
-<body>
+<body class="is-building">
 <header class="top"><div class="top-in">
   <a class="logo" href="/">The <i>Desk</i></a>
   <span class="top-meta" id="topMeta"></span>
@@ -358,8 +359,8 @@ var ATS_NAMES={textReadability:"Readable text",sectionStructure:"Section heading
 var LABELS={ats:"ATS",numerical:"Numerical",technical:"Commercial & technical",competency:"Competency",application:"CV & application"};
 
 /* ---------- load ---------- */
-var activeAssessmentId=null;
-function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;}
+var activeAssessmentId=null,buildScreen=null;
+function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;if(buildScreen)buildScreen.message(text);}
 async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok)throw new Error(data.error||'This step could not complete. Please retry.');return data;}
 async function load(){
  var params=new URLSearchParams(location.search),id=params.get('id');
@@ -367,19 +368,22 @@ async function load(){
  if(sample){var preview=await api('/samples/amelia-report-v3-preview.json');preview.sample=true;preview.preview=true;return preview;}
  if(!id||!/^[a-f0-9]{48}$/.test(id))throw new Error('Open Full Cycle from your paid assessment, or view the fictional sample below.');
  activeAssessmentId=id;
+ var buildModule=await import('/fullcycle-build-screen.mjs');buildScreen=buildModule.mountBuildScreen(document.getElementById('main'),{id:id});buildScreen.stage('evidence','active');
  var session=params.get('session_id');
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
  if(!saved.paid)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
+ if(!saved.experience?.completedAt&&!Object.keys(saved.report||{}).length){location.replace('/fullcycle-experience.html?id='+encodeURIComponent(id));return null;}
+ buildScreen.stage('evidence','done');
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
-  var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
-  var section=saved.report&&saved.report[part];
+  var part=parts[i];var section=saved.report&&saved.report[part];buildScreen.stage(part,'active');status((section?'Opening your saved ':'Preparing your ')+part+' section…');
   if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}finally{clearTimeout(timeout);}}
-  Object.assign(paid,section);
+  Object.assign(paid,section);buildScreen.stage(part,'done');
  }
- status('Building your CV from validated repairs…');
+ buildScreen.stage('cv','active');status('Assembling your CV from the saved repairs…');
  var draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});
+ buildScreen.stage('cv','done');
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
 
@@ -388,13 +392,13 @@ function safeLink(value){var s=String(value||'');return /^\/(?!\/)|^#[a-z][a-z0-
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 var EMAP={};
 function buildEvidenceMap(R){
- EMAP={};(R.paid.competencyRepair||[]).forEach(function(c){(c.evidenceSourceIds||[]).forEach(function(id){EMAP[id]='your cited CV evidence';});});
+ EMAP={};(R.paid.competencyRepair||[]).forEach(function(c){(c.evidenceSourceIds||[]).forEach(function(id){EMAP[id]='your cited experience evidence';});});
 }
 /* Replace internal evidence codes (E7, E8/E13) with plain words */
 function clean(s){
   s=String(s==null?"":s);
-  s=s.replace(/\bE\d{1,2}(?:\s*(?:\/|,|and|or)\s*E\d{1,2})*\b/g,function(m){
-    var ids=m.match(/E\d{1,2}/g),seen={},out=[];
+  s=s.replace(/\b(?:E\d+|C\d+_[a-z]+|B_[a-z_]+|F_Q\d+)\b/g,function(m){
+    var ids=m.match(/E\d+|C\d+_[a-z]+|B_[a-z_]+|F_Q\d+/g),seen={},out=[];
     ids.forEach(function(id){var l=EMAP[id]||("your CV");if(!seen[l]){seen[l]=1;out.push(l);}});
     return out.join(" and ");
   });
@@ -422,6 +426,7 @@ var SECTIONS=[
   {id:"interview",t:"Interview questions"},
   {id:"competencies",t:"Competency answers"},
   {id:"technical",t:"Technical gaps"},
+  {id:"numerical",t:"Numerical practice"},
   {id:"application",t:"Application readiness"},
   {id:"plan",t:"7-day plan"},
   {id:"prep",t:"Prep"},
@@ -430,12 +435,14 @@ var SECTIONS=[
 ];
 
 function render(R){
+ document.body.classList.remove('is-building');
   if(R.paid&&R.paid.weeksTwoToFour){SECTIONS.forEach(function(s){if(s.id==="plan")s.t="30-day plan";});}
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
   document.getElementById("sampleTag").textContent=R.preview?'V3 design preview':'Sample report';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
+  if(!R.sample){var experienceLink=document.createElement('a');experienceLink.className='btn';experienceLink.href='/fullcycle-experience.html?id='+encodeURIComponent(R.id);experienceLink.textContent='Review experience details';document.getElementById('nav').after(experienceLink);}
   document.getElementById("dlTop").disabled=false;
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
@@ -447,7 +454,9 @@ function render(R){
     var rows=Object.keys(res.weights).map(function(k){return{k:k,max:res.weights[k],got:res.breakdown[k]};})
       .sort(function(a,b){return(b.max-b.got)-(a.max-a.got);});
     var missing=rows.reduce(function(a,r){return a+(r.max-r.got);},0);
-    var pr=res.priorities||[],links=["technical","competencies","cv"];
+    var pr=res.priorities||[];
+    function linkFor(p){var s=(p.title+' '+(p.description||'')).toLowerCase();if(/quiz|wacc|cash flow|technical|numerical|percentage|margin|net debt|dilution|test/.test(s))return 'technical';if(/ats|keyword/.test(s))return 'ats';if(/cv|bullet|lvmh|redcliffe|wording/.test(s))return 'cv';if(/leadership|resilience|teamwork|competenc|star|example/.test(s))return 'competencies';if(/commercial|market view|why /.test(s))return 'interview';return 'plan';}
+    var links=pr.map(linkFor);
     var roleKey=(prof.targetFirm||"")+"|"+(prof.targetDivision||"").split(" /")[0];
     var role=TRACKER_ROLES[roleKey];
     S.overview=
@@ -484,7 +493,7 @@ function render(R){
   /* CV */
   (function(){
     var repairs=P.bulletRepair||[],cuts=(P.evidenceHierarchy&&P.evidenceHierarchy.reduceOrCut)||[];
-    var cutPhrases=[];cuts.forEach(function(c){c.evidence.split(" / ").forEach(function(p){p=p.trim();if(p.length>12)cutPhrases.push({p:p,why:c.whyReduce});});});
+    var cutPhrases=[];cuts.forEach(function(c){c.evidence.split(" / ").forEach(function(p){p=p.trim();if(p.length>12&&!/\d/.test(p))cutPhrases.push({p:p,why:c.whyReduce});});});
     var flags=(R.cv&&R.cv.accuracyFlags)||[];
     var lines=String(R.repairedCvDraft||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);
     var qn=0,qList=[];
@@ -581,8 +590,8 @@ function render(R){
     var sorted=src.slice().sort(function(a,b){return a.score-b.score;});
     var lowest=sorted[0]&&sorted[0].score;
     S.competencies=
-    '<div class="eyebrow">Competency answers</div><h2 class="mt8">All seven competencies, weakest first.</h2>'+
-    '<p class="lede">Each one has the evidence you already have, the answer structure to use, and the one thing to add. Open any row.</p>'+
+    '<div class="eyebrow">Competency answers</div><h2 class="mt8">Your competency evidence, weakest first.</h2>'+
+    '<p class="lede">Finished answers appear where your evidence supports them. For gaps, answer the recruiter question before building a draft.</p>'+
     '<div class="mt32">'+sorted.map(function(c,i){
       var L=lvl[c.name]||Math.round(c.score/25),low=c.score===lowest;
       var star=splitStar(c.answerStructure||"");
@@ -592,9 +601,14 @@ function render(R){
         '<div class="comp-b"><div class="label">What you have</div><div style="color:var(--ink2)">'+h(c.evidence)+'</div>'+
         (star?'<div class="star">'+star.map(function(s){return'<div><b>'+esc(s.k)+'</b>'+h(s.v)+'</div>';}).join("")+'</div>':'<p>'+h(c.answerStructure)+'</p>')+
         (c.draftAnswer?'<div class="label mt16">Your draft answer. Say it out loud, then fill the yellow gaps</div><div class="draft">'+h(c.draftAnswer).replace(/\[confirm:\s*([^\]]+)\]/gi,'<span class="cf">$1</span>')+'</div>'
-          :'<div class="label mt16">Your raw material, from your CV</div><div class="raw" style="margin-top:0">'+h(c.sampleAnswer)+'</div>')+
+          :'<div class="label mt16">More evidence needed before drafting this answer</div><div class="raw" style="margin-top:0">'+h(c.sampleAnswer)+'</div>')+
         '<div class="next"><b>Add this →</b><span>'+h(c.nextAction)+'</span></div></div></div>';
     }).join("")+'</div>';
+  })();
+
+  /* Numerical practice links do not regenerate or change the assessment score. */
+  (function(){var quiz=R.quiz||{},missed=(quiz.missed||[]).filter(function(m){return m.section==='numerical';});
+    S.numerical='<div class="eyebrow">Numerical practice</div><h2 class="mt8">Build confidence with the numbers.</h2><p class="lede">Practise percentages, ratios, tables and financial calculations. Review the method first, then work on accuracy under time pressure.</p><div class="card"><h3>Your assessment starting point</h3><p>'+esc(quiz.numericalCorrect==null?'Not available':quiz.numericalCorrect+' of '+(quiz.numericalTotal||5)+' correct')+'</p><p class="mute">Practice results do not change your saved assessment score. Use an eligible recheck when you are ready.</p><a class="btn or" href="/test-hub.html?type=numerical">Start numerical practice →</a></div>'+(missed.length?'<h2 class="mt32">Start with the topics you missed.</h2><div class="grid2">'+missed.map(function(m){var topic=/percentage (?:growth|fall)/i.test(m.topic)?'Percentage change':m.topic;return '<div class="card"><h3>'+esc(m.topic)+'</h3><a href="/test-hub.html?type=numerical&topic='+encodeURIComponent(topic)+'">Practise this topic →</a></div>';}).join('')+'</div>':'<p class="mt24">Use a mixed set to practise across topics, then review the explanations for any errors.</p>');
   })();
 
   /* TECHNICAL */
@@ -605,12 +619,12 @@ function render(R){
     '<div class="eyebrow">Technical gaps</div><h2 class="mt8">'+W.length+' questions you missed. Review the concepts, then practise them.</h2>'+
     '<p class="lede">You got '+(q.numericalCorrect||0)+' of '+(q.numericalTotal||0)+' numerical and '+(q.commercialCorrect||0)+' of '+(q.commercialTotal||0)+' commercial right. Say each answer out loud before you reveal it, then drill it in the Test Hub until it’s automatic.</p>'+
     '<div class="gaps mt32">'+W.map(function(w,i){
-      var pr=PRACTICE[w.concept],url=pr?'/test-hub.html?type='+pr.type+(pr.route?'&route='+pr.route:'')+'&topic='+encodeURIComponent(pr.topic):'/test-hub.html';
+      var pr=PRACTICE[w.concept]||({WACC:{type:'technical',route:'investment_banking',topic:'WACC'},'Free cash flow':{type:'technical',route:'investment_banking',topic:'Free cash flow'},'Percentage growth':{type:'numerical',topic:'Percentage change'},'Margin change in percentage points':{type:'numerical',topic:'Margin change in percentage points'}}[w.concept])||(w.hub?{type:w.hub.type,route:w.hub.route,topic:w.hub.topic}:null),url=pr?'/test-hub.html?type='+pr.type+(pr.route?'&route='+pr.route:'')+'&topic='+encodeURIComponent(pr.topic):'/test-hub.html';
       return '<div class="card gap"><span class="sect">'+esc(sec[w.concept]||"")+'</span><h3>'+esc(w.concept)+'</h3>'+
         '<button class="reveal" data-reveal="'+i+'">Explain it out loud first. Then tap to see the answer.</button>'+
-        '<div hidden data-ans="'+i+'">'+esc(w.answer)+'</div>'+
-        ((w.steps||[]).length>1||w.question!==w.concept?'<details><summary style="cursor:pointer;font-weight:700;font-size:14.5px">Full working</summary>'+(w.question&&w.question!==w.concept?'<p style="font-size:15px;margin:10px 0 6px"><b>Question:</b> '+esc(w.question)+'</p>':'')+'<ol class="wa-steps">'+(w.steps||[]).map(function(s){return'<li>'+esc(s)+'</li>';}).join("")+'</ol>'+(w.trap?'<p class="wa-trap"><b>Trap:</b> '+esc(w.trap)+'</p>':'')+(w.drill&&w.drillAnswer!==w.answer?'<p style="font-size:14.5px;margin:6px 0 0"><b>Try one:</b> '+esc(w.drill)+' <span class="mute">('+esc(w.drillAnswer)+')</span></p>':'')+'</details>':'')+
-        '<div class="go"><span class="mute">'+'Practise in the Test Hub'+'</span><a href="'+url+'">Practise →</a></div></div>';
+        '<div hidden data-ans="'+i+'">'+esc(w.correctAnswer?w.correctAnswer+(w.explanation&&w.explanation!==w.correctAnswer?'. '+w.explanation:''):w.answer)+'</div>'+
+        ((w.steps||[]).length>1||w.question!==w.concept?'<details><summary style="cursor:pointer;font-weight:700;font-size:14.5px">Full working</summary>'+(w.question&&w.question!==w.concept?'<p style="font-size:15px;margin:10px 0 6px"><b>Question:</b> '+esc(w.question)+'</p>':'')+'<ol class="wa-steps">'+(w.steps||[]).map(function(s){return'<li>'+esc(s)+'</li>';}).join("")+'</ol>'+(w.trap&&!/^Check the definition and units/.test(w.trap)?'<p class="wa-trap"><b>Trap:</b> '+esc(w.trap)+'</p>':'')+(w.drill&&w.drillAnswer!==w.answer?'<p style="font-size:14.5px;margin:6px 0 0"><b>Try one:</b> '+esc(w.drill)+' <span class="mute">('+esc(w.drillAnswer)+')</span></p>':'')+'</details>':'')+
+        '<div class="go"><span class="mute">'+(pr&&pr.topic?'Practise '+esc(pr.topic)+' in the Test Hub':'Practise in the Test Hub')+'</span><a href="'+url+'">Practise →</a></div></div>';
     }).join("")+'</div>';
   })();
 
@@ -670,11 +684,12 @@ function render(R){
   })();
 
   /* Firm guide shortcuts are opt-in; the target firm never auto-adds one. */
+  var GUIDE_PATHS={"Deutsche Bank": "/deutsche-bank.html", "Goldman Sachs": "/goldman-sachs.html", "JP Morgan": "/jp-morgan.html", "Barclays": "/barclays.html", "HSBC": "/hsbc.html", "Citi": "/citi.html", "Morgan Stanley": "/morgan-stanley.html", "Bank of America": "/bank-of-america.html", "PwC": "/pwc.html", "EY": "/ey.html", "RSA / Intact Insurance": "/rsa-intact.html", "Legal & General": "/legal-general.html", "Insight Investment": "/insight-investment.html", "BlackRock": "/blackrock.html"};
   var prepKey='desk-prep-'+(R.sample?'sample':R.id),prepFirms=[];
   try{prepFirms=JSON.parse(localStorage.getItem(prepKey)||'[]');if(!Array.isArray(prepFirms))prepFirms=[];}catch(e){}
   prepFirms=prepFirms.filter(function(n){return typeof n==='string'&&n.length<80;});
   var addFirmUrl='/graduate-programmes.html'+(R.sample?'?dashboard=sample':'?id='+encodeURIComponent(R.id||''))+'#add-firm';
-  S.prep='<div class="eyebrow">Prep</div><h2 class="mt8">Your firm guides.</h2><p class="lede">Add the firms you want to prepare for. Your CV, ATS and competency work stays in your report.</p><a class="btn or" href="'+esc(addFirmUrl)+'">Add firm →</a><div class="grid2 mt24">'+prepFirms.map(function(f,i){var available=f==='Deutsche Bank',url=available?'/deutsche-bank.html'+(R.sample?'':'?id='+encodeURIComponent(R.id||'')):'/graduate-programmes.html'+(R.sample?'?dashboard=sample':'?id='+encodeURIComponent(R.id||''));return '<div class="card"><h3>'+esc(f)+' prep</h3><p>'+ (available?'Explore the bank and programme guide.':'Guide coming soon. Your firm is saved here.')+'</p><a href="'+esc(url)+'">'+(available?'Open guide →':'View application guides →')+'</a><button class="btn ghost" data-remove-firm="'+i+'" style="margin-left:12px">Remove</button></div>';}).join('')+'</div>';
+  S.prep='<div class="eyebrow">Prep</div><h2 class="mt8">Your firm guides.</h2><p class="lede">Add the firms you want to prepare for. Your CV, ATS and competency work stays in your report.</p><a class="btn or" href="'+esc(addFirmUrl)+'">Add firm →</a><div class="grid2 mt24">'+prepFirms.map(function(f,i){var available=Object.prototype.hasOwnProperty.call(GUIDE_PATHS,f),url=(GUIDE_PATHS[f]||'/graduate-programmes.html')+(R.sample?'?dashboard=sample':'?id='+encodeURIComponent(R.id||''));return '<div class="card"><h3>'+esc(f)+' prep</h3><p>'+ (available?'Explore the firm, roles and preparation guide.':'Guide coming soon. Your firm is saved here.')+'</p><a href="'+esc(url)+'">'+(available?'Open guide →':'View application guides →')+'</a><button class="btn ghost" data-remove-firm="'+i+'" style="margin-left:12px">Remove</button></div>';}).join('')+'</div>';
 
   /* mount */
   var main=document.getElementById("main"),nav=document.getElementById("nav");
@@ -801,11 +816,10 @@ function wire(R,S){
 }
 
 document.getElementById('dlTop').disabled=true;
-load().then(render).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+load().then(function(result){if(result)render(result);}).catch(function(e){if(buildScreen){buildScreen.fail(e.name==='AbortError'?'This section took too long. Your completed sections are saved; retry to continue.':e.message);return;}document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 </body>
 </html>
-
 
 

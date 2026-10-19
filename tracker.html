@@ -139,8 +139,10 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   .count{margin-left:0;width:100%}
 }
 .tabs a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px}.storage-note{font-size:13px;color:var(--muted);margin:12px 0}.export{display:inline-block;width:auto;font-size:13px}.application-stage{font-size:12px;color:var(--muted);display:grid;gap:4px}.application-stage select{width:100%;font-size:14px}.prep a{white-space:normal}.insight a{white-space:normal}
-.prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}\n.role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.role-tab{font:600 13px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 11px;cursor:pointer}.role-tab[aria-expanded="true"]{background:var(--soft);border-color:var(--ink)}.role-info{border-top:1px solid var(--line);padding:14px 0 4px}.role-info h3{font:500 19px var(--display);margin:0 0 8px}.role-info p{font-size:14px;margin:0 0 10px}.role-info a{font-size:13px;font-weight:600}.role-info .role-note{font-size:12px;color:var(--muted)}.role-info[hidden]{display:none}.prep-topics{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:7px}.prep-topics span{font-size:13px}.prep-topics span:before{content:"✓";margin-right:6px;color:var(--accent)}.prep-support{font-size:12px;color:var(--muted);margin:8px 0 0}
-.role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}\n.row,.fcard,.insight,.stat,.prep,.role-info{border-radius:12px}.btn,.role-tab,.sectors button,.filters select,.application-stage select{border-radius:8px}.row{overflow:hidden}
+.prep{border-top:1px solid var(--line);background:var(--accent-soft);padding:17px 18px}.prep .lock{font-size:14px;line-height:1.6}.prep a{white-space:normal}.prep .lock b{color:var(--ink)}
+.role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.role-tab{font:600 13px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 11px;cursor:pointer}.role-tab[aria-expanded="true"]{background:var(--soft);border-color:var(--ink)}.role-info{border-top:1px solid var(--line);padding:14px 0 4px}.role-info h3{font:500 19px var(--display);margin:0 0 8px}.role-info p{font-size:14px;margin:0 0 10px}.role-info a{font-size:13px;font-weight:600}.role-info .role-note{font-size:12px;color:var(--muted)}.role-info[hidden]{display:none}.prep-topics{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:7px}.prep-topics span{font-size:13px}.prep-topics span:before{content:"✓";margin-right:6px;color:var(--accent)}.prep-support{font-size:12px;color:var(--muted);margin:8px 0 0}
+.role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}
+.row,.fcard,.insight,.stat,.prep,.role-info{border-radius:12px}.btn,.role-tab,.sectors button,.filters select,.application-stage select{border-radius:8px}.row{overflow:hidden}
 </style>
 
 </head>
@@ -149,13 +151,13 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   <a class="logo" href="/" style="text-decoration:none">The Desk<small>Finance careers. Done properly.</small></a>
   <nav class="tabs" aria-label="Site navigation"><a href="/assessment-start.html">Assess your readiness</a><a id="backToPlan" href="/assessment-start.html">Full Cycle</a><span class="on">Graduate 2027</span></nav>
 </div></header>
-<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button><button type="button" id="sIN" aria-pressed="false">Insurance</button></nav>
+<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button><button type="button" id="sIB" aria-pressed="false">Boutiques &amp; other banks</button><button type="button" id="sUK" aria-pressed="false">UK banks</button><button type="button" id="sAC" aria-pressed="false">Mid-tier accountancy</button><button type="button" id="sIN" aria-pressed="false">Insurance</button></nav>
 
 <main class="wrap">
   <section class="hero">
     <div class="kicker" id="kick">Deadline tracker · Bulge bracket · London</div>
     <h1 id="h1">2027 graduate programmes, with official application links.</h1>
-    <div class="checked">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
+    <div class="checked" id="checkedNote">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
     <div class="stats" id="stats"></div>
     <div class="insight" id="insight"></div>
 <p class="storage-note">Your shortlist and application stages are saved on this browser only.</p><button class="btn export" id="exportList" type="button">Export my application list</button><p id="saveNotice" role="status" aria-live="polite"></p>
@@ -166,7 +168,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
     <label for="fDiv">Area</label><select id="fDiv"></select>
     <label for="fType">Programme type</label><select id="fType"><option value="all">All types</option></select><label for="fStatus">Status</label>
     <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="notyet">Not open yet</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
-    <label class="toggle"><input type="checkbox" id="fEntry"> Open to anyone only</label>
+    <label class="toggle"><input type="checkbox" id="fEntry"> External applicants only</label>
     <label class="toggle"><input type="checkbox" id="fMine"> My list</label>
     <span class="count" id="count"></span>
   </div>
@@ -180,7 +182,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   </section>
 </main>
 
-<footer><div class="wrap">Programme dates, eligibility and process notes are imported from the supplied 13 October 2026 snapshot; they have not all been independently reverified. Firms can close roles early or change dates without notice, so always confirm on the firm's page before you apply. "Not confirmed" is the source tracker’s status; it does not mean the role is not running.</div></footer>
+<footer><div class="wrap">Programme dates, eligibility and process notes are imported from the supplied 13 and 15 October 2026 snapshots; they have not all been independently reverified. Firms can close roles early or change dates without notice, so always confirm on the firm's page before you apply. "Not confirmed" is the source tracker’s status; it does not mean the role is not running.</div></footer>
 
 <script>
 (function(){
@@ -213,7 +215,7 @@ var P=[
   url:"https://search.jobs.barclays/job/london/uk-corporate-banking-graduate-programme-2027-london/13015/100032500656",src:"search.jobs.barclays"},
  {firm:"Citi",name:"Markets · Sales and Trading Full Time Analyst",area:"Markets",status:"open",opens:"2026-09-04",closes:null,rolling:true,entry:"open",
   steps:["Online application"],elig:["2:1 expected or achieved","Strong Excel; VBA/Python helps"],
-  note:"Rolling hiring and no published deadline. Open to anyone, not only Citi interns.",
+  note:"Rolling hiring and no published deadline. External applicants, not only Citi interns.",
   url:"https://jobs.citi.com/job/london/markets-sales-and-trading-full-time-analyst-london-united-kingdom-2027/287/100186099392",src:"jobs.citi.com"},
  {firm:"Citi",name:"Banking · Commercial Banking Full Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-10-01",closes:null,rolling:true,entry:"open",
   steps:["Online application"],elig:["Predicted or achieved 2:1","Graduating 2026 or 2027"],
@@ -363,7 +365,943 @@ P=P.concat([
  {sector:"ins",type:"Graduate",firm:"Munich Re",name:"Actuarial Graduate Trainee Programme",area:"Actuarial",status:"closed",closes:null,rolling:false,entry:"open",steps:["Application + CV","Online test","Competency interview","Assessment centre","Final round with senior leaders"],elig:["2:1, numerate degree","Visa sponsorship offered"],
   note:"Filled for this cycle. The window usually runs September to October, so set a reminder for next year.",url:"https://careers.munichre.com/munichre-actuarial-graduate-trainee-programme",src:"careers.munichre.com"}
 ]);
+// Wave 1 (checked 15 Oct 2026): elite boutiques and other investment banks, UK banks, mid-tier accountancy.
+// conf: "firm" = firm's own site or portal; "listing" = graduate listing site, confirm on the firm's site; "none" = not confirmed.
+P=P.concat([
+  {
+    "sector": "ib",
+    "firm": "Rothschild & Co",
+    "name": "2027 UK Global Advisory Summer Analyst Programme · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-08-19",
+    "closes": null,
+    "rolling": true,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Second or penultimate year",
+      "On track for a 2:1"
+    ],
+    "note": "Rolling: interviews start as soon as applications come in, so apply early. 10 weeks from June 2027. A Leeds programme is also advertised.",
+    "url": "https://www.rothschildandco.com/en/careers/students-and-graduates/opportunities/2027-uk-global-advisory-summer-analyst-programme-london/",
+    "src": "rothschildandco.com",
+    "conf": "firm",
+    "checked": "2026-10-15",
+    "reviewedAt": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Lazard",
+    "name": "2027 London Financial Advisory Summer Internship",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": "2026-10-04",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year of first undergraduate degree",
+      "Graduating 2028"
+    ],
+    "note": "Closed 4 October. Lazard also advertises a 2027 Full-Time Analyst role and a 2027–28 industrial placement.",
+    "url": "https://targetjobs.co.uk/jobs/2027-london-financial-advisory-summer-internship-245471",
+    "src": "targetjobs.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Lazard",
+    "name": "2027 London Financial Advisory Full-Time Analyst",
+    "area": "Investment Banking",
+    "type": "Graduate",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Advertised on listing sites; we could not confirm dates on Lazard's own site.",
+    "url": "https://targetjobs.co.uk/jobs/2027-london-financial-advisory-full-time-analyst-245479",
+    "src": "targetjobs.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "2027 Summer Intern · Debt Advisory",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": "2026-08-31",
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year"
+    ],
+    "note": "Closed 11 October. One week of training, then a sector team; past interns have received full-time offers.",
+    "url": "https://smrtr.io/B8qqY",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "2027 Summer Intern · Real Estate Strategic Advisory",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": "2026-08-31",
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year"
+    ],
+    "note": "Closed 11 October. One week of training, then a sector team; past interns have received full-time offers.",
+    "url": "https://smrtr.io/B8qdZ",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "2027 Summer Intern · Restructuring",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": "2026-08-31",
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year"
+    ],
+    "note": "Closed 11 October. One week of training, then a sector team; past interns have received full-time offers.",
+    "url": "https://smrtr.io/B8pMh",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "2027 Graduate · Real Estate Strategic Advisory",
+    "area": "Investment Banking",
+    "type": "Graduate",
+    "status": "closed",
+    "opens": "2026-08-31",
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Closed 11 October. Five weeks of training, then two nine-month rotations.",
+    "url": "https://smrtr.io/B8qht",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "2027 Graduate · Restructuring",
+    "area": "Investment Banking",
+    "type": "Graduate",
+    "status": "closed",
+    "opens": "2026-08-31",
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Closed 11 October. Five weeks of training, then two nine-month rotations.",
+    "url": "https://smrtr.io/B8pVT",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Evercore",
+    "name": "London Spring Week 2027",
+    "area": "Investment Banking",
+    "type": "Spring week",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "First-year students"
+    ],
+    "note": "Two three-day sessions in April 2027, with a mock M&A exercise. Evercore hasn't published application dates yet.",
+    "url": "https://smrtr.io/B8q97",
+    "src": "evercore.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "PJT Partners",
+    "name": "Summer Analyst 2027 · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": "2026-10-11",
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "CV (PDF, with grades and graduation date)",
+      "Suited online survey"
+    ],
+    "elig": [
+      "Graduating Winter 2027 – Summer 2028"
+    ],
+    "note": "Closed 11 October. Teams included Strategic Advisory, Restructuring, Park Hill and a corporate rotational programme.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/pjt-partners/summer-analyst-london-2027-alba",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Perella Weinberg",
+    "name": "2027 Advisory Summer Analyst Programme · Munich / London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Listing sites show this as closed. PWP's own portal blocks automated checks, so confirm there.",
+    "url": "https://pwpcareers.tal.net/vx/lang-en-GB/mobile-0/appcentre-pwpext/brand-4/xf-3692fcc9b38d/candidate/jobboard/vacancy/2/adv/",
+    "src": "pwpcareers.tal.net",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Moelis",
+    "name": "London Summer Analyst Internship",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Online application",
+      "Suited assessment (~30 min)",
+      "1–2 interviews (technical + behavioural)",
+      "Final round on site"
+    ],
+    "elig": [
+      "Undergraduates",
+      "No prior experience needed"
+    ],
+    "note": "Moelis says applications usually open in August for the following summer, but no 2027 dates are published.",
+    "url": "https://www.moelis.com/careers/explore-opportunities/",
+    "src": "moelis.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Centerview",
+    "name": "Summer Analyst · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Centerview hires summer analysts and full-time analysts but publishes no London dates. Apply to one office only: applications to several aren't reviewed.",
+    "url": "https://www.centerview.com/careers",
+    "src": "centerview.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Houlihan Lokey",
+    "name": "2027 Summer Financial Analyst · Corporate Finance (M&A)",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": null,
+    "closes": "2026-10-17",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year",
+      "Final assessments in Spring/Summer 2028"
+    ],
+    "note": "Closes 11:59pm, Saturday 17 October. Training starts 14 June 2027. Valuation knowledge is expected.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/houlihan-lokey/2027-summer-financial-analyst-corporate-finance-ma",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Houlihan Lokey",
+    "name": "2027 Summer Financial Analyst · Capital Solutions Group",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": null,
+    "closes": "2026-10-17",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year",
+      "Final assessments in Spring/Summer 2028"
+    ],
+    "note": "Closes 11:59pm, Saturday 17 October. Training starts 14 June 2027. Valuation knowledge is expected.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/houlihan-lokey/summer-financial-analyst-capital-solutions-group-london-2027",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Jefferies",
+    "name": "Investment Banking Summer Internship · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Jefferies' student portal blocks automated checks. Confirm 2027 dates there.",
+    "url": "https://jefferies.tal.net/vx/mobile-0/appcentre-1/brand-4/candidate/jobboard/vacancy/2",
+    "src": "jefferies.tal.net",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Nomura",
+    "name": "Investment Banking Summer Internship 2027 · Coverage & Advisory",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": true,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "The supplied listing contains conflicting December 2026 and January 2027 deadlines and inconsistent graduation-year wording. Programme timing, eligibility and sponsorship are not confirmed; check Nomura’s own portal before applying.",
+    "url": "https://higherin.com/jobs/44098/nomura/investment-banking-summer-internship-2027-coverage-advisory-teams",
+    "src": "higherin.com",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "BNP Paribas",
+    "name": "London 2027 Summer Internship · Global Markets",
+    "area": "Markets",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year",
+      "On track for a 2:1"
+    ],
+    "note": "BNP marks this position as filled. One summer internship application per academic year; more than one means automatic rejection.",
+    "url": "https://group.bnpparibas/en/careers/job-offer/london-2027-summer-internship-global-markets",
+    "src": "group.bnpparibas",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "BNP Paribas",
+    "name": "London 2027 Summer Internship · Coverage, Global Banking",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Advertised, but the page wouldn't load when we checked. Same one-application rule applies.",
+    "url": "https://group.bnpparibas/en/careers/job-offer/london-2027-summer-internship-coverage-global-banking",
+    "src": "group.bnpparibas",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Société Générale",
+    "name": "Global Banking & Advisory 2027 Summer Internship (8 weeks)",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-09-07",
+    "closes": "2026-10-25",
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Application",
+      "Online assessments",
+      "One-way video interview",
+      "Virtual assessment centre (Jan 2027)",
+      "Final interviews (Jan/Feb 2027)"
+    ],
+    "elig": [
+      "Penultimate year, graduating 2028"
+    ],
+    "note": "The listing shows both 25 and 26 October; we use the earlier date. Eight weeks across July and August 2027.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/societe-generale/global-banking-and-advisory-2027-summer-internship-8-weeks",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Macquarie",
+    "name": "Summer Internship 2027 · London",
+    "area": "Multiple divisions",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-09-01",
+    "closes": "2026-10-30",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year, graduating 2028",
+      "Tell Macquarie if you need a visa"
+    ],
+    "note": "Nine weeks, June to August 2027. Strong interns may be offered the graduate programme.",
+    "url": "https://recruitment.macquarie.com/en_US/careers/SearchJobs/?7959=%5B421070%2C421069%5D&7959_format=14495&listFilterMode=1&jobRecordsPerPage=9&",
+    "src": "macquarie.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Macquarie",
+    "name": "Graduate Programme 2027 · London",
+    "area": "Multiple divisions",
+    "type": "Graduate",
+    "status": "open",
+    "opens": "2026-09-01",
+    "closes": "2026-10-30",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Final year (UG or Master's), graduating 2027"
+    ],
+    "note": "Starts July 2027 and runs for 12 months.",
+    "url": "https://recruitment.macquarie.com/en_US/careers/SearchJobs/?7959=%5B421070%2C421069%5D&7959_format=14495&listFilterMode=1&jobRecordsPerPage=9&",
+    "src": "macquarie.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Macquarie",
+    "name": "Insight Programme · London",
+    "area": "Multiple divisions",
+    "type": "Spring week",
+    "status": "open",
+    "opens": "2026-10-12",
+    "closes": "2026-11-30",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Graduating 2029"
+    ],
+    "note": "April 2027. Strong participants can get accelerated access to internships.",
+    "url": "https://recruitment.macquarie.com/en_US/careers/SearchJobs/?7959=%5B421070%2C421069%5D&7959_format=14495&listFilterMode=1&jobRecordsPerPage=9&",
+    "src": "macquarie.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Stifel",
+    "name": "Summer Internship · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Online application",
+      "Online interview",
+      "In-person assessment"
+    ],
+    "elig": [
+      "Completed penultimate year before the internship"
+    ],
+    "note": "Six to eight weeks in Corporate Finance, ECM, Equities Research or Equities Sales. Stifel says unlisted roles aren't recruiting; no 2027 dates when we checked.",
+    "url": "https://stifelinstitutional.com/careers/eu-campus-entry-level",
+    "src": "stifelinstitutional.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Stifel",
+    "name": "Graduate Analyst Programme · London",
+    "area": "Investment Banking",
+    "type": "Graduate",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Online application",
+      "Online interview",
+      "In-person assessment"
+    ],
+    "elig": [
+      "Final year (UG or Master's)"
+    ],
+    "note": "12 months, starting with training and regulatory exams. No 2027 dates published when we checked.",
+    "url": "https://stifelinstitutional.com/careers/eu-campus-entry-level",
+    "src": "stifelinstitutional.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "Mizuho",
+    "name": "Banking Summer Internship 2027",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": "2026-10-05",
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "CV (no cover letter)",
+      "Online assessment + video interview",
+      "Assessment centre in London (early Dec)"
+    ],
+    "elig": [
+      "Penultimate year, graduating 2028",
+      "No visa sponsorship"
+    ],
+    "note": "Closed 5 October. Mizuho also ran Global Markets, Risk and other 2027 internships.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/mizuho/banking-summer-internship-2027",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "ib",
+    "firm": "RBC Capital Markets",
+    "name": "Summer Analyst · London",
+    "area": "Investment Banking",
+    "type": "Summer internship",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "RBC's UK careers pages list analyst internships but no London 2027 dates.",
+    "url": "https://jobs.rbc.com/ca/en/uk-europe-ci",
+    "src": "jobs.rbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Markets · Sales and Trading Internship · London",
+    "area": "Markets",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-10-23",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 21 Jun 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/London-Markets-Sales-and-Trading-Internship-E14-5HQ/1373586957/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Investment Banking · Off-Cycle Internship · London",
+    "area": "Investment Banking",
+    "type": "Off-cycle internship",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-10-23",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 1 Mar 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/London-Investment-Banking-Corporate-and-Institutional-Banking-Off-Cycle-Internship-E14-5HQ/1373577757/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Global Investment Research · Work Placement · London",
+    "area": "Research",
+    "type": "Placement",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-11-01",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 21 Jun 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/London-Global-Investment-Research-Work-Placement-E14-5HQ/1373586657/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Data Analyst · Quantitative Finance Internship · London",
+    "area": "Markets",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-12-04",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 21 Jun 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/London-Data-Analyst-Quantitative-Finance-Internship-E14-5HQ/1373585957/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Commercial Banking · Relationship Management Internship · London",
+    "area": "Corporate & Commercial",
+    "type": "Summer internship",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-10-18",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 7 Jun 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/London-Relationship-Management-Commercial-Bank-Internship-E14-5HQ/1373604457/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "HSBC",
+    "name": "Commercial Banking · Relationship Management Graduate · Manchester",
+    "area": "Corporate & Commercial",
+    "type": "Graduate",
+    "status": "open",
+    "opens": "2026-10-01",
+    "closes": "2026-10-18",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Starts 5 Jul 2027. HSBC lists over 100 programmes; check its site for others.",
+    "url": "https://apply.careers.hsbc.com/emergingtalent/job/Manchester-Relationship-Management-Commercial-Bank-Graduate-M2-7HD/1373601257/",
+    "src": "hsbc.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "Lloyds Banking Group",
+    "name": "Corporate Banking & Markets Graduate Scheme 2027",
+    "area": "Corporate & Commercial",
+    "type": "Graduate",
+    "status": "closed",
+    "opens": "2026-09-10",
+    "closes": "2026-10-04",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "No minimum degree grade",
+      "No visa sponsorship",
+      "£55,000"
+    ],
+    "note": "Closed 4 October. 2.5 years, London with Birmingham and Edinburgh options.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/lloyds-banking-group/corporate-banking-and-markets-graduate-scheme-2027",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "NatWest Group",
+    "name": "Commercial Banking Graduate Programme 2027",
+    "area": "Corporate & Commercial",
+    "type": "Graduate",
+    "status": "notyet",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Application",
+      "Work scenarios",
+      "Online skills assessment",
+      "Video recording",
+      "Virtual assessment centre"
+    ],
+    "elig": [
+      "2:1 (achieved or predicted)",
+      "£37,500"
+    ],
+    "note": "Not open yet: NatWest asks you to join its list to hear when applications open. Two years, starting September 2027.",
+    "url": "https://jobs.natwestgroup.com/pages/commercial-banking-graduate-programmes",
+    "src": "jobs.natwestgroup.com",
+    "conf": "firm",
+    "checked": "2026-10-15",
+    "reviewedAt": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "Santander UK",
+    "name": "Summer Internship 2027",
+    "area": "Corporate & Commercial",
+    "type": "Summer internship",
+    "status": "closed",
+    "opens": null,
+    "closes": null,
+    "rolling": true,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Penultimate year",
+      "Predicted degree + 112 UCAS points"
+    ],
+    "note": "Santander marks this as closed. 10 weeks in London or Milton Keynes, with a route to the 2027 graduate programme.",
+    "url": "https://www.santander.com/en/careers/uk-careers/emerging-talent/summer-internships",
+    "src": "santander.com",
+    "conf": "firm",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "uk",
+    "firm": "Standard Chartered",
+    "name": "Graduate and Internship Programmes · UK",
+    "area": "Multiple divisions",
+    "type": "Graduate",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "We couldn't confirm 2027 UK dates on Standard Chartered's site.",
+    "url": "https://www.sc.com/en/careers/",
+    "src": "sc.com",
+    "conf": "none",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "BDO",
+    "name": "2027 Tax Graduate Programme · London",
+    "area": "Tax",
+    "type": "Graduate",
+    "status": "open",
+    "opens": null,
+    "closes": "2026-11-15",
+    "rolling": null,
+    "entry": "open",
+    "steps": [
+      "Online application",
+      "Online assessments",
+      "Video interview",
+      "Virtual assessment centre",
+      "Final interview in person"
+    ],
+    "elig": [
+      "2:2 or above",
+      "3 A-levels A*–C (no UCAS points used)",
+      "GCSE Maths & English 4+",
+      "No visa sponsorship",
+      "£33,000"
+    ],
+    "note": "Starts 20 September 2027, studying ACA/CTA. Midlands, East Anglia and North programmes are also advertised.",
+    "url": "https://www.gradcracker.com/hub/846/bdo/graduate-job/84084/2027-tax-graduate-programme-london",
+    "src": "gradcracker.com",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "Grant Thornton",
+    "name": "Private Capital Audit Graduate Programme (Autumn 2027) · Glasgow",
+    "area": "Audit & Assurance",
+    "type": "Graduate",
+    "status": "open",
+    "opens": null,
+    "closes": "2026-10-31",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Flexible academic requirements",
+      "£34,250 + £5,000 qualification bonus"
+    ],
+    "note": "Starts 1 September 2027. Grant Thornton lists over 80 early-careers roles across UK offices; deadlines vary by office.",
+    "url": "https://www.grantthornton.co.uk/careers/early-careers-job-search",
+    "src": "grantthornton.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "RSM",
+    "name": "Audit Graduate · September 2027",
+    "area": "Audit & Assurance",
+    "type": "Graduate",
+    "status": "open",
+    "opens": null,
+    "closes": null,
+    "rolling": true,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "Honours degree (achieved or predicted)",
+      "112 UCAS points",
+      "No visa sponsorship"
+    ],
+    "note": "Rolling, with no closing date. Starts 14 September 2027, studying ACA. Offered in many offices, including Birmingham, Leeds, Manchester, Bristol and Edinburgh.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/rsm/audit-graduate-september-2027",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "Crowe",
+    "name": "Audit Assistant · London · September 2027",
+    "area": "Audit & Assurance",
+    "type": "Graduate",
+    "status": "closed",
+    "opens": null,
+    "closes": "2026-09-14",
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [
+      "2:2, any subject",
+      "BBC at A-level (112 UCAS)",
+      "GCSE Maths & English 4+",
+      "No visa sponsorship"
+    ],
+    "note": "London closed 14 September. Midlands, Thames Valley, Cheltenham and Kent intakes are also advertised; check each.",
+    "url": "https://www.brightnetwork.co.uk/graduate-jobs/crowe/audit-assistant-london-september-2027",
+    "src": "brightnetwork.co.uk",
+    "conf": "listing",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "Forvis Mazars",
+    "name": "Audit Graduate Trainee · September 2027",
+    "area": "Audit & Assurance",
+    "type": "Graduate",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "We couldn't find 2027 graduate adverts on Forvis Mazars' site. Its 2026 summer internships fed 2027 graduate roles.",
+    "url": "https://careers-uk.forvismazars.com/",
+    "src": "forvismazars.com",
+    "conf": "none",
+    "checked": "2026-10-15"
+  },
+  {
+    "sector": "acc",
+    "firm": "PKF",
+    "name": "Graduate Audit Programme · 2027",
+    "area": "Audit & Assurance",
+    "type": "Graduate",
+    "status": "unconfirmed",
+    "opens": null,
+    "closes": null,
+    "rolling": null,
+    "entry": "open",
+    "steps": [],
+    "elig": [],
+    "note": "Not checked yet.",
+    "url": "https://www.pkf-l.com/careers/",
+    "src": "pkf-l.com",
+    "conf": "none",
+    "checked": null
+  }
+]);
 P.forEach(function(p){if(!p.type)p.type="Graduate"});
+var FIRMS_IB=[["Rothschild & Co", "Rolling recruitment: interviews begin as soon as applications arrive, so earlier is better. On track for a 2:1."], ["Evercore", "London summer, graduate and spring roles all go through SmartRecruiters links on Evercore's EMEA students page. The 2027 summer and graduate windows ran 31 Aug–11 Oct."], ["Moelis", "UK applicants also complete the Suited assessment (~30 minutes). Then 1–2 interviews and an on-site final round."], ["Centerview", "Apply to one office only: applications to more than one aren't reviewed."], ["Nomura", "One application per recruitment year (September to August). Visa support offered."], ["BNP Paribas", "One summer internship application per academic year. A second application means automatic rejection."], ["Macquarie", "Summer and graduate windows: 1 Sep–30 Oct 2026. Insight: 12 Oct–30 Nov 2026. Tell Macquarie up front if you need a visa."], ["Société Générale", "Online tests, then a one-way video interview, then a virtual assessment centre in January."]];
+var FIRMS_UK=[["HSBC", "Most 2027 UK programmes opened 1 October, with deadlines from 18 October. Over 100 programmes, so filter by your area on HSBC's site."], ["Lloyds Banking Group", "No visa sponsorship. Corporate Banking & Markets graduates start on £55,000."], ["NatWest Group", "Six stages, including work scenarios and a video recording. Join NatWest's list to hear when 2027 opens."], ["Santander UK", "112 UCAS points required. Applications are reviewed on a rolling basis and close early."]];
+var FIRMS_AC=[["BDO", "No visa sponsorship. Uses A-level grades, not UCAS points. Tax and audit programmes by region."], ["Grant Thornton", "Flexible academic entry requirements. Deadlines differ by office and team."], ["RSM", "Rolling. 112 UCAS points. No visa sponsorship."], ["Crowe", "2:2 and BBC at A-level. London 2027 closed 14 September; other offices may still be open."]];
 var FIRMS_IN=[
  ["Zurich","You can apply to only one Zurich programme. No visa sponsorship: you need indefinite UK right to work and 3 years' UK residence. Tests are run by Cappfinity, including a job simulation."],
  ["WTW","One WTW application per year. Online test and video interview, then an assessment centre. Strong interns can be offered the graduate programme."],
@@ -408,7 +1346,7 @@ var FIRMS=[
 ];
 
 var londonParts=new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());var calendar={};londonParts.forEach(function(p){calendar[p.type]=p.value});var today=new Date(Date.UTC(+calendar.year,+calendar.month-1,+calendar.day));
-var MODE="free";var contextParams=new URLSearchParams(location.search),contextId=contextParams.get("id"),contextSample=contextParams.get("sample");var contextQuery=contextId&&/^[a-f0-9]{48}$/.test(contextId)?"?id="+encodeURIComponent(contextId):["emily","elliot","amelia"].includes(contextSample)?"?sample="+encodeURIComponent(contextSample):"";var fullCycleUrl=contextQuery?"/fullcycle-plan.html"+contextQuery+location.hash:"/assessment-start.html";document.getElementById("backToPlan").href=fullCycleUrl;
+var MODE="free";var contextParams=new URLSearchParams(location.search),contextId=contextParams.get("id"),contextSample=contextParams.get("sample");var contextQuery=contextId&&/^[a-f0-9]{48}$/.test(contextId)?"?id="+encodeURIComponent(contextId):["emily","elliot","amelia"].includes(contextSample)?"?sample="+encodeURIComponent(contextSample):"";var fullCycleUrl=contextId&&/^[a-f0-9]{48}$/.test(contextId)?"/fullcycle.html"+contextQuery:contextParams.get("dashboard")==="sample"?"/fullcycle-report-v3-test.html#prep":contextQuery?"/fullcycle-plan.html"+contextQuery:"/assessment-start.html";document.getElementById("backToPlan").href=fullCycleUrl;
 // Example students for the Full Cycle preview.
 var EX=EXS.bb={name:"Amelia",overall:66,
   byArea:{"Investment Banking":66,"Markets":61,"Risk":74,"Corporate & Commercial":72,"Research":63,"Wealth & Asset Management":69,"Multiple divisions":66},
@@ -462,35 +1400,18 @@ var openEntry=open.filter(function(p){return p.entry==="open"});
 var soon=open.filter(function(p){var n=days(p.closes);return n!==null&&n<=21});
 var interns=open.filter(function(p){return p.entry==="interns"});
 var noDate=open.filter(function(p){return !p.closes});
-if(SECTOR==="bb"){
-document.getElementById("stats").innerHTML=
- '<div class="stat"><b>'+open.length+'</b><span>open now in London</span></div>'+
- '<div class="stat hot"><b>'+soon.length+'</b><span>closing within 21 days</span></div>'+
- '<div class="stat"><b>'+openEntry.length+'</b><span>open to anyone</span></div>'+
- '<div class="stat"><b>'+interns.length+'</b><span>for the bank\'s own interns only</span></div>';
-document.getElementById("insight").innerHTML='<p>Of the <b>'+open.length+'</b> London graduate roles open right now, <b>'+interns.length+'</b> are only for that bank\'s own summer interns. At the bulge brackets, the graduate job is usually won a year earlier, in the summer internship.</p><a href="/assessment-start.html">See 2027 summer internships →</a>';
-}else if(SECTOR==="ins"){
-var notyet=C.filter(function(p){return st(p)==="notyet"});
-var paid=C.filter(function(p){return (p.elig||[]).some(function(e){return e.indexOf("£")>-1})});
-document.getElementById("stats").innerHTML=
- '<div class="stat"><b>'+open.length+'</b><span>open now</span></div>'+
- '<div class="stat hot"><b>'+soon.length+'</b><span>closing within 21 days</span></div>'+
- '<div class="stat"><b>'+notyet.length+'</b><span>not open yet</span></div>'+
- '<div class="stat"><b>'+paid.length+'</b><span>with a published salary</span></div>';
-var week=open.filter(function(p){var n=days(p.closes);return n!==null&&n<=7});
-document.getElementById("insight").innerHTML='<p><b>'+week.length+'</b> insurance programmes close within a week, most of them at Zurich and WTW. Check each scheme’s eligibility and application limit before applying.</p><a href="/assessment-start.html">Check my readiness now →</a>';
-}else{
-document.getElementById("stats").innerHTML=
- '<div class="stat"><b>'+open.length+'</b><span>open now</span></div>'+
- '<div class="stat hot"><b>'+noDate.length+'</b><span>with no closing date: they fill up</span></div>'+
- '<div class="stat"><b>4</b><span>firms, each with its own application limit</span></div>'+
- '<div class="stat"><b>1</b><span>PwC application per year, across every programme</span></div>';
-document.getElementById("insight").innerHTML='<p>None of the Big 4 publish a closing date. They recruit <b>until places are filled</b>, so a strong application in October has more seats to compete for than the same one in February.</p><a href="/assessment-start.html">Check my readiness now →</a>';
-}
-var T={bb:["Deadline tracker · Bulge bracket · London","2027 graduate programmes, checked against each bank's own site.","How each bank hires",FIRMS],
-       big4:["Deadline tracker · Big 4 accountancy · UK","2027 Big 4 graduate schemes, checked against each firm's own site.","How each Big 4 firm hires",FIRMS_B4],
-       ins:["Deadline tracker · Insurance · UK","Insurance graduate schemes, internships and placements for 2027.","How each insurer hires",FIRMS_IN]}[SECTOR];
+var unconfirmed=C.filter(function(p){return st(p)==='unconfirmed';});
+document.getElementById('stats').innerHTML='<div class="stat"><b>'+open.length+'</b><span>marked open in snapshot</span></div><div class="stat hot"><b>'+soon.length+'</b><span>listed deadline within 21 days</span></div><div class="stat"><b>'+C.filter(function(p){return st(p)==='closed';}).length+'</b><span>closed or past listed deadline</span></div><div class="stat"><b>'+unconfirmed.length+'</b><span>availability unconfirmed</span></div>';
+var insight=SECTOR==='acc'?'Recruitment and deadlines can differ by office. Check the exact programme and location.':'Dates and eligibility are a source snapshot. Confirm the vacancy on the employer’s own page; a listed future deadline does not guarantee that a role remains open.';
+document.getElementById('insight').innerHTML='<p>'+esc(insight)+'</p><a href="/assessment-start.html">Check my readiness →</a>';
+var T={bb:["Deadline tracker · Bulge bracket · London","2027 graduate programmes from the supplied source snapshot.","How each bank hires",FIRMS],
+       big4:["Deadline tracker · Big 4 accountancy · UK","2027 Big 4 graduate schemes from the supplied source snapshot.","How each Big 4 firm hires",FIRMS_B4],
+       ins:["Deadline tracker · Insurance · UK","Insurance graduate schemes, internships and placements for 2027.","How each insurer hires",FIRMS_IN],
+       ib:["Deadline tracker · Elite boutiques & other investment banks · London","2027 summer internships, graduate roles and spring weeks.","How each firm hires",FIRMS_IB],
+       uk:["Deadline tracker · UK banks","2027 graduate schemes and internships at the UK's high-street and commercial banks.","How each bank hires",FIRMS_UK],
+       acc:["Deadline tracker · Mid-tier accountancy · UK","2027 audit and tax graduate programmes outside the Big 4.","How each firm hires",FIRMS_AC]}[SECTOR];
 document.getElementById("kick").textContent=T[0];
+var cn=document.getElementById("checkedNote");if(cn){if(!cn.dataset.orig)cn.dataset.orig=cn.textContent;cn.textContent=(SECTOR==="ib"||SECTOR==="uk"||SECTOR==="acc")?"Imported 15 October 2026 snapshot: employer pages, listing sites and unconfirmed entries are labelled separately. This is not a live vacancy feed. Confirm availability and eligibility on the employer’s own page.":cn.dataset.orig;}
 document.getElementById("h1").textContent=T[1];
 document.getElementById("fh").textContent=T[2];
 document.getElementById("firmNotes").innerHTML=T[3].map(function(f){return'<div class="fcard"><b>'+esc(f[0])+'</b><p>'+esc(f[1])+'</p></div>'}).join("");
@@ -522,14 +1443,12 @@ function prepItems(p){
  items.push("Why "+p.firm+" / why "+p.area);
  return items;
 }
-function roleTabsHtml(p,i){
- if(p.firm==='Deutsche Bank')return '<div class="role-tabs"><a class="role-tab" href="/deutsche-bank.html#roles">What is this role?</a><a class="role-tab" href="/deutsche-bank.html#programmes">DB programme insights →</a></div>';
- return '<div class="role-tabs" role="group" aria-label="Upcoming programme guides"><button type="button" class="role-tab" disabled>What is this role? · Coming soon</button><button type="button" class="role-tab" disabled>'+esc(firmLabel(p))+' graduate programme insights · Coming soon</button></div>';
-}
-function lockHtml(p){
- if(p.firm==='Deutsche Bank')return '<div class="prep"><div class="lock"><b>The Desk · DB interview guide</b><div class="prep-topics"><span>Why Deutsche Bank / why your division</span><span>Recorded-video interview practice</span><span>Ability tests and situational judgement</span></div><p class="prep-support">Programme dates, role insights, DB news and interview practice.</p></div><a href="/deutsche-bank.html">Explore the DB guide →</a></div>';
- return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+' with Full Cycle.</b><div class="prep-topics">'+prepItems(p).map(function(item){return '<span>'+esc(item)+'</span>'}).join("")+'</div><p class="prep-support">Alongside your CV rewrite, competency answer drafts and readiness rechecks.</p></div><a href="'+esc(fullCycleUrl)+'">Explore Full Cycle →</a></div>';
-}
+var GUIDE_PATHS={"Deutsche Bank": "/deutsche-bank.html", "Goldman Sachs": "/goldman-sachs.html", "JP Morgan": "/jp-morgan.html", "Barclays": "/barclays.html", "HSBC": "/hsbc.html", "Citi": "/citi.html", "Morgan Stanley": "/morgan-stanley.html", "Bank of America": "/bank-of-america.html", "PwC": "/pwc.html", "EY": "/ey.html", "RSA / Intact Insurance": "/rsa-intact.html", "Legal & General": "/legal-general.html", "Insight Investment": "/insight-investment.html", "BlackRock": "/blackrock.html", "J.P. Morgan": "/jp-morgan.html", "RSA (Intact)": "/rsa-intact.html"};
+function guideUrl(p,hash){var path=GUIDE_PATHS[p.firm];if(!path)return null;var q=contextQuery||(contextParams.get('dashboard')==='sample'?'?dashboard=sample':'');return path+q+(hash||'');}
+function roleTabsHtml(p){var url=guideUrl(p,'#roles');return url?'<div class="role-tabs"><a class="role-tab" href="'+esc(url)+'">Roles explained →</a><a class="role-tab" href="'+esc(guideUrl(p,''))+'">'+esc(firmLabel(p))+' guide →</a></div>':'<div class="role-tabs"><a class="role-tab" href="/graduate-programmes.html'+esc(contextQuery)+'">Explore application guides →</a></div>';}
+function lockHtml(p){var url=guideUrl(p,p.firm==='Deutsche Bank'?'#interviews':'#prep');return '<div class="prep"><div class="lock"><b>Prepare for '+esc(firmLabel(p))+'</b><p class="prep-support">Explore the role and firm guide. Keep your CV, competency answers and numerical practice in your dashboard.</p></div><a href="'+esc(url||fullCycleUrl)+'">'+(url?'Open preparation guide →':'Explore Full Cycle →')+'</a></div>';}
+function sourceLabel(p){var listing=/^(?:www\.)?(?:targetjobs\.co\.uk|brightnetwork\.co\.uk|higherin\.com|gradcracker\.com)$/.test(new URL(p.url).hostname);return listing?'View listing':(st(p)==='closed'?'View employer source':'Check on firm site');}
+function sourceSummary(p){var warning=p.conf==='listing'?' · listing-sourced details; confirm with the employer':p.conf==='none'?' · availability not confirmed':'';return 'Source: '+esc(p.src)+warning+(p.reviewedAt?' · employer page reviewed '+fmt(p.reviewedAt):p.checked?' · supplied snapshot '+fmt(p.checked):p.conf==='none'?' · not verified':' · supplied snapshot '+fmt(CHECKED));}
 function render(){
   var rows=cur().filter(function(p){
     var s=st(p),n=days(p.closes);
@@ -556,13 +1475,13 @@ function render(){
   L.innerHTML=rows.map(function(p,i){
     var s=st(p),k=key(p),saved=!!mine[k];
     var chips='<span class="chip">'+esc(p.type)+'</span><span class="chip">'+esc(p.area)+'</span>'+
-      (p.entry==="open"?'<span class="chip open">Open to anyone</span>':p.entry==="interns"?'<span class="chip warn">Bank\'s own interns only</span>':'')+
+      (p.entry==="open"?'<span class="chip open">External applicants</span>':p.entry==="interns"?'<span class="chip warn">Bank\'s own interns only</span>':'')+
       (p.elig||[]).map(function(e){return'<span class="chip">'+esc(e)+'</span>'}).join("");
     return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
       '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
-      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
-      '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"||s==="notyet"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
+      '<p class="note">'+esc(p.note)+'</p><div class="src">'+sourceSummary(p)+'</div>'+roleTabsHtml(p,i)+'</div>'+
+      '<div class="side">'+('<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener noreferrer">'+sourceLabel(p)+' ↗</a>')+
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
       (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
@@ -578,19 +1497,26 @@ function setSector(x){
   document.getElementById("sBB").setAttribute("aria-pressed",String(x==="bb"));
   document.getElementById("sB4").setAttribute("aria-pressed",String(x==="big4"));
   document.getElementById("sIN").setAttribute("aria-pressed",String(x==="ins"));
+  document.getElementById("sIB").setAttribute("aria-pressed",String(x==="ib"));
+  document.getElementById("sUK").setAttribute("aria-pressed",String(x==="uk"));
+  document.getElementById("sAC").setAttribute("aria-pressed",String(x==="acc"));
   fFirm.value="all";fDiv.value="all";fType.value="all";
   drawTop();render();
 }
 document.getElementById("sBB").onclick=function(){setSector("bb")};
 document.getElementById("sB4").onclick=function(){setSector("big4")};
 document.getElementById("sIN").onclick=function(){setSector("ins")};
+document.getElementById("sIB").onclick=function(){setSector("ib")};
+document.getElementById("sUK").onclick=function(){setSector("uk")};
+document.getElementById("sAC").onclick=function(){setSector("acc")};
 
 
 [fFirm,fDiv,fStatus,fEntry,fMine,fType].forEach(function(el){el.onchange=render});
 document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
-if(contextSample==="emily")setSector("big4");else{drawTop();render();}
+var requestedSector=contextParams.get("sector");if(["bb","big4","ins","ib","uk","acc"].includes(requestedSector))setSector(requestedSector);else if(contextSample==="emily")setSector("big4");else{drawTop();render();}
 })();
 </script>
 
 </body>
 </html>
+
