@@ -394,8 +394,8 @@ function buildEvidenceMap(R){
 /* Replace internal evidence codes (E7, E8/E13) with plain words */
 function clean(s){
   s=String(s==null?"":s);
-  s=s.replace(/\b(?:E\d+|C\d+_[a-z]+|B_[a-z]+|F_Q\d+)\b/g,function(m){
-    var ids=m.match(/E\d+|C\d+_[a-z]+|B_[a-z]+|F_Q\d+/g),seen={},out=[];
+  s=s.replace(/\b(?:E\d+|C\d+_[a-z]+|B_[a-z_]+|F_Q\d+)\b/g,function(m){
+    var ids=m.match(/E\d+|C\d+_[a-z]+|B_[a-z_]+|F_Q\d+/g),seen={},out=[];
     ids.forEach(function(id){var l=EMAP[id]||("your CV");if(!seen[l]){seen[l]=1;out.push(l);}});
     return out.join(" and ");
   });
