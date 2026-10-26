@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market drill | The Desk</title>
+<meta name="description" content="A daily 60-second commercial awareness drill for finance interviews.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/desk-app.css">
+<script src="/desk-track.js" defer></script>
+<script src="/desk-account.js"></script>
+<script src="/desk-config.js"></script>
+<style>
+.q{font-family:Lora,Georgia,serif;font-size:28px;line-height:1.3;margin:12px 0 0}
+.parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.parts div{border:1px solid var(--rule);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--paper)}
+.parts b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--or)}
+.parts div.hit{border-color:var(--gr);background:var(--gr-soft)}
+.parts div.hit b{color:var(--gr)}
+.timer{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.tbar{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin-top:8px}
+.tbar i{display:block;height:100%;background:var(--or);transition:width .5s linear}
+.live{min-height:120px;border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--card);margin-top:12px;font-size:17px}
+.live .interim{color:var(--mute)}
+textarea.ans{width:100%;min-height:150px;padding:12px;border:1px solid var(--rule2);border-radius:8px;background:var(--card);font-size:16px;line-height:1.55}
+.crit{display:grid;gap:8px;margin-top:12px}
+.crit div{display:grid;grid-template-columns:150px 1fr 36px;gap:10px;align-items:center;font-size:15px}
+.better{font-family:Lora,Georgia,serif;font-size:17px;line-height:1.6;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.streak{display:flex;gap:18px;flex-wrap:wrap}
+@media (max-width:720px){.parts{grid-template-columns:repeat(2,minmax(0,1fr))}.q{font-size:23px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><a class="logo" href="/">The <i>Desk</i></a><nav class="nav" id="deskNav"></nav></div></header>
+<main id="app"><p class="mute">Loading today’s drill…</p></main>
+<script type="module">
+const D = await import('/lib/drill-core.mjs');
+const app = document.getElementById('app');
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const track = id => { try { window.deskTrack && window.deskTrack('click', { id }); } catch (x) { } };
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const me = await window.deskAccount;
+const paid = !!(me.signedIn && me.access && me.access.active);
+const division = (me.assessment && me.assessment.division) || '';
+const S = { drill: D.todaysDrill(new Date(), division), headline: '', text: '', interim: '', started: 0, timer: null, recog: null, seconds: 0 };
+const LIMIT = 60;
+const past = paid ? ((await fetch('/api/account?kind=drill&limit=120').then(r => r.json()).catch(() => ({}))).items || []) : [];
+
+function streak(items) {
+  const days = new Set(items.map(i => new Date(i.createdAt).toISOString().slice(0, 10)));
+  let n = 0; const d = new Date(); if (!days.has(d.toISOString().slice(0, 10))) d.setUTCDate(d.getUTCDate() - 1);
+  while (days.has(d.toISOString().slice(0, 10))) { n++; d.setUTCDate(d.getUTCDate() - 1); } return n;
+}
+const partsHtml = hits => `<div class="parts">${[['What', 'What is happening, in one sentence'], ['Why', 'The economics behind it'], ['Who wins and loses', 'Companies, investors, consumers'], ['Your view', 'A view of your own, and what would change it']].map(([h, t], i) => `<div class="${hits && hits[i] ? 'hit' : ''}"><b>${hits ? (hits[i] ? '✓ ' : '') : (i + 1) + '. '}${h}</b>${t}</div>`).join('')}</div>`;
+
+function intro() {
+  stop();
+  const q = S.headline ? `What do you make of this story, and why does it matter? “${S.headline}”` : S.drill.q;
+  app.innerHTML = `<div class="eyebrow">Market drill · ${esc(S.headline ? 'Your story' : S.drill.topic)}</div>
+    <div class="q">${esc(q)}</div>
+    ${paid && past.length ? `<p class="streak mute" style="font-size:15px;margin:10px 0 0"><span>Streak: <b>${streak(past)}</b> day${streak(past) === 1 ? '' : 's'}</span><span>Drills done: <b>${past.length}</b></span></p>` : ''}
+    <p class="lede" style="font-size:16px">You have 60 seconds. Interviewers listen for four things:</p>
+    ${partsHtml(null)}
+    <div class="row" style="margin-top:20px"><button class="btn or" id="go">${SR ? '● Answer out loud (60s)' : 'Start (60s)'}</button>${SR ? '<button class="btn ghost" id="type">Type instead</button>' : ''}</div>
+    <details style="margin-top:22px"><summary class="mute">Bring your own story, or pick another question</summary>
+      <label class="field"><span class="label">A headline you read this week</span><input id="headline" maxlength="200" placeholder="Paste a headline" value="${esc(S.headline)}"></label>
+      <div class="row"><button class="btn ghost" id="useHeadline">Use my story</button><button class="btn ghost" id="another">Give me another question</button>${S.headline ? '<button class="btn ghost" id="backToday">Back to today’s question</button>' : ''}</div>
+      <p class="mute" style="font-size:14px">With your own story, we judge your reasoning. We can’t check this week’s facts, so we list any you should verify.</p></details>
+    ${paid ? '' : `<div class="notice" style="margin-top:22px">${me.signedIn ? 'Full feedback on your drills is part of Full Cycle.' : 'Sign in with Full Cycle for full feedback and a daily streak.'} You can still practise and see which of the four parts you covered. <a href="${me.signedIn ? '/my.html' : '/signin.html'}">${me.signedIn ? 'My Desk' : 'Sign in'}</a></div>`}`;
+  $('#go').onclick = () => answer(!SR);
+  const t = $('#type'); if (t) t.onclick = () => answer(true);
+  $('#useHeadline').onclick = () => { const h = $('#headline').value.trim(); if (h.length >= 10) { S.headline = h; track('drill_own_story'); intro(); } };
+  $('#another').onclick = () => { const others = D.DRILLS.filter(x => x.id !== S.drill.id); S.drill = others[Math.floor(Math.random() * others.length)]; S.headline = ''; intro(); };
+  const b = $('#backToday'); if (b) b.onclick = () => { S.headline = ''; S.drill = D.todaysDrill(new Date(), division); intro(); };
+}
+
+function answer(typed) {
+  S.text = ''; S.interim = ''; S.started = Date.now(); S.typed = typed;
+  const q = S.headline ? `“${S.headline}”` : S.drill.q;
+  app.innerHTML = `<div class="eyebrow">Market drill</div><div class="q" style="font-size:22px">${esc(q)}</div>
+    <div class="row" style="justify-content:space-between;margin-top:18px"><span class="label" style="margin:0">${typed ? 'Type your answer' : 'Speak now'}</span><span class="timer" id="t">1:00</span></div>
+    <div class="tbar"><i id="bar" style="width:100%"></i></div>
+    ${typed ? '<textarea class="ans" id="typed" placeholder="What, why, who wins and loses, your view." style="margin-top:12px"></textarea>' : '<div class="live" id="live"><span class="interim">Listening…</span></div>'}
+    <div class="row"><button class="btn" id="stop">■ Finish</button></div>`;
+  if (!typed) listen(); else $('#typed').focus();
+  S.timer = setInterval(() => { const left = LIMIT - (Date.now() - S.started) / 1000; $('#t').textContent = '0:' + String(Math.max(0, Math.ceil(left))).padStart(2, '0'); $('#bar').style.width = Math.max(0, left / LIMIT * 100) + '%'; if (left <= 0) finish(); }, 250);
+  $('#stop').onclick = finish;
+}
+function listen() {
+  const r = new SR(); S.recog = r; r.lang = 'en-GB'; r.continuous = true; r.interimResults = true;
+  r.onresult = e => { let interim = ''; for (let k = e.resultIndex; k < e.results.length; k++) { const t = e.results[k][0].transcript; if (e.results[k].isFinal) S.text += t.trim() + ' '; else interim += t; } S.interim = interim; const l = $('#live'); if (l) l.innerHTML = esc(S.text) + '<span class="interim">' + esc(interim) + '</span>'; };
+  r.onend = () => { if (S.recog === r) try { r.start(); } catch (e) { } };
+  r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { S.recog = null; } };
+  try { r.start(); } catch (e) { }
+}
+function stop() { clearInterval(S.timer); S.timer = null; const r = S.recog; S.recog = null; if (r) try { r.stop(); } catch (e) { } }
+function finish() {
+  if (!S.timer) return;
+  S.seconds = Math.min(LIMIT, Math.round((Date.now() - S.started) / 1000));
+  const text = S.typed ? ($('#typed') ? $('#typed').value : '') : (S.text + ' ' + S.interim);
+  stop(); review(text.replace(/\s+/g, ' ').trim());
+}
+function review(text) {
+  const qk = D.drillQuick(text, S.seconds);
+  app.innerHTML = `<div class="eyebrow">Market drill</div><div class="q" style="font-size:22px">${esc(S.headline ? '“' + S.headline + '”' : S.drill.q)}</div>
+    <div class="label" style="margin-top:18px">Your answer (fix any transcription mistakes)</div><textarea class="ans" id="tx">${esc(text)}</textarea>
+    <div id="parts">${partsHtml([qk.parts.what, qk.parts.why, qk.parts.winsLoses, qk.parts.view])}</div>
+    <div class="row"><button class="btn or" id="fb">${paid ? 'Get feedback' : 'Check my structure'}</button><button class="btn ghost" id="again">Try again</button></div><p class="mute" id="note" style="font-size:14px;margin:8px 0 0"></p>
+    <div id="out"></div>`;
+  $('#tx').oninput = () => { const q = D.drillQuick($('#tx').value, S.seconds); $('#parts').innerHTML = partsHtml([q.parts.what, q.parts.why, q.parts.winsLoses, q.parts.view]); };
+  $('#again').onclick = () => answer(S.typed);
+  $('#fb').onclick = () => feedback($('#tx').value.trim());
+}
+async function feedback(text) {
+  if (text.length < 30) { $('#note').textContent = 'Say or type a little more first.'; return; }
+  const qk = D.drillQuick(text, S.seconds);
+  if (!paid) { showResult(text, qk, null, ''); track('drill_quick'); return; }
+  $('#fb').disabled = true; $('#note').textContent = 'Reading your answer…';
+  try {
+    const r = await fetch('/api/drill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'feedback', drillId: S.headline ? undefined : S.drill.id, headline: S.headline || undefined, transcript: text, seconds: S.seconds }) });
+    const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'Feedback is unavailable right now.');
+    past.unshift({ createdAt: new Date().toISOString() }); showResult(text, d.quick, d.feedback, d.notice); track('drill_feedback');
+  } catch (e) { $('#note').textContent = e.message; $('#fb').disabled = false; }
+}
+function showResult(text, qk, f, notice) {
+  const ideas = S.headline ? [] : S.drill.ideas;
+  $('#note').textContent = notice || '';
+  $('#fb').classList.add('hidden');
+  $('#out').innerHTML = `<div class="card" style="margin-top:18px">
+    ${f ? `<div style="display:flex;align-items:baseline;gap:12px"><b style="font-size:34px">${f.overall}</b><span class="mute">/ 5</span><span class="tag ${f.overall >= 4 ? 'gr' : ''}">${esc(f.band)}</span></div>
+      ${f.verdict ? `<p style="font-family:Lora,Georgia,serif;font-size:18px;margin:8px 0 0">“${esc(f.verdict)}”</p>` : ''}
+      <div class="crit">${[['Structure', f.scores.structure], ['Economics', f.scores.economics], ['So what', f.scores.soWhat], ['Your view', f.scores.conviction]].map(([l, v]) => `<div><span>${l}</span><span class="meter"><i style="width:${v * 20}%"></i></span><b>${v}/5</b></div>`).join('')}</div>
+      <div class="grid2" style="margin-top:16px"><div><div class="label" style="color:var(--gr)">What worked</div><ul>${f.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div><div class="label" style="color:var(--or-ink)">Fix next time</div><ul>${f.fixes.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
+      ${f.betterAnswer ? `<div class="label" style="margin-top:16px">A stronger 60 seconds</div><div class="better">${esc(f.betterAnswer)}</div>` : ''}
+      ${f.factsToCheck.length ? `<div class="notice"><b>Check these facts before an interview:</b> ${f.factsToCheck.map(esc).join(' · ')}</div>` : ''}`
+    : `<b>You covered ${qk.covered} of the 4 parts.</b>${qk.tips.length ? `<ul>${qk.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${paid ? '' : `<div class="notice">Full feedback (your economics, the “so what”, a stronger answer) is part of Full Cycle. <a href="${me.signedIn ? '/my.html' : '/signin.html'}">${me.signedIn ? 'My Desk' : 'Sign in'}</a></div>`}`}
+    ${ideas.length ? `<details style="margin-top:16px" ${f ? '' : 'open'}><summary><b>Ideas a strong answer might use</b></summary><ul>${ideas.map(x => `<li>${esc(x)}</li>`).join('')}</ul></details>` : ''}
+    <div class="row"><button class="btn" id="next">Another question</button>${paid ? '<a class="btn ghost" href="/my.html">My Desk</a>' : ''}</div></div>`;
+  $('#next').onclick = () => { const others = D.DRILLS.filter(x => x.id !== S.drill.id); S.drill = others[Math.floor(Math.random() * others.length)]; S.headline = ''; intro(); };
+}
+intro();
+</script>
+</body>
+</html>

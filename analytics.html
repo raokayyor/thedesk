@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Usage | The Desk</title>
+<style>
+:root{--paper:#f7f4ee;--card:#fffdf9;--ink:#0d1620;--ink2:#3b4550;--mute:#6b7682;--rule:#e4ddd2;--or:#d9480f;--gr:#1f6f5a;--bad:#b42318}
+@media (prefers-color-scheme:dark){:root{--paper:#11171d;--card:#182028;--ink:#eef0ee;--ink2:#c3cad0;--mute:#8d98a2;--rule:#2a343d;--or:#ff7a3d;--gr:#5cc3a3;--bad:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+a.logo{font-family:Georgia,serif;font-size:22px;color:var(--ink);text-decoration:none}
+h1{font-family:Georgia,serif;font-weight:500;font-size:32px;margin:18px 0 4px}
+h2{font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+.lede{color:var(--ink2);margin:0 0 18px}
+form,.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+input,select,button{font:inherit;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--card);color:var(--ink)}
+button{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:700;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;min-width:0}
+.card.wide{grid-column:1/-1}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.kpi{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+.kpi b{display:block;font-size:28px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:12px;color:var(--mute);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.meter{height:8px;background:var(--rule);border-radius:4px;overflow:hidden;min-width:60px}
+.meter i{display:block;height:100%;background:var(--gr)}
+.funnel td:first-child{width:46%}
+.warn{color:var(--bad);font-weight:700}
+.mute{color:var(--mute);font-size:13px}
+.empty{color:var(--mute);font-size:14px;margin:0}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <a class="logo" href="/">The Desk</a>
+  <h1>Usage</h1>
+  <p class="lede">Staff only. Anonymous events: no CV text, answers, recordings, names or emails are collected. Sales figures come straight from the assessments table.</p>
+  <form id="login"><label for="key" class="mute">Staff access key</label><input id="key" type="password" autocomplete="off" required><button>Open</button></form>
+  <div class="bar hidden" id="controls" style="margin-top:12px;display:none"><label for="days" class="mute">Period</label>
+    <select id="days"><option value="1">Last 24 hours</option><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select>
+    <button id="refresh" type="button">Refresh</button><span class="mute" id="stamp"></span></div>
+  <p id="status" role="status" class="mute"></p>
+  <div id="out"></div>
+  <section class="card" id="linkBox" style="margin-top:16px;display:none"><h2>Send a student a sign-in link</h2>
+    <p class="mute" style="margin:0 0 10px">Until email sign-in is switched on, make a one-time link here and send it yourself. It works once and expires in 30 minutes.</p>
+    <form id="linkForm" class="bar"><input id="linkEmail" type="email" placeholder="student@university.ac.uk" required style="min-width:260px"><button>Make link</button></form>
+    <p id="linkOut" style="word-break:break-all;margin:10px 0 0"></p></section>
+</main>
+<script type="module">
+let access = '';
+const $ = s => document.querySelector(s);
+const el = (tag, attrs = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else e.setAttribute(k, v); } for (const k of kids) e.append(k instanceof Node ? k : document.createTextNode(k == null ? '' : String(k))); return e; };
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const meter = v => { const m = el('div', { class: 'meter' }); const i = el('i'); i.style.width = Math.max(0, Math.min(100, v)) + '%'; m.append(i); return m; };
+
+function card(title, body, wide) { const c = el('section', { class: 'card' + (wide ? ' wide' : '') }, el('h2', {}, title)); c.append(body); return c; }
+function table(cols, rows, empty = 'Nothing yet.') {
+  if (!rows || !rows.length) return el('p', { class: 'empty' }, empty);
+  const t = el('table'); const h = el('tr'); cols.forEach(c => h.append(el('th', { class: c.n ? 'n' : '' }, c.label))); t.append(el('thead', {}, h));
+  const b = el('tbody'); rows.forEach(r => { const tr = el('tr'); cols.forEach(c => { const v = c.get ? c.get(r) : r[c.key]; tr.append(el('td', { class: c.n ? 'n' : '' }, v instanceof Node ? v : (v ?? ''))); }); b.append(tr); }); t.append(b); return t;
+}
+const label = k => k === 'true' ? 'On' : k === 'false' ? 'Off' : k;
+const shareTable = rows => { rows = (rows || []).map(r => ({ ...r, k: label(r.k) })); const total = (rows || []).reduce((a, r) => a + r.n, 0); return table([{ label: 'Value', key: 'k' }, { label: 'Count', key: 'n', n: true }, { label: 'Share', get: r => meter(pct(r.n, total)) }, { label: '', n: true, get: r => pct(r.n, total) + '%' }], rows); };
+
+function render(d) {
+  const out = $('#out'); out.replaceChildren();
+  const s = d.sales && d.sales.totals, t = d.totals || {};
+  const k = (label, v, sub) => el('div', { class: 'kpi' }, el('b', {}, v ?? '–'), el('span', {}, label), sub ? el('div', { class: 'mute' }, sub) : '');
+  out.append(el('div', { class: 'kpis' },
+    k('Visitors (visitor-days)', t.visitorDays), k('Page views', t.views), k('Interview answers', t.answers),
+    k('Free assessments', s ? s.assessments : '–'), k('Checkouts started', s ? s.checkouts : '–'),
+    k('Paid Full Cycle', s ? s.paid : '–', d.sales ? '£' + (d.sales.revenuePence / 100).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' taken' + (s.refunded ? ' · ' + s.refunded + ' refunded' : '') : ''),
+    k('Assessment → paid', s && s.assessments ? pct(s.paid, s.assessments) + '%' : '–')));
+  const g = el('div', { class: 'grid' }); out.append(g);
+
+  // Funnel
+  const f = d.funnel || {}; const steps = Object.entries(f); const top = steps.length ? steps[0][1] : 0;
+  const ft = table([{ label: 'Step', key: 0 }, { label: 'Sessions', key: 1, n: true }, { label: 'Of opened', get: r => meter(pct(r[1], top)) }, { label: '', n: true, get: r => pct(r[1], top) + '%' }], steps, 'No interview practice sessions yet.');
+  ft.classList && ft.classList.add('funnel'); g.append(card('Interview practice funnel', ft, true));
+
+  // Device checks
+  g.append(card('Does the device check pass? (by device)', table([{ label: 'Device', key: 'k' }, { label: 'Checks', key: 'checks', n: true },
+    { label: 'Camera ok', n: true, get: r => r.cam ? pct(r.cam, r.checks) + '%' : '–' }, { label: 'Mic ok', n: true, get: r => { const v = pct(r.mic, r.checks); return v < 80 ? el('span', { class: 'warn' }, v + '%') : v + '%'; } },
+    { label: 'Words heard', n: true, get: r => { const v = pct(r.words, r.checks); return v < 70 ? el('span', { class: 'warn' }, v + '%') : v + '%'; } }], d.deviceChecks), true));
+  g.append(card('Transcription in real answers (by device)', table([{ label: 'Device', key: 'k' }, { label: 'Answers', key: 'answers', n: true },
+    { label: 'Transcribed', n: true, get: r => pct(r.transcribed, r.answers) + '%' }, { label: 'Typed', n: true, get: r => pct(r.typed, r.answers) + '%' }, { label: 'Avg words', key: 'avgWords', n: true }], d.transcription), true));
+
+  const st = d.serverTranscription;
+  if (st && st.tries) g.append(card('Server transcription (OpenAI)', el('p', {}, `${st.ok} of ${st.tries} answers transcribed (${pct(st.ok, st.tries)}%)`), true));
+  // Choices
+  const c = d.choices || {};
+  g.append(card('Format chosen', shareTable(c.mode)));
+  g.append(card('Firm chosen', shareTable(c.firm)));
+  g.append(card('Division chosen', shareTable(c.division)));
+  g.append(card('Answer guide on?', shareTable(c.guide)));
+  g.append(card('Push-back on?', shareTable(c.pushback)));
+  g.append(card('Follow-ups written by', shareTable(c.followupSource)));
+  g.append(card('Feedback by question type', table([{ label: 'Type', key: 'k' }, { label: 'Answers', key: 'n', n: true }, { label: 'Avg score', key: 'avg', n: true }, { label: 'Full AI feedback', n: true, get: r => pct(r.full, r.n) + '%' }], d.feedback)));
+  const r = d.returning || {};
+  g.append(card('Students who came back on another day', el('p', {}, r.accounts ? `${r.returned} of ${r.accounts} students with an assessment (${pct(r.returned, r.accounts)}%)` : 'Not enough data yet. Only students with an assessment can be followed across days.')));
+
+  // Traffic
+  g.append(card('Pages', table([{ label: 'Page', key: 'k' }, { label: 'Views', key: 'n', n: true }, { label: 'Visitors', key: 'visitors', n: true }], d.pages)));
+  g.append(card('Where visitors came from', shareTable(d.referrers)));
+  g.append(card('Campaign links (utm_source / campaign)', shareTable(d.campaigns)));
+  g.append(card('Devices', shareTable(d.devices)));
+  g.append(card('Buttons clicked', table([{ label: 'Page · button', key: 'k' }, { label: 'Clicks', key: 'n', n: true }], d.clicks), true));
+  g.append(card('Errors seen by students', table([{ label: 'Error', key: 'k' }, { label: 'Times', key: 'n', n: true }, { label: 'Browsers', key: 'browsers' }, { label: 'Last seen', key: 'last' }], d.errors, 'No errors recorded.'), true));
+
+  g.append(card('“Book a call with Rao” clicks', shareTable(d.calls)));
+  const em = d.emails;
+  if (em) g.append(card('Email step and deadline alerts', table([{ label: 'Step', key: 0 }, { label: 'Count', key: 1, n: true }], [
+    ['Free assessments (this period)', em.assessments], ['Saw the email step', em.gate ? em.gate.shown : '–'], ['Gave an email (this period)', em.emailsGiven], ['…and ticked deadline alerts', em.gate ? em.gate.withAlerts : '–'],
+    ['Accounts (all time)', em.accountsTotal], ['Confirmed emails (all time)', em.verifiedTotal], ['Alerts switched on (all time)', em.alertsOn ?? '–'], ['Alerts being sent (confirmed)', em.alertsLive ?? '–']]), true));
+  // Codes and accounts
+  if (d.sales && d.sales.byCode) g.append(card('Sales by discount code', table([{ label: 'Code', key: 'k' }, { label: 'Paid', key: 'n', n: true }, { label: 'Taken', n: true, get: r => '£' + (r.pence / 100).toFixed(2) }], d.sales.byCode, 'No sales yet.')));
+  const ac = d.accounts;
+  g.append(card('Student accounts', ac ? el('div', {}, el('p', { style: 'margin:0' }, `${ac.total} accounts · ${ac.new} new in this period · ${ac.activeWeek} active in the last 7 days`), table([{ label: 'Saved work', get: r => ({ interview: 'Interview answers', answer: 'Application answers', drill: 'Market drills' }[r.k] || r.k) }, { label: 'Items', key: 'n', n: true }, { label: 'Students', key: 'students', n: true }], ac.items, 'Nothing saved in this period.')) : el('p', { class: 'empty' }, 'No accounts yet.')));
+  // Daily
+  const daily = (d.daily || []).slice().reverse();
+  g.append(card('By day (usage)', table([{ label: 'Day', key: 'd' }, { label: 'Visitors', key: 'visitors', n: true }, { label: 'Views', key: 'views', n: true }, { label: 'Interviews', key: 'interviews', n: true }, { label: 'Answers', key: 'answers', n: true }], daily)));
+  const sd = ((d.sales && d.sales.daily) || []).filter(x => x.assessments || x.checkouts || x.paid || x.refunded).reverse();
+  g.append(card('By day (sales)', table([{ label: 'Day', key: 'd' }, { label: 'Assessments', key: 'assessments', n: true }, { label: 'Checkouts', key: 'checkouts', n: true }, { label: 'Paid', key: 'paid', n: true }, { label: 'Refunded', key: 'refunded', n: true }], sd)));
+  $('#stamp').textContent = 'Updated ' + new Date(d.generatedAt).toLocaleString('en-GB', { timeZone: 'Europe/London' });
+}
+
+async function load() {
+  $('#status').textContent = 'Loading…';
+  const r = await fetch('/api/analytics?days=' + $('#days').value, { headers: { Authorization: 'Bearer ' + access } });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'Could not load usage.');
+  $('#status').textContent = '';
+  render(d);
+}
+$('#login').addEventListener('submit', async e => {
+  e.preventDefault(); access = $('#key').value.trim();
+  try { await load(); $('#login').style.display = 'none'; $('#controls').style.display = 'flex'; $('#linkBox').style.display = 'block'; }
+  catch (err) { $('#status').textContent = err.message; }
+});
+$('#linkForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('#linkOut').textContent = 'Making link…';
+  const r = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + access }, body: JSON.stringify({ action: 'staff-link', email: $('#linkEmail').value }) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { $('#linkOut').textContent = d.error || 'Could not make a link.'; return; }
+  $('#linkOut').replaceChildren(el('b', {}, 'Link: '), el('span', {}, d.link), ' ', el('button', { type: 'button', id: 'copyLink' }, 'Copy'));
+  $('#copyLink').onclick = () => navigator.clipboard.writeText(d.link).then(() => { $('#copyLink').textContent = 'Copied'; });
+});
+$('#days').addEventListener('change', () => load().catch(err => { $('#status').textContent = err.message; }));
+$('#refresh').addEventListener('click', () => load().catch(err => { $('#status').textContent = err.message; }));
+</script>
+</body>
+</html>

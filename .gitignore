@@ -1,0 +1,6 @@
+node_modules/
+.env
+.env.*
+.private/
+.vercel/
+tests/local-preview-server.mjs

@@ -34,6 +34,6 @@ function buildReview(){const cs=score('c',commercial),ns=score('n',numerical);do
 
 async function prepareRouteQuiz(){try{const {questionsForRoute}=await import('/lib/question-banks.mjs');const bank=questionsForRoute(document.getElementById('sector1').value);commercial=bank.commercial.map(q=>[q.question,q.options,q.answer]);numerical=bank.numerical.map(q=>[q.question,q.options,q.answer]);commercialTopics=bank.commercial.map(q=>q.topic);numericalTopics=bank.numerical.map(q=>q.topic);selectedBankId=bank.id;renderSet('commercialQuiz',commercial,'c');renderSet('numericalQuiz',numerical,'n');window.routeQuizReady=true;return true;}catch(e){document.getElementById('uploadStatus').textContent=e.message;return false;}}
 document.getElementById('sector1').addEventListener('change',()=>{window.routeQuizReady=false;selectedBankId=null;commercial=[];numerical=[];document.getElementById('commercialQuiz').replaceChildren();document.getElementById('numericalQuiz').replaceChildren();});
-</script><script src="/assessment-loading.js"></script><script src="/assessment-submit.js"></script></body></html>
+</script><script src="/assessment-loading.js"></script><script src="/assessment-submit.js"></script><script src="/desk-track.js" defer></script></body></html>
 
 

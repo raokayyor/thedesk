@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Application answers | The Desk</title>
+<meta name="description" content="Plan and improve your finance application answers from your own CV evidence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/desk-app.css">
+<script src="/desk-track.js" defer></script>
+<script src="/desk-account.js"></script>
+<script src="/desk-config.js"></script>
+<style>
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:22px;align-items:start}
+.plan li{margin:8px 0}
+.plan .ev{display:block;font-size:14px;color:var(--mute)}
+.draft{font-family:Lora,Georgia,serif;font-size:17px;line-height:1.6;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:8px}
+.counter{font-size:14px;font-variant-numeric:tabular-nums;color:var(--mute)}
+.counter.over{color:var(--rec);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:13px;border-radius:999px;padding:3px 10px;background:var(--or-soft);color:var(--or-ink)}
+.chip.ok{background:var(--gr-soft);color:var(--gr)}
+.crit{display:grid;gap:8px;margin-top:12px}
+.crit div{display:grid;grid-template-columns:150px 1fr 36px;gap:10px;align-items:center;font-size:15px}
+.edit{border-left:3px solid var(--or);padding:8px 12px;margin:10px 0;background:var(--paper);border-radius:0 6px 6px 0}
+.edit q{display:block;color:var(--mute);font-size:15px}
+.edit p{margin:6px 0 0}
+.policy{font-size:14px;color:var(--ink2);border-left:3px solid var(--gr);padding:6px 12px;margin-top:16px}
+textarea#mine{min-height:260px}
+@media (max-width:860px){.cols{grid-template-columns:1fr}.crit div{grid-template-columns:120px 1fr 32px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><a class="logo" href="/">The <i>Desk</i></a><nav class="nav" id="deskNav"></nav></div></header>
+<main id="app"><p class="mute">Loading…</p></main>
+<script type="module">
+const A = await import('/lib/answers-core.mjs');
+const Core = await import('/interview-practice-core.mjs');
+const app = document.getElementById('app');
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const gaps = s => esc(s).replace(/\[confirm:\s*([^\]]+)\]/gi, '<span class="cf">[$1]</span>');
+const track = (e, p) => { try { window.deskTrack && window.deskTrack('click', { id: e }); } catch (x) { } };
+const me = await window.deskAccount;
+const S = { firm: '', division: '', programme: '', question: '', limit: 200, limitType: 'words', draft: null, check: null };
+
+const EXAMPLE = {
+  question: 'Why are you applying to Barclays, and why Investment Banking? (200 words)',
+  plan: [
+    { point: 'Why Investment Banking: turning research into a recommendation someone acts on', evidence: 'Redcliffe Partners: screened 12 UK software companies, flagged 4, presented to an associate' },
+    { point: 'Why the analytical work suits you: assumptions drive the answer', evidence: 'LVMH valuation project: tested growth of 3%, 5% and 7%' },
+    { point: 'Why Barclays: something specific you have researched', evidence: 'needs research' },
+    { point: 'A Barclays value you can prove: Integrity', evidence: 'Pho House: spotted a duplicate payment and raised it with the shift lead' }
+  ],
+  draft: 'At Redcliffe Partners I screened 12 UK software companies for a prospective acquisition and narrowed them to 4 whose recurring revenue matched the brief. Presenting that shortlist to an associate was the part I enjoyed most: turning research into a recommendation someone could act on. That is the work I want to do in Investment Banking. My LVMH valuation project, where I tested growth assumptions of 3%, 5% and 7%, showed me how much a conclusion depends on the assumptions behind it, and I want to learn to build and defend those judgements properly. I am applying to Barclays because [confirm: a deal, team or person at Barclays you have researched or met]. Barclays lists Integrity among its values. At Pho House I spotted a duplicate payment during a busy service and raised it with my shift lead straight away, and that is the standard I would bring to the analyst role.',
+  research: ['One Barclays Investment Bank deal or sector team you can talk about', 'Someone from Barclays you met or heard at an event, and what they said', 'How the graduate programme is structured in your division']
+};
+
+if (!me.signedIn || !(me.access && me.access.active)) renderLocked(); else renderBuilder();
+
+function renderLocked() {
+  app.innerHTML = `<div class="eyebrow">Application answers</div>
+    <h1 style="margin-top:8px">Answers built from your own evidence</h1>
+    <p class="lede">Paste any application question. You get a plan built from your CV, a draft that never invents anything (gaps are marked for you to fill), and coaching on your own rewrite.</p>
+    <div class="notice">${me.signedIn ? 'The answer builder is part of Full Cycle (£79 for 12 months).' : 'Sign in to use the answer builder. It’s part of Full Cycle (£79 for 12 months).'} <a href="${me.signedIn ? '/my.html' : '/signin.html'}">${me.signedIn ? 'Go to My Desk' : 'Sign in'}</a></div>
+    <div class="card" style="margin-top:20px"><span class="tag">Example</span> <span class="mute" style="font-size:14px">Built from our fictional candidate Amelia’s CV</span>
+      <h3 style="margin-top:12px">${esc(EXAMPLE.question)}</h3>
+      <div class="label" style="margin-top:16px">The plan</div><ol class="plan">${EXAMPLE.plan.map(p => `<li>${esc(p.point)}<span class="ev">${esc(p.evidence)}</span></li>`).join('')}</ol>
+      <div class="label" style="margin-top:16px">Draft to rewrite in your own words (highlighted parts are gaps only you can fill)</div><div class="draft">${gaps(EXAMPLE.draft)}</div>
+      <div class="label" style="margin-top:16px">Research before you write</div><ul>${EXAMPLE.research.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`;
+}
+
+function firmOptions(cur) {
+  const groups = [['UK banks', 'uk'], ['US banks', 'bulge'], ['European banks', 'europe'], ['Advisory boutiques', 'boutique'], ['Big Four', 'big4']];
+  const known = Core.firmInfo(cur); const isOther = cur && (!known || !Core.FIRMS[known.name]);
+  return groups.map(([lab, g]) => `<optgroup label="${lab}">${Object.keys(Core.FIRMS).filter(k => Core.FIRMS[k].group === g).map(k => `<option ${known && k === known.name ? 'selected' : ''}>${esc(k)}</option>`).join('')}</optgroup>`).join('') + `<option value="__other" ${isOther ? 'selected' : ''}>Another firm (type it)</option>`;
+}
+
+function renderBuilder() {
+  const as = me.assessment || {};
+  S.firm = S.firm || (Core.firmInfo(as.firm) || {}).name || as.firm || 'Barclays'; S.division = S.division || as.division || 'Investment Banking';
+  const otherFirm = !Core.FIRMS[S.firm];
+  app.innerHTML = `<div class="eyebrow">Application answers</div>
+    <h1 style="margin-top:8px">Build an application answer</h1>
+    <p class="lede">Paste the question. We plan it from your CV and draft it without inventing anything. Then you write it in your own words and we coach it.</p>
+    <div class="cols">
+      <div>
+        <div class="card">
+          <div class="grid2">
+            <label class="field"><span class="label">Firm</span><select id="firm">${firmOptions(S.firm)}</select></label>
+            <label class="field"><span class="label">Division</span><select id="division">${[...new Set([S.division, ...Core.DIVISIONS])].map(d => `<option ${d === S.division ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></label>
+          </div>
+          <label class="field ${otherFirm ? '' : 'hidden'}" id="otherWrap"><span class="label">Firm name</span><input id="firmOther" maxlength="60" value="${otherFirm ? esc(S.firm) : ''}"></label>
+          <label class="field"><span class="label">Programme</span><select id="programme"><option value="">Choose…</option>${A.PROGRAMMES.map(p => `<option ${p === S.programme ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select></label>
+          <label class="field"><span class="label">The question, exactly as written</span><textarea id="question" maxlength="600" placeholder="e.g. Why are you applying to Barclays, and why this division?" style="min-height:90px">${esc(S.question)}</textarea></label>
+          <div class="grid2">
+            <label class="field"><span class="label">Limit</span><input id="limit" type="number" min="0" max="2000" value="${S.limit || ''}" inputmode="numeric"></label>
+            <label class="field"><span class="label">Counted in</span><select id="limitType"><option value="words" ${S.limitType === 'words' ? 'selected' : ''}>Words</option><option value="characters" ${S.limitType === 'characters' ? 'selected' : ''}>Characters</option></select></label>
+          </div>
+          <div class="row"><button class="btn or" id="plan">Plan my answer</button></div>
+          <p class="mute" id="planNote" style="font-size:14px;margin:8px 0 0"></p>
+        </div>
+        <div id="planOut"></div>
+      </div>
+      <div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span class="label" style="margin:0">Your answer</span><span class="counter" id="counter"></span></div>
+          <textarea id="mine" style="width:100%;margin-top:8px;padding:12px;border:1px solid var(--rule2);border-radius:8px;background:var(--card);font-size:16px;line-height:1.55" placeholder="Write your answer here, in your own words. Use the plan on the left."></textarea>
+          <div class="chips" id="live"></div>
+          <div class="row"><button class="btn" id="check">Check my answer</button><button class="btn ghost" id="save">Save to My Desk</button></div>
+          <p class="mute" id="checkNote" style="font-size:14px;margin:8px 0 0"></p>
+          <p class="policy">Some firms ask that application answers are your own work. Use the plan and draft as a guide, then write it yourself. The checker coaches what <i>you</i> wrote.</p>
+        </div>
+        <div id="checkOut"></div>
+      </div>
+    </div>
+    <h2 style="margin-top:40px">Your saved answers</h2>
+    <div class="card" style="margin-top:14px" id="saved"><p class="mute" style="margin:0">Loading…</p></div>`;
+  wire(); loadSaved(); live();
+}
+
+function req() {
+  const f = $('#firm').value === '__other' ? $('#firmOther').value.trim() : $('#firm').value;
+  return { firm: f, division: $('#division').value, programme: $('#programme').value, question: $('#question').value.trim(), limit: Number($('#limit').value) || null, limitType: $('#limitType').value };
+}
+async function post(body) {
+  const r = await fetch('/api/answers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'Something went wrong. Try again.'); return d;
+}
+function live() {
+  const r = req(), q = A.quickChecks($('#mine').value, { limit: r.limit, limitType: r.limitType, firm: r.firm });
+  const c = $('#counter'); c.textContent = `${r.limitType === 'characters' ? q.chars + ' characters' : q.words + ' words'}${r.limit ? ' of ' + r.limit : ''}`; c.classList.toggle('over', q.overLimit);
+  const chips = [];
+  if (q.words >= 20) {
+    if (q.overLimit) chips.push(['Over the limit', 0]);
+    if (q.cliches.length) chips.push(['Overused: ' + q.cliches.join(', '), 0]);
+    if (q.aiTells.length) chips.push(['Sounds machine-written: ' + q.aiTells.join(', '), 0]);
+    if (q.weCount > q.iCount) chips.push(['More “we” than “I”', 0]);
+    if (q.gaps) chips.push([q.gaps + ' gap' + (q.gaps > 1 ? 's' : '') + ' still to fill', 0]);
+    if (r.firm && !q.namesFirm) chips.push(['Doesn’t name ' + r.firm, 0]);
+    if (!q.cliches.length && !q.aiTells.length && !q.overLimit && !q.gaps) chips.push(['No clichés or filler phrases', 1]);
+  }
+  $('#live').innerHTML = chips.map(([t, ok]) => `<span class="chip ${ok ? 'ok' : ''}">${esc(t)}</span>`).join('');
+}
+function wire() {
+  $('#firm').onchange = () => $('#otherWrap').classList.toggle('hidden', $('#firm').value !== '__other');
+  ['#mine', '#limit', '#limitType', '#firm', '#firmOther'].forEach(s => $(s).addEventListener('input', live));
+  $('#plan').onclick = async () => {
+    const r = req(); if (r.question.length < 8) { $('#planNote').textContent = 'Paste the question first.'; return; }
+    $('#plan').disabled = true; $('#planNote').textContent = 'Planning from your CV… (about 15 seconds)';
+    try { const d = await post({ action: 'draft', ...r }); S.draft = d; renderPlan(d); $('#planNote').textContent = ''; track('answers_plan'); }
+    catch (e) { $('#planNote').textContent = e.message; }
+    $('#plan').disabled = false;
+  };
+  $('#check').onclick = async () => {
+    const text = $('#mine').value.trim(); if (text.length < 40) { $('#checkNote').textContent = 'Write a bit more first.'; return; }
+    $('#check').disabled = true; $('#checkNote').textContent = 'Reading your answer…';
+    try { const d = await post({ action: 'check', ...req(), text }); S.check = d.check; renderCheck(d); $('#checkNote').textContent = d.notice || ''; track('answers_check'); }
+    catch (e) { $('#checkNote').textContent = e.message; }
+    $('#check').disabled = false;
+  };
+  $('#save').onclick = async () => {
+    try { await post({ action: 'save', ...req(), text: $('#mine').value.trim(), check: S.check }); $('#checkNote').textContent = 'Saved to My Desk.'; loadSaved(); track('answers_save'); }
+    catch (e) { $('#checkNote').textContent = e.message; }
+  };
+}
+function renderPlan(d) {
+  $('#planOut').innerHTML = `<div class="card" style="margin-top:16px">
+    <div class="label">The plan${d.competency ? ' · tests ' + esc(d.competency) : ''}</div>
+    <ol class="plan">${d.plan.map(p => `<li>${esc(p.point)}<span class="ev">${esc(p.evidence)}</span></li>`).join('')}</ol>
+    ${d.research.length ? `<div class="label" style="margin-top:14px">Research before you write</div><ul>${d.research.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+    <div class="label" style="margin-top:14px">Draft (${d.checks.words} words). Highlighted parts are gaps only you can fill</div>
+    <div class="draft">${gaps(d.draft)}</div>
+    ${d.removedSentences ? `<p class="mute" style="font-size:14px">We removed ${d.removedSentences} sentence${d.removedSentences > 1 ? 's' : ''} that used facts not on your CV.</p>` : ''}
+    <div class="row"><button class="btn ghost" id="useDraft">Start from this draft</button></div></div>`;
+  $('#useDraft').onclick = () => { if ($('#mine').value.trim() && !confirmReplace()) return; $('#mine').value = d.draft; live(); $('#mine').focus(); };
+}
+function confirmReplace() { const b = $('#useDraft'); if (b.dataset.armed) return true; b.dataset.armed = '1'; b.textContent = 'Replace what you’ve written? Tap again'; return false; }
+function renderCheck(d) {
+  const c = d.check, q = d.quick;
+  const off = d.offCv && !d.offCv.ok ? [...d.offCv.badAmounts, ...d.offCv.badClaims.map(w => '“' + w + '”')] : [];
+  $('#checkOut').innerHTML = `<div class="card" style="margin-top:16px">
+    ${c ? `<div style="display:flex;align-items:baseline;gap:12px"><b style="font-size:34px">${c.overall}</b><span class="mute">/ 5</span><span class="tag ${c.overall >= 4 ? 'gr' : ''}">${esc(c.band)}</span></div>
+      ${c.verdict ? `<p style="font-family:Lora,Georgia,serif;font-size:18px;margin:8px 0 0">“${esc(c.verdict)}”</p>` : ''}
+      <div class="crit">${[['Answers the question', c.scores.answersQuestion], ['Specific to the firm', c.scores.specificity], ['Your evidence', c.scores.evidence], ['Reason for this firm', c.scores.firmFit], ['Structure', c.scores.structure]].map(([l, v]) => `<div><span>${l}</span><span class="meter"><i style="width:${v * 20}%"></i></span><b>${v}/5</b></div>`).join('')}</div>
+      <div class="grid2" style="margin-top:16px"><div><div class="label" style="color:var(--gr)">What works</div><ul>${c.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div><div class="label" style="color:var(--or-ink)">Fix next</div><ul>${c.fixes.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>
+      ${c.lineEdits.length ? `<div class="label" style="margin-top:12px">Line edits</div>${c.lineEdits.map((e, i) => `<div class="edit"><q>${esc(e.quote)}</q><p>${gaps(e.suggestion)}</p><button class="linkbtn" data-edit="${i}">Use this line</button></div>`).join('')}` : ''}
+      ${c.checkTheseClaims.length ? `<div class="notice"><b>Be ready to back these up at interview:</b> ${c.checkTheseClaims.map(esc).join(' · ')}</div>` : ''}` : '<p class="mute" style="margin:0">Automatic checks only.</p>'}
+    ${off.length ? `<div class="notice"><b>Not on your CV:</b> ${off.map(esc).join(', ')}. Only include it if it’s true and you can talk about it.</div>` : ''}
+    <p class="mute" style="font-size:14px;margin:12px 0 0">${q.words} words · ${q.specifics} specific details · “I” ×${q.iCount}, “we” ×${q.weCount}</p></div>`;
+  document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { const e = c.lineEdits[+b.dataset.edit]; const t = $('#mine').value; if (t.includes(e.quote)) { $('#mine').value = t.replace(e.quote, e.suggestion); live(); b.textContent = 'Applied'; b.disabled = true; } });
+}
+async function loadSaved() {
+  const d = await fetch('/api/account?kind=answer&limit=100').then(r => r.json()).catch(() => ({}));
+  const items = d.items || [];
+  $('#saved').innerHTML = items.length ? `<ul class="list">${items.map((i, k) => `<li><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b>${esc(i.data.question)}</b><span class="mute" style="font-size:14px">${esc(i.data.firm)} · ${new Date(i.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} · ${i.data.words} words${i.data.overall ? ' · ' + i.data.overall + '/5' : ''}</span></div><button class="linkbtn" data-load="${k}" style="margin-top:6px">Open as a starting point</button></li>`).join('')}</ul>` : '<p class="mute" style="margin:0">Nothing saved yet. Answers you save appear here so you can reuse them for other applications.</p>';
+  document.querySelectorAll('[data-load]').forEach(b => b.onclick = () => { const x = items[+b.dataset.load].data; $('#question').value = x.question; $('#mine').value = x.text; if (x.limit) $('#limit').value = x.limit; $('#limitType').value = x.limitType || 'words'; live(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+}
+</script>
+</body>
+</html>

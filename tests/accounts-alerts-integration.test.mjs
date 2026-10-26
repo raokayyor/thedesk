@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {registerHooks} from 'node:module';
+import {PGlite} from '@electric-sql/pglite';
+const db=new PGlite();await db.waitReady;
+globalThis.__deskQuery=async(q,p=[])=>{const r=await db.query(q,p);return r.rows;};
+registerHooks({resolve(spec,context,next){if(spec==='@neondatabase/serverless')return {url:'desk-test:neon',shortCircuit:true};return next(spec,context);},load(url,context,next){if(url==='desk-test:neon')return {format:'module',shortCircuit:true,source:'export const neon=()=>({query:(q,p)=>globalThis.__deskQuery(q,p)});'};return next(url,context);}});
+process.env.APP_ORIGIN='http://127.0.0.1:4330';process.env.RESEND_API_KEY='test-only';process.env.EMAIL_FROM='The Desk <test@example.com>';process.env.RESULT_EMAIL_GATE_ENABLED='true';process.env.EMAIL_ALERTS_ENABLED='true';
+const emails=[];let batchCalls=0,providerFails=false,deliveryAcknowledged=false;const idempotency=new Map();
+globalThis.fetch=async(url,opts)=>{assert(String(url).startsWith('https://api.resend.com/'),'No real network or model calls are allowed');const body=JSON.parse(opts.body);if(url.endsWith('/emails/batch')){batchCalls++;if(providerFails)throw Error('simulated transport timeout');const key=opts.headers['Idempotency-Key'];assert(key);if(!idempotency.has(key))idempotency.set(key,{data:body.map((_,i)=>({id:'mail-'+i}))});deliveryAcknowledged=true;return {ok:true,json:async()=>idempotency.get(key)};}emails.push(body);return {ok:true,json:async()=>({id:'confirmation'})};};
+const store=await import('../lib/report-store.mjs');const accounts=await import('../lib/accounts.mjs');const {runWeekly}=await import('../lib/alert-delivery.mjs');const {setPrefs,getPrefs}=await import('../lib/alerts.mjs');const {loadProgrammes}=await import('../lib/programmes.mjs');const {paidSessionMatches,linkPaidAccount}=await import('../lib/payment-verification.mjs');const {default:auth}=await import('../api/auth.js');const {default:accountApi}=await import('../api/account.js');
+function res(){return {statusCode:200,headers:{},setHeader(k,v){this.headers[k]=v;},getHeader(k){return this.headers[k];},status(n){this.statusCode=n;return this;},json(v){this.body=v;return this;},end(){return this;}};}
+const owner='a'.repeat(64),id='b'.repeat(48),email='student@example.com';const req={method:'POST',headers:{host:'127.0.0.1:4330',origin:process.env.APP_ORIGIN,cookie:'desk_owner='+owner},body:{},query:{}};
+try{
+ await store.initStore();await db.query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3,$4)',[id,store.hash(owner),JSON.stringify({profile:{name:'Test Student',targetFirm:'Barclays',programme:'Graduate programme'},cvText:'Fictional CV evidence for testing only.'}),JSON.stringify({overallScore:50})]);
+ let response=res();let out=await accounts.claimResult(req,response,{assessmentId:id,email,alerts:true});assert(out.success&&out.emailSent);assert(!response.headers['Set-Cookie'],'Typing an email must never start an account session');
+ const acct=await accounts.accountByEmail(email);assert(!acct.verified_at);assert.equal((await db.query('SELECT * FROM desk_sessions')).rows.length,0);
+ assert.equal((await runWeekly(process.env.APP_ORIGIN)).sent,0,'Unverified recipients must not receive alerts');
+ const token=emails[0].text.match(/token=([a-f0-9]{48})/)[1];response=res();await auth({...req,body:{action:'verify',token}},response);assert.equal(response.statusCode,200);assert(response.headers['Set-Cookie']);const cookie=String(response.headers['Set-Cookie']).split(';')[0];
+ const signed={...req,headers:{...req.headers,cookie}};assert.equal((await store.ownedRecord(signed,res(),id)).id,id,'Verified account opens its result without owner cookie');assert.equal(await accounts.redeemLoginToken(token),null,'Token is single-use');
+ const data=await loadProgrammes();const firms=[...new Set(data.programmes.map(p=>p.firm))];await setPrefs(acct.id,{enabled:true,firms:[],types:[]},firms);
+ await assert.rejects(()=>setPrefs(acct.id,{enabled:true,firms:['not-a-firm'],types:[]},firms),/Invalid alert preferences/);
+ // A previously registered email is not exposed or signed in by the claim endpoint.
+ const before=(await getPrefs(acct.id)).enabled;response=res();out=await accounts.claimResult(req,response,{assessmentId:id,email,alerts:false});assert(out.existingAccount);assert(!response.headers['Set-Cookie']);assert.equal((await getPrefs(acct.id)).enabled,before);
+ // Concurrent new-email claims still cannot log a browser into the account.
+ const responses=[res(),res()];await Promise.all(responses.map(r=>accounts.claimResult(req,r,{assessmentId:id,email:'concurrent@example.com',alerts:false})));assert(responses.every(r=>!r.headers['Set-Cookie']));
+ let expired=await accounts.createLoginLink(email,process.env.APP_ORIGIN);let expiredToken=new URL(expired).searchParams.get('token');await db.query("UPDATE desk_login_tokens SET expires_at=now()-interval '1 minute' WHERE token_hash=$1",[store.hash(expiredToken)]);assert.equal(await accounts.redeemLoginToken(expiredToken),null);
+ // A Stripe checkout email is not email verification and cannot create a login session.
+ const session={id:'cs_test',status:'complete',payment_status:'paid',currency:'gbp',amount_subtotal:7900,amount_total:5900,total_details:{amount_discount:2000},metadata:{assessmentId:id},client_reference_id:id,customer_email:'checkout-only@example.com'};assert(paidSessionMatches(session,id));await linkPaidAccount(session);assert(!(await accounts.accountByEmail(session.customer_email)).verified_at);
+ await db.query('UPDATE desk_assessments SET paid_at=now(),refunded_at=NULL WHERE id=$1',[id]);assert((await accounts.entitlement(acct.id)).active);await db.query('UPDATE desk_assessments SET refunded_at=now() WHERE id=$1',[id]);assert(!(await accounts.entitlement(acct.id)).active);await db.query("UPDATE desk_assessments SET refunded_at=NULL,paid_at=now()-interval '366 days' WHERE id=$1",[id]);assert(!(await accounts.entitlement(acct.id)).active);
+ // Overlapping scheduler calls acquire one DB lease, and a rerun doesn't duplicate a send.
+ const runs=await Promise.all([runWeekly(process.env.APP_ORIGIN),runWeekly(process.env.APP_ORIGIN)]);assert(runs.some(r=>r.skipped==='another run is active'));assert(deliveryAcknowledged);const calls=batchCalls;assert.equal((await runWeekly(process.env.APP_ORIGIN)).sent,0);assert.equal(batchCalls,calls);
+ // A failed provider request retains a stable outbox payload/key for the next attempt.
+ await db.query('UPDATE desk_alert_outbox SET sent_at=NULL');await db.query('UPDATE desk_alert_prefs SET last_sent_at=NULL');providerFails=true;assert((await runWeekly(process.env.APP_ORIGIN)).failed>0);providerFails=false;assert((await runWeekly(process.env.APP_ORIGIN)).sent>0);assert.equal(idempotency.size,1,'Retry reuses the provider key');
+ const prefs=await getPrefs(acct.id);const {unsubscribe}=await import('../lib/alerts.mjs');assert(await unsubscribe(prefs.unsubscribeToken));assert.equal((await getPrefs(acct.id)).enabled,false);
+ process.env.RESULT_EMAIL_GATE_ENABLED='false';response=res();await accountApi({...req,method:'GET',query:{unlock:id}},response);assert(response.body.unlocked&&response.body.enabled===false);
+ console.log('PASS PostgreSQL integration: unverified claims, concurrent claims, token single-use/expiry, cross-device ownership, preferences, refunds/expiry, payment-email safety, opt-in, scheduler overlap/retry, unsubscribe, disabled gate. No real email/model calls.');
+}finally{await db.close();}

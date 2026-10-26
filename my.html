@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>My Desk | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/desk-app.css">
+<script src="/desk-track.js" defer></script>
+<script src="/desk-account.js"></script>
+<script src="/desk-config.js"></script>
+<style>
+.tile{display:flex;flex-direction:column;gap:6px;text-decoration:none}
+.tile h3{margin:4px 0 0}
+.tile p{margin:0;color:var(--ink2);font-size:15px}
+.tile .go{margin-top:auto;padding-top:10px;color:var(--or-ink);font-weight:700}
+table.m{width:100%;border-collapse:collapse;font-size:15px}
+table.m td,table.m th{padding:10px 6px;border-bottom:1px solid var(--rule);text-align:left}
+table.m th{font-size:12px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+table.m td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.weeks{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:10px}
+.weeks div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;font-size:12px;color:var(--mute)}
+.weeks i{display:block;width:100%;background:var(--gr);border-radius:3px 3px 0 0;min-height:2px}
+details summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><a class="logo" href="/">The <i>Desk</i></a><nav class="nav" id="deskNav"></nav></div></header>
+<main id="app"><p class="mute">Loading your Desk…</p></main>
+<script type="module">
+const app = document.getElementById('app');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtDate = d => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const get = kind => fetch('/api/account?kind=' + kind + '&limit=300').then(r => r.json()).then(d => d.items || []).catch(() => []);
+const me = await window.deskAccount;
+
+if (!me.signedIn) {
+  app.innerHTML = `<div class="eyebrow">My Desk</div><h1 style="margin-top:8px">Sign in to see your progress</h1>
+    <p class="lede">Your interview practice, application answers and market drills are saved to your account.</p>
+    <div class="row"><a class="btn or" href="/signin.html">Sign in</a><a class="btn ghost" href="/assessment-start.html">Start a free assessment</a></div>`;
+} else {
+  const [interviews, answers, drills] = await Promise.all([get('interview'), get('answer'), get('drill')]);
+  render(me, interviews, answers, drills);
+}
+
+function streak(items) {
+  const days = new Set(items.map(i => new Date(i.createdAt).toISOString().slice(0, 10)));
+  let n = 0; const d = new Date();
+  if (!days.has(d.toISOString().slice(0, 10))) d.setUTCDate(d.getUTCDate() - 1); // today not done yet: count from yesterday
+  while (days.has(d.toISOString().slice(0, 10))) { n++; d.setUTCDate(d.getUTCDate() - 1); }
+  return n;
+}
+// Practice measures: earliest answers versus most recent, only once there are enough to compare.
+function measures(items) {
+  const xs = items.map(i => i.data && i.data.measures).filter(Boolean).reverse(); // oldest first
+  const avg = (arr, f) => { const v = arr.map(f).filter(x => x !== null && x !== undefined && !Number.isNaN(x)); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+  const rows = [
+    ['Filler words per minute', m => m.fillersPerMin, 'down', v => v.toFixed(1)],
+    ['Hedging per minute ("I think", "maybe")', m => m.hedgesPerMin, 'down', v => v.toFixed(1)],
+    ['Answers that give a result', m => m.hasResult ? 1 : 0, 'up', v => Math.round(v * 100) + '%'],
+    ['Answers inside the time limit', m => m.withinTime ? 1 : 0, 'up', v => Math.round(v * 100) + '%'],
+    ['Share of "I" versus "we"', m => m.iShare, 'up', v => Math.round(v * 100) + '%'],
+    ['Follow-ups answered with specifics', m => m.followUpSpecific === null ? null : (m.followUpSpecific ? 1 : 0), 'up', v => Math.round(v * 100) + '%']
+  ];
+  const n = xs.length >= 6 ? Math.min(5, Math.floor(xs.length / 2)) : 0; // compare only once there are enough answers
+  return { count: xs.length, n, rows: rows.map(([label, f, dir, fmt]) => {
+    const first = n ? avg(xs.slice(0, n), f) : null, last = n ? avg(xs.slice(-n), f) : avg(xs, f);
+    let delta = '';
+    if (first !== null && last !== null && n) { const better = dir === 'down' ? last < first : last > first; const same = Math.abs(last - first) < 0.05; delta = same ? '' : `<span class="delta ${better ? 'good' : 'bad'}">${better ? 'better' : 'worse'}</span>`; }
+    return { label, first: first === null ? '–' : fmt(first), last: last === null ? '–' : fmt(last), delta };
+  }) };
+}
+function weekly(items) {
+  const weeks = []; const now = new Date();
+  for (let w = 7; w >= 0; w--) { const end = new Date(now); end.setDate(now.getDate() - w * 7); const start = new Date(end); start.setDate(end.getDate() - 7); weeks.push({ label: end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }), n: items.filter(i => { const t = new Date(i.createdAt); return t > start && t <= end; }).length }); }
+  const max = Math.max(1, ...weeks.map(w => w.n));
+  return `<div class="weeks">${weeks.map(w => `<div><span>${w.n || ''}</span><i style="height:${Math.round(w.n / max * 70)}px"></i><span>${w.label}</span></div>`).join('')}</div>`;
+}
+
+async function loadAlerts() {
+  const box = document.getElementById('alertsBox');
+  const d = await fetch('/api/alerts').then(r => r.json()).catch(() => null);
+  if (!d) { box.innerHTML = '<p class="mute" style="margin:0">Alerts are unavailable right now.</p>'; return; }
+  const p = d.prefs || { enabled: false, firms: [], types: [] };
+  const status = p.enabled ? (d.verified ? '<span class="tag gr">On</span> Next email Monday morning.' : '<span class="tag">Waiting for you</span> Confirm your email to start them: check your inbox for our link.' + (d.emailReady ? ' <button class="linkbtn" id="resend">Send the link again</button>' : '')) : '<span class="tag">Off</span>';
+  box.innerHTML = `<p style="margin:0">${status}</p>
+    <label class="row" style="margin-top:14px;gap:10px"><input type="checkbox" id="alOn" ${p.enabled ? 'checked' : ''} style="width:20px;height:20px"> <b>Send me weekly deadline alerts</b></label>
+    <div class="label" style="margin-top:16px">Programme types (none ticked = all)</div>
+    <div class="row" style="margin-top:4px">${d.types.map(t => `<label style="display:flex;gap:6px;align-items:center;font-size:15px"><input type="checkbox" class="alType" value="${esc(t)}" ${p.types.includes(t) ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</div>
+    <div class="label" style="margin-top:16px">Firms (none ticked = every firm on the tracker)</div>
+    ${d.firms.map(g => `<details ${g.firms.some(f => p.firms.includes(f)) ? 'open' : ''} style="margin-top:8px"><summary style="font-size:15px">${esc(g.label)} <span class="mute">(${g.firms.filter(f => p.firms.includes(f)).length}/${g.firms.length})</span></summary><div class="row" style="margin-top:6px">${g.firms.map(f => `<label style="display:flex;gap:6px;align-items:center;font-size:15px"><input type="checkbox" class="alFirm" value="${esc(f)}" ${p.firms.includes(f) ? 'checked' : ''}> ${esc(f)}</label>`).join('')}</div></details>`).join('')}
+    <div class="row"><button class="btn" id="alSave">Save alert settings</button></div><p class="mute" id="alMsg" role="status" style="font-size:14px;margin:8px 0 0"></p>
+    <p class="mute" style="font-size:13px;margin:12px 0 0">Dates are checked on the firms’ own sites (last checked ${esc(d.checked || '')}). Unsubscribe any time from any alert email or here.</p>`;
+  const save = async () => {
+    const body = { action: 'prefs', enabled: document.getElementById('alOn').checked, firms: [...document.querySelectorAll('.alFirm:checked')].map(x => x.value), types: [...document.querySelectorAll('.alType:checked')].map(x => x.value) };
+    const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const out = await r.json().catch(() => ({}));
+    if (!r.ok) { document.getElementById('alMsg').textContent = out.error || 'Could not save.'; return; }
+    await loadAlerts();
+    document.getElementById('alMsg').textContent = out.prefs.enabled ? (out.verified ? 'Saved. Your next alert arrives on Monday morning.' : out.confirmSent ? 'Saved. We’ve emailed you a link: confirm your email to start your alerts.' : 'Saved. Alerts start once your email is confirmed.') : 'Saved. Alerts are off.';
+    try { window.deskTrack && window.deskTrack('click', { id: out.prefs.enabled ? 'alerts_on' : 'alerts_off' }); } catch (e) { }
+  };
+  document.getElementById('alSave').onclick = save;
+  const rs = document.getElementById('resend'); if (rs) rs.onclick = save;
+}
+
+function render(me, interviews, answers, drills) {
+  const a = me.access || {}, as = me.assessment;
+  const today = new Date().toISOString().slice(0, 10);
+  const drilledToday = drills.some(d => new Date(d.createdAt).toISOString().slice(0, 10) === today);
+  const m = measures(interviews);
+  app.innerHTML = `
+    <div class="eyebrow">My Desk</div>
+    <h1 style="margin-top:8px">Your preparation</h1>
+    <p class="lede">${esc(me.email)} · ${a.active ? `Full Cycle until <b>${fmtDate(a.until)}</b>` : 'No active Full Cycle'}${as && as.firm ? ` · Target: ${esc(as.firm)}${as.division ? ', ' + esc(as.division) : ''}` : ''}</p>
+    ${a.active ? '' : `<div class="notice">Interview practice, application answers and the market drill are part of Full Cycle (£79 for 12 months). <a href="${as ? '/result-final-design.html?id=' + encodeURIComponent(as.id) : '/assessment-start.html'}">${as ? 'Unlock it from your result' : 'Start with a free assessment'}</a>.</div>`}
+    <div class="grid2" style="margin-top:22px">
+      <a class="card tile" href="/interview-practice.html" data-track="my_interviews"><span class="tag">Interviews</span><h3>Interview practice</h3><p>${interviews.length ? `${interviews.length} answer${interviews.length === 1 ? '' : 's'} practised. Last on ${fmtDate(interviews[0].createdAt)}.` : 'Questions from your CV for your target firm, with push-back and feedback.'}</p><span class="go">Practise →</span></a>
+      <a class="card tile" href="/answers.html" data-track="my_answers"><span class="tag">Applications</span><h3>Application answers</h3><p>${answers.length ? `${answers.length} answer${answers.length === 1 ? '' : 's'} built.` : 'Build "Why this firm" and competency answers from your own CV evidence.'}</p><span class="go">Build an answer →</span></a>
+      <a class="card tile" href="/drill.html" data-track="my_drill"><span class="tag">Market drill</span><h3>Today’s market drill</h3><p>${drilledToday ? 'Done today. ' : 'Not done today. '}${streak(drills) ? `Streak: ${streak(drills)} day${streak(drills) === 1 ? '' : 's'}.` : '60 seconds on a market question, every day.'}</p><span class="go">${drilledToday ? 'Do another →' : 'Start today’s →'}</span></a>
+      <a class="card tile" href="${as ? (as.paid ? '/fullcycle.html?id=' : '/result-final-design.html?id=') + encodeURIComponent(as.id) : '/assessment-start.html'}" data-track="my_report"><span class="tag gr">Your report</span><h3>${as && as.paid ? 'Your Full Cycle report' : 'Your assessment'}</h3><p>${as ? 'Assessment from ' + fmtDate(as.createdAt) + '. Your baseline: it doesn’t change when you practise.' : 'Start with a free CV and readiness assessment.'}</p><span class="go">Open →</span></a>
+    </div>
+
+    <h2 style="margin-top:40px" id="alerts">Deadline alerts</h2>
+    <p class="mute" style="font-size:15px;margin:6px 0 0">A weekly email on Monday morning: deadlines closing in the next two weeks, programmes that have just opened, and ones opening soon, for the firms you choose.</p>
+    <div class="card" style="margin-top:14px" id="alertsBox"><p class="mute" style="margin:0">Loading…</p></div>
+
+    <h2 style="margin-top:40px">How your answers are changing</h2>
+    <p class="mute" style="font-size:15px;margin:6px 0 0">Counted from what you said in interview practice${m.n ? `, comparing your first ${m.n} answers with your latest ${m.n}` : '. Once you have practised 6 answers we compare your first with your latest'}. These are practice measures, not a prediction of any firm’s decision. Your readiness score only changes after a fresh assessment.</p>
+    <div class="card" style="margin-top:14px">
+      ${m.count < 2 ? '<p class="mute" style="margin:0">Practise at least two answers to start seeing your trends.</p>' : `<table class="m"><thead><tr><th>Measure</th><th class="n">${m.n ? 'First ' + m.n : 'So far'}</th><th class="n">${m.n ? 'Latest ' + m.n : ''}</th><th></th></tr></thead><tbody>${m.rows.map(r => `<tr><td>${esc(r.label)}</td><td class="n">${r.first}</td><td class="n">${m.n ? r.last : ''}</td><td>${r.delta}</td></tr>`).join('')}</tbody></table>`}
+      <div class="label" style="margin-top:20px">Answers practised per week</div>
+      ${weekly(interviews)}
+    </div>
+
+    <h2 style="margin-top:40px">Recent practice</h2>
+    <div class="card" style="margin-top:14px">${interviews.length ? `<ul class="list">${interviews.slice(0, 15).map(i => { const d = i.data || {}; return `<li><div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap"><b>${esc(d.question)}</b><span class="mute" style="font-size:14px">${fmtDate(i.createdAt)}${d.overall ? ' · ' + d.overall + '/5' : ''}${d.firm ? ' · ' + esc(d.firm) : ''}</span></div>${d.fixes && d.fixes[0] ? `<div class="mute" style="font-size:15px;margin-top:4px">Fix: ${esc(d.fixes[0])}</div>` : ''}<details style="margin-top:6px"><summary class="mute" style="font-size:14px">Your answer</summary><p style="color:var(--ink2);font-size:15px">${esc(d.transcript)}</p>${d.followUp ? `<p style="color:var(--ink2);font-size:15px"><b>Follow-up:</b> ${esc(d.followUp.text)}<br>${esc(d.followUp.transcript)}</p>` : ''}</details></li>`; }).join('')}</ul>` : '<p class="mute" style="margin:0">Nothing yet. <a href="/interview-practice.html">Practise your first answer</a>.</p>'}</div>
+
+    ${window.DESK_CONFIG && DESK_CONFIG.callUrl ? `<div class="card" style="margin-top:28px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:240px"><b>${esc(DESK_CONFIG.callLabel)}</b><p class="mute" style="margin:4px 0 0;font-size:15px">${esc(DESK_CONFIG.callBlurb)}</p></div><a class="btn or" id="ctaCall" href="${esc(DESK_CONFIG.callUrl)}" target="_blank" rel="noopener">Book a call</a></div>` : ''}
+    <div class="row" style="margin-top:28px"><button class="btn ghost" id="signout">Sign out</button></div>
+    <p class="foot">Your answers are private to your account. We use them to give you feedback and show your progress, and share them only with service providers needed to deliver those features.</p>`;
+  const cc = document.getElementById('ctaCall'); if (cc) cc.addEventListener('click', () => { try { window.deskTrack && window.deskTrack('call_click', { where: 'my' }); } catch (e) { } });
+  loadAlerts();
+  document.getElementById('signout').onclick = async () => { await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'signout' }) }); location.href = '/'; };
+}
+</script>
+</body>
+</html>

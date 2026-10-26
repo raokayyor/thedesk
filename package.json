@@ -13,5 +13,11 @@
     "pdf-parse": "^1.1.1",
     "stripe": "^20.0.0",
     "@neondatabase/serverless": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.11"
+  },
+  "scripts": {
+    "test:updates": "node --test tests/interview-practice.test.mjs tests/analytics.test.mjs tests/answers-drill.test.mjs tests/alerts.test.mjs tests/accounts-alerts-integration.test.mjs"
   }
 }

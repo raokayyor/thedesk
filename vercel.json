@@ -1,7 +1,40 @@
 {
   "functions": {
-    "api/analyse-mot.js": { "maxDuration": 300 },
-    "api/full-cycle.js": { "maxDuration": 300 },
-    "api/generate-cv.js": { "maxDuration": 60 }
+    "api/analyse-mot.js": {
+      "maxDuration": 300
+    },
+    "api/full-cycle.js": {
+      "maxDuration": 300
+    },
+    "api/generate-cv.js": {
+      "maxDuration": 60
+    },
+    "api/interview-questions.js": {
+      "maxDuration": 60,
+      "includeFiles": "samples/amelia-*.json"
+    },
+    "api/interview-feedback.js": {
+      "maxDuration": 60,
+      "includeFiles": "samples/amelia-*.json"
+    },
+    "api/answers.js": {
+      "maxDuration": 60
+    },
+    "api/drill.js": {
+      "maxDuration": 60
+    },
+    "api/voice.js": {
+      "maxDuration": 60
+    },
+    "api/alerts.js": {
+      "includeFiles": "tracker.html",
+      "maxDuration": 300
+    },
+    "api/account.js": {
+      "includeFiles": "tracker.html"
+    },
+    "api/auth.js": {
+      "includeFiles": "tracker.html"
+    }
   }
 }

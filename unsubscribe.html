@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Unsubscribe | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/desk-app.css">
+</head>
+<body>
+<header class="top"><div class="top-in"><a class="logo" href="/">The <i>Desk</i></a></div></header>
+<main><div style="max-width:520px">
+  <div class="eyebrow">Deadline alerts</div>
+  <h1 style="margin-top:8px" id="t">Stop your deadline alerts?</h1>
+  <p class="lede" id="p">You won’t get any more weekly deadline emails. Your account and saved work stay as they are.</p>
+  <div class="row"><button class="btn or" id="go">Unsubscribe</button><a class="btn ghost" href="/my.html#alerts">Change my firms instead</a></div>
+</div></main>
+<script>
+(function () {
+  var token = new URLSearchParams(location.search).get('u') || '';
+  var t = document.getElementById('t'), p = document.getElementById('p'), go = document.getElementById('go');
+  if (!/^[a-f0-9]{48}$/.test(token)) { t.textContent = 'This link isn’t valid'; p.textContent = 'You can turn alerts off on My Desk.'; go.classList.add('hidden'); return; }
+  go.onclick = function () {
+    go.disabled = true;
+    fetch('/api/alerts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'unsubscribe', token: token }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { t.textContent = d.success ? 'You’re unsubscribed' : 'Already unsubscribed'; p.textContent = 'You won’t get any more deadline alerts. You can switch them back on from My Desk at any time.'; go.classList.add('hidden'); })
+      .catch(function () { go.disabled = false; p.textContent = 'Something went wrong. Try again.'; });
+  };
+})();
+</script>
+</body>
+</html>
