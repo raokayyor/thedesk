@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';import {NEWS_SOURCES,parseFirmNews} from '../lib/firm-news.mjs';
+const source=NEWS_SOURCES['goldman-sachs'];
+const html=`<script type="application/ld+json">{"@type":"NewsArticle","headline":"An official news headline to read","url":"https://www.goldmansachs.com/pressroom/2026/news-one","datePublished":"2026-10-10"}</script><a href="https://evil.example/pressroom/2026/fake">A fake headline on another host</a><a href="javascript:alert(1)">An unsafe link with a long title</a><a href="/pressroom/2026/news-one">Duplicate official headline link</a><a href="/pressroom/2026/news-two"><h3>A second official headline worth reading</h3></a>`;
+const items=parseFirmNews(html,source,new Date('2026-10-16').getTime());assert.equal(items.length,2);assert(items.every(i=>new URL(i.url).hostname==='www.goldmansachs.com'));assert.equal(items[1].publishedAt,null);
+assert.equal(parseFirmNews('<script type="application/ld+json">{"@type":"NewsArticle","headline":"Future article must stay unpublished","url":"https://www.goldmansachs.com/pressroom/2027/future","datePublished":"2027-01-01"}</script>',source,new Date('2026-10-16').getTime()).length,0);
+assert.equal(Object.keys(NEWS_SOURCES).length,13);assert.throws(()=>parseFirmNews('x'.repeat(4000001),source));console.log('PASS official headline extraction, deduplication, domain/protocol/date guards and unknown dates');
+
