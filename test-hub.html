@@ -127,7 +127,7 @@ details .reveal{margin:0 14px 14px}
 <body>
 <header class="top">
   <a class="logo" href="/">The Desk<small>Finance careers. Done properly.</small></a>
-  <nav class="hub-nav" aria-label="Main navigation"><a href="/assessment-start.html">Assess</a><a href="/test-hub.html" aria-current="page">Learn</a><a href="/fullcycle-amelia.html">Explore Full Cycle — £79</a></nav>
+  <nav class="hub-nav" aria-label="Main navigation"><a href="/assessment-start.html">Assess</a><a href="/test-hub.html" aria-current="page">Learn</a><a href="/fullcycle-amelia.html">Explore Full Cycle — £89</a></nav>
 </header>
 <main id="app"><p class="lede">Loading questions…</p></main><footer class="hub-footer">The Desk · Finance careers. Done properly.<p>Practice results help you choose what to work on. They are separate from your application readiness score.</p><a href="/assessment-start.html">Assess your application →</a></footer>
 
@@ -148,7 +148,7 @@ function mmss(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 
 function uniqueQuestions(qs){var seen={};return qs.filter(function(q){var key=q.question+JSON.stringify(q.table||null);if(seen[key])return false;seen[key]=true;return true})}
-function offer(){var id=new URLSearchParams(location.search).get("assessmentId");var href=id?'/result-final-design.html?id='+encodeURIComponent(id)+'#full-cycle-offer':'/fullcycle-amelia.html';return '<section class="hub-offer"><div><p class="kicker">Your knowledge is one part of the application</p><h2>Know the answer. Show why you belong.</h2><p>Full Cycle connects your CV gaps and test results to a repaired CV draft, interview preparation and a personal study plan, with two rechecks in 30 days.</p><p><a class="specialist-link" href="/mentor.html">Want 1:1 support? Explore specialist help — £3,000 →</a></p></div><a href="'+href+'">'+(id?'Get your repair plan — £79 →':'See what Full Cycle adds — £79 →')+'</a></section>'}
+function offer(){var id=new URLSearchParams(location.search).get("assessmentId");var href=id?'/result-final-design.html?id='+encodeURIComponent(id)+'#full-cycle-offer':'/fullcycle-amelia.html';return '<section class="hub-offer"><div><p class="kicker">Your knowledge is one part of the application</p><h2>Know the answer. Show why you belong.</h2><p>Full Cycle connects your CV gaps and test results to a repaired CV draft, interview preparation and a personal study plan, with two rechecks in 30 days.</p><p><a class="specialist-link" href="/mentor.html">Want 1:1 support? Explore specialist help — £3,000 →</a></p></div><a href="'+href+'">'+(id?'Get your repair plan — £89 →':'See what Full Cycle adds — £89 →')+'</a></section>'}
 function pool(){
   var p=S.type==="numerical"?DATA.numerical:DATA.technical.filter(function(q){return q.route===S.route||q.route==="commercial_general"});
   if(S.topic!=="all")p=p.filter(function(q){return q.topic===S.topic});
