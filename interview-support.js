@@ -7,6 +7,7 @@
   function isRecording() { return recorder && recorder.state === 'recording'; }
   function updateRecordLabel() { document.getElementById('recordBtn').textContent = voiceAvailable && voiceToggle.checked && spokenQuestion !== questions[current].q ? 'Ask question & start answer' : 'Start answer'; }
   function lock(active) {
+    for (const id of ['firmSelect','roleSelect','practiceFocus','logicToggle','newSessionBtn']) { const control = document.getElementById(id); if (control) control.disabled = active; }
     document.getElementById('buildQuestions').disabled = active;
     document.getElementById('nextBtn').disabled = active;
     hearButton.disabled = active || !voiceAvailable;
