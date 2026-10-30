@@ -7,7 +7,7 @@
   function isRecording() { return recorder && recorder.state === 'recording'; }
   function updateRecordLabel() { document.getElementById('recordBtn').textContent = voiceAvailable && voiceToggle.checked && spokenQuestion !== questions[current].q ? 'Ask question & start answer' : 'Start answer'; }
   function lock(active) {
-    for (const id of ['firmSelect','roleSelect','practiceFocus','logicToggle','newSessionBtn']) { const control = document.getElementById(id); if (control) control.disabled = active; }
+    for (const id of ['firmSelect','roleSelect','practiceFocus','logicToggle','newSessionBtn','cameraBtn','audioOnlyBtn']) { const control = document.getElementById(id); if (control) control.disabled = active; }
     document.getElementById('buildQuestions').disabled = active;
     document.getElementById('nextBtn').disabled = active;
     hearButton.disabled = active || !voiceAvailable;
@@ -34,14 +34,14 @@
       const utterance = new SpeechSynthesisUtterance(question);
       utterance.lang = 'en-GB'; utterance.rate = 0.95;
       const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => /^en-GB/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
+      const preferred = voices.find(v => /^en-GB/i.test(v.lang) && /natural|online|neural/i.test(v.name)) || voices.find(v => /^en-GB/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang) && /natural|online/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang));
       if (preferred) utterance.voice = preferred;
       let settled = false;
       const finish = success => {
         if (settled) return; settled = true; clearTimeout(timeout);
         if (token !== speechToken) { resolve(false); return; }
         reading = false; lock(false);
-        document.getElementById('camStatus').textContent = stream ? 'Camera ready' : 'Camera off';
+        document.getElementById('camStatus').textContent = stream ? (stream.getVideoTracks().length ? 'Camera ready' : 'Microphone ready') : 'Camera off';
         if (success) { spokenQuestion = question; hearButton.textContent = 'Repeat question'; voiceStatus.textContent = 'Question finished. Start your answer when ready.'; updateRecordLabel(); }
         else voiceStatus.textContent = 'Audio could not play. You can read the question above and answer with voice switched off.';
         resolve(success);
