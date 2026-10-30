@@ -10,11 +10,15 @@
  document.getElementById('buildFocus').textContent=selected?[DeskInterviewBank.firms[selected.firm].label,selected.roleTitle||DeskInterviewBank.roles[selected.role].label,DeskInterviewSession.rounds[selected.round]].join(' · '):'Preparing your selected interview.';
  document.getElementById('buildBack').href=document.getElementById('changeSetup').href;
  function done(id,note){const el=document.getElementById(id);el.classList.add('done');el.querySelector('i').textContent='✓';el.querySelector('small').textContent=note}
+ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  async function finish(){
-  await window.interviewProfileReady;
+  await Promise.all([window.interviewProfileReady,pause(1800)]);
   done('buildCv',document.getElementById('cvText').value.trim()?'Your CV evidence is loaded.':'No saved CV found. Your questions will use your selected role; you can add experience in the interview.');
+  await pause(1800);
   done('buildFirm','Selected employer, role and round applied. Independent practice scenarios—not confirmed employer questions.');
+  await pause(1800);
   done('buildDesk','Question-by-question answer structure, evidence prompts and follow-up guidance included.');
+  await pause(1600);
   done('buildQuestionStage',questions.length+' questions ready'+(questions.some(q=>q.kind==='news')?', including your selected employer news story.':'.'));
   document.getElementById('buildTitle').textContent='Your interview is ready.';
   const button=document.getElementById('enterInterview');button.disabled=false;button.textContent='Enter my interview →';
