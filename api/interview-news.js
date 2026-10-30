@@ -1,0 +1,2 @@
+import {NEWS_SOURCES,fetchEmployerNews} from '../lib/interview-news.mjs';
+export default async function handler(req,res){if(req.method!=='GET')return res.status(405).end();const firm=req.query?.firm;if(typeof firm!=='string'||!Object.hasOwn(NEWS_SOURCES,firm))return res.status(400).json({error:'Choose a supported employer.'});const news=await fetchEmployerNews(firm);res.setHeader('Cache-Control',news.items.length?'public, s-maxage=900, stale-while-revalidate=3600':'public, s-maxage=60');return res.json({firm,checkedAt:new Date().toISOString(),...news})}
