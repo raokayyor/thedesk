@@ -91,5 +91,5 @@ async function loadAssessment(){
   action.hidden=false;
  }finally{clearTimeout(timeout);}
 }
-$('#cameraBtn').onclick=enableCamera;$('#recordBtn').onclick=start;$('#stopBtn').onclick=stop;$('#playBtn').onclick=play;$('#assessBtn').onclick=assess;$('#buildQuestions').onclick=derive;$('#nextBtn').onclick=()=>{if(current<questions.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'})}else notice('Interview complete. Click “Use this CV” to restart.')};loadAssessment();render();
-</script><script src="/interview-support.js"></script><script src="/interview-bank.js"></script><script src="/interview-firms.js"></script><script src="/interview-session-core.js"></script><script src="/interview-session.js"></script><script src="/interview-media.js"></script></body></html>
+$('#cameraBtn').onclick=enableCamera;$('#recordBtn').onclick=start;$('#stopBtn').onclick=stop;$('#playBtn').onclick=play;$('#assessBtn').onclick=assess;$('#buildQuestions').onclick=derive;$('#nextBtn').onclick=()=>{if(current<questions.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'})}else notice('Interview complete. Click “Use this CV” to restart.')};window.interviewProfileReady=loadAssessment();render();
+</script><script src="/interview-support.js"></script><script src="/interview-bank.js"></script><script src="/interview-firms.js"></script><script src="/interview-session-core.js"></script><script src="/interview-session.js"></script><script src="/interview-media.js"></script><script src="/interview-building.js"></script></body></html>
