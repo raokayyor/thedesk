@@ -1,7 +1,19 @@
 {
   "functions": {
-    "api/analyse-mot.js": { "maxDuration": 300 },
-    "api/full-cycle.js": { "maxDuration": 300 },
-    "api/generate-cv.js": { "maxDuration": 60 }
+    "api/analyse-mot.js": {
+      "maxDuration": 300
+    },
+    "api/full-cycle.js": {
+      "maxDuration": 300
+    },
+    "api/generate-cv.js": {
+      "maxDuration": 60
+    },
+    "api/knowledge.js": {
+      "maxDuration": 120
+    },
+    "api/interview-feedback.js": {
+      "maxDuration": 60
+    }
   }
 }

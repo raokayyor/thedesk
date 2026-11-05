@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Student reports | The Desk</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f1ea;color:#121a22;font:15px/1.55 Arial,Helvetica,sans-serif}main{max-width:1000px;margin:0 auto;padding:28px 16px 80px}
+h1,h2{font-family:Georgia,serif;margin:0}h2{margin-top:30px;font-size:22px}.card{background:#fff;border:1px solid #e4ded2;border-radius:14px;padding:18px;margin-top:14px}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:9px 16px;background:#1d4e89;color:#fff;cursor:pointer}button.ghost{background:#fff;color:#1d4e89;border:1px solid #1d4e89}
+input,textarea,select{font:inherit;padding:9px 10px;border:1px solid #cfc7b8;border-radius:8px;width:100%}textarea{min-height:70px}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.mute{color:#5f6b76;font-size:13px}.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:#dbe5f1;color:#123459;margin-right:6px}
+.tabs button{background:#fff;color:#121a22;border:1px solid #e4ded2}.tabs button.on{background:#121a22;color:#fff}
+</style>
+</head>
+<body>
+<main>
+  <a href="/">← The Desk</a><h1 style="margin-top:10px">Student reports</h1>
+  <p class="mute">What students tell us after real interviews. Approve a report to use its format on the HireVue firm cards. Approve a quote separately: only with the student’s consent, and edit it only to fix typos.</p>
+  <form id="login" class="card" style="max-width:420px"><label>Staff key<input id="key" type="password" required autocomplete="off"></label><div class="row"><button>Open</button></div><p class="mute" id="lmsg"></p></form>
+  <div id="app" hidden>
+    <div class="row tabs" id="tabs"><button data-s="pending" class="on">To review</button><button data-s="approved">Approved</button><button data-s="rejected">Rejected</button></div>
+    <div id="list"></div>
+    <h2>Sign-in link (for testing)</h2>
+    <div class="card"><p class="mute" style="margin-top:0">Until email is switched on, make a one-time sign-in link for a student and send it yourself.</p><div class="row"><input id="lemail" type="email" placeholder="student@university.ac.uk" style="max-width:320px"><button class="ghost" id="lgo">Make link</button></div><p class="mute" id="lout" style="word-break:break-all"></p></div>
+  </div>
+</main>
+<script>
+let KEY='',STATUS='pending';const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const call=async(method,body,q='')=>{const r=await fetch('/api/value-account'+q,{method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+KEY},body:body?JSON.stringify(body):undefined});const d=await r.json().catch(()=>({}));return r.ok?d:{error:d.error||'Error '+r.status};};
+$('login').onsubmit=async e=>{e.preventDefault();KEY=$('key').value;const d=await call('GET',null,'?view=staff-outcomes&status=pending');if(d.error){$('lmsg').textContent=d.error;return}$('login').remove();$('app').hidden=false;show(d.items);};
+$('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;STATUS=b.dataset.s;[...$('tabs').children].forEach(x=>x.classList.toggle('on',x===b));load();};
+async function load(){const d=await call('GET',null,'?view=staff-outcomes&status='+STATUS);show(d.items||[]);}
+function show(items){
+  $('list').innerHTML=items.length?items.map(o=>`<div class="card" data-id="${o.id}"><div><span class="tag">${esc(o.firm)}</span><span class="tag">${esc(o.stage)}</span><span class="tag">${esc(o.outcome)}</span>${o.usedDesk?'<span class="tag">Used The Desk</span>':''}<span class="mute">${esc(o.programme)} · ${esc(o.month)} · ${new Date(o.createdAt).toLocaleDateString('en-GB')}</span></div>
+    ${o.format?`<p><b>Format:</b> ${[o.format.questions?o.format.questions+' questions':'',o.format.think?'thinking '+o.format.think:'',o.format.answer?'answer '+o.format.answer:'',o.format.retakes||''].filter(Boolean).map(esc).join(' · ')||'<span class="mute">not given</span>'}</p>`:''}
+    ${o.asked.length?`<p><b>Asked:</b></p><ul>${o.asked.map(a=>`<li>${esc(a)}</li>`).join('')}</ul><div class="row"><button class="ghost" data-kb>Send questions to the knowledge base</button><span class="mute kbm"></span></div>`:''}
+    ${o.consent?`<p><b>Quote</b> (consent given) from ${esc(o.firstName)}${o.university?', '+esc(o.university):''}:</p><textarea class="q">${esc(o.quote)}</textarea><label style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" class="qa" style="width:auto" ${o.quoteApproved?'checked':''}> Show this quote on the site</label>`:'<p class="mute">No consent to share a quote.</p>'}
+    <div class="row"><button data-s="approved">Approve</button><button class="ghost" data-s="rejected">Reject</button><span class="mute m"></span></div></div>`).join(''):'<div class="card"><p class="mute" style="margin:0">Nothing here.</p></div>';
+  document.querySelectorAll('[data-id]').forEach(c=>{const id=c.dataset.id;
+    c.querySelectorAll('[data-s]').forEach(b=>b.onclick=async()=>{const q=c.querySelector('.q'),qa=c.querySelector('.qa');const d=await call('POST',{action:'staff-outcome',id,status:b.dataset.s,quote:q?q.value:undefined,quoteApproved:qa?qa.checked:false});if(d.error)c.querySelector('.m').textContent=d.error;else load();});
+    const kb=c.querySelector('[data-kb]');if(kb)kb.onclick=async()=>{const d=await call('POST',{action:'staff-outcome-to-knowledge',id});c.querySelector('.kbm').textContent=d.error||`${d.added} new, ${d.merged} matched existing points. Review them in the knowledge base.`;};});
+}
+$('lgo').onclick=async()=>{const d=await call('POST',{action:'staff-link',email:$('lemail').value});$('lout').textContent=d.error||(d.emailed?'Emailed to the student.':d.link);};
+</script>
+</body>
+</html>

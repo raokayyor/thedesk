@@ -1,0 +1,133 @@
+{
+  "batch": "youtube-playlist-2026-11-05",
+  "playlist": "https://www.youtube.com/playlist?list=PLCcteVWYyBtubxjZCwxBDPLjGV7vSbddY",
+  "sourceVideos": 13,
+  "distinctProposedPoints": 25,
+  "status": "pending practitioner review",
+  "receipts": [
+    {
+      "videoId": "ycG5_uccoNk",
+      "title": "HIREVUE Interview Questions, Tips and Answers! How to PASS a HireVue Interview!",
+      "ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13"
+      ],
+      "merged": 0,
+      "submitted": 13
+    },
+    {
+      "videoId": "CwFDm2KiKpI",
+      "title": "VIDEO Interview Questions & Answers! (VIDEO INTERVIEW TIPS!)",
+      "ids": [
+        "14",
+        "15"
+      ],
+      "merged": 4,
+      "submitted": 6
+    },
+    {
+      "videoId": "V0QPgZBO-Pg",
+      "title": "VIRTUAL ONLINE Interview Questions & Answers! (Hirevue, Skype, & Zoom ONLINE Interview TIPS!",
+      "ids": [
+        "16"
+      ],
+      "merged": 9,
+      "submitted": 10
+    },
+    {
+      "videoId": "PpbhaVjV2QI",
+      "title": "TOP 10 VIRTUAL JOB INTERVIEW TIPS! (How to PASS an Online Zoom, Skype, or HireVue Job Interview!)",
+      "ids": [
+        "17",
+        "18"
+      ],
+      "merged": 10,
+      "submitted": 12
+    },
+    {
+      "videoId": "wLeIM6E00QU",
+      "title": "ONLINE INTERVIEW QUESTIONS & ANSWERS! (Use this SCRIPT to PASS your ONLINE JOB INTERVIEW!)",
+      "ids": [
+        "19",
+        "20",
+        "21"
+      ],
+      "merged": 11,
+      "submitted": 14
+    },
+    {
+      "videoId": "9KtYjWIt8DU",
+      "title": "HIREVUE INTERVIEW QUESTIONS & ANSWERS for 2023! (How to PREPARE for a HIREVUE Job Interview!)",
+      "ids": [
+        "22",
+        "23",
+        "24"
+      ],
+      "merged": 15,
+      "submitted": 18
+    },
+    {
+      "videoId": "jQdjrFCOReM",
+      "title": "VIDEO INTERVIEWS! (How to PASS an ONLINE VIDEO INTERVIEW Questions Answers & TOP TIPS for SUCCESS!)",
+      "ids": [
+        "25"
+      ],
+      "merged": 14,
+      "submitted": 15
+    },
+    {
+      "videoId": "7sDhn4P90mQ",
+      "title": "ZOOM INTERVIEW TIPS! (How to PASS a ZOOM Interview) ONLINE Interview Tips and Sample ANSWERS!",
+      "ids": [],
+      "merged": 12,
+      "submitted": 12
+    },
+    {
+      "videoId": "i7v-tUtk9KM",
+      "title": "10 ‘QUICK ANSWERS’ to ONLINE JOB INTERVIEW QUESTIONS! (How to PASS a VIRTUAL or ONLINE INTERVIEW!)",
+      "ids": [],
+      "merged": 12,
+      "submitted": 12
+    },
+    {
+      "videoId": "IWtzQFam-Ys",
+      "title": "PRE-RECORDED VIDEO INTERVIEWS! (How to PASS an ON-DEMAND VIDEO INTERVIEW!)",
+      "ids": [],
+      "merged": 12,
+      "submitted": 12
+    },
+    {
+      "videoId": "WxNCXVzoiRc",
+      "title": "ZOOM, HIREVUE & SKYPE Interview Questions & Answers! (How to PASS an ONLINE VIRTUAL Job Interview!)",
+      "ids": [],
+      "merged": 13,
+      "submitted": 13
+    },
+    {
+      "videoId": "cDWiMN4jN_4",
+      "title": "ONLINE INTERVIEW QUESTIONS & ANSWERS! (How to PASS an ONLINE VIRTUAL ZOOM OR SKYPE JOB INTERVIEW!)",
+      "ids": [],
+      "merged": 14,
+      "submitted": 14
+    },
+    {
+      "videoId": "96ZbWOcWQ0o",
+      "title": "Self Made Millennial — HireVue one-way interview advice",
+      "ids": [],
+      "merged": 10,
+      "submitted": 10
+    }
+  ],
+  "completedAt": "2026-11-05T14:09:37.073Z"
+}
