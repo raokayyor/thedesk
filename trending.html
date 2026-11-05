@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trending interview questions | The Desk</title>
+<meta name="description" content="The interview questions and advice being talked about most this season, checked by finance practitioners.">
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#121a22;--ink2:#3b4652;--mute:#5f6b76;--blue:#1d4e89;--blue2:#123459;--soft:#dbe5f1;--warm:#fde9dd;--warmink:#9a3412;--rule:#e4ded2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161d;--card:#18212b;--ink:#eef2f6;--ink2:#c5ced8;--mute:#9aa6b2;--blue:#8fb4e3;--blue2:#b9d0ee;--soft:#22364d;--warm:#3a2418;--warmink:#f6b48f;--rule:#2a3542}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Arial,Helvetica,sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 16px 80px}a{color:var(--blue)}h1,h2,h3{font-family:Georgia,serif;line-height:1.2;margin:0}
+h1{font-size:clamp(30px,6vw,46px);margin-top:14px}h2{font-size:26px;margin-top:40px}.lede{color:var(--ink2);font-size:19px;max-width:700px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.chip{border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.q{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:18px 20px;margin-top:12px}
+.q .t{font-family:Georgia,serif;font-size:21px;line-height:1.35}.q .d{color:var(--ink2);font-size:15px;margin-top:6px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--blue2)}.tag.hot{background:var(--warm);color:var(--warmink)}
+.myth{background:var(--card);border-left:4px solid var(--warmink);border-radius:12px;padding:14px 18px;margin-top:12px}
+.cta{background:var(--blue);color:#fff;border-radius:20px;padding:26px;margin-top:44px}.cta a{display:inline-block;background:#fff;color:#1d4e89;text-decoration:none;font-weight:700;border-radius:999px;padding:12px 22px;margin-top:12px}
+.mute{color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <a href="/">← The Desk</a>
+  <h1>Trending interview questions</h1>
+  <p class="lede">The questions and advice being talked about most across finance social media this season. We rewrite each one in plain words, and our practitioners check every one before it appears here.</p>
+  <div class="chips" id="firms"></div>
+  <div id="qs"><p class="mute">Loading…</p></div>
+  <h2>What people are saying interviewers look for</h2>
+  <div id="advice"></div>
+  <h2>Advice our practitioners disagree with</h2>
+  <p class="mute">It gets repeated a lot. Here’s what they’d tell you instead.</p>
+  <div id="myths"></div>
+  <div class="cta"><h3 style="font-size:24px">Practise these out loud, on your own CV</h3><p style="margin:8px 0 0">Our interview coach asks questions like these for your target firm, then pushes back on your answer.</p><a href="/assessment-start.html">Get your free assessment</a></div>
+  <p class="mute" style="margin-top:22px">These are common themes, not confirmed questions from any firm, and no firm endorses The Desk. Always check process details with the firm.</p>
+</main>
+<script>
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let D=null,firm='';
+fetch('/api/knowledge?view=trending').then(r=>r.json()).then(d=>{D=d;draw();}).catch(()=>{document.getElementById('qs').innerHTML='<p class="mute">Couldn’t load right now. Try again shortly.</p>';});
+function draw(){
+  const qs=D.questions||[], shown=firm?qs.filter(q=>(q.firm||'Any firm')===firm):qs;
+  document.getElementById('firms').innerHTML=qs.length?`<button class="chip ${firm?'':'on'}" data-f="">All firms</button>`+D.firms.map(f=>`<button class="chip ${firm===f.firm?'on':''}" data-f="${esc(f.firm)}">${esc(f.firm)}</button>`).join(''):'';
+  document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{firm=b.dataset.f;draw();});
+  document.getElementById('qs').innerHTML=shown.length?shown.map((q,i)=>`<div class="q"><div class="meta">${i<3&&!firm?'<span class="tag hot">Trending</span>':''}${q.firm?`<span class="tag">${esc(q.firm)}</span>`:''}${q.stage?`<span class="tag">${esc(q.stage)}</span>`:''}<span class="mute">Mentioned ${q.mentions} times this season</span></div><div class="t">${esc(q.text)}</div>${q.detail?`<div class="d">${esc(q.detail)}</div>`:''}${q.view?`<div class="d"><b>Practitioner note:</b> ${esc(q.view)}</div>`:''}</div>`).join(''):'<p class="mute" style="margin-top:16px">No trending questions yet. Check back soon.</p>';
+  document.getElementById('advice').innerHTML=(D.advice||[]).length?D.advice.map(a=>`<div class="q"><div class="meta"><span class="tag">${esc(a.label)}</span>${a.firm?`<span class="tag">${esc(a.firm)}</span>`:''}<span class="mute">Mentioned ${a.mentions} times</span></div><div class="t" style="font-size:19px">${esc(a.text)}</div>${a.view?`<div class="d"><b>Practitioner note:</b> ${esc(a.view)}</div>`:''}</div>`).join(''):'<p class="mute">Nothing yet.</p>';
+  document.getElementById('myths').innerHTML=(D.myths||[]).length?D.myths.map(m=>`<div class="myth"><b>You’ll hear:</b> ${esc(m.text)}<br><b>Our practitioners say:</b> ${esc(m.view)}</div>`).join(''):'<p class="mute">Nothing yet.</p>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>My Desk | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--line:#ddd7cf;--ok:#15803d}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "DM Sans",Arial,sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line)}.hin{max-width:980px;margin:0 auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 26px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}main{max-width:980px;margin:0 auto;padding:28px 16px 80px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}h1{font-size:clamp(30px,5vw,42px)}h2{font-size:24px;margin-top:34px}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:14px}
+.btn{font:700 14px "DM Sans",Arial,sans-serif;border:0;border-radius:999px;padding:11px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}input{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;min-width:0;flex:1;max-width:360px;background:#fff}
+.mute{color:var(--mute);font-size:14px}.list{list-style:none;margin:0;padding:0}.list li{border-top:1px solid var(--line);padding:12px 0;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}.list li:first-child{border-top:0}
+.score{font:500 24px "Fraunces",Georgia,serif;color:var(--accent)}.tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#eef3f9;color:#1d4e89}.tag.ok{background:#dcfce7;color:var(--ok)}
+.notice{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:12px 14px;margin-top:16px}
+details.ans summary{cursor:pointer;font-weight:600}.ans p{margin:6px 0;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+<script src="/desk-me.js" defer></script>
+</head>
+<body>
+<header><div class="hin"><a class="logo" href="/">The Desk</a><a class="btn ghost" href="/interview.html">Interview practice</a></div></header>
+<main id="app"><p class="mute">Loading…</p></main>
+<script>
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app'),qp=new URLSearchParams(location.search);
+const day=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+async function load(){
+  const d=await fetch('/api/value-account?view=me',{credentials:'same-origin'}).then(r=>r.json()).catch(()=>null);
+  if(!d){app.innerHTML='<p>Couldn’t load your desk. Refresh to try again.</p>';return}
+  const has=d.assessments.length||d.items.length;
+  const interviews=d.items.filter(i=>i.kind==='interview');
+  const signIn=`<div class="card"><h3>${has?'Keep your work on every device':'Sign in'}</h3><p class="mute" style="margin:6px 0 0">${has?'Your work is saved in this browser only. Sign in with your email and you can open it on your phone and laptop.':'We email you a link. No password.'}</p>
+    <form class="row" id="signin"><input type="email" id="email" required placeholder="you@university.ac.uk" autocomplete="email" aria-label="Email address"><button class="btn">Email me a sign-in link</button></form><p class="mute" id="smsg" role="status"></p></div>`;
+  app.innerHTML=`<div class="kicker">My Desk</div><h1>${d.signedIn?'Welcome back':'Your work'}</h1>
+    ${d.signedIn?`<p class="mute">Signed in as ${esc(d.email)} · <button class="btn ghost" id="out" style="padding:6px 12px">Sign out</button></p>`:''}
+    ${qp.get('signed_in')?'<div class="notice">You’re signed in. Your work is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
+    ${d.signedIn?'':signIn}
+    ${d.call?`<div class="card" style="background:#11191e;color:#fff"><b>Included with Full Cycle</b><p style="margin:4px 0 10px">${esc(d.call.label)}: five minutes on what to fix first.</p><a class="btn" style="background:#fff;color:#11191e" href="${esc(d.call.url)}" target="_blank" rel="noopener">Book a time</a></div>`:''}
+    <div class="grid"><div><h2>Assessments</h2><div class="card">${d.assessments.length?`<ul class="list">${d.assessments.map(a=>`<li><span><b>${esc(a.firm||'Assessment')}</b>${a.route?' · '+esc(a.route):''}<br><span class="mute">${day(a.createdAt)}${a.rootId?' · recheck':''}</span></span><span style="display:flex;gap:8px;align-items:center">${a.overall!==null?`<span class="score">${Math.round(a.overall)}</span>`:''}${a.paidAt&&!a.refundedAt?`<a class="btn" href="/fullcycle.html?id=${encodeURIComponent(a.id)}">Full Cycle report</a>`:''}<a class="btn ghost" href="/result-final-design.html?id=${encodeURIComponent(a.id)}">Result</a></span></li>`).join('')}</ul>`:'<p class="mute" style="margin:0">None yet. <a href="/assessment-start.html">Take the free assessment</a>.</p>'}</div></div>
+    <div><h2>Interview practice</h2><div class="card">${interviews.length?`<p class="mute" style="margin:0 0 8px">${interviews.length} answer${interviews.length===1?'':'s'} with feedback${interviews.length>=3?` · average ${Math.round(interviews.reduce((a,i)=>a+(i.data.feedback?.overall||0),0)/interviews.length)}`:''}</p><ul class="list">${interviews.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<li style="display:block"><details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span class="score" style="font-size:18px;margin-left:6px">${f.overall??''}</span></summary><p class="mute">${day(i.createdAt)}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-del="${i.id}" style="padding:6px 12px">Delete</button></details></li>`}).join('')}</ul>`:'<p class="mute" style="margin:0">No answers yet. <a href="/interview.html">Practise an interview question</a>.</p>'}</div></div></div>
+    <h2>Had an interview?</h2><div class="card"><p style="margin:0">Tell us how it went and what you were asked. It takes two minutes and keeps the firm guides accurate for the next student.</p><div class="row"><button class="btn" id="outcome">How did it go?</button></div></div>`;
+  const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'request',email:document.getElementById('email').value,next:'/my.html'})});const o=await r.json().catch(()=>({}));document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(o.error||'Something went wrong.');};
+  const o=document.getElementById('out');if(o)o.onclick=async()=>{await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signout'})});location.href='/my.html';};
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('Delete this answer?'))return;await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-item',id:b.dataset.del})});load();});
+  document.getElementById('outcome').onclick=()=>window.DeskOutcome&&window.DeskOutcome.open({});
+}
+load();
+</script>
+</body>
+</html>

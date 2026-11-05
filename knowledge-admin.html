@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Knowledge base | The Desk</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#121a22;--ink2:#3b4652;--mute:#5f6b76;--blue:#1d4e89;--blue2:#123459;--soft:#dbe5f1;--warm:#fde9dd;--warmink:#9a3412;--rule:#e4ded2;--ok:#166534;--oksoft:#dcfce7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Arial,Helvetica,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:28px 16px 80px}h1,h2,h3{font-family:Georgia,serif;line-height:1.2;margin:0}h1{font-size:32px}h2{font-size:24px;margin-top:34px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:20px;margin-top:16px}
+label{display:block;font-weight:700;font-size:14px;margin-top:12px}input,select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #cfc7b8;border-radius:10px;background:#fff;color:var(--ink)}textarea{min-height:90px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){.grid,.grid2{grid-template-columns:1fr}}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:10px 18px;background:var(--blue);color:#fff;cursor:pointer}button:hover{background:var(--blue2)}button.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}.mute{color:var(--mute);font-size:14px}
+.drop{border:2px dashed #b9c6d8;border-radius:14px;padding:22px;text-align:center;background:#f8fafd;margin-top:12px;cursor:pointer}.drop.on{background:var(--soft)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--rule)}
+.tabs{display:flex;gap:6px;margin-top:22px;flex-wrap:wrap}.tabs button{background:#fff;color:var(--ink);border:1px solid var(--rule)}.tabs button.on{background:var(--ink);color:#fff}
+.item{border-top:1px solid var(--rule);padding:16px 0}.item:first-child{border-top:0}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--blue2);margin-right:6px}.tag.warn{background:var(--warm);color:var(--warmink)}.tag.ok{background:var(--oksoft);color:var(--ok)}
+.status{margin-top:10px;font-size:15px}.draft{white-space:pre-wrap;background:#faf8f3;border:1px solid var(--rule);border-radius:12px;padding:14px;margin-top:10px;font-size:15px}
+.stat{display:inline-block;margin-right:24px}.stat b{font-size:26px;display:block}
+</style>
+</head>
+<body>
+<main>
+  <a href="/">← The Desk</a>
+  <h1 style="margin-top:12px">Knowledge base</h1>
+  <p class="mute">Add what people are saying (screenshots, reels, captions, articles, your own notes). The model pulls out the points in our own words. You approve each one and say whether you agree. Approved points feed the paid report, the interview coach and post drafts.</p>
+  <form id="login" class="card" style="max-width:420px"><label>Staff key<input id="key" type="password" autocomplete="off" required></label><div class="row"><button>Open</button></div><p class="mute" id="lmsg"></p></form>
+  <div id="app" hidden>
+    <div class="card" id="counts"></div>
+
+    <h2>1. Add a source</h2>
+    <div class="card">
+      <div class="grid">
+        <label>Type<select id="sType"></select></label>
+        <label>Who / account<input id="sName" placeholder="e.g. @handle or channel"></label>
+        <label>Link<input id="sUrl" placeholder="https://…"></label>
+        <label>Date posted<input id="sDate" type="date"></label>
+      </div>
+      <div class="drop" id="drop" tabindex="0" role="button">Drop screenshots, a saved reel or video, or audio here, or click to choose<br><span class="mute">Images are read directly. Video and audio are transcribed (only the sound is sent; the video stays on your computer).</span></div>
+      <input type="file" id="file" multiple accept="image/*,video/*,audio/*" hidden>
+      <div class="thumbs" id="thumbs"></div>
+      <label>Text, caption or transcript <span class="mute">(paste here, or it fills in from the video)</span><textarea id="text" placeholder="Paste the caption, the words from a reel, an article, or your own notes."></textarea></label>
+      <div class="row"><button id="extract">Pull out the points</button><button class="ghost" id="clear" type="button">Clear</button></div>
+      <p class="status" id="xmsg" role="status"></p>
+      <p class="mute">We keep the link and who said it, for your reference only. The screenshots, transcript and original wording are not saved, and nothing here names the source to students.</p>
+    </div>
+
+    <h2>Or add your own point</h2>
+    <form class="card" id="note">
+      <div class="grid"><label>Type<select id="nKind"></select></label><label>Firm (optional)<input id="nFirm" placeholder="e.g. Lazard"></label><label>Division (optional)<input id="nDiv"></label><label>Stage<select id="nStage"></select></label></div>
+      <label>The point<input id="nStatement" maxlength="240" placeholder="e.g. At boutiques, expect to be asked why advisory rather than a bank with a balance sheet."></label>
+      <label>Why it matters / how to act on it (optional)<input id="nDetail" maxlength="400"></label>
+      <div class="grid2"><label>Your name<select id="nWho"></select></label><label>Extra note (optional)<input id="nNote" maxlength="400"></label></div>
+      <div class="row"><button>Add to the knowledge base</button></div><p class="status" id="nmsg" role="status"></p>
+    </form>
+
+    <div class="tabs" id="tabs"><button data-s="pending" class="on">2. To review</button><button data-s="approved">Approved library</button><button data-s="rejected">Rejected</button><button data-s="retired">Retired</button></div>
+    <div class="row"><select id="fKind" style="max-width:260px"><option value="">All types</option></select><input id="fFirm" placeholder="Filter by firm" style="max-width:220px"><button class="ghost" id="refresh" type="button">Refresh</button></div>
+    <div class="card" id="list"></div>
+
+    <h2>3. Draft posts from approved points</h2>
+    <div class="card">
+      <p class="mute" style="margin-top:0">Tick up to 12 points in the approved library, then draft. Drafts use our wording only and never mention where a point came from.</p>
+      <div class="grid2"><label>Format<select id="pFormat"><option value="">All three (carousel, reel, LinkedIn)</option><option>Instagram carousel</option><option>Reel script</option><option>LinkedIn post</option></select></label><label>Voice<select id="pWho"><option value="">The Desk’s practitioners</option></select></label></div>
+      <div class="row"><button id="posts">Draft posts</button><span class="mute" id="picked">0 ticked</span></div>
+      <div id="drafts"></div>
+    </div>
+  </div>
+</main>
+<script>
+let KEY='', META=null, STATUS='pending', FILES=[], PICKED=new Set();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function call(method,body,q=''){const r=await fetch('/api/knowledge'+q,{method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+KEY},body:body?JSON.stringify(body):undefined});const d=await r.json().catch(()=>({}));return r.ok?d:{error:d.error||'Something went wrong ('+r.status+').'};}
+$('login').onsubmit=async e=>{e.preventDefault();KEY=$('key').value;const d=await call('GET',null,'?view=staff&status=pending');if(d.error){$('lmsg').textContent=d.error;return}META=d;$('login').remove();$('app').hidden=false;setup();show(d.items);counts();};
+function opts(el,map,blank){el.innerHTML=(blank!==undefined?`<option value="">${blank}</option>`:'')+Object.entries(map).map(([k,v])=>`<option value="${esc(k)}">${esc(v)}</option>`).join('');}
+function setup(){
+  $('sType').innerHTML=META.sourceTypes.map(t=>`<option>${esc(t)}</option>`).join('');
+  opts($('nKind'),META.kinds);opts($('fKind'),META.kinds,'All types');
+  $('nStage').innerHTML=META.stages.map(s=>`<option value="${esc(s)}">${esc(s||'Any stage')}</option>`).join('');
+  $('nWho').innerHTML=META.practitioners.map(p=>`<option>${esc(p)}</option>`).join('');
+  $('pWho').innerHTML+=META.practitioners.map(p=>`<option>${esc(p)}</option>`).join('');
+  if(!META.transcription)$('xmsg').textContent='Transcription isn’t switched on (add OPENAI_API_KEY in Vercel). Screenshots and pasted text work now.';
+}
+async function counts(){const d=await call('GET',null,'?view=counts');if(d.error)return;const by=s=>d.rows.filter(r=>r.status===s).reduce((a,r)=>a+r.n,0);$('counts').innerHTML=`<span class="stat"><b>${by('pending')}</b>to review</span><span class="stat"><b>${by('approved')}</b>approved</span>${d.firms.length?`<span class="mute">Firms covered: ${d.firms.slice(0,12).map(f=>esc(f.firm)+' ('+f.n+')').join(', ')}</span>`:''}`;}
+
+// ---------- Files ----------
+const drop=$('drop');
+drop.onclick=()=>$('file').click();drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('file').click()};
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('on')};drop.ondragleave=()=>drop.classList.remove('on');
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove('on');addFiles([...e.dataTransfer.files])};
+$('file').onchange=e=>addFiles([...e.target.files]);
+$('clear').onclick=()=>{FILES=[];$('thumbs').innerHTML='';$('text').value='';$('xmsg').textContent='';};
+async function addFiles(list){
+  for(const f of list){
+    if(f.type.startsWith('image/')){const url=await shrink(f);FILES.push(url);const im=new Image();im.src=url;im.alt='Screenshot';$('thumbs').append(im);}
+    else if(f.type.startsWith('video/')||f.type.startsWith('audio/'))await transcribe(f);
+  }
+  if(FILES.length)$('xmsg').textContent=FILES.length+' screenshot'+(FILES.length===1?'':'s')+' ready'+(FILES.length>6?' (we read 6 at a time)':'')+'.';
+}
+// Screenshots → JPEG, longest side 1568px (what the model reads best), to keep uploads small.
+function shrink(file){return new Promise((ok,bad)=>{const img=new Image();img.onload=()=>{const s=Math.min(1,1568/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(img.src);ok(c.toDataURL('image/jpeg',0.82))};img.onerror=bad;img.src=URL.createObjectURL(file)});}
+// Video/audio → 16 kHz mono WAV in 60-second chunks → transcript. The video itself never leaves the computer.
+async function transcribe(file){
+  if(!META.transcription){$('xmsg').textContent='Transcription isn’t switched on yet. Paste the words into the text box instead.';return}
+  $('xmsg').textContent='Reading the audio from '+file.name+'…';
+  let buf;try{const ctx=new (window.AudioContext||window.webkitAudioContext)();buf=await ctx.decodeAudioData(await file.arrayBuffer());ctx.close&&ctx.close();}catch(e){$('xmsg').textContent='Couldn’t read the sound in that file. Try an MP4 or M4A, or paste the words.';return}
+  const rate=16000,off=new OfflineAudioContext(1,Math.ceil(buf.duration*rate),rate);const src=off.createBufferSource();src.buffer=buf;src.connect(off.destination);src.start();
+  const mono=(await off.startRendering()).getChannelData(0);
+  const per=rate*60,parts=[];
+  for(let i=0;i<mono.length;i+=per){
+    $('xmsg').textContent=`Transcribing ${file.name}: part ${parts.length+1} of ${Math.ceil(mono.length/per)}…`;
+    const d=await call('POST',{action:'transcribe',audio:wav(mono.subarray(i,i+per),rate)});
+    if(d.error){$('xmsg').textContent=d.error;return}parts.push(d.text);
+  }
+  $('text').value=($('text').value?$('text').value+'\n\n':'')+parts.join(' ').trim();
+  $('xmsg').textContent='Transcribed '+file.name+' ('+Math.round(buf.duration)+' seconds). Check the text, then pull out the points.';
+}
+function wav(samples,rate){const b=new ArrayBuffer(44+samples.length*2),v=new DataView(b);const w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));w(0,'RIFF');v.setUint32(4,36+samples.length*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,samples.length*2,true);for(let i=0;i<samples.length;i++){const s=Math.max(-1,Math.min(1,samples[i]));v.setInt16(44+i*2,s<0?s*0x8000:s*0x7fff,true)}let bin='';const u=new Uint8Array(b);for(let i=0;i<u.length;i+=32768)bin+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(bin);}
+
+$('extract').onclick=async()=>{
+  const text=$('text').value.trim();if(!FILES.length&&text.length<40){$('xmsg').textContent='Add screenshots, a video, or paste some text first.';return}
+  $('extract').disabled=true;const source={type:$('sType').value,name:$('sName').value,url:$('sUrl').value,date:$('sDate').value},batch=new Date().toISOString();
+  let added=0,dropped=0,merged=0;const groups=[];for(let i=0;i<FILES.length;i+=6)groups.push({images:FILES.slice(i,i+6),text:''});for(let i=0;i<text.length;i+=24000)groups.push({images:[],text:text.slice(i,i+24000)});
+  for(const [i,g] of groups.entries()){$('xmsg').textContent=`Reading${groups.length>1?' batch '+(i+1)+' of '+groups.length:''}…`;const d=await call('POST',{action:'extract',images:g.images,text:g.text,source,batch});if(d.error){$('xmsg').textContent=d.error;$('extract').disabled=false;return}added+=d.added;dropped+=d.dropped;merged+=d.merged||0;}
+  $('extract').disabled=false;$('xmsg').textContent=`${added} new point${added===1?'':'s'} for review${merged?`, ${merged} matched points we already had (counted as another mention)`:''}${dropped?`, ${dropped} dropped (too close to the original wording, or too short)`:''}.`;
+  FILES=[];$('thumbs').innerHTML='';$('text').value='';STATUS='pending';tab();load();counts();
+};
+$('note').onsubmit=async e=>{e.preventDefault();const d=await call('POST',{action:'note',kind:$('nKind').value,statement:$('nStatement').value,detail:$('nDetail').value,firm:$('nFirm').value,division:$('nDiv').value,stage:$('nStage').value,practitioner:$('nWho').value,stanceNote:$('nNote').value});$('nmsg').textContent=d.error||'Added and approved.';if(!d.error){$('nStatement').value='';$('nDetail').value='';counts();if(STATUS==='approved')load();}};
+
+// ---------- Review ----------
+$('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;STATUS=b.dataset.s;tab();load();};
+function tab(){[...$('tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.s===STATUS));}
+$('refresh').onclick=load;$('fKind').onchange=load;$('fFirm').onchange=load;
+async function load(){const d=await call('GET',null,`?view=staff&status=${STATUS}&kind=${encodeURIComponent($('fKind').value)}&firm=${encodeURIComponent($('fFirm').value)}`);if(d.error){$('list').textContent=d.error;return}show(d.items);}
+function show(items){
+  const L=$('list');
+  if(!items.length){L.innerHTML=`<p class="mute" style="margin:0">${STATUS==='pending'?'Nothing to review. Add a source above.':'Nothing here yet.'}</p>`;return}
+  L.innerHTML=items.map(i=>`<div class="item" data-id="${i.id}">
+    <div><span class="tag">${esc(META.kinds[i.kind])}</span>${i.firm?`<span class="tag">${esc(i.firm)}</span>`:''}${i.needsCheck?'<span class="tag warn">Check this fact</span>':''}${i.mentions>1?`<span class="tag ok">Mentioned by ${i.mentions} sources</span>`:''}${i.stance?`<span class="tag ${i.stance==='disagree'?'warn':'ok'}">${esc(META.stances[i.stance])}</span>`:''}
+      <span class="mute">${esc(i.sourceType)}${i.sourceName?' · '+esc(i.sourceName):''}${i.sourceUrl?` · <a href="${esc(i.sourceUrl)}" target="_blank" rel="noopener noreferrer">source</a>`:''}${i.practitioner?' · approved by '+esc(i.practitioner):''}</span></div>
+    ${STATUS==='pending'?editor(i):`<p style="margin:8px 0 0"><b>${esc(i.statement)}</b>${i.detail?' '+esc(i.detail):''}</p>${i.stanceNote?`<p class="mute" style="margin:4px 0 0">Practitioner view: ${esc(i.stanceNote)}</p>`:''}
+      <div class="row">${STATUS==='approved'?`<label style="margin:0;font-weight:400;display:flex;gap:6px;align-items:center;width:auto"><input type="checkbox" class="pick" ${PICKED.has(i.id)?'checked':''} style="width:auto"> Use in a post</label><button class="ghost" data-act="edit">Edit</button><button class="ghost" data-act="retired">Retire</button>`:`<button class="ghost" data-act="pending">Back to review</button>`}</div>`}
+  </div>`).join('');
+  L.querySelectorAll('.item').forEach(el=>{
+    const id=el.dataset.id,item=items.find(x=>x.id===id);
+    el.querySelectorAll('[data-act]').forEach(b=>b.onclick=async()=>{
+      if(b.dataset.act==='edit'){el.querySelector('.row').remove();el.insertAdjacentHTML('beforeend',editor(item));bindEditor(el,item);return}
+      const d=await call('POST',{action:'review',id,...item,status:b.dataset.act});if(d.error)alert(d.error);else{load();counts();}});
+    const pick=el.querySelector('.pick');if(pick)pick.onchange=()=>{pick.checked?PICKED.add(id):PICKED.delete(id);if(PICKED.size>12){PICKED.delete(id);pick.checked=false;}$('picked').textContent=PICKED.size+' ticked';};
+    bindEditor(el,item);
+  });
+}
+function editor(i){return `<div class="ed"><label>Point (our words)<input class="eS" maxlength="240" value="${esc(i.statement)}"></label><label>Detail<input class="eD" maxlength="400" value="${esc(i.detail)}"></label>
+  <div class="grid"><label>Type<select class="eK">${Object.entries(META.kinds).map(([k,v])=>`<option value="${k}" ${k===i.kind?'selected':''}>${esc(v)}</option>`).join('')}</select></label><label>Firm<input class="eF" value="${esc(i.firm)}"></label><label>Division<input class="eV" value="${esc(i.division)}"></label><label>Stage<select class="eT">${META.stages.map(s=>`<option value="${esc(s)}" ${s===i.stage?'selected':''}>${esc(s||'Any stage')}</option>`).join('')}</select></label></div>
+  <div class="grid"><label>Do you agree?<select class="eA"><option value="">Choose…</option>${Object.entries(META.stances).map(([k,v])=>`<option value="${k}" ${k===i.stance?'selected':''}>${esc(v)}</option>`).join('')}</select></label><label style="grid-column:span 2">Your view <span class="mute">(needed for a caveat or disagreement)</span><input class="eN" maxlength="400" value="${esc(i.stanceNote)}"></label><label>Approved by<select class="eW">${META.practitioners.map(p=>`<option ${p===i.practitioner?'selected':''}>${esc(p)}</option>`).join('')}</select></label></div>
+  <label style="font-weight:400;display:flex;gap:6px;align-items:center"><input type="checkbox" class="eC" ${i.needsCheck?'checked':''} style="width:auto"> Fact still needs checking</label>
+  <div class="row"><button data-save="approved">Approve</button><button class="ghost" data-save="rejected">Reject</button><span class="mute eM"></span></div></div>`;}
+function bindEditor(el,i){const ed=el.querySelector('.ed');if(!ed)return;ed.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{
+  const body={action:'review',id:i.id,status:b.dataset.save,statement:ed.querySelector('.eS').value,detail:ed.querySelector('.eD').value,kind:ed.querySelector('.eK').value,firm:ed.querySelector('.eF').value,division:ed.querySelector('.eV').value,stage:ed.querySelector('.eT').value,stance:ed.querySelector('.eA').value,stanceNote:ed.querySelector('.eN').value,practitioner:ed.querySelector('.eW').value,needsCheck:ed.querySelector('.eC').checked};
+  if(body.status==='approved'&&body.needsCheck&&!confirm('This is marked as a fact still to check. Approve anyway?'))return;
+  const d=await call('POST',body);if(d.error){ed.querySelector('.eM').textContent=d.error;return}el.remove();counts();if(!$('list').querySelector('.item'))load();});}
+
+// ---------- Posts ----------
+$('posts').onclick=async()=>{if(!PICKED.size){$('drafts').innerHTML='<p class="mute">Tick some points in the approved library first.</p>';return}$('posts').disabled=true;$('drafts').innerHTML='<p class="mute">Drafting…</p>';
+  const d=await call('POST',{action:'posts',ids:[...PICKED],format:$('pFormat').value,practitioner:$('pWho').value});$('posts').disabled=false;
+  $('drafts').innerHTML=d.error?`<p class="mute">${esc(d.error)}</p>`:d.drafts.map(x=>`<h3 style="margin-top:16px">${esc(x.format)}: ${esc(x.title)}</h3><div class="draft">${esc(x.body)}</div><div class="row"><button class="ghost copy">Copy</button></div>`).join('')+'<p class="mute">Drafts only. Read and edit before posting, and check any firm-specific point is still right.</p>';
+  $('drafts').querySelectorAll('.copy').forEach((b,i)=>b.onclick=()=>{navigator.clipboard.writeText(d.drafts[i].title+'\n\n'+d.drafts[i].body);b.textContent='Copied';});};
+</script>
+<script src="/knowledge-youtube.js"></script></body>
+</html>
+

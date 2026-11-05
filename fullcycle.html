@@ -791,7 +791,7 @@ function wire(R,S){
       if(l.indexOf("## ")===0)return'<p style="margin:8pt 0 2pt"><b>'+esc(l.slice(3))+'</b></p>';
       if(l.indexOf("• ")===0)return'<p style="margin:2pt 0 2pt 14pt;text-indent:-10pt">• '+esc(l.slice(2))+'</p>';
       return'<p style="margin:3pt 0">'+esc(l)+'</p>';}).join("");
-    var doc='<html><head><meta charset="utf-8"></head><body style="font-family:Georgia;font-size:11pt">'+body+'</body></html>';
+    var doc='<html><head><meta charset="utf-8"></head><body style="font-family:Georgia;font-size:11pt">'+body+'<script src="/desk-me.js" defer></script></body></html>';
     var name=((R.profile||{}).name||"cv").replace(/\s+/g,"-")+"-CV-repaired.doc";
     var b=new Blob(["﻿"+doc],{type:"application/msword"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   }
