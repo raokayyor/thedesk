@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';import {registerHooks} from 'node:module';
+let calls=0,owned=true,allowed=true;
+registerHooks({resolve(s,c,n){return s.endsWith('/lib/report-store.mjs')||s==='../lib/report-store.mjs'?{url:'voice-test:store',shortCircuit:true}:n(s,c)},load(u,c,n){return u==='voice-test:store'?{format:'module',shortCircuit:true,source:`export const sameOrigin=(req,res)=>req.headers.origin==='https://desk.test'||(res.status(403).json({error:'origin'}),false);export const owner=req=>req.headers.cookie?'owner':null;export const ownedRecord=async()=>globalThis.__voiceOwned?{}:null;export const sql=()=>({query:async q=>q.startsWith('CREATE')?[]:(globalThis.__voiceAllowed?[{calls:1}]:[])});`}:n(u,c)}});
+const {default:handler}=await import('../api/interview-voice.js');globalThis.__voiceOwned=owned;globalThis.__voiceAllowed=allowed;
+const res=()=>({headers:{},code:200,setHeader(k,v){this.headers[k]=v},status(c){this.code=c;return this},json(v){this.body=v;return this},send(v){this.body=v;return this},end(){return this}});
+const request={method:'POST',headers:{origin:'https://desk.test',cookie:'test'},body:{assessmentId:'a'.repeat(48),text:'Tell me about your experience.'}};
+globalThis.fetch=async(url,options)=>{calls++;assert(url.startsWith('https://api.elevenlabs.io/v1/text-to-speech/'));assert.equal(options.headers['xi-api-key'],'test-key');assert.equal(JSON.parse(options.body).model_id,'eleven_flash_v2_5');return{ok:true,arrayBuffer:async()=>new Uint8Array([1,2,3]).buffer}};
+delete process.env.ELEVENLABS_API_KEY;let r=res();await handler(request,r);assert.equal(r.code,503);assert.equal(calls,0);
+process.env.ELEVENLABS_API_KEY='test-key';r=res();await handler({method:'GET'},r);assert.deepEqual(r.body,{enabled:true});assert(!JSON.stringify(r.body).includes('test-key'));
+r=res();await handler({...request,headers:{origin:'https://other.test'}},r);assert.equal(r.code,403);assert.equal(calls,0);
+r=res();await handler({...request,headers:{origin:'https://desk.test'}},r);assert.equal(r.code,401);
+globalThis.__voiceOwned=false;r=res();await handler(request,r);assert.equal(r.code,404);assert.equal(calls,0);
+globalThis.__voiceOwned=true;globalThis.__voiceAllowed=false;r=res();await handler(request,r);assert.equal(r.code,429);assert.equal(calls,0);
+globalThis.__voiceAllowed=true;r=res();await handler(request,r);assert.equal(r.code,200);assert.equal(r.headers['Content-Type'],'audio/mpeg');assert.equal(calls,1);
+console.log('PASS voice configuration, secret isolation, origin/ownership checks, daily allowance and provider request. No paid calls.');

@@ -1,5 +1,6 @@
 (() => {
-  const voiceAvailable = typeof window.speechSynthesis?.speak === 'function' && typeof window.SpeechSynthesisUtterance === 'function';
+  const browserVoiceAvailable = typeof window.speechSynthesis?.speak === 'function' && typeof window.SpeechSynthesisUtterance === 'function';
+  const voiceAvailable = browserVoiceAvailable || !!window.DeskNaturalVoice;
   const voiceToggle = document.getElementById('voiceQuestions');
   const hearButton = document.getElementById('hearQuestion');
   const voiceStatus = document.getElementById('voiceStatus');
@@ -17,41 +18,44 @@
   }
   function cancelVoice() {
     speechToken++;
-    if (voiceAvailable) window.speechSynthesis.cancel();
+    if (browserVoiceAvailable) window.speechSynthesis.cancel();
+    window.DeskNaturalVoice?.cancel();
     reading = false; waiting = false;
   }
   async function readQuestion() {
-    if (isRecording()) return false;
+    if (isRecording() || reading) return false;
     cancelVoice();
+    const token=speechToken;reading=true;lock(true);
     const preview = document.getElementById('preview');
     if (preview.src && !preview.srcObject) { preview.pause(); preview.removeAttribute('src'); preview.srcObject = stream; preview.muted = true; preview.controls = false; if (stream) preview.play().catch(() => {}); }
+    await window.DeskNaturalVoice?.ready;
+    if(token!==speechToken)return false;
     if (!voiceAvailable) { voiceStatus.textContent = 'Spoken questions are unavailable in this browser. Read the question above and start your answer.'; return false; }
-    const token = speechToken, question = questions[current].q;
+    const question = questions[current].q;
     reading = true; lock(true);
     document.getElementById('camStatus').textContent = 'Interviewer speaking';
     voiceStatus.textContent = 'Listen to the question. Your answer is not recording yet.';
     return new Promise(resolve => {
-      const utterance = new SpeechSynthesisUtterance(question);
-      utterance.lang = 'en-GB'; utterance.rate = 0.95;
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => /^en-GB/i.test(v.lang) && /natural|online|neural/i.test(v.name)) || voices.find(v => /^en-GB/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang) && /natural|online/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang));
-      if (preferred) utterance.voice = preferred;
-      let settled = false;
-      const finish = success => {
-        if (settled) return; settled = true; clearTimeout(timeout);
-        if (token !== speechToken) { resolve(false); return; }
-        reading = false; lock(false);
-        document.getElementById('camStatus').textContent = stream ? (stream.getVideoTracks().length ? 'Camera ready' : 'Microphone ready') : 'Camera off';
-        if (success) { spokenQuestion = question; hearButton.textContent = 'Repeat question'; voiceStatus.textContent = 'Question finished. Start your answer when ready.'; updateRecordLabel(); }
-        else voiceStatus.textContent = 'Audio could not play. You can read the question above and answer with voice switched off.';
+      let settled=false;
+      const finish=success=>{
+        if(settled)return;settled=true;clearTimeout(timeout);
+        if(token!==speechToken){resolve(false);return}
+        reading=false;lock(false);
+        document.getElementById('camStatus').textContent=stream?(stream.getVideoTracks().length?'Camera ready':'Microphone ready'):'Camera off';
+        if(success){spokenQuestion=question;hearButton.textContent='Repeat question';voiceStatus.textContent='Question finished. Start your answer when ready.';updateRecordLabel()}
+        else voiceStatus.textContent='Voice could not play. Try again, or switch off “Read questions aloud” and answer the displayed question.';
         resolve(success);
       };
-      const timeout = setTimeout(() => { window.speechSynthesis.cancel(); finish(false); }, 45000);
-      utterance.onend = () => finish(true);
-      utterance.onerror = () => finish(false);
-      try { window.speechSynthesis.speak(utterance); } catch { finish(false); }
+      const timeout=setTimeout(()=>{window.DeskNaturalVoice?.cancel();if(browserVoiceAvailable)window.speechSynthesis.cancel();finish(false)},45000);
+      if(window.DeskNaturalVoice?.enabled&&assessment?.id){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,assessment.id).then(finish);return}
+      if(!browserVoiceAvailable){finish(false);return}
+      const utterance=new SpeechSynthesisUtterance(question);utterance.lang='en-GB';utterance.rate=0.97;
+      const voices=window.speechSynthesis.getVoices();const preferred=voices.find(v=>/^en-GB/i.test(v.lang)&&/natural|online|neural/i.test(v.name))||voices.find(v=>/^en/i.test(v.lang)&&/natural|online|neural/i.test(v.name))||voices.find(v=>/^en-GB/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang));if(preferred)utterance.voice=preferred;
+      utterance.onend=()=>finish(true);utterance.onerror=()=>finish(false);
+      try{window.speechSynthesis.speak(utterance)}catch{finish(false)}
     });
   }
+
   function renderGuide() {
     const course = [profile.course, profile.university].filter(Boolean).join(' at ');
     const role = profile.targetSector || 'your target role';

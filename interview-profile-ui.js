@@ -1,0 +1,12 @@
+(() => {
+ const box=document.querySelector('.cvbox'),card=box.closest('.card'),rows=card.querySelector('.profileRows'),button=document.getElementById('buildQuestions');
+ card.querySelector('.kicker').textContent='Your CV';
+ const status=document.createElement('p');status.className='cv-default-status';status.setAttribute('role','status');
+ const edit=document.createElement('details'),summary=document.createElement('summary');summary.textContent='View or change CV';edit.append(summary,rows,box,button);card.insertBefore(status,card.firstChild.nextSibling);status.after(edit);
+ function refresh(){const loaded=!!document.getElementById('cvText').value.trim();status.textContent=loaded?'Your CV is loaded and used for these questions.':'Add your CV to personalise the questions.';if(!loaded)edit.open=true}
+ const prior=derive;derive=function(){prior();refresh()};document.getElementById('cvText').addEventListener('input',refresh);refresh();window.interviewProfileReady?.then(()=>{if(document.getElementById('cvText').value.trim())edit.open=false;refresh()});
+ const context=document.querySelector('.session-context'),primary=document.createElement('div'),secondary=document.createElement('div');primary.className='session-primary';secondary.className='session-secondary';
+ for(const selector of ['.kicker','#sessionName','#sessionRole','#roleRequirementSummary'])primary.append(context.querySelector(selector));
+ for(const selector of ['#sessionEmployerRound','#sessionNewsBox','#changeSetup'])secondary.append(context.querySelector(selector));context.append(primary,secondary);
+ const style=document.createElement('style');style.textContent='.session-context{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.8fr);gap:20px;align-items:center}.session-context #sessionRole{font-size:25px}.session-secondary{min-width:0}.session-secondary #sessionEmployerRound{font-size:13px;color:#1d4e89;margin:0 0 10px}.session-secondary #sessionNewsBox{background:#f1f5fa;margin:0 0 12px;padding:12px}.session-secondary a{font-size:12px;color:#1d4e89;overflow-wrap:anywhere}.session-primary .session-name{margin-top:7px}.cv-default-status{font-size:13px;line-height:1.6;color:#1d4e89}.side details{margin-top:12px}.side details summary{font-size:12px;color:#1d4e89;cursor:pointer}.side details .profileRows{margin-top:14px}@media(max-width:650px){.session-context{grid-template-columns:1fr;gap:10px}.session-context #sessionRole{font-size:23px}}';document.head.append(style);
+})();
