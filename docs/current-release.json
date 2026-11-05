@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-05",
+  "productionUrl": "https://thedesk.vercel.app",
+  "libraryUrl": "https://thedesk.vercel.app/video-library.html",
+  "deploymentId": "dpl_AQNs1U47XFpDFy8ytwDSCzgHXUaj",
+  "sourceCommit": "d1d612e",
+  "sourceDirectory": "C:/Users/Home/Documents/Codex/2026-11-05/where-is-my-repositiory-stuff/work/hirevue-release",
+  "sourceNote": "Latest source is committed locally in this isolated worktree. Production was deployed through the authenticated Vercel CLI; GitHub main was not updated.",
+  "features": ["Practice & learn with per-question answer breakdown", "Mock interview with coaching hidden until review", "Practitioner-style HireVue Input with framework checks", "Private searchable transcript research used in feedback", "Four original ElevenLabs-narrated preparation videos"],
+  "verification": {"selectedCodeChecks":32,"browser":"Modes, feedback overlay, library filters, responsive layouts and employer/role deep links passed with mocked APIs.","live":"Model feedback returned framework checks with researchAvailable=true and no private source identifiers. All four video endpoints return video/mp4. Private import receipt returns 404."},
+  "limitations": ["Practice feedback is not a validated prediction of an employer hiring score.", "Real camera/microphone permission and recording require the user’s device test.", "Email sign-in delivery and optional call booking remain unconfigured."],
+  "researchVisibility": "Staff-only source archive and provenance. No source titles or links are returned in customer feedback. docs and tests are excluded from deployment."
+}
