@@ -1,0 +1,89 @@
+[
+  {
+    "id": "general",
+    "firm": "HireVue essentials",
+    "title": "Prepare a HireVue answer you can deliver",
+    "description": "Get your setup, evidence and delivery ready before the real interview.",
+    "practice": "/interview-start.html",
+    "video": "/videos/general.mp4",
+    "poster": "/videos/general-cover.png",
+    "duration": "1:22",
+    "topics": [
+      "HireVue coming up?",
+      "Test before you start.",
+      "Make your experience relevant."
+    ],
+    "notes": [
+      "Got a HireVue invitation and wondering where to start? Get three things ready: your setup, your evidence, and your delivery.",
+      "Start with the setup. Record a quick test on the device you will actually use. Can you hear yourself clearly? Is your face visible? Then read your invitation. Check the deadline, the answer limit, and whether retakes are allowed.",
+      "For tell me about yourself, choose the parts of your studies and experience that explain why this role makes sense for you. Give the interviewer a clear thread to follow.",
+      "For why this firm, go beyond saying it has a great reputation. Pick something specific about its work, clients, or training. Check the detail, and explain why it matters to you.",
+      "For a behavioural question, choose one real example. Keep the situation and your responsibility brief. Explain what you personally did, then finish with the actual outcome. If it went wrong, explain what you learned and changed.",
+      "Finally, practise out loud and record it. Did you answer the question? Is your contribution clear? Did you reach the result before the timer ended? You do not need to fill every second. You need enough detail for someone to understand your evidence.",
+      "At The Desk, that is what we want you to practise. Clear answers, grounded in your own experience, that you can explain when someone asks a follow-up."
+    ]
+  },
+  {
+    "id": "db",
+    "firm": "Deutsche Bank",
+    "title": "Deutsche Bank video interview",
+    "description": "Connect your motivation, division knowledge and personal evidence.",
+    "practice": "/interview-start.html?libraryFirm=db",
+    "video": "/videos/db.mp4",
+    "poster": "/videos/db-cover.png",
+    "duration": "0:56",
+    "topics": [
+      "Know your division.",
+      "Make it personal.",
+      "Explain your actions."
+    ],
+    "notes": [
+      "Preparing for a Deutsche Bank video interview? Start with the division you applied to. Explain what that business does and the client problems that interest you. A reason for corporate banking should sound different from a reason for investment banking.",
+      "Build your motivation from three parts: a genuine interest in the work, one specific detail about the business that you have checked, and an experience that helped you discover that interest. Reputation alone does not explain your choice.",
+      "For a behavioural example, explain your responsibility, what you personally did, and why you chose that approach. Finish with the actual outcome or learning. Do not invent a result because a sample answer sounds impressive.",
+      "Check the timings and attempts in your own invitation. Test your sound and connection, then rehearse a complete answer under that limit. Watch for a clear main point, personal evidence, and a result before time runs out."
+    ]
+  },
+  {
+    "id": "jpm",
+    "firm": "J.P. Morgan",
+    "title": "J.P. Morgan HireVue preparation",
+    "description": "Explain why the work interests you, then support it with evidence.",
+    "practice": "/interview-start.html?libraryFirm=jpm",
+    "video": "/videos/jpm.mp4",
+    "poster": "/videos/jpm-cover.png",
+    "duration": "0:55",
+    "topics": [
+      "Start with the work.",
+      "Research, then connect.",
+      "Explain the effect."
+    ],
+    "notes": [
+      "Preparing for a J.P. Morgan HireVue? First, be precise about the business area you applied to. Investment banking, markets and asset management involve different work. Explain what interests you about the actual role.",
+      "Choose a specific detail about the firm or programme and explain why it matters to you. Connect your research to something you have genuinely done, learned or explored. Avoid a speech about prestige that could describe any bank.",
+      "If you discuss a market story or transaction, explain what happened, why it matters to a client or business, and your own reasoned view. A headline summary alone does not show commercial understanding.",
+      "Practise a behavioural example with your own actions and a supported outcome. Then challenge yourself: why did you choose that approach, and what would you change? Use your actual invitation for timings and recording instructions."
+    ]
+  },
+  {
+    "id": "kpmg",
+    "firm": "KPMG",
+    "title": "KPMG video interview preparation",
+    "description": "Prepare for your service line with motivation, quality and collaboration examples.",
+    "practice": "/interview-start.html?libraryRole=audit",
+    "video": "/videos/kpmg.mp4",
+    "poster": "/videos/kpmg-cover.png",
+    "duration": "0:58",
+    "topics": [
+      "Know your service line.",
+      "Give a specific reason.",
+      "Show quality and judgement."
+    ],
+    "notes": [
+      "Preparing for a KPMG video interview? Begin with the service line in your application. Be ready to explain the work you want to do and why it suits your interests. Use the platform and format named in your invitation.",
+      "Explain why this service line and this programme interest you. Choose a specific detail you have checked and connect it to a real experience or learning goal. Broad claims about being a global firm are not enough on their own.",
+      "Prepare genuine examples of doing careful work, collaborating and responding when something changed. Explain your personal responsibility, your decisions and the actual result. For an audit application, be ready to explain why reliable information matters.",
+      "Record an answer and review the evidence it gives. Is your own contribution clear? Did you explain your judgement? If the outcome was disappointing, explain what you learned. Follow your invitation for timings, attempts and any support you need."
+    ]
+  }
+]

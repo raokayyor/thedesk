@@ -32,7 +32,7 @@
   ];
   const HOW = [
     ['What it is', 'A one-way recorded interview. A question appears on screen, you get a short time to think, then record your answer. There is no one on the other side while you record.'],
-    ['Format', 'Usually 3–5 questions. Thinking time is often around 30 seconds; answer time is anywhere from 30 seconds to 3 minutes. It varies by firm and sometimes by question, so read the first screen carefully.'],
+    ['Format', 'The employer sets the question count, preparation windows, answer limits and available attempts. Read your invitation and the instructions for each question; do not assume another candidate’s format applies.'],
     ['Retakes', 'Some firms allow a retake on some questions; many don’t. Assume you get one go unless the instructions say otherwise.'],
     ['Practice question', 'Most invitations start with an unscored practice question. Use it to check your camera, sound and timing.'],
     ['Who watches it', 'Both happen: some firms have software score the transcript against the qualities they’re looking for, and many have someone from HR or the team watch it. Prepare for a person watching, and make sure your words read well as a transcript too.'],
@@ -67,8 +67,8 @@
   ];
   const CHECKLIST = {
     'Two days before': ['Read the invitation: deadline, number of questions, timings, whether retakes are allowed.', 'Pick your four stories and map them to the question types above.', 'Prepare one recent, checked example of the firm’s work and one market story.', 'Do two full practice runs in HireVue format below and watch them back.'],
-    'The hour before': ['Quiet room, door closed, phone on silent and out of reach.', 'Webcam at eye level, light in front of you, plain background.', 'Laptop plugged in; close other apps and browser tabs.', 'Dress as you would for the firm in person. For banking, a suit.'],
-    'Ten minutes before': ['Run the camera and sound check below. If you use wireless earphones, check they’re connected.', 'Glance at your four stories, not a script.', 'Use the platform’s practice question to check timing.', 'Slow your breathing. Being invited means you’ve passed the first screen.']
+    'The hour before': ['Quiet room, door closed, phone on silent and out of reach.', 'Webcam at eye level, light in front of you, plain background.', 'Laptop plugged in; close other apps and browser tabs.', 'Dress as you would for the firm in person. Follow the employer’s guidance and choose clothing suited to the role.'],
+    'Ten minutes before': ['Run the camera and sound check below. If you use wireless earphones, check they’re connected.', 'Glance at your four stories, not a script.', 'Use the platform’s practice question to check timing.', 'Slow your breathing. An invitation alone does not establish how the employer screened applications.']
   };
   const STORY_SLOTS = [
     ['Leading or organising people', 'a society role, a team project, a part-time job'],
@@ -85,8 +85,8 @@
   const bank = globalThis.DeskInterviewBank;
   const firmKeys = bank ? Object.keys(bank.firms).filter(k => k !== 'general') : Object.keys(HV_FIRM_FORMATS);
   root.innerHTML = `
-    <div class="hv-head"><div><div class="hv-kicker">HireVue and video interviews</div><h2 id="hvTitle">The HireVue guide</h2>
-      <p>Everything you need for a one-way video interview, from people who have reviewed them, firm by firm. Updated ${UPDATED}.</p></div>
+    <div class="hv-head"><div><div class="hv-kicker">HireVue and video interviews</div><h2 id="hvTitle">How to tackle HireVue</h2>
+      <p>A practical preparation guide: understand the format, build answers from your own evidence and rehearse under a timer. Updated ${UPDATED}.</p><p><a href="/video-library.html">Watch The Desk’s firm preparation videos →</a></p></div>
       <div class="hv-jump"><button class="hv-btn" type="button" data-hv-go="hvPractise">Practise in HireVue format</button></div></div>
     <div class="hv-proof" data-desk-proof></div>
     <nav class="hv-tabs" aria-label="HireVue guide sections">${[['hvQuick', '2-minute version'], ['hvHow', 'How it works'], ['hvFirms', 'Your firm'], ['hvTypes', 'Question types'], ['hvStories', 'Your stories'], ['hvDay', 'On the day'], ['hvMyths', 'Myths'], ['hvPractise', 'Practise']].map(([id, l]) => `<button type="button" data-hv-go="${id}">${l}</button>`).join('')}</nav>
@@ -103,13 +103,13 @@
     <details class="hv-sec" id="hvTypes"><summary>The six question types</summary>
       <div class="hv-types">${TYPES.map(t => `<article class="hv-card"><h3>${esc(t.name)}</h3><p class="hv-shape"><b>Shape:</b> ${esc(t.shape)} <span class="hv-mute">· aim for ${esc(t.time)}</span></p>
         <p class="hv-mute">For example: ${t.qs.map(q => '“' + esc(q) + '”').join(' or ')}</p>
-        ${t.strong ? `<details class="hv-ex"><summary>See a weak, an average and a strong answer</summary>
+        ${t.strong ? `<details class="hv-ex"><summary>See illustrative weak, average and stronger answers (fictional examples)</summary>
           <div class="hv-ans weak"><span>Weak</span>${esc(t.weak)}</div><div class="hv-ans ok"><span>Average</span>${esc(t.ok)}</div><div class="hv-ans strong"><span>Strong</span>${esc(t.strong)}</div>
-          <div class="hv-notes"><b>What a reviewer notices</b><ul>${t.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div></details>` : ''}
+          <div class="hv-notes"><b>What makes the example stronger</b><ul>${t.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div></details>` : ''}
       </article>`).join('')}</div></details>
 
     <details class="hv-sec" id="hvStories"><summary>Your four stories</summary>
-      <p class="hv-mute">Four real examples cover almost every competency question. Write a few bullet points for each: the situation, what you did, the result. This stays in your browser.</p>
+      <p class="hv-mute">Build a small bank of genuine examples, then choose one that fits the actual question. Write a few bullet points for each: the situation, what you did, the result. This stays in your browser.</p>
       <div class="hv-stories">${STORY_SLOTS.map(([t, e], i) => `<label class="hv-story"><b>${i + 1}. ${esc(t)}</b><span class="hv-mute">e.g. ${esc(e)}</span><textarea data-story="${i}" rows="4" placeholder="Situation… What I did… Result…"></textarea></label>`).join('')}</div>
       <p class="hv-mute" id="hvStoryCv"></p></details>
 
@@ -117,7 +117,7 @@
       <div class="hv-checks">${Object.entries(CHECKLIST).map(([when, items], g) => `<div class="hv-card"><h3>${esc(when)}</h3>${items.map((x, i) => `<label class="hv-check"><input type="checkbox" data-check="${g}-${i}"> <span>${esc(x)}</span></label>`).join('')}</div>`).join('')}</div>
       <div class="hv-row"><button class="hv-btn ghost" type="button" id="hvCamCheck">Run a camera and sound check</button><button class="hv-btn ghost" type="button" id="hvPrint">Print the checklist</button></div></details>
 
-    <details class="hv-sec" id="hvMyths"><summary>Myths our practitioners disagree with</summary>
+    <details class="hv-sec" id="hvMyths"><summary>Common misconceptions</summary>
       ${MYTHS.map(([m, v]) => `<div class="hv-myth"><b>You’ll hear:</b> ${esc(m)}<br><b>Our view:</b> ${esc(v)}</div>`).join('')}<div id="hvKbMyths"></div></details>
 
     <details class="hv-sec" id="hvPractise" open><summary>Practise in HireVue format</summary>
@@ -125,7 +125,7 @@
       <div class="hv-settings">
         <label class="hv-label">Thinking time <select id="hvThink"><option value="30" selected>30 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option></select></label>
         <label class="hv-label">Answer time <select id="hvAnswer"><option value="60">1 minute</option><option value="120" selected>2 minutes</option><option value="180">3 minutes</option></select></label>
-        <label class="hv-label">Retakes <select id="hvRetakes"><option value="0" selected>None (most realistic)</option><option value="1">One</option><option value="2">Two</option></select></label>
+        <label class="hv-label">Retakes <select id="hvRetakes"><option value="0" selected>None (single-attempt practice)</option><option value="1">One</option><option value="2">Two</option></select></label>
       </div>
       <div class="hv-row"><button class="hv-btn" type="button" id="hvStart">Start this question in HireVue format</button><span class="hv-mute" id="hvStatus" role="status"></span></div>
       <div class="hv-stage" id="hvStage" hidden><div class="hv-phase" id="hvPhase">Thinking time</div><div class="hv-clock" id="hvClock">0:30</div><div class="hv-q" id="hvQ"></div>
