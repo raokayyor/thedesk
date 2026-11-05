@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import '../interview-star-core.js';import '../interview-review-core.js';
+const star=globalThis.DeskInterviewSTAR,q={id:'cv-evidence',kind:'cv'};
+const full='During my internship, our team faced a deadline. My responsibility was to check the invoice data. I compared the invoices with delivery notes and explained the discrepancy to my supervisor. As a result, the team corrected the report before submission.';
+const result=star.analyse(full,q);assert.equal(result.length,4);assert(result.every(p=>p.evidence));assert(result.every(p=>full.includes(p.evidence)));
+const weak=star.analyse('We worked on a project. It was valuable experience.',q);assert.equal(weak.find(x=>x.key==='action').evidence,'');assert.equal(weak.find(x=>x.key==='result').evidence,'');
+assert.equal(star.analyse("I did not lead the project and never delivered the result.",q).find(x=>x.key==='action').evidence,'');
+for(const kind of ['technical','case','news','motivation','maths','logic','estimation'])assert.equal(star.analyse(full,{kind}),null);
+assert.equal(star.analyse(full,{id:'intro',kind:'cv'}),null);
+const reviewed=DeskInterviewReview.reviewTranscript(full,q);assert.equal(reviewed.star.length,4);assert(reviewed.star.every(x=>x.starter.includes('[')));assert(!reviewed.starters.some(x=>/\d+%/.test(x)));
+console.log('PASS STAR evidence, missing components, personal action, negation, question suitability and fact-preserving templates');
