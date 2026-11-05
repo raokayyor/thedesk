@@ -5,7 +5,9 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   if (typeof assess !== 'function') return;
   const fallback = assess, originalRender = typeof render === 'function' ? render : null;
-  let FU = null, t0 = 0, spoken = 0, busy = false, ME = null;
+  let FU = null, t0 = 0, spoken = 0, busy = false, ME = null, requestVersion=0,activeRequest=null;
+  function cancelFeedback(){requestVersion++;activeRequest?.abort();activeRequest=null;busy=false;const b=$('#assessBtn');if(b){b.disabled=false;b.textContent='Assess this answer'}}
+  document.addEventListener('desk:questionchange',cancelFeedback);
   fetch('/api/value-account?view=me', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).then(d => { ME = d; }).catch(() => { });
 
   // How long they spoke, for "you got to your point after X seconds".
@@ -49,20 +51,21 @@
     if ($('#voiceQuestions')?.checked) document.getElementById('hearQuestion')?.click();
     ($('#preview') || $('#question')).scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-  if (originalRender) render = function () { if (FU?.questionRef) FU.questionRef.q = FU.originalQ; FU = null; const el = $('#fbExtra'); if (el) el.innerHTML = ''; label('mSpecificity', 'Specificity'); label('mConfidence', 'Confidence'); return originalRender.apply(this, arguments); };
+  if (originalRender) render = function () { cancelFeedback(); if (FU?.questionRef) FU.questionRef.q = FU.originalQ; FU = null; const el = $('#fbExtra'); if (el) el.innerHTML = ''; label('mSpecificity', 'Specificity'); label('mConfidence', 'Confidence'); return originalRender.apply(this, arguments); };
 
   assess = async function () {
     const q = questions[current];
     if (!q || q.challenge || busy) return fallback.apply(this, arguments);
     const transcript = $('#transcript').value.trim();
     if (transcript.split(/\s+/).length < 20) return fallback.apply(this, arguments);
-    busy = true; const btn = $('#assessBtn'), was = btn ? btn.textContent : ''; if (btn) { btn.disabled = true; btn.textContent = 'Reading your answer…'; }
+    const version=++requestVersion,questionText=q.q;const controller=new AbortController();activeRequest=controller;busy = true; const btn = $('#assessBtn'), was = btn ? btn.textContent : ''; if (btn) { btn.disabled = true; btn.textContent = 'Reading your answer…'; }
     try {
-      const r = await fetch('/api/interview-feedback', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      const r = await fetch('/api/interview-feedback', { method: 'POST', signal:controller.signal, credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         question: FU ? FU.followQ : q.q, kind: FU ? 'follow-up' : (q.kind || q.type || ''), transcript, seconds: spoken,
-        firm: (typeof profile === 'object' && profile.targetFirm) || '', role: (typeof profile === 'object' && profile.targetSector) || '', cv: ($('#cvText') || {}).value || '',
+        firm: (typeof profile === 'object' && profile.targetFirm) || '', role: (typeof profile === 'object' && profile.targetSector) || '', cv: ($('#cvText') || {}).value || '', programme:globalThis.DeskInterviewSession?.readSelection()?.programme,stage:globalThis.DeskInterviewSession?.readSelection()?.round,format:globalThis.DeskInterviewSession?.readSelection()?.format,roleDescription:globalThis.DeskInterviewSession?.readSelection()?.roleDescription,
         followUpOf: FU ? { question: FU.question, answer: FU.answer } : null }) });
       const d = await r.json().catch(() => ({}));
+      if(version!==requestVersion||questions[current]!==q||q.q!==questionText)return;
       if (!r.ok || !d.feedback) {
         fallback.apply(this, arguments);
         const msg = d.error || 'Detailed feedback isn’t available right now, so this is the quick automatic check.';
@@ -72,8 +75,8 @@
       show(d.feedback, d.paid);
       if (!d.paid && typeof d.left === 'number') extra().insertAdjacentHTML('beforeend', `<p class="fb-why">${d.left} free detailed feedback${d.left === 1 ? '' : 's'} left today. Full Cycle includes 60 detailed feedbacks a day.</p>`);
       if (FU) FU = { ...FU, done: true };
-    } catch (e) { fallback.apply(this, arguments); }
-    finally { busy = false; if (btn) { btn.disabled = false; btn.textContent = was; } }
+    } catch (e) { if(version===requestVersion)fallback.apply(this, arguments); }
+    finally { if(version!==requestVersion)return;activeRequest=null;busy = false; if (btn) { btn.disabled = false; btn.textContent = was; } }
   };
   const ab = $('#assessBtn'); if (ab) ab.onclick = () => assess();
   const css = document.createElement('style');

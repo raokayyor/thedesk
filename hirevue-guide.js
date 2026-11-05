@@ -205,6 +205,7 @@
     $('#hvStatus').innerHTML = `Done. Watch it back with “Play recording”, then check your transcript and get feedback. ${left > 0 ? `<button class="hv-btn ghost" type="button" id="hvRetake">Retake (${left} left)</button>` : 'No retakes left, as in the real thing.'}`;
     const r = document.getElementById('hvRetake'); if (r) r.onclick = () => { S.retakesLeft--; hvStart(true); };
   }
+  document.addEventListener('desk:questionchange',()=>{clearInterval(S.timer);S.phase='';$('#hvStart').disabled=false;$('#hvStage').hidden=true;setStatus('');});
   $('#hvStart').onclick = () => hvStart(false);
   fetch('/api/interview-feedback', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).then(d => { if (d && !d.paid) $('#hvFree').textContent = `Your first ${d.limit} answers each day get detailed feedback free (${d.left} left today).`; }).catch(() => { });
   $('#hvSkip').onclick = () => beginAnswer(+$('#hvAnswer').value);
