@@ -101,7 +101,7 @@
     if (voiceToggle.checked && voiceAvailable && spokenQuestion !== questions[current].q) {
       const success = await readQuestion();
       waiting = false;
-      if (!success) return;
+      if (!success) { voiceToggle.checked=false; updateRecordLabel(); voiceStatus.textContent='Question audio unavailable. Answer the displayed question; recording will start now.'; }
     }
     waiting = false; start();
   };

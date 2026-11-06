@@ -15,9 +15,10 @@
    audioButton.textContent=hasVideo?'Switch to microphone only':'Microphone enabled';
    cameraButton.textContent=hasVideo?'Camera + mic enabled':'Enable camera + mic';
    notice(hasVideo?'Camera and microphone connected.':'Your answer will be recorded as audio. A camera is optional.');
-  }catch(error){notice(error.name==='NotAllowedError'?'Microphone permission was not granted. Allow access in your browser, or type your answer below.':'No microphone could be connected. You can still type your answer below.')}
+  }catch(error){const status=document.querySelector('.microphone-status');if(status)status.textContent=error.name==='NotAllowedError'?'Microphone access was blocked. Allow microphone access in your browser, then click Start answer again.':'No microphone is available. Check your input device, or type an answer in the transcript box.';notice(error.name==='NotAllowedError'?'Microphone permission was not granted. Allow access in your browser, or type your answer below.':'No microphone could be connected. You can still type your answer below.')}
   finally{audioButton.disabled=false;cameraButton.disabled=false}
  }
+ window.DeskInterviewMedia={connect};
  cameraButton.onclick=()=>connect(true);audioButton.onclick=()=>connect(false);
  let generation=0;
  const baseDerive=derive;
