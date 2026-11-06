@@ -1,4 +1,5 @@
 import {owner,initStore,sql,apiFailure} from '../lib/report-store.mjs';
+import {latestCv} from '../lib/saved-cv.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');res.setHeader('Vary','Cookie');
  if(req.method!=='GET')return res.status(405).end();
@@ -12,6 +13,6 @@ export default async function handler(req,res){
   const row=rows[0];if(!row)return res.status(404).json({success:false,error:'No saved assessment is available in this browser.'});
   const competencies=(Array.isArray(row.result?.competencies)?row.result.competencies:[]).map(c=>({name:c.name,score:c.score}));
   const missed=(Array.isArray(row.input?.quiz?.missed)?row.input.quiz.missed:[]).map(q=>({topic:q.topic,section:q.section}));
-  return res.json({success:true,id:row.id,profile:row.input?.profile||{},cv:{text:typeof row.input?.cvText==='string'?row.input.cvText:''},result:{competencies},quiz:{missed}});
+  return res.json({success:true,id:row.id,profile:row.input?.profile||{},cv:await latestCv(ownerHash),result:{competencies},quiz:{missed}});
  }catch(e){return apiFailure(res,e);}
 }

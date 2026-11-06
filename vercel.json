@@ -14,6 +14,9 @@
     },
     "api/interview-feedback.js": {
       "maxDuration": 60
+    },
+    "api/interview-transcribe.js": {
+      "maxDuration": 60
     }
   }
 }

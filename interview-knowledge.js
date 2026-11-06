@@ -42,7 +42,7 @@
     });
   };
   render = function () { originalRender.apply(this, arguments); tipsBox(); };
-  const btn = $('buildQuestions'); if (btn) btn.onclick = derive;
+  // CV save and question rebuilding are handled by interview-profile-ui.js.
   ['firmSelect', 'roleSelect'].forEach(id => { const el = $(id); if (el) el.addEventListener('change', () => { key = ''; fetchKnowledge().then(tipsBox); }); });
   fetchKnowledge().then(tipsBox);
 })();

@@ -5,7 +5,7 @@
  document.head.append(style);
  const box=document.createElement('main');box.className='interview-build';
  box.innerHTML=`<a href="/" style="font:600 30px Georgia;color:#142333;text-decoration:none">The Desk</a><p style="color:#1d4e89;margin-top:35px">YOUR INTERVIEW · BUILT AROUND YOU</p><h1 id="buildTitle">Creating your interview.</h1><p id="buildFocus"></p><section class="build-card" aria-label="Interview preparation progress" aria-live="polite"><div class="build-step" id="buildCv"><i aria-hidden="true"></i><div><strong>Loading your experience</strong><small>Checking your saved CV and assessment.</small></div></div><div class="build-step" id="buildFirm"><i aria-hidden="true"></i><div><strong>Applying the employer and role framework</strong><small>Setting the scenarios, technical focus and interview round.</small></div></div><div class="build-step" id="buildDesk"><i aria-hidden="true"></i><div><strong>Adding The Desk practitioners’ guidance</strong><small>Applying prompts for ownership, evidence, judgement and clear explanations.</small></div></div><div class="build-step" id="buildQuestionStage"><i aria-hidden="true"></i><div><strong>Preparing your questions</strong><small>Combining your chosen focus, experience and optional news topic.</small></div></div></section><section class="build-people"><div class="build-faces" aria-hidden="true"><img src="/assets/illustrative/peter-placeholder.jpg" alt=""><img src="/assets/illustrative/neil-placeholder.jpg" alt=""><img src="/assets/illustrative/jim-placeholder.jpg" alt=""><img src="/assets/illustrative/chris-placeholder.jpg" alt=""></div><strong>Your experience. Firm-focused practice. A framework behind it.</strong><p>The Desk’s structured preparation framework connects your CV to role scenarios and shows what a strong answer needs to demonstrate: your contribution, your judgement and evidence you can explain. Practise the answer, prepare for the follow-up and take that preparation into your next round.</p></section><button class="build-enter" id="enterInterview" disabled>Preparing your interview…</button><a class="build-back" id="buildBack">Change my interview setup</a>`;
- document.body.append(box);
+ document.body.append(box);window.dispatchEvent(new Event('desk:buildready'));
  const selected=DeskInterviewSession.readSelection();
  document.getElementById('buildFocus').textContent=selected?[DeskInterviewBank.firms[selected.firm].label,selected.roleTitle||DeskInterviewBank.roles[selected.role].label,DeskInterviewSession.rounds[selected.round]].join(' · '):'Preparing your selected interview.';
  document.getElementById('buildBack').href=document.getElementById('changeSetup').href;
@@ -19,10 +19,10 @@
   await pause(1800);
   done('buildDesk','Question-by-question answer structure, evidence prompts and follow-up guidance included.');
   await pause(1600);
-  done('buildQuestionStage',questions.length+' questions ready'+(questions.some(q=>q.kind==='news')?', including your selected employer news story.':'.'));
+  done('buildQuestionStage',questions.length+' questions ready'+(questions.some(q=>q.kind==='news')?', including your selected commercial-awareness story.':'.'));
   document.getElementById('buildTitle').textContent='Your interview is ready.';
   const button=document.getElementById('enterInterview');button.disabled=false;button.textContent='Enter my interview →';
-  button.onclick=()=>{box.remove();page.hidden=false;const url=new URL(location.href);url.searchParams.delete('build');history.replaceState(null,'',url);window.scrollTo(0,0);document.getElementById('sessionRole').setAttribute('tabindex','-1');document.getElementById('sessionRole').focus()};
+  button.onclick=()=>{box.remove();page.hidden=false;document.documentElement.classList.remove('interview-pending');const url=new URL(location.href);url.searchParams.delete('build');history.replaceState(null,'',url);window.scrollTo(0,0);document.getElementById('sessionRole').setAttribute('tabindex','-1');document.getElementById('sessionRole').focus()};
  }
  finish().catch(error=>{console.error('Interview preparation failed',error);document.getElementById('buildTitle').textContent='We couldn’t prepare this interview.';document.getElementById('buildFocus').textContent='Return to setup and try again. Your camera and microphone have not been enabled.'});
 })();

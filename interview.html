@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script>if(new URLSearchParams(location.search).get('ready')!=='1'){const from=new URLSearchParams(location.search),next=new URLSearchParams();for(const key of ['id','assessmentId','sample'])if(from.get(key))next.set(key,from.get(key));location.replace('/interview-start.html'+(next.size?'?'+next:''));}</script>
+<head><style>html.interview-pending .page{display:none!important}</style><script>if(new URLSearchParams(location.search).get('ready')!=='1'||new URLSearchParams(location.search).get('build')==='1')document.documentElement.classList.add('interview-pending');</script><script>if(new URLSearchParams(location.search).get('ready')!=='1'){const from=new URLSearchParams(location.search),next=new URLSearchParams();for(const key of ['id','assessmentId','sample'])if(from.get(key))next.set(key,from.get(key));location.replace('/interview-start.html'+(next.size?'?'+next:''));}</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Desk — Interview Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,7 +80,7 @@ async function loadAssessment(){
   $('#candidateName').textContent=(sample?'Sample: ':'')+name;
   $('#candidateSummary').textContent=[profile.targetSector,profile.targetFirm,profile.programme].filter(Boolean).join(' · ')||'Your saved assessment is ready for interview practice.';
   $('#route').textContent=profile.targetSector||'Not specified';
-  $('#education').textContent=[profile.course,profile.university].filter(Boolean).join(' · ')||'Not specified';
+  $('#education').textContent=[String(profile.course||'').replace(/^\p{L}/u,c=>c.toUpperCase()),profile.university].filter(Boolean).join(' · ')||'Not specified';
   $('#stage').textContent=profile.programme||'Not specified';
   const cv=saved.cv?.text||saved.cv?.sourceText||'';
   $('#cvText').value=typeof cv==='string'?cv:'';
@@ -93,4 +93,4 @@ async function loadAssessment(){
  }finally{clearTimeout(timeout);}
 }
 $('#cameraBtn').onclick=enableCamera;$('#recordBtn').onclick=start;$('#stopBtn').onclick=stop;$('#playBtn').onclick=play;$('#assessBtn').onclick=assess;$('#buildQuestions').onclick=derive;$('#nextBtn').onclick=()=>{if(current<questions.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'})}else notice('Interview complete. Click “Use this CV” to restart.')};window.interviewProfileReady=loadAssessment();render();
-</script><script src="/interview-natural-voice.js"></script><script src="/interview-support.js"></script><script src="/interview-bank.js"></script><script src="/interview-firms.js"></script><script src="/interview-session-core.js"></script><script src="/interview-session.js"></script><script src="/interview-media.js"></script><script src="/interview-building.js"></script><script src="/interview-star-core.js"></script><script src="/interview-review-core.js"></script><script src="/interview-review.js"></script><script src="/interview-star.js"></script><script src="/interview-profile-ui.js"></script><script src="/interview-knowledge.js"></script><script src="/desk-me.js"></script><script src="/hirevue-guide.js"></script><script src="/interview-feedback.js"></script><script type="module" src="/interview-practice-modes.js"></script><script src="/interview-navigation.js"></script></body></html>
+</script><script src="/interview-natural-voice.js"></script><script src="/interview-support.js"></script><script src="/interview-bank.js"></script><script src="/interview-firms.js"></script><script src="/interview-session-core.js"></script><script src="/interview-session.js"></script><script src="/interview-media.js"></script><script src="/interview-building.js"></script><script src="/interview-star-core.js"></script><script src="/interview-review-core.js"></script><script src="/interview-review.js"></script><script src="/interview-star.js"></script><script src="/interview-profile-ui.js"></script><script src="/interview-knowledge.js"></script><script src="/desk-me.js"></script><script src="/hirevue-guide.js"></script><script src="/interview-feedback.js"></script><script type="module" src="/interview-practice-modes.js"></script><script src="/interview-navigation.js"></script><script type="module" src="/interview-training-layout.js"></script><script type="module" src="/interview-practitioner-panel.js"></script><script type="module" src="/interview-audio-capture.js"></script></body></html>

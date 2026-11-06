@@ -1,7 +1,15 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import '../interview-bank.js';import '../interview-session-core.js';
 import {rankNews,trustedArticle} from '../lib/news-library.mjs';
+import {TOPICAL_READINGS} from '../lib/topical-readings.mjs';
 const bank=globalThis.DeskInterviewBank,session=globalThis.DeskInterviewSession;
+test('wider AI, energy and geopolitics stories survive a busy firm feed',()=>{
+ const firmItems=Array.from({length:20},(_,n)=>({title:'Deutsche Bank announces acquisition financing transaction '+n,url:'https://www.db.com/news/deal-'+n,publishedAt:'2026-11-06'}));
+ const items=rankNews([...firmItems,...TOPICAL_READINGS],{firm:'db',role:'ibd',now:Date.parse('2026-11-06T10:00:00Z')});
+ for(const topic of ['ai','energy','geopolitics'])assert(items.some(i=>i.topic===topic),topic);
+ assert(items.some(i=>i.scope==='firm'));assert(items.some(i=>i.scope==='wider'));
+ for(const item of items){assert(session.normalizeSetup({firm:'db',role:'ibd',news:item}).news);assert.equal(item.discussionQuestions.length,3)}
+});
 test('programme, stage and format are independent and numerical counts match the session',()=>{
  const setup=session.normalizeSetup({firm:'db',role:'ibd',programme:'spring',round:'first',format:'video',roleDescription:'Excel and valuation',includeLogic:true,numericalCount:6,reasoningCount:2});
  assert.equal(setup.programme,'spring');assert.equal(setup.round,'first');assert.equal(setup.format,'video');

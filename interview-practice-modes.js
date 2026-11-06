@@ -2,7 +2,8 @@ import {chooseFramework} from '/lib/interview-frameworks.mjs';
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const bar=document.createElement('section');bar.className='desk-mode-switch';bar.setAttribute('aria-label','Interview mode');
 bar.innerHTML='<div><strong>Choose how you want to practise</strong> <a href="/video-library.html" style="font-size:12px;margin-left:12px">Watch the preparation videos →</a><p id="deskModeDescription"></p></div><div role="group" aria-label="Practice or mock interview"><button type="button" data-desk-mode="learn" aria-pressed="true">Practice &amp; learn</button><button type="button" data-desk-mode="test" aria-pressed="false">Mock interview</button></div>';
-$('.session-context').after(bar);
+function placeMode(){const build=document.querySelector('.interview-build');if(build){build.querySelector('#enterInterview').before(bar);bar.style.margin='24px 0'}else $('.session-context').after(bar)}
+placeMode();window.addEventListener('desk:buildready',placeMode);document.getElementById('enterInterview')?.addEventListener('click',()=>{document.querySelector('.session-context').after(bar);bar.style.margin=''});
 const panel=document.createElement('section');panel.className='desk-answer-breakdown';panel.setAttribute('aria-label','How to tackle this question');$('.qbox').after(panel);
 const examples={
  introduction:['Start with your current studies or situation.','Choose a relevant project, job or activity.','Explain your contribution and why this work is your next step.'],
