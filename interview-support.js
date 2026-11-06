@@ -6,15 +6,15 @@
   const voiceStatus = document.getElementById('voiceStatus');
   let speechToken = 0, spokenQuestion = '', reading = false, waiting = false;
   function isRecording() { return recorder && recorder.state === 'recording'; }
-  function updateRecordLabel() { document.getElementById('recordBtn').textContent = voiceAvailable && voiceToggle.checked && spokenQuestion !== questions[current].q ? 'Ask question & start answer' : 'Start answer'; }
+  function updateRecordLabel() { document.getElementById('recordBtn').textContent = isRecording() ? 'Recording your answer…' : 'Start recording'; }
   function lock(active) {
     for (const id of ['firmSelect','roleSelect','practiceFocus','logicToggle','newSessionBtn','cameraBtn','audioOnlyBtn']) { const control = document.getElementById(id); if (control) control.disabled = active; }
     document.getElementById('buildQuestions').disabled = active;
     document.getElementById('nextBtn').disabled = active;
     hearButton.disabled = active || !voiceAvailable;
     document.getElementById('playBtn').disabled = active || !recordingUrl;
-    document.getElementById('recordBtn').disabled = active || !stream;
-    document.getElementById('stopBtn').disabled = !active;
+    document.getElementById('recordBtn').disabled = !!isRecording();
+    document.getElementById('stopBtn').disabled = !isRecording() && !reading;
   }
   function cancelVoice() {
     speechToken++;
@@ -42,7 +42,7 @@
         if(token!==speechToken){resolve(false);return}
         reading=false;lock(false);
         document.getElementById('camStatus').textContent=stream?(stream.getVideoTracks().length?'Camera ready':'Microphone ready'):'Camera off';
-        if(success){spokenQuestion=question;hearButton.textContent='Repeat question';voiceStatus.textContent='Question finished. Start your answer when ready.';updateRecordLabel()}
+        if(success){spokenQuestion=question;hearButton.textContent='Repeat question';voiceStatus.textContent='Question finished. Click Start recording when you are ready; nothing is recording yet.';updateRecordLabel()}
         else voiceStatus.textContent='Voice could not play. Try again, or switch off “Read questions aloud” and answer the displayed question.';
         resolve(success);
       };
@@ -80,7 +80,7 @@
     if (recordingUrl) { URL.revokeObjectURL(recordingUrl); recordingUrl = ''; }
     spokenQuestion = ''; hearButton.textContent = 'Hear question';
     baseRender(); renderGuide(); lock(false); updateRecordLabel();
-    voiceStatus.textContent = voiceAvailable ? 'Hear the question, then give your answer.' : 'Spoken questions are unavailable in this browser. The question is shown above.';
+    voiceStatus.textContent = voiceAvailable ? 'Click Hear question to listen, then Start recording when you are ready.' : 'Spoken questions are unavailable in this browser. The question is shown above.';
   };
   const baseStart = start;
   start = function() {
@@ -96,14 +96,11 @@
   hearButton.onclick = () => { if (!reading && !waiting) readQuestion(); };
   voiceToggle.onchange = () => { if (!voiceToggle.checked && reading) { stop(); } updateRecordLabel(); };
   document.getElementById('recordBtn').onclick = async () => {
-    if (!stream || waiting || isRecording()) return;
-    waiting = true;
-    if (voiceToggle.checked && voiceAvailable && spokenQuestion !== questions[current].q) {
-      const success = await readQuestion();
-      waiting = false;
-      if (!success) { voiceToggle.checked=false; updateRecordLabel(); voiceStatus.textContent='Question audio unavailable. Answer the displayed question; recording will start now.'; }
-    }
-    waiting = false; start();
+    if (!stream || isRecording()) return;
+    cancelVoice();
+    waiting = false;
+    start();
+    updateRecordLabel();
   };
   document.getElementById('stopBtn').onclick = stop;
   const baseCamera = document.getElementById('cameraBtn').onclick;
