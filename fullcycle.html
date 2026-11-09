@@ -374,7 +374,7 @@ async function load(){
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
  if(!saved.paid&&!saved.fullCycleReview)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
- if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.getElementById('main').before(notice);}
+ if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.querySelector('.wrap').before(notice);}
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
   var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
