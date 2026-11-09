@@ -37,7 +37,7 @@ async function prices(gameId) {
   const rows = await sql().query('SELECT ticker, name, sector, price, history FROM desk_game_prices WHERE game_id=$1 ORDER BY sector, ticker', [gameId]);
   const order = t => { const i = UNIVERSE.findIndex(u => u.ticker === t); return i < 0 ? 99 : i; };
   rows.sort((x, y) => order(x.ticker) - order(y.ticker));
-  return rows.map(r => { const h = r.history || [], prev = h.length > 1 ? h[h.length - 2][1] : +r.price; const u = UNIVERSE.find(x => x.ticker === r.ticker) || {}; return { ticker: r.ticker, name: r.name, sector: r.sector, hint: u.hint || '', dp: u.dp ?? 2, price: +r.price, prev: +prev, change: prev ? Math.round((+r.price / prev - 1) * 10000) / 100 : 0, start: h[0]?.[1] ?? +r.price, history: h.slice(-30) }; });
+  return rows.map(r => { const h = r.history || [], prev = h.length > 1 ? h[h.length - 2][1] : +r.price; const u = UNIVERSE.find(x => x.ticker === r.ticker) || {}; return { ticker: r.ticker, name: r.name, sector: r.sector, region: u.region || '', hint: u.hint || '', dp: u.dp ?? 2, price: +r.price, prev: +prev, change: prev ? Math.round((+r.price / prev - 1) * 10000) / 100 : 0, start: h[0]?.[1] ?? +r.price, history: h.slice(-30) }; });
 }
 
 export default async function handler(req, res) {
