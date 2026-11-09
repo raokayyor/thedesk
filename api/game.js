@@ -1,5 +1,5 @@
 // The Desk · trading game (simulated market). See lib/trading-game.mjs for the companies, news presets and maths.
-// Students (members): GET -> market, news, my portfolio, league.  POST {action:'join', displayName, university} | {action:'trade', ticker, side:'buy'|'sell', shares}
+// Students (open to everyone, free or member; up to MAX_HOLDINGS different investments): GET -> market, news, my portfolio, league.  POST {action:'join', displayName, university} | {action:'trade', ticker, side:'buy'|'sell', shares}
 // Staff (Authorization: Bearer PRACTITIONER_SUPPORT_KEY):
 //   GET ?view=staff                         -> game, prices, presets, sectors, recent news
 //   POST {action:'staff-new-game', name}    -> starts a fresh game (everyone back to £100,000; the old one is kept as ended)
@@ -8,7 +8,7 @@ import { timingSafeEqual, randomBytes, randomInt } from 'node:crypto';
 import { sql, sameOrigin, apiFailure, initStore } from '../lib/report-store.mjs';
 import * as A from '../lib/value-accounts.mjs';
 import { PRACTITIONERS } from '../lib/practitioner-questions.mjs';
-import { STARTING_CASH, SECTORS, UNIVERSE, PRESETS, NOISE, QTY_DP, dpOf, moveFor, applyMove, cleanEffects, portfolioValue } from '../lib/trading-game.mjs';
+import { STARTING_CASH, MAX_HOLDINGS, SECTORS, UNIVERSE, PRESETS, NOISE, QTY_DP, dpOf, moveFor, applyMove, cleanEffects, portfolioValue } from '../lib/trading-game.mjs';
 
 const staffOk = req => { const e = process.env.PRACTITIONER_SUPPORT_KEY || ''; const a = Buffer.from(String(req.headers.authorization || '').replace(/^Bearer /, '')), b = Buffer.from(e); return !!e && a.length === b.length && timingSafeEqual(a, b); };
 const clean = (v, n) => String(v ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, n);
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       const ranked = accounts.map(a => ({ principal: a.principal, name: a.display_name + (a.university ? ' · ' + a.university : ''), value: portfolioValue(a.cash, a.positions, map) })).sort((x, y) => y.value - x.value);
       const meIdx = ranked.findIndex(r => r.principal === p), mine = accounts.find(a => a.principal === p);
       const trades = mine ? await sql().query('SELECT day, ticker, side, shares, price, at FROM desk_game_trades WHERE game_id=$1 AND principal=$2 ORDER BY id DESC LIMIT 20', [g.id, p]) : [];
-      return res.json({ member, startingCash: STARTING_CASH,
+      return res.json({ member, startingCash: STARTING_CASH, maxHoldings: MAX_HOLDINGS,
         game: { name: g.name, day: g.day }, prices: px, news,
         me: mine ? { displayName: mine.display_name, cash: +mine.cash, positions: mine.positions, value: ranked[meIdx].value, rank: meIdx + 1, players: ranked.length, trades: trades.map(t => ({ ...t, price: +t.price, shares: +t.shares })) } : null,
         league: ranked.slice(0, 10).map((r, i) => ({ rank: i + 1, name: r.name, value: r.value, returnPct: Math.round((r.value / STARTING_CASH - 1) * 10000) / 100, you: r.principal === p })), players: ranked.length });
@@ -75,7 +75,6 @@ export default async function handler(req, res) {
     const b = req.body || {};
 
     if (b.action === 'join' || b.action === 'trade') {
-      if (!member) return res.status(402).json({ error: 'The trading game is part of membership.' });
       const g = await liveGame(); if (!g) return res.status(404).json({ error: 'No game is running right now.' });
       if (b.action === 'join') {
         const dn = clean(b.displayName, 40); if (dn.length < 2) return res.status(400).json({ error: 'Choose the name to show on the leaderboard.' });
@@ -84,6 +83,10 @@ export default async function handler(req, res) {
       }
       const ticker = String(b.ticker || ''), side = b.side, f = 10 ** QTY_DP, shares = Math.round(Number(b.shares) * f) / f;
       if (!['buy', 'sell'].includes(side) || !Number.isFinite(shares) || shares <= 0 || shares > 10000000) return res.status(400).json({ error: 'Enter how many units (up to 3 decimal places).' });
+      if (side === 'buy') {
+        const acct = (await sql().query('SELECT positions FROM desk_game_accounts WHERE game_id=$1 AND principal=$2', [g.id, p]))[0];
+        if (acct && !acct.positions?.[ticker] && Object.keys(acct.positions || {}).length >= MAX_HOLDINGS) return res.status(400).json({ error: `You can hold up to ${MAX_HOLDINGS} different investments. Sell one before adding another.` });
+      }
       const row = (await sql().query('SELECT price FROM desk_game_prices WHERE game_id=$1 AND ticker=$2', [g.id, ticker]))[0];
       if (!row) return res.status(400).json({ error: 'Unknown company.' });
       const price = +row.price, cost = Math.round(price * shares * 100) / 100;

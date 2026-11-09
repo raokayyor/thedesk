@@ -211,7 +211,7 @@ function freeRow(){
 }
 function lockedRow(){
   const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
-  return `<section class="grid3 twocol">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Trading game','Start with £100,000 of virtual cash, trade as the news breaks, climb the league and read why each story moved the market.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
+  return `<section class="grid3">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
   <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
 }
 function render(){
@@ -223,6 +223,7 @@ function render(){
     <section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
     ${actionsCard()}${D.member?toolsRow():freeRow()}
+    ${!D.member&&D.game?`<section class="grid3"><div class="span2" style="display:flex;flex-direction:column;gap:16px">${gameCard()}</div></section>`:''}
     ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
     ${extrasRow()}`;
   bind();if(D.member)loadNews();
