@@ -78,7 +78,7 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute
 <header>
   <h1>Free vs Full Cycle — 10 test students</h1>
   <div class="controls">
-    <input id="key" type="password" placeholder="Staff key" autocomplete="off" style="width:150px">
+    <input id="key" type="password" placeholder="Staff key (not needed on test links)" autocomplete="off" style="width:150px">
     <select id="batch" title="Test batch"></select>
     <button id="load">Load</button>
     <button id="runAll" class="primary">Run all 10</button>
@@ -108,8 +108,7 @@ async function api(method,body,q=''){
 function newBatchName(){const d=new Date();return 'run-'+d.toISOString().slice(0,10)+'-'+d.toTimeString().slice(0,5).replace(':','')}
 
 async function load(batch){
-  if(!key()){msg('Enter the staff key (PRACTITIONER_SUPPORT_KEY) to start.');return}
-  try{
+    try{
     const d=await api('GET',null,batch?('?batch='+encodeURIComponent(batch)):'');
     state.personas=d.personas;state.batches=d.batches;state.env=d.env;state.batch=d.batch||newBatchName();
     state.runs={};for(const r of d.runs)state.runs[r.persona_key]=r;
@@ -118,7 +117,7 @@ async function load(batch){
     const miss=[];if(!d.env.anthropic)miss.push('ANTHROPIC_API_KEY');if(!d.env.database)miss.push('DATABASE_URL');
     msg(miss.length?`This deployment is missing <b>${miss.join(' and ')}</b>. Runs will fail until it is set in Vercel for this environment.`:'',!!miss.length);
     render();
-  }catch(e){msg(e.status===401?'Staff key not accepted.':'Could not load: '+esc(e.message),true)}
+  }catch(e){msg(e.status===401?'Staff key needed on this site — enter it top right and press Load.':'Could not load: '+esc(e.message),true)}
 }
 $('#load').onclick=()=>load($('#batch').value&&$('#batch').value!=='__new'?$('#batch').value:'');
 $('#batch').onchange=e=>{if(e.target.value==='__new'){state.batch=newBatchName();state.runs={};const o=document.createElement('option');o.textContent=state.batch;o.selected=true;e.target.prepend(o);render()}else load(e.target.value)};
@@ -248,7 +247,7 @@ function bindPersona(){
   document.querySelectorAll('[data-star]').forEach(b=>b.onclick=()=>{star=+b.dataset.star;document.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('on',+x.dataset.star===star))});
   const save=$('#saveRate');if(save)save.onclick=async()=>{try{await api('POST',{action:'rate',batch:state.batch,personaKey:state.tab,rating:star,notes:$('#notes').value});await refresh();$('#saved').textContent='Saved'}catch(e){$('#saved').textContent='Not saved: '+e.message}};
 }
-if($('#key').value)load();else render();
+load();
 </script>
 </body>
 </html>

@@ -22,7 +22,9 @@ const PERSONAS = require('../samples/test-personas.json').personas;
 const STEPS = ['free', 'verdict', 'repair', 'plan'];
 const TEST_OWNER = createHash('sha256').update('the-desk-internal-test-runner-v1').digest('hex');
 
+// Preview deployments are behind Vercel login (deployment protection), so no key is needed there (approved by Rao).
 const staffOk = req => {
+  if (process.env.VERCEL_ENV === 'preview') return true;
   const e = process.env.PRACTITIONER_SUPPORT_KEY || '';
   const a = Buffer.from(String(req.headers.authorization || '').replace(/^Bearer /, '')), b = Buffer.from(e);
   return !!e && a.length === b.length && timingSafeEqual(a, b);
