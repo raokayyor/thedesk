@@ -28,7 +28,7 @@ h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margi
 .score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.score div{background:var(--ink);color:#fff;border-radius:12px;padding:14px}.score b{display:block;font:500 34px/1.1 Fraunces,Georgia,serif;color:#ff8a52}.score span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#cfd6db;font-weight:700}
 .rev{border-top:1px solid var(--soft);padding:14px 0}.rev:first-child{border-top:0}.ok{color:var(--ok);font-weight:700}.no{color:var(--bad);font-weight:700}
 .timer{font-weight:700;font-variant-numeric:tabular-nums}
-@media(max-width:600px){.score{grid-template-columns:1fr}}
+@media(max-width:600px){.score{grid-template-columns:1fr}.pick{grid-template-columns:1fr!important}}
 </style>
 <script src="/desk-nav.js" defer></script>
 </head>
@@ -39,17 +39,21 @@ h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margi
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app=document.getElementById('app');
 let T=null,qs=[],ans=[],i=0,started=0,tick=null;
+const SECTION=['numerical','commercial'].includes(new URLSearchParams(location.search).get('section'))?new URLSearchParams(location.search).get('section'):'both';
+const LABEL={numerical:'Numerical test',commercial:'Commercial & technical test',both:'Mixed test'};
 function intro(){
-  app.innerHTML=`<div class="kicker">Tests</div><h1>A fresh 10-question test</h1>
-  <div class="card"><p style="margin:0">Five commercial and technical questions for your route, then five numerical. New questions each time, from a bank of over 2,000.</p>
-  <ul class="mute" style="margin:12px 0 0;padding-left:18px"><li>About 8 minutes. The clock is a guide, not a cut-off.</li><li>Your best of your last 3 tests counts towards your readiness score.</li><li>Every question you miss comes with the working.</li></ul>
+  const tab=(k,t,d)=>`<a href="/tests.html?section=${k}" class="card" style="text-decoration:none;display:block;${SECTION===k?'border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset':''}"><b>${t}</b><div class="mute">${d}</div></a>`;
+  app.innerHTML=`<div class="kicker">Tests</div><h1>${esc(LABEL[SECTION])}</h1>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px" class="pick">${tab('numerical','Numerical','10 questions · about 8 min')}${tab('commercial','Commercial & technical','10 questions for your route')}${tab('both','Mixed','5 of each')}</div>
+  <div class="card"><p style="margin:0">${SECTION==='numerical'?'Percentages, ratios, growth, margins and the quick maths banks test online.':SECTION==='commercial'?'Markets, accounting and deal questions for your route: the commercial awareness interviewers probe.':'Five commercial and technical questions for your route, then five numerical.'} New questions each time, from a bank of over 2,000.</p>
+  <ul class="mute" style="margin:12px 0 0;padding-left:18px"><li>The clock is a guide, not a cut-off.</li><li>Your best of your last 3 results in each section counts towards your readiness score.</li><li>Every question you miss comes with the working.</li></ul>
   <div style="margin-top:18px"><button class="btn hot" id="go">Start the test</button></div><p class="mute" id="err" role="status"></p></div>`;
   document.getElementById('go').onclick=start;
 }
 async function start(){
   const b=document.getElementById('go');b.disabled=true;
-  const r=await fetch('/api/desk-home?view=test',{credentials:'same-origin'});const d=await r.json().catch(()=>({}));
-  if(!r.ok){b.disabled=false;const next=d.nextAt?` Your next free test opens ${new Date(d.nextAt).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})}.`:'';document.getElementById('err').innerHTML=esc((d.error||'Couldn’t start a test.')+next)+(d.member===false?' <a href="/my.html">Members get unlimited tests →</a>':'');return}
+  const r=await fetch('/api/desk-home?view=test&section='+SECTION,{credentials:'same-origin'});const d=await r.json().catch(()=>({}));
+  if(!r.ok){b.disabled=false;const next=d.nextAt?` Your next free test opens ${new Date(d.nextAt).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})}.`:'';document.getElementById('err').innerHTML=esc((d.error||'Couldn’t start a test.')+next)+(d.member===false?' <a href="/my.html">See membership →</a>':'');return}
   T=d;qs=[...d.commercial.map(q=>({...q,g:'commercial'})),...d.numerical.map(q=>({...q,g:'numerical'}))];ans=qs.map(()=>null);i=0;started=Date.now();
   tick=setInterval(()=>{const el=document.getElementById('clock');if(el){const s=Math.floor((Date.now()-started)/1000);el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}},1000);
   show();
@@ -68,16 +72,16 @@ function show(){
 async function finish(){
   clearInterval(tick);const secs=Math.round((Date.now()-started)/1000);
   app.innerHTML='<p class="mute">Marking…</p>';
-  const body={action:'test',attemptId:T.attemptId,answers:{commercial:ans.slice(0,5),numerical:ans.slice(5)}};
+  const nC=T.commercial.length;const body={action:'test',attemptId:T.attemptId,answers:{commercial:ans.slice(0,nC),numerical:ans.slice(nC)}};
   const r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));
   if(!r.ok){app.innerHTML=`<div class="card">${esc(d.error||'Couldn’t mark that test.')} <a href="/tests.html">Start again</a></div>`;return}
   const R=d.readiness,diff=R&&R.previous!=null?R.score-R.previous:null;
   const wrong=d.review.filter(x=>!x.right);
-  app.innerHTML=`<div class="kicker">Your result</div><h1>${d.commercialCorrect+d.numericalCorrect} out of 10</h1>
-  <div class="score"><div><b>${d.commercialCorrect}/5</b><span>Commercial</span></div><div><b>${d.numericalCorrect}/5</b><span>Numerical</span></div><div><b>${R?R.score:'—'}</b><span>Readiness${diff?` (${diff>0?'+':''}${diff})`:''}</span></div></div>
-  <p class="mute" style="margin:0">Took ${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}. ${R?(diff>0?'Your readiness score went up.':diff<0?'Your readiness score went down: it counts your best of your last 3 tests, so keep practising and take another.':'Your readiness score is unchanged.'):'Take the free assessment to get a readiness score.'}</p>
+  app.innerHTML=`<div class="kicker">Your result</div><h1>${(d.commercial?.correct||0)+(d.numerical?.correct||0)} out of ${(d.commercial?.total||0)+(d.numerical?.total||0)}</h1>
+  <div class="score">${d.commercial?`<div><b>${d.commercial.correct}/${d.commercial.total}</b><span>Commercial</span></div>`:''}${d.numerical?`<div><b>${d.numerical.correct}/${d.numerical.total}</b><span>Numerical</span></div>`:''}<div><b>${R?R.score:'—'}</b><span>Readiness${diff?` (${diff>0?'+':''}${diff})`:''}</span></div></div>
+  <p class="mute" style="margin:0">Took ${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}. ${R?(diff>0?'Your readiness score went up.':diff<0?'Your readiness score went down: it counts your best of your last 3 results in each section, so keep practising and take another.':'Your readiness score is unchanged.'):'Take the free assessment to get a readiness score.'}</p>
   ${wrong.length?`<div class="card"><h2>${wrong.length===1?'The one you missed':'The '+wrong.length+' you missed'}</h2>${wrong.map(x=>`<div class="rev"><div class="mute">${esc(x.topic)}</div><p style="margin:4px 0;font-weight:600">${esc(x.question)}</p><p style="margin:4px 0;font-size:14px"><span class="no">You said:</span> ${esc(x.options[x.chosen])}<br><span class="ok">Answer:</span> ${esc(x.options[x.answer])}</p>${x.working.length?`<ol style="margin:6px 0;padding-left:20px;font-size:14px">${x.working.map(w=>`<li>${esc(w)}</li>`).join('')}</ol>`:''}${x.explanation?`<p class="mute" style="margin:4px 0">${esc(x.explanation)}</p>`:''}${x.trap?`<p class="mute" style="margin:4px 0"><b>Trap:</b> ${esc(x.trap)}</p>`:''}</div>`).join('')}</div>`:'<div class="card">All ten right. Nicely done.</div>'}
-  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="/my.html">Back to My Desk</a><a class="btn ghost" href="/tests.html">Another test</a></div>`;
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="/my.html">Back to My Desk</a><a class="btn ghost" href="/tests.html?section=${SECTION}">Another ${SECTION==='both'?'test':SECTION+' test'}</a></div>`;
   window.scrollTo(0,0);
 }
 intro();

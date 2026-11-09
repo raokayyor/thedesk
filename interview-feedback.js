@@ -69,7 +69,7 @@
         return;
       }
       show(d.feedback, d.paid);
-      if (!d.paid && typeof d.left === 'number') extra().insertAdjacentHTML('beforeend', `<p class="fb-why">${d.left} free detailed feedback${d.left === 1 ? '' : 's'} left today. Full Cycle includes 60 detailed feedbacks a day.</p>`);
+      if (!d.paid && typeof d.left === 'number') extra().insertAdjacentHTML('beforeend', `<p class="fb-why">${d.left} free detailed feedback${d.left === 1 ? '' : 's'} left this week. Members get up to 60 a day, with interviewer follow-ups.</p>`);
       if (FU) FU = { ...FU, done: true };
     } catch (e) { fallback.apply(this, arguments); }
     finally { busy = false; if (btn) { btn.disabled = false; btn.textContent = was; } }

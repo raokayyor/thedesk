@@ -6,12 +6,16 @@
   var report = null;
   try { report = localStorage.getItem('desk-report-url'); } catch (e) {}
   if (!/^\/(fullcycle|result-final-design)\.html\?id=[a-f0-9]{48}$/.test(report || '')) report = null;
+  var interview = null;
+  try { interview = localStorage.getItem('desk-interview-url'); } catch (e) {}
+  if (!/^\/interview-start\.html\?id=[a-f0-9]{48}$/.test(interview || '')) interview = null;
   var links = [
     ['My Desk', '/my.html', /\/my\.html$/],
     ['Report', report || '/my.html#report', /\/(fullcycle|result-final-design)\.html$/],
-    ['Interview', '/interview-start.html', /\/interview(-start)?\.html$/],
+    ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
     ['Tests', '/tests.html', /\/tests\.html$/],
     ['Tracker', '/tracker.html', /\/tracker\.html$/],
+    ['Library', '/library.html', /\/library\.html$/],
     ['News', '/my.html#news', /$^/]
   ];
   var css = '.desk-nav{background:#11191e;font:600 14px "DM Sans",Arial,sans-serif;position:relative;z-index:30}' +

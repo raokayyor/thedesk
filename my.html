@@ -41,7 +41,7 @@ select,input,textarea{font:inherit;font-size:14px;padding:9px 10px;border:1px so
 .news a{display:block;text-decoration:none;border-bottom:1px solid var(--soft);padding:8px 0;font-size:14px;font-weight:600}.news a:last-child{border-bottom:0}
 .lock{color:var(--mute);font-size:13px}
 .notice{background:var(--warm);border:1px solid var(--warm-line);border-radius:12px;padding:12px 14px;font-size:14px}
-form.add[hidden]{display:none}form.add{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;margin-top:12px}
+.addbox{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--soft);padding-top:12px}.addbox:first-child{border-top:0;padding-top:0}.addrow{display:flex;gap:8px;flex-wrap:wrap}.addrow select,.addrow input{flex:1;min-width:160px}#addPanel[hidden]{display:none!important}form.add[hidden]{display:none}form.add{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px}
 details.ans{border-top:1px solid var(--soft);padding:10px 0}details.ans:first-child{border-top:0}summary{cursor:pointer;font-weight:600}
 .signin{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.signin input{flex:1;max-width:340px}
 .panel{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:center}
@@ -67,7 +67,7 @@ const day=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'
 const dayY=d=>new Date(d).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
 const post=(url,body)=>fetch(url,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(async r=>({ok:r.ok,data:await r.json().catch(()=>({}))}));
 const greet=()=>{const h=new Date().getHours();return h<12?'Morning':h<18?'Afternoon':'Evening'};
-let D=null,ME=null;
+let D=null,ME=null,showAll=false;
 
 async function syncTracker(){
   // The programme tracker keeps its shortlist in this browser; copy it to the Desk so it shows here and on other devices.
@@ -78,7 +78,7 @@ async function load(){
   const [d,me]=await Promise.all([fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null),fetch('/api/value-account?view=me',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
   if(!d){app.innerHTML='<div class="card">We couldn’t load your desk. Refresh to try again.</div>';return}
   D=d;ME=me||{items:[]};
-  try{if(d.report?.url){localStorage.setItem('desk-report-url',d.report.url);document.querySelectorAll('.desk-nav a').forEach(a=>{if(a.textContent==='Report')a.href=d.report.url})}}catch(e){}
+  try{if(d.interviewUrl)localStorage.setItem('desk-interview-url',d.interviewUrl);if(d.report?.url){localStorage.setItem('desk-report-url',d.report.url);document.querySelectorAll('.desk-nav a').forEach(a=>{if(a.textContent==='Report')a.href=d.report.url})}}catch(e){}
   render();
 }
 function headerBits(){
@@ -120,43 +120,48 @@ function sideCard(){
       <a href="${esc(D.report.url)}#plan" style="font-weight:700;font-size:14px;margin-top:auto">Open your plan →</a></div>`;
   }
   return `<div class="card" style="background:var(--warm);border-color:var(--warm-line);display:flex;flex-direction:column;gap:10px"><div class="kicker" style="color:#9a3412">Members get</div>
-    <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:#3b4652"><li>Your weakest CV lines rewritten</li><li>7 model interview answers from your CV</li><li>Interview practice with follow-up questions, up to ${60} a day</li><li>A 30-day plan and CV rechecks all year</li><li>Unlimited fresh tests</li><li>A call with a practitioner</li></ul>
+    <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:#3b4652"><li>Your weakest CV lines rewritten</li><li>7 model interview answers from your CV</li><li>The full interview coach: two-minute answers, follow-ups, up to 60 a day</li><li>A 30-day plan and CV rechecks all year</li><li>Unlimited fresh tests that move your readiness</li><li>Practitioners’ notes on your next steps, a question to the panel and a call</li></ul>
     ${D.report?`<button class="btn hot" id="join2" style="margin-top:auto">£89 for the whole year</button>`:`<a class="btn hot" href="/assessment.html" style="margin-top:auto">Start with the free assessment</a>`}</div>`;
 }
 function actionsCard(){
   if(!D.actions.length)return '';
   return `<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>Your next ${D.actions.length===1?'action':D.actions.length+' actions'}</h2><span class="mute">From your report, applications and practice</span></div>
-    <div class="grid3" style="margin-top:14px">${D.actions.map(a=>`<a class="act${a.urgent?' urgent':''}" href="${esc(a.href)}"><span class="kicker">${esc(a.tag)}</span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span>${a.note?`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+'’s note':'Practitioner note'}:</b> ${esc(a.note.text)}</span></span>`:''}</a>`).join('')}</div></section>`;
+    <div class="grid3" style="margin-top:14px">${D.actions.map(a=>`<a class="act${a.urgent?' urgent':''}" href="${esc(a.href)}"><span class="kicker">${esc(a.tag)}</span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span>${a.note?(a.note.locked?`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+' has a note on this.':'A practitioner has a note on this.'}</b> Members only.</span></span>`:`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+'’s note':'Practitioner note'}:</b> ${esc(a.note.text)}</span></span>`):''}</a>`).join('')}</div></section>`;
 }
 function toolsRow(){
   const R=D.report,T=D.tests,I=D.interview,b=R?.breakdown;
   const report=R?`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${R.paid?'Your report':'Your result'}</h3><span class="mute">${R.paid?'Full Cycle':'Free'}</span></div>
       ${b?`<div class="row"><span>CV and evidence</span><b>${(b.application||0)+(b.ats||0)}/40</b></div><div class="row"><span>Competencies</span><b>${b.competency||0}/25</b></div><div class="row"><span>Tests (from your assessment)</span><b>${(b.numerical||0)+(b.technical||0)}/35</b></div>`:''}
-      ${R.paid?`<div class="row"><span>Rechecks used</span><b>${R.rechecks}</b></div>`:`<p class="lock" style="margin:0">CV rewrites, model answers and your plan open with membership.</p>`}
+      ${R.paid?`<div class="row"><span>Rechecks used</span><b>${R.rechecks}</b></div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Your score and your top 3 priorities.</p><p class="lock" style="margin:0">Members: the full score breakdown, CV rewrites, 7 model answers and a 30-day plan.</p>`}
       <a class="btn" href="${esc(R.url)}">${R.paid?'Open your report':'See your result'}</a></div>`
     :`<div class="card tool"><h3>Your report</h3><p class="mute" style="margin:0">Starts with the free assessment: your CV read against your target route.</p><a class="btn" href="/assessment.html">Take the free assessment</a></div>`;
   const rec=I.recent;const max=Math.max(100,...rec);
-  const interview=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Interview</h3><span class="mute">${I.leftToday!=null?I.leftToday+' feedback'+(I.leftToday===1?'':'s')+' left today':''}</span></div>
+  const interview=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Interview</h3><span class="mute">${I.left!=null?I.left+' feedback'+(I.left===1?'':'s')+' left '+I.per:''}</span></div>
       ${rec.length?`<div class="spark" aria-hidden="true">${rec.map(s=>`<i style="height:${Math.max(8,Math.round(s/max*100))}%"></i>`).join('')}</div><div style="font-size:14px;color:#3b4652">Last ${rec.length} answer${rec.length===1?'':'s'}: ${rec.join(' → ')}. Tracked separately from your readiness score.</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Answer real interview questions on camera, timed like HireVue, and get feedback on structure, evidence and delivery.</p>`}
-      <a class="btn hot" href="/interview-start.html">${rec.length?'Practise next question':'Practise a question'}</a></div>`;
+      <a class="btn hot" href="${esc(D.interviewUrl)}">${rec.length?'Practise next question':'Practise a question'}</a></div>`;
   const tests=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Tests</h3><span class="mute">${esc(D.profile.targetSector||'Your route')}</span></div>
-      ${T.last?`<div class="row"><span>Commercial</span><b>${T.last.commercial}/5</b></div><div class="bar" style="height:6px"><i style="width:${T.last.commercial*20}%"></i></div><div class="row"><span>Numerical</span><b>${T.last.numerical}/5</b></div><div class="bar" style="height:6px"><i style="width:${T.last.numerical*20}%"></i></div><div class="mute">Last test ${esc(day(T.last.at))}</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">10 fresh questions for your route from a bank of over 2,000. A better score moves your readiness.</p>`}
-      ${T.freeEveryDays?`<p class="lock" style="margin:0">Free: one fresh test a week. Members: unlimited.</p>`:''}
-      <a class="btn ghost" href="/tests.html">Take a fresh test · about 8 min</a></div>`;
+      ${T.last?`${T.last.commercial!=null?`<div class="row"><span>Commercial &amp; technical</span><b>${T.last.commercial}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.commercial}%"></i></div>`:''}${T.last.numerical!=null?`<div class="row"><span>Numerical</span><b>${T.last.numerical}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.numerical}%"></i></div>`:''}<div class="mute">Last test ${esc(day(T.last.at))}</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Fresh questions for your route from a bank of over 2,000. Your best of the last 3 in each section moves your readiness.</p>`}
+      ${T.freeEveryDays?`<p class="lock" style="margin:0">Free: one fresh test a month. Members: unlimited.</p>`:''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto"><a class="btn ghost" href="/tests.html?section=numerical">Numerical</a><a class="btn ghost" href="/tests.html?section=commercial">Commercial</a></div></div>`;
   return `<section class="grid3">${report}${interview}${tests}</section>`;
 }
 function appsCard(){
   const A=D.applications,stages=D.stages;const today=new Date();today.setHours(0,0,0,0);
   const due=a=>{if(!a.deadline)return a.rolling?'Rolling':'—';const x=new Date(a.deadline+'T00:00:00');const n=Math.round((x-today)/864e5);const t=x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});return n<0?`<span class="mute">Closed ${t}</span>`:n<=7&&['Shortlisted','Preparing'].includes(a.stage)?`<span class="due">${t} · ${n===0?'today':n+' day'+(n===1?'':'s')}</span>`:t};
-  const prep=a=>{const l=[];if(D.report?.paid)l.push(`<a href="${esc(D.report.url)}#prep">Firm prep</a>`);l.push(`<a href="/interview-start.html">Practise</a>`);if(a.url)l.push(`<a href="${esc(a.url)}" target="_blank" rel="noopener">Apply ↗</a>`);return l.join(' · ')};
-  return `<section class="card span2" id="applications"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h3>Applications</h3><span style="display:flex;gap:14px;font-size:14px;font-weight:700"><a href="/tracker.html">Find programmes in the tracker</a><a href="#" id="addToggle">+ Add another firm</a></span></div>
-    <form class="add" id="addForm" hidden><input name="firm" placeholder="Firm" required aria-label="Firm"><input name="programme" placeholder="Programme" aria-label="Programme"><input name="deadline" type="date" aria-label="Deadline"><select name="stage" aria-label="Stage">${stages.map(s=>`<option>${esc(s)}</option>`).join('')}</select><button class="btn">Add</button></form>
-    ${A.length?`<div class="scroll" style="margin-top:10px"><table><thead><tr><th>FIRM</th><th>STAGE</th><th>DEADLINE</th><th>PREP</th><th><span class="mute" style="font-size:11px">REMOVE</span></th></tr></thead><tbody>${A.map(a=>`<tr><td><b>${esc(a.firm)}</b>${a.programme?`<div class="mute">${esc(a.programme)}</div>`:''}</td><td><select data-stage="${esc(a.id)}" aria-label="Stage for ${esc(a.firm)}">${stages.map(s=>`<option ${s===a.stage?'selected':''}>${esc(s)}</option>`).join('')}</select></td><td>${due(a)}</td><td>${prep(a)}</td><td><button class="btn ghost" data-del="${esc(a.id)}" aria-label="Remove ${esc(a.firm)}" style="min-height:32px;padding:4px 10px">×</button></td></tr>`).join('')}</tbody></table></div>`
+  const prep=a=>{const l=[];if(D.report?.paid)l.push(`<a href="${esc(D.report.url)}#prep">Firm prep</a>`);l.push(`<a href="${esc(D.interviewUrl)}">Practise</a>`);if(a.url)l.push(`<a href="${esc(a.url)}" target="_blank" rel="noopener">Apply ↗</a>`);return l.join(' · ')};
+  return `<section class="card span2" id="applications"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h3>Applications</h3><span style="display:flex;gap:14px;font-size:14px;font-weight:700"><a href="/tracker.html">Find programmes in the tracker</a><a href="#" id="addToggle">+ Add applications</a></span></div>
+    <div id="addPanel" hidden style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+      <div class="addbox"><b>Add a whole group</b><div class="addrow"><select id="grpSector" aria-label="Group"><option>Loading…</option></select><select id="grpType" aria-label="Programme type"><option value="">All programme types</option></select><button class="btn" id="grpAdd" type="button">Add</button></div><span class="mute" id="grpInfo"></span></div>
+      <div class="addbox"><b>Add one programme</b><div class="addrow"><input id="oneProg" list="progList" placeholder="Start typing a firm or programme" aria-label="Programme"><datalist id="progList"></datalist><button class="btn" id="oneAdd" type="button">Add</button></div></div>
+      <div class="addbox"><b>Not in the tracker? Add it yourself</b><form class="add" id="addForm"><input name="firm" placeholder="Firm" required aria-label="Firm"><input name="programme" placeholder="Programme" aria-label="Programme"><input name="deadline" type="date" aria-label="Deadline"><select name="stage" aria-label="Stage">${stages.map(s=>`<option>${esc(s)}</option>`).join('')}</select><button class="btn">Add</button></form></div>
+      <span class="mute" id="addMsg" role="status"></span></div>
+    ${A.length?`<div class="scroll" style="margin-top:10px"><table id="appTable"><thead><tr><th>FIRM</th><th>STAGE</th><th>DEADLINE</th><th>PREP</th><th><span class="mute" style="font-size:11px">REMOVE</span></th></tr></thead><tbody>${A.map((a,i)=>`<tr${i>=5&&!showAll?' hidden':''}><td><b>${esc(a.firm)}</b>${a.programme?`<div class="mute">${esc(a.programme)}</div>`:''}</td><td><select data-stage="${esc(a.id)}" aria-label="Stage for ${esc(a.firm)}">${stages.map(s=>`<option ${s===a.stage?'selected':''}>${esc(s)}</option>`).join('')}</select></td><td>${due(a)}</td><td>${prep(a)}</td><td><button class="btn ghost" data-del="${esc(a.id)}" aria-label="Remove ${esc(a.firm)}" style="min-height:32px;padding:4px 10px">×</button></td></tr>`).join('')}</tbody></table></div>${A.length>5?`<button class="btn ghost" id="appMore" style="margin-top:10px">${showAll?'Show fewer':'Show all '+A.length+' applications'}</button>`:''}`
       :`<p class="mute" style="margin:10px 0 0">Nothing yet. Add programmes from the <a href="/tracker.html">tracker</a> (live deadlines for 60+ programmes) or add a firm yourself.</p>`}
     <p class="mute" style="margin:10px 0 0">Programmes you add in the tracker appear here. ${D.signedIn?'Saved to your account.':'Saved in this browser. Sign in to keep them on every device.'}</p></section>`;
 }
 function mythCard(){
   const m=D.practitioners?.myth;if(!m)return '';
+  if(m.locked)return `<section class="card myth"><div class="kicker">Advice our practitioners disagree with</div><p style="margin:0;font-size:14px">There’s popular advice for your route that ${m.by?esc(m.by):'our practitioners'} would tell you to ignore, and what to do instead.</p><button class="btn ghost" id="join4" style="align-self:flex-start">Members: see it</button></section>`;
   return `<section class="card myth"><div class="kicker">Advice our practitioners disagree with</div><p style="margin:0;font-size:14px"><s>${esc(m.myth)}</s></p><div class="pnote" style="margin-top:0"><span class="av" aria-hidden="true">${esc(m.init||'TD')}</span><span><b>${m.by?esc(m.by)+' says':'Our view'}:</b> ${esc(m.view)}</span></div></section>`;
 }
 function newsCard(){
@@ -177,6 +182,20 @@ function extrasRow(){
   const outcome=`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`;
   return signin+call+saved+outcome;
 }
+// Free accounts: the assessment, a look at what members get, and a 30-second interview check. Everything else is shown locked.
+function freeRow(){
+  const R=D.report;
+  const result=R?`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Your result</h3><span class="mute">Free</span></div><p style="margin:0;font-size:14px;color:#3b4652">Your readiness score and your top 3 priorities.</p><p class="lock" style="margin:0">Members: the full breakdown, CV rewrites, 7 model answers and a 30-day plan.</p><a class="btn" href="${esc(R.url)}">See your result</a></div>`
+    :`<div class="card tool"><h3>Free assessment</h3><p style="margin:0;font-size:14px;color:#3b4652">Upload your CV, answer 10 questions, get your readiness score and top 3 fixes. About 10 minutes.</p><a class="btn" href="/assessment.html">Take the free assessment</a></div>`;
+  const teaser=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>30-second interview check</h3><span class="mute">${D.interview.left?'Free this week':'Used this week'}</span></div><p style="margin:0;font-size:14px;color:#3b4652">Answer one question out loud for 30 seconds. We mark your opening, which is what interviewers judge first.</p><a class="btn hot" href="/interview-teaser.html">${D.interview.left?'Try it now':'See your last check'}</a></div>`;
+  const sample=`<div class="card tool" style="background:var(--warm);border-color:var(--warm-line)"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>What members get</h3><span class="mute">Sample</span></div><p style="margin:0;font-size:14px;color:#3b4652">Open a full member report for a fictional student: CV rewrites, model answers, interview questions and a 30-day plan.</p><a class="btn ghost" href="/fullcycle.html?sample=amelia">See a member’s report</a></div>`;
+  return `<section class="grid3">${result}${teaser}${sample}</section>`;
+}
+function lockedRow(){
+  const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
+  return `<section class="grid3">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
+  <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
+}
 function render(){
   headerBits();
   const name=D.profile.firstName;
@@ -185,11 +204,33 @@ function render(){
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><div class="mute">${D.member?'':'Free account'}${!D.member&&target?' · ':''}${esc(target)}</div></div>
     <section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
-    ${actionsCard()}${toolsRow()}
-    <section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${mythCard()}${newsCard()}</div></section>
+    ${actionsCard()}${D.member?toolsRow():freeRow()}
+    ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${mythCard()}${newsCard()}</div></section>`:lockedRow()}
     ${extrasRow()}`;
-  bind();loadNews();
+  bind();if(D.member)loadNews();
   if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}
+}
+let PROGS=null;
+async function loadProgrammes(){
+  if(!PROGS)PROGS=await fetch('/api/desk-home?view=programmes',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null);
+  if(!PROGS)return;
+  const mine=new Set(D.applications.filter(a=>a.source==='tracker').map(a=>a.id.slice(2)));
+  const sec=document.getElementById('grpSector'),typ=document.getElementById('grpType'),info=document.getElementById('grpInfo');
+  sec.innerHTML=PROGS.sectors.map(x=>`<option value="${esc(x.key)}">${esc(x.label)} (${x.count})</option>`).join('');
+  typ.innerHTML='<option value="">All programme types</option>'+PROGS.types.map(t=>`<option>${esc(t)}</option>`).join('');
+  const pick=()=>PROGS.programmes.filter(x=>x.sector===sec.value&&(!typ.value||x.type===typ.value)&&!mine.has(x.key));
+  const upd=()=>{const n=pick().length;info.textContent=n?`${n} programme${n===1?'':'s'} not on your list yet.`:'All of these are already on your list.';document.getElementById('grpAdd').disabled=!n};
+  sec.onchange=upd;typ.onchange=upd;upd();
+  document.getElementById('progList').innerHTML=PROGS.programmes.filter(x=>!mine.has(x.key)).map(x=>`<option value="${esc(x.firm+' · '+x.name)}"></option>`).join('');
+  document.getElementById('grpAdd').onclick=()=>addKeys(pick().map(x=>x.key));
+  document.getElementById('oneAdd').onclick=()=>{const v=document.getElementById('oneProg').value;const x=PROGS.programmes.find(p=>p.firm+' · '+p.name===v);if(!x){document.getElementById('addMsg').textContent='Pick a programme from the list, or add it yourself below.';return}addKeys([x.key])};
+}
+async function addKeys(keys){
+  if(!keys.length)return;
+  const r=await post('/api/desk-home',{action:'tracker-add',keys});
+  if(!r.ok){document.getElementById('addMsg').textContent=r.data.error||'Could not add those.';return}
+  try{localStorage.setItem('desk_mylist',JSON.stringify(r.data.list))}catch(e){}
+  showAll=true;await load();const pn=document.getElementById('addPanel');if(pn){pn.hidden=false;loadProgrammes();document.getElementById('addMsg').textContent=`Added ${r.data.added} programme${r.data.added===1?'':'s'}.`}
 }
 async function join(){
   const id=D.report?.assessmentId;if(!id){location.href='/assessment.html';return}
@@ -197,11 +238,13 @@ async function join(){
   if(r.ok&&r.data.url)location.href=r.data.url;else location.href=D.report.url;
 }
 function bind(){
-  ['join','join2','join3'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
+  ['join','join2','join3','join4','join5'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
   const o=document.getElementById('out');if(o)o.onclick=async()=>{await post('/api/value-account',{action:'signout'});location.href='/my.html'};
   const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await post('/api/value-account',{action:'request',email:document.getElementById('email').value,next:'/my.html'});document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(r.data.error||'Something went wrong.')};
+  const more=document.getElementById('appMore');if(more)more.onclick=()=>{showAll=!showAll;render();document.getElementById('applications').scrollIntoView()};
   const t=document.getElementById('addToggle'),f=document.getElementById('addForm');
-  if(t)t.onclick=e=>{e.preventDefault();f.hidden=!f.hidden;if(!f.hidden)f.firm.focus()};
+  const panel=document.getElementById('addPanel');
+  if(t)t.onclick=e=>{e.preventDefault();panel.hidden=!panel.hidden;if(!panel.hidden)loadProgrammes()};
   if(f)f.onsubmit=async e=>{e.preventDefault();const r=await post('/api/desk-home',{action:'app-save',firm:f.firm.value,programme:f.programme.value,deadline:f.deadline.value,stage:f.stage.value});if(!r.ok)return alert(r.data.error||'Could not add that.');load()};
   document.querySelectorAll('[data-stage]').forEach(sel=>sel.onchange=async()=>{
     const id=sel.dataset.stage,a=D.applications.find(x=>x.id===id);if(!a)return;

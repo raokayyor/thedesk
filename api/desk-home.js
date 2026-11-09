@@ -16,8 +16,8 @@ import * as A from '../lib/value-accounts.mjs';
 import { select as selectKnowledge, initKnowledge, KINDS } from '../lib/knowledge.mjs';
 import { initQuestions } from '../lib/practitioner-questions.mjs';
 import { entitlement } from '../lib/accounts.mjs';
-import { FREE_PER_DAY, PAID_PER_DAY } from '../lib/interview-feedback.mjs';
-import { loadProgrammes } from '../lib/programmes.mjs';
+import { FREE_PER_WEEK, PAID_PER_DAY } from '../lib/interview-feedback.mjs';
+import { loadProgrammes, SECTOR_LABELS, TYPES } from '../lib/programmes.mjs';
 
 const require = createRequire(import.meta.url);
 let BANK;
@@ -29,41 +29,53 @@ const OPEN_STAGES = ['Shortlisted', 'Preparing'];
 const FIRM_NEWS = [[/deutsche/i, 'db'], [/bank of america|bofa/i, 'bofa'], [/goldman/i, 'gs'], [/j\.?\s?p\.?\s?morgan|jpm/i, 'jpm'], [/barclays/i, 'barclays'], [/\bubs\b/i, 'ubs'], [/\bey\b|ernst/i, 'ey'], [/pwc|pricewaterhouse/i, 'pwc']];
 export const newsKeyFor = firm => (FIRM_NEWS.find(([re]) => re.test(String(firm || ''))) || [])[1] || null;
 export const band = s => s >= 75 ? 'Competitive' : s >= 65 ? 'Borderline' : 'Weak';
-const TEST_FREE_DAYS = 7, TEST_PAID_PER_DAY = 10;
+const TEST_FREE_DAYS = 30, TEST_PAID_PER_DAY = 10;
 const clean = (v, n) => String(v ?? '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, n);
 
 // Readiness timeline from assessments and tests, oldest first.
+// Section scores as rates (0-1). Older tests stored commercialCorrect/numericalCorrect out of 5.
+export function testRates(d) {
+  const r = {};
+  if (d.numerical) r.numerical = d.numerical.correct / d.numerical.total; else if (Number.isFinite(d.numericalCorrect)) r.numerical = d.numericalCorrect / 5;
+  if (d.commercial) r.commercial = d.commercial.correct / d.commercial.total; else if (Number.isFinite(d.commercialCorrect)) r.commercial = d.commercialCorrect / 5;
+  return r;
+}
+const testNote = d => ['commercial', 'numerical'].map(g => { const x = d[g] || (Number.isFinite(d[g + 'Correct']) ? { correct: d[g + 'Correct'], total: 5 } : null); return x ? `${g === 'commercial' ? 'commercial' : 'numerical'} ${x.correct}/${x.total}` : ''; }).filter(Boolean).join(', ');
 export function readinessTimeline(assessments, tests) {
   const ev = [...assessments.map(a => ({ type: 'assessment', at: new Date(a.createdAt), a })), ...tests.map(t => ({ type: 'test', at: new Date(t.createdAt), t }))].sort((x, y) => x.at - y.at);
-  const out = [], recent = []; let base = null;
+  const out = []; let base = null, recent = { numerical: [], commercial: [] };
   for (const e of ev) {
     if (e.type === 'assessment') {
       if (!Number.isFinite(+e.a.overall)) continue;
       base = e.a;
-      // The assessment's own 10 questions count as its first test.
-      recent.length = 0; if (e.a.breakdown) recent.push({ numericalCorrect: (+e.a.breakdown.numerical || 0) / 3, commercialCorrect: (+e.a.breakdown.technical || 0) / 4, fromAssessment: true });
+      // The assessment's own questions count as its first test in each section.
+      recent = { numerical: [], commercial: [] };
+      if (e.a.breakdown) { recent.numerical.push((+e.a.breakdown.numerical || 0) / 15); recent.commercial.push((+e.a.breakdown.technical || 0) / 20); }
       out.push({ at: e.at.toISOString(), kind: e.a.rootId ? 'Recheck' : 'Assessment', score: +e.a.overall, note: e.a.rootId ? 'Recheck of your updated CV' : 'Assessment' });
     } else if (base?.breakdown) {
-      // Counts your best of the last 3 tests: rewards improvement, limits one lucky or unlucky test.
-      recent.push(e.t.data); if (recent.length > 3) recent.shift();
-      const best = recent.reduce((m, t) => (t.numericalCorrect * 3 + t.commercialCorrect * 4) > (m.numericalCorrect * 3 + m.commercialCorrect * 4) ? t : m);
-      const b = base.breakdown, num = best.numericalCorrect * 3, tech = best.commercialCorrect * 4;
-      const score = Object.values(b).reduce((s, x) => s + (+x || 0), 0) - (+b.numerical || 0) - (+b.technical || 0) + num + tech;
-      out.push({ at: e.at.toISOString(), kind: 'Test', score, note: `Test: commercial ${e.t.data.commercialCorrect}/5, numerical ${e.t.data.numericalCorrect}/5${best !== e.t.data ? ' (best of last 3 counts)' : ''}` });
+      // Each section counts your best of the last 3 results: rewards improvement, limits one lucky or unlucky test.
+      const r = testRates(e.t.data);
+      for (const g of ['numerical', 'commercial']) if (Number.isFinite(r[g])) { recent[g].push(r[g]); if (recent[g].length > 3) recent[g].shift(); }
+      const best = g => Math.max(...recent[g]);
+      const b = base.breakdown;
+      const score = Object.values(b).reduce((s, x) => s + (+x || 0), 0) - (+b.numerical || 0) - (+b.technical || 0) + Math.round(best('numerical') * 15) + Math.round(best('commercial') * 20);
+      out.push({ at: e.at.toISOString(), kind: 'Test', score, note: 'Test: ' + testNote(e.t.data) });
     }
   }
   return out;
 }
 
-function pickTest(route, seen) {
+// section: 'numerical' or 'commercial' (10 questions), or 'both' (5 + 5).
+function pickTest(route, seen, section = 'both') {
   const code = ROUTE_CODE[route] || 'commercial_general';
-  const pool = (list, filter) => { const all = list.filter(filter); const fresh = all.filter(q => !seen.has(q.id)); return fresh.length >= 5 ? fresh : all; };
   const draw = (list, n) => { const a = [...list], out = []; while (out.length < n && a.length) out.push(a.splice(randomInt(a.length), 1)[0]); return out; };
-  const t = pool(bank().technical, q => q.route === code || q.route === 'commercial_general');
-  const n = pool(bank().numerical, () => true);
+  const pool = (list, n) => { const fresh = list.filter(q => !seen.has(q.id)); return fresh.length >= n ? fresh : list; };
   // Mix of difficulties: mostly level 2, some 1 and 3.
-  const mix = (list) => { const by = d => list.filter(q => q.difficulty === d); const picked = [...draw(by(1), 1), ...draw(by(2), 3), ...draw(by(3), 1)]; return picked.length === 5 ? picked : draw(list, 5); };
-  return { commercial: mix(t), numerical: mix(n) };
+  const mix = (list, n) => { const by = d => list.filter(q => q.difficulty === d); const k = Math.max(1, Math.round(n / 5)); const picked = [...draw(by(1), k), ...draw(by(2), n - 2 * k), ...draw(by(3), k)]; return picked.length === n ? picked : draw(list, n); };
+  const n = section === 'both' ? 5 : 10;
+  const t = pool(bank().technical.filter(q => q.route === code || q.route === 'commercial_general'), n);
+  const u = pool(bank().numerical, n);
+  return { commercial: section === 'numerical' ? [] : mix(t, n), numerical: section === 'commercial' ? [] : mix(u, n) };
 }
 const publicQ = q => ({ id: q.id, topic: q.topic, question: q.question, options: q.options, timeSec: q.timeSec });
 const findQ = (group, id) => bank()[group === 'commercial' ? 'technical' : 'numerical'].find(q => q.id === id);
@@ -125,20 +137,30 @@ export default async function handler(req, res) {
     const paid = await A.isPaidOwner(p);
     await A.quotaLeft('desk-home-init', 1); // creates the saved-items tables on first use
 
+    // Programmes students can add from the tracker: everything not yet closed, grouped by sector.
+    if (req.method === 'GET' && req.query?.view === 'programmes') {
+      const today = new Date().toISOString().slice(0, 10);
+      const list = (await loadProgrammes()).programmes.filter(x => x.status !== 'closed' && !(x.closes && x.closes < today))
+        .map(x => ({ key: x.firm + '|' + x.name, firm: x.firm, name: x.name, sector: x.sector, type: x.type, closes: x.closes, status: x.status }));
+      const sectors = Object.entries(SECTOR_LABELS).map(([key, label]) => ({ key, label, count: list.filter(x => x.sector === key).length })).filter(x => x.count);
+      return res.json({ sectors, types: TYPES.filter(t => list.some(x => x.type === t)), programmes: list });
+    }
     if (req.method === 'GET' && req.query?.view === 'shortlist') return res.json({ list: (await getShortlist(p)).list });
 
     if (req.method === 'GET' && req.query?.view === 'test') {
       const s = await A.ownerSummary(p);
       const route = s.assessments[0]?.route || 'General Finance';
       const recent = await items(p, ['test'], 20);
-      if (!paid && recent[0] && Date.now() - new Date(recent[0].createdAt).getTime() < TEST_FREE_DAYS * 86400000)
-        return res.status(429).json({ error: 'Free accounts get one fresh test a week.', nextAt: new Date(new Date(recent[0].createdAt).getTime() + TEST_FREE_DAYS * 86400000).toISOString(), member: false });
+      if (!paid) return res.status(402).json({ error: 'Fresh tests are part of membership: unlimited 10-question tests from a bank of over 2,000, and your best of the last 3 counts towards your readiness.', member: false });
+      if (false)
+        return res.status(429).json({ error: 'Free accounts get one fresh test a month. Members get unlimited tests.', nextAt: new Date(new Date(recent[0].createdAt).getTime() + TEST_FREE_DAYS * 86400000).toISOString(), member: false });
       if (paid && !await A.useQuota('test:' + p, TEST_PAID_PER_DAY)) return res.status(429).json({ error: 'That’s ten tests today. Come back tomorrow.' });
+      const section = ['numerical', 'commercial'].includes(req.query.section) ? req.query.section : 'both';
       const seen = new Set(recent.flatMap(r => [...(r.data.ids?.commercial || []), ...(r.data.ids?.numerical || [])]));
-      const set = pickTest(route, seen);
+      const set = pickTest(route, seen, section);
       const ids = { commercial: set.commercial.map(q => q.id), numerical: set.numerical.map(q => q.id) };
-      const attemptId = await A.saveItem(p, 'test-pending', { ids, route });
-      return res.json({ attemptId, route, commercial: set.commercial.map(publicQ), numerical: set.numerical.map(publicQ) });
+      const attemptId = await A.saveItem(p, 'test-pending', { ids, route, section });
+      return res.json({ attemptId, route, section, commercial: set.commercial.map(publicQ), numerical: set.numerical.map(publicQ) });
     }
 
     if (req.method === 'GET') {
@@ -157,7 +179,7 @@ export default async function handler(req, res) {
       else if (paidRow) until = new Date(new Date(paidRow.paidAt).getTime() + 365 * 86400000).toISOString();
       const now = timeline[timeline.length - 1] || null, first = timeline[0] || null;
       const scores = practice.map(x => x.data?.feedback?.overall).filter(Number.isFinite);
-      const left = await A.quotaLeft(paid ? 'fb:' + p : 'fb:' + p + ':' + hash(A.clientKey(req)).slice(0, 16), paid ? PAID_PER_DAY : FREE_PER_DAY).catch(() => null);
+      const left = paid ? await A.quotaLeft('fb:' + p, PAID_PER_DAY).catch(() => null) : Math.max(0, FREE_PER_WEEK - await A.countItems(p, 'interview', 7));
       const short = await getShortlist(p);
       const progs = Object.keys(short.list).length ? (await loadProgrammes().catch(() => ({ programmes: [] }))).programmes : [];
       const byKey = Object.fromEntries(progs.map(x => [x.firm + '|' + x.name, x]));
@@ -167,6 +189,8 @@ export default async function handler(req, res) {
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
       const reportUrl = paidRow ? '/fullcycle.html?id=' + paidRow.id : latest ? '/result-final-design.html?id=' + latest.id : null;
+      // The interview coach loads the student's CV and target from their (paid, else latest) assessment.
+      const interviewUrl = latest ? '/interview-start.html?id=' + (paidRow || latest).id : '/interview-start.html';
 
       // Next actions, most urgent first.
       const actions = [];
@@ -183,24 +207,33 @@ export default async function handler(req, res) {
       if (latest && (!lastTest || Date.now() - new Date(lastTest.createdAt).getTime() > 7 * 86400000)) actions.push({ tag: 'Test · moves readiness', title: 'Take a fresh 10-question test', detail: 'New questions for your route. About 8 minutes.', href: '/tests.html' });
       const lastPractice = practice[0];
       const target = profile.targetFirm || applications[0]?.firm;
-      if (!lastPractice || Date.now() - new Date(lastPractice.createdAt).getTime() > 3 * 86400000) actions.push({ tag: 'Practise · Interview', title: target ? `Practise an interview question for ${target}` : 'Practise an interview question', detail: 'On camera, timed like the real thing', href: '/interview-start.html' });
-      else { const weak = practice.filter(x => Number.isFinite(x.data?.feedback?.overall)).sort((a, b) => a.data.feedback.overall - b.data.feedback.overall)[0]; if (weak) actions.push({ tag: 'Practise · Interview', title: 'Retry your weakest answer', detail: `“${clean(weak.data.question, 90)}” scored ${weak.data.feedback.overall}`, href: '/interview-start.html' }); }
+      if (!lastPractice || Date.now() - new Date(lastPractice.createdAt).getTime() > 3 * 86400000) actions.push({ tag: 'Practise · Interview', title: target ? `Practise an interview question for ${target}` : 'Practise an interview question', detail: 'On camera, timed like the real thing', href: interviewUrl });
+      else { const weak = practice.filter(x => Number.isFinite(x.data?.feedback?.overall)).sort((a, b) => a.data.feedback.overall - b.data.feedback.overall)[0]; if (weak) actions.push({ tag: 'Practise · Interview', title: 'Retry your weakest answer', detail: `“${clean(weak.data.question, 90)}” scored ${weak.data.feedback.overall}`, href: interviewUrl }); }
       if (!applications.length) actions.push({ tag: 'Applications', title: 'Pick the programmes you’re applying for', detail: 'Live deadlines from the tracker, in one list with your prep', href: '/tracker.html' });
 
       const practitioners = await practitionerLayer(req, res, profile, paid);
+      if (!paid && practitioners.myth) practitioners.myth = { locked: true, by: practitioners.myth.by, init: practitioners.myth.init };
+      if (!paid) {
+        // Free accounts: the assessment, a look at what members get, and the 30-second interview check.
+        actions.length = 0;
+        if (!latest) actions.push({ tag: 'Start here', title: 'Take the free assessment', detail: 'Your CV read against your target route: a readiness score and your top 3 fixes. About 10 minutes.', href: '/assessment.html' });
+        else actions.push({ tag: 'Your result', title: latest.priorities?.[0] ? clean(latest.priorities[0].title, 90) : 'See your result', detail: latest.priorities?.[0] ? clean(latest.priorities[0].description, 160) : 'Your score and top 3 priorities', href: reportUrl });
+        actions.push({ tag: 'Free · 30 seconds', title: target ? `Answer “Why ${target}?” in 30 seconds` : 'Try the 30-second interview check', detail: 'One question, marked on your opening. One free check a week.', href: '/interview-teaser.html' });
+        actions.push({ tag: 'Membership', title: 'See what a member’s report looks like', detail: 'A full sample: CV rewrites, model answers, interview prep and a 30-day plan', href: '/fullcycle.html?sample=amelia' });
+      }
       const usedNotes = new Set();
       for (const a of actions.slice(0, 3)) {
         const key = /Interview/.test(a.tag) ? 'interview' : /Test/.test(a.tag) ? 'test' : /Deadline|Applications/.test(a.tag) ? 'application' : 'report';
         const n = practitioners.notes[key];
-        if (n && !usedNotes.has(n.text)) { a.note = n; usedNotes.add(n.text); }   // one note per action, never the same one twice
+        if (n && !usedNotes.has(n.text)) { a.note = paid ? n : { locked: true, by: n.by, init: n.init }; usedNotes.add(n.text); }   // one note per action, never twice; free accounts see who has a note, not the note
       }
       return res.json({
         signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
         member: paid, until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         readiness: now ? { score: now.score, band: band(now.score), change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
-        report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: latest.breakdown || null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
-        tests: { last: lastTest ? { at: lastTest.createdAt, commercial: lastTest.data.commercialCorrect, numerical: lastTest.data.numericalCorrect } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
-        interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, leftToday: left, perDay: paid ? PAID_PER_DAY : FREE_PER_DAY },
+        interviewUrl, report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: paidRow ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
+        tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
+        interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
         applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners,
         prices: { membership: '£89 a year' }
       });
@@ -214,24 +247,27 @@ export default async function handler(req, res) {
       if (!/^\d{1,18}$/.test(String(b.attemptId || ''))) return res.status(400).json({ error: 'Start a new test.' });
       const pend = (await sql().query(`SELECT id::text, data, created_at FROM desk_value_items WHERE id=$1 AND principal=$2 AND kind='test-pending'`, [String(b.attemptId), p]))[0];
       if (!pend || Date.now() - new Date(pend.created_at).getTime() > 3 * 3600000) return res.status(400).json({ error: 'This test has expired. Start a new one.' });
-      const out = { commercialCorrect: 0, numericalCorrect: 0, ids: pend.data.ids, route: pend.data.route, review: [] };
+      const out = { ids: pend.data.ids, route: pend.data.route, section: pend.data.section || 'both', review: [] };
       for (const g of ['commercial', 'numerical']) {
-        const ans = b.answers?.[g];
-        if (!Array.isArray(ans) || ans.length !== 5 || ans.some(x => !Number.isInteger(x) || x < 0 || x > 3)) return res.status(400).json({ error: 'Answer all ten questions.' });
-        pend.data.ids[g].forEach((id, i) => {
+        const ids = pend.data.ids[g] || [], ans = b.answers?.[g] || [];
+        if (!Array.isArray(ans) || ans.length !== ids.length || ans.some(x => !Number.isInteger(x) || x < 0 || x > 3)) return res.status(400).json({ error: 'Answer every question.' });
+        if (!ids.length) continue;
+        out[g] = { correct: 0, total: ids.length };
+        ids.forEach((id, i) => {
           const q = findQ(g, id); if (!q) return;
-          const right = ans[i] === q.answer; if (right) out[g + 'Correct']++;
+          const right = ans[i] === q.answer; if (right) out[g].correct++;
           out.review.push({ section: g, topic: q.topic, question: q.question, options: q.options, chosen: ans[i], answer: q.answer, right, working: q.working?.length ? q.working : [], explanation: q.concept || q.explanation || '', trap: q.trap || '' });
         });
       }
-      await sql().query(`UPDATE desk_value_items SET kind='test', data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [pend.id, p, JSON.stringify({ commercialCorrect: out.commercialCorrect, numericalCorrect: out.numericalCorrect, ids: out.ids, route: out.route })]);
+      const { review, ...stored } = out;
+      await sql().query(`UPDATE desk_value_items SET kind='test', data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [pend.id, p, JSON.stringify(stored)]);
       const s = await A.ownerSummary(p);
       const assessments = s.assessments.filter(a => !a.refundedAt);
       const bd = assessments.length ? (await sql().query(`SELECT id, result->'breakdown' AS breakdown FROM desk_assessments WHERE id = ANY($1)`, [assessments.map(a => a.id)])) : [];
       const map = Object.fromEntries(bd.map(r => [r.id, r.breakdown]));
       const timeline = readinessTimeline(assessments.map(a => ({ ...a, breakdown: map[a.id] })), await items(p, ['test'], 50));
       const now = timeline[timeline.length - 1], before = timeline[timeline.length - 2];
-      return res.json({ success: true, commercialCorrect: out.commercialCorrect, numericalCorrect: out.numericalCorrect, review: out.review, readiness: now ? { score: now.score, band: band(now.score), previous: before?.score ?? null } : null });
+      return res.json({ success: true, section: out.section, commercial: out.commercial || null, numerical: out.numerical || null, review: out.review, readiness: now ? { score: now.score, band: band(now.score), previous: before?.score ?? null } : null });
     }
 
     if (b.action === 'tracker-sync') {
@@ -239,6 +275,16 @@ export default async function handler(req, res) {
       if (cur.id) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list })]);
       else await A.saveItem(p, 'shortlist', { list });
       return res.json({ success: true, count: Object.keys(list).length });
+    }
+    if (b.action === 'tracker-add') {
+      const valid = new Set((await loadProgrammes()).programmes.map(x => x.firm + '|' + x.name));
+      const keys = (Array.isArray(b.keys) ? b.keys : []).filter(k => typeof k === 'string' && valid.has(k)).slice(0, 200);
+      const cur = await getShortlist(p), list = { ...cur.list };
+      let added = 0;
+      for (const k of keys) if (!list[k] && Object.keys(list).length < 200) { list[k] = { stage: 'Shortlisted' }; added++; }
+      if (cur.id) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list })]);
+      else await A.saveItem(p, 'shortlist', { list });
+      return res.json({ success: true, added, list });
     }
     if (b.action === 'app-stage' && String(b.id || '').startsWith('t:')) {
       const cur = await getShortlist(p), k = String(b.id).slice(2);

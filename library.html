@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Library | The Desk</title>
+<meta name="description" content="Help for finance applications: CVs, online tests, video interviews, assessment centres, brain teasers and the market basics interviewers expect.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}.hin{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 24px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}
+main{max-width:1000px;margin:0 auto;padding:28px 16px 80px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margin:0}h1{font-size:clamp(30px,5vw,42px)}h2{font-size:26px;margin:40px 0 6px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.mute{color:var(--mute);font-size:14px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}.jump a{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;text-decoration:none}
+.search{width:100%;max-width:420px;font:inherit;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:16px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;padding:0 18px}
+details[open]{padding-bottom:14px}
+summary{cursor:pointer;font-weight:700;padding:16px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";color:var(--accent);font-size:20px;line-height:1}details[open] summary::after{content:"–"}
+details p,details li{font-size:15px;color:#2b353d}details ul,details ol{padding-left:20px;margin:6px 0}
+.ans{background:var(--warm);border:1px solid var(--warm-line);border-radius:10px;padding:10px 14px;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-decoration:none;display:flex;flex-direction:column;gap:6px}
+.tile:hover{border-color:var(--ink);color:var(--ink)}.tile b{font-size:16px}.tile span{font-size:14px;color:var(--mute)}
+.help{background:var(--ink);color:#fff;border-radius:16px;padding:22px;margin-top:14px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.help a.btn{background:var(--accent);color:#fff;border-radius:999px;padding:12px 18px;font-weight:700;text-decoration:none}
+.tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-left:6px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+<script src="/desk-nav.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
+<main>
+<div class="kicker">Library</div>
+<h1>Help with every stage of your application.</h1>
+<p class="mute" style="max-width:640px">Short, practical guides: what each stage tests, what good looks like and the mistakes that get people screened out. Written by The Desk, built around what our practitioners look for.</p>
+<input class="search" id="q" type="search" placeholder="Search the library (e.g. HireVue, DCF, why this firm)" aria-label="Search the library">
+<nav class="jump" aria-label="Library sections"><a href="#applications">Applications</a><a href="#tests">Online tests</a><a href="#interviews">Interviews</a><a href="#teasers">Brain teasers</a><a href="#markets">Market basics</a><a href="#guides">Firm guides</a><a href="#help">Get help</a></nav>
+
+<h2 id="applications">Applications</h2>
+<p class="mute">From the CV to the “why this firm” question.</p>
+<details><summary>Your CV: five rules reviewers actually apply</summary>
+<ol><li><b>One page.</b> Education, experience, activities, skills. Nothing else.</li><li><b>Start each bullet with what you did,</b> then what changed because of it. Reviewers skim the first few words.</li><li><b>Numbers where they’re real:</b> money raised, people led, time saved, results. Never invent or round up.</li><li><b>Cut generic lines</b> (“hard-working team player”). Show it in a bullet instead.</li><li><b>Match the role’s words</b> where they honestly describe your experience. Screening software and reviewers both look for them.</li></ol>
+<p>Your free assessment checks all of this against your route. <a href="/assessment.html">Check your CV →</a></p></details>
+<details><summary>“Why this firm?” and “Why this division?”</summary>
+<p>Three parts, in this order:</p><ol><li><b>Why the work:</b> one specific thing about what the division does that you’ve seen yourself (a project, a society, an internship task).</li><li><b>Why this firm:</b> something you can only say about this firm, from its own site, a deal, a talk or a person you spoke to. Not “prestigious” or “global”.</li><li><b>Why you fit:</b> one example from your CV that shows you’d do the job well.</li></ol>
+<p>Test: if you could swap in another bank’s name and it still works, it isn’t specific enough.</p></details>
+<details><summary>Cover letters and motivation questions</summary>
+<p>Many applications now ask two or three short questions instead of a letter. Treat each as a 150–250 word answer with one point and one piece of evidence. Answer the question asked, use the first line to make your point, and end on what you’d bring, not what you’d gain.</p></details>
+<details><summary>When to apply</summary>
+<p>Many programmes review applications as they arrive, so a strong application early usually beats a perfect one late. Check each programme’s deadline in the <a href="/tracker.html">tracker</a>, and aim to submit at least a week before it closes.</p></details>
+
+<h2 id="tests">Online tests</h2>
+<details><summary>Numerical tests: what they test and how to prepare</summary>
+<p>Percentages, ratios, growth rates, currency conversion and reading tables quickly. The maths is simple; the pressure is time.</p><ul><li>Always check the base: a percentage change is divided by the <i>starting</i> value.</li><li>Estimate first, then calculate, so you can spot an answer that’s out by a factor of ten.</li><li>Practise with a timer and a calculator, as you’ll have one.</li></ul>
+<p><a href="/tests.html?section=numerical">Take a numerical test →</a></p></details>
+<details><summary>Situational judgement tests</summary>
+<p>You’re shown work scenarios and asked to rank responses. Firms are testing their own values. Read the firm’s stated values before you start, pick the response that solves the problem and keeps people informed, and avoid answers that escalate too early or ignore a colleague.</p></details>
+<details><summary>Logical and verbal reasoning</summary>
+<p>Verbal: answer only from the passage, not from what you know. “Cannot say” is correct whenever the text doesn’t settle it. Logical: look for one rule at a time (rotation, count, colour) and eliminate options quickly.</p></details>
+
+<h2 id="interviews">Interviews</h2>
+<details><summary>Video interviews (HireVue and similar)</summary>
+<ul><li>Usually 30 seconds to think and 1–3 minutes to answer, with no retakes.</li><li>Open with your answer in one sentence, then give the example.</li><li>Look at the camera, not the screen, and keep notes off to the side to a minimum.</li></ul>
+<p><a href="/interview-teaser.html">Try a 30-second check</a> · Members: <a href="/interview-start.html">full timed practice</a></p></details>
+<details><summary>Competency questions: answering with STAR</summary>
+<p><b>Situation</b> in one line, <b>Task</b> in one line, then most of your time on the <b>Action</b> (what <i>you</i> did, not “we”), and a real <b>Result</b>, with a number if there is one. Finish with one sentence on what you learned. Prepare five stories that between them cover teamwork, leadership, resilience, a mistake and persuading someone.</p></details>
+<details><summary>Technical questions by route</summary>
+<ul><li><b>Investment banking:</b> the three statements and how they link, EV vs equity value, the main valuation methods and when each is used.</li><li><b>Markets:</b> what moves rates, FX and equities, and how a rate rise affects bond prices.</li><li><b>Asset management:</b> how you’d pitch a stock, active vs passive, risk and return.</li><li><b>Accounting and audit:</b> double entry, accruals, and what auditors test.</li></ul>
+<p><a href="/tests.html?section=commercial">Take a commercial & technical test →</a></p></details>
+<details><summary>Assessment centres and superdays</summary>
+<p>Expect a mix of interviews, a group exercise, a case study or written exercise, and sometimes a presentation. In the group exercise, assessors watch how you work with others: bring others in, keep time, summarise. In a case study, state your recommendation first and show the numbers behind it.</p></details>
+<details><summary>Questions to ask at the end</summary>
+<p>Ask about the work, not the perks: what a first-year analyst does in their first three months, what separates good analysts from great ones, or something specific about a deal or team you’ve read about.</p></details>
+
+<h2 id="teasers">Brain teasers</h2>
+<p class="mute">Interviewers use these to see how you think out loud. Say your approach before your answer. Tap to reveal.</p>
+<details><summary>A bat and a ball cost £1.10. The bat costs £1 more than the ball. How much is the ball?</summary><div class="ans"><b>5p.</b> If the ball is x, the bat is x + £1, so 2x + £1 = £1.10 and x = 5p. The trap is answering 10p.</div></details>
+<details><summary>A stock rises 50%, then falls 50%. Where is it versus where it started?</summary><div class="ans"><b>Down 25%.</b> £100 → £150 → £75. The fall is 50% of a bigger number.</div></details>
+<details><summary>Five machines make five widgets in five minutes. How long do 100 machines take to make 100 widgets?</summary><div class="ans"><b>Five minutes.</b> Each machine makes one widget in five minutes, so 100 machines make 100 in the same time.</div></details>
+<details><summary>A patch of lily pads doubles in size every day and covers the lake on day 48. When was it half covered?</summary><div class="ans"><b>Day 47.</b> It doubles from half to full on the last day.</div></details>
+<details><summary>How many times do the hour and minute hands of a clock overlap in 24 hours?</summary><div class="ans"><b>22 times.</b> They overlap 11 times every 12 hours, not 12, because the hour hand moves on while the minute hand catches up (roughly every 65.45 minutes).</div></details>
+<details><summary>What is the angle between the hands at 3:15?</summary><div class="ans"><b>7.5 degrees.</b> The minute hand is at 90°. The hour hand has moved a quarter of the way from 3 to 4: 90° + 0.25 × 30° = 97.5°.</div></details>
+<details><summary>What is the sum of the numbers from 1 to 100?</summary><div class="ans"><b>5,050.</b> Pair them: 1 + 100, 2 + 99… gives 50 pairs of 101.</div></details>
+<details><summary>Your pay rises 10%, then is cut 10%. Are you better or worse off?</summary><div class="ans"><b>Worse off by 1%.</b> 1.1 × 0.9 = 0.99.</div></details>
+<details><summary>What’s the probability that two dice add up to 7?</summary><div class="ans"><b>1 in 6.</b> Six of the 36 equally likely outcomes sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1).</div></details>
+<details><summary>On average, how many rolls of a fair die does it take to get a six?</summary><div class="ans"><b>Six.</b> Each roll has a 1 in 6 chance, and the expected wait for an event with probability p is 1/p.</div></details>
+<details><summary>How many squares are on a chessboard?</summary><div class="ans"><b>204.</b> Count by size: 64 (1×1) + 49 + 36 + 25 + 16 + 9 + 4 + 1 (8×8) = 204.</div></details>
+<details><summary>Three boxes are labelled Apples, Oranges and Mixed, and every label is wrong. You may take one fruit from one box. How do you fix the labels?</summary><div class="ans"><b>Take a fruit from the “Mixed” box.</b> It can’t be mixed, so if you draw an apple it’s the apples box. The box labelled “Oranges” can’t be oranges and can’t be apples now, so it’s mixed, and the last box is oranges.</div></details>
+<details><summary>How many trailing zeros does 100! (100 factorial) have?</summary><div class="ans"><b>24.</b> Each zero needs a 5 × 2. Count the 5s: 100 ÷ 5 = 20, plus 100 ÷ 25 = 4 more.</div></details>
+<details><summary>Market sizing: how many coffees are sold in a big city each day?</summary><div class="ans">There’s no single right number; they’re testing your method. Say it out loud: <b>population → share who drink coffee out → cups per person per day → total</b>. State each assumption, round to easy numbers, then sense-check the answer against something you know (for example, how many cafés you pass on one street).</div></details>
+
+<h2 id="markets">Market basics</h2>
+<p class="mute">The terms interviewers expect you to use without stopping to think.</p>
+<details><summary>Why do bond prices fall when interest rates rise?</summary><p>A bond pays fixed coupons. When new bonds pay more, existing ones are worth less, so their price falls until their yield matches the market. Longer bonds move more.</p></details>
+<details><summary>Enterprise value vs equity value</summary><p><b>Equity value</b> is what the shares are worth. <b>Enterprise value</b> is the value of the whole business to all its funders: equity value plus net debt (and other claims such as minority interests). Use EV with measures like EBITDA that belong to everyone; use equity value with earnings per share and P/E.</p></details>
+<details><summary>EBITDA, and why people use it</summary><p>Earnings before interest, tax, depreciation and amortisation: a rough measure of operating cash profit that’s comparable across firms with different debt and tax. Its weakness is that it ignores the cost of replacing equipment.</p></details>
+<details><summary>P/E ratio</summary><p>Share price ÷ earnings per share. A high P/E usually means the market expects growth; a low one can mean value or trouble. Compare within a sector, not across sectors.</p></details>
+<details><summary>What happens when a central bank raises rates?</summary><p>Borrowing gets more expensive, so spending and investment slow, which cools inflation. The currency often strengthens, bond prices fall, and banks’ lending margins can widen.</p></details>
+<details><summary>The three ways to value a company</summary><p><b>Comparable companies</b> (what similar listed firms trade at), <b>precedent transactions</b> (what buyers paid for similar firms, usually higher because of a control premium) and <b>DCF</b> (the value today of future cash flows). Bankers show all three and explain the gap.</p></details>
+
+<h2 id="guides">Firm and programme guides</h2>
+<div class="grid">
+<a class="tile" href="/tracker.html"><b>Programme tracker</b><span>Live deadlines for 60+ programmes. Add them to your applications.</span></a>
+<a class="tile" href="/graduate-programmes.html"><b>Bank programme guides</b><span>What each programme involves and who it suits.</span></a>
+<a class="tile" href="/deutsche-bank.html"><b>Deutsche Bank guide</b><span>Programmes, roles, numeracy and interview questions.</span></a>
+<a class="tile" href="/role-checker.html"><b>Find your role</b><span>Not sure which division? Start here.</span></a>
+<a class="tile" href="/how-we-score.html"><b>How we score</b><span>What the readiness score measures, and how to move it.</span></a>
+<a class="tile" href="/fullcycle.html?sample=amelia"><b>A member’s report</b><span>A fictional sample of the full report.</span></a>
+</div>
+
+<h2 id="help">Get help</h2>
+<div class="help"><div><b style="font-size:17px">Stuck on something specific?</b><br><span style="color:#cfd6db;font-size:14px">Members can ask our practitioner panel one question, answered within 48 hours, and book a call.</span></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="/my.html">Go to My Desk</a><a href="/mentor.html" style="color:#fff;font-weight:700;align-self:center">1-to-1 mentor support →</a></div></div>
+<p class="mute" id="none" hidden>Nothing matches that. Try a shorter word.</p>
+</main>
+<script>
+const q=document.getElementById('q'),all=[...document.querySelectorAll('main details')];
+q.addEventListener('input',()=>{const t=q.value.trim().toLowerCase();let n=0;all.forEach(d=>{const hit=!t||d.textContent.toLowerCase().includes(t);d.hidden=!hit;if(hit)n++;if(t&&hit)d.open=true;if(!t)d.open=false});document.getElementById('none').hidden=n>0});
+</script>
+</body>
+</html>
