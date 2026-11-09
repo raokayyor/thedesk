@@ -22,6 +22,8 @@ function init() {
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_prices (game_id text NOT NULL, ticker text NOT NULL, name text NOT NULL, sector text NOT NULL, price numeric NOT NULL, history jsonb NOT NULL DEFAULT '[]', PRIMARY KEY (game_id, ticker))`);
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_events (id bigserial PRIMARY KEY, game_id text NOT NULL, day integer NOT NULL, headline text NOT NULL, body text NOT NULL DEFAULT '', why text NOT NULL DEFAULT '', practitioner text NOT NULL DEFAULT '', effects jsonb NOT NULL, published_at timestamptz NOT NULL DEFAULT now())`);
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_accounts (game_id text NOT NULL, principal text NOT NULL, display_name text NOT NULL, university text NOT NULL DEFAULT '', cash numeric NOT NULL, positions jsonb NOT NULL DEFAULT '{}', stops jsonb NOT NULL DEFAULT '{}', joined_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY (game_id, principal))`);
+    // Games started before part-units existed logged whole units only.
+    await sql().query(`ALTER TABLE IF EXISTS desk_game_trades ALTER COLUMN shares TYPE numeric`).catch(() => {});
     await sql().query(`ALTER TABLE IF EXISTS desk_game_accounts ADD COLUMN IF NOT EXISTS stops jsonb NOT NULL DEFAULT '{}'`).catch(() => {});
     // costs: total £ paid for what's still held, per investment (so we can show the average price paid and profit/loss)
     await sql().query(`ALTER TABLE IF EXISTS desk_game_accounts ADD COLUMN IF NOT EXISTS costs jsonb NOT NULL DEFAULT '{}'`).catch(() => {});
@@ -123,10 +125,10 @@ export default async function handler(req, res) {
         const joined = (await sql().query('SELECT 1 FROM desk_game_accounts WHERE game_id=$1 AND principal=$2', [g.id, p]))[0];
         return res.status(400).json({ error: !joined ? 'Join the game first.' : side === 'buy' ? 'Not enough cash for that many shares.' : 'You don’t hold that many shares.' });
       }
-      await sql().query('INSERT INTO desk_game_trades(game_id, principal, day, ticker, side, shares, price) VALUES($1,$2,$3,$4,$5,$6,$7)', [g.id, p, g.day, ticker, side, shares, price]);
       // Cost basis: buying adds what you paid; selling removes the same share of the cost, so the average price paid stays put.
       if (side === 'buy') await sql().query(`UPDATE desk_game_accounts SET costs=jsonb_set(costs, ARRAY[$3::text], to_jsonb(COALESCE((costs->>$3::text)::numeric,0)+$4::numeric)) WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, cost]);
       else await sql().query(`UPDATE desk_game_accounts SET costs=CASE WHEN positions ? $3::text THEN jsonb_set(costs, ARRAY[$3::text], to_jsonb(round(COALESCE((costs->>$3::text)::numeric,0) * (positions->>$3::text)::numeric / ((positions->>$3::text)::numeric + $4::numeric), 2))) ELSE costs-$3::text END WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, shares]);
+      await sql().query('INSERT INTO desk_game_trades(game_id, principal, day, ticker, side, shares, price) VALUES($1,$2,$3,$4,$5,$6,$7)', [g.id, p, g.day, ticker, side, shares, price]).catch(e => console.warn('trade log failed', e.message));
       // Optional stop loss with a buy; selling everything clears the stop.
       const sp = Number(b.stopPrice);
       if (side === 'buy' && b.stopPrice != null && b.stopPrice !== '' && sp > 0 && sp < price) await sql().query(`UPDATE desk_game_accounts SET stops=jsonb_set(stops, ARRAY[$3::text], to_jsonb($4::numeric)) WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, sp]);
