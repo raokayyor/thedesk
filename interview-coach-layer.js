@@ -93,6 +93,14 @@
   .dc-pr .k2{color:#ffb38f}.dc-pr ul{margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.55}.dc-pr .by{font-size:12px;color:#cfd6db;margin-top:8px}
   .dc-faces{display:flex}.dc-av{width:34px;height:34px;border-radius:50%;background:#dbe5f1;color:#123459;display:inline-flex;align-items:center;justify-content:center;font:700 12px "DM Sans",Arial,sans-serif;border:2px solid #11191e;margin-left:-8px}.dc-av:first-child{margin-left:0}
   .dc-empty{font-size:14px;color:#5f6b76;margin-top:8px}
+  /* Calmer page: smaller hero, slimmer session bar, transcript column only as tall as it needs */
+  body.dc-on .intro{padding:6px 0 4px!important;margin:0!important}
+  body.dc-on .intro h1{font-size:clamp(24px,3vw,32px)!important;line-height:1.15!important;margin:4px 0!important}
+  body.dc-on .intro p{display:none}
+  body.dc-on .session-context{padding:12px 16px!important;margin:8px 0!important}
+  body.dc-on .session-context .session-name{font-size:13px!important}
+  body.dc-on section.transcript{min-height:0!important;height:auto!important}
+  body.dc-on section.transcript textarea{min-height:140px!important}
   @media(max-width:860px){.dc-pts{grid-template-columns:1fr}.dc-pr{grid-template-columns:1fr}}`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -115,7 +123,8 @@
     const q = ($('question')?.textContent || '').trim(), type = ($('questionType')?.textContent || '').trim();
     if (!q) return;
     const themes = themesFor(q, type), pts = cvPoints();
-    const ranked = pts.map(p => ({ ...p, ...score(p, themes) })).filter(p => p.s > 0).sort((a, b) => b.s - a.s);
+    // Points that match what the question is testing come first; a number alone isn't enough.
+    const ranked = pts.map(p => ({ ...p, ...score(p, themes) })).filter(p => p.s > 0).sort((a, b) => (b.why.some(w => w !== 'has a number you can quote') - a.why.some(w => w !== 'has a number you can quote')) || b.s - a.s);
     // Best point from each different experience first, so the student has a range of examples; then fill up.
     const top = [], seen = new Set();
     for (const p of ranked) { if (top.length === 3) break; if (!seen.has(p.source)) { top.push(p); seen.add(p.source); } }
@@ -155,6 +164,7 @@
   }
   function start() {
     if (!place()) return setTimeout(start, 500);
+    document.body.classList.add('dc-on');
     const sel = $('answerCvEvidence'); if (sel) sel.addEventListener('change', e => { if (e.isTrusted) sel.dataset.dcTouched = '1'; });
     render();
     const mo = new MutationObserver(() => { const q = ($('question')?.textContent || '').trim(); if (q && q !== lastQ) { showFull = false; if (sel) sel.dataset.dcTouched = ''; render(); } });
