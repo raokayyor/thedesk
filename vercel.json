@@ -19,8 +19,7 @@
       "maxDuration": 60
     },
     "api/extract-cv.js": {
-      "maxDuration": 60,
-      "includeFiles": "node_modules/pdf-parse/lib/pdf.js/v1.10.100/build/**"
+      "maxDuration": 60
     }
   }
 }
