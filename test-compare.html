@@ -66,6 +66,7 @@ summary{cursor:pointer;font-weight:600}
 .rate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
 .stars button{border-radius:8px;padding:6px 11px}
 .stars button.on{background:var(--ink);color:#fff}
+.btn-link{display:inline-block;border:1px solid var(--ink);border-radius:999px;padding:8px 14px;font-weight:700;color:var(--ink);text-decoration:none;background:#fff}.btn-link:hover{background:var(--ink);color:#fff}
 .err-t{color:var(--bad);font-size:13px}
 table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card)}
 th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
@@ -233,7 +234,7 @@ function personaView(p){
     <div class="chips">${['university','course','year','grade','targetSector','targetDivision','programme','targetFirm'].filter(k=>p.profile[k]).map(k=>`<span class="chip">${esc(p.profile[k])}</span>`).join('')}<span class="chip">Quiz set to ${p.quiz.commercial}/5 + ${p.quiz.numerical}/5</span></div>
     <details><summary>Their CV</summary><div class="cv">${esc(p.cv)}</div></details>
     ${errs.length?`<div class="err-t">${errs.map(([s,e])=>esc(STEP_LABEL[s]+': '+e)).join('<br>')}</div>`:''}</div>
-    <div><button class="primary" data-run="${esc(p.key)}" ${state.running[p.key]?'disabled':''}>${state.running[p.key]?'Running: '+STEP_LABEL[state.running[p.key]]:'Run this student'}</button></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">${r?.free?`<a class="btn-link" target="_blank" href="/api/test-run?view=free&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open free results page ↗</a>`:''}${r?.report?.plan?`<a class="btn-link" target="_blank" href="/api/test-run?view=paid&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open paid report page ↗</a>`:''}<button class="primary" data-run="${esc(p.key)}" ${state.running[p.key]?'disabled':''}>${state.running[p.key]?'Running: '+STEP_LABEL[state.running[p.key]]:'Run this student'}</button></div></div>
   ${metrics(r)}
   <div class="cols"><div class="card"><div class="col-h"><h3>Free</h3><span class="note">what the student sees before paying</span></div>${freeCol(r)}</div>
   <div class="card"><div class="col-h"><h3>Full Cycle · £89</h3><span class="note">${esc(r?.report?.verdict?.paidTitle||'')}</span></div>${paidCol(r)}</div></div>

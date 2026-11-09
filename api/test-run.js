@@ -64,6 +64,22 @@ export default async function handler(req, res) {
   if (!staffOk(req)) return res.status(401).json({ error: 'Staff key required.' });
   try {
     await initRuns();
+    if (req.method === 'GET' && req.query?.view) {
+      // Open the real student pages for a test record: sets this browser's desk_owner cookie
+      // to the test owner (preview only) and redirects. "free" uses an unpaid copy so the page
+      // shows exactly what a non-paying student sees.
+      const run = (await sql().query('SELECT assessment_id FROM desk_test_runs WHERE batch=$1 AND persona_key=$2', [String(req.query.batch || ''), String(req.query.persona || '')]))[0];
+      if (!run?.assessment_id) return res.status(404).send('Run this student first.');
+      let id = run.assessment_id;
+      if (req.query.view === 'free') {
+        id = createHash('sha256').update(run.assessment_id + ':free-view').digest('hex').slice(0, 48);
+        await sql().query(`INSERT INTO desk_assessments(id,owner_hash,input,result) SELECT $1,owner_hash,input,result FROM desk_assessments WHERE id=$2 ON CONFLICT (id) DO NOTHING`, [id, run.assessment_id]);
+      }
+      res.setHeader('Set-Cookie', `desk_owner=${TEST_OWNER}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400${process.env.VERCEL ? '; Secure' : ''}`);
+      res.statusCode = 302;
+      res.setHeader('Location', (req.query.view === 'free' ? '/result-final-design.html?id=' : '/fullcycle.html?id=') + id);
+      return res.end();
+    }
     if (req.method === 'GET') {
       const latest = (await sql().query('SELECT batch FROM desk_test_runs ORDER BY created_at DESC LIMIT 1'))[0]?.batch || null;
       const batch = String(req.query?.batch || latest || '');
