@@ -23,6 +23,8 @@ function init() {
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_events (id bigserial PRIMARY KEY, game_id text NOT NULL, day integer NOT NULL, headline text NOT NULL, body text NOT NULL DEFAULT '', why text NOT NULL DEFAULT '', practitioner text NOT NULL DEFAULT '', effects jsonb NOT NULL, published_at timestamptz NOT NULL DEFAULT now())`);
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_accounts (game_id text NOT NULL, principal text NOT NULL, display_name text NOT NULL, university text NOT NULL DEFAULT '', cash numeric NOT NULL, positions jsonb NOT NULL DEFAULT '{}', stops jsonb NOT NULL DEFAULT '{}', joined_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY (game_id, principal))`);
     await sql().query(`ALTER TABLE IF EXISTS desk_game_accounts ADD COLUMN IF NOT EXISTS stops jsonb NOT NULL DEFAULT '{}'`).catch(() => {});
+    // costs: total £ paid for what's still held, per investment (so we can show the average price paid and profit/loss)
+    await sql().query(`ALTER TABLE IF EXISTS desk_game_accounts ADD COLUMN IF NOT EXISTS costs jsonb NOT NULL DEFAULT '{}'`).catch(() => {});
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_trades (id bigserial PRIMARY KEY, game_id text NOT NULL, principal text NOT NULL, day integer NOT NULL, ticker text NOT NULL, side text NOT NULL, shares numeric NOT NULL, price numeric NOT NULL, at timestamptz NOT NULL DEFAULT now())`);
   })().catch(e => { ready = null; throw e; });
 }
@@ -60,6 +62,11 @@ export default async function handler(req, res) {
       return res.json({ game: g && { id: g.id, name: g.name, day: g.day, players }, prices: g ? await prices(g.id) : [], universe: UNIVERSE, presets: PRESETS, sectors: SECTORS, practitioners: PRACTITIONERS,
         news: g ? await sql().query('SELECT day, headline, effects, published_at AS "publishedAt" FROM desk_game_events WHERE game_id=$1 ORDER BY id DESC LIMIT 30', [g.id]) : [] });
     }
+    if (q.view === 'quote') {
+      const g = await liveGame(); if (!g) return res.status(404).json({ error: 'No game is running right now.' });
+      const r = (await sql().query('SELECT price FROM desk_game_prices WHERE game_id=$1 AND ticker=$2', [g.id, String(q.ticker || '')]))[0];
+      return r ? res.json({ ticker: q.ticker, price: +r.price, day: g.day }) : res.status(404).json({ error: 'Unknown investment.' });
+    }
     const p = await A.principal(req, res);
     const member = await A.isPaidOwner(p);
 
@@ -68,13 +75,13 @@ export default async function handler(req, res) {
       if (!g) return res.json({ member, game: null });
       const px = await prices(g.id), map = Object.fromEntries(px.map(x => [x.ticker, x.price]));
       const news = await sql().query('SELECT day, headline, body, why, practitioner, effects, published_at AS "publishedAt" FROM desk_game_events WHERE game_id=$1 ORDER BY id DESC LIMIT 20', [g.id]);
-      const accounts = await sql().query('SELECT principal, display_name, university, cash, positions, stops FROM desk_game_accounts WHERE game_id=$1', [g.id]);
+      const accounts = await sql().query('SELECT principal, display_name, university, cash, positions, stops, costs FROM desk_game_accounts WHERE game_id=$1', [g.id]);
       const ranked = accounts.map(a => ({ principal: a.principal, name: a.display_name + (a.university ? ' · ' + a.university : ''), value: portfolioValue(a.cash, a.positions, map) })).sort((x, y) => y.value - x.value);
       const meIdx = ranked.findIndex(r => r.principal === p), mine = accounts.find(a => a.principal === p);
       const trades = mine ? await sql().query('SELECT day, ticker, side, shares, price, at FROM desk_game_trades WHERE game_id=$1 AND principal=$2 ORDER BY id DESC LIMIT 20', [g.id, p]) : [];
       return res.json({ member, startingCash: STARTING_CASH, maxHoldings: MAX_HOLDINGS,
         game: { name: g.name, day: g.day }, prices: px, news,
-        me: mine ? { displayName: mine.display_name, cash: +mine.cash, positions: mine.positions, stops: mine.stops || {}, value: ranked[meIdx].value, rank: meIdx + 1, players: ranked.length, trades: trades.map(t => ({ ...t, price: +t.price, shares: +t.shares })) } : null,
+        me: mine ? { displayName: mine.display_name, cash: +mine.cash, positions: mine.positions, stops: mine.stops || {}, costs: mine.costs || {}, value: ranked[meIdx].value, rank: meIdx + 1, players: ranked.length, trades: trades.map(t => ({ ...t, price: +t.price, shares: +t.shares })) } : null,
         league: ranked.slice(0, 10).map((r, i) => ({ rank: i + 1, name: r.name, value: r.value, returnPct: Math.round((r.value / STARTING_CASH - 1) * 10000) / 100, you: r.principal === p })), players: ranked.length });
     }
 
@@ -89,7 +96,7 @@ export default async function handler(req, res) {
         await sql().query(`INSERT INTO desk_game_accounts(game_id, principal, display_name, university, cash) VALUES($1,$2,$3,$4,$5) ON CONFLICT (game_id, principal) DO UPDATE SET display_name=$3, university=$4`, [g.id, p, dn, clean(b.university, 60), STARTING_CASH]);
         return res.json({ success: true });
       }
-      const account = async () => { const a = (await sql().query('SELECT cash, positions, stops FROM desk_game_accounts WHERE game_id=$1 AND principal=$2', [g.id, p]))[0]; return a ? { cash: +a.cash, positions: a.positions, stops: a.stops || {} } : null; };
+      const account = async () => { const a = (await sql().query('SELECT cash, positions, stops, costs FROM desk_game_accounts WHERE game_id=$1 AND principal=$2', [g.id, p]))[0]; return a ? { cash: +a.cash, positions: a.positions, stops: a.stops || {}, costs: a.costs || {} } : null; };
       if (b.action === 'stop') {
         // Set or clear a stop loss on something you hold: if the price falls to this level, it's sold automatically.
         const t = String(b.ticker || ''), a = await account();
@@ -117,6 +124,9 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: !joined ? 'Join the game first.' : side === 'buy' ? 'Not enough cash for that many shares.' : 'You don’t hold that many shares.' });
       }
       await sql().query('INSERT INTO desk_game_trades(game_id, principal, day, ticker, side, shares, price) VALUES($1,$2,$3,$4,$5,$6,$7)', [g.id, p, g.day, ticker, side, shares, price]);
+      // Cost basis: buying adds what you paid; selling removes the same share of the cost, so the average price paid stays put.
+      if (side === 'buy') await sql().query(`UPDATE desk_game_accounts SET costs=jsonb_set(costs, ARRAY[$3::text], to_jsonb(COALESCE((costs->>$3::text)::numeric,0)+$4::numeric)) WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, cost]);
+      else await sql().query(`UPDATE desk_game_accounts SET costs=CASE WHEN positions ? $3::text THEN jsonb_set(costs, ARRAY[$3::text], to_jsonb(round(COALESCE((costs->>$3::text)::numeric,0) * (positions->>$3::text)::numeric / ((positions->>$3::text)::numeric + $4::numeric), 2))) ELSE costs-$3::text END WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, shares]);
       // Optional stop loss with a buy; selling everything clears the stop.
       const sp = Number(b.stopPrice);
       if (side === 'buy' && b.stopPrice != null && b.stopPrice !== '' && sp > 0 && sp < price) await sql().query(`UPDATE desk_game_accounts SET stops=jsonb_set(stops, ARRAY[$3::text], to_jsonb($4::numeric)) WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, sp]);
@@ -139,8 +149,8 @@ export default async function handler(req, res) {
         const day = g.day + 1, rows = await sql().query('SELECT ticker, sector, price, history FROM desk_game_prices WHERE game_id=$1', [g.id]);
         const moves = {};
         for (const r of rows) {
-          const noise = (randomInt(2001) - 1000) / 1000 * (NOISE[r.sector] ?? 0.5);   // a little random movement, bigger for volatile assets
-          const pct = moveFor({ ticker: r.ticker, sector: r.sector }, events, noise), price = applyMove(+r.price, pct, dpOf(r.ticker));
+          const isCo = !!(UNIVERSE.find(u => u.ticker === r.ticker) || {}).region, noise = (randomInt(2001) - 1000) / 1000 * (NOISE[r.sector] ?? (isCo ? 1 : 0.5));   // a little random movement, bigger for volatile assets
+          const pct = moveFor({ ticker: r.ticker, sector: r.sector, region: (UNIVERSE.find(u => u.ticker === r.ticker) || {}).region }, events, noise), price = applyMove(+r.price, pct, dpOf(r.ticker));
           moves[r.ticker] = Math.round(pct * 100) / 100;
           await sql().query('UPDATE desk_game_prices SET price=$3, history=history || $4::jsonb WHERE game_id=$1 AND ticker=$2', [g.id, r.ticker, price, JSON.stringify([[day, price]])]);
         }
@@ -153,7 +163,7 @@ export default async function handler(req, res) {
           for (const [t, stop] of Object.entries(a.stops || {})) {
             const q = Number(a.positions?.[t] || 0), px = newPx[t];
             if (!q || !(px <= Number(stop))) continue;
-            await sql().query(`UPDATE desk_game_accounts SET cash=cash+$3, positions=positions-$4::text, stops=stops-$4::text WHERE game_id=$1 AND principal=$2`, [g.id, a.principal, Math.round(q * px * 100) / 100, t]);
+            await sql().query(`UPDATE desk_game_accounts SET cash=cash+$3, positions=positions-$4::text, stops=stops-$4::text, costs=costs-$4::text WHERE game_id=$1 AND principal=$2`, [g.id, a.principal, Math.round(q * px * 100) / 100, t]);
             await sql().query('INSERT INTO desk_game_trades(game_id, principal, day, ticker, side, shares, price) VALUES($1,$2,$3,$4,$5,$6,$7)', [g.id, a.principal, day, t, 'stop', q, px]);
             stopped++;
           }

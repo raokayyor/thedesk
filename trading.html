@@ -92,7 +92,7 @@ function sideBlock(){
   const me=G.me;let h='';
   if(me){
     const pos=Object.entries(me.positions||{}).map(([t,q])=>{const p=G.prices.find(x=>x.ticker===t);return {t,q,v:q*(p?.price||0),p}}).sort((a,b)=>b.v-a.v);
-    h+=`<div class="card"><h3>Your holdings</h3>${pos.length?`<table style="margin-top:6px"><thead><tr><th>ASSET</th><th class="num">UNITS</th><th class="num">VALUE</th><th class="num">STOP</th></tr></thead><tbody>${pos.map(x=>`<tr><td><b>${esc(x.p?.name||x.t)}</b></td><td class="num">${qty(x.q)}</td><td class="num">${gbp(x.v)}</td><td class="num">${me.stops?.[x.t]?`<button class="linkbtn" data-stopedit="${esc(x.t)}">${lvl(me.stops[x.t],x.p?.dp??2)}</button>`:`<button class="linkbtn" data-stopedit="${esc(x.t)}">Set</button>`}</td></tr>`).join('')}<tr><td>Cash</td><td></td><td class="num">${gbp(me.cash)}</td><td class="num mute">${(me.cash/me.value*100).toFixed(0)}%</td></tr></tbody></table>`:'<p class="mute">All cash. Buy something from the market.</p>'}</div>`;
+    h+=`<div class="card"><h3>Your holdings</h3>${pos.length?`<div class="scroll"><table style="margin-top:6px"><thead><tr><th>ASSET</th><th class="num">UNITS</th><th class="num">PAID (AVG)</th><th class="num">VALUE</th><th class="num">PROFIT/LOSS</th><th class="num">STOP</th></tr></thead><tbody>${pos.map(x=>{const cost=Number(me.costs?.[x.t]||0),avg=x.q?cost/x.q:0,pl=x.v-cost;return `<tr><td><b>${esc(x.p?.name||x.t)}</b><div class="mute">now ${lvl(x.p?.price||0,x.p?.dp??2)}</div></td><td class="num">${qty(x.q)}</td><td class="num">${cost?lvl(avg,x.p?.dp??2):'—'}</td><td class="num">${gbp(x.v)}</td><td class="num">${cost?pct2(pl,cost):'—'}</td><td class="num"><button class="linkbtn" data-stopedit="${esc(x.t)}">${me.stops?.[x.t]?lvl(me.stops[x.t],x.p?.dp??2):'Set'}</button></td></tr>`}).join('')}<tr><td>Cash</td><td></td><td></td><td class="num">${gbp(me.cash)}</td><td></td><td></td></tr></tbody></table></div>`:'<p class="mute">All cash. Press Buy on anything in the market.</p>'}</div>`;
     if(me.trades.length)h+=`<div class="card"><h3>Your recent trades</h3><table style="margin-top:6px"><tbody>${me.trades.slice(0,8).map(t=>`<tr><td class="mute">Day ${t.day}</td><td>${t.side==='buy'?'Bought':t.side==='stop'?'<span class="down">Stop loss sold</span>':'Sold'} ${qty(t.shares)} <b>${esc((G.prices.find(p=>p.ticker===t.ticker)||{}).name||t.ticker)}</b></td><td class="num">${lvl(t.price,(G.prices.find(p=>p.ticker===t.ticker)||{}).dp??2)}</td></tr>`).join('')}</tbody></table></div>`;
   }
   if(G.league.length)h+=`<div class="card"><h3>League</h3><p class="mute" style="margin:2px 0 8px">${G.players} player${G.players===1?'':'s'}</p><table><thead><tr><th>#</th><th>STUDENT</th><th class="num">RETURN</th></tr></thead><tbody>${G.league.map(r=>`<tr class="${r.you?'you':''}"><td>${r.rank}</td><td>${esc(r.name)}</td><td class="num">${pct(r.returnPct)}</td></tr>`).join('')}</tbody></table>${me&&me.rank>10?`<p style="margin:8px 0 0">You’re ${me.rank} of ${me.players}.</p>`:''}</div>`;
@@ -114,64 +114,79 @@ function applyFilter(){
   document.querySelectorAll('#mkt tr[data-head]').forEach(h=>{h.hidden=![...document.querySelectorAll(`#mkt tr[data-row][data-grp="${CSS.escape(h.dataset.head)}"]`)].some(r=>!r.hidden)});
 }
 // ---------- trade ticket ----------
+// The form is drawn once when the ticket opens; typing only updates the summary, so the cursor never jumps.
 let TK=null;
-function openTicket(t,side,focusStop){
+async function openTicket(t,side,focusStop){
   document.querySelectorAll('tr.ticket').forEach(r=>r.remove());
   const row=document.querySelector(`#mkt tr[data-row] [data-buy="${CSS.escape(t)}"]`)?.closest('tr');if(!row)return;
-  TK={t,side,mode:'units',val:'',stopOn:!!G.me.stops?.[t],stopPct:10};
-  const tr=document.createElement('tr');tr.className='ticket';tr.innerHTML=`<td colspan="7"></td>`;row.after(tr);drawTicket();
+  TK={t,side,mode:'gbp',stopOn:!!G.me.stops?.[t],stopPct:10,fresh:false};
+  const tr=document.createElement('tr');tr.className='ticket';tr.innerHTML=`<td colspan="7"></td>`;row.after(tr);drawTicket(focusStop);
   tr.scrollIntoView({block:'nearest',behavior:'smooth'});
-  const inp=tr.querySelector(focusStop?'[data-k=stopv]':'[data-k=val]');if(inp)inp.focus();
+  // Load the latest price (it may have moved with news since this page loaded).
+  try{const r=await fetch('/api/game?view=quote&ticker='+encodeURIComponent(t),{credentials:'same-origin'});const d=await r.json();const p=G.prices.find(x=>x.ticker===t);
+    if(r.ok&&p&&TK&&TK.t===t){const moved=d.price!==p.price;p.price=d.price;TK.fresh=true;if(moved)toast('Price updated to the latest: '+lvl(d.price,p.dp));updateTicket()}}catch(e){}
 }
 function ticketCalc(){
-  const p=G.prices.find(x=>x.ticker===TK.t),me=G.me,held=Number(me.positions?.[TK.t]||0);
-  const v=parseFloat(TK.val)||0,units=TK.mode==='units'?v:(p.price?v/p.price:0),u=Math.floor(units*1e6)/1e6,cost=Math.round(u*p.price*100)/100;
+  const td=document.querySelector('tr.ticket td');const p=G.prices.find(x=>x.ticker===TK.t),me=G.me,held=Number(me.positions?.[TK.t]||0);
+  const raw=td?.querySelector('[data-k=val]')?.value||'';const v=parseFloat(raw.replace(/,/g,''))||0;
+  const units=TK.mode==='units'?v:(p.price?v/p.price:0),u=Math.floor(units*1e6+1e-7)/1e6,cost=Math.round(u*p.price*100)/100;
   const nHeld=Object.keys(me.positions||{}).length;let err='';
-  if(TK.side==='buy'){if(u>0&&cost>me.cash+0.005)err=`Not enough cash: this costs ${gbp(cost,2)} and you have ${gbp(me.cash,2)}.`;else if(u>0&&!held&&nHeld>=G.maxHoldings)err=`You already hold ${G.maxHoldings} investments. Sell one first.`}
-  else if(u>held+1e-9)err=`You only hold ${qty(held)}.`;
+  if(v<0)err='Enter a positive amount.';
+  else if(TK.side==='buy'){if(u>0&&cost>me.cash+0.005)err=`Not enough cash: this costs ${gbp(cost,2)} and you have ${gbp(me.cash,2)}.`;else if(u>0&&!held&&nHeld>=G.maxHoldings)err=`You already hold ${G.maxHoldings} investments. Sell one first.`}
+  else if(u>held+1e-9)err=`You only hold ${qty(held)} units (worth ${gbp(held*p.price,2)}).`;
   const stopPrice=TK.side==='buy'&&TK.stopOn?Math.round(p.price*(1-TK.stopPct/100)*100)/100:null;
   return {p,held,u,cost,err,stopPrice,cashAfter:TK.side==='buy'?me.cash-cost:me.cash+cost};
 }
-function drawTicket(){
-  const td=document.querySelector('tr.ticket td');if(!td)return;const c=ticketCalc(),p=c.p,me=G.me,buy=TK.side==='buy';
-  const curStop=me.stops?.[TK.t];
+function drawTicket(focusStop){
+  const td=document.querySelector('tr.ticket td');if(!td)return;const p=G.prices.find(x=>x.ticker===TK.t),me=G.me,buy=TK.side==='buy',held=Number(me.positions?.[TK.t]||0),curStop=me.stops?.[TK.t];
   td.innerHTML=`<div class="tk"><div>
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="tabs" role="tablist"><button data-side="buy" class="${buy?'on':''}">Buy</button><button data-side="sell" class="${buy?'':'on'}" ${c.held?'':'disabled'}>Sell</button></div><b>${esc(p.name)} · ${lvl(p.price,p.dp)}</b><button class="linkbtn" data-k="close">Close</button></div>
-    <div class="mode"><label><input type="radio" name="tkm" value="units" ${TK.mode==='units'?'checked':''}> Units</label><label><input type="radio" name="tkm" value="gbp" ${TK.mode==='gbp'?'checked':''}> Amount in £</label></div>
-    <input type="number" min="0" step="any" inputmode="decimal" data-k="val" value="${esc(TK.val)}" placeholder="${TK.mode==='units'?'How many units':'How much in £'}" aria-label="${TK.mode==='units'?'Units':'Amount in pounds'}">
-    <div class="quick">${buy?[[0.1,'10% of cash'],[0.25,'25%'],[0.5,'50%'],[1,'All my cash']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join(''):[[0.5,'Half'],[1,'All']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join('')}</div>
-    ${buy?`<div class="stop"><label><input type="checkbox" data-k="stopon" ${TK.stopOn?'checked':''}> Add a stop loss: sell automatically if it falls</label> <input type="number" min="1" max="90" step="1" data-k="stoppct" value="${TK.stopPct}" aria-label="Stop loss percent below the price">% below the price${TK.stopOn?` · at <b>${lvl(c.stopPrice,p.dp)}</b>`:''}</div>`
-      :`<div class="stop">Stop loss on your holding: ${curStop?`<b>${lvl(curStop,p.dp)}</b>`:'none'} · set at <input type="number" step="any" data-k="stopv" value="${curStop||''}" placeholder="${lvl(p.price*0.9,p.dp)}" aria-label="Stop loss price"> <button class="btn ghost sm" data-k="stopset">${curStop?'Update':'Set'}</button>${curStop?` <button class="linkbtn" data-k="stopclear">Remove</button>`:''}</div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="tabs" role="tablist"><button data-side="buy" class="${buy?'on':''}" aria-pressed="${buy}">Buy</button><button data-side="sell" class="${buy?'':'on'}" aria-pressed="${!buy}" ${held?'':'disabled title="You don’t hold any yet"'}>Sell</button></div><b data-k="title"></b><button class="linkbtn" data-k="close">Close</button></div>
+    <div class="mode"><label><input type="radio" name="tkm" value="gbp" ${TK.mode==='gbp'?'checked':''}> Amount in £</label><label><input type="radio" name="tkm" value="units" ${TK.mode==='units'?'checked':''}> Units</label></div>
+    <input type="text" inputmode="decimal" autocomplete="off" data-k="val" placeholder="${TK.mode==='units'?'How many units, e.g. 10':'How much in £, e.g. 5000'}" aria-label="${TK.mode==='units'?'Units':'Amount in pounds'}">
+    <div class="quick">${buy?[[0.1,'10% of cash'],[0.25,'25%'],[0.5,'50%'],[1,'All my cash']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join(''):[[0.25,'Quarter'],[0.5,'Half'],[1,'All']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join('')}</div>
+    ${buy?`<div class="stop"><label><input type="checkbox" data-k="stopon" ${TK.stopOn?'checked':''}> Add a stop loss: sell automatically if it falls</label> <input type="number" min="1" max="90" step="1" data-k="stoppct" value="${TK.stopPct}" aria-label="Stop loss percent below the price">% below <span data-k="stopat"></span></div>`
+      :`<div class="stop">Stop loss on your holding: ${curStop?`<b>${lvl(curStop,p.dp)}</b>`:'none'} · set at <input type="number" step="any" data-k="stopv" value="${curStop||''}" placeholder="${lvl(p.price*0.9,p.dp).replace(/,/g,'')}" aria-label="Stop loss price"> <button class="btn ghost sm" data-k="stopset">${curStop?'Update':'Set'}</button>${curStop?` <button class="linkbtn" data-k="stopclear">Remove</button>`:''}</div>`}
   </div><div>
-    <div class="sum"><div><span>Price</span><span>${lvl(p.price,p.dp)}</span></div><div><span>Units</span><span>${qty(c.u)}</span></div>
-      <div class="big"><span>${buy?'Cost':'You receive'}</span><span>${gbp(c.cost,2)}</span></div>
-      <div><span>Cash now</span><span>${gbp(me.cash,2)}</span></div><div><span>Cash after</span><span class="${c.cashAfter<0?'down':''}">${gbp(c.cashAfter,2)}</span></div>
-      <div><span>You’ll hold</span><span>${qty(buy?c.held+c.u:Math.max(0,c.held-c.u))} units</span></div></div>
-    <div class="err" role="status">${esc(c.err)}</div>
-    <button class="btn ${buy?'hot':''}" data-k="go" style="width:100%" ${!c.u||c.err?'disabled':''}>${c.u?`${buy?'Buy':'Sell'} ${qty(c.u)} for ${gbp(c.cost,2)}`:(buy?'Enter an amount to buy':'Enter an amount to sell')}</button>
+    <div class="sum" data-k="sum"></div><div class="err" role="status" data-k="err"></div>
+    <button class="btn ${buy?'hot':''}" data-k="go" style="width:100%"></button>
   </div></div>`;
-  bindTicket();
+  bindTicket();updateTicket();
+  const f=td.querySelector(focusStop?'[data-k=stopv]':'[data-k=val]');if(f)f.focus();
 }
+function updateTicket(){
+  const td=document.querySelector('tr.ticket td');if(!td||!TK)return;const c=ticketCalc(),p=c.p,me=G.me,buy=TK.side==='buy';const q=k=>td.querySelector(`[data-k="${k}"]`);
+  const avg=c.held&&me.costs?.[TK.t]?me.costs[TK.t]/c.held:null;
+  q('title').textContent=`${p.name} · ${lvl(p.price,p.dp)}${TK.fresh?' (latest)':''}`;
+  q('sum').innerHTML=`<div><span>Latest price</span><span>${lvl(p.price,p.dp)}</span></div><div><span>Units</span><span>${qty(c.u)}</span></div>
+    <div class="big"><span>${buy?'Cost':'You receive'}</span><span>${gbp(c.cost,2)}</span></div>
+    <div><span>Cash now</span><span>${gbp(me.cash,2)}</span></div><div><span>Cash after</span><span class="${c.cashAfter<0?'down':''}">${gbp(c.cashAfter,2)}</span></div>
+    <div><span>You’ll hold</span><span>${qty(buy?c.held+c.u:Math.max(0,c.held-c.u))} units</span></div>
+    ${!buy&&avg?`<div><span>Profit/loss on this sale</span><span>${pct2(c.u*(p.price-avg),c.u*avg)}</span></div>`:''}`;
+  q('err').textContent=c.err;
+  const go=q('go');go.disabled=!c.u||!!c.err;go.textContent=c.u?`${buy?'Buy':'Sell'} ${qty(c.u)} for ${gbp(c.cost,2)}`:(buy?'Enter an amount to buy':'Enter an amount to sell');
+  if(q('stopat'))q('stopat').innerHTML=TK.stopOn?`the price · at <b>${lvl(c.stopPrice,p.dp)}</b>`:'the price';
+}
+const pct2=(pl,base)=>`<span class="${pl>=0?'up':'down'}">${pl>=0?'+':'−'}${gbp(Math.abs(pl),2)}${base?` (${pl>=0?'+':'−'}${Math.abs(pl/base*100).toFixed(1)}%)`:''}</span>`;
 function bindTicket(){
   const td=document.querySelector('tr.ticket td');const q=k=>td.querySelector(`[data-k="${k}"]`);
-  td.querySelectorAll('[data-side]').forEach(b=>b.onclick=()=>{TK.side=b.dataset.side;TK.val='';drawTicket()});
-  td.querySelectorAll('input[name=tkm]').forEach(r=>r.onchange=()=>{TK.mode=r.value;TK.val='';drawTicket();q('val').focus()});
-  q('val').oninput=e=>{TK.val=e.target.value;const pos=e.target.selectionStart;drawTicket();const n=q('val');n.focus();try{n.setSelectionRange(pos,pos)}catch(x){}};
-  td.querySelectorAll('[data-fill]').forEach(b=>b.onclick=()=>{const f=+b.dataset.fill,p=G.prices.find(x=>x.ticker===TK.t);
-    if(TK.side==='buy'){const amt=Math.floor(G.me.cash*f*100)/100;TK.val=TK.mode==='gbp'?String(amt):String(Math.floor(amt/p.price*1e6)/1e6)}
-    else{const h=Number(G.me.positions?.[TK.t]||0)*f;TK.val=TK.mode==='units'?String(Math.floor(h*1e6)/1e6):String(Math.floor(h*p.price*100)/100)}
-    drawTicket()});
-  q('close').onclick=()=>document.querySelectorAll('tr.ticket').forEach(r=>r.remove());
-  if(q('stopon')){q('stopon').onchange=e=>{TK.stopOn=e.target.checked;drawTicket()};q('stoppct').oninput=e=>{TK.stopPct=Math.max(1,Math.min(90,parseFloat(e.target.value)||10));if(TK.stopOn){const v=e.target.value;drawTicket();const n=q('stoppct');n.value=v;n.focus()}}}
-  if(q('stopset'))q('stopset').onclick=async()=>{const r=await post({action:'stop',ticker:TK.t,stopPrice:parseFloat(q('stopv').value)});if(r.ok){G.me={...G.me,...r.data.account};toast('Stop loss saved.');render();openTicket(TK.t,'sell')}else toast(r.data.error||'Could not set that.')};
-  if(q('stopclear'))q('stopclear').onclick=async()=>{const r=await post({action:'stop',ticker:TK.t,stopPrice:null});if(r.ok){G.me={...G.me,...r.data.account};toast('Stop loss removed.');render();openTicket(TK.t,'sell')}};
-  q('go').onclick=async()=>{const c=ticketCalc();if(!c.u||c.err)return;q('go').disabled=true;
+  td.querySelectorAll('[data-side]').forEach(b=>b.onclick=()=>{if(b.disabled)return;TK.side=b.dataset.side;drawTicket()});
+  td.querySelectorAll('input[name=tkm]').forEach(r=>r.onchange=()=>{TK.mode=r.value;drawTicket()});
+  q('val').addEventListener('input',e=>{const c=e.target.value.replace(/[^0-9.,]/g,'');if(c!==e.target.value)e.target.value=c;updateTicket()});
+  q('val').addEventListener('keydown',e=>{if(e.key==='Enter'&&!q('go').disabled)q('go').click()});
+  td.querySelectorAll('[data-fill]').forEach(b=>b.onclick=()=>{const f=+b.dataset.fill,p=G.prices.find(x=>x.ticker===TK.t);let v;
+    if(TK.side==='buy'){const amt=Math.floor(G.me.cash*f*100)/100;v=TK.mode==='gbp'?amt:Math.floor(amt/p.price*1e6)/1e6}
+    else{const h=Number(G.me.positions?.[TK.t]||0)*f;v=TK.mode==='units'?Math.floor(h*1e6)/1e6:Math.floor(h*p.price*100)/100}
+    q('val').value=String(v);updateTicket()});
+  q('close').onclick=()=>{document.querySelectorAll('tr.ticket').forEach(r=>r.remove());TK=null};
+  if(q('stopon')){q('stopon').onchange=e=>{TK.stopOn=e.target.checked;updateTicket()};q('stoppct').oninput=e=>{TK.stopPct=Math.max(1,Math.min(90,parseFloat(e.target.value)||10));updateTicket()}}
+  if(q('stopset'))q('stopset').onclick=async()=>{const r=await post({action:'stop',ticker:TK.t,stopPrice:parseFloat(q('stopv').value)});if(r.ok){G.me={...G.me,...r.data.account};toast('Stop loss saved.');const t=TK.t;render();openTicket(t,'sell')}else toast(r.data.error||'Could not set that.')};
+  if(q('stopclear'))q('stopclear').onclick=async()=>{const r=await post({action:'stop',ticker:TK.t,stopPrice:null});if(r.ok){G.me={...G.me,...r.data.account};toast('Stop loss removed.');const t=TK.t;render();openTicket(t,'sell')}};
+  q('go').onclick=async()=>{const c=ticketCalc();if(!c.u||c.err)return;q('go').disabled=true;q('go').textContent='Placing your trade…';
     const r=await post({action:'trade',ticker:TK.t,side:TK.side,shares:c.u,stopPrice:c.stopPrice});
-    if(!r.ok){toast(r.data.error||'Trade failed.');drawTicket();return}
-    // Update the pot straight away, then refresh the league in the background.
+    if(!r.ok){toast(r.data.error||'Trade failed.');updateTicket();return}
     const a=r.data.account,map=Object.fromEntries(G.prices.map(x=>[x.ticker,x.price]));
     G.me={...G.me,...a,value:a.cash+Object.entries(a.positions).reduce((s,[k,v])=>s+v*(map[k]||0),0),trades:[{day:G.game.day,ticker:TK.t,side:TK.side,shares:c.u,price:r.data.price},...(G.me.trades||[])]};
-    toast(`${TK.side==='buy'?'Bought':'Sold'} ${qty(c.u)} ${c.p.name} for ${gbp(r.data.cost,2)}${c.stopPrice?` · stop loss at ${lvl(c.stopPrice,c.p.dp)}`:''}`);
+    toast(`${TK.side==='buy'?'Bought':'Sold'} ${qty(c.u)} ${c.p.name} at ${lvl(r.data.price,c.p.dp)} for ${gbp(r.data.cost,2)}${c.stopPrice?` · stop loss at ${lvl(c.stopPrice,c.p.dp)}`:''}`);
     TK=null;render();load()};
 }
 function bind(){
