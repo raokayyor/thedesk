@@ -44,7 +44,15 @@ select,input,textarea{font:inherit;font-size:14px;padding:9px 10px;border:1px so
 form.add[hidden]{display:none}form.add{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;margin-top:12px}
 details.ans{border-top:1px solid var(--soft);padding:10px 0}details.ans:first-child{border-top:0}summary{cursor:pointer;font-weight:600}
 .signin{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.signin input{flex:1;max-width:340px}
-@media(max-width:900px){.grid3{grid-template-columns:1fr}.span2{grid-column:auto}.hero{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}.big{font-size:60px}}
+.panel{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:center}
+.faces{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}.face{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.3}
+.av{width:38px;height:38px;border-radius:50%;background:#dbe5f1;color:#123459;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+.face.lead .av{background:var(--ink);color:#fff;box-shadow:0 0 0 3px var(--accent)}
+.pnote{display:flex;gap:8px;align-items:flex-start;margin-top:8px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:#3b4652}
+.pnote .av{width:24px;height:24px;font-size:10px}.pnote b{font-size:13px}
+.ask{background:var(--warm);border:1px solid var(--warm-line);border-radius:12px;padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:10px}
+.myth{display:flex;flex-direction:column;gap:8px}.myth s{color:var(--mute)}
+@media(max-width:900px){.panel{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.span2{grid-column:auto}.hero{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}.big{font-size:60px}}
 </style>
 <script src="/desk-me.js" defer></script>
 <script src="/desk-nav.js" defer></script>
@@ -80,13 +88,27 @@ function headerBits(){
   if(D.signedIn)parts.push(`<span>${esc(D.email)}</span><button class="btn ghost" id="out" style="min-height:36px;padding:6px 12px">Sign out</button>`);
   who.innerHTML=parts.join('');
 }
+function panelBand(){
+  const P=D.practitioners;if(!P)return '';
+  const q=P.question;let ask;
+  if(q&&q.answered)ask=`<div class="ask"><b>${esc(q.by||'The panel')} answered your question.</b><a class="btn" href="/practitioner-answer.html?id=${encodeURIComponent(q.id)}">Read the answer</a></div>`;
+  else if(q)ask=`<div class="ask"><b>Your question is with the panel.</b><span>Answer due by ${esc(new Date(q.dueAt).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'}))}.</span></div>`;
+  else if(P.canAsk&&D.report)ask=`<div class="ask"><b>Your membership includes one question to the panel.</b><span>Ask about your CV, a firm or an interview. Answered within 48 hours.</span><a class="btn" href="${esc(D.report.url)}#ask">Ask the panel</a></div>`;
+  else if(!D.member)ask=`<div class="ask"><b>Members put a question to the panel.</b><span>Answered by one of them within 48 hours, plus a call to talk it through.</span>${D.report?'<button class="btn hot" id="join3">£89 for the whole year</button>':''}</div>`;
+  else ask=`<div class="ask"><b>Your panel question has been used.</b><span>Members also get a call with a practitioner.</span></div>`;
+  if(D.member&&ME.call)ask=ask.replace('</div>',`<a class="btn ghost" href="${esc(ME.call.url)}" target="_blank" rel="noopener">${esc(ME.call.label)}</a></div>`);
+  return `<section class="card panel"><div><div class="kicker">Your practitioner panel</div><h2 style="margin-top:6px">Built on what people who’ve hired for banks actually look for.</h2>
+    <p class="mute" style="margin:6px 0 0">The scoring, the tips and the interview feedback on your Desk use points our practitioners have checked and approved${P.approved>=50?` (${P.approved.toLocaleString('en-GB')} so far)`:''}. Where they disagree with popular advice, we tell you.</p>
+    <div class="faces">${P.panel.map(m=>`<div class="face${m.name===P.lead.name?' lead':''}" title="${esc(m.firms)}"><span class="av" aria-hidden="true">${esc(m.init)}</span><span><b>${esc(m.name)}</b>${m.name===P.lead.name?' · <span style="color:var(--accent-ink);font-weight:700">your route</span>':''}<br><span class="mute" style="font-size:12px">${esc(m.firms)}</span></span></div>`).join('')}</div></div>
+    ${ask}</section>`;
+}
 function readinessCard(){
   const r=D.readiness;
   if(!r)return `<div class="hero span2"><div><div class="kicker">Readiness score</div><p style="font:500 26px/1.25 Fraunces,Georgia,serif;margin:10px 0 0">You don’t have a score yet.</p><p style="color:#cfd6db;font-size:14px">The free assessment reads your CV against your target route and gives you a readiness score and your top 3 fixes. About 10 minutes.</p><a class="btn hot" href="/assessment.html" style="margin-top:6px">Take the free assessment</a></div><div><div class="kicker">How it moves</div><p style="color:#cfd6db;font-size:14px;margin:10px 0 0">Your score changes only when you prove something: a recheck of an improved CV, or a better result on a fresh test. Practice and ticked-off tasks show in your progress, not your score.</p></div></div>`;
   const gap=r.score>=75?'':r.score>=65?`${75-r.score} points from Competitive`:`${65-r.score} points from Borderline`;
   return `<div class="hero span2"><div><div class="kicker">Readiness score</div><div style="display:flex;align-items:baseline;gap:12px;margin-top:8px"><div class="big">${r.score}</div><div><div style="font-size:18px;font-weight:700">${esc(r.band)}</div><div style="font-size:14px;color:#cfd6db">${esc(gap)}</div></div></div>
     ${r.change?`<div class="up ${r.change<0?'down':''}">${r.change>0?'+':''}${r.change} since your first assessment</div>`:''}
-    <p style="margin:12px 0 0;font-size:13px;color:#cfd6db">Moves only when you prove something: a recheck of a better CV, or better test results (your best of the last 3 tests counts).</p></div>
+    <p style="margin:12px 0 0;font-size:13px;color:#cfd6db">Moves only when you prove something: a recheck of a better CV, or better test results (your best of the last 3 tests counts).</p><p style="margin:8px 0 0;font-size:13px"><a href="/how-we-score.html" style="color:#ffb38f">Scoring framework set by our practitioners →</a></p></div>
     <div><div class="kicker">What moved it</div><div style="margin-top:6px">${r.timeline.map(t=>`<div class="tl"><span>${esc(day(t.at))} · ${esc(t.note)}</span><b>${t.score}</b></div>`).join('')}</div>
     <p style="margin:8px 0 0;font-size:13px;color:#cfd6db">${D.member?'Next: recheck after your CV rewrites, or take a fresh test.':'Next: take a fresh test. Members can also recheck their CV.'}</p></div></div>`;
 }
@@ -104,7 +126,7 @@ function sideCard(){
 function actionsCard(){
   if(!D.actions.length)return '';
   return `<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>Your next ${D.actions.length===1?'action':D.actions.length+' actions'}</h2><span class="mute">From your report, applications and practice</span></div>
-    <div class="grid3" style="margin-top:14px">${D.actions.map(a=>`<a class="act${a.urgent?' urgent':''}" href="${esc(a.href)}"><span class="kicker">${esc(a.tag)}</span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span></a>`).join('')}</div></section>`;
+    <div class="grid3" style="margin-top:14px">${D.actions.map(a=>`<a class="act${a.urgent?' urgent':''}" href="${esc(a.href)}"><span class="kicker">${esc(a.tag)}</span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span>${a.note?`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+'’s note':'Practitioner note'}:</b> ${esc(a.note.text)}</span></span>`:''}</a>`).join('')}</div></section>`;
 }
 function toolsRow(){
   const R=D.report,T=D.tests,I=D.interview,b=R?.breakdown;
@@ -133,6 +155,10 @@ function appsCard(){
       :`<p class="mute" style="margin:10px 0 0">Nothing yet. Add programmes from the <a href="/tracker.html">tracker</a> (live deadlines for 60+ programmes) or add a firm yourself.</p>`}
     <p class="mute" style="margin:10px 0 0">Programmes you add in the tracker appear here. ${D.signedIn?'Saved to your account.':'Saved in this browser. Sign in to keep them on every device.'}</p></section>`;
 }
+function mythCard(){
+  const m=D.practitioners?.myth;if(!m)return '';
+  return `<section class="card myth"><div class="kicker">Advice our practitioners disagree with</div><p style="margin:0;font-size:14px"><s>${esc(m.myth)}</s></p><div class="pnote" style="margin-top:0"><span class="av" aria-hidden="true">${esc(m.init||'TD')}</span><span><b>${m.by?esc(m.by)+' says':'Our view'}:</b> ${esc(m.view)}</span></div></section>`;
+}
 function newsCard(){
   return `<section class="card" id="news" style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>News on your firms</h3><span class="mute">Daily</span></div>
     <div class="news" id="newsList">${D.news.length?'<p class="mute">Loading…</p>':'<p class="mute" style="margin:0">Add a firm to your applications to see its latest news here. Covered so far: Barclays, BofA, Deutsche Bank, EY, Goldman Sachs, J.P. Morgan, PwC and UBS.</p>'}</div></section>`;
@@ -145,7 +171,7 @@ async function loadNews(){
 }
 function extrasRow(){
   const ints=(ME.items||[]).filter(i=>i.kind==='interview');
-  const call=ME.call?`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Talk to a practitioner</b><br>${esc(ME.call.label)}. Five minutes on what to fix first.</div><a class="btn ghost" href="${esc(ME.call.url)}" target="_blank" rel="noopener">Book a time</a></div>`:'';
+  const call='';
   const signin=D.signedIn?'':`<div class="card"><h3>Keep your desk on every device</h3><p class="mute" style="margin:6px 0 0">Everything here is saved in this browser. Sign in with your email (no password) to open it on your phone and laptop.</p><form class="signin" id="signin"><input type="email" id="email" required placeholder="you@university.ac.uk" autocomplete="email" aria-label="Email address"><button class="btn">Email me a sign-in link</button></form><p class="mute" id="smsg" role="status"></p></div>`;
   const saved=ints.length?`<details class="card"><summary>Your saved interview answers (${ints.length})</summary><div style="margin-top:8px">${ints.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span style="color:var(--accent-ink);margin-left:6px">${f.overall??''}</span></summary><p class="mute">${esc(day(i.createdAt))}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p style="font-size:14px"><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p style="font-size:14px"><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-delans="${esc(i.id)}" style="min-height:32px;padding:4px 12px">Delete</button></details>`}).join('')}</div></details>`:'';
   const outcome=`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`;
@@ -158,8 +184,9 @@ function render(){
   app.innerHTML=`${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><div class="mute">${D.member?'':'Free account'}${!D.member&&target?' · ':''}${esc(target)}</div></div>
     <section class="grid3">${readinessCard()}${sideCard()}</section>
+    ${panelBand()}
     ${actionsCard()}${toolsRow()}
-    <section class="grid3">${appsCard()}${newsCard()}</section>
+    <section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${mythCard()}${newsCard()}</div></section>
     ${extrasRow()}`;
   bind();loadNews();
   if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}
@@ -170,7 +197,7 @@ async function join(){
   if(r.ok&&r.data.url)location.href=r.data.url;else location.href=D.report.url;
 }
 function bind(){
-  ['join','join2'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
+  ['join','join2','join3'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
   const o=document.getElementById('out');if(o)o.onclick=async()=>{await post('/api/value-account',{action:'signout'});location.href='/my.html'};
   const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await post('/api/value-account',{action:'request',email:document.getElementById('email').value,next:'/my.html'});document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(r.data.error||'Something went wrong.')};
   const t=document.getElementById('addToggle'),f=document.getElementById('addForm');

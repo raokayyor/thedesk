@@ -11,8 +11,10 @@
 // Interview practice is shown separately and never changes readiness.
 import { createRequire } from 'node:module';
 import { randomInt } from 'node:crypto';
-import { sql, sameOrigin, apiFailure, initStore, hash } from '../lib/report-store.mjs';
+import { sql, sameOrigin, apiFailure, initStore, hash, owner } from '../lib/report-store.mjs';
 import * as A from '../lib/value-accounts.mjs';
+import { select as selectKnowledge, initKnowledge, KINDS } from '../lib/knowledge.mjs';
+import { initQuestions } from '../lib/practitioner-questions.mjs';
 import { entitlement } from '../lib/accounts.mjs';
 import { FREE_PER_DAY, PAID_PER_DAY } from '../lib/interview-feedback.mjs';
 import { loadProgrammes } from '../lib/programmes.mjs';
@@ -66,6 +68,41 @@ function pickTest(route, seen) {
 const publicQ = q => ({ id: q.id, topic: q.topic, question: q.question, options: q.options, timeSec: q.timeSec });
 const findQ = (group, id) => bank()[group === 'commercial' ? 'technical' : 'numerical'].find(q => q.id === id);
 
+// The practitioner panel, as presented across the site (fullcycle.html).
+export const PANEL = [
+  { init: 'KR', name: 'Kayyor Rao', role: 'Banking · MD · 20 years', firms: 'UBS · Commerzbank · BGC · Knight · Stifel', routes: ['Investment Banking / IBD', 'Sales & Trading / Markets', 'General Finance'] },
+  { init: 'PC', name: 'Peter Cheley', role: 'Banking & Asset Management · MD · 40 years', firms: 'SocGen · Commerzbank · JPM IM · BGC', routes: ['Asset Management / Investing'] },
+  { init: 'NR', name: 'Neil Robertson', role: 'Banking · MD · 30 years', firms: 'UBS · Knight · Stifel · Aurel', routes: ['Sales & Trading / Markets'] },
+  { init: 'JS', name: 'Jim Staples', role: 'Banking · MD · 30 years', firms: 'Barclays · BGC', routes: ['Investment Banking / IBD'] },
+  { init: 'CS', name: 'Chris Sharkey', role: 'Audit, Accounting & Insurance · MD · 20+ years', firms: 'Lancashire Insurance · EY', routes: ['Accounting / Audit'] }
+];
+const panelMember = name => PANEL.find(m => m.name === name || m.name.split(' ').includes(name)) || null;
+// Approved practitioner points for this student's firm and route, with who approved them.
+async function practitionerLayer(req, res, profile, paid) {
+  const out = { panel: PANEL.map(({ routes, ...m }) => m), lead: PANEL.find(m => m.routes.includes(profile.targetSector)) || PANEL[0], notes: {}, myth: null, approved: 0, question: null };
+  try {
+    await initKnowledge();
+    const rows = await sql().query(`SELECT kind, statement, detail, firm, division, stage, stance, stance_note AS "stanceNote", practitioner FROM desk_knowledge WHERE status='approved' ORDER BY reviewed_at DESC LIMIT 1500`);
+    out.approved = rows.length;
+    const pick = (kinds) => {
+      const chosen = selectKnowledge(rows, { firm: profile.targetFirm, division: profile.targetDivision || profile.targetSector, use: 'report', limit: 200 }).filter(i => i.stance !== 'disagree' && kinds.includes(i.kind));
+      const i = chosen[0]; if (!i) return null;
+      const m = panelMember(i.practitioner);
+      return { kind: KINDS[i.kind], text: clean(i.statement + (i.stance === 'nuance' && i.stanceNote ? ' ' + i.stanceNote : ''), 260), firm: i.firm, by: m ? m.name : '', init: m ? m.init : '' };
+    };
+    out.notes = { interview: pick(['interviewer_looks_for', 'answer_technique', 'red_flag']), test: pick(['test_tip']), application: pick(['firm_insight', 'cv_tip', 'firm_question']), report: pick(['cv_tip', 'red_flag']) };
+    const myth = selectKnowledge(rows, { firm: profile.targetFirm, division: profile.targetDivision || profile.targetSector, use: 'report', limit: 200 }).find(i => i.stance === 'disagree' && i.stanceNote);
+    if (myth) { const m = panelMember(myth.practitioner); out.myth = { myth: clean(myth.statement, 220), view: clean(myth.stanceNote, 300), by: m ? m.name : '', init: m ? m.init : '' }; }
+  } catch (e) { console.warn('practitioner layer: knowledge unavailable', e.message); }
+  try {
+    await initQuestions();
+    const h = owner(req, res);
+    const q = h ? (await sql().query(`SELECT id, practitioner, due_at AS "dueAt", answered_at AS "answeredAt" FROM desk_practitioner_questions WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1`, [h]))[0] : null;
+    out.question = q ? { id: q.id, answered: !!q.answeredAt, by: q.practitioner || '', dueAt: q.dueAt } : null;
+  } catch (e) { console.warn('practitioner layer: questions unavailable', e.message); }
+  out.canAsk = paid && !out.question;
+  return out;
+}
 function cleanShortlist(list) {
   const out = {};
   if (!list || typeof list !== 'object' || Array.isArray(list)) return out;
@@ -150,6 +187,11 @@ export default async function handler(req, res) {
       else { const weak = practice.filter(x => Number.isFinite(x.data?.feedback?.overall)).sort((a, b) => a.data.feedback.overall - b.data.feedback.overall)[0]; if (weak) actions.push({ tag: 'Practise · Interview', title: 'Retry your weakest answer', detail: `“${clean(weak.data.question, 90)}” scored ${weak.data.feedback.overall}`, href: '/interview-start.html' }); }
       if (!applications.length) actions.push({ tag: 'Applications', title: 'Pick the programmes you’re applying for', detail: 'Live deadlines from the tracker, in one list with your prep', href: '/tracker.html' });
 
+      const practitioners = await practitionerLayer(req, res, profile, paid);
+      for (const a of actions) {
+        const key = /Interview/.test(a.tag) ? 'interview' : /Test/.test(a.tag) ? 'test' : /Deadline|Applications/.test(a.tag) ? 'application' : 'report';
+        if (practitioners.notes[key]) a.note = practitioners.notes[key];
+      }
       return res.json({
         signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
         member: paid, until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
@@ -157,7 +199,7 @@ export default async function handler(req, res) {
         report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: latest.breakdown || null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, commercial: lastTest.data.commercialCorrect, numerical: lastTest.data.numericalCorrect } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, leftToday: left, perDay: paid ? PAID_PER_DAY : FREE_PER_DAY },
-        applications, stages: STAGES, news, actions: actions.slice(0, 3),
+        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners,
         prices: { membership: '£89 a year' }
       });
     }
