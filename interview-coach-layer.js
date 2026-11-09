@@ -34,17 +34,17 @@
   function cvPoints() {
     const raw = ($('cvText')?.value || '').replace(/\r/g, '');
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    const pts = []; let heading = '';
+    const pts = []; let heading = '', section = '';
     for (const line of lines) {
       const isHeading = /^[A-Z][A-Z &/]{3,}$/.test(line);
       const isRole = /—|–| - /.test(line) && line.split(/\s+/).length <= 14 && !/[.;]\s+\w/.test(line);
-      if (isHeading) { heading = ''; continue; }
+      if (isHeading) { heading = ''; section = line.toUpperCase(); continue; }
       if (isRole) { heading = line; continue; }
-      if (/^(email|phone|tel|linkedin)\b/i.test(line) || line.split(/\s+/).length < 5) continue;
+      if (/^(email|phone|tel|linkedin|modules?|languages?|skills?|interests?|a-?levels?|gcses?)\b/i.test(line) || line.split(/\s+/).length < 5) continue;
       // Split long paragraphs into clauses a student could actually say.
       for (const part of line.split(/;\s+|\.\s+(?=[A-Z])/)) {
         const clean = part.replace(/\s*\[CONFIRM:[^\]]*\]/gi, '').replace(/\s+/g, ' ').trim().replace(/\.$/, '');
-        if (clean.split(/\s+/).length >= 5) pts.push({ text: clean, source: heading, confirm: /\[CONFIRM/i.test(part) });
+        if (clean.split(/\s+/).length >= 5 && !/^(SKILLS|INTERESTS|LANGUAGES)/.test(section) && !/^(modules?|predicted|final year|grades?)\b/i.test(clean)) pts.push({ text: clean, source: heading || (section === 'EDUCATION' ? 'Education' : ''), confirm: /\[CONFIRM/i.test(part) });
       }
     }
     return pts;
@@ -148,8 +148,7 @@
   function place() {
     const qEl = $('question'); if (!qEl) return false;
     // Put the panels straight after the question card, so they're in view during thinking time.
-    let card = qEl.closest('section, .card, .question-card, article') || qEl.parentElement;
-    for (let i = 0; i < 4 && card && card.parentElement && card.offsetWidth < 500; i++) card = card.parentElement;
+    const card = qEl.closest('.qbox') || qEl.parentElement;
     if (!card?.parentElement) return false;
     if (panel.parentElement !== card.parentElement) { card.after(panel); panel.after(pr); }
     return true;
