@@ -188,9 +188,11 @@ export default async function handler(req, res) {
       if (!applications.length) actions.push({ tag: 'Applications', title: 'Pick the programmes you’re applying for', detail: 'Live deadlines from the tracker, in one list with your prep', href: '/tracker.html' });
 
       const practitioners = await practitionerLayer(req, res, profile, paid);
-      for (const a of actions) {
+      const usedNotes = new Set();
+      for (const a of actions.slice(0, 3)) {
         const key = /Interview/.test(a.tag) ? 'interview' : /Test/.test(a.tag) ? 'test' : /Deadline|Applications/.test(a.tag) ? 'application' : 'report';
-        if (practitioners.notes[key]) a.note = practitioners.notes[key];
+        const n = practitioners.notes[key];
+        if (n && !usedNotes.has(n.text)) { a.note = n; usedNotes.add(n.text); }   // one note per action, never the same one twice
       }
       return res.json({
         signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
