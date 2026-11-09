@@ -95,7 +95,7 @@
   .dc-empty{font-size:14px;color:#5f6b76;margin-top:8px}
   /* Calmer page: smaller hero, slimmer session bar, transcript column only as tall as it needs */
   body.dc-on .intro{padding:6px 0 4px!important;margin:0!important}
-  body.dc-on .intro h1{font-size:clamp(24px,3vw,32px)!important;line-height:1.15!important;margin:4px 0!important}
+  body.dc-on section.intro h1,body.dc-on .intro div h1{font-size:clamp(22px,2.6vw,30px)!important;line-height:1.15!important;margin:4px 0!important}
   body.dc-on .intro p{display:none}
   body.dc-on .session-context{padding:12px 16px!important;margin:8px 0!important}
   body.dc-on .session-context .session-name{font-size:13px!important}
@@ -127,7 +127,9 @@
     const ranked = pts.map(p => ({ ...p, ...score(p, themes) })).filter(p => p.s > 0).sort((a, b) => (b.why.some(w => w !== 'has a number you can quote') - a.why.some(w => w !== 'has a number you can quote')) || b.s - a.s);
     // Best point from each different experience first, so the student has a range of examples; then fill up.
     const top = [], seen = new Set();
-    for (const p of ranked) { if (top.length === 3) break; if (!seen.has(p.source)) { top.push(p); seen.add(p.source); } }
+    const themed = p => p.why.some(w => w !== 'has a number you can quote');
+    for (const p of ranked) { if (top.length === 3) break; if (themed(p) && !seen.has(p.source)) { top.push(p); seen.add(p.source); } }
+    for (const p of ranked) { if (top.length === 3) break; if (themed(p) && !top.includes(p)) top.push(p); }
     for (const p of ranked) { if (top.length === 3) break; if (!top.includes(p)) top.push(p); }
     const label = themes.map(t => t.label).slice(0, 2).join(' and ');
     if (!pts.length) {
