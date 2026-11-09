@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading game | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}.hin{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 24px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}
+main{max-width:1200px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margin:0}h1{font-size:clamp(26px,4vw,36px)}h2{font-size:22px}h3{font-size:18px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.btn{font:700 14px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:10px 16px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:40px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn.sm{min-height:34px;padding:6px 12px;font-size:13px}.btn:disabled{opacity:.4;cursor:default}
+.mute{color:var(--mute);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:var(--ink);color:#fff;border-radius:14px;padding:14px 16px}.stat b{display:block;font:500 28px/1.1 Fraunces,Georgia,serif;color:#ff8a52}.stat span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#cfd6db;font-weight:700}
+.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}.layout>*{min-width:0}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;font-size:11px;letter-spacing:.08em;color:var(--mute);padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap}td{padding:8px 6px;border-bottom:1px solid var(--soft);vertical-align:middle}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.up{color:var(--ok);font-weight:700}.down{color:var(--bad);font-weight:700}
+.scroll{overflow-x:auto}
+.trade{display:flex;gap:6px;align-items:center;justify-content:flex-end}.trade input{width:72px;font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;text-align:right}
+.news{border-top:1px solid var(--soft);padding:12px 0}.news:first-of-type{border-top:0;padding-top:4px}
+.why{display:flex;gap:8px;margin-top:8px;font-size:14px;background:var(--warm);border:1px solid var(--warm-line);border-radius:10px;padding:10px 12px}
+.av{width:26px;height:26px;border-radius:50%;background:#dbe5f1;color:#123459;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips span{border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12px;background:#fff}
+.lockbox{background:var(--warm);border:1px solid var(--warm-line);border-radius:16px;padding:20px}
+input.t{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;z-index:50}
+tr.you td{background:var(--warm);font-weight:700}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hide-sm{display:none}}
+</style>
+<script src="/desk-nav.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
+<main id="app"><p class="mute">Loading the market…</p></main>
+<script>
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+const gbp=(x,dp=0)=>'£'+Number(x).toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const pct=x=>`<span class="${x>0?'up':x<0?'down':''}">${x>0?'+':''}${Number(x).toFixed(2)}%</span>`;
+const initials=n=>String(n||'').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+let G=null,P=null,showOld=false;
+function spark(h){if(!h||h.length<2)return '';const v=h.map(x=>+x[1]),mn=Math.min(...v),mx=Math.max(...v),w=70,ht=22;const pts=v.map((y,i)=>`${(i/(v.length-1)*w).toFixed(1)},${(ht-(mx===mn?ht/2:(y-mn)/(mx-mn)*ht)).toFixed(1)}`).join(' ');const c=v[v.length-1]>=v[0]?'#15803d':'#b91c1c';return `<svg width="${w}" height="${ht}" viewBox="0 0 ${w} ${ht}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.6"/></svg>`}
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+async function load(){
+  const [g,d]=await Promise.all([fetch('/api/game',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null),fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(!g){app.innerHTML='<div class="card">We couldn’t load the market. Refresh to try again.</div>';return}
+  G=g;P=d?.profile||{};render();
+}
+function newsBlock(){
+  if(!G.news.length)return `<div class="card"><div class="kicker">Market news</div><p class="mute" style="margin:6px 0 0">No news yet. Prices move when the day’s news is published.</p></div>`;
+  const today=G.news.filter(n=>n.day===G.game.day),older=G.news.filter(n=>n.day!==G.game.day);
+  const item=n=>`<div class="news"><div class="mute">Day ${n.day}</div><b style="font-size:16px">${esc(n.headline)}</b>${n.body?`<p style="margin:4px 0 0">${esc(n.body)}</p>`:''}
+    ${n.why?`<div class="why"><span class="av" aria-hidden="true">${esc(initials(n.practitioner)||'TD')}</span><span><b>${n.practitioner?'Why it moved · '+esc(n.practitioner):'Why it moved'}:</b> ${esc(n.why)}</span></div>`:''}
+    <div class="chips">${n.effects.market?`<span>Market ${pct(n.effects.market)}</span>`:''}${Object.entries(n.effects.sectors||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}${Object.entries(n.effects.stocks||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}</div></div>`;
+  return `<div class="card"><div class="kicker">Today’s news · Day ${G.game.day}</div>${today.map(item).join('')||'<p class="mute">No news today.</p>'}
+    ${older.length?`<button class="btn ghost sm" id="old" style="margin-top:10px">${showOld?'Hide':'Show'} earlier news (${older.length})</button>${showOld?older.map(item).join(''):''}`:''}</div>`;
+}
+function marketBlock(){
+  const me=G.me,canTrade=G.member&&me;
+  const byS={};G.prices.forEach(p=>(byS[p.sector]=byS[p.sector]||[]).push(p));
+  return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>Market</h2><span class="mute">Fictional companies · prices move with the news</span></div>
+  <div class="scroll" style="margin-top:8px"><table><thead><tr><th>COMPANY</th><th class="num">PRICE</th><th class="num">TODAY</th><th class="num hide-sm">SINCE START</th><th class="hide-sm">TREND</th><th class="num">YOU HOLD</th>${canTrade?'<th class="num">TRADE</th>':''}</tr></thead><tbody>
+  ${Object.entries(byS).map(([s,list])=>`<tr><td colspan="7" class="mute" style="font-weight:700;padding-top:14px">${esc(s)}</td></tr>`+list.map(p=>{const held=me?.positions?.[p.ticker]||0;return `<tr><td><b>${esc(p.ticker)}</b> <span class="mute">${esc(p.name)}</span></td><td class="num">£${p.price.toFixed(2)}</td><td class="num">${pct(p.change)}</td><td class="num hide-sm">${pct((p.price/p.start-1)*100)}</td><td class="hide-sm">${spark(p.history)}</td><td class="num">${held?held.toLocaleString('en-GB'):'—'}</td>
+    ${canTrade?`<td><div class="trade"><input type="number" min="1" step="1" inputmode="numeric" aria-label="Shares of ${esc(p.ticker)}" data-q="${esc(p.ticker)}" placeholder="Qty"><button class="btn sm" data-buy="${esc(p.ticker)}">Buy</button><button class="btn ghost sm" data-sell="${esc(p.ticker)}" ${held?'':'disabled'}>Sell</button></div></td>`:''}</tr>`}).join('')).join('')}
+  </tbody></table></div>${canTrade?'<p class="mute" style="margin:10px 0 0">Trades fill at the price shown. Prices only move when the day’s news is published, so take your time.</p>':''}</div>`;
+}
+function sideBlock(){
+  const me=G.me;let h='';
+  if(me){
+    const pos=Object.entries(me.positions||{}).map(([t,q])=>{const p=G.prices.find(x=>x.ticker===t);return {t,q,v:q*(p?.price||0),p}}).sort((a,b)=>b.v-a.v);
+    h+=`<div class="card"><h3>Your holdings</h3>${pos.length?`<table style="margin-top:6px"><thead><tr><th>COMPANY</th><th class="num">SHARES</th><th class="num">VALUE</th><th class="num">WEIGHT</th></tr></thead><tbody>${pos.map(x=>`<tr><td><b>${esc(x.t)}</b></td><td class="num">${x.q.toLocaleString('en-GB')}</td><td class="num">${gbp(x.v)}</td><td class="num">${(x.v/me.value*100).toFixed(0)}%</td></tr>`).join('')}<tr><td>Cash</td><td></td><td class="num">${gbp(me.cash)}</td><td class="num">${(me.cash/me.value*100).toFixed(0)}%</td></tr></tbody></table>`:'<p class="mute">All cash. Buy something from the market.</p>'}</div>`;
+    if(me.trades.length)h+=`<div class="card"><h3>Your recent trades</h3><table style="margin-top:6px"><tbody>${me.trades.slice(0,8).map(t=>`<tr><td class="mute">Day ${t.day}</td><td>${t.side==='buy'?'Bought':'Sold'} ${t.shares.toLocaleString('en-GB')} <b>${esc(t.ticker)}</b></td><td class="num">£${t.price.toFixed(2)}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  if(G.league.length)h+=`<div class="card"><h3>League</h3><p class="mute" style="margin:2px 0 8px">${G.players} player${G.players===1?'':'s'}</p><table><thead><tr><th>#</th><th>STUDENT</th><th class="num">RETURN</th></tr></thead><tbody>${G.league.map(r=>`<tr class="${r.you?'you':''}"><td>${r.rank}</td><td>${esc(r.name)}</td><td class="num">${pct(r.returnPct)}</td></tr>`).join('')}</tbody></table>${me&&me.rank>10?`<p style="margin:8px 0 0">You’re ${me.rank} of ${me.players}.</p>`:''}</div>`;
+  return h;
+}
+function render(){
+  if(!G.game){app.innerHTML=`<div class="kicker">Trading game</div><h1>The market opens soon.</h1><div class="card">No game is running right now. Check back shortly.</div>`;return}
+  const me=G.me;let h=`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><div><div class="kicker">Trading game · Day ${G.game.day}</div><h1>${esc(G.game.name)}</h1></div><span class="mute">Virtual money. Fictional companies. Practice, not advice.</span></div>`;
+  if(me){const ret=(me.value/G.startingCash-1)*100;h+=`<div class="stats"><div class="stat"><b>${gbp(me.value)}</b><span>Portfolio value</span></div><div class="stat"><b>${ret>0?'+':''}${ret.toFixed(2)}%</b><span>Return</span></div><div class="stat"><b>${gbp(me.cash)}</b><span>Cash to invest</span></div><div class="stat"><b>${me.rank} / ${me.players}</b><span>League position</span></div></div>`}
+  else if(G.member)h+=`<form class="card" id="join" style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end"><div><div class="kicker">Join the game</div><p style="margin:4px 0 8px">You start with ${gbp(G.startingCash)} of virtual cash.</p><label class="mute" for="dn">Name on the league</label><input class="t" id="dn" maxlength="40" value="${esc((P.name||'').split(' ')[0]+(P.name&&P.name.split(' ')[1]?' '+P.name.split(' ')[1][0]+'.':''))}"></div><div><label class="mute" for="uni">University (optional)</label><input class="t" id="uni" maxlength="60" value="${esc(P.university||'')}"></div><button class="btn hot">Start with ${gbp(G.startingCash)}</button></form>`;
+  else h+=`<div class="lockbox"><b>The trading game is part of membership.</b><p style="margin:6px 0 12px;color:#3b4652">Members start with ${gbp(G.startingCash)}, trade as the news breaks, and read why each story moved the market, from people who’ve worked on trading floors. It’s the easiest way to have a real answer to “What’s been happening in markets?”.</p><a class="btn hot" href="/my.html">See membership · £89 a year</a></div>`;
+  h+=`<div class="layout"><div style="display:flex;flex-direction:column;gap:16px">${newsBlock()}${marketBlock()}</div><div style="display:flex;flex-direction:column;gap:16px">${sideBlock()}</div></div>`;
+  app.innerHTML=h;bind();
+}
+function bind(){
+  const o=document.getElementById('old');if(o)o.onclick=()=>{showOld=!showOld;render()};
+  const j=document.getElementById('join');if(j)j.onsubmit=async e=>{e.preventDefault();const r=await post({action:'join',displayName:document.getElementById('dn').value,university:document.getElementById('uni').value});if(r.ok){toast('You’re in. £100,000 to invest.');load()}else toast(r.data.error||'Could not join.')};
+  const go=async(t,side)=>{const q=parseInt(document.querySelector(`[data-q="${t}"]`).value,10);if(!q||q<1){toast('Enter how many shares.');return}const r=await post({action:'trade',ticker:t,side,shares:q});if(r.ok){toast(`${side==='buy'?'Bought':'Sold'} ${q.toLocaleString('en-GB')} ${t} at £${r.data.price.toFixed(2)}`);load()}else toast(r.data.error||'Trade failed.')};
+  document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>go(b.dataset.buy,'buy'));
+  document.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>go(b.dataset.sell,'sell'));
+  document.querySelectorAll('[data-q]').forEach(i=>i.oninput=()=>{const p=G.prices.find(x=>x.ticker===i.dataset.q);const q=parseInt(i.value,10)||0;i.title=q?'≈ '+gbp(q*p.price):''});
+}
+const post=b=>fetch('/api/game',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(async r=>({ok:r.ok,data:await r.json().catch(()=>({}))}));
+load();
+</script>
+</body>
+</html>

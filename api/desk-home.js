@@ -219,6 +219,18 @@ export default async function handler(req, res) {
         const entered = c ? !!(await sql().query('SELECT 1 FROM desk_challenge_entries WHERE challenge_id=$1 AND principal=$2', [c.id, p]))[0] : false;
         challenge = { current: c ? { title: c.title, closesAt: c.closes_at, open: new Date(c.closes_at) > new Date(), entered } : null, last: last ? { rank: last.rank, of: last.n, returnPct: +last.return_pct } : null };
       } catch (e) { challenge = null; }   // tables appear once the first challenge is posted
+      let game = null;
+      try {
+        const g = (await sql().query(`SELECT id, name, day FROM desk_game WHERE status='live' ORDER BY created_at DESC LIMIT 1`))[0];
+        if (g) {
+          const px = Object.fromEntries((await sql().query('SELECT ticker, price FROM desk_game_prices WHERE game_id=$1', [g.id])).map(r => [r.ticker, +r.price]));
+          const accts = await sql().query('SELECT principal, cash, positions FROM desk_game_accounts WHERE game_id=$1', [g.id]);
+          const val = a => +a.cash + Object.entries(a.positions || {}).reduce((s, [t, q]) => s + q * (px[t] || 0), 0);
+          const ranked = accts.map(a => ({ p: a.principal, v: val(a) })).sort((x, y) => y.v - x.v), i = ranked.findIndex(r => r.p === p);
+          const head = (await sql().query('SELECT headline FROM desk_game_events WHERE game_id=$1 AND day=$2 ORDER BY id LIMIT 1', [g.id, g.day]))[0];
+          game = { name: g.name, day: g.day, headline: head?.headline || '', me: i >= 0 ? { value: Math.round(ranked[i].v), rank: i + 1, players: ranked.length } : null };
+        }
+      } catch (e) { game = null; }   // tables appear once the first game starts
       if (!paid && practitioners.myth) practitioners.myth = { locked: true, by: practitioners.myth.by, init: practitioners.myth.init };
       if (!paid) {
         // Free accounts: the assessment, a look at what members get, and the 30-second interview check.
@@ -241,7 +253,7 @@ export default async function handler(req, res) {
         interviewUrl, report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: paidRow ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
-        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge,
+        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge, game,
         prices: { membership: '£89 a year' }
       });
     }

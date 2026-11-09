@@ -160,6 +160,14 @@ function appsCard(){
       :`<p class="mute" style="margin:10px 0 0">Nothing yet. Add programmes from the <a href="/tracker.html">tracker</a> (live deadlines for 60+ programmes) or add a firm yourself.</p>`}
     <p class="mute" style="margin:10px 0 0">Programmes you add in the tracker appear here. ${D.signedIn?'Saved to your account.':'Saved in this browser. Sign in to keep them on every device.'}</p></section>`;
 }
+function gameCard(){
+  const g=D.game;if(!g)return '';
+  const m=g.me,ret=m?(m.value/100000-1)*100:0;
+  return `<section class="card" style="display:flex;flex-direction:column;gap:8px"><div class="kicker">Trading game · Day ${g.day}</div>
+    ${g.headline?`<span style="font-size:14px"><b>Today:</b> ${esc(g.headline)}</span>`:''}
+    ${m?`<div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font:500 26px Fraunces,Georgia,serif">£${m.value.toLocaleString('en-GB')}</b><span class="${ret>=0?'':''}" style="font-weight:700;color:${ret>=0?'var(--ok)':'var(--bad)'}">${ret>=0?'+':''}${ret.toFixed(2)}%</span></div><span class="mute">${m.rank} of ${m.players} in the league</span>`:'<span class="mute">Start with £100,000 of virtual cash and trade as the news breaks.</span>'}
+    <a class="btn ${m?'ghost':'hot'}" href="/trading.html" style="margin-top:4px">${m?'Open the market':'Join the game'}</a></section>`;
+}
 function challengeCard(){
   const c=D.challenge;if(!c)return '';
   const cur=c.current,l=c.last;
@@ -203,7 +211,7 @@ function freeRow(){
 }
 function lockedRow(){
   const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
-  return `<section class="grid3 twocol">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Weekly market challenge','Split a virtual £100,000 each week, get ranked against other students and read a practitioner’s view of what moved markets.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
+  return `<section class="grid3 twocol">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Trading game','Start with £100,000 of virtual cash, trade as the news breaks, climb the league and read why each story moved the market.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
   <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
 }
 function render(){
@@ -215,7 +223,7 @@ function render(){
     <section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
     ${actionsCard()}${D.member?toolsRow():freeRow()}
-    ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
+    ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
     ${extrasRow()}`;
   bind();if(D.member)loadNews();
   if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}

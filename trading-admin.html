@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Trading game · news desk | The Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--line:#ddd7cf;--soft:#eee7dd;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 "DM Sans",Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:500;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+input,textarea,select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;width:100%}
+textarea{min-height:64px}
+label{font-size:12px;font-weight:700;color:var(--mute);display:block;margin:8px 0 3px}
+.btn{font:700 14px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:9px 16px;background:var(--ink);color:#fff;cursor:pointer}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}
+.mute{color:var(--mute);font-size:13px}.msg{font-weight:700}
+.sectors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.three{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.item{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:5px 6px;border-bottom:1px solid var(--soft);text-align:left}td.n,th.n{text-align:right}
+.up{color:var(--ok);font-weight:700}.down{color:var(--bad);font-weight:700}
+@media(max-width:800px){.sectors{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><h1>Trading game · news desk</h1><div style="display:flex;gap:8px"><input id="key" type="password" placeholder="Staff key" style="width:180px" autocomplete="off"><button class="btn" id="load">Load</button></div></div>
+<div class="card" id="status"><p class="mute">Enter the staff key and press Load.</p></div>
+<div class="card" id="desk" hidden>
+  <h2>Today’s news</h2><p class="mute">Pick a story from the list or write your own, set how much it moves the market, sectors or single companies, then publish. Prices move the moment you publish (plus a little random noise, ±0.6%, so companies in a sector don’t move identically).</p>
+  <div id="items"></div>
+  <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button class="btn ghost" id="addItem" type="button">+ Add another story</button></div>
+  <h3 style="margin-top:18px">Preview: how each company moves (before noise)</h3><div id="preview" style="margin-top:6px"></div>
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap"><button class="btn hot" id="publish">Publish and move prices</button><span class="msg" id="pmsg"></span></div>
+</div>
+<div class="card" id="recent" hidden></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S=null;
+try{$('#key').value=sessionStorage.getItem('deskStaffKey')||''}catch(e){}
+const key=()=>{const k=$('#key').value.trim();try{sessionStorage.setItem('deskStaffKey',k)}catch(e){}return k};
+const api=async(method,body,q='')=>{const r=await fetch('/api/game'+q,{method,headers:{Authorization:'Bearer '+key(),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'HTTP '+r.status);return d};
+const pct=x=>`<span class="${x>0?'up':x<0?'down':''}">${x>0?'+':''}${Number(x).toFixed(1)}%</span>`;
+async function load(){
+  try{S=await api('GET',null,'?view=staff')}catch(e){$('#status').innerHTML=`<p class="mute">${esc(e.message)}</p>`;return}
+  const g=S.game;
+  $('#status').innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><div>${g?`<h2>${esc(g.name)}</h2><p class="mute" style="margin:2px 0 0">Day ${g.day} · ${g.players} player${g.players===1?'':'s'} · <a href="/trading.html" target="_blank">open the student view ↗</a></p>`:'<h2>No game running</h2><p class="mute">Start one: everyone who joins gets £100,000.</p>'}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input id="gname" placeholder="Game name" value="${esc(g?'':'The Desk trading game · '+new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'}))}" style="width:260px"><button class="btn ${g?'ghost':'hot'}" id="newGame">${g?'Start a new game':'Start the game'}</button></div></div>`;
+  $('#newGame').onclick=async()=>{if(g&&!confirm('Start a new game? Everyone goes back to £100,000 and prices reset. The current game is kept as ended.'))return;try{await api('POST',{action:'staff-new-game',name:$('#gname').value||'The Desk trading game'});load()}catch(e){alert(e.message)}};
+  $('#desk').hidden=!g;$('#recent').hidden=!g;
+  if(!g)return;
+  if(!$('#items').children.length)addItem();
+  preview();
+  $('#recent').innerHTML=`<h2>Published news</h2>${S.news.length?`<table style="margin-top:8px"><thead><tr><th>DAY</th><th>HEADLINE</th><th>EFFECTS</th></tr></thead><tbody>${S.news.map(n=>`<tr><td>${n.day}</td><td>${esc(n.headline)}</td><td class="mute">${n.effects.market?'Market '+n.effects.market+'% ':''}${Object.entries(n.effects.sectors||{}).map(([k,v])=>k+' '+v+'%').join(', ')}${Object.entries(n.effects.stocks||{}).map(([k,v])=>' '+k+' '+v+'%').join(',')}</td></tr>`).join('')}</tbody></table>`:'<p class="mute">Nothing published yet.</p>'}
+  <h3 style="margin-top:16px">Prices now</h3><table style="margin-top:6px"><thead><tr><th>TICKER</th><th>COMPANY</th><th>SECTOR</th><th class="n">PRICE</th><th class="n">TODAY</th></tr></thead><tbody>${S.prices.map(p=>`<tr><td><b>${esc(p.ticker)}</b></td><td>${esc(p.name)}</td><td>${esc(p.sector)}</td><td class="n">£${p.price.toFixed(2)}</td><td class="n">${pct(p.change)}</td></tr>`).join('')}</tbody></table>`;
+}
+function addItem(){
+  const d=document.createElement('div');d.className='item';
+  d.innerHTML=`<div class="two"><div><label>Start from</label><select data-preset><option value="">Write my own</option>${S.presets.map(p=>`<option value="${esc(p.id)}">${esc(p.headline)}</option>`).join('')}</select></div><div><label>Explained by</label><select data-by><option value="">The Desk</option>${S.practitioners.map(p=>`<option>${esc(p)}</option>`).join('')}</select></div></div>
+    <label>Headline</label><input data-h maxlength="160">
+    <label>Story (what happened)</label><textarea data-b></textarea>
+    <label>Why it moves markets (students read this after it’s published)</label><textarea data-w></textarea>
+    <div class="three"><div><label>Whole market %</label><input type="number" step="0.1" data-m value="0"></div><div><label>Company</label><select data-stk><option value="">None</option>${S.prices.map(p=>`<option value="${esc(p.ticker)}">${esc(p.ticker)} · ${esc(p.name)}</option>`).join('')}</select></div><div><label>Company %</label><input type="number" step="0.1" data-sv value="0"></div></div>
+    <label>Sector moves %</label><div class="sectors">${S.sectors.map(s=>`<div><label style="margin:0 0 2px;font-weight:600">${esc(s)}</label><input type="number" step="0.1" data-sec="${esc(s)}" value="0"></div>`).join('')}</div>
+    <div style="margin-top:10px"><button class="btn ghost" type="button" data-rm>Remove this story</button></div>`;
+  d.querySelector('[data-rm]').onclick=()=>{d.remove();preview()};
+  d.querySelector('[data-preset]').onchange=e=>{const p=S.presets.find(x=>x.id===e.target.value);if(!p)return;d.querySelector('[data-h]').value=p.headline;d.querySelector('[data-b]').value=p.body;d.querySelector('[data-w]').value=p.why;d.querySelector('[data-m]').value=p.effects.market||0;
+    d.querySelectorAll('[data-sec]').forEach(i=>i.value=p.effects.sectors?.[i.dataset.sec]||0);
+    if(p.needsStock==='target'){d.querySelector('[data-sv]').value=25;d.querySelector('[data-h]').value='Takeover bid for [company]';alert('Pick the company being bid for in “Company”, and put its name in the headline.')}
+    else if(p.needsStock==='warning'){d.querySelector('[data-sv]').value=-20;d.querySelector('[data-h]').value='[Company] issues a profit warning';alert('Pick the company in “Company”, and put its name in the headline.')}
+    else{d.querySelector('[data-stk]').value='';d.querySelector('[data-sv]').value=0}
+    preview()};
+  d.querySelectorAll('input,select').forEach(i=>i.addEventListener('input',preview));
+  $('#items').appendChild(d);
+}
+function events(){return [...document.querySelectorAll('#items .item')].map(d=>{const sectors={};d.querySelectorAll('[data-sec]').forEach(i=>{const v=parseFloat(i.value);if(v)sectors[i.dataset.sec]=v});const stocks={};const t=d.querySelector('[data-stk]').value,sv=parseFloat(d.querySelector('[data-sv]').value);if(t&&sv)stocks[t]=sv;
+  return {headline:d.querySelector('[data-h]').value,body:d.querySelector('[data-b]').value,why:d.querySelector('[data-w]').value,practitioner:d.querySelector('[data-by]').value,effects:{market:parseFloat(d.querySelector('[data-m]').value)||0,sectors,stocks}}})}
+function preview(){
+  if(!S?.prices)return;const ev=events();
+  const rows=S.prices.map(p=>{let m=0;ev.forEach(e=>{m+=e.effects.market||0;m+=e.effects.sectors[p.sector]||0;m+=e.effects.stocks[p.ticker]||0});return {...p,m}});
+  $('#preview').innerHTML=`<table><thead><tr><th>COMPANY</th><th>SECTOR</th><th class="n">NOW</th><th class="n">MOVE</th><th class="n">NEW PRICE</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${esc(r.ticker)}</b> ${esc(r.name)}</td><td>${esc(r.sector)}</td><td class="n">£${r.price.toFixed(2)}</td><td class="n">${pct(r.m)}</td><td class="n">£${Math.max(.01,r.price*(1+r.m/100)).toFixed(2)}</td></tr>`).join('')}</tbody></table>`;
+}
+$('#addItem').onclick=()=>{addItem();preview()};
+$('#publish').onclick=async()=>{const ev=events();if(ev.some(e=>/\[company\]/i.test(e.headline))){$('#pmsg').textContent='Replace “[company]” in the headline with the company’s name.';return}
+  if(!confirm(`Publish ${ev.length} stor${ev.length===1?'y':'ies'} and move prices to day ${S.game.day+1}?`))return;
+  try{const d=await api('POST',{action:'staff-publish',events:ev});$('#pmsg').textContent=`Published day ${d.day}. Prices have moved.`;$('#items').innerHTML='';load()}catch(e){$('#pmsg').textContent=e.message}};
+$('#load').onclick=load;if($('#key').value)load();
+</script>
+</body>
+</html>

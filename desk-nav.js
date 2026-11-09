@@ -14,7 +14,7 @@
     ['Report', report || '/my.html#report', /\/(fullcycle|result-final-design)\.html$/],
     ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
     ['Tests', '/tests.html', /\/tests\.html$/],
-    ['Challenge', '/challenge.html', /\/challenge\.html$/],
+    ['Trading', '/trading.html', /\/(trading|challenge)\.html$/],
     ['Tracker', '/tracker.html', /\/tracker\.html$/],
     ['Library', '/library.html', /\/library\.html$/],
     ['News', '/my.html#news', /$^/]
