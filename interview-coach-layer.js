@@ -22,7 +22,7 @@
       words: /\b(identified|spotted|noticed|flagged|escalated|corrected|fixed|resolved|error|duplicate|issue|problem|tested|checked)\b/gi, why: 'shows you noticing a problem and acting on it' },
     { key: 'analysis', label: 'analysis and numbers', test: /analy|technical|model|valu|numbers|data|excel|research|deal|transaction|company you|stock|pitch/i,
       words: /\b(dcf|valuation|model\w*|excel|analysis|analy[sz]ed|research\w*|comparables?|comps|ebitda|revenue|sensitivity|data|screen\w*|benchmark\w*|python|forecast\w*)\b/gi, why: 'shows real analytical work you can talk through' },
-    { key: 'communication', label: 'communication', test: /communicat|explain|present|persuad|convinc|influenc|client|customer/i,
+    { key: 'communication', label: 'communication', test: /communicat|present(?:ation|ed|ing)?\b|persuad|convinc|influenc|client|customer|explain (?:a|something) (?:complex|technical|difficult)/i,
       words: /\b(presented|presentation|pitched|explained|wrote|report\w*|persuad\w*|customer-facing|clients?|customers?|seminar)\b/gi, why: 'shows you explaining or persuading' },
     { key: 'motivation', label: 'why this role', test: /why (?:do you|this|us|the|investment|banking|our|are you)|motivat|interest(?:ed)? in|attract|career|introduc|tell me about yourself|walk me through/i,
       words: /\b(corporate finance|investment|transactions?|acquisition|deal|valuation|banking|markets?|intern\w*|analyst|equity|m&a|finance)\b/gi, why: 'links your experience to the job you want' }
@@ -52,6 +52,8 @@
   function themesFor(q, type) {
     const t = (type + ' ' + q).toLowerCase();
     const hits = THEMES.filter(th => th.test.test(t));
+    // An introduction or "why" question is about motivation first, whatever else it mentions.
+    const mi = hits.findIndex(h => h.key === 'motivation'); if (mi > 0) hits.unshift(...hits.splice(mi, 1));
     if (!hits.length) hits.push(THEMES.find(x => x.key === 'motivation'), THEMES.find(x => x.key === 'analysis'));
     return hits;
   }
