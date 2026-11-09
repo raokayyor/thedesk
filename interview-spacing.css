@@ -37,3 +37,10 @@
 .page .wrap .interview-cv-summary,
 .page .wrap #practiceSettingsDetails,
 .page .wrap .inline-settings{display:none!important}
+
+/* Keep the summary focused on the selected role and practice mode. */
+.page .wrap .session-context .session-secondary,
+.page .wrap .question-navigation{display:none!important}
+.page .wrap .session-context{grid-template-columns:1fr!important}
+.page .wrap .interview-format-strip #skipQuestionBtn{margin-left:auto;min-width:165px;min-height:44px;padding:10px 18px;font-size:14px;background:#245d9a;border:1px solid #8cb2dc;color:white}
+@media(max-width:600px){.page .wrap .interview-format-strip #skipQuestionBtn{margin-left:0;width:100%}}
