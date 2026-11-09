@@ -1,0 +1,205 @@
+{
+  "note": "Ten fictional students for internal testing of the free assessment and the paid Full Cycle report. All names, CVs and details are invented.",
+  "personas": [
+    {
+      "key": "p01-strong-ib",
+      "label": "Strong IB candidate, target uni",
+      "profile": {
+        "name": "Aisha Rahman",
+        "university": "University of Warwick",
+        "course": "BSc Economics",
+        "year": "Second year",
+        "grade": "On track for a First",
+        "targetSector": "Investment Banking / IBD",
+        "targetDivision": "M&A",
+        "programme": "Summer internship",
+        "targetFirm": "J.P. Morgan"
+      },
+      "quiz": {
+        "commercial": 5,
+        "numerical": 4
+      },
+      "cv": "AISHA RAHMAN\naisha.rahman@example.com | Coventry\n\nEDUCATION\nUniversity of Warwick — BSc Economics (2025–2028)\n- First-year average 74%. Modules: Corporate Finance (78%), Econometrics, Industrial Organisation\n- Dissertation proposal: impact of private equity ownership on UK mid-market margins\n\nEXPERIENCE\nRothbury Capital Partners (boutique advisory) — Spring Insight Intern, April 2026\n- Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate\n- Drafted two pages of a pitch book on a £180m bolt-on acquisition, revised after director feedback\n\nWarwick Investment Society — Head of Research (2025–present)\n- Lead a team of 6 analysts producing a fortnightly equity pitch; 3 pitches added to the society's £15k student fund\n- Wrote a DCF on Games Workshop with a sensitivity table on margin and terminal growth; position returned 11% in four months\n\nSainsbury's — Customer Assistant (2023–2024, part-time)\n- Trained four new starters on tills and stock rotation while working 12 hours a week alongside A-levels\n\nSKILLS\nExcel (INDEX/MATCH, data tables), PowerPoint, Python (pandas), Bloomberg Market Concepts certificate\n\nINTERESTS\nDebating (university novice cup semi-finalist), long-distance running (Leamington half marathon 1:41)"
+    },
+    {
+      "key": "p02-first-year-thin",
+      "label": "First year, thin CV",
+      "profile": {
+        "name": "Jack Doherty",
+        "university": "University of Leeds",
+        "course": "BA Business Management",
+        "year": "First year",
+        "grade": "Not yet graded",
+        "targetSector": "General Finance",
+        "targetDivision": "",
+        "programme": "Spring week",
+        "targetFirm": "Barclays"
+      },
+      "quiz": {
+        "commercial": 2,
+        "numerical": 3
+      },
+      "cv": "JACK DOHERTY\njack.d@example.com\n\nEducation\nUniversity of Leeds, BA Business Management, 2026–2029\nA-levels: Economics A, Maths B, History B\n\nWork\nThe Crown & Anchor pub, bar staff, 2025–2026\n- Served customers and worked weekend shifts\n- Helped with cashing up at the end of the night\n\nNike Factory Store, sales assistant, summer 2025\n- Helped customers and kept the shop floor tidy\n\nOther\nPlayed in my school football team for five years\nMember of the Leeds Finance Society\nInterested in the stock market and I have a Trading 212 account\n\nSkills\nMicrosoft Office, good communication, team player, hard working"
+    },
+    {
+      "key": "p03-accounting-solid",
+      "label": "Accounting / audit, solid",
+      "profile": {
+        "name": "Priya Nair",
+        "university": "University of Birmingham",
+        "course": "BSc Accounting and Finance",
+        "year": "Final year",
+        "grade": "2:1 predicted",
+        "targetSector": "Accounting / Audit",
+        "targetDivision": "Audit",
+        "programme": "Graduate programme",
+        "targetFirm": "PwC"
+      },
+      "quiz": {
+        "commercial": 4,
+        "numerical": 4
+      },
+      "cv": "PRIYA NAIR\npriya.nair@example.com | Birmingham\n\nEDUCATION\nUniversity of Birmingham — BSc Accounting and Finance (2024–2027), predicted 2:1\n- Financial Reporting 68%, Auditing 71%, Taxation 64%\n\nEXPERIENCE\nHarper & Lowe LLP (regional accountancy firm) — Summer Audit Intern, June–August 2026\n- Tested 40 sales invoices against delivery notes for a manufacturing client; found 3 cut-off errors worth £18k and reported them to the senior\n- Prepared bank reconciliations for two charity clients and updated the lead schedules\n\nUniversity of Birmingham Students' Union — Treasurer, Netball Club (2025–2026)\n- Managed a £9,000 annual budget, introduced a shared spreadsheet that cut late membership payments from 22 to 6\n\nBoots — Pharmacy Counter Assistant (2023–2025, part-time)\n- Handled confidential customer information and balanced the till each shift\n\nSKILLS\nExcel (pivot tables, VLOOKUP), Xero, Sage, ICAEW Certificate in Finance, Accounting and Business (2 modules passed)\n\nINTERESTS\nNetball (university second team), volunteering with a local food bank on Saturdays"
+    },
+    {
+      "key": "p04-markets-quant",
+      "label": "Markets, maths-heavy, weak storytelling",
+      "profile": {
+        "name": "Wei Zhang",
+        "university": "Imperial College London",
+        "course": "MSci Mathematics",
+        "year": "Third year",
+        "grade": "First",
+        "targetSector": "Sales & Trading / Markets",
+        "targetDivision": "Rates trading",
+        "programme": "Summer internship",
+        "targetFirm": "Goldman Sachs"
+      },
+      "quiz": {
+        "commercial": 3,
+        "numerical": 5
+      },
+      "cv": "WEI ZHANG\nwei.zhang@example.com\n\nEDUCATION\nImperial College London, MSci Mathematics (2024–2028)\nYear averages: 82%, 79%. Modules: Stochastic Calculus, Probability Theory, Numerical Analysis, Machine Learning\n\nPROJECTS\nPairs trading backtest (personal project)\n- Python, cointegration tests on FTSE 100 stocks, 2015–2024 data\n- Sharpe ratio 1.1 before costs, 0.4 after realistic costs\nOption pricing\n- Implemented Black–Scholes and a Monte Carlo pricer, compared results\n\nEXPERIENCE\nTutor, MyTutor (2024–present)\n- A-level maths and further maths tutoring\n\nResearch assistant, Imperial Department of Mathematics (summer 2025)\n- Helped with simulations for a PhD student's paper\n\nSKILLS\nPython, C++, R, LaTeX, Excel\n\nAWARDS\nUKMT British Mathematical Olympiad round 1 merit"
+    },
+    {
+      "key": "p05-career-switcher",
+      "label": "Career switcher, older, retail management",
+      "profile": {
+        "name": "Daniel Okafor",
+        "university": "Birkbeck, University of London",
+        "course": "MSc Finance (part-time)",
+        "year": "Postgraduate",
+        "grade": "Merit so far",
+        "targetSector": "General Finance",
+        "targetDivision": "Corporate banking",
+        "programme": "Graduate programme",
+        "targetFirm": "HSBC"
+      },
+      "quiz": {
+        "commercial": 4,
+        "numerical": 3
+      },
+      "cv": "DANIEL OKAFOR\ndaniel.okafor@example.com | London\n\nPROFILE\nStore manager moving into corporate banking after six years running multi-million-pound retail sites. Studying MSc Finance part-time.\n\nEDUCATION\nBirkbeck, University of London — MSc Finance (part-time, 2025–2027), merit average so far\n- Corporate Finance, Financial Statement Analysis, Banking and Credit\nUniversity of Kent — BA History (2015–2018), 2:1\n\nEXPERIENCE\nTesco — Store Manager, Croydon Express (2021–present)\n- Run a store with £6.2m annual sales and 28 staff; lifted sales 9% in 2024 by changing the evening product range after analysing basket data\n- Cut stock waste by £41k a year by renegotiating delivery times with the regional depot\n- Hire, train and appraise staff; resolved two formal grievances\nTesco — Deputy Manager (2018–2021)\n- Covered store manager duties for four months during a vacancy\n\nSKILLS\nExcel (budgets, forecasts), P&L management, negotiation, Power BI basics\n\nINTERESTS\nVolunteer treasurer for a youth football club (£25k annual turnover)"
+    },
+    {
+      "key": "p06-asset-mgmt-international",
+      "label": "International MSc, asset management",
+      "profile": {
+        "name": "Sofia Martinez",
+        "university": "London School of Economics",
+        "course": "MSc Finance",
+        "year": "Postgraduate",
+        "grade": "Distinction track",
+        "targetSector": "Asset Management / Investing",
+        "targetDivision": "Equity investment",
+        "programme": "Graduate programme",
+        "targetFirm": "BlackRock"
+      },
+      "quiz": {
+        "commercial": 4,
+        "numerical": 4
+      },
+      "cv": "SOFIA MARTINEZ\nsofia.martinez@example.com | London\n\nEDUCATION\nLondon School of Economics — MSc Finance (2026–2027)\nUniversidad Carlos III de Madrid — BSc Economics (2022–2026), 8.6/10, top 10% of cohort\n\nEXPERIENCE\nAlcalá Gestión SGIIC (Madrid asset manager) — Investment Intern, January–June 2026\n- Monitored 25 holdings in a €300m European equity fund and wrote weekly notes on earnings results\n- Built a screen of European mid-caps on return on capital and net debt, two names were added to the watch list\n- Presented a buy case on a Spanish infrastructure company to the portfolio manager\n\nBBVA — Summer Analyst, Retail Banking Strategy, July–August 2025\n- Analysed branch customer data to support a proposal to merge six branches\n\nCFA Institute Research Challenge — Team member, Spain finalist 2025\n\nSKILLS\nExcel, FactSet, Python, Spanish (native), English (C2), French (B1)\n\nINTERESTS\nPadel, cooking for large groups"
+    },
+    {
+      "key": "p07-non-target-ib",
+      "label": "Non-target uni, IB, generic CV",
+      "profile": {
+        "name": "Ryan Clarke",
+        "university": "University of Hertfordshire",
+        "course": "BSc Finance",
+        "year": "Second year",
+        "grade": "2:1",
+        "targetSector": "Investment Banking / IBD",
+        "targetDivision": "",
+        "programme": "Summer internship",
+        "targetFirm": "Deutsche Bank"
+      },
+      "quiz": {
+        "commercial": 3,
+        "numerical": 2
+      },
+      "cv": "RYAN CLARKE\nryan.clarke@example.com | Hatfield\n\nPERSONAL STATEMENT\nA highly motivated and hard-working finance student with a strong passion for investment banking. I am a fast learner with excellent communication and teamwork skills, looking for a challenging internship.\n\nEDUCATION\nUniversity of Hertfordshire, BSc Finance (2025–2028), currently 2:1\nModules include financial markets, corporate finance and accounting\n\nEXPERIENCE\nAmazon warehouse operative (2025, summer)\n- Picked and packed orders to targets\n- Worked in a fast-paced environment\n\nCustomer service, Costa Coffee (2024–2025)\n- Served customers and handled cash\n- Opened and closed the store\n\nACTIVITIES\nMember of the university finance society\nCompleted a virtual investment banking experience online\n\nSKILLS\nExcel, PowerPoint, communication, leadership, problem solving"
+    },
+    {
+      "key": "p08-consulting-leader",
+      "label": "Consulting, strong leadership, little finance",
+      "profile": {
+        "name": "Hannah Lewis",
+        "university": "University of Bristol",
+        "course": "BA Politics and International Relations",
+        "year": "Final year",
+        "grade": "2:1",
+        "targetSector": "General Finance",
+        "targetDivision": "Advisory / transaction services",
+        "programme": "Graduate programme",
+        "targetFirm": "Deloitte"
+      },
+      "quiz": {
+        "commercial": 4,
+        "numerical": 2
+      },
+      "cv": "HANNAH LEWIS\nhannah.lewis@example.com | Bristol\n\nEDUCATION\nUniversity of Bristol — BA Politics and International Relations (2024–2027), 2:1 average\n- Dissertation: how UK city councils decide where to cut budgets (interviews with 9 councillors)\n\nEXPERIENCE\nBristol Students' Union — Elected Vice-President, Societies (2025–2026)\n- Represented 380 societies; rewrote the society funding process so grants were paid in 10 days instead of 6 weeks\n- Led a team of 5 volunteers to run Freshers' Fair for 9,000 students\n\nCity of Bristol Council — Policy Intern, summer 2025\n- Researched bus-route usage data and wrote a 12-page briefing used in a cabinet member's report\n\nThe Climate Hub (charity) — Volunteer Fundraising Lead (2023–2024)\n- Organised a charity ball that raised £7,400\n\nSKILLS\nResearch and interviewing, stakeholder management, Excel (basic), Canva\n\nINTERESTS\nRowing (college boat club captain), public speaking"
+    },
+    {
+      "key": "p09-equity-research-mid",
+      "label": "Equity research, mid, numbers but vague",
+      "profile": {
+        "name": "Oliver Grant",
+        "university": "University of Exeter",
+        "course": "BSc Economics and Finance",
+        "year": "Final year",
+        "grade": "2:1",
+        "targetSector": "Asset Management / Investing",
+        "targetDivision": "Equity research",
+        "programme": "Summer internship",
+        "targetFirm": "Barclays"
+      },
+      "quiz": {
+        "commercial": 3,
+        "numerical": 3
+      },
+      "cv": "OLIVER GRANT\noliver.grant@example.com\n\nEDUCATION\nUniversity of Exeter — BSc Economics and Finance (2023–2027, year abroad included)\n- 2:1 average; modules: Valuation, Behavioural Finance, Macroeconomics\n- Year abroad at University of Melbourne (2025–2026)\n\nEXPERIENCE\nExeter Investment Club — Analyst (2023–2025)\n- Researched companies in the consumer sector\n- Helped write reports and pitches for the club\n- Involved in the club's portfolio which performed well\n\nHargreaves Lansdown — Work experience week (2023)\n- Shadowed the research team and learned about fund analysis\n\nWaitrose — Partner (2022–2024, weekends)\n- Delivered great customer service and helped with deliveries\n\nSKILLS\nExcel, Bloomberg (basic), some Python\n\nINTERESTS\nTravel, rugby, reading the Financial Times"
+    },
+    {
+      "key": "p10-placement-year",
+      "label": "Placement-year student, corporate finance",
+      "profile": {
+        "name": "Amara Bello",
+        "university": "Loughborough University",
+        "course": "BSc Banking, Finance and Management",
+        "year": "Third year (placement)",
+        "grade": "First predicted",
+        "targetSector": "General Finance",
+        "targetDivision": "Corporate finance",
+        "programme": "Graduate programme",
+        "targetFirm": "UBS"
+      },
+      "quiz": {
+        "commercial": 4,
+        "numerical": 5
+      },
+      "cv": "AMARA BELLO\namara.bello@example.com | Loughborough\n\nEDUCATION\nLoughborough University — BSc Banking, Finance and Management (2024–2028), first-class average 72%\n\nEXPERIENCE\nRolls-Royce plc — Finance Placement Student, Commercial Finance (July 2026–June 2027)\n- Maintain a monthly cost report for a £40m engineering programme and explain variances to the programme manager\n- Found a duplicated supplier accrual of £230k during month-end close and corrected it with the finance business partner\n- Automated part of the forecast pack in Excel, saving about 4 hours a month\n\nLoughborough Students' Union — President, African-Caribbean Society (2025–2026)\n- Grew membership from 60 to 210 and secured £3,000 sponsorship from two employers\n\nNext — Sales Adviser (2023–2024, part-time)\n\nSKILLS\nExcel (advanced, macros), SAP, Power BI, presentation skills\n\nINTERESTS\nSpoken-word poetry (performed at two university showcases), gym"
+    }
+  ]
+}
