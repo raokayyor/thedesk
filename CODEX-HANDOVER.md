@@ -34,6 +34,7 @@ interview work is lost.**
 | `lib/practitioner-questions.mjs` | `PRACTITIONERS` adds `'Chris Sharkey'` (he's on the panel shown in the report). |
 | `tracker.html` | Shortlist (`localStorage desk_mylist`) also syncs to `/api/desk-home` (`tracker-sync`) and is pulled back if the browser has none. |
 | `vercel.json` | `api/test-run.js` maxDuration 300. |
+| `interview.html` | Add `<script src="/interview-coach-layer.js" defer></script>` before `</body>` (loaded last). Written and tested against the **live** interview page (it reads `#question`, `#questionType`, `#cvText`, `.qbox`, `#answerCvEvidence`). |
 
 ## What's new (all on this branch)
 
@@ -73,6 +74,19 @@ interview work is lost.**
   signed by a practitioner.
 - Staff set starting levels when a game starts (paste `TICKER price` lines). Defaults are placeholders.
 - A running game automatically gains any investments added to the list later.
+
+### Interview coach layer (`interview-coach-layer.js`)
+- Under each question: **"Your CV for this question"**, the 3 CV points that best answer it (best point from each experience first),
+  key words highlighted, why each works, a "check the detail" flag on lines with `[CONFIRM: …]`, and the full CV with the points marked.
+  Re-picks on every question; pre-selects the best example in the existing answer builder.
+- **"What the interviewer is listening for"**, by question type, credited to the practitioner panel.
+- Calmer page: smaller hero, slimmer session bar, shorter transcript column (scoped CSS, `body.dc-on`).
+
+### Trading game extras
+- Bid/offer spreads (buy at offer, sell at bid, holdings valued at bid), cash earns Bank Rate interest each news day
+  (BoE stories move the rate; staff can set it), stop losses, average price paid and P&L per holding, trade ticket.
+- News desk: live BBC/Guardian business headlines (RSS) with "Turn into a story" (AI draft of text and moves; staff edit and publish).
+  New table columns: `desk_game.cash_rate`, `desk_game_accounts.stops`, `.costs`, `.interest`.
 
 ### Weekly challenge (`challenge.html`, `challenge-admin.html`, `api/challenge.js`)
 - Earlier format (weekly scenario, split £100k, staff score from public weekly moves). Still works but no longer in the
