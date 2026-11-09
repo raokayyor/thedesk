@@ -3,6 +3,14 @@ import '../interview-bank.js';import '../interview-session-core.js';
 import {rankNews,trustedArticle} from '../lib/news-library.mjs';
 import {TOPICAL_READINGS} from '../lib/topical-readings.mjs';
 const bank=globalThis.DeskInterviewBank,session=globalThis.DeskInterviewSession;
+test('HireVue defaults to five balanced questions with optional numeracy off',()=>{
+ const setup=session.normalizeSetup({firm:'db',role:'ibd'}),base=bank.buildSession({firmKey:'db',roleKey:'ibd',includeLogic:true});
+ assert.equal(setup.numericalCount,0);assert.equal(setup.reasoningCount,0);assert.equal(setup.includeLogic,false);
+ const questions=session.applyContext(base,setup);assert.equal(questions.length,5);assert.deepEqual(questions.map(q=>q.kind),['cv','competency','commercial','cv','motivation']);
+ assert(!questions.some(q=>q.challenge));assert(!questions.some(q=>/an experience you choose/.test(q.q)));
+ const opted=session.normalizeSetup({...setup,includeLogic:true,numericalCount:2,reasoningCount:1});assert.equal(session.applyContext(base,opted).length,8);
+ const selected=session.normalizeSetup({...setup,news:{title:'A checked financial story for commercial discussion',url:'https://www.reuters.com/markets/example'}});const withNews=session.applyContext(base,selected);assert.equal(withNews.length,5);assert.equal(withNews[2].kind,'news');
+});
 test('wider AI, energy and geopolitics stories survive a busy firm feed',()=>{
  const firmItems=Array.from({length:20},(_,n)=>({title:'Deutsche Bank announces acquisition financing transaction '+n,url:'https://www.db.com/news/deal-'+n,publishedAt:'2026-11-06'}));
  const items=rankNews([...firmItems,...TOPICAL_READINGS],{firm:'db',role:'ibd',now:Date.parse('2026-11-06T10:00:00Z')});

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import '../interview-bank.js';import '../interview-session-core.js';
 import {parseEmployerNews,validNewsUrl,fetchEmployerNews} from '../lib/interview-news.mjs';
 const S=globalThis.DeskInterviewSession,B=globalThis.DeskInterviewBank;
-const setup=S.normalizeSetup({firm:'db',role:'ibd',roleTitle:'Risk Analyst',roleDescription:'Excel and risk research',round:'second',news:{title:'A sufficiently detailed employer headline',url:'https://www.db.com/news/test'}});
+const setup=S.normalizeSetup({firm:'db',role:'ibd',format:'video',roleTitle:'Risk Analyst',roleDescription:'Excel and risk research',round:'second',news:{title:'A sufficiently detailed employer headline',url:'https://www.db.com/news/test'}});
 const base=B.buildSession({firmKey:'db',roleKey:'ibd',evidence:'My project',includeLogic:true});const original=JSON.stringify(base),q=S.applyContext(base,setup);
 assert.equal(q.length,9);assert.match(q[0].q,/Risk Analyst/);assert.match(q[1].q,/Excel|risk/);assert.match(q[2].q,/assumption/);assert.equal(q[4].kind,'news');assert.equal(JSON.stringify(base),original);
 assert.equal(S.normalizeSetup({...setup,firm:'ey'}).news,null);
