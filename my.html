@@ -98,7 +98,7 @@ function panelBand(){
   else ask=`<div class="ask"><b>Your panel question has been used.</b><span>Members also get a call with a practitioner.</span></div>`;
   if(D.member&&ME.call)ask=ask.replace('</div>',`<a class="btn ghost" href="${esc(ME.call.url)}" target="_blank" rel="noopener">${esc(ME.call.label)}</a></div>`);
   return `<section class="card panel"><div><div class="kicker">Your practitioner panel</div><h2 style="margin-top:6px">Built on what people who’ve hired for banks actually look for.</h2>
-    <p class="mute" style="margin:6px 0 0">The scoring, the tips and the interview feedback on your Desk use points our practitioners have checked and approved${P.approved>=50?` (${P.approved.toLocaleString('en-GB')} so far)`:''}. Where they disagree with popular advice, we tell you.</p>
+    <p class="mute" style="margin:6px 0 0">${P.approved?`The scoring, the tips and the interview feedback on your Desk use points our practitioners have checked and approved${P.approved>=50?` (${P.approved.toLocaleString('en-GB')} so far)`:''}. Where they disagree with popular advice, we tell you.`:'Your score, your report and your interview feedback are built on The Desk’s practitioner-developed framework.'}</p>
     <div class="faces">${P.panel.map(m=>`<div class="face${m.name===P.lead.name?' lead':''}" title="${esc(m.firms)}"><span class="av" aria-hidden="true">${esc(m.init)}</span><span><b>${esc(m.name)}</b>${m.name===P.lead.name?' · <span style="color:var(--accent-ink);font-weight:700">your route</span>':''}<br><span class="mute" style="font-size:12px">${esc(m.firms)}</span></span></div>`).join('')}</div></div>
     ${ask}</section>`;
 }
