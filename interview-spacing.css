@@ -32,3 +32,7 @@
  .page .wrap .interview-answer-step>.card,
  .page .wrap .interview-answer-step>.desk-answer-breakdown{padding:14px}
 }
+
+/* CV management and setup live outside the interview workspace. */
+.page .wrap .interview-cv-summary,
+.page .wrap #practiceSettingsDetails{display:none!important}
