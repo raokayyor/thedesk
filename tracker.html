@@ -143,6 +143,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
 .role-tab:disabled{color:var(--muted);cursor:default;background:var(--soft);border-color:var(--line)}\n.row,.fcard,.insight,.stat,.prep,.role-info{border-radius:12px}.btn,.role-tab,.sectors button,.filters select,.application-stage select{border-radius:8px}.row{overflow:hidden}
 </style>
 
+<script src="/desk-nav.js" defer></script>
 </head>
 <body>
 <header class="top"><div class="wrap">
@@ -451,7 +452,10 @@ function st(p){
 }
 function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;if(s==="open")return 500;if(s==="notyet")return 700;if(s==="unconfirmed")return 800;return 1000+(-(n||0))}
 var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}");if(stored&&typeof stored==="object"&&!Array.isArray(stored))mine=stored}catch(e){}
-function save(){try{localStorage.setItem("desk_mylist",JSON.stringify(mine));document.getElementById("saveNotice").textContent="Saved on this browser."}catch(e){document.getElementById("saveNotice").textContent="This browser could not save your changes. Export your list to keep a copy."}}
+// Keep the shortlist on the student's Desk too, so My Desk shows it and it follows them across devices.
+function deskSync(){try{fetch("/api/desk-home",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"tracker-sync",list:mine})}).catch(function(){})}catch(e){}}
+if(!Object.keys(mine).length){try{fetch("/api/desk-home?view=shortlist",{credentials:"same-origin"}).then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&d.list&&Object.keys(d.list).length&&!Object.keys(mine).length){mine=d.list;try{localStorage.setItem("desk_mylist",JSON.stringify(mine))}catch(e){}if(typeof render==="function")render()}}).catch(function(){})}catch(e){}}
+function save(){deskSync();try{localStorage.setItem("desk_mylist",JSON.stringify(mine));document.getElementById("saveNotice").textContent="Saved on this browser."}catch(e){document.getElementById("saveNotice").textContent="This browser could not save your changes. Export your list to keep a copy."}}
 function key(p){return p.firm+"|"+p.name}
 
 // stats + insight

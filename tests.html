@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tests | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}.hin{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 24px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}
+main{max-width:760px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margin:0}h1{font-size:clamp(26px,4vw,34px)}h2{font-size:22px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 20px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn:disabled{opacity:.45;cursor:default}
+.mute{color:var(--mute);font-size:14px}
+.prog{display:flex;gap:4px}.prog i{flex:1;height:6px;border-radius:3px;background:var(--soft)}.prog i.done{background:var(--ink)}.prog i.on{background:var(--accent)}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.opt{text-align:left;font:500 16px "DM Sans",Arial,sans-serif;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;color:var(--ink);min-height:44px}
+.opt:hover{border-color:var(--ink)}.opt[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:#fff}
+.q{font:500 22px/1.35 "Fraunces",Georgia,serif;margin:10px 0 0}
+.score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.score div{background:var(--ink);color:#fff;border-radius:12px;padding:14px}.score b{display:block;font:500 34px/1.1 Fraunces,Georgia,serif;color:#ff8a52}.score span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#cfd6db;font-weight:700}
+.rev{border-top:1px solid var(--soft);padding:14px 0}.rev:first-child{border-top:0}.ok{color:var(--ok);font-weight:700}.no{color:var(--bad);font-weight:700}
+.timer{font-weight:700;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.score{grid-template-columns:1fr}.pick{grid-template-columns:1fr!important}}
+</style>
+<script src="/desk-nav.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
+<main id="app"><p class="mute">Loading…</p></main>
+<script>
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+let T=null,qs=[],ans=[],i=0,started=0,tick=null;
+const SECTION=['numerical','commercial'].includes(new URLSearchParams(location.search).get('section'))?new URLSearchParams(location.search).get('section'):'both';
+const LABEL={numerical:'Numerical test',commercial:'Commercial & technical test',both:'Mixed test'};
+function intro(){
+  const tab=(k,t,d)=>`<a href="/tests.html?section=${k}" class="card" style="text-decoration:none;display:block;${SECTION===k?'border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset':''}"><b>${t}</b><div class="mute">${d}</div></a>`;
+  app.innerHTML=`<div class="kicker">Tests</div><h1>${esc(LABEL[SECTION])}</h1>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px" class="pick">${tab('numerical','Numerical','10 questions · about 8 min')}${tab('commercial','Commercial & technical','10 questions for your route')}${tab('both','Mixed','5 of each')}</div>
+  <div class="card"><p style="margin:0">${SECTION==='numerical'?'Percentages, ratios, growth, margins and the quick maths banks test online.':SECTION==='commercial'?'Markets, accounting and deal questions for your route: the commercial awareness interviewers probe.':'Five commercial and technical questions for your route, then five numerical.'} New questions each time, from a bank of over 2,000.</p>
+  <ul class="mute" style="margin:12px 0 0;padding-left:18px"><li>The clock is a guide, not a cut-off.</li><li>Your best of your last 3 results in each section counts towards your readiness score.</li><li>Every question you miss comes with the working.</li></ul>
+  <div style="margin-top:18px"><button class="btn hot" id="go">Start the test</button></div><p class="mute" id="err" role="status"></p></div>`;
+  document.getElementById('go').onclick=start;
+}
+async function start(){
+  const b=document.getElementById('go');b.disabled=true;
+  const r=await fetch('/api/desk-home?view=test&section='+SECTION,{credentials:'same-origin'});const d=await r.json().catch(()=>({}));
+  if(!r.ok){b.disabled=false;const next=d.nextAt?` Your next free test opens ${new Date(d.nextAt).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})}.`:'';document.getElementById('err').innerHTML=esc((d.error||'Couldn’t start a test.')+next)+(d.member===false?' <a href="/my.html">See membership →</a>':'');return}
+  T=d;qs=[...d.commercial.map(q=>({...q,g:'commercial'})),...d.numerical.map(q=>({...q,g:'numerical'}))];ans=qs.map(()=>null);i=0;started=Date.now();
+  tick=setInterval(()=>{const el=document.getElementById('clock');if(el){const s=Math.floor((Date.now()-started)/1000);el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}},1000);
+  show();
+}
+function show(){
+  const q=qs[i];
+  app.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:baseline"><div class="kicker">${q.g==='commercial'?'Commercial & technical':'Numerical'} · Question ${i+1} of ${qs.length}</div><span class="timer mute" id="clock" aria-label="Time taken">0:00</span></div>
+  <div class="prog" aria-hidden="true">${qs.map((_,k)=>`<i class="${k<i?'done':k===i?'on':''}"></i>`).join('')}</div>
+  <div class="card"><div class="mute">${esc(q.topic)}</div><p class="q">${esc(q.question)}</p>
+  <div class="opts">${q.options.map((o,k)=>`<button class="opt" data-k="${k}" aria-pressed="${ans[i]===k}">${esc(o)}</button>`).join('')}</div>
+  <div style="display:flex;justify-content:space-between;margin-top:18px;gap:8px">${i?'<button class="btn ghost" id="back">Back</button>':'<span></span>'}<button class="btn ${i===qs.length-1?'hot':''}" id="next" ${ans[i]===null?'disabled':''}>${i===qs.length-1?'Finish and mark':'Next'}</button></div></div>`;
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ans[i]=+b.dataset.k;document.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('next').disabled=false});
+  const bk=document.getElementById('back');if(bk)bk.onclick=()=>{i--;show()};
+  document.getElementById('next').onclick=()=>{if(i<qs.length-1){i++;show()}else finish()};
+}
+async function finish(){
+  clearInterval(tick);const secs=Math.round((Date.now()-started)/1000);
+  app.innerHTML='<p class="mute">Marking…</p>';
+  const nC=T.commercial.length;const body={action:'test',attemptId:T.attemptId,answers:{commercial:ans.slice(0,nC),numerical:ans.slice(nC)}};
+  const r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));
+  if(!r.ok){app.innerHTML=`<div class="card">${esc(d.error||'Couldn’t mark that test.')} <a href="/tests.html">Start again</a></div>`;return}
+  const R=d.readiness,diff=R&&R.previous!=null?R.score-R.previous:null;
+  const wrong=d.review.filter(x=>!x.right);
+  app.innerHTML=`<div class="kicker">Your result</div><h1>${(d.commercial?.correct||0)+(d.numerical?.correct||0)} out of ${(d.commercial?.total||0)+(d.numerical?.total||0)}</h1>
+  <div class="score">${d.commercial?`<div><b>${d.commercial.correct}/${d.commercial.total}</b><span>Commercial</span></div>`:''}${d.numerical?`<div><b>${d.numerical.correct}/${d.numerical.total}</b><span>Numerical</span></div>`:''}<div><b>${R?R.score:'—'}</b><span>Readiness${diff?` (${diff>0?'+':''}${diff})`:''}</span></div></div>
+  <p class="mute" style="margin:0">Took ${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}. ${R?(diff>0?'Your readiness score went up.':diff<0?'Your readiness score went down: it counts your best of your last 3 results in each section, so keep practising and take another.':'Your readiness score is unchanged.'):'Take the free assessment to get a readiness score.'}</p>
+  ${wrong.length?`<div class="card"><h2>${wrong.length===1?'The one you missed':'The '+wrong.length+' you missed'}</h2>${wrong.map(x=>`<div class="rev"><div class="mute">${esc(x.topic)}</div><p style="margin:4px 0;font-weight:600">${esc(x.question)}</p><p style="margin:4px 0;font-size:14px"><span class="no">You said:</span> ${esc(x.options[x.chosen])}<br><span class="ok">Answer:</span> ${esc(x.options[x.answer])}</p>${x.working.length?`<ol style="margin:6px 0;padding-left:20px;font-size:14px">${x.working.map(w=>`<li>${esc(w)}</li>`).join('')}</ol>`:''}${x.explanation?`<p class="mute" style="margin:4px 0">${esc(x.explanation)}</p>`:''}${x.trap?`<p class="mute" style="margin:4px 0"><b>Trap:</b> ${esc(x.trap)}</p>`:''}</div>`).join('')}</div>`:'<div class="card">All ten right. Nicely done.</div>'}
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="/my.html">Back to My Desk</a><a class="btn ghost" href="/tests.html?section=${SECTION}">Another ${SECTION==='both'?'test':SECTION+' test'}</a></div>`;
+  window.scrollTo(0,0);
+}
+intro();
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Free vs Full Cycle test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8f4ed;--card:#fffdfa;--ink:#11191e;--muted:#5f6b76;--line:#ddd7cf;--accent:#ff5a14;--accent-ink:#c2410c;--soft:#fff7ed;--good:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'DM Sans',Arial,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:500;margin:0}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header h1{font-size:22px}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 24px 60px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input,select,textarea,button{font:inherit}
+input,select,textarea{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;color:var(--ink)}
+button{border:1px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:disabled{opacity:.5;cursor:default}
+.note{font-size:13px;color:var(--muted)}
+.banner{background:var(--soft);border:1px solid #fed7aa;border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:14px}
+.banner.err{background:#fef2f2;border-color:#fecaca}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin:6px 0 16px;border-bottom:1px solid var(--line)}
+.tab{flex:none;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-weight:600;font-size:13px;text-align:left;cursor:pointer;color:var(--ink)}
+.tab small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab.on small{color:#cfd6db}
+.dots{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dot.done{background:var(--good)}.dot.run{background:var(--accent);animation:p 1s infinite}.dot.err{background:var(--bad)}
+@keyframes p{50%{opacity:.3}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.persona{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
+.persona h2{font-size:24px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;background:#fff}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.metric{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px}
+.metric b{display:block;font-family:Fraunces,Georgia,serif;font-size:26px;font-weight:500;color:#ff8a52;line-height:1.1}
+.metric span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cfd6db;font-weight:700}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:16px;align-items:start}
+.col-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.col-h h3{font-size:20px}
+.label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.sec{border-top:1px solid var(--line);padding:12px 0}
+.sec:first-of-type{border-top:0;padding-top:0}
+.sec>.label{margin-bottom:6px;display:block}
+.score{display:flex;align-items:baseline;gap:12px}
+.score b{font-family:Fraunces,Georgia,serif;font-size:46px;font-weight:500;color:var(--accent-ink);line-height:1}
+.bar{height:6px;background:#eee7dd;border-radius:3px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.comp{margin:8px 0}
+.comp .top{display:flex;justify-content:space-between;font-weight:600;font-size:14px}
+.kv{margin:6px 0}
+.kv>.k{font-size:12px;font-weight:700;color:var(--muted);text-transform:capitalize}
+.kv>.v{white-space:pre-wrap}
+.item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
+ul.plain{margin:4px 0;padding-left:18px}
+details{margin:6px 0}
+summary{cursor:pointer;font-weight:600}
+.cv{white-space:pre-wrap;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;max-height:420px;overflow:auto}
+.rate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.stars button{border-radius:8px;padding:6px 11px}
+.stars button.on{background:var(--ink);color:#fff}
+.btn-link{display:inline-block;border:1px solid var(--ink);border-radius:999px;padding:8px 14px;font-weight:700;color:var(--ink);text-decoration:none;background:#fff}.btn-link:hover{background:var(--ink);color:#fff}
+.err-t{color:var(--bad);font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card)}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.empty{color:var(--muted);font-style:italic}
+@media(max-width:860px){.cols,.persona{grid-template-columns:1fr}.wrap{padding:14px 16px 50px}header{padding:12px 16px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Free vs Full Cycle — 10 test students</h1>
+  <div class="controls">
+    <input id="key" type="password" placeholder="Staff key (not needed on test links)" autocomplete="off" style="width:150px">
+    <select id="batch" title="Test batch"></select>
+    <button id="load">Load</button>
+    <button id="runAll" class="primary">Run all 10</button>
+  </div>
+</header>
+<div class="wrap">
+  <div id="msg"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STEPS=['free','verdict','repair','plan'];
+const STEP_LABEL={free:'Free assessment',verdict:'Paid: verdict',repair:'Paid: CV & answers',plan:'Paid: plan'};
+let state={batch:'',batches:[],personas:[],runs:{},running:{},tab:'overview',env:null};
+try{$('#key').value=localStorage.getItem('deskStaffKey')||''}catch(e){}
+
+function key(){const k=$('#key').value.trim();try{localStorage.setItem('deskStaffKey',k)}catch(e){}return k}
+function msg(html,err){$('#msg').innerHTML=html?`<div class="banner${err?' err':''}">${html}</div>`:''}
+async function api(method,body,q=''){
+  const r=await fetch('/api/test-run'+q,{method,headers:{'Authorization':'Bearer '+key(),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
+  let d={};try{d=await r.json()}catch(e){}
+  if(!r.ok)throw Object.assign(new Error(d.error||('HTTP '+r.status)),{status:r.status,data:d});
+  return d;
+}
+function newBatchName(){const d=new Date();return 'run-'+d.toISOString().slice(0,10)+'-'+d.toTimeString().slice(0,5).replace(':','')}
+
+async function load(batch){
+    try{
+    const d=await api('GET',null,batch?('?batch='+encodeURIComponent(batch)):'');
+    state.personas=d.personas;state.batches=d.batches;state.env=d.env;state.batch=d.batch||newBatchName();
+    state.runs={};for(const r of d.runs)state.runs[r.persona_key]=r;
+    const opts=[...d.batches.map(b=>b.batch)];if(!opts.includes(state.batch))opts.unshift(state.batch);
+    $('#batch').innerHTML=opts.map(b=>`<option ${b===state.batch?'selected':''}>${esc(b)}</option>`).join('')+'<option value="__new">+ New batch</option>';
+    const miss=[];if(!d.env.anthropic)miss.push('ANTHROPIC_API_KEY');if(!d.env.database)miss.push('DATABASE_URL');
+    msg(miss.length?`This deployment is missing <b>${miss.join(' and ')}</b>. Runs will fail until it is set in Vercel for this environment.`:'',!!miss.length);
+    render();
+  }catch(e){msg(e.status===401?'Staff key needed on this site — enter it top right and press Load.':'Could not load: '+esc(e.message),true)}
+}
+$('#load').onclick=()=>load($('#batch').value&&$('#batch').value!=='__new'?$('#batch').value:'');
+$('#batch').onchange=e=>{if(e.target.value==='__new'){state.batch=newBatchName();state.runs={};const o=document.createElement('option');o.textContent=state.batch;o.selected=true;e.target.prepend(o);render()}else load(e.target.value)};
+
+function stepDone(r,s){return s==='free'?!!r?.free:!!r?.report?.[s]}
+async function runPersona(p){
+  for(const s of STEPS){
+    if(stepDone(state.runs[p.key],s))continue;
+    state.running[p.key]=s;render(true);
+    let ok=false;
+    for(let attempt=0;attempt<2&&!ok;attempt++){
+      try{await api('POST',{action:'step',batch:state.batch,personaKey:p.key,step:s});ok=true}
+      catch(e){if(attempt===1||e.status===401){state.running[p.key]=null;await refresh();return false}}
+    }
+    await refresh();
+  }
+  state.running[p.key]=null;render(true);return true;
+}
+async function refresh(){try{const d=await api('GET',null,'?batch='+encodeURIComponent(state.batch));state.runs={};for(const r of d.runs)state.runs[r.persona_key]=r;state.batches=d.batches}catch(e){}render(true)}
+$('#runAll').onclick=async()=>{
+  if(!state.personas.length){await load();if(!state.personas.length)return}
+  $('#runAll').disabled=true;const t0=Date.now();
+  msg('Running… each student takes about 4–6 minutes (free assessment, then the three paid sections). Three run at once. Keep this tab open.');
+  const queue=[...state.personas];
+  await Promise.all([0,1,2].map(async()=>{while(queue.length)await runPersona(queue.shift())}));
+  $('#runAll').disabled=false;
+  const failed=state.personas.filter(p=>STEPS.some(s=>!stepDone(state.runs[p.key],s)));
+  msg(`Finished in ${Math.round((Date.now()-t0)/60000)} min. ${failed.length?failed.length+' student(s) incomplete — open their tab and press “Run this student” to retry.':'All 10 complete.'}`,!!failed.length);
+};
+
+// ---------- rendering ----------
+const human=k=>String(k).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/_/g,' ').replace(/^./,c=>c.toUpperCase());
+function generic(v,depth=0){
+  if(v==null||v==='')return '<span class="empty">—</span>';
+  if(typeof v!=='object')return esc(v);
+  if(Array.isArray(v)){
+    if(!v.length)return '<span class="empty">none</span>';
+    if(v.every(x=>typeof x!=='object'))return '<ul class="plain">'+v.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>';
+    return v.map(x=>`<div class="item">${generic(x,depth+1)}</div>`).join('');
+  }
+  return Object.entries(v).map(([k,x])=>`<div class="kv"><div class="k">${esc(human(k))}</div><div class="v">${generic(x,depth+1)}</div></div>`).join('');
+}
+const sec=(label,body)=>body?`<div class="sec"><span class="label">${esc(label)}</span>${body}</div>`:'';
+const words=v=>JSON.stringify(v||'').replace(/"[a-zA-Z]+":/g,' ').split(/\s+/).filter(w=>/[a-z]/i.test(w)).length;
+
+function freeCol(r){
+  if(!r?.free)return '<p class="empty">Not run yet.</p>';
+  const s=r.free.shown||{},res=s.result||{},q=s.quiz||{};
+  const shown=new Set(['overallScore','band','competencies','priorities','deskSummary','cvPreview','atsReadiness','candidateName']);
+  return sec('Score',`<div class="score"><b>${esc(res.overallScore??'—')}</b><div><div style="font-weight:700">${esc(res.band||'')}</div><div class="note">Quiz: commercial ${esc(q.commercialCorrect)}/5 · numerical ${esc(q.numericalCorrect)}/5</div></div></div>`)
+   +sec('Desk summary',esc(res.deskSummary))
+   +sec('Competencies',(res.competencies||[]).map(c=>`<div class="comp"><div class="top"><span>${esc(c.name)}</span><span>${esc(c.score)}</span></div><div class="bar"><i style="width:${Math.max(0,Math.min(100,+c.score||0))}%"></i></div><div class="note">${esc(c.reason)}${c.nextStep?' <b>Next:</b> '+esc(c.nextStep):''}</div></div>`).join(''))
+   +sec('Top 3 priorities',(res.priorities||[]).map(p=>`<div class="item"><b>${esc(p.title)}</b><br>${esc(p.description)}</div>`).join(''))
+   +sec('CV line preview',res.cvPreview?generic(res.cvPreview):'')
+   +sec('ATS readiness',res.atsReadiness?generic(res.atsReadiness):'')
+   +sec('Missed quiz topics',q.missed?.length?'<ul class="plain">'+q.missed.map(m=>`<li>${esc(m.section)}: ${esc(m.topic)}</li>`).join('')+'</ul>':'None')
+   +Object.entries(res).filter(([k])=>!shown.has(k)).map(([k,v])=>sec(human(k),generic(v))).join('');
+}
+function paidCol(r){
+  const rep=r?.report||{};if(!rep.verdict&&!rep.repair&&!rep.plan)return '<p class="empty">Not run yet.</p>';
+  const v=rep.verdict||{},rp=rep.repair||{},pl=rep.plan||{};
+  const done=new Set();const take=(o,k)=>{done.add(k);return o[k]};
+  let h='';
+  h+=sec('Executive verdict',v.executiveVerdict?generic(take(v,'executiveVerdict')):'');
+  h+=sec('Application risk map',v.applicationRiskMap?take(v,'applicationRiskMap').map(x=>`<div class="item"><b>${esc(x.risk)}</b> <span class="chip">${esc(x.severity)}</span><div class="note" style="margin-top:4px">${esc(x.whyItMatters)}</div><div><b>Fix:</b> ${esc(x.howToFix)}</div></div>`).join(''):'');
+  h+=sec('Is the route realistic?',v.targetRouteMeaning?generic(take(v,'targetRouteMeaning')):'');
+  h+=sec('Firm prep',v.firmPrep?generic(take(v,'firmPrep')):'');
+  h+=sec('CV bullet rewrites',rp.bulletRepair?take(rp,'bulletRepair').map(b=>`<div class="item"><div class="note">${esc(b.cvItem)}</div><div><b>Before:</b> ${esc(b.originalBullet)}</div><div style="margin-top:4px"><b>After:</b> ${esc(b.exampleBullet)}</div><div class="note" style="margin-top:4px">${esc(b.whyThisWorks)}</div>${b.questionsToConfirm?.length?'<div class="note"><b>Confirm:</b> '+b.questionsToConfirm.map(esc).join(' · ')+'</div>':''}</div>`).join(''):'');
+  h+=sec('Evidence hierarchy',rp.evidenceHierarchy?`<details><summary>Lead with / support with / cut</summary>${generic(take(rp,'evidenceHierarchy'))}</details>`:'');
+  h+=sec('7 competency model answers',rp.competencyRepair?take(rp,'competencyRepair').map(c=>`<details class="item"><summary>${esc(c.name)} — ${esc(c.score)} <span class="note">· ${esc(c.evidence)}</span></summary><p style="white-space:pre-wrap">${esc(c.draftAnswer)}</p><div class="note"><b>Next:</b> ${esc(c.nextAction)}</div></details>`).join(''):'');
+  h+=sec('Firm & division fit',rp.firmDivisionFit?generic(take(rp,'firmDivisionFit')):'');
+  h+=sec('Interview risk map',rp.interviewRiskMap?take(rp,'interviewRiskMap').map(x=>`<div class="item"><b>“${esc(x.likelyQuestion)}”</b><div class="note">${esc(x.whyThisQuestionExposesRisk)}</div><div><b>Avoid:</b> ${esc(x.weakAnswerPattern)}</div><div><b>Structure:</b> ${esc(x.strongAnswerStructure)}</div><div><b>Use:</b> ${esc(x.candidateEvidenceToUse)}</div></div>`).join(''):'');
+  h+=sec('Worked quiz answers',pl.workedAnswers?.length?`<details><summary>${pl.workedAnswers.length} worked answer(s)</summary>${generic(take(pl,'workedAnswers'))}</details>`:(take(pl,'workedAnswers'),''));
+  h+=sec('7-day action plan',pl.sevenDayActionPlan?take(pl,'sevenDayActionPlan').map(d=>`<div class="item"><b>${esc(d.day)}: ${esc(d.focus)}</b> <span class="note">${esc(d.minutes)} min</span><ul class="plain">${(d.tasks||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul><div class="note">Deliverable: ${esc(d.deliverable)}</div></div>`).join(''):'');
+  h+=sec('Weeks 2–4',pl.weeksTwoToFour?`<details><summary>Show</summary>${generic(take(pl,'weeksTwoToFour'))}</details>`:'');
+  h+=sec('Final submission checklist',pl.finalSubmissionChecklist?generic(take(pl,'finalSubmissionChecklist')):'');
+  h+=sec('Recheck advice',pl.recheckRecommendation?esc(take(pl,'recheckRecommendation')):'');
+  for(const part of [v,rp,pl])for(const [k,x] of Object.entries(part))if(!done.has(k)&&!['paidTitle','atsReadiness','profileWarnings'].includes(k))h+=sec(human(k),generic(x));
+  if(v.profileWarnings?.length)h=sec('Profile warnings',generic(v.profileWarnings))+h;
+  return h;
+}
+function metrics(r){
+  const rep=r?.report||{},t=r?.timings||{};
+  const rewrites=rep.repair?.bulletRepair?.length||0,answers=rep.repair?.competencyRepair?.length||0,iq=rep.repair?.interviewRiskMap?.length||0,days=rep.plan?.sevenDayActionPlan?.length||0;
+  const freeW=words(r?.free?.shown?.result),paidW=words(rep);
+  const secs=Object.values(t).reduce((a,b)=>a+(+b||0),0)/1000;
+  const m=[['CV lines rewritten',rewrites],['Model answers',answers],['Interview Qs prepped',iq],['Plan days',days],['Words: free',freeW],['Words: paid',paidW],['Paid ÷ free',freeW?(paidW/freeW).toFixed(1)+'×':'—'],['Run time',secs?Math.round(secs)+'s':'—']];
+  return '<div class="metrics">'+m.map(([k,v])=>`<div class="metric"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')+'</div>';
+}
+function dots(p){const r=state.runs[p.key];return '<span class="dots">'+STEPS.map(s=>`<i class="dot ${state.running[p.key]===s?'run':stepDone(r,s)?'done':r?.errors?.[s]?'err':''}" title="${STEP_LABEL[s]}"></i>`).join('')+'</span>'}
+function render(soft){
+  $('#tabs').innerHTML=`<button class="tab ${state.tab==='overview'?'on':''}" data-t="overview">Overview<small>${esc(state.batch)}</small></button>`+state.personas.map((p,i)=>`<button class="tab ${state.tab===p.key?'on':''}" data-t="${esc(p.key)}">${i+1}. ${esc(p.profile.name)}${dots(p)}<small>${esc(p.label)}</small></button>`).join('');
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=b.dataset.t;render()});
+  if(soft&&document.activeElement&&document.activeElement.tagName==='TEXTAREA')return;
+  const openDetails=[...document.querySelectorAll('#view details')].map(d=>d.open);
+  $('#view').innerHTML=state.tab==='overview'?overview():personaView(state.personas.find(p=>p.key===state.tab));
+  if(soft)document.querySelectorAll('#view details').forEach((d,i)=>{if(openDetails[i])d.open=true});
+  bindPersona();
+}
+function overview(){
+  if(!state.personas.length)return '<div class="card">Enter the staff key and press <b>Load</b>. Then <b>Run all 10</b> generates a free assessment and the full paid report for each test student (about 15–20 minutes in total, using real model calls). Results are saved, so you can close the page and come back.</div>';
+  const rows=state.personas.map((p,i)=>{const r=state.runs[p.key],res=r?.free?.shown?.result||{},rep=r?.report||{};const err=Object.entries(r?.errors||{}).map(([s,e])=>`${s}: ${e}`).join('; ');
+    return `<tr><td>${i+1}</td><td><b>${esc(p.profile.name)}</b><div class="note">${esc(p.label)}</div></td><td>${esc(p.profile.targetSector)}</td><td>${esc(res.overallScore??'—')} <span class="note">${esc(res.band||'')}</span></td><td>${dots(p)}</td><td>${rep.repair?.bulletRepair?.length??'—'} / ${rep.repair?.competencyRepair?.length??'—'}</td><td>${r?.rating?'★'.repeat(r.rating):'—'}</td><td class="note">${esc(r?.notes||'')}${err?`<div class="err-t">${esc(err)}</div>`:''}</td></tr>`}).join('');
+  const rated=Object.values(state.runs).filter(r=>r.rating);const avg=rated.length?(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):'—';
+  return `<div class="metrics"><div class="metric"><b>${Object.values(state.runs).filter(r=>r.report?.plan).length}/10</b><span>Fully run</span></div><div class="metric"><b>${avg}</b><span>Avg “worth £89?”</span></div><div class="metric"><b>${rated.length}</b><span>Rated</span></div></div>
+  <table><thead><tr><th>#</th><th>Student</th><th>Route</th><th>Free score</th><th>Steps</th><th>Rewrites / answers</th><th>Worth £89?</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>
+  <p class="note">Dots: free assessment, paid verdict, paid CV &amp; answers, paid plan. All ten students are fictional; their CVs are in samples/test-personas.json.</p>`;
+}
+function personaView(p){
+  if(!p)return '';
+  const r=state.runs[p.key],errs=Object.entries(r?.errors||{});
+  return `<div class="card persona"><div><div class="label">${esc(p.label)}</div><h2>${esc(p.profile.name)}</h2>
+    <div class="chips">${['university','course','year','grade','targetSector','targetDivision','programme','targetFirm'].filter(k=>p.profile[k]).map(k=>`<span class="chip">${esc(p.profile[k])}</span>`).join('')}<span class="chip">Quiz set to ${p.quiz.commercial}/5 + ${p.quiz.numerical}/5</span></div>
+    <details><summary>Their CV</summary><div class="cv">${esc(p.cv)}</div></details>
+    ${errs.length?`<div class="err-t">${errs.map(([s,e])=>esc(STEP_LABEL[s]+': '+e)).join('<br>')}</div>`:''}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">${r?.free?`<a class="btn-link" target="_blank" href="/api/test-run?view=free&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open free results page ↗</a>`:''}${r?.report?.plan?`<a class="btn-link" target="_blank" href="/api/test-run?view=paid&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open paid report page ↗</a>`:''}<button class="primary" data-run="${esc(p.key)}" ${state.running[p.key]?'disabled':''}>${state.running[p.key]?'Running: '+STEP_LABEL[state.running[p.key]]:'Run this student'}</button></div></div>
+  ${metrics(r)}
+  <div class="cols"><div class="card"><div class="col-h"><h3>Free</h3><span class="note">what the student sees before paying</span></div>${freeCol(r)}</div>
+  <div class="card"><div class="col-h"><h3>Full Cycle · £89</h3><span class="note">${esc(r?.report?.verdict?.paidTitle||'')}</span></div>${paidCol(r)}</div></div>
+  <div class="card rate"><b>Worth £89 for this student?</b><span class="stars">${[1,2,3,4,5].map(n=>`<button data-star="${n}" class="${r?.rating===n?'on':''}">${n}</button>`).join('')}</span>
+    <textarea id="notes" rows="2" style="flex:1;min-width:240px" placeholder="What's missing, wrong or great?">${esc(r?.notes||'')}</textarea><button id="saveRate">Save</button><span id="saved" class="note"></span></div>`;
+}
+function bindPersona(){
+  const runBtn=document.querySelector('[data-run]');
+  if(runBtn)runBtn.onclick=async()=>{const p=state.personas.find(x=>x.key===runBtn.dataset.run);await runPersona(p)};
+  let star=state.runs[state.tab]?.rating||null;
+  document.querySelectorAll('[data-star]').forEach(b=>b.onclick=()=>{star=+b.dataset.star;document.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('on',+x.dataset.star===star))});
+  const save=$('#saveRate');if(save)save.onclick=async()=>{try{await api('POST',{action:'rate',batch:state.batch,personaKey:state.tab,rating:star,notes:$('#notes').value});await refresh();$('#saved').textContent='Saved'}catch(e){$('#saved').textContent='Not saved: '+e.message}};
+}
+load();
+</script>
+</body>
+</html>

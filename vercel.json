@@ -20,6 +20,9 @@
     },
     "api/extract-cv.js": {
       "maxDuration": 60
+    },
+    "api/test-run.js": {
+      "maxDuration": 300
     }
   }
 }

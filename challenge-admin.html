@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Challenge admin | The Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--line:#ddd7cf;--soft:#eee7dd;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "DM Sans",Arial,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:Fraunces,Georgia,serif;font-weight:500;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+input,textarea,select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;width:100%}
+textarea{min-height:120px}
+label{font-size:13px;font-weight:700;color:var(--mute);display:block;margin:10px 0 4px}
+.btn{font:700 14px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:10px 16px;background:var(--ink);color:#fff;cursor:pointer}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}
+.row{display:grid;grid-template-columns:1fr 2fr auto;gap:8px;align-items:center;margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mute{color:var(--mute);font-size:13px}.msg{font-weight:700}
+.list .item{border-top:1px solid var(--soft);padding:12px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--soft)}
+@media(max-width:700px){.two,.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><h1>Weekly challenge · staff</h1><div style="display:flex;gap:8px"><input id="key" type="password" placeholder="Staff key" style="width:180px" autocomplete="off"><button class="btn" id="load">Load</button></div></div>
+<p class="mute">Each week: post a scenario with 2–8 instruments. When the week ends, enter each instrument’s weekly % move from public data and a short commentary, then score. Students see results and the league straight away.</p>
+<div class="card"><h2 id="formTitle">New challenge</h2>
+  <label for="title">Title</label><input id="title" placeholder="e.g. Central bank week: hold or cut?">
+  <label for="scenario">Scenario (what students read)</label><textarea id="scenario" placeholder="What’s happening this week, what markets expect, and the question you want them to think about."></textarea>
+  <label>Instruments (name, and a one-line hint)</label><div id="insts"></div><button class="btn ghost" id="addInst" type="button" style="margin-top:8px">+ Add instrument</button>
+  <div class="two"><div><label for="opens">Entries open</label><input id="opens" type="datetime-local"></div><div><label for="closes">Entries close</label><input id="closes" type="datetime-local"></div></div>
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap"><button class="btn hot" id="save">Save challenge</button><button class="btn ghost" id="example" type="button">Fill with a template</button><button class="btn ghost" id="reset" type="button">Clear</button><span class="msg" id="smsg"></span></div>
+</div>
+<div class="card"><h2>All challenges</h2><div class="list" id="list"><p class="mute">Enter the staff key and press Load.</p></div></div>
+<div class="card" id="scoreCard" hidden><h2 id="scoreTitle">Score</h2><div id="moves"></div>
+  <label for="comm">Commentary: what happened and why (students read this)</label><textarea id="comm"></textarea>
+  <label for="by">Written by</label><select id="by"></select>
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center"><button class="btn hot" id="score">Score this week</button><span class="msg" id="cmsg"></span></div></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let LIST=[],PRACT=[],editId=null,scoreId=null;
+try{$('#key').value=localStorage.getItem('deskStaffKey')||''}catch(e){}
+const key=()=>{const k=$('#key').value.trim();try{localStorage.setItem('deskStaffKey',k)}catch(e){}return k};
+const api=async(method,body,q='')=>{const r=await fetch('/api/challenge'+q,{method,headers:{Authorization:'Bearer '+key(),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'HTTP '+r.status);return d};
+const local=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,16)};
+function instRow(i={}){const d=document.createElement('div');d.className='row';d.innerHTML=`<input placeholder="Name, e.g. FTSE 250" value="${esc(i.name||'')}" data-n><input placeholder="Hint, e.g. UK-focused mid caps" value="${esc(i.hint||'')}" data-h><button class="btn ghost" type="button" aria-label="Remove">×</button>`;d.querySelector('button').onclick=()=>d.remove();d.dataset.key=i.key||'';$('#insts').appendChild(d)}
+function resetForm(){editId=null;$('#formTitle').textContent='New challenge';['#title','#scenario'].forEach(s=>$(s).value='');$('#insts').innerHTML='';for(let i=0;i<4;i++)instRow();
+  const mon=new Date();mon.setDate(mon.getDate()+((8-mon.getDay())%7||7));mon.setHours(8,0,0,0);const wed=new Date(mon);wed.setDate(mon.getDate()+2);wed.setHours(18,0,0,0);$('#opens').value=local(mon);$('#closes').value=local(wed);$('#smsg').textContent=''}
+$('#addInst').onclick=()=>instRow();$('#reset').onclick=resetForm;
+$('#example').onclick=()=>{$('#title').value='Rate decision week: what moves most?';$('#scenario').value='The central bank announces its interest rate decision this week. Markets are split on whether it holds or cuts.\n\nSplit your £100,000 across the assets below. Think about which ones are most sensitive to a surprise either way, and say why in one line.';$('#insts').innerHTML='';[['UK large caps (FTSE 100)','Big international earners; often helped by a weaker pound'],['UK mid caps (FTSE 250)','More UK-focused, more sensitive to UK rates'],['10-year gilts','Prices rise when yields fall'],['GBP/USD','The pound against the dollar'],['Gold','Often bought when real rates fall or risk rises']].forEach(([name,hint])=>instRow({name,hint}))};
+function render(){
+  $('#list').innerHTML=LIST.length?LIST.map(c=>{const st=c.scoredAt?'Scored':new Date(c.closesAt)<new Date()?'Closed: needs scoring':new Date(c.opensAt)>new Date()?'Scheduled':'Open';return `<div class="item"><div><b>${esc(c.title)}</b><div class="mute">${new Date(c.opensAt).toLocaleString('en-GB')} → ${new Date(c.closesAt).toLocaleString('en-GB')} · ${c.entries} entr${c.entries===1?'y':'ies'}</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="pill">${st}</span><button class="btn ghost" data-edit="${c.id}">Edit</button>${!c.scoredAt?`<button class="btn" data-score="${c.id}">Score</button>`:`<button class="btn ghost" data-score="${c.id}">Re-score</button>`}</div></div>`}).join(''):'<p class="mute">No challenges yet. Create the first one above.</p>';
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const c=LIST.find(x=>x.id===b.dataset.edit);editId=c.id;$('#formTitle').textContent='Edit challenge';$('#title').value=c.title;$('#scenario').value=c.scenario;$('#insts').innerHTML='';c.instruments.forEach(instRow);$('#opens').value=local(c.opensAt);$('#closes').value=local(c.closesAt);scrollTo(0,0)});
+  document.querySelectorAll('[data-score]').forEach(b=>b.onclick=()=>{const c=LIST.find(x=>x.id===b.dataset.score);scoreId=c.id;$('#scoreCard').hidden=false;$('#scoreTitle').textContent='Score: '+c.title;
+    $('#moves').innerHTML=c.instruments.map(i=>`<label for="m-${esc(i.key)}">${esc(i.name)}: weekly move in % (e.g. 1.25 or -0.8)</label><input id="m-${esc(i.key)}" type="number" step="0.01" value="${c.results?.[i.key]??''}">`).join('');
+    $('#comm').value=c.commentary||'';$('#by').innerHTML=PRACT.map(p=>`<option ${p===c.commentaryBy?'selected':''}>${esc(p)}</option>`).join('');$('#cmsg').textContent='';$('#scoreCard').scrollIntoView()});
+}
+async function load(){try{const d=await api('GET',null,'?view=staff');LIST=d.challenges;PRACT=d.practitioners;render()}catch(e){$('#list').innerHTML=`<p class="mute">${esc(e.message)}</p>`}}
+$('#load').onclick=load;
+$('#save').onclick=async()=>{const instruments=[...document.querySelectorAll('#insts .row')].map(r=>({key:r.dataset.key||'',name:r.querySelector('[data-n]').value,hint:r.querySelector('[data-h]').value})).filter(i=>i.name.trim());
+  try{await api('POST',{action:'staff-save',id:editId,title:$('#title').value,scenario:$('#scenario').value,instruments,opensAt:new Date($('#opens').value).toISOString(),closesAt:new Date($('#closes').value).toISOString()});$('#smsg').textContent='Saved.';resetForm();load()}catch(e){$('#smsg').textContent=e.message}};
+$('#score').onclick=async()=>{const c=LIST.find(x=>x.id===scoreId),results={};c.instruments.forEach(i=>results[i.key]=$('#m-'+i.key).value);
+  try{const d=await api('POST',{action:'staff-score',id:scoreId,results,commentary:$('#comm').value,commentaryBy:$('#by').value});$('#cmsg').textContent=`Scored ${d.scored} entr${d.scored===1?'y':'ies'}.`;load()}catch(e){$('#cmsg').textContent=e.message}};
+resetForm();if($('#key').value)load();
+</script>
+</body>
+</html>

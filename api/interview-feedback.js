@@ -3,14 +3,15 @@ import {retrieveGuidance,sourcePrompt,saveResearchAudit} from '../lib/source-gui
 import { knowledgeBlock } from '../lib/knowledge.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import { owner, sameOrigin, hash, apiFailure } from '../lib/report-store.mjs';
-import { isPaidOwner, useQuota, quotaLeft, saveItem, clientKey, principal } from '../lib/value-accounts.mjs';
-import { FEEDBACK_SCHEMA, schemaForFramework, feedbackPrompt, validateFeedback, validInput, FREE_PER_DAY, PAID_PER_DAY } from '../lib/interview-feedback.mjs';
+import { isPaidOwner, useQuota, quotaLeft, saveItem, clientKey, principal, countItems } from '../lib/value-accounts.mjs';
+import { FEEDBACK_SCHEMA, schemaForFramework, feedbackPrompt, validateFeedback, validInput, FREE_PER_DAY, FREE_PER_WEEK, PAID_PER_DAY } from '../lib/interview-feedback.mjs';
 
 // POST { question, kind, transcript, seconds, firm, role, cv, followUpOf? } → model feedback plus a follow-up question.
 // GET → how many feedbacks are left today. Free: FREE_PER_DAY a day. Full Cycle: PAID_PER_DAY.
 export const maxDuration = 60;
 const MODEL = process.env.INTERVIEW_MODEL || process.env.FULL_CYCLE_MODEL || 'claude-sonnet-4-6';
 
+const TEASER_SECONDS=30, TEASER_WORDS=90;
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
@@ -18,11 +19,15 @@ export default async function handler(req, res) {
     const paid = await isPaidOwner(ownerHash);
     const limit = paid ? PAID_PER_DAY : FREE_PER_DAY;
     const key = paid ? 'fb:' + ownerHash : 'fb:' + ownerHash + ':' + hash(clientKey(req)).slice(0, 16);
-    if (req.method === 'GET') return res.json({ paid, left: await quotaLeft(key, limit), limit });
+    const weekLeft=paid?null:Math.max(0,FREE_PER_WEEK-await countItems(ownerHash,'interview',7));
+    if(req.method==='GET')return res.json({paid,left:paid?await quotaLeft(key,limit):Math.min(weekLeft,await quotaLeft(key,limit)),limit:paid?limit:FREE_PER_WEEK,per:paid?'day':'week'});
     if (req.method !== 'POST') return res.status(405).end();
     if (!sameOrigin(req, res)) return;
     const v = validInput(req.body);
     if (v.error) return res.status(400).json({ error: v.error });
+    if(!paid&&v.input.followUpOf)return res.status(402).json({error:'Answering the interviewer’s follow-up is part of membership.',upgrade:true});
+    if(!paid&&weekLeft<=0)return res.status(429).json({error:'Free accounts get one 30-second interview check a week. Members get up to 60 a day.',upgrade:true});
+    if(!paid){v.input.transcript=(v.input.transcript.match(/\S+/g)||[]).slice(0,TEASER_WORDS).join(' ');v.input.seconds=Math.min(v.input.seconds||TEASER_SECONDS,TEASER_SECONDS);}
     if (!await useQuota(key, limit)) return res.status(429).json({ error: paid ? 'That’s a lot of practice for one day. Come back tomorrow.' : `You’ve used today’s ${FREE_PER_DAY} free feedbacks. Full Cycle includes 60 detailed feedbacks a day.`, upgrade: !paid });
     const framework=chooseFramework(v.input);
     const research=await retrieveGuidance({question:v.input.question,framework});
@@ -35,9 +40,10 @@ export default async function handler(req, res) {
     });
     const t = r.content.find(c => c.type === 'tool_use');
     if (!t) throw new Error('Missing structured feedback');
-    const feedback = validateFeedback(t.input, { transcript: v.input.transcript, seconds: v.input.seconds, followUp: !!v.input.followUpOf, framework });
+    let feedback = validateFeedback(t.input, { transcript: v.input.transcript, seconds: v.input.seconds, followUp: !!v.input.followUpOf, framework });
+    if(!paid)feedback={...feedback,strengths:feedback.strengths.slice(0,1),fixes:feedback.fixes.slice(0,1),strongerOpening:'',followUp:null,teaser:true};
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);
-    return res.json({ success: true, researchAvailable:research.available, paid, left: await quotaLeft(key, limit), feedback });
+    return res.json({ success: true, researchAvailable:research.available, paid, left:paid?await quotaLeft(key,limit):Math.max(0,weekLeft-1), feedback });
   } catch (e) { return apiFailure(res, e); }
 }

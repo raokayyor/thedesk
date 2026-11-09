@@ -8,49 +8,275 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--line:#ddd7cf;--ok:#15803d}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "DM Sans",Arial,sans-serif}
-header{background:#fff;border-bottom:1px solid var(--line)}.hin{max-width:980px;margin:0 auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-.logo{font:600 26px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}main{max-width:980px;margin:0 auto;padding:28px 16px 80px}
-h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}h1{font-size:clamp(30px,5vw,42px)}h2{font-size:24px;margin-top:34px}
-.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:14px}
-.btn{font:700 14px "DM Sans",Arial,sans-serif;border:0;border-radius:999px;padding:11px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}input{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;min-width:0;flex:1;max-width:360px;background:#fff}
-.mute{color:var(--mute);font-size:14px}.list{list-style:none;margin:0;padding:0}.list li{border-top:1px solid var(--line);padding:12px 0;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}.list li:first-child{border-top:0}
-.score{font:500 24px "Fraunces",Georgia,serif;color:var(--accent)}.tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#eef3f9;color:#1d4e89}.tag.ok{background:#dcfce7;color:var(--ok)}
-.notice{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:12px 14px;margin-top:16px}
-details.ans summary{cursor:pointer;font-weight:600}.ans p{margin:6px 0;font-size:14px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}.hin{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font:600 24px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}
+.who{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute);flex-wrap:wrap}
+.pill{border-radius:999px;padding:5px 11px;font-weight:700;font-size:12px;background:var(--warm);color:#9a3412;border:1px solid var(--warm-line)}
+main{max-width:1200px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}h1{font-size:clamp(28px,4vw,36px)}h2{font-size:22px}h3{font-size:20px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.btn{font:700 14px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:11px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px}
+.btn:hover{color:#fff;opacity:.92}.btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:var(--ink);color:#fff}.btn.hot{background:var(--accent);border-color:var(--accent)}
+.mute{color:var(--mute);font-size:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.grid3>*{min-width:0}.span2{grid-column:span 2}
+.hero{background:var(--ink);color:#fff;border-radius:16px;padding:24px 26px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.hero .kicker{color:#ffb38f}.big{font:500 72px/1 "Fraunces",Georgia,serif;color:#ff8a52}
+.up{display:inline-block;margin-top:12px;background:rgba(21,128,61,.28);color:#bbf7d0;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.down{background:rgba(185,28,28,.3);color:#fecaca}
+.tl{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.12);padding:7px 0}.tl:last-child{border-bottom:0}
+.bar{height:10px;background:var(--soft);border-radius:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
+.act{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--ink)}
+.act:hover{border-color:var(--ink);color:var(--ink)}.act.urgent{background:var(--warm);border-color:var(--warm-line)}
+.act .kicker{font-size:10px;color:var(--accent-ink)}.act b{font-size:16px}.act span.d{font-size:13px;color:#3b4652}
+.tool{display:flex;flex-direction:column;gap:12px}.tool .row{display:flex;justify-content:space-between;font-size:14px;gap:8px}.tool .btn{margin-top:auto}
+.spark{display:flex;align-items:flex-end;gap:6px;height:64px}.spark i{flex:1;background:var(--line);border-radius:4px}.spark i:last-child{background:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:620px}th{text-align:left;font-size:11px;letter-spacing:.1em;color:var(--mute);padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:10px 6px;border-bottom:1px solid var(--soft);vertical-align:middle}tr:last-child td{border-bottom:0}
+select,input,textarea{font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);min-width:0}
+.scroll{overflow-x:auto}.due{color:var(--bad);font-weight:700}
+.news a{display:block;text-decoration:none;border-bottom:1px solid var(--soft);padding:8px 0;font-size:14px;font-weight:600}.news a:last-child{border-bottom:0}
+.lock{color:var(--mute);font-size:13px}
+.notice{background:var(--warm);border:1px solid var(--warm-line);border-radius:12px;padding:12px 14px;font-size:14px}
+.addbox{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--soft);padding-top:12px}.addbox:first-child{border-top:0;padding-top:0}.addrow{display:flex;gap:8px;flex-wrap:wrap}.addrow select,.addrow input{flex:1;min-width:160px}#addPanel[hidden]{display:none!important}form.add[hidden]{display:none}form.add{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px}
+details.ans{border-top:1px solid var(--soft);padding:10px 0}details.ans:first-child{border-top:0}summary{cursor:pointer;font-weight:600}
+.signin{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.signin input{flex:1;max-width:340px}
+.panel{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:center}
+.faces{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}.face{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.3}
+.av{width:38px;height:38px;border-radius:50%;background:#dbe5f1;color:#123459;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+.face.lead .av{background:var(--ink);color:#fff;box-shadow:0 0 0 3px var(--accent)}
+.pnote{display:flex;gap:8px;align-items:flex-start;margin-top:8px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:#3b4652}
+.pnote .av{width:24px;height:24px;font-size:10px}.pnote b{font-size:13px}
+.ask{background:var(--warm);border:1px solid var(--warm-line);border-radius:12px;padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:10px}
+.myth{display:flex;flex-direction:column;gap:8px}.myth s{color:var(--mute)}
+.grid3.twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){.grid3.twocol{grid-template-columns:1fr}.panel{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.span2{grid-column:auto}.hero{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}.big{font-size:60px}}
 </style>
 <script src="/desk-me.js" defer></script>
+<script src="/desk-nav.js" defer></script>
 </head>
 <body>
-<header><div class="hin"><a class="logo" href="/">The Desk</a><a class="btn ghost" href="/interview.html">Interview practice</a></div></header>
-<main id="app"><p class="mute">Loading…</p></main>
+<header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><div class="who" id="who"></div></div></header>
+<main id="app"><p class="mute">Loading your desk…</p></main>
 <script>
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const app=document.getElementById('app'),qp=new URLSearchParams(location.search);
-const day=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const app=document.getElementById('app'),who=document.getElementById('who'),qp=new URLSearchParams(location.search);
+const day=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+const dayY=d=>new Date(d).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+const post=(url,body)=>fetch(url,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(async r=>({ok:r.ok,data:await r.json().catch(()=>({}))}));
+const greet=()=>{const h=new Date().getHours();return h<12?'Morning':h<18?'Afternoon':'Evening'};
+let D=null,ME=null,showAll=false;
+
+async function syncTracker(){
+  // The programme tracker keeps its shortlist in this browser; copy it to the Desk so it shows here and on other devices.
+  try{const list=JSON.parse(localStorage.getItem('desk_mylist')||'{}');if(list&&typeof list==='object'&&Object.keys(list).length)await post('/api/desk-home',{action:'tracker-sync',list});}catch(e){}
+}
 async function load(){
-  const d=await fetch('/api/value-account?view=me',{credentials:'same-origin'}).then(r=>r.json()).catch(()=>null);
-  if(!d){app.innerHTML='<p>Couldn’t load your desk. Refresh to try again.</p>';return}
-  const has=d.assessments.length||d.items.length;
-  const interviews=d.items.filter(i=>i.kind==='interview');
-  const signIn=`<div class="card"><h3>${has?'Keep your work on every device':'Sign in'}</h3><p class="mute" style="margin:6px 0 0">${has?'Your work is saved in this browser only. Sign in with your email and you can open it on your phone and laptop.':'We email you a link. No password.'}</p>
-    <form class="row" id="signin"><input type="email" id="email" required placeholder="you@university.ac.uk" autocomplete="email" aria-label="Email address"><button class="btn">Email me a sign-in link</button></form><p class="mute" id="smsg" role="status"></p></div>`;
-  app.innerHTML=`<div class="kicker">My Desk</div><h1>${d.signedIn?'Welcome back':'Your work'}</h1>
-    ${d.signedIn?`<p class="mute">Signed in as ${esc(d.email)} · <button class="btn ghost" id="out" style="padding:6px 12px">Sign out</button></p>`:''}
-    ${qp.get('signed_in')?'<div class="notice">You’re signed in. Your work is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
-    ${d.signedIn?'':signIn}
-    ${d.call?`<div class="card" style="background:#11191e;color:#fff"><b>Included with Full Cycle</b><p style="margin:4px 0 10px">${esc(d.call.label)}: five minutes on what to fix first.</p><a class="btn" style="background:#fff;color:#11191e" href="${esc(d.call.url)}" target="_blank" rel="noopener">Book a time</a></div>`:''}
-    <div class="grid"><div><h2>Assessments</h2><div class="card">${d.assessments.length?`<ul class="list">${d.assessments.map(a=>`<li><span><b>${esc(a.firm||'Assessment')}</b>${a.route?' · '+esc(a.route):''}<br><span class="mute">${day(a.createdAt)}${a.rootId?' · recheck':''}</span></span><span style="display:flex;gap:8px;align-items:center">${a.overall!==null?`<span class="score">${Math.round(a.overall)}</span>`:''}${a.paidAt&&!a.refundedAt?`<a class="btn" href="/fullcycle.html?id=${encodeURIComponent(a.id)}">Full Cycle report</a>`:''}<a class="btn ghost" href="/result-final-design.html?id=${encodeURIComponent(a.id)}">Result</a></span></li>`).join('')}</ul>`:'<p class="mute" style="margin:0">None yet. <a href="/assessment-start.html">Take the free assessment</a>.</p>'}</div></div>
-    <div><h2>Interview practice</h2><div class="card">${interviews.length?`<p class="mute" style="margin:0 0 8px">${interviews.length} answer${interviews.length===1?'':'s'} with feedback${interviews.length>=3?` · average ${Math.round(interviews.reduce((a,i)=>a+(i.data.feedback?.overall||0),0)/interviews.length)}`:''}</p><ul class="list">${interviews.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<li style="display:block"><details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span class="score" style="font-size:18px;margin-left:6px">${f.overall??''}</span></summary><p class="mute">${day(i.createdAt)}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-del="${i.id}" style="padding:6px 12px">Delete</button></details></li>`}).join('')}</ul>`:'<p class="mute" style="margin:0">No answers yet. <a href="/interview.html">Practise an interview question</a>.</p>'}</div></div></div>
-    <h2>Had an interview?</h2><div class="card"><p style="margin:0">Tell us how it went and what you were asked. It takes two minutes and keeps the firm guides accurate for the next student.</p><div class="row"><button class="btn" id="outcome">How did it go?</button></div></div>`;
-  const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'request',email:document.getElementById('email').value,next:'/my.html'})});const o=await r.json().catch(()=>({}));document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(o.error||'Something went wrong.');};
-  const o=document.getElementById('out');if(o)o.onclick=async()=>{await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signout'})});location.href='/my.html';};
-  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('Delete this answer?'))return;await fetch('/api/value-account',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-item',id:b.dataset.del})});load();});
-  document.getElementById('outcome').onclick=()=>window.DeskOutcome&&window.DeskOutcome.open({});
+  await syncTracker();
+  const [d,me]=await Promise.all([fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null),fetch('/api/value-account?view=me',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(!d){app.innerHTML='<div class="card">We couldn’t load your desk. Refresh to try again.</div>';return}
+  D=d;ME=me||{items:[]};
+  try{if(d.interviewUrl)localStorage.setItem('desk-interview-url',d.interviewUrl);if(d.report?.url){localStorage.setItem('desk-report-url',d.report.url);document.querySelectorAll('.desk-nav a').forEach(a=>{if(a.textContent==='Report')a.href=d.report.url})}}catch(e){}
+  render();
+}
+function headerBits(){
+  const parts=[];
+  if(D.member)parts.push(`<span class="pill">Member${D.until?' until '+esc(dayY(D.until)):''}</span>`);
+  else if(D.report)parts.push(`<button class="btn hot" id="join" style="min-height:40px;padding:9px 16px">Become a member · £89 a year</button>`);
+  if(D.signedIn)parts.push(`<span>${esc(D.email)}</span><button class="btn ghost" id="out" style="min-height:36px;padding:6px 12px">Sign out</button>`);
+  who.innerHTML=parts.join('');
+}
+function panelBand(){
+  const P=D.practitioners;if(!P)return '';
+  const q=P.question;let ask;
+  if(q&&q.answered)ask=`<div class="ask"><b>${esc(q.by||'The panel')} answered your question.</b><a class="btn" href="/practitioner-answer.html?id=${encodeURIComponent(q.id)}">Read the answer</a></div>`;
+  else if(q)ask=`<div class="ask"><b>Your question is with the panel.</b><span>Answer due by ${esc(new Date(q.dueAt).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'}))}.</span></div>`;
+  else if(P.canAsk&&D.report)ask=`<div class="ask"><b>Your membership includes one question to the panel.</b><span>Ask about your CV, a firm or an interview. Answered within 48 hours.</span><a class="btn" href="${esc(D.report.url)}#ask">Ask the panel</a></div>`;
+  else if(!D.member)ask=`<div class="ask"><b>Members put a question to the panel.</b><span>Answered by one of them within 48 hours, plus a call to talk it through.</span>${D.report?'<button class="btn hot" id="join3">£89 for the whole year</button>':''}</div>`;
+  else ask=`<div class="ask"><b>Your panel question has been used.</b><span>Members also get a call with a practitioner.</span></div>`;
+  if(D.member&&ME.call)ask=ask.replace('</div>',`<a class="btn ghost" href="${esc(ME.call.url)}" target="_blank" rel="noopener">${esc(ME.call.label)}</a></div>`);
+  return `<section class="card panel"><div><div class="kicker">Your practitioner panel</div><h2 style="margin-top:6px">Built on what people who’ve hired for banks actually look for.</h2>
+    <p class="mute" style="margin:6px 0 0">${P.approved?`The scoring, the tips and the interview feedback on your Desk use points our practitioners have checked and approved${P.approved>=50?` (${P.approved.toLocaleString('en-GB')} so far)`:''}. Where they disagree with popular advice, we tell you.`:'Your score, your report and your interview feedback are built on The Desk’s practitioner-developed framework.'}</p>
+    <div class="faces">${P.panel.map(m=>`<div class="face${m.name===P.lead.name?' lead':''}" title="${esc(m.firms)}"><span class="av" aria-hidden="true">${esc(m.init)}</span><span><b>${esc(m.name)}</b>${m.name===P.lead.name?' · <span style="color:var(--accent-ink);font-weight:700">your route</span>':''}<br><span class="mute" style="font-size:12px">${esc(m.firms)}</span></span></div>`).join('')}</div></div>
+    ${ask}</section>`;
+}
+function readinessCard(){
+  const r=D.readiness;
+  if(!r)return `<div class="hero span2"><div><div class="kicker">Readiness score</div><p style="font:500 26px/1.25 Fraunces,Georgia,serif;margin:10px 0 0">You don’t have a score yet.</p><p style="color:#cfd6db;font-size:14px">The free assessment reads your CV against your target route and gives you a readiness score and your top 3 fixes. About 10 minutes.</p><a class="btn hot" href="/assessment.html" style="margin-top:6px">Take the free assessment</a></div><div><div class="kicker">How it moves</div><p style="color:#cfd6db;font-size:14px;margin:10px 0 0">Your score changes only when you prove something: a recheck of an improved CV, or a better result on a fresh test. Practice and ticked-off tasks show in your progress, not your score.</p></div></div>`;
+  const gap=r.score>=75?'':r.score>=65?`${75-r.score} points from Competitive`:`${65-r.score} points from Borderline`;
+  return `<div class="hero span2"><div><div class="kicker">Readiness score</div><div style="display:flex;align-items:baseline;gap:12px;margin-top:8px"><div class="big">${r.score}</div><div><div style="font-size:18px;font-weight:700">${esc(r.band)}</div><div style="font-size:14px;color:#cfd6db">${esc(gap)}</div></div></div>
+    ${r.change?`<div class="up ${r.change<0?'down':''}">${r.change>0?'+':''}${r.change} since your first assessment</div>`:''}
+    <p style="margin:12px 0 0;font-size:13px;color:#cfd6db">Moves only when you prove something: a recheck of a better CV, or better test results (your best of the last 3 tests counts).</p><p style="margin:8px 0 0;font-size:13px"><a href="/how-we-score.html" style="color:#ffb38f">Scoring framework set by our practitioners →</a></p></div>
+    <div><div class="kicker">What moved it</div><div style="margin-top:6px">${r.timeline.map(t=>`<div class="tl"><span>${esc(day(t.at))} · ${esc(t.note)}</span><b>${t.score}</b></div>`).join('')}</div>
+    <p style="margin:8px 0 0;font-size:13px;color:#cfd6db">${D.member?'Next: recheck after your CV rewrites, or take a fresh test.':'Next: take a fresh test. Members can also recheck their CV.'}</p></div></div>`;
+}
+function sideCard(){
+  if(D.member){
+    let p=null;try{const x=JSON.parse(localStorage.getItem('desk-progress')||'null');if(x&&x.id===D.report?.assessmentId)p=x}catch(e){}
+    return `<div class="card" style="display:flex;flex-direction:column;gap:12px"><div class="kicker">Prep progress</div>
+      ${p?`<div style="font:500 34px Fraunces,Georgia,serif">${p.done} <span style="font-size:18px;color:var(--mute)">of ${p.tot} actions</span></div><div class="bar"><i style="width:${p.tot?Math.round(p.done/p.tot*100):0}%"></i></div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Tick off tasks in your report’s plan and checklist. Your progress shows here.</p>`}
+      <a href="${esc(D.report.url)}#plan" style="font-weight:700;font-size:14px;margin-top:auto">Open your plan →</a></div>`;
+  }
+  return `<div class="card" style="background:var(--warm);border-color:var(--warm-line);display:flex;flex-direction:column;gap:10px"><div class="kicker" style="color:#9a3412">Members get</div>
+    <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:#3b4652"><li>Your weakest CV lines rewritten</li><li>7 model interview answers from your CV</li><li>The full interview coach: two-minute answers, follow-ups, up to 60 a day</li><li>A 30-day plan and CV rechecks all year</li><li>Unlimited fresh tests that move your readiness</li><li>Practitioners’ notes on your next steps, a question to the panel and a call</li></ul>
+    ${D.report?`<button class="btn hot" id="join2" style="margin-top:auto">£89 for the whole year</button>`:`<a class="btn hot" href="/assessment.html" style="margin-top:auto">Start with the free assessment</a>`}</div>`;
+}
+function actionsCard(){
+  if(!D.actions.length)return '';
+  return `<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>Your next ${D.actions.length===1?'action':D.actions.length+' actions'}</h2><span class="mute">From your report, applications and practice</span></div>
+    <div class="grid3" style="margin-top:14px">${D.actions.map(a=>`<a class="act${a.urgent?' urgent':''}" href="${esc(a.href)}"><span class="kicker">${esc(a.tag)}</span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span>${a.note?(a.note.locked?`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+' has a note on this.':'A practitioner has a note on this.'}</b> Members only.</span></span>`:`<span class="pnote"><span class="av" aria-hidden="true">${esc(a.note.init||'TD')}</span><span><b>${a.note.by?esc(a.note.by.split(' ')[0])+'’s note':'Practitioner note'}:</b> ${esc(a.note.text)}</span></span>`):''}</a>`).join('')}</div></section>`;
+}
+function toolsRow(){
+  const R=D.report,T=D.tests,I=D.interview,b=R?.breakdown;
+  const report=R?`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${R.paid?'Your report':'Your result'}</h3><span class="mute">${R.paid?'Full Cycle':'Free'}</span></div>
+      ${b?`<div class="row"><span>CV and evidence</span><b>${(b.application||0)+(b.ats||0)}/40</b></div><div class="row"><span>Competencies</span><b>${b.competency||0}/25</b></div><div class="row"><span>Tests (from your assessment)</span><b>${(b.numerical||0)+(b.technical||0)}/35</b></div>`:''}
+      ${R.paid?`<div class="row"><span>Rechecks used</span><b>${R.rechecks}</b></div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Your score and your top 3 priorities.</p><p class="lock" style="margin:0">Members: the full score breakdown, CV rewrites, 7 model answers and a 30-day plan.</p>`}
+      <a class="btn" href="${esc(R.url)}">${R.paid?'Open your report':'See your result'}</a></div>`
+    :`<div class="card tool"><h3>Your report</h3><p class="mute" style="margin:0">Starts with the free assessment: your CV read against your target route.</p><a class="btn" href="/assessment.html">Take the free assessment</a></div>`;
+  const rec=I.recent;const max=Math.max(100,...rec);
+  const interview=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Interview</h3><span class="mute">${I.left!=null?I.left+' feedback'+(I.left===1?'':'s')+' left '+I.per:''}</span></div>
+      ${rec.length?`<div class="spark" aria-hidden="true">${rec.map(s=>`<i style="height:${Math.max(8,Math.round(s/max*100))}%"></i>`).join('')}</div><div style="font-size:14px;color:#3b4652">Last ${rec.length} answer${rec.length===1?'':'s'}: ${rec.join(' → ')}. Tracked separately from your readiness score.</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Answer real interview questions on camera, timed like HireVue, and get feedback on structure, evidence and delivery.</p>`}
+      <a class="btn hot" href="${esc(D.interviewUrl)}">${rec.length?'Practise next question':'Practise a question'}</a></div>`;
+  const tests=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Tests</h3><span class="mute">${esc(D.profile.targetSector||'Your route')}</span></div>
+      ${T.last?`${T.last.commercial!=null?`<div class="row"><span>Commercial &amp; technical</span><b>${T.last.commercial}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.commercial}%"></i></div>`:''}${T.last.numerical!=null?`<div class="row"><span>Numerical</span><b>${T.last.numerical}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.numerical}%"></i></div>`:''}<div class="mute">Last test ${esc(day(T.last.at))}</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Fresh questions for your route from a bank of over 2,000. Your best of the last 3 in each section moves your readiness.</p>`}
+      ${T.freeEveryDays?`<p class="lock" style="margin:0">Free: one fresh test a month. Members: unlimited.</p>`:''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto"><a class="btn ghost" href="/tests.html?section=numerical">Numerical</a><a class="btn ghost" href="/tests.html?section=commercial">Commercial</a></div></div>`;
+  return `<section class="grid3">${report}${interview}${tests}</section>`;
+}
+function appsCard(){
+  const A=D.applications,stages=D.stages;const today=new Date();today.setHours(0,0,0,0);
+  const due=a=>{if(!a.deadline)return a.rolling?'Rolling':'—';const x=new Date(a.deadline+'T00:00:00');const n=Math.round((x-today)/864e5);const t=x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});return n<0?`<span class="mute">Closed ${t}</span>`:n<=7&&['Shortlisted','Preparing'].includes(a.stage)?`<span class="due">${t} · ${n===0?'today':n+' day'+(n===1?'':'s')}</span>`:t};
+  const prep=a=>{const l=[];if(D.report?.paid)l.push(`<a href="${esc(D.report.url)}#prep">Firm prep</a>`);l.push(`<a href="${esc(D.interviewUrl)}">Practise</a>`);if(a.url)l.push(`<a href="${esc(a.url)}" target="_blank" rel="noopener">Apply ↗</a>`);return l.join(' · ')};
+  return `<section class="card span2" id="applications"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h3>Applications</h3><span style="display:flex;gap:14px;font-size:14px;font-weight:700"><a href="/tracker.html">Find programmes in the tracker</a><a href="#" id="addToggle">+ Add applications</a></span></div>
+    <div id="addPanel" hidden style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+      <div class="addbox"><b>Add a whole group</b><div class="addrow"><select id="grpSector" aria-label="Group"><option>Loading…</option></select><select id="grpType" aria-label="Programme type"><option value="">All programme types</option></select><button class="btn" id="grpAdd" type="button">Add</button></div><span class="mute" id="grpInfo"></span></div>
+      <div class="addbox"><b>Add one programme</b><div class="addrow"><input id="oneProg" list="progList" placeholder="Start typing a firm or programme" aria-label="Programme"><datalist id="progList"></datalist><button class="btn" id="oneAdd" type="button">Add</button></div></div>
+      <div class="addbox"><b>Not in the tracker? Add it yourself</b><form class="add" id="addForm"><input name="firm" placeholder="Firm" required aria-label="Firm"><input name="programme" placeholder="Programme" aria-label="Programme"><input name="deadline" type="date" aria-label="Deadline"><select name="stage" aria-label="Stage">${stages.map(s=>`<option>${esc(s)}</option>`).join('')}</select><button class="btn">Add</button></form></div>
+      <span class="mute" id="addMsg" role="status"></span></div>
+    ${A.length?`<div class="scroll" style="margin-top:10px"><table id="appTable"><thead><tr><th>FIRM</th><th>STAGE</th><th>DEADLINE</th><th>PREP</th><th><span class="mute" style="font-size:11px">REMOVE</span></th></tr></thead><tbody>${A.map((a,i)=>`<tr${i>=5&&!showAll?' hidden':''}><td><b>${esc(a.firm)}</b>${a.programme?`<div class="mute">${esc(a.programme)}</div>`:''}</td><td><select data-stage="${esc(a.id)}" aria-label="Stage for ${esc(a.firm)}">${stages.map(s=>`<option ${s===a.stage?'selected':''}>${esc(s)}</option>`).join('')}</select></td><td>${due(a)}</td><td>${prep(a)}</td><td><button class="btn ghost" data-del="${esc(a.id)}" aria-label="Remove ${esc(a.firm)}" style="min-height:32px;padding:4px 10px">×</button></td></tr>`).join('')}</tbody></table></div>${A.length>5?`<button class="btn ghost" id="appMore" style="margin-top:10px">${showAll?'Show fewer':'Show all '+A.length+' applications'}</button>`:''}`
+      :`<p class="mute" style="margin:10px 0 0">Nothing yet. Add programmes from the <a href="/tracker.html">tracker</a> (live deadlines for 60+ programmes) or add a firm yourself.</p>`}
+    <p class="mute" style="margin:10px 0 0">Programmes you add in the tracker appear here. ${D.signedIn?'Saved to your account.':'Saved in this browser. Sign in to keep them on every device.'}</p></section>`;
+}
+function gameCard(){
+  const g=D.game;if(!g)return '';
+  const m=g.me,ret=m?(m.value/100000-1)*100:0;
+  return `<section class="card" style="display:flex;flex-direction:column;gap:8px"><div class="kicker">Trading game · Day ${g.day}</div>
+    ${g.headline?`<span style="font-size:14px"><b>Today:</b> ${esc(g.headline)}</span>`:''}
+    ${m?`<div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font:500 26px Fraunces,Georgia,serif">£${m.value.toLocaleString('en-GB')}</b><span class="${ret>=0?'':''}" style="font-weight:700;color:${ret>=0?'var(--ok)':'var(--bad)'}">${ret>=0?'+':''}${ret.toFixed(2)}%</span></div><span class="mute">${m.rank} of ${m.players} in the league</span>`:'<span class="mute">Start with £100,000 of virtual cash and trade as the news breaks.</span>'}
+    <a class="btn ${m?'ghost':'hot'}" href="/trading.html" style="margin-top:4px">${m?'Open the market':'Join the game'}</a></section>`;
+}
+function challengeCard(){
+  const c=D.challenge;if(!c)return '';
+  const cur=c.current,l=c.last;
+  if(!cur&&!l)return '';
+  return `<section class="card" style="display:flex;flex-direction:column;gap:8px"><div class="kicker">Weekly market challenge</div>
+    ${cur?`<b style="font-size:16px">${esc(cur.title)}</b><span class="mute">${cur.open?(cur.entered?'You’re in. You can change your split until ':'Entries close ')+esc(new Date(cur.closesAt).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})):'Entries closed. Results soon.'}</span>`:''}
+    ${l?`<span style="font-size:14px">Last week: <b>${l.rank} of ${l.of}</b>, ${l.returnPct>0?'+':''}${l.returnPct.toFixed(2)}%</span>`:''}
+    <a class="btn ${cur&&cur.open&&!cur.entered?'hot':'ghost'}" href="/challenge.html" style="margin-top:4px">${cur&&cur.open&&!cur.entered?'Make your call':'Open the challenge'}</a></section>`;
+}
+function mythCard(){
+  const m=D.practitioners?.myth;if(!m)return '';
+  if(m.locked)return `<section class="card myth"><div class="kicker">Advice our practitioners disagree with</div><p style="margin:0;font-size:14px">There’s popular advice for your route that ${m.by?esc(m.by):'our practitioners'} would tell you to ignore, and what to do instead.</p><button class="btn ghost" id="join4" style="align-self:flex-start">Members: see it</button></section>`;
+  return `<section class="card myth"><div class="kicker">Advice our practitioners disagree with</div><p style="margin:0;font-size:14px"><s>${esc(m.myth)}</s></p><div class="pnote" style="margin-top:0"><span class="av" aria-hidden="true">${esc(m.init||'TD')}</span><span><b>${m.by?esc(m.by)+' says':'Our view'}:</b> ${esc(m.view)}</span></div></section>`;
+}
+function newsCard(){
+  return `<section class="card" id="news" style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>News on your firms</h3><span class="mute">Daily</span></div>
+    <div class="news" id="newsList">${D.news.length?'<p class="mute">Loading…</p>':'<p class="mute" style="margin:0">Add a firm to your applications to see its latest news here. Covered so far: Barclays, BofA, Deutsche Bank, EY, Goldman Sachs, J.P. Morgan, PwC and UBS.</p>'}</div></section>`;
+}
+async function loadNews(){
+  const box=document.getElementById('newsList');if(!box||!D.news.length)return;
+  const all=await Promise.all(D.news.map(n=>fetch('/api/interview-news?firm='+encodeURIComponent(n.key)).then(r=>r.ok?r.json():null).catch(()=>null).then(x=>({firm:n.firm,items:(x?.items||[]).slice(0,2)}))));
+  const rows=all.flatMap(x=>x.items.map(i=>({...i,firm:x.firm})));
+  box.innerHTML=rows.length?rows.slice(0,5).map(i=>`<a href="${esc(i.url)}" target="_blank" rel="noopener"><span class="mute" style="font-weight:700;font-size:12px">${esc(i.firm)}${i.publishedAt?' · '+esc(day(i.publishedAt)):''}</span><br>${esc(i.title)}</a>`).join(''):'<p class="mute" style="margin:0">No fresh news from your firms’ newsrooms right now.</p>';
+}
+function extrasRow(){
+  const ints=(ME.items||[]).filter(i=>i.kind==='interview');
+  const call='';
+  const signin=D.signedIn?'':`<div class="card"><h3>Keep your desk on every device</h3><p class="mute" style="margin:6px 0 0">Everything here is saved in this browser. Sign in with your email (no password) to open it on your phone and laptop.</p><form class="signin" id="signin"><input type="email" id="email" required placeholder="you@university.ac.uk" autocomplete="email" aria-label="Email address"><button class="btn">Email me a sign-in link</button></form><p class="mute" id="smsg" role="status"></p></div>`;
+  const saved=ints.length?`<details class="card"><summary>Your saved interview answers (${ints.length})</summary><div style="margin-top:8px">${ints.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span style="color:var(--accent-ink);margin-left:6px">${f.overall??''}</span></summary><p class="mute">${esc(day(i.createdAt))}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p style="font-size:14px"><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p style="font-size:14px"><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-delans="${esc(i.id)}" style="min-height:32px;padding:4px 12px">Delete</button></details>`}).join('')}</div></details>`:'';
+  const outcome=`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`;
+  const history=(ME.assessments||[]).length?`<details class="card"><summary>Your assessment history (${ME.assessments.length})</summary><ul class="list">${ME.assessments.map(a=>`<li><span><b>${esc(a.firm||'Assessment')}</b>${a.route?' · '+esc(a.route):''}<br><span class="mute">${esc(day(a.createdAt))}${a.rootId?' · recheck':''}</span></span><span>${a.overall!==null?`<b>${Math.round(a.overall)}</b> `:''}${a.paidAt&&!a.refundedAt?`<a class="btn" href="/fullcycle.html?id=${encodeURIComponent(a.id)}">Full Cycle report</a> `:''}<a class="btn ghost" href="/result-final-design.html?id=${encodeURIComponent(a.id)}">Result</a></span></li>`).join('')}</ul></details>`:'';
+  return signin+call+history+saved+outcome;
+}
+// Free accounts: the assessment, a look at what members get, and a 30-second interview check. Everything else is shown locked.
+function freeRow(){
+  const R=D.report;
+  const result=R?`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Your result</h3><span class="mute">Free</span></div><p style="margin:0;font-size:14px;color:#3b4652">Your readiness score and your top 3 priorities.</p><p class="lock" style="margin:0">Members: the full breakdown, CV rewrites, 7 model answers and a 30-day plan.</p><a class="btn" href="${esc(R.url)}">See your result</a></div>`
+    :`<div class="card tool"><h3>Free assessment</h3><p style="margin:0;font-size:14px;color:#3b4652">Upload your CV, answer 10 questions, get your readiness score and top 3 fixes. About 10 minutes.</p><a class="btn" href="/assessment.html">Take the free assessment</a></div>`;
+  const teaser=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>30-second interview check</h3><span class="mute">${D.interview.left?'Free this week':'Used this week'}</span></div><p style="margin:0;font-size:14px;color:#3b4652">Answer one question out loud for 30 seconds. We mark your opening, which is what interviewers judge first.</p><a class="btn hot" href="/interview-teaser.html">${D.interview.left?'Try it now':'See your last check'}</a></div>`;
+  const sample=`<div class="card tool" style="background:var(--warm);border-color:var(--warm-line)"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>What members get</h3><span class="mute">Sample</span></div><p style="margin:0;font-size:14px;color:#3b4652">Open a full member report for a fictional student: CV rewrites, model answers, interview questions and a 30-day plan.</p><a class="btn ghost" href="/fullcycle.html?sample=amelia">See a member’s report</a></div>`;
+  return `<section class="grid3">${result}${teaser}${sample}</section>`;
+}
+function lockedRow(){
+  const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
+  return `<section class="grid3">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
+  <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
+}
+function render(){
+  headerBits();
+  const name=D.profile.firstName;
+  const target=[D.profile.targetFirm,D.profile.targetDivision||D.profile.targetSector,D.profile.programme].filter(Boolean).join(' · ');
+  app.innerHTML=`${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><div class="mute">${D.member?'':'Free account'}${!D.member&&target?' · ':''}${esc(target)}</div></div>
+    <section class="grid3">${readinessCard()}${sideCard()}</section>
+    ${panelBand()}
+    ${actionsCard()}${D.member?toolsRow():freeRow()}
+    ${!D.member&&D.game?`<section class="grid3"><div class="span2" style="display:flex;flex-direction:column;gap:16px">${gameCard()}</div></section>`:''}
+    ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
+    ${extrasRow()}`;
+  bind();if(D.member)loadNews();
+  if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}
+}
+let PROGS=null;
+async function loadProgrammes(){
+  if(!PROGS)PROGS=await fetch('/api/desk-home?view=programmes',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null);
+  if(!PROGS)return;
+  const mine=new Set(D.applications.filter(a=>a.source==='tracker').map(a=>a.id.slice(2)));
+  const sec=document.getElementById('grpSector'),typ=document.getElementById('grpType'),info=document.getElementById('grpInfo');
+  sec.innerHTML=PROGS.sectors.map(x=>`<option value="${esc(x.key)}">${esc(x.label)} (${x.count})</option>`).join('');
+  typ.innerHTML='<option value="">All programme types</option>'+PROGS.types.map(t=>`<option>${esc(t)}</option>`).join('');
+  const pick=()=>PROGS.programmes.filter(x=>x.sector===sec.value&&(!typ.value||x.type===typ.value)&&!mine.has(x.key));
+  const upd=()=>{const n=pick().length;info.textContent=n?`${n} programme${n===1?'':'s'} not on your list yet.`:'All of these are already on your list.';document.getElementById('grpAdd').disabled=!n};
+  sec.onchange=upd;typ.onchange=upd;upd();
+  document.getElementById('progList').innerHTML=PROGS.programmes.filter(x=>!mine.has(x.key)).map(x=>`<option value="${esc(x.firm+' · '+x.name)}"></option>`).join('');
+  document.getElementById('grpAdd').onclick=()=>addKeys(pick().map(x=>x.key));
+  document.getElementById('oneAdd').onclick=()=>{const v=document.getElementById('oneProg').value;const x=PROGS.programmes.find(p=>p.firm+' · '+p.name===v);if(!x){document.getElementById('addMsg').textContent='Pick a programme from the list, or add it yourself below.';return}addKeys([x.key])};
+}
+async function addKeys(keys){
+  if(!keys.length)return;
+  const r=await post('/api/desk-home',{action:'tracker-add',keys});
+  if(!r.ok){document.getElementById('addMsg').textContent=r.data.error||'Could not add those.';return}
+  try{localStorage.setItem('desk_mylist',JSON.stringify(r.data.list))}catch(e){}
+  showAll=true;await load();const pn=document.getElementById('addPanel');if(pn){pn.hidden=false;loadProgrammes();document.getElementById('addMsg').textContent=`Added ${r.data.added} programme${r.data.added===1?'':'s'}.`}
+}
+async function join(){
+  const id=D.report?.assessmentId;if(!id){location.href='/assessment.html';return}
+  const r=await post('/api/start-checkout',{assessmentId:id});
+  if(r.ok&&r.data.url)location.href=r.data.url;else location.href=D.report.url;
+}
+function bind(){
+  ['join','join2','join3','join4','join5'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
+  const o=document.getElementById('out');if(o)o.onclick=async()=>{await post('/api/value-account',{action:'signout'});location.href='/my.html'};
+  const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await post('/api/value-account',{action:'request',email:document.getElementById('email').value,next:'/my.html'});document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(r.data.error||'Something went wrong.')};
+  const more=document.getElementById('appMore');if(more)more.onclick=()=>{showAll=!showAll;render();document.getElementById('applications').scrollIntoView()};
+  const t=document.getElementById('addToggle'),f=document.getElementById('addForm');
+  const panel=document.getElementById('addPanel');
+  if(t)t.onclick=e=>{e.preventDefault();panel.hidden=!panel.hidden;if(!panel.hidden)loadProgrammes()};
+  if(f)f.onsubmit=async e=>{e.preventDefault();const r=await post('/api/desk-home',{action:'app-save',firm:f.firm.value,programme:f.programme.value,deadline:f.deadline.value,stage:f.stage.value});if(!r.ok)return alert(r.data.error||'Could not add that.');load()};
+  document.querySelectorAll('[data-stage]').forEach(sel=>sel.onchange=async()=>{
+    const id=sel.dataset.stage,a=D.applications.find(x=>x.id===id);if(!a)return;
+    if(id.startsWith('t:')){try{const l=JSON.parse(localStorage.getItem('desk_mylist')||'{}');if(l[id.slice(2)]){l[id.slice(2)]={stage:sel.value};localStorage.setItem('desk_mylist',JSON.stringify(l))}}catch(e){}await post('/api/desk-home',{action:'app-stage',id,stage:sel.value})}
+    else await post('/api/desk-home',{action:'app-save',id,firm:a.firm,programme:a.programme,deadline:a.deadline,url:a.url,notes:a.notes,stage:sel.value});
+    load()});
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+    const id=b.dataset.del;if(!confirm('Remove this application?'))return;
+    if(id.startsWith('t:')){try{const l=JSON.parse(localStorage.getItem('desk_mylist')||'{}');delete l[id.slice(2)];localStorage.setItem('desk_mylist',JSON.stringify(l))}catch(e){}}
+    await post('/api/desk-home',{action:'app-delete',id});load()});
+  document.querySelectorAll('[data-delans]').forEach(b=>b.onclick=async()=>{if(!confirm('Delete this answer?'))return;await post('/api/value-account',{action:'delete-item',id:b.dataset.delans});load()});
+  const oc=document.getElementById('outcome');if(oc)oc.onclick=()=>window.DeskOutcome&&window.DeskOutcome.open({});
 }
 load();
 </script>

@@ -1,0 +1,104 @@
+# Handover to Codex: My Desk, membership, tests, library, trading game
+
+Branch: `claude/assessment-test` (GitHub: raokayyor/thedesk). Built on `origin/codex/hirevue-value-release-nov5` (commit 2494599).
+Nothing has been pushed to `main` or deployed to production.
+
+## Read this first: production is ahead of GitHub
+
+The live site (thedesk.vercel.app) contains interview work that was deployed from Codex and never pushed to GitHub
+(for example interview-answer-builder.js, interview-audio-capture.js, interview-live-transcript.js,
+interview-navigation.js, interview-practice-modes.js, interview-recording-*.js, interview-spacing.css,
+interview-training-layout.js, lib/interview-frameworks.mjs, and changed versions of interview.html, interview-bank.js,
+interview-session*.js, hirevue-guide.js and others). **If this branch is deployed to production as it is, that live
+interview work is lost.**
+
+### Order of work
+
+1. **Push live first.** From your workspace, commit exactly what is deployed to production today and push it as a new
+   branch, e.g. `codex/live-2026-11-09`. Don't change anything in this step.
+2. **Integrate.** Create `integration/my-desk` from that live branch and merge `claude/assessment-test` into it.
+   Rule for every conflict: **keep the live behaviour, then add the small change from this branch on top** (listed below).
+3. **Check on a Preview deployment** (checklist at the end), then deploy to production.
+
+### Small edits this branch makes to existing files (re-apply on top of live if they conflict)
+
+| File | Change |
+|---|---|
+| `interview.html`, `interview-start.html`, `tracker.html`, `result-final-design.html`, `fullcycle.html` | Add `<script src="/desk-nav.js" defer></script>` before `</head>` (shared top bar). |
+| `fullcycle.html` | **Bug fix:** the Word-CV download built a string containing `<script src="/desk-me.js" defer></script></body></html>`, which ended the page's inline script early and left the report stuck on "Loading your saved assessment…". The string now ends `'</body></html>'` and the desk-me tag sits before the real `</body>`. Also: in `progress()`, save `{id, done, tot}` to `localStorage['desk-progress']` (My Desk shows it). The live version didn't have this bug when checked, but keep the progress line. |
+| `fullcycle-plan.html`, `result-final-design.html` | Price copy: "£89 a year" / "Membership · 12 months"; "Rechecks all year (up to 12)". |
+| `api/analyse-mot.js` | Rechecks: 365 days and up to 12 (was 30 days and 2). Message text updated. |
+| `api/assessment-result.js` | Same: recheck window 365 days, `12 - rechecks_used`. |
+| `api/interview-feedback.js`, `lib/interview-feedback.mjs`, `interview-feedback.js` | **Free = 30-second teaser:** `FREE_PER_WEEK = 1` (counted over 7 days from saved items, plus the existing per-device daily cap); free answers are cut to the first ~90 words / 30 s, follow-ups return 402, and the response keeps one strength and one fix with `teaser: true`. Front-end copy: "left this week". Members unchanged (60 a day). |
+| `lib/value-accounts.mjs` | New helper `countItems(p, kind, days)`. |
+| `lib/practitioner-questions.mjs` | `PRACTITIONERS` adds `'Chris Sharkey'` (he's on the panel shown in the report). |
+| `tracker.html` | Shortlist (`localStorage desk_mylist`) also syncs to `/api/desk-home` (`tracker-sync`) and is pulled back if the browser has none. |
+| `vercel.json` | `api/test-run.js` maxDuration 300. |
+
+## What's new (all on this branch)
+
+### My Desk (`my.html`, `api/desk-home.js`, `desk-nav.js`)
+- **One home page** for members and free accounts; the same top bar on every student page:
+  My Desk · Report · Interview · Tests · Trading · Tracker · Library · News.
+- **Readiness score that only moves on evidence:** assessments and rechecks, plus tests (each section counts the
+  best of the last 3 results; the assessment's own quiz counts as the first). Interview scores are shown separately.
+- **Next 3 actions** from deadlines, report/priority, tests and interview practice.
+- **Practitioner layer:** panel band (5 practitioners, route lead highlighted, ask-the-panel status, call link),
+  practitioners' notes on actions, "Advice our practitioners disagree with". Notes come only from **approved**
+  knowledge items (`desk_knowledge`), with the approver's name. Nothing shows until practitioners approve points.
+- **Applications:** one list with the tracker shortlist plus firms added by hand; add a whole group (e.g. all Big Four)
+  or one programme; stage changes; deadline flags; 5 shown with "Show all".
+- **Members** link straight to their Full Cycle report and to the interview coach with their assessment loaded
+  (`/interview-start.html?id=…`).
+- **Free accounts:** assessment result, a sample member report (`/fullcycle.html?sample=amelia`) and a weekly
+  30-second interview check. Tests, applications, news and practitioner notes show locked. The trading game is open to all.
+
+### Tests (`tests.html`, `/api/desk-home?view=test&section=…`)
+- Numerical, Commercial & technical (10 each) or Mixed (5+5), fresh questions from `data/numerical.json` and
+  `data/technical.json` (2,064 questions), answers withheld until marked, working shown for misses. Members only.
+
+### 30-second interview check (`interview-teaser.html`)
+- One question ("Why <firm>?" if known), 30-second timer, browser speech-to-text (typing fallback), then a short
+  read with one strength and one fix, and the member upsell.
+
+### Library (`library.html`)
+- Applications, online tests, interviews, 14 brain teasers with answers, market basics, firm guides, get help. Search box.
+
+### Trading game (`trading.html`, `trading-admin.html`, `api/game.js`, `lib/trading-game.mjs`)
+- **Real markets, simulated prices.** 125 investments: ~80 big UK (FTSE 100) names, 32 big US names, FTSE 100/250,
+  S&P 500, Nasdaq 100, Bitcoin, Ethereum, Brent, gold, copper, GBP/USD, GBP/EUR, EUR/USD, UK 10-year gilt.
+- Everyone gets £100,000 and up to 10 investments; part-units allowed; league table.
+- Staff "news desk" publishes the day's stories (19 presets or custom). Each story moves risk appetite, asset groups,
+  sectors and/or one company; prices move on publish with volatility-scaled noise. Each story has a "why it moved"
+  signed by a practitioner.
+- Staff set starting levels when a game starts (paste `TICKER price` lines). Defaults are placeholders.
+- A running game automatically gains any investments added to the list later.
+
+### Weekly challenge (`challenge.html`, `challenge-admin.html`, `api/challenge.js`)
+- Earlier format (weekly scenario, split £100k, staff score from public weekly moves). Still works but no longer in the
+  top bar; the trading game replaced it. Remove if not wanted.
+
+### Staff test runner (`test-compare.html`, `api/test-run.js`, `samples/test-personas.json`)
+- Runs 10 fictional students through the real free assessment and Full Cycle and shows free vs paid side by side,
+  with "Open free results page" / "Open paid report page" as that student. Preview deployments skip the staff key
+  (they're behind Vercel login); production needs it.
+
+## New database tables (created automatically on first use)
+`desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,
+`desk_game_accounts`, `desk_game_trades`. Saved items reuse `desk_value_items` with kinds `test`, `test-pending`,
+`application`, `shortlist`.
+
+## Environment variables
+- `PRACTITIONER_SUPPORT_KEY`: staff pages (news desk, challenge, knowledge, outcomes). Set for **Production and Preview**.
+- `ANTHROPIC_API_KEY`, `DATABASE_URL`: as before (needed on Preview for the test runner and tests).
+- `RESEND_API_KEY` + `EMAIL_FROM`: sign-in links (My Desk shows "keep your desk on every device").
+- `CALL_URL` (optional): practitioner call link shown to members.
+
+## Preview checklist before production
+1. Free browser: `/my.html` shows assessment / 30-second check / sample report; tests return 402; the teaser marks once a week.
+2. Member (use `/test-compare.html` → Open paid report page): My Desk shows report, interview (with `?id=`), tests,
+   applications, practitioner panel; "Open your report" opens `/fullcycle.html?id=…`.
+3. `/tests.html?section=numerical` marks 10 questions and updates readiness.
+4. `/trading-admin.html`: start a game with real levels, publish a story; `/trading.html` buys and sells, league updates.
+5. Live interview pages still behave exactly as before (the live work you pushed in step 1), with the new top bar.
+6. Run `node --test tests/` with dependencies installed.
