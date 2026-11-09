@@ -212,6 +212,13 @@ export default async function handler(req, res) {
       if (!applications.length) actions.push({ tag: 'Applications', title: 'Pick the programmes you’re applying for', detail: 'Live deadlines from the tracker, in one list with your prep', href: '/tracker.html' });
 
       const practitioners = await practitionerLayer(req, res, profile, paid);
+      let challenge = null;
+      try {
+        const c = (await sql().query(`SELECT id, title, closes_at FROM desk_challenges WHERE opens_at <= now() AND scored_at IS NULL ORDER BY opens_at DESC LIMIT 1`))[0];
+        const last = (await sql().query(`SELECT e.return_pct, (SELECT count(*) FROM desk_challenge_entries x WHERE x.challenge_id=e.challenge_id AND x.return_pct > e.return_pct)::int + 1 AS rank, (SELECT count(*)::int FROM desk_challenge_entries x WHERE x.challenge_id=e.challenge_id) AS n FROM desk_challenge_entries e JOIN desk_challenges c ON c.id=e.challenge_id WHERE e.principal=$1 AND c.scored_at IS NOT NULL ORDER BY c.closes_at DESC LIMIT 1`, [p]))[0];
+        const entered = c ? !!(await sql().query('SELECT 1 FROM desk_challenge_entries WHERE challenge_id=$1 AND principal=$2', [c.id, p]))[0] : false;
+        challenge = { current: c ? { title: c.title, closesAt: c.closes_at, open: new Date(c.closes_at) > new Date(), entered } : null, last: last ? { rank: last.rank, of: last.n, returnPct: +last.return_pct } : null };
+      } catch (e) { challenge = null; }   // tables appear once the first challenge is posted
       if (!paid && practitioners.myth) practitioners.myth = { locked: true, by: practitioners.myth.by, init: practitioners.myth.init };
       if (!paid) {
         // Free accounts: the assessment, a look at what members get, and the 30-second interview check.
@@ -234,7 +241,7 @@ export default async function handler(req, res) {
         interviewUrl, report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: paidRow ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
-        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners,
+        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge,
         prices: { membership: '£89 a year' }
       });
     }

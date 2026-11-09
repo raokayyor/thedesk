@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weekly market challenge | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}.hin{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 24px/1 "Fraunces",Georgia,serif;color:inherit;text-decoration:none}
+main{max-width:980px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margin:0}h1{font-size:clamp(28px,4vw,38px)}h2{font-size:24px}h3{font-size:19px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.dark{background:var(--ink);color:#fff;border-radius:16px;padding:24px}.dark .kicker{color:#ffb38f}.dark .mute{color:#cfd6db}
+.scenario{white-space:pre-line;font-size:16px;line-height:1.6;margin:10px 0 0}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 20px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn:disabled{opacity:.45;cursor:default}
+.mute{color:var(--mute);font-size:14px}
+.inst{display:grid;grid-template-columns:minmax(0,1fr) 120px 110px;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--soft)}.inst:first-of-type{border-top:0}
+.inst input[type=number]{width:100%;font:inherit;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;text-align:right;background:#fff}
+.inst input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}
+.amt{text-align:right;font-variant-numeric:tabular-nums;color:var(--mute);font-size:14px}
+.total{display:flex;justify-content:space-between;align-items:center;font-weight:700;padding-top:12px;border-top:2px solid var(--ink);margin-top:6px}
+.total.bad{color:var(--bad)}.total.ok{color:var(--ok)}
+input.t,textarea{width:100%;font:inherit;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;font-size:11px;letter-spacing:.1em;color:var(--mute);padding:8px 6px;border-bottom:1px solid var(--line)}td{padding:9px 6px;border-bottom:1px solid var(--soft);vertical-align:top}
+tr.you td{background:var(--warm);font-weight:700}
+.up{color:var(--ok);font-weight:700}.down{color:var(--bad);font-weight:700}
+.moves{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.moves span{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;background:#fff}
+.av{width:30px;height:30px;border-radius:50%;background:#dbe5f1;color:#123459;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex:none}
+.lockbox{background:var(--warm);border:1px solid var(--warm-line);border-radius:16px;padding:22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2,.two{grid-template-columns:1fr}.inst{grid-template-columns:minmax(0,1fr) 90px}.amt{display:none}}
+</style>
+<script src="/desk-nav.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
+<main id="app"><p class="mute">Loading…</p></main>
+<script>
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+const when=d=>new Date(d).toLocaleString('en-GB',{weekday:'long',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const pct=x=>`<span class="${x>0?'up':x<0?'down':''}">${x>0?'+':''}${Number(x).toFixed(2)}%</span>`;
+const gbp=x=>'£'+Math.round(x).toLocaleString('en-GB');
+const ord=n=>{const t=['th','st','nd','rd'],v=n%100;return n+(t[(v-20)%10]||t[v]||t[0])};
+const initials=n=>String(n||'').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+let C=null,P=null;
+async function load(){
+  const [c,d]=await Promise.all([fetch('/api/challenge',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null),fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(!c){app.innerHTML='<div class="card">We couldn’t load the challenge. Refresh to try again.</div>';return}
+  C=c;P=d?.profile||{};render();
+}
+function entryForm(){
+  const cur=C.current,w=C.mine?.weights||{};
+  const rows=[...cur.instruments,{key:'cash',name:'Cash',hint:'Earns nothing this week. Safe if you think everything falls.'}];
+  return `<form class="card" id="entry"><h3>Your split of ${gbp(C.stake)}</h3><p class="mute" style="margin:4px 0 8px">Whole percentages, adding up to 100. Long only: put money where you think it does best this week.</p>
+    ${rows.map(i=>`<div class="inst"><div><b>${esc(i.name)}</b>${i.hint?`<div class="mute">${esc(i.hint)}</div>`:''}</div><input type="number" min="0" max="100" step="1" name="${esc(i.key)}" value="${w[i.key]||0}" aria-label="${esc(i.name)} percentage"><div class="amt" data-amt="${esc(i.key)}"></div><input type="range" min="0" max="100" step="5" data-range="${esc(i.key)}" value="${w[i.key]||0}" aria-label="${esc(i.name)} slider"></div>`).join('')}
+    <div class="total" id="total"></div>
+    <div style="margin-top:16px"><label class="mute" for="why"><b style="color:var(--ink)">Why?</b> One line, as you’d say it in an interview (optional, shown with the results).</label><input class="t" id="why" maxlength="280" value="${esc(C.mine?.rationale||'')}" placeholder="e.g. A rate cut would help housebuilders more than banks"></div>
+    <div class="two" style="margin-top:12px"><div><label class="mute" for="dn">Name on the leaderboard</label><input class="t" id="dn" maxlength="40" value="${esc(C.mine?.displayName||((P.name||'').split(' ')[0]+(P.name&&P.name.split(' ')[1]?' '+P.name.split(' ')[1][0]+'.':'')))}"></div><div><label class="mute" for="uni">University (optional)</label><input class="t" id="uni" maxlength="60" value="${esc(P.university||'')}"></div></div>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap"><button class="btn hot" id="submit">${C.mine?'Update my entry':'Submit my entry'}</button><span class="mute" id="msg" role="status">${C.mine?'Entered '+esc(when(C.mine.submittedAt))+'. You can change it until entries close.':''}</span></div></form>`;
+}
+function render(){
+  const cur=C.current;let h=`<div class="kicker">Weekly market challenge</div><h1>Call the week. Explain it like an interview.</h1><p class="mute" style="max-width:660px;margin:0">Each week we set a market scenario. Split a virtual ${gbp(C.stake)} across what you think will do best, say why in one line, and see how you did when the week ends, with a practitioner’s view of what actually happened.</p>`;
+  if(cur){
+    h+=`<div class="dark"><div class="kicker">This week</div><h2 style="margin-top:6px">${esc(cur.title)}</h2><p class="scenario">${esc(cur.scenario)}</p><p class="mute" style="margin:12px 0 0">${C.open?'Entries close '+esc(when(cur.closesAt))+'.':'Entries closed '+esc(when(cur.closesAt))+'. Results once the week is scored.'}</p></div>`;
+    if(!C.member)h+=`<div class="lockbox"><b>The weekly challenge is part of membership.</b><p style="margin:6px 0 12px;font-size:14px;color:#3b4652">Members enter every week, get ranked against other students, and read a practitioner’s breakdown of what moved markets: ready-made answers for “What’s happening in markets?”.</p><a class="btn hot" href="/my.html">See membership · £89 a year</a></div>`;
+    else if(C.open)h+=entryForm();
+    else if(C.mine)h+=`<div class="card"><h3>Your entry</h3><div class="moves">${Object.entries(C.mine.weights).map(([k,v])=>`<span>${esc((cur.instruments.find(i=>i.key===k)||{name:'Cash'}).name)} ${v}%</span>`).join('')}</div>${C.mine.rationale?`<p class="mute" style="margin:10px 0 0">“${esc(C.mine.rationale)}”</p>`:''}</div>`;
+  }else h+=`<div class="card">No challenge is open right now. A new one is posted each week.</div>`;
+  const R=C.results;
+  if(R){
+    h+=`<div class="card"><div class="kicker">Last week’s results</div><h2 style="margin-top:6px">${esc(R.title)}</h2>
+      <div class="moves">${R.instruments.map(i=>`<span>${esc(i.name)} ${pct(R.results[i.key])}</span>`).join('')}<span>Cash 0.00%</span></div>
+      ${R.commentary?`<div style="display:flex;gap:10px;margin-top:16px;align-items:flex-start"><span class="av" aria-hidden="true">${esc(initials(R.commentaryBy)||'TD')}</span><div><b>${R.commentaryBy?esc(R.commentaryBy)+' on what happened':'What happened'}</b><p class="scenario" style="margin-top:4px;font-size:15px">${esc(R.commentary)}</p></div></div>`:''}
+      ${R.me?`<p style="margin:14px 0 0"><b>You finished ${R.me.rank} of ${R.entries}</b> with ${pct(R.me.returnPct)}.</p>`:''}
+      ${R.top.length?`<div style="overflow-x:auto;margin-top:12px"><table><thead><tr><th>#</th><th>STUDENT</th><th>RETURN</th><th>WHY</th></tr></thead><tbody>${R.top.map(r=>`<tr class="${r.you?'you':''}"><td>${r.rank}</td><td>${esc(r.name)}</td><td>${pct(r.returnPct)}</td><td class="mute">${esc(r.rationale)}</td></tr>`).join('')}</tbody></table></div>`:''}</div>`;
+  }
+  const L=C.league;
+  if(L.top.length)h+=`<div class="card"><div class="kicker">Season league</div><h3 style="margin-top:6px">Total return since ${esc(new Date(L.since).toLocaleDateString('en-GB',{day:'numeric',month:'long'}))}</h3>
+    ${L.me?`<p style="margin:8px 0 0">You’re <b>${ord(L.me.rank)}</b> on ${pct(L.me.totalPct)} over ${L.me.weeks} week${L.me.weeks===1?'':'s'}.</p>`:''}
+    <div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>#</th><th>STUDENT</th><th>TOTAL</th><th>WEEKS</th></tr></thead><tbody>${L.top.map(r=>`<tr class="${r.you?'you':''}"><td>${r.rank}</td><td>${esc(r.name)}</td><td>${pct(r.totalPct)}</td><td>${r.weeks}</td></tr>`).join('')}</tbody></table></div></div>`;
+  h+=`<p class="mute">Virtual money only. Weekly moves are entered by The Desk from public market data after each week closes. This is practice for interviews, not investment advice.</p>`;
+  app.innerHTML=h;bind();
+}
+function bind(){
+  const f=document.getElementById('entry');if(!f)return;
+  const keys=[...C.current.instruments.map(i=>i.key),'cash'];
+  const upd=()=>{let t=0;keys.forEach(k=>{const v=Math.max(0,Math.min(100,parseInt(f.elements[k].value||'0',10)||0));t+=v;const a=f.querySelector(`[data-amt="${k}"]`);if(a)a.textContent=gbp(C.stake*v/100);const r=f.querySelector(`[data-range="${k}"]`);if(r)r.value=v});
+    const el=document.getElementById('total');el.className='total '+(t===100?'ok':'bad');el.innerHTML=`<span>Total</span><span>${t}%${t===100?' ✓':t<100?` · ${100-t}% left to place`:` · ${t-100}% too much`}</span>`;document.getElementById('submit').disabled=t!==100};
+  keys.forEach(k=>{f.elements[k].oninput=upd;const r=f.querySelector(`[data-range="${k}"]`);if(r)r.oninput=()=>{f.elements[k].value=r.value;upd()}});upd();
+  f.onsubmit=async e=>{e.preventDefault();const weights={};keys.forEach(k=>weights[k]=parseInt(f.elements[k].value||'0',10)||0);
+    const r=await fetch('/api/challenge',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'enter',challengeId:C.current.id,weights,rationale:document.getElementById('why').value,displayName:document.getElementById('dn').value,university:document.getElementById('uni').value})});
+    const d=await r.json().catch(()=>({}));document.getElementById('msg').textContent=r.ok?'Saved. You can change it until entries close.':(d.error||'Could not save that.');if(r.ok)load()};
+}
+load();
+</script>
+</body>
+</html>
