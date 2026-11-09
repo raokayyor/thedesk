@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Grace Wilson
+grace.wilson@example.com | United Kingdom
+Target: Consulting / Advisory | Summer Internship
+
+EDUCATION
+University of Nottingham | BSc Psychology | September 2025 - June 2028
+First-year average: 68%. Modules include Research Methods, Statistics and Social Psychology.
+
+PROJECTS
+Student Service Survey | University Research Project | February - May 2026
+Designed a survey about student use of campus support services and analysed 64 anonymous responses.
+Compared responses across 2 study-year groups using descriptive statistics and highlighted the small, self-selected sample.
+Recommended simplifying the signposting page based on recurring comments; the university had not implemented the recommendation at the time of submission.
+
+EXPERIENCE
+Willow Events | Casual Events Assistant | June 2025 - present
+Help set up venues, check guest lists and communicate schedule changes to team members.
+When a speaker was delayed, coordinated the revised welcome schedule with the event supervisor.
+
+ACTIVITIES
+Psychology Society | Peer Support Volunteer | October 2025 - present
+Signpost students to university resources and maintain appropriate confidentiality.
+Completed a 3-person case competition; owned the customer research slide.
+
+SKILLS
+Excel, introductory R, survey analysis and presentation.
+Interests: consumer behaviour, running and theatre.
+

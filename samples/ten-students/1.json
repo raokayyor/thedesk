@@ -1,0 +1,1017 @@
+{
+  "sample": true,
+  "generatedReview": true,
+  "preview": false,
+  "id": "fictional-review-1",
+  "generatedAt": "2026-11-09T10:15:40.456Z",
+  "profile": {
+    "number": 1,
+    "name": "Sam Taylor",
+    "route": "Investment Banking / IBD",
+    "programme": "Spring Week / Insight Programme",
+    "course": "English",
+    "university": "Loughborough University",
+    "year": "1st Year",
+    "grade": "2:1 (predicted)",
+    "whatToCheck": "Early-stage humanities applicant; vague evidence and no finance employment.",
+    "pdf": "01-sam-taylor.pdf",
+    "text": "01-sam-taylor.txt",
+    "fictional": true,
+    "targetSector": "Investment Banking / IBD",
+    "targetDivision": "Investment Banking / IBD"
+  },
+  "result": {
+    "band": "Weak",
+    "weights": {
+      "ats": 10,
+      "numerical": 15,
+      "technical": 20,
+      "competency": 25,
+      "application": 30
+    },
+    "breakdown": {
+      "ats": 7,
+      "numerical": 6,
+      "technical": 8,
+      "competency": 5,
+      "application": 11
+    },
+    "cvPreview": {
+      "original": "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r",
+      "source": "Loughborough University | BA English | September 2026 - June 2029",
+      "issue": "The essay task names two novels and library sources but omits the specific techniques compared, what the argument found and how sources were evaluated.",
+      "structure": "Compared [technique A] and [technique B] across [Novel 1] and [Novel 2] using [library sources], finding that [conclusion], which demonstrated [analytical point]."
+    },
+    "priorities": [
+      {
+        "title": "Build a visible analytical finding",
+        "description": "Your Loughborough University | BA English | September essay names no method or conclusion, so your analytical depth stays hidden from a reader."
+      },
+      {
+        "title": "Develop commercial knowledge foundations",
+        "description": "Interests: business news appears but no specific insight is described, leaving your commercial curiosity unsupported beyond the label."
+      },
+      {
+        "title": "Close core technical gaps from the test",
+        "description": "Literature Society | Events Volunteer | October shows no quantitative work, and DCF, WACC and percentage calculations were all missed."
+      }
+    ],
+    "targetFirm": "",
+    "deskSummary": "Your strongest transferable activity is the comparative essay at Loughborough University | BA English | September, which shows research and structured writing. The main gaps are the absence of any stated analytical method or finding, no leadership or resilience evidence, and missed core technical concepts including DCF, WACC and numerical calculations.",
+    "atsReadiness": {
+      "band": "Room to improve",
+      "score": 65,
+      "status": "assessed",
+      "version": "desk-ats-v1",
+      "assessedMax": 100,
+      "limitations": [
+        "Text-only check: original PDF layout, columns, tables and reading order are not verified.",
+        "This is The Desk’s readiness heuristic, not a bank pass mark or rejection probability."
+      ],
+      "keywordSource": "desk_route_dictionary",
+      "weightedContribution": {
+        "max": 10,
+        "score": 65,
+        "earned": 7,
+        "component": "ats",
+        "appliedToOverall": true
+      }
+    },
+    "competencies": [
+      {
+        "name": "Analytical ability",
+        "score": 32,
+        "reason": "Your Loughborough University | BA English | September essay names two novels and library sources but states no technique, argument or finding.",
+        "nextStep": "What specific narrative pattern did you find across those two novels, and what did your library sources show?"
+      },
+      {
+        "name": "Teamwork",
+        "score": 38,
+        "reason": "At Literature Society | Events Volunteer | October you supported bookings and lists alongside colleagues, but your individual contribution within the team is not described."
+      },
+      {
+        "name": "Communication",
+        "score": 42,
+        "reason": "Sharing event notices at Literature Society | Events Volunteer | October shows outward communication, but audience, format and any measurable reach are absent."
+      },
+      {
+        "name": "Leadership",
+        "score": 0,
+        "reason": "No evidence of leading, delegating, coaching or initiating a decision appears anywhere in the supplied CV."
+      },
+      {
+        "name": "Resilience",
+        "score": 0,
+        "reason": "No evidence of handling setbacks, pressure or sustained effort under difficulty appears in the supplied CV."
+      },
+      {
+        "name": "Commercial awareness",
+        "score": 22,
+        "reason": "Interests: business news is listed but no specific story, sector view or business insight is described anywhere in the CV."
+      },
+      {
+        "name": "Technical readiness",
+        "score": 18,
+        "reason": "Basic Excel sorting and formulas are listed under Loughborough University | BA English | September skills, but DCF, WACC and all six numerical concepts were missed in the test."
+      }
+    ],
+    "overallScore": 37,
+    "candidateName": "Sam Taylor",
+    "scoringVersion": "desk-readiness-v3"
+  },
+  "quiz": {
+    "commercialCorrect": 2,
+    "commercialTotal": 5,
+    "numericalCorrect": 2,
+    "numericalTotal": 5,
+    "missed": [
+      {
+        "topic": "DCF",
+        "section": "commercial",
+        "questionId": "T0035"
+      },
+      {
+        "topic": "WACC",
+        "section": "commercial",
+        "questionId": "T0038"
+      },
+      {
+        "topic": "Free cash flow",
+        "section": "commercial",
+        "questionId": "T0039"
+      },
+      {
+        "topic": "Compound annual growth rate",
+        "section": "numerical",
+        "questionId": "N0201"
+      },
+      {
+        "topic": "Percentage change",
+        "section": "numerical",
+        "questionId": "N0001"
+      },
+      {
+        "topic": "Margin change in percentage points",
+        "section": "numerical",
+        "questionId": "N0111"
+      }
+    ]
+  },
+  "paid": {
+    "paidTitle": "Sam Taylor — Spring Week / Insight Programme (Investment Banking / IBD) Full Cycle Report",
+    "executiveVerdict": {
+      "summary": "You score 37/100 (Weak), needing 38 more points to reach a competitive band. Your CV & application score of 11/30 is the single largest drag: every bullet uses passive, task-level language with no stated finding, output or impact. Your ATS score of 7/10 is the strongest component but is undermined by zero role-relevant keywords. Competency evidence is thin across all seven dimensions, and your technical gaps — six missed quiz concepts — leave the numerical and commercial sections well below competitive. The CV is repairable, but all three areas need work before you submit.",
+      "readinessVerdict": "You score 37/100 — band: Weak.",
+      "mostImportantFix": "Rewrite every CV bullet to include a specific action and a stated output or finding. This directly lifts your lowest-scoring component (CV & application 11/30) and gives competency answers real evidence to draw on.",
+      "submitAdvice": "Do not submit until you have: (1) rewritten your CV bullets with specific outputs, (2) drilled all six missed technical concepts, and (3) prepared at least one concrete commercial observation from your business-news reading. Check the official vacancy for eligibility, deadlines and application limits — none of those are confirmed here."
+    },
+    "targetRouteMeaning": {
+      "isRouteRealistic": "A Spring Week / Insight Programme is the correct target for a first-year student at Loughborough University starting September 2026. The route is structurally appropriate for your stage. However, your current evidence base — retail sales assistant duties and society volunteer support tasks — does not yet demonstrate the analytical or commercial depth these programmes typically screen for.",
+      "routeGap": "No analytical finding, no commercial insight and no quantitative output appear anywhere in your CV. Your ATS keyword score for role-relevant terms (valuation, financial modelling, financial analysis, due diligence, M&A) is 0/35 on that component. You also score 5/25 on competency, with Leadership and Resilience at 0.",
+      "whatWouldMakeItCredible": "Add a stated conclusion from your comparative essay (what did you find?). Record one specific commercial observation from your business-news reading. Drill your technical gaps so you can speak to DCF, WACC and free cash flow in an interview. Seek one quantifiable output from your bookshop or society role — even a count or a before/after comparison. [confirm: are any of these available from your actual experience?]",
+      "steppingStoneRoute": "If Spring Week applications have already closed for this cycle, check whether any firms run a first-year insight day or open day in spring 2027. A society finance or investment committee role — even organising one event with a financial element — would add leadership evidence for next cycle."
+    },
+    "applicationRiskMap": [
+      {
+        "risk": "Every CV bullet is task-level with no output, finding or impact stated",
+        "severity": "High",
+        "whyItMatters": "Your CV & application score is 11/30 — the largest single gap to competitive. Bullets such as 'Help customers find books and process sales' and 'Help count stock and update the ordering spreadsheet' describe duties only. Screeners and ATS systems look for evidence of what changed or what you produced; without that, your application scores near the bottom of the contribution, outputs and specificity criteria.",
+        "howToFix": "For each bullet, ask: what was the situation, what did you do specifically, and what was the result or output? [confirm: were there any counts, comparisons, or before/after changes in your bookshop or society work you can state?] Add the answer to the bullet. Do not invent figures — use a question placeholder if you cannot confirm a number."
+      },
+      {
+        "risk": "Zero role-relevant keywords in the CV body",
+        "severity": "High",
+        "whyItMatters": "Your ATS keyword component scores 0/35 because none of the five target-role terms — valuation, financial modelling, financial analysis, due diligence, mergers and acquisitions — appear in your CV. While your overall ATS score of 7/10 is held up by structure and readability, the keyword gap means automated filters for IBD roles may not surface your application.",
+        "howToFix": "Add keywords only where your actual experience supports them. Your essay involved structured analysis; your spreadsheet work involved data handling. [confirm: did your essay involve any financial or quantitative analysis? Did your spreadsheet work go beyond basic sorting?] If yes, describe it accurately using the closest supported term. Do not insert keywords without an evidential basis."
+      },
+      {
+        "risk": "Six missed technical concepts leave numerical and commercial scores well below competitive",
+        "severity": "High",
+        "whyItMatters": "You score 6/15 on numerical and 8/20 on commercial & technical. Your quiz results show 2/5 on both numerical and commercial sections, with your technical gaps spanning core valuation and maths concepts. Spring Week interviews and online tests routinely include these topics; arriving without fluency in them is a material screening risk.",
+        "howToFix": "Work through the six worked answers provided in your quiz results. For each concept, explain the definition aloud without looking at the answer (as the drill instructions say), then attempt a fresh example. Prioritise DCF and WACC first as they underpin the others. Aim to complete all six before any online test or interview invitation."
+      }
+    ],
+    "profileWarnings": [],
+    "evidenceHierarchy": {
+      "leadWith": [
+        {
+          "evidence": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present: Work with colleagues to prioritise outstanding orders during busy periods.",
+          "whyItLeads": "This is your only evidence of working under pressure with a concrete operational task, making it your strongest transferable moment for teamwork and prioritisation questions.",
+          "howToUseIt": "Open teamwork and prioritisation answers with this example. Add the specific context: how many colleagues, what the busy period was, and what the outcome of the prioritisation was [confirm these details]."
+        },
+        {
+          "evidence": "Loughborough University | BA English: Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.",
+          "whyItLeads": "This is your only evidence of structured research and analytical writing, which maps directly to the analytical ability competency banks assess at Spring Week stage.",
+          "howToUseIt": "Use it to answer analytical and communication questions. Strengthen it by naming the techniques compared, the novels, and what your argument concluded [confirm these details]."
+        }
+      ],
+      "supportWith": [
+        {
+          "evidence": "Literature Society | Events Volunteer | October 2026 - present: Help organise talks and share event notices with students.",
+          "whyItSupports": "Shows outward communication and coordination alongside a team, supporting teamwork and communication answers as a secondary example.",
+          "howToUseIt": "Use as a second example when a question asks for two instances of teamwork or communication. Add the number of events, audience size, or any specific challenge you navigated [confirm these details]."
+        },
+        {
+          "evidence": "Brook Lane Books: Help count stock and update the ordering spreadsheet.",
+          "whyItSupports": "Demonstrates basic data handling and attention to detail, which can support an analytical or technical answer at a junior level.",
+          "howToUseIt": "Reference it briefly when asked about working with data or accuracy. Do not overstate it as financial modelling; describe it as stock data entry and spreadsheet updating."
+        },
+        {
+          "evidence": "Interests: business news, contemporary fiction and university running.",
+          "whyItSupports": "Business news interest signals commercial curiosity, which is relevant to commercial awareness questions, but only if you can name a specific story or sector development.",
+          "howToUseIt": "Prepare one specific business news story you have followed recently and explain why it interested you. Do not rely on the label alone."
+        }
+      ],
+      "reduceOrCut": [
+        {
+          "evidence": "Help customers find books and process sales.",
+          "whyReduce": "This describes a basic duty with no analytical content, no output and no transferable skill made explicit. It adds no differentiation for an IBD Spring Week application.",
+          "whatToDoInstead": "Replace with a bullet that shows a specific customer interaction where you used judgement or communication, or fold the duty into a stronger bullet about prioritisation or stock management."
+        },
+        {
+          "evidence": "Microsoft Word and PowerPoint; basic Excel sorting and formulas.",
+          "whyReduce": "Word and PowerPoint are expected baseline tools and add no signal. 'Basic Excel' without a specific task context is weak against candidates who can cite financial modelling or data analysis.",
+          "whatToDoInstead": "Remove Word and PowerPoint. Keep Excel only if you can link it to the ordering spreadsheet task and describe what the spreadsheet tracked and why accuracy mattered [confirm details]."
+        },
+        {
+          "evidence": "Support the committee with room bookings and attendance lists.",
+          "whyReduce": "Administrative support tasks with no stated challenge, decision or outcome read as filler at this application stage.",
+          "whatToDoInstead": "Either cut this bullet or rewrite it to show a specific coordination challenge: for example, a booking conflict you resolved or a list you used to improve attendance [confirm whether this happened]."
+        }
+      ]
+    },
+    "bulletRepair": [
+      {
+        "cvItem": "Loughborough University | BA English | September 2026 - June 2029",
+        "originalBullet": "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r",
+        "currentIssue": "The bullet names no specific techniques, no titles of the novels, no library sources used, and states no finding or conclusion. A reader cannot assess your analytical depth.",
+        "strongerAngle": "Name the two techniques you compared, identify the novels, state what your argument found, and show how library sources supported that finding.",
+        "bulletStructure": "Compared [technique A] and [technique B] → across [Novel 1] and [Novel 2] using [source type] → finding that [conclusion]",
+        "exampleBullet": "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r",
+        "whyThisWorks": "Adding the specific techniques and conclusion turns a generic task description into evidence of analytical method and structured argument, without inventing any fact.",
+        "questionsToConfirm": [
+          "What were the two narrative techniques you compared?",
+          "What were the titles of the two novels?",
+          "What did your library sources show, and what was your essay's main finding?"
+        ],
+        "factsUsed": [
+          "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r",
+          "Predicted 2:1. Modules include Literary Analysis, Academic Writing and Research Methods.\r",
+          "Loughborough University | BA English | September 2026 - June 2029\r"
+        ]
+      },
+      {
+        "cvItem": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present",
+        "originalBullet": "Work with colleagues to prioritise outstanding orders during busy periods.\r",
+        "currentIssue": "The bullet says you worked with colleagues to prioritise orders but gives no context for what made the period busy, how priorities were decided, or what the result was.",
+        "strongerAngle": "Show the decision-making involved: what criteria you and colleagues used to prioritise, and what happened as a result of that prioritisation.",
+        "bulletStructure": "Worked with [number] colleagues → to prioritise [type of orders] during [busy period] → by [method used] → ensuring [outcome]",
+        "exampleBullet": "Work with colleagues to prioritise outstanding orders during busy periods.\r",
+        "whyThisWorks": "Naming the prioritisation method and outcome shows judgement and teamwork rather than just presence, without adding any unconfirmed metric.",
+        "questionsToConfirm": [
+          "How did you and your colleagues decide which orders to prioritise — by deadline, customer type, or another method?",
+          "What was the outcome of that prioritisation process — were orders fulfilled on time, or was a specific problem avoided?"
+        ],
+        "factsUsed": [
+          "Work with colleagues to prioritise outstanding orders during busy periods.\r",
+          "Brook Lane Books | Weekend Sales Assistant | June 2025 - present\r",
+          "Help customers find books and process sales.\r"
+        ]
+      },
+      {
+        "cvItem": "Literature Society | Events Volunteer | October 2026 - present",
+        "originalBullet": "Help organise talks and share event notices with students.\r",
+        "currentIssue": "The bullet describes sharing event notices but gives no audience size, no format, no challenge navigated, and no result. It reads as a passive administrative task.",
+        "strongerAngle": "Show what organising the talks involved: who you coordinated with, what the communication challenge was, and whether attendance or engagement was affected.",
+        "bulletStructure": "Helped organise [type of talk] → by coordinating [with whom] → communicating event details to [audience] → resulting in [outcome or attendance]",
+        "exampleBullet": "Help organise talks and share event notices with students.\r",
+        "whyThisWorks": "Naming the coordination partners and communication channel turns a vague duty into a concrete communication example, using only facts you can confirm.",
+        "questionsToConfirm": [
+          "What type of talks did you help organise — author talks, panels, or another format?",
+          "How did you share event notices — email list, social media, or another channel — and roughly how many students did you reach?",
+          "Is there a specific event where your communication contribution made a difference to attendance or logistics?"
+        ],
+        "factsUsed": [
+          "Help organise talks and share event notices with students.\r",
+          "Literature Society | Events Volunteer | October 2026 - present\r",
+          "Support the committee with room bookings and attendance lists.\r"
+        ]
+      }
+    ],
+    "competencyRepair": [
+      {
+        "name": "Analytical ability",
+        "score": 32,
+        "evidence": "Loughborough University | BA English: Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.",
+        "answerStructure": "Situation: essay task at Loughborough. Action: compared techniques, evaluated library sources. Result: produced a structured argument. Reflection: what this shows about how you approach evidence.",
+        "evidenceSourceIds": [
+          "E8"
+        ],
+        "draftAnswer": "In my first term at Loughborough, I was set an essay that required me to compare narrative techniques across two novels. Rather than just summarising the texts, I went to the library and found sources that had analysed similar techniques, then used those to build my own argument about what the comparison revealed. [confirm: what were the two novels and the techniques you compared?] I had to decide which sources were most relevant and how to weave them into a coherent line of reasoning rather than just listing views. [confirm: what did your essay argue or conclude?] The process taught me that analysis means taking a position and defending it with evidence, not just describing what you found. [confirm: what grade or feedback did you receive, if any?]",
+        "nextAction": "Write down the two novels, the techniques compared, and your essay's main conclusion so you can answer follow-up questions precisely in an interview.",
+        "sourceEvidence": [
+          "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r"
+        ],
+        "sampleAnswer": "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Teamwork",
+        "score": 38,
+        "evidence": "Brook Lane Books: Work with colleagues to prioritise outstanding orders during busy periods.",
+        "answerStructure": "Situation: busy period at Brook Lane Books. Action: worked with colleagues to decide order priorities. Result: orders handled. Reflection: what you learned about working in a team under pressure.",
+        "evidenceSourceIds": [
+          "E12"
+        ],
+        "draftAnswer": "At Brook Lane Books, where I work as a weekend sales assistant, there are periods when outstanding orders build up and the team has to decide together what to deal with first. [confirm: how many colleagues were involved in this?] I worked with my colleagues to go through the outstanding orders and agree on which ones needed to be handled most urgently. [confirm: what criteria did you use to prioritise — delivery deadline, customer request, or something else?] I made sure I was clear about what I was taking on so we didn't duplicate effort. [confirm: what was the outcome — were the orders cleared, or was a specific problem avoided?] Working through that with colleagues showed me that good teamwork in a pressured moment depends on being direct about capacity and agreeing on priorities quickly. [confirm: is there a more specific outcome you can describe?]",
+        "nextAction": "Recall one specific busy period at Brook Lane Books and note the number of colleagues involved, the prioritisation method used, and the result, so your answer is concrete.",
+        "sourceEvidence": [
+          "Work with colleagues to prioritise outstanding orders during busy periods.\r"
+        ],
+        "sampleAnswer": "Work with colleagues to prioritise outstanding orders during busy periods.\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Communication",
+        "score": 42,
+        "evidence": "Literature Society | Events Volunteer: Help organise talks and share event notices with students.",
+        "answerStructure": "Situation: events volunteer role at Literature Society. Action: shared event notices and helped organise talks. Result: students informed. Reflection: what you learned about communicating to an audience.",
+        "evidenceSourceIds": [
+          "E16"
+        ],
+        "draftAnswer": "As an events volunteer for the Literature Society at Loughborough, part of my role is to make sure students know about upcoming talks. I help put together the event notices and share them with the student body. [confirm: what channel do you use — email, social media, or another format?] I have to think about what information is most important to include so that students understand what the event is, when it is, and why it might interest them. [confirm: roughly how many students do you communicate with, and have you had to adapt the message for different audiences?] [confirm: has there been a specific talk where your communication contribution made a noticeable difference to attendance or engagement?] The experience has made me think carefully about clarity and relevance when writing for an audience, which I think connects directly to how analysts communicate findings to clients. [confirm: any specific feedback received?]",
+        "nextAction": "Note the communication channel you use, the approximate audience size, and one specific event where your notice or outreach had a clear effect, to make this answer concrete.",
+        "sourceEvidence": [
+          "Help organise talks and share event notices with students.\r"
+        ],
+        "sampleAnswer": "Help organise talks and share event notices with students.\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Leadership",
+        "score": 0,
+        "evidence": "No leadership evidence appears in the supplied CV.",
+        "answerStructure": "Situation: identify any moment where you took initiative or guided others. Action: describe what you did. Result: what changed. Reflection: what you learned about leading.",
+        "evidenceSourceIds": [
+          "E15"
+        ],
+        "draftAnswer": "I want to be honest that I am at an early stage and have not yet held a formal leadership role. [confirm: within your Literature Society volunteering, have you ever taken the lead on organising a specific event, even informally — for example, coordinating a booking when the usual contact was unavailable?] [confirm: at Brook Lane Books, have you ever shown a new colleague how something works, or stepped up during a shift when a senior colleague was absent?] If either of those happened, I would describe the situation, what I did to keep things moving, and what the outcome was. [confirm: please describe the specific situation so this answer can be built accurately.] I recognise leadership is a gap I am actively working to address by taking on more responsibility within the Literature Society. [confirm: is there a specific task or event you are planning to take ownership of?]",
+        "nextAction": "Within the next two weeks, identify one concrete task within the Literature Society or at Brook Lane Books where you can take ownership — for example, leading the logistics for one upcoming event — so you have a real example before applications close.",
+        "sourceEvidence": [
+          "Literature Society | Events Volunteer | October 2026 - present\r"
+        ],
+        "sampleAnswer": "Literature Society | Events Volunteer | October 2026 - present\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Resilience",
+        "score": 0,
+        "evidence": "No resilience evidence appears in the supplied CV.",
+        "answerStructure": "Situation: a moment of difficulty or setback. Action: how you kept going. Result: what you achieved despite the difficulty. Reflection: what it showed you about yourself.",
+        "evidenceSourceIds": [
+          "E10"
+        ],
+        "draftAnswer": "There is no resilience example in my CV as it currently stands, so I want to think carefully about what I can honestly describe. [confirm: at Brook Lane Books, was there a shift or period that was particularly difficult — for example, being short-staffed, handling a difficult customer situation, or managing a high volume of orders alone?] [confirm: in your studies, was there a piece of work or a deadline that was harder than expected, and how did you handle it?] If either of those situations applies, I would describe what made it difficult, what I did to keep going, and what the result was. [confirm: please describe the specific situation so this answer reflects what actually happened.] I am aware this is a gap and I am looking for opportunities to build evidence of handling pressure. [confirm: is there an upcoming challenge — academic or extracurricular — where you could demonstrate this?]",
+        "nextAction": "Recall one genuinely difficult moment from Brook Lane Books or your studies — a specific shift, deadline, or setback — and write down what happened and how you responded, so you have a real example ready.",
+        "sourceEvidence": [
+          "Brook Lane Books | Weekend Sales Assistant | June 2025 - present\r"
+        ],
+        "sampleAnswer": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Commercial awareness",
+        "score": 22,
+        "evidence": "Interests: business news, contemporary fiction and university running.",
+        "answerStructure": "Situation: a business story or sector development you have followed. Action: how you engaged with it — read, discussed, formed a view. Result: what you understood or concluded. Reflection: why it matters to IBD.",
+        "evidenceSourceIds": [
+          "E20"
+        ],
+        "draftAnswer": "I follow business news as part of my regular interests. [confirm: what is a specific story or sector development you have read about recently — for example, a deal, a company result, or a market trend?] I try to understand not just what happened but why it matters — for example, what it means for the companies involved, their competitors, or the broader sector. [confirm: can you name the specific story and describe what you understood from it?] I find it interesting to think about how businesses make decisions under uncertainty, which is part of what draws me to investment banking. [confirm: what is your personal reason for targeting IBD specifically?] I recognise my commercial knowledge is at an early stage and I am working to build it, including addressing the technical gaps from my assessment. [confirm: which business news source do you read regularly?]",
+        "nextAction": "Before your next application or interview, prepare one specific business news story: name the companies involved, explain what happened, and state what you think it means for the sector. Practise saying it aloud in under two minutes.",
+        "sourceEvidence": [
+          "Interests: business news, contemporary fiction and university running.\r"
+        ],
+        "sampleAnswer": "Interests: business news, contemporary fiction and university running.\r",
+        "draftStatus": "draft"
+      },
+      {
+        "name": "Technical readiness",
+        "score": 18,
+        "evidence": "Microsoft Word and PowerPoint; basic Excel sorting and formulas. Quiz results: numerical 6/15, commercial 8/20.",
+        "answerStructure": "Situation: current technical baseline. Action: what you are doing to build it. Result: progress so far. Reflection: why technical skills matter in IBD.",
+        "evidenceSourceIds": [
+          "E19"
+        ],
+        "draftAnswer": "My current technical foundation is basic Excel — sorting and using formulas — which I have used to help update the ordering spreadsheet at Brook Lane Books. [confirm: what specifically does the spreadsheet track, and what formulas have you used?] I am aware that this is well below the level expected in investment banking, and my assessment results confirmed I have gaps in your technical gaps that I am now working through using the worked answers provided. I am approaching this systematically: understanding the concept first, then practising the calculation aloud without looking at the answer. I know that Spring Week candidates are not expected to arrive as fully trained analysts, but I want to show that I understand why these concepts matter — for example, that discounting future cash flows reflects the time value of money and investor risk appetite. [confirm: how many hours per week are you currently dedicating to technical preparation?]",
+        "nextAction": "Spend at least 30 minutes per day this week working through your technical gaps using the drill method: explain each concept aloud before checking the worked answer. Aim to answer all six missed concepts correctly before your next practice test.",
+        "sourceEvidence": [
+          "Microsoft Word and PowerPoint; basic Excel sorting and formulas.\r"
+        ],
+        "sampleAnswer": "Microsoft Word and PowerPoint; basic Excel sorting and formulas.\r",
+        "draftStatus": "draft"
+      }
+    ],
+    "firmDivisionFit": {
+      "targetFirm": "Target firm not specified",
+      "targetDivision": "Investment Banking / IBD — Spring Week / Insight Programme",
+      "whatTheFirmWillLike": "You are a first-year student targeting the correct programme for your stage (Spring Week / Insight). Your comparative essay at Loughborough shows structured research and written argument. Your Brook Lane Books role shows you can work in a team under operational pressure. Your Literature Society volunteering shows outward communication. These are the building blocks Spring Week applications look for at this stage.",
+      "whatTheFirmWillQuestion": "Your overall score is 37/100, which is 38 points below a competitive benchmark. Your CV contains no analytical finding, no leadership evidence, no resilience example, and no named commercial insight. Your technical gaps from the assessment are a material risk if the application includes an online test. Your degree subject (English) is non-technical, which is not a barrier but will require you to demonstrate commercial and numerical competence explicitly.",
+      "howToMakeFitClearer": "Until a specific firm is confirmed, prepare a 'why this firm' answer by connecting your business news interest to a sector or deal type relevant to IBD, and linking your research skills from the essay to the analytical work of an analyst. [confirm: which firm are you applying to?] Check the firm's official vacancy page for eligibility criteria, application deadlines, and any online test format — do not rely on this report for those details. Verify whether the firm accepts first-year students on its Spring Week programme, as eligibility varies by firm."
+    },
+    "interviewRiskMap": [
+      {
+        "likelyQuestion": "Tell me about a time you analysed information and reached a conclusion.",
+        "whyThisQuestionExposesRisk": "Your only analytical evidence is the comparative essay, but as written it names no technique, no novels, and no finding. An interviewer pressing for detail will find nothing to follow up on.",
+        "weakAnswerPattern": "Describing the essay as 'comparing narrative techniques' without naming the techniques, the novels, or what you concluded — leaving the interviewer with no evidence of actual analytical depth.",
+        "strongAnswerStructure": "Name the two novels and the specific techniques you compared. Explain how you evaluated your library sources and chose which ones to use. State what your essay argued. Finish with one sentence on what the process taught you about building an argument from evidence.",
+        "candidateEvidenceToUse": "Loughborough University BA English essay: 'Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.' [confirm: technique names, novel titles, essay conclusion]"
+      },
+      {
+        "likelyQuestion": "Why do you want to work in investment banking, and what do you know about what analysts do?",
+        "whyThisQuestionExposesRisk": "Your CV lists 'business news' as an interest but contains no specific commercial insight, no named sector, and no description of what IBD analysts actually do. A vague motivation answer is one of the most common reasons Spring Week candidates are screened out at interview.",
+        "weakAnswerPattern": "Saying you are interested in finance and business without naming a specific deal, sector trend, or aspect of IBD work — and without connecting your own experience to the role.",
+        "strongAnswerStructure": "Open with one specific business story you have followed and what it showed you about how IBD creates value. Connect your research and analytical skills from the essay to the work of an analyst. State one concrete aspect of IBD work you want to learn during a Spring Week. [confirm: your personal motivation for IBD specifically]",
+        "candidateEvidenceToUse": "Interests: business news. Brook Lane Books ordering spreadsheet work. Comparative essay research at Loughborough. [confirm: specific business story followed recently]"
+      },
+      {
+        "likelyQuestion": "Can you walk me through a time you worked as part of a team to solve a problem?",
+        "whyThisQuestionExposesRisk": "Your teamwork evidence from Brook Lane Books describes prioritising orders with colleagues but gives no detail on how priorities were decided, what your specific contribution was, or what the outcome was. Without those details, the answer sounds generic.",
+        "weakAnswerPattern": "Saying 'I worked with colleagues to prioritise orders' without explaining the decision-making process, your individual role, or the result — which gives the interviewer nothing to probe further.",
+        "strongAnswerStructure": "Set the scene at Brook Lane Books during a busy period. Explain how you and your colleagues decided which orders to prioritise and what your specific contribution to that decision was. State the outcome. Close with one sentence on what you learned about effective teamwork under pressure.",
+        "candidateEvidenceToUse": "Brook Lane Books: 'Work with colleagues to prioritise outstanding orders during busy periods.' [confirm: number of colleagues, prioritisation method, specific outcome]"
+      }
+    ],
+    "atsReadiness": {
+      "band": "Room to improve",
+      "score": 65,
+      "status": "assessed",
+      "version": "desk-ats-v1",
+      "components": [
+        {
+          "max": 25,
+          "checks": [
+            {
+              "id": "usableText",
+              "passed": true,
+              "explanation": "At least 300 readable characters extracted."
+            },
+            {
+              "id": "cleanExtraction",
+              "passed": true,
+              "explanation": "Fewer than 1% replacement characters."
+            }
+          ],
+          "earned": 25,
+          "component": "textReadability"
+        },
+        {
+          "max": 25,
+          "checks": [
+            {
+              "id": "education",
+              "passed": true,
+              "explanation": "Recognisable education heading."
+            },
+            {
+              "id": "experience",
+              "passed": true,
+              "explanation": "Recognisable experience or projects heading."
+            },
+            {
+              "id": "skills",
+              "passed": true,
+              "explanation": "Recognisable skills heading."
+            }
+          ],
+          "earned": 25,
+          "component": "sectionStructure"
+        },
+        {
+          "max": 15,
+          "checks": [
+            {
+              "id": "email",
+              "passed": true,
+              "explanation": "Readable email address; contact details are not returned."
+            },
+            {
+              "id": "dates",
+              "passed": true,
+              "explanation": "Recognisable year dates for chronology."
+            }
+          ],
+          "earned": 15,
+          "component": "contactAndChronology"
+        },
+        {
+          "max": 35,
+          "checks": [
+            {
+              "id": "valuation",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            },
+            {
+              "id": "financial modelling",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            },
+            {
+              "id": "financial analysis",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            },
+            {
+              "id": "due diligence",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            },
+            {
+              "id": "mergers and acquisitions",
+              "passed": false,
+              "explanation": "Term not found in extracted text. Add it only if your experience supports it."
+            }
+          ],
+          "earned": 0,
+          "component": "targetRoleTerms"
+        }
+      ],
+      "assessedMax": 100,
+      "limitations": [
+        "Text-only check: original PDF layout, columns, tables and reading order are not verified.",
+        "This is The Desk’s readiness heuristic, not a bank pass mark or rejection probability."
+      ],
+      "keywordSource": "desk_route_dictionary",
+      "matchedKeywords": [],
+      "missingKeywords": [
+        "valuation",
+        "financial modelling",
+        "financial analysis",
+        "due diligence",
+        "mergers and acquisitions"
+      ],
+      "suggestedActions": [
+        "Review missing role terms. Add them only where supported by your actual experience; do not stuff keywords."
+      ],
+      "weightedContribution": {
+        "max": 10,
+        "score": 65,
+        "earned": 7,
+        "component": "ats",
+        "appliedToOverall": true
+      }
+    },
+    "sevenDayActionPlan": [
+      {
+        "day": "Day 1",
+        "focus": "Diagnose and prioritise your application gaps",
+        "tasks": [
+          "Read your full score breakdown (37/100, Weak band) and write down the three lowest-scoring areas: CV & application (11/30), Competency (5/25), and Commercial & technical (8/20).",
+          "List the six missed quiz topics in your notes and confirm you have the worked answers from your report to hand before Day 2."
+        ],
+        "deliverable": "A single prioritised gap list with your three lowest scores and six missed topics noted — ready to drive Days 2–7.",
+        "minutes": 30
+      },
+      {
+        "day": "Day 2",
+        "focus": "Recover your two numerical quiz concepts",
+        "tasks": [
+          "Work through the Percentage change and CAGR worked answers aloud: for percentage change, practise (new − old) ÷ old using the £225m → £252m example; for CAGR, practise (end ÷ start)^(1/n) − 1 using the £50m → £60.5m example.",
+          "Write each formula from memory, then check it against the worked answer — repeat until you can write both without looking."
+        ],
+        "deliverable": "Two handwritten formula cards (Percentage change and CAGR) you can reproduce from memory.",
+        "minutes": 45
+      },
+      {
+        "day": "Day 3",
+        "focus": "Recover your four commercial quiz concepts",
+        "tasks": [
+          "Work through the DCF, WACC, Free cash flow, and Margin change in percentage points worked answers aloud, one at a time, using the drill method: explain each concept without looking, then check.",
+          "Write a one-sentence plain-English definition of each concept and note the common trap listed in the worked answer (e.g. for margin change: quote pp, not %)."
+        ],
+        "deliverable": "Four definition cards (DCF, WACC, FCF, Margin pp) with the trap noted on the back of each.",
+        "minutes": 45
+      },
+      {
+        "day": "Day 4",
+        "focus": "Strengthen your CV's analytical evidence",
+        "tasks": [
+          "Answer in writing: what specific narrative techniques did you compare in your Loughborough essay, what did you find, and which library sources did you use? Use your answers to draft a revised essay bullet following the structure: Compared [technique A] and [technique B] across [Novel 1] and [Novel 2] using [sources], finding [conclusion].",
+          "Answer in writing: what business news story have you followed recently, what happened, and what does it mean for a company or sector? Draft one sentence you could use in a cover letter or interview."
+        ],
+        "deliverable": "A revised essay bullet (confirmed facts only, no invented details) and one business-news sentence ready for review.",
+        "minutes": 40
+      },
+      {
+        "day": "Day 5",
+        "focus": "Draft and practise three competency answers",
+        "tasks": [
+          "Using the Situation–Action–Result–Reflection structure, draft spoken answers for Teamwork (Brook Lane Books busy-period prioritisation) and Communication (Literature Society event notices). Keep each under 170 words and use only confirmed facts; mark anything unconfirmed as [confirm: …].",
+          "Read each answer aloud and time it — aim for 90–120 seconds per answer. Note any invented detail and replace it with a [confirm: …] placeholder."
+        ],
+        "deliverable": "Two timed, spoken-style competency drafts with all unconfirmed details clearly flagged.",
+        "minutes": 50
+      },
+      {
+        "day": "Day 6",
+        "focus": "Draft remaining competency answers and address leadership/resilience gap",
+        "tasks": [
+          "Draft spoken answers for Analytical ability (essay), Commercial awareness (business news interest), and Technical readiness (Excel and quiz recovery). Mark all unconfirmed details [confirm: …].",
+          "For Leadership and Resilience, write down any real situation — from Brook Lane Books, Literature Society, university running, or coursework — where you made a decision under pressure or kept going through difficulty. [confirm: which situation fits best?] Use that as your evidence base."
+        ],
+        "deliverable": "Five additional competency drafts (including Leadership and Resilience placeholders with your chosen situation identified).",
+        "minutes": 50
+      },
+      {
+        "day": "Day 7",
+        "focus": "Consolidate, check, and plan your recheck",
+        "tasks": [
+          "Run through all six formula/definition cards from memory; re-drill any you cannot recall without looking. Review all seven competency drafts and confirm every [confirm: …] item has been resolved or remains clearly flagged.",
+          "Check your CV against the five-item submission checklist in this report: essay bullet specificity, ATS keyword support, contact details, date chronology, and skills section accuracy. Note any item that still needs action."
+        ],
+        "deliverable": "A completed self-review checklist with a dated note of what remains outstanding before your next application submission.",
+        "minutes": 40
+      }
+    ],
+    "finalSubmissionChecklist": [
+      {
+        "item": "Essay bullet specificity",
+        "statusNeeded": "Bullet names the specific techniques compared, the two novels, the library sources used, and the conclusion reached — no vague placeholders remain.",
+        "whyItMatters": "Your current bullet ('comparing narrative techniques across two novels and used library sources') hides your analytical depth. Reviewers cannot assess what you found or how you reasoned without the specifics."
+      },
+      {
+        "item": "ATS keyword support",
+        "statusNeeded": "Any role-relevant term added to the CV (e.g. 'financial analysis', 'data analysis') is supported by a real, describable activity — not inserted as a bare keyword.",
+        "whyItMatters": "Your ATS check found zero matches for the five target-role terms. Adding unsupported keywords risks rejection at screening; each term must link to a genuine task you can describe."
+      },
+      {
+        "item": "Contact details completeness",
+        "statusNeeded": "Email address is present and correct; check whether the target firm's application form requires a phone number or LinkedIn URL not currently on the CV.",
+        "whyItMatters": "Your CV shows email and country only. Some application portals require additional contact fields; a missing field can block submission or delay processing."
+      },
+      {
+        "item": "Date chronology accuracy",
+        "statusNeeded": "All role start and end dates are present and consistent with the application form; confirm Brook Lane Books (June 2025 – present) and Literature Society (October 2026 – present) are still accurate on the day you submit.",
+        "whyItMatters": "Inconsistent dates between your CV and application form are a common screening flag. Verify both entries are current before each submission."
+      },
+      {
+        "item": "Skills section accuracy",
+        "statusNeeded": "Excel is listed as 'basic sorting and formulas'; confirm this accurately reflects your current level and that no higher-level claim (e.g. pivot tables, VLOOKUP) is added unless you can demonstrate it.",
+        "whyItMatters": "Overstating technical skills is a risk at the offer stage when firms verify or test them. Your current description is honest; only upgrade it if your actual capability has changed."
+      },
+      {
+        "item": "Programme eligibility confirmation",
+        "statusNeeded": "Confirm with the official vacancy that the Spring Week / Insight Programme you are targeting is open to first-year students starting September 2026, and check any application window or eligibility criteria stated on the firm's careers page.",
+        "whyItMatters": "Programme eligibility rules vary by firm and year. This report cannot confirm current deadlines or eligibility; you must check the official vacancy directly."
+      },
+      {
+        "item": "Commercial awareness evidence",
+        "statusNeeded": "At least one specific business story, sector development, or company event is noted in your application or interview preparation — not just 'business news' as a label.",
+        "whyItMatters": "Your CV lists 'business news' as an interest but provides no specific insight. Reviewers and interviewers will probe this; a concrete example is needed to support the claim."
+      }
+    ],
+    "recheckRecommendation": "Recheck after you have: (1) revised the essay bullet with confirmed specific techniques, novels, sources, and conclusion; (2) retaken the numerical and commercial quiz sections and scored above 3/5 on each; and (3) drafted and timed at least five competency answers with all [confirm: …] items resolved. A recheck at that point will reflect genuine evidence improvements — not the passage of time alone. No score outcome is guaranteed by these actions.",
+    "workedAnswers": [
+      {
+        "trap": "Check the definition and units before choosing an answer.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Future cash is worth less than cash today, and riskier cash even less. The discount rate (often WACC) reflects the return investors demand for that risk."
+        ],
+        "answer": "Future cash is worth less than cash today, and riskier cash even less. The discount rate (often WACC) reflects the return investors demand for that risk.",
+        "concept": "DCF",
+        "question": "In a DCF, what does the discount rate represent?",
+        "drillAnswer": "Future cash is worth less than cash today, and riskier cash even less. The discount rate (often WACC) reflects the return investors demand for that risk."
+      },
+      {
+        "trap": "Check the definition and units before choosing an answer.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further."
+        ],
+        "answer": "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further.",
+        "concept": "WACC",
+        "question": "Why is the cost of debt usually lower than the cost of equity?",
+        "drillAnswer": "Lenders rank ahead of shareholders if things go wrong, so they accept a lower return. Interest is also tax-deductible, lowering the cost further."
+      },
+      {
+        "trap": "Check the definition and units before choosing an answer.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value."
+        ],
+        "answer": "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value.",
+        "concept": "Free cash flow",
+        "question": "Unlevered free cash flow is cash flow:",
+        "drillAnswer": "Unlevered FCF ignores how the company is funded, which is why it's discounted at WACC to get enterprise value."
+      },
+      {
+        "trap": "Dividing total growth by the number of years (simple average), which overstates the rate.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "CAGR = (end ÷ start)^(1/2) − 1",
+          "= (60.5 ÷ 50)^(1/2) − 1 ≈ 10%"
+        ],
+        "answer": "CAGR = (end ÷ start)^(1/2) − 1 = (60.5 ÷ 50)^(1/2) − 1 ≈ 10% CAGR is the steady yearly rate that gets you from start to end with compounding. Dividing total growth by the number of years (simple average), which overstates the rate.",
+        "concept": "Compound annual growth rate",
+        "question": "A division's revenue grows from £50m to £60.5m over 2 years. What is the compound annual growth rate (CAGR), to the nearest whole percent?",
+        "drillAnswer": "CAGR = (end ÷ start)^(1/2) − 1 = (60.5 ÷ 50)^(1/2) − 1 ≈ 10% CAGR is the steady yearly rate that gets you from start to end with compounding. Dividing total growth by the number of years (simple average), which overstates the rate."
+      },
+      {
+        "trap": "Dividing by the new value instead of the old one.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Change = £252m − £225m = £27m",
+          "Divide by the starting value: 27 ÷ 225 = 0.1200",
+          "= 12.0%"
+        ],
+        "answer": "Change = £252m − £225m = £27m Divide by the starting value: 27 ÷ 225 = 0.1200 = 12.0% Percentage change always uses the starting value as the base: (new − old) ÷ old. Dividing by the new value instead of the old one.",
+        "concept": "Percentage change",
+        "question": "Operating costs move from £225m to £252m. What is the percentage change?",
+        "drillAnswer": "Change = £252m − £225m = £27m Divide by the starting value: 27 ÷ 225 = 0.1200 = 12.0% Percentage change always uses the starting value as the base: (new − old) ÷ old. Dividing by the new value instead of the old one."
+      },
+      {
+        "trap": "Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference.",
+        "drill": "Explain the calculation or definition aloud without looking at the worked answer.",
+        "steps": [
+          "Old margin = 15.2 ÷ 190 = 8.0%",
+          "New margin = 22 ÷ 200 = 11.0%",
+          "Change = 11 − 8 = 3.0 percentage points"
+        ],
+        "answer": "Old margin = 15.2 ÷ 190 = 8.0% New margin = 22 ÷ 200 = 11.0% Change = 11 − 8 = 3.0 percentage points A margin is a percentage, so a change in margin is quoted in percentage points (pp), not percent. Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference.",
+        "concept": "Margin change in percentage points",
+        "question": "Revenue grows from £190m to £200m and operating profit from £15.2m to £22m. By how much does the operating margin change?",
+        "drillAnswer": "Old margin = 15.2 ÷ 190 = 8.0% New margin = 22 ÷ 200 = 11.0% Change = 11 − 8 = 3.0 percentage points A margin is a percentage, so a change in margin is quoted in percentage points (pp), not percent. Quoting the relative change in the margin (%) or the growth in profit instead of the pp difference."
+      }
+    ],
+    "weeksTwoToFour": [
+      {
+        "week": "Week 2",
+        "focus": "Make your technical gaps automatic",
+        "sessions": [
+          {
+            "label": "Drill: DCF",
+            "href": "/test-hub.html",
+            "minutes": 20,
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice."
+          },
+          {
+            "label": "Drill: WACC",
+            "href": "/test-hub.html",
+            "minutes": 20,
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice."
+          },
+          {
+            "label": "Drill: Free cash flow",
+            "href": "/test-hub.html",
+            "minutes": 20,
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice."
+          },
+          {
+            "label": "Drill: Compound annual growth rate",
+            "href": "/test-hub.html",
+            "minutes": 20,
+            "detail": "One 10-question set in practice mode. Repeat until you score 9/10 twice."
+          },
+          {
+            "label": "Timed numerical set",
+            "href": "/test-hub.html?type=numerical",
+            "minutes": 20,
+            "detail": "One mixed set in timed mode, three times this week. Note your time per question."
+          }
+        ],
+        "deliverable": "Each gap topic at 9/10 or better, twice, in practice mode."
+      },
+      {
+        "week": "Week 3",
+        "focus": "Interview out loud",
+        "sessions": [
+          {
+            "label": "Answer your interview questions aloud",
+            "href": "#interview",
+            "minutes": 45,
+            "detail": "Record yourself answering 3 questions with the 90-second timer, then compare with the strong answer."
+          },
+          {
+            "label": "Say your competency answers",
+            "href": "#competencies",
+            "minutes": 40,
+            "detail": "Say your two lowest competency answers without notes. Fill in every [confirm] first."
+          },
+          {
+            "label": "Route technical set",
+            "href": "/test-hub.html?type=technical&route=investment_banking",
+            "minutes": 30,
+            "detail": "Two 10-question sets for your route, in timed mode."
+          }
+        ],
+        "deliverable": "Recordings of you answering all the interview questions, and a confident answer for your two weakest competencies."
+      },
+      {
+        "week": "Week 4",
+        "focus": "Recheck, then apply",
+        "sessions": [
+          {
+            "label": "Recheck 1",
+            "href": "#submit",
+            "minutes": 20,
+            "detail": "Upload your updated CV and retake the tests. See what moved."
+          },
+          {
+            "label": "Ask your practitioner question",
+            "href": "#ask",
+            "minutes": 10,
+            "detail": "Ask about whatever the recheck still shows as weak."
+          },
+          {
+            "label": "Review your firm motivation",
+            "href": "#interview",
+            "minutes": 30,
+            "detail": "Practise your answer aloud and check every firm-specific claim against its official website."
+          },
+          {
+            "label": "Check deadlines and submit when ready",
+            "href": "/tracker.html",
+            "minutes": 30,
+            "detail": "Check the live deadline on the employer’s site. Bring this forward if it falls before Week 4; do not delay a suitable application just to finish the plan."
+          }
+        ],
+        "deliverable": "Application submitted, with one recheck left for your next application."
+      }
+    ]
+  },
+  "cv": {
+    "candidateName": "Sam Taylor",
+    "targetRole": "Investment Banking / IBD",
+    "sourceText": "FICTIONAL TEST CV - not a real applicant\r\nSam Taylor\r\nsam.taylor@example.com | United Kingdom\r\nTarget: Investment Banking / IBD | Spring Week / Insight Programme\r\n\r\nEDUCATION\r\nLoughborough University | BA English | September 2026 - June 2029\r\nPredicted 2:1. Modules include Literary Analysis, Academic Writing and Research Methods.\r\nProduced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r\n\r\nEXPERIENCE\r\nBrook Lane Books | Weekend Sales Assistant | June 2025 - present\r\nWork with colleagues to prioritise outstanding orders during busy periods.\r\nHelp count stock and update the ordering spreadsheet.\r\n\r\nACTIVITIES\r\nLiterature Society | Events Volunteer | October 2026 - present\r\nHelp organise talks and share event notices with students.\r\n\r\nSKILLS\r\nInterests: business news, contemporary fiction and university running.\r\n\r\n",
+    "sections": [
+      {
+        "title": "Contact",
+        "items": [
+          {
+            "heading": "FICTIONAL TEST CV - not a real applicant",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "sam.taylor@example.com | United Kingdom",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              },
+              {
+                "text": "Target: Investment Banking / IBD | Spring Week / Insight Programme",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Education",
+        "items": [
+          {
+            "heading": "Loughborough University | BA English | September 2026 - June 2029",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Predicted 2:1. Modules include Literary Analysis, Academic Writing and Research Methods.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              },
+              {
+                "text": "Produced an essay comparing narrative techniques across two novels and used library sources to support the argument.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Experience",
+        "items": [
+          {
+            "heading": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Work with colleagues to prioritise outstanding orders during busy periods.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              },
+              {
+                "text": "Help count stock and update the ordering spreadsheet.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Activities",
+        "items": [
+          {
+            "heading": "Literature Society | Events Volunteer | October 2026 - present",
+            "subheading": "",
+            "bullets": [
+              {
+                "text": "Help organise talks and share event notices with students.",
+                "confidence": "ready",
+                "rewritten": false,
+                "note": "Based on the supplied CV; check it before you submit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Skills",
+        "items": [
+          {
+            "heading": "Interests: business news, contemporary fiction and university running.",
+            "subheading": "",
+            "bullets": []
+          }
+        ]
+      }
+    ],
+    "whatChangedAndWhy": [
+      {
+        "change": "Loughborough University | BA English | September 2026 - June 2029",
+        "reason": "Adding the specific techniques and conclusion turns a generic task description into evidence of analytical method and structured argument, without inventing any fact."
+      },
+      {
+        "change": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present",
+        "reason": "Naming the prioritisation method and outcome shows judgement and teamwork rather than just presence, without adding any unconfirmed metric."
+      },
+      {
+        "change": "Literature Society | Events Volunteer | October 2026 - present",
+        "reason": "Naming the coordination partners and communication channel turns a vague duty into a concrete communication example, using only facts you can confirm."
+      }
+    ],
+    "accuracyFlags": [
+      {
+        "item": "Loughborough University | BA English | September 2026 - June 2029",
+        "question": "What were the two narrative techniques you compared?"
+      },
+      {
+        "item": "Loughborough University | BA English | September 2026 - June 2029",
+        "question": "What were the titles of the two novels?"
+      },
+      {
+        "item": "Loughborough University | BA English | September 2026 - June 2029",
+        "question": "What did your library sources show, and what was your essay's main finding?"
+      },
+      {
+        "item": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present",
+        "question": "How did you and your colleagues decide which orders to prioritise — by deadline, customer type, or another method?"
+      },
+      {
+        "item": "Brook Lane Books | Weekend Sales Assistant | June 2025 - present",
+        "question": "What was the outcome of that prioritisation process — were orders fulfilled on time, or was a specific problem avoided?"
+      },
+      {
+        "item": "Literature Society | Events Volunteer | October 2026 - present",
+        "question": "What type of talks did you help organise — author talks, panels, or another format?"
+      },
+      {
+        "item": "Literature Society | Events Volunteer | October 2026 - present",
+        "question": "How did you share event notices — email list, social media, or another channel — and roughly how many students did you reach?"
+      },
+      {
+        "item": "Literature Society | Events Volunteer | October 2026 - present",
+        "question": "Is there a specific event where your communication contribution made a difference to attendance or logistics?"
+      }
+    ],
+    "removed": [
+      {
+        "text": "Help customers find books and process sales.",
+        "reason": "This describes a basic duty with no analytical content, no output and no transferable skill made explicit. It adds no differentiation for an IBD Spring Week application."
+      },
+      {
+        "text": "Microsoft Word and PowerPoint; basic Excel sorting and formulas.",
+        "reason": "Word and PowerPoint are expected baseline tools and add no signal. 'Basic Excel' without a specific task context is weak against candidates who can cite financial modelling or data analysis."
+      },
+      {
+        "text": "Support the committee with room bookings and attendance lists.",
+        "reason": "Administrative support tasks with no stated challenge, decision or outcome read as filler at this application stage."
+      }
+    ],
+    "buildFirst": []
+  },
+  "repairedCvDraft": "FICTIONAL TEST CV - not a real applicant\r\nSam Taylor\r\nsam.taylor@example.com | United Kingdom\r\nTarget: Investment Banking / IBD | Spring Week / Insight Programme\r\n\r\nEDUCATION\r\nLoughborough University | BA English | September 2026 - June 2029\r\nPredicted 2:1. Modules include Literary Analysis, Academic Writing and Research Methods.\r\nProduced an essay comparing narrative techniques across two novels and used library sources to support the argument.\r\n\r\nEXPERIENCE\r\nBrook Lane Books | Weekend Sales Assistant | June 2025 - present\r\nWork with colleagues to prioritise outstanding orders during busy periods.\r\nHelp count stock and update the ordering spreadsheet.\r\n\r\nACTIVITIES\r\nLiterature Society | Events Volunteer | October 2026 - present\r\nHelp organise talks and share event notices with students.\r\n\r\nSKILLS\r\nInterests: business news, contemporary fiction and university running.\r\n\r\n",
+  "reviewAssumptions": {
+    "fictional": true,
+    "testAnswers": "Simulated for review, not inferred from CV",
+    "correctPerSection": 2,
+    "questionBankId": "hub-investment_banking-v1"
+  }
+}

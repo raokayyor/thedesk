@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Noah Williams
+noah.williams@example.com | United Kingdom
+Target: General Finance | Summer Internship
+
+EDUCATION
+Cardiff University | BSc Computer Science | September 2025 - June 2028
+First-year average: 75%. Modules include Databases, Programming and Statistics.
+
+PROJECTS
+Transaction Data Quality Dashboard | Personal Project | April - August 2026
+Generated a synthetic dataset of 5,000 transactions and wrote Python checks for duplicate IDs, missing fields and invalid dates.
+Stored exceptions in SQLite and built a dashboard showing the rule, transaction ID and reason for each flag.
+Wrote 18 automated tests and documented that the dashboard checked data quality, not fraud or creditworthiness.
+
+EXPERIENCE
+Campus IT Helpdesk | Student Support Assistant | October 2025 - present
+Record support requests and explain basic troubleshooting steps to students.
+Reviewed 45 resolved tickets, grouped recurring issues and drafted a supervisor-reviewed guide for common login problems.
+
+ACTIVITIES
+Coding Society | Project Coordinator | January 2026 - present
+Organised weekly task reviews for 5 students building a course-planning prototype.
+Documented incomplete features before the demonstration instead of presenting them as finished.
+
+SKILLS
+Python, SQL, Git, Excel and basic dashboard development.
+Interests: data quality, financial technology and climbing.
+

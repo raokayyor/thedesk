@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Aisha Khan
+aisha.khan@example.com | United Kingdom
+Target: Accounting / Audit | Summer Internship
+
+EDUCATION
+University of Manchester | BSc Accounting and Finance | September 2025 - June 2028
+First-year average: 67%. Modules include Financial Reporting, Audit Foundations and Business Law.
+
+EXPERIENCE
+Elmbridge Community Trust | Finance Volunteer | January - August 2026
+Matched receipts to 85 expense claims and recorded missing evidence in an Excel checklist.
+Flagged 9 claims with incomplete receipts to the finance coordinator rather than approving them independently.
+Documented the coordinator-approved corrections and helped prepare a monthly expense summary.
+
+PROJECTS
+Working Capital Review | Group Accounting Project | February - May 2026
+Calculated receivables, inventory and payables days from a case company annual report.
+Prepared the receivables section and identified that slower collection explained part of the cash-flow movement.
+Presented the finding with a limitation: the annual figures did not show monthly seasonality.
+
+ACTIVITIES
+Accounting Society | Events Assistant | October 2025 - present
+Booked rooms and checked attendee lists for 3 careers events.
+
+SKILLS
+Excel: SUMIFS, lookups and pivot tables; Word; basic financial statement analysis.
+Languages: English and Urdu. Interests: volunteering and netball.
+

@@ -1,3 +1,4 @@
+import {FULL_CYCLE_REVIEW_MODE} from '../lib/full-cycle-access.mjs';
 import {MEMBERSHIP_AMOUNT,MEMBERSHIP_VERSION} from '../lib/membership-pricing.mjs';
 import {grantPayment,paidSessionMatches} from '../lib/payment-verification.mjs';
 import Stripe from 'stripe';
@@ -5,6 +6,7 @@ import {ownedRecord,hasAccess,sameOrigin,apiFailure,sql} from '../lib/report-sto
 export default async function handler(req,res){
  if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
  try{const row=await ownedRecord(req,res,req.body?.assessmentId);if(!row)return res.status(404).json({error:'Assessment not found.'});
+ if(FULL_CYCLE_REVIEW_MODE)return res.json({url:`/fullcycle.html?id=${row.id}`,review:true});
  if(await hasAccess(row))return res.json({url:`/fullcycle.html?id=${row.id}`});
  const stripe=new Stripe(process.env.STRIPE_SECRET_KEY);const origin=new URL(process.env.APP_ORIGIN||`https://${req.headers.host}`).origin;
  if(row.stripe_session){const prior=await stripe.checkout.sessions.retrieve(row.stripe_session);if(prior.status==='complete'&&paidSessionMatches(prior,row.id)&&await grantPayment(prior))return res.json({url:`/fullcycle.html?id=${row.id}`});if(prior.status==='open'&&prior.amount_total===MEMBERSHIP_AMOUNT&&prior.metadata?.productVersion===MEMBERSHIP_VERSION)return res.json({url:prior.url});if(prior.status==='open')await stripe.checkout.sessions.expire(prior.id);}

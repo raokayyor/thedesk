@@ -363,6 +363,8 @@ function status(text){var el=document.getElementById('loadStatus');if(el)el.text
 async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok)throw new Error(data.error||'This step could not complete. Please retry.');return data;}
 async function load(){
  var params=new URLSearchParams(location.search),id=params.get('id');
+ var reviewStudent=params.get('reviewStudent');
+ if(reviewStudent&&/^(?:[1-9]|10)$/.test(reviewStudent)){var review=await api('/samples/ten-students/'+reviewStudent+'.json');review.sample=true;review.generatedReview=true;return review;}
  var sample=location.pathname.includes('fullcycle-amelia')||params.get('sample')==='amelia'||(!id&&location.pathname.includes('fullcycle-report'));
  if(sample){var preview=await api('/samples/amelia-report-v3-preview.json');preview.sample=true;preview.preview=true;return preview;}
  if(!id||!/^[a-f0-9]{48}$/.test(id))throw new Error('Open Full Cycle from your paid assessment, or view the fictional sample below.');
@@ -370,7 +372,8 @@ async function load(){
  var session=params.get('session_id');
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
- if(!saved.paid)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
+ if(!saved.paid&&!saved.fullCycleReview)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
+ if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.getElementById('main').before(notice);}
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
   var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
@@ -434,8 +437,9 @@ function render(R){
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
-  document.getElementById("sampleTag").textContent=R.preview?'V3 design preview':'Sample report';
+  document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':R.preview?'V3 design preview':'Sample report';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
+  if(R.generatedReview)notice.innerHTML='<strong>Generated fictional student · Full Cycle £89 output.</strong> Created through the current report generator and validators. Test answers were simulated ('+R.reviewAssumptions.correctPerSection+'/5 in each section), not inferred from the CV. No human review or purchase took place. Drafts still need factual checks.';
   document.getElementById("dlTop").disabled=false;
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
@@ -666,7 +670,7 @@ function render(R){
     '<p class="lede">Your report applies The Desk framework. These are the people behind it. Ask about the one thing your report did not settle. Your question goes into the practitioner review queue.</p>'+
     '<div class="people mt32">'+PEOPLE.map(function(p){return '<div class="card person"><div class="avatar">'+esc(p.init)+'</div><h3>'+esc(p.name)+'</h3><p>'+esc(p.role)+'</p><p class="mute" style="font-size:14px">'+esc(p.area)+'</p></div>';}).join("")+'</div>'+
     '<form class="card ask mt24" id="practitionerQuestion"><div class="label">Your question · 1 included</div><label for="practitionerEmail">Your email</label><input id="practitionerEmail" type="email" required maxlength="254"'+(R.sample?' disabled':'')+'><label for="practitionerText">Your question</label><textarea id="practitionerText" required minlength="20" maxlength="2000" placeholder="What would you like to ask about your application?"'+(R.sample?' disabled':'')+'></textarea><div class="mt16"><button class="btn" type="submit"'+(R.sample?' disabled title="Not available on the sample"':'')+'>Send question</button><p id="questionStatus" role="status"></p></div></form>'+
-    '<p class="foot">This report uses AI to apply The Desk framework to your CV and test answers. Scores are The Desk’s readiness measure, not a bank’s pass mark.'+(R.sample?' Amelia Chen is a fictional sample candidate.':'')+'</p>';
+    '<p class="foot">This report uses AI to apply The Desk framework to your CV and test answers. Scores are The Desk’s readiness measure, not a bank’s pass mark.'+(R.sample?' This is a fictional sample candidate.':'')+'</p>';
   })();
 
   /* Firm guide shortcuts are opt-in; the target firm never auto-adds one. */
@@ -791,7 +795,7 @@ function wire(R,S){
       if(l.indexOf("## ")===0)return'<p style="margin:8pt 0 2pt"><b>'+esc(l.slice(3))+'</b></p>';
       if(l.indexOf("• ")===0)return'<p style="margin:2pt 0 2pt 14pt;text-indent:-10pt">• '+esc(l.slice(2))+'</p>';
       return'<p style="margin:3pt 0">'+esc(l)+'</p>';}).join("");
-    var doc='<html><head><meta charset="utf-8"></head><body style="font-family:Georgia;font-size:11pt">'+body+'<script src="/desk-me.js" defer></script></body></html>';
+    var doc='<html><head><meta charset="utf-8"></head><body style="font-family:Georgia;font-size:11pt">'+body+'</body></html>';
     var name=((R.profile||{}).name||"cv").replace(/\s+/g,"-")+"-CV-repaired.doc";
     var b=new Blob(["﻿"+doc],{type:"application/msword"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   }

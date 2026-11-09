@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Ethan Brooks
+ethan.brooks@example.com | United Kingdom
+Target: Investment Banking / IBD | Summer Internship
+
+EDUCATION
+University of Bath | BEng Mechanical Engineering | September 2025 - June 2028
+First-year average: 69%. Modules include Engineering Mathematics, Materials and Design.
+
+PROJECTS
+Pump Redesign Study | Team Design Project | January - May 2026
+Compared 3 impeller designs using a supplied test dataset and checked the calculations against the laboratory notes.
+Owned the cost-comparison spreadsheet and separated material assumptions from measured performance.
+Recommended the second design because it met the case performance requirement at lower estimated material cost; the design was not manufactured.
+
+EXPERIENCE
+Cedar Manufacturing | Summer Engineering Assistant | July - August 2026
+Updated maintenance records and checked 60 equipment entries for missing inspection dates.
+Raised incomplete entries with the maintenance supervisor and documented the corrections they approved.
+
+ACTIVITIES
+Engineering Society | Workshop Volunteer | October 2025 - present
+Helped run 4 introductory CAD workshops and answered student questions.
+Completed an introductory corporate-finance online course and began reading company annual reports.
+
+SKILLS
+Excel, MATLAB, SolidWorks and technical report writing.
+Interests: industrial companies, cycling and design.
+

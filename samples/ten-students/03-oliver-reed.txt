@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Oliver Reed
+oliver.reed@example.com | United Kingdom
+Target: Sales & Trading / Markets | Summer Internship
+
+EDUCATION
+University of Bristol | BSc Mathematics | September 2025 - June 2028
+First-year average: 76%. Modules include Probability, Statistics and Numerical Methods.
+
+PROJECTS
+Rates Scenario Notebook | Personal Research Project | May - August 2026
+Used Python to clean 260 daily observations from a supplied government-bond dataset and calculate changes in yields.
+Compared 2 simple forecasting baselines with a time-ordered train/test split, avoiding random sampling of future observations.
+Reported that one model underperformed the unchanged-yield baseline out of sample and explained why the result was not a trading strategy.
+
+EXPERIENCE
+Northgate Supermarket | Customer Assistant | September 2024 - present
+Resolve customer queries and check price discrepancies with the duty manager.
+During a stock-system outage, recorded outstanding queries in a shared log so the next shift could follow up.
+
+ACTIVITIES
+Mathematics Society | Peer Tutor | October 2025 - present
+Led 8 revision sessions for a group of 6 first-year students, preparing probability exercises and checking their solutions.
+University Tennis Club | Member | 2025 - present
+
+SKILLS
+Python: pandas, NumPy and matplotlib; Excel; probability and basic time-series analysis.
+Interests: central-bank announcements, tennis and puzzles.
+

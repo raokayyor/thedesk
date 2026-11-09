@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Maya Patel
+maya.patel@example.com | United Kingdom
+Target: Investment Banking / IBD | Summer Internship
+
+EDUCATION
+University of Warwick | BSc Economics | September 2025 - June 2028
+First-year average: 74%. Modules include Corporate Finance, Econometrics and Financial Accounting.
+
+PROJECTS
+North Quay Retail Valuation | Independent University Project | February - April 2026
+Built a DCF and comparable-company model for a fictional retailer using a supplied case dataset.
+Compared EV/EBITDA multiples across 6 case companies and tested a 7-9% discount-rate range.
+Found that the case valuation was most sensitive to terminal growth; presented the sensitivity table and limitations to 4 classmates.
+
+EXPERIENCE
+Westfield Advisory Practice | Finance Work Experience | July 2026
+Reconciled 140 invoice entries against the cash ledger in Excel and flagged 7 unmatched items for supervisor review.
+Created a SUMIFS-based tracking sheet so the supervisor could review each exception and its supporting document.
+
+ACTIVITIES
+Economics Society | Treasurer | October 2025 - present
+Managed a GBP 2,400 event budget and compared 3 venue quotes before recommending the lowest-cost suitable option.
+Published a monthly budget update to the 5-person committee.
+
+SKILLS
+Excel: pivot tables, SUMIFS, scenario tables; PowerPoint; introductory Python.
+Languages: English and Gujarati. Interests: company reporting and badminton.
+

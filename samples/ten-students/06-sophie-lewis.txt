@@ -1,0 +1,29 @@
+FICTIONAL TEST CV - not a real applicant
+Sophie Lewis
+sophie.lewis@example.com | United Kingdom
+Target: Corporate Banking | Graduate Programme
+
+EDUCATION
+University of Leeds | BA Business Management | September 2023 - June 2026
+Graduated with a 2:1. Modules included Business Finance, Operations and Marketing.
+
+EXPERIENCE
+Harbour Office Supplies | Sales Support Assistant | June 2024 - present
+Maintain order records and coordinate customer updates when deliveries are delayed.
+Reviewed 110 outstanding orders with the sales team and separated stock delays from incomplete customer information.
+Created a weekly follow-up list that showed each outstanding action and its owner; the team adopted it for the next quarter.
+
+PROJECTS
+Small Business Cash-Flow Case | Final-Year Project | October 2025 - March 2026
+Built a 12-month cash-flow forecast for a fictional wholesaler using the case assumptions.
+Compared a 15-day and a 30-day customer-payment delay and explained the effect on the forecast funding gap.
+Recommended checking customer concentration before relying on a single forecast; did not make a lending decision.
+
+ACTIVITIES
+Business Society | Committee Member | 2024 - 2026
+Helped organise employer talks and maintained the speaker contact list.
+
+SKILLS
+Excel cash-flow modelling, customer communication and PowerPoint.
+Interests: small businesses, hiking and football.
+
