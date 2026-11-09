@@ -74,7 +74,7 @@ function newsBlock(){
   const today=G.news.filter(n=>n.day===G.game.day),older=G.news.filter(n=>n.day!==G.game.day);
   const item=n=>`<div class="news"><div class="mute">Day ${n.day}</div><b style="font-size:16px">${esc(n.headline)}</b>${n.body?`<p style="margin:4px 0 0">${esc(n.body)}</p>`:''}
     ${n.why?`<div class="why"><span class="av" aria-hidden="true">${esc(initials(n.practitioner)||'TD')}</span><span><b>${n.practitioner?'Why it moved · '+esc(n.practitioner):'Why it moved'}:</b> ${esc(n.why)}</span></div>`:''}
-    <div class="chips">${n.effects.market?`<span>Market ${pct(n.effects.market)}</span>`:''}${Object.entries(n.effects.sectors||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}${Object.entries(n.effects.stocks||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}</div></div>`;
+    <div class="chips">${n.effects.bankRate?`<span>Bank Rate ${n.effects.bankRate>0?"+":""}${n.effects.bankRate.toFixed(2)}</span>`:''}${n.effects.market?`<span>Market ${pct(n.effects.market)}</span>`:''}${Object.entries(n.effects.sectors||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}${Object.entries(n.effects.stocks||{}).map(([s,v])=>`<span>${esc(s)} ${pct(v)}</span>`).join('')}</div></div>`;
   return `<div class="card"><div class="kicker">Today’s news · Day ${G.game.day}</div>${today.map(item).join('')||'<p class="mute">No news today.</p>'}
     ${older.length?`<button class="btn ghost sm" id="old" style="margin-top:10px">${showOld?'Hide':'Show'} earlier news (${older.length})</button>${showOld?older.map(item).join(''):''}`:''}</div>`;
 }
@@ -83,16 +83,16 @@ function marketBlock(){
   const byS={};G.prices.forEach(p=>{const k=p.region?(p.region==='UK'?'UK · ':'US · ')+p.sector:p.sector;(byS[k]=byS[k]||[]).push(p)});
   return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2>Market</h2><span class="mute">${G.prices.length} investments: about 110 UK and US shares, indices, crypto, oil, gold, copper, currencies and gilts · simulated prices</span></div>
   <div class="filters"><input type="search" id="fq" placeholder="Search, e.g. Shell, Nvidia, gold" aria-label="Search the market" value="${esc(F.q)}"><select id="fs" aria-label="Show">${[['all','Everything'],['mine','My investments'],['markets','Markets, crypto, commodities, currencies'],['UK','UK shares (FTSE 100)'],['US','US shares'],...SECTS.map(x=>['s:'+x,x])].map(([v,l])=>`<option value="${esc(v)}" ${F.s===v?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
-  <div class="scroll" style="margin-top:8px"><table id="mkt"><thead><tr><th>ASSET</th><th class="num">PRICE</th><th class="num">TODAY</th><th class="num hide-sm">SINCE START</th><th class="hide-sm">TREND</th><th class="num">YOU HOLD</th>${canTrade?'<th class="num">TRADE</th>':''}</tr></thead><tbody>
-  ${Object.entries(byS).map(([s,list])=>`<tr data-head="${esc(s)}"><td colspan="7" class="mute" style="font-weight:700;padding-top:14px">${esc(s)}</td></tr>`+list.map(p=>{const held=me?.positions?.[p.ticker]||0;return `<tr data-row data-grp="${esc(s)}" data-region="${esc(p.region||'')}" data-sector="${esc(p.sector)}" data-held="${held?1:0}" data-text="${esc((p.name+' '+p.ticker+' '+p.sector+' '+(p.hint||'')).toLowerCase())}"><td><b>${esc(p.name)}</b>${p.hint?`<div class="mute">${esc(p.hint)}</div>`:''}</td><td class="num">${lvl(p.price,p.dp)}</td><td class="num">${pct(p.change)}</td><td class="num hide-sm">${pct((p.price/p.start-1)*100)}</td><td class="hide-sm">${spark(p.history)}</td><td class="num">${held?qty(held):'—'}</td>
+  <div class="scroll" style="margin-top:8px"><table id="mkt"><thead><tr><th>ASSET</th><th class="num">SELL<br><span style="font-weight:500">bid</span></th><th class="num">BUY<br><span style="font-weight:500">offer</span></th><th class="num">TODAY</th><th class="num hide-sm">SINCE START</th><th class="hide-sm">TREND</th><th class="num">YOU HOLD</th>${canTrade?'<th class="num">TRADE</th>':''}</tr></thead><tbody>
+  ${Object.entries(byS).map(([s,list])=>`<tr data-head="${esc(s)}"><td colspan="8" class="mute" style="font-weight:700;padding-top:14px">${esc(s)}</td></tr>`+list.map(p=>{const held=me?.positions?.[p.ticker]||0;return `<tr data-row data-grp="${esc(s)}" data-region="${esc(p.region||'')}" data-sector="${esc(p.sector)}" data-held="${held?1:0}" data-text="${esc((p.name+' '+p.ticker+' '+p.sector+' '+(p.hint||'')).toLowerCase())}"><td><b>${esc(p.name)}</b>${p.hint?`<div class="mute">${esc(p.hint)}</div>`:''}</td><td class="num">${lvl(p.bid,p.dp)}</td><td class="num"><b>${lvl(p.offer,p.dp)}</b></td><td class="num">${pct(p.change)}</td><td class="num hide-sm">${pct((p.price/p.start-1)*100)}</td><td class="hide-sm">${spark(p.history)}</td><td class="num">${held?qty(held):'—'}</td>
     ${canTrade?`<td><div class="trade"><button class="btn sm" data-buy="${esc(p.ticker)}">Buy</button><button class="btn ghost sm" data-sell="${esc(p.ticker)}" ${held?'':'disabled'}>Sell</button></div></td>`:''}</tr>`}).join('')).join('')}
-  </tbody></table></div>${canTrade?'<p class="mute" style="margin:10px 0 0">Press Buy or Sell to open a trade ticket: it shows the cost and your cash before you confirm. Part-units are fine (e.g. 0.25 Bitcoin). For the game every price counts as pounds. Prices only move when the day’s news is published, so take your time.</p>':''}</div>`;
+  </tbody></table></div>${canTrade?'<p class="mute" style="margin:10px 0 0">You buy at the offer and sell at the bid, like a real broker; the gap (spread) is the cost of trading. Cash earns the Bank Rate on every news day. Press Buy or Sell to open a trade ticket: it shows the cost and your cash before you confirm. Part-units are fine (e.g. 0.25 Bitcoin). For the game every price counts as pounds. Prices only move when the day’s news is published, so take your time.</p>':''}</div>`;
 }
 function sideBlock(){
   const me=G.me;let h='';
   if(me){
-    const pos=Object.entries(me.positions||{}).map(([t,q])=>{const p=G.prices.find(x=>x.ticker===t);return {t,q,v:q*(p?.price||0),p}}).sort((a,b)=>b.v-a.v);
-    h+=`<div class="card"><h3>Your holdings</h3>${pos.length?`<div class="scroll"><table style="margin-top:6px"><thead><tr><th>ASSET</th><th class="num">UNITS</th><th class="num">PAID (AVG)</th><th class="num">VALUE</th><th class="num">PROFIT/LOSS</th><th class="num">STOP</th></tr></thead><tbody>${pos.map(x=>{const cost=Number(me.costs?.[x.t]||0),avg=x.q?cost/x.q:0,pl=x.v-cost;return `<tr><td><b>${esc(x.p?.name||x.t)}</b><div class="mute">now ${lvl(x.p?.price||0,x.p?.dp??2)}</div></td><td class="num">${qty(x.q)}</td><td class="num">${cost?lvl(avg,x.p?.dp??2):'—'}</td><td class="num">${gbp(x.v)}</td><td class="num">${cost?pct2(pl,cost):'—'}</td><td class="num"><button class="linkbtn" data-stopedit="${esc(x.t)}">${me.stops?.[x.t]?lvl(me.stops[x.t],x.p?.dp??2):'Set'}</button></td></tr>`}).join('')}<tr><td>Cash</td><td></td><td></td><td class="num">${gbp(me.cash)}</td><td></td><td></td></tr></tbody></table></div>`:'<p class="mute">All cash. Press Buy on anything in the market.</p>'}</div>`;
+    const pos=Object.entries(me.positions||{}).map(([t,q])=>{const p=G.prices.find(x=>x.ticker===t);return {t,q,v:q*(p?.bid??p?.price??0),p}}).sort((a,b)=>b.v-a.v);
+    h+=`<div class="card"><h3>Your holdings</h3>${pos.length?`<div class="scroll"><table style="margin-top:6px"><thead><tr><th>ASSET</th><th class="num">UNITS</th><th class="num">PAID (AVG)</th><th class="num">VALUE</th><th class="num">PROFIT/LOSS</th><th class="num">STOP</th></tr></thead><tbody>${pos.map(x=>{const cost=Number(me.costs?.[x.t]||0),avg=x.q?cost/x.q:0,pl=x.v-cost;return `<tr><td><b>${esc(x.p?.name||x.t)}</b><div class="mute">sell now at ${lvl(x.p?.bid??0,x.p?.dp??2)}</div></td><td class="num">${qty(x.q)}</td><td class="num">${cost?lvl(avg,x.p?.dp??2):'—'}</td><td class="num">${gbp(x.v)}</td><td class="num">${cost?pct2(pl,cost):'—'}</td><td class="num"><button class="linkbtn" data-stopedit="${esc(x.t)}">${me.stops?.[x.t]?lvl(me.stops[x.t],x.p?.dp??2):'Set'}</button></td></tr>`}).join('')}<tr><td>Cash<div class="mute">earns ${G.game.cashRate.toFixed(2)}% a year</div></td><td></td><td></td><td class="num">${gbp(me.cash)}</td><td class="num">${me.interest?`<span class="up">+${gbp(me.interest,2)}</span><div class="mute">interest</div>`:''}</td><td></td></tr></tbody></table></div>`:'<p class="mute">All cash. Press Buy on anything in the market.</p>'}</div>`;
     if(me.trades.length)h+=`<div class="card"><h3>Your recent trades</h3><table style="margin-top:6px"><tbody>${me.trades.slice(0,8).map(t=>`<tr><td class="mute">Day ${t.day}</td><td>${t.side==='buy'?'Bought':t.side==='stop'?'<span class="down">Stop loss sold</span>':'Sold'} ${qty(t.shares)} <b>${esc((G.prices.find(p=>p.ticker===t.ticker)||{}).name||t.ticker)}</b></td><td class="num">${lvl(t.price,(G.prices.find(p=>p.ticker===t.ticker)||{}).dp??2)}</td></tr>`).join('')}</tbody></table></div>`;
   }
   if(G.league.length)h+=`<div class="card"><h3>League</h3><p class="mute" style="margin:2px 0 8px">${G.players} player${G.players===1?'':'s'}</p><table><thead><tr><th>#</th><th>STUDENT</th><th class="num">RETURN</th></tr></thead><tbody>${G.league.map(r=>`<tr class="${r.you?'you':''}"><td>${r.rank}</td><td>${esc(r.name)}</td><td class="num">${pct(r.returnPct)}</td></tr>`).join('')}</tbody></table>${me&&me.rank>10?`<p style="margin:8px 0 0">You’re ${me.rank} of ${me.players}.</p>`:''}</div>`;
@@ -101,7 +101,7 @@ function sideBlock(){
 function render(){
   if(!G.game){app.innerHTML=`<div class="kicker">Trading game</div><h1>The market opens soon.</h1><div class="card">No game is running right now. Check back shortly.</div>`;return}
   const me=G.me;let h=`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><div><div class="kicker">Trading game · Day ${G.game.day}</div><h1>${esc(G.game.name)}</h1></div><span class="mute">Real markets, simulated prices: they move with the news we publish, not live markets. Virtual money; practice, not advice.</span></div>`;
-  if(me){const ret=(me.value/G.startingCash-1)*100;h+=`<div class="stats"><div class="stat"><b>${gbp(me.value)}</b><span>Portfolio value</span></div><div class="stat"><b>${ret>0?'+':''}${ret.toFixed(2)}%</b><span>Return</span></div><div class="stat"><b>${gbp(me.cash)}</b><span>Cash · ${Object.keys(me.positions||{}).length} of ${G.maxHoldings} investments</span></div><div class="stat"><b>${me.rank} / ${me.players}</b><span>League position</span></div></div>`}
+  if(me){const ret=(me.value/G.startingCash-1)*100;h+=`<div class="stats"><div class="stat"><b>${gbp(me.value)}</b><span>Portfolio value</span></div><div class="stat"><b>${ret>0?'+':''}${ret.toFixed(2)}%</b><span>Return</span></div><div class="stat"><b>${gbp(me.cash)}</b><span>Cash · earns ${G.game.cashRate.toFixed(2)}% · ${Object.keys(me.positions||{}).length} of ${G.maxHoldings} investments</span></div><div class="stat"><b>${me.rank} / ${me.players}</b><span>League position</span></div></div>`}
   else h+=`<form class="card" id="join" style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end"><div><div class="kicker">Join the game</div><p style="margin:4px 0 8px">You start with ${gbp(G.startingCash)} of virtual cash to spread across up to ${G.maxHoldings} investments.</p><label class="mute" for="dn">Name on the league</label><input class="t" id="dn" maxlength="40" value="${esc((P.name||'').split(' ')[0]+(P.name&&P.name.split(' ')[1]?' '+P.name.split(' ')[1][0]+'.':''))}"></div><div><label class="mute" for="uni">University (optional)</label><input class="t" id="uni" maxlength="60" value="${esc(P.university||'')}"></div><button class="btn hot">Start with ${gbp(G.startingCash)}</button></form>`;
   h+=`<div class="layout"><div style="display:flex;flex-direction:column;gap:16px">${newsBlock()}${marketBlock()}</div><div style="display:flex;flex-direction:column;gap:16px">${sideBlock()}</div></div>`;
   app.innerHTML=h;bind();
@@ -120,22 +120,22 @@ async function openTicket(t,side,focusStop){
   document.querySelectorAll('tr.ticket').forEach(r=>r.remove());
   const row=document.querySelector(`#mkt tr[data-row] [data-buy="${CSS.escape(t)}"]`)?.closest('tr');if(!row)return;
   TK={t,side,mode:'gbp',stopOn:!!G.me.stops?.[t],stopPct:10,fresh:false};
-  const tr=document.createElement('tr');tr.className='ticket';tr.innerHTML=`<td colspan="7"></td>`;row.after(tr);drawTicket(focusStop);
+  const tr=document.createElement('tr');tr.className='ticket';tr.innerHTML=`<td colspan="8"></td>`;row.after(tr);drawTicket(focusStop);
   tr.scrollIntoView({block:'nearest',behavior:'smooth'});
   // Load the latest price (it may have moved with news since this page loaded).
   try{const r=await fetch('/api/game?view=quote&ticker='+encodeURIComponent(t),{credentials:'same-origin'});const d=await r.json();const p=G.prices.find(x=>x.ticker===t);
-    if(r.ok&&p&&TK&&TK.t===t){const moved=d.price!==p.price;p.price=d.price;TK.fresh=true;if(moved)toast('Price updated to the latest: '+lvl(d.price,p.dp));updateTicket()}}catch(e){}
+    if(r.ok&&p&&TK&&TK.t===t){const moved=d.price!==p.price;p.price=d.price;p.bid=d.bid;p.offer=d.offer;TK.fresh=true;if(moved)toast('Price updated to the latest: '+lvl(d.price,p.dp));updateTicket()}}catch(e){}
 }
 function ticketCalc(){
   const td=document.querySelector('tr.ticket td');const p=G.prices.find(x=>x.ticker===TK.t),me=G.me,held=Number(me.positions?.[TK.t]||0);
   const raw=td?.querySelector('[data-k=val]')?.value||'';const v=parseFloat(raw.replace(/,/g,''))||0;
-  const units=TK.mode==='units'?v:(p.price?v/p.price:0),u=Math.floor(units*1e6+1e-7)/1e6,cost=Math.round(u*p.price*100)/100;
+  const px=TK.side==='buy'?p.offer:p.bid;const units=TK.mode==='units'?v:(px?v/px:0),u=Math.floor(units*1e6+1e-7)/1e6,cost=Math.round(u*px*100)/100,spreadCost=Math.round(u*(p.offer-p.bid)/2*100)/100;
   const nHeld=Object.keys(me.positions||{}).length;let err='';
   if(v<0)err='Enter a positive amount.';
   else if(TK.side==='buy'){if(u>0&&cost>me.cash+0.005)err=`Not enough cash: this costs ${gbp(cost,2)} and you have ${gbp(me.cash,2)}.`;else if(u>0&&!held&&nHeld>=G.maxHoldings)err=`You already hold ${G.maxHoldings} investments. Sell one first.`}
-  else if(u>held+1e-9)err=`You only hold ${qty(held)} units (worth ${gbp(held*p.price,2)}).`;
-  const stopPrice=TK.side==='buy'&&TK.stopOn?Math.round(p.price*(1-TK.stopPct/100)*100)/100:null;
-  return {p,held,u,cost,err,stopPrice,cashAfter:TK.side==='buy'?me.cash-cost:me.cash+cost};
+  else if(u>held+1e-9)err=`You only hold ${qty(held)} units (worth ${gbp(held*p.bid,2)}).`;
+  const stopPrice=TK.side==='buy'&&TK.stopOn?Math.round(p.bid*(1-TK.stopPct/100)*100)/100:null;
+  return {p,px,spreadCost,held,u,cost,err,stopPrice,cashAfter:TK.side==='buy'?me.cash-cost:me.cash+cost};
 }
 function drawTicket(focusStop){
   const td=document.querySelector('tr.ticket td');if(!td)return;const p=G.prices.find(x=>x.ticker===TK.t),me=G.me,buy=TK.side==='buy',held=Number(me.positions?.[TK.t]||0),curStop=me.stops?.[TK.t];
@@ -145,7 +145,7 @@ function drawTicket(focusStop){
     <input type="text" inputmode="decimal" autocomplete="off" data-k="val" placeholder="${TK.mode==='units'?'How many units, e.g. 10':'How much in £, e.g. 5000'}" aria-label="${TK.mode==='units'?'Units':'Amount in pounds'}">
     <div class="quick">${buy?[[0.1,'10% of cash'],[0.25,'25%'],[0.5,'50%'],[1,'All my cash']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join(''):[[0.25,'Quarter'],[0.5,'Half'],[1,'All']].map(([f,l])=>`<button data-fill="${f}">${l}</button>`).join('')}</div>
     ${buy?`<div class="stop"><label><input type="checkbox" data-k="stopon" ${TK.stopOn?'checked':''}> Add a stop loss: sell automatically if it falls</label> <input type="number" min="1" max="90" step="1" data-k="stoppct" value="${TK.stopPct}" aria-label="Stop loss percent below the price">% below <span data-k="stopat"></span></div>`
-      :`<div class="stop">Stop loss on your holding: ${curStop?`<b>${lvl(curStop,p.dp)}</b>`:'none'} · set at <input type="number" step="any" data-k="stopv" value="${curStop||''}" placeholder="${lvl(p.price*0.9,p.dp).replace(/,/g,'')}" aria-label="Stop loss price"> <button class="btn ghost sm" data-k="stopset">${curStop?'Update':'Set'}</button>${curStop?` <button class="linkbtn" data-k="stopclear">Remove</button>`:''}</div>`}
+      :`<div class="stop">Stop loss on your holding: ${curStop?`<b>${lvl(curStop,p.dp)}</b>`:'none'} · set at <input type="number" step="any" data-k="stopv" value="${curStop||''}" placeholder="${lvl(p.bid*0.9,p.dp).replace(/,/g,'')}" aria-label="Stop loss price"> <button class="btn ghost sm" data-k="stopset">${curStop?'Update':'Set'}</button>${curStop?` <button class="linkbtn" data-k="stopclear">Remove</button>`:''}</div>`}
   </div><div>
     <div class="sum" data-k="sum"></div><div class="err" role="status" data-k="err"></div>
     <button class="btn ${buy?'hot':''}" data-k="go" style="width:100%"></button>
@@ -156,12 +156,12 @@ function drawTicket(focusStop){
 function updateTicket(){
   const td=document.querySelector('tr.ticket td');if(!td||!TK)return;const c=ticketCalc(),p=c.p,me=G.me,buy=TK.side==='buy';const q=k=>td.querySelector(`[data-k="${k}"]`);
   const avg=c.held&&me.costs?.[TK.t]?me.costs[TK.t]/c.held:null;
-  q('title').textContent=`${p.name} · ${lvl(p.price,p.dp)}${TK.fresh?' (latest)':''}`;
-  q('sum').innerHTML=`<div><span>Latest price</span><span>${lvl(p.price,p.dp)}</span></div><div><span>Units</span><span>${qty(c.u)}</span></div>
+  q('title').textContent=`${p.name} · ${lvl(p.bid,p.dp)} / ${lvl(p.offer,p.dp)}${TK.fresh?' (latest)':''}`;
+  q('sum').innerHTML=`<div><span>${buy?'You buy at the offer':'You sell at the bid'}</span><span><b>${lvl(c.px,p.dp)}</b></span></div><div class="mute" style="font-size:12px"><span>Bid ${lvl(p.bid,p.dp)} · offer ${lvl(p.offer,p.dp)} · spread ${p.spreadPct}%</span><span>${c.u?'spread costs you ≈ '+gbp(c.spreadCost,2):''}</span></div><div><span>Units</span><span>${qty(c.u)}</span></div>
     <div class="big"><span>${buy?'Cost':'You receive'}</span><span>${gbp(c.cost,2)}</span></div>
     <div><span>Cash now</span><span>${gbp(me.cash,2)}</span></div><div><span>Cash after</span><span class="${c.cashAfter<0?'down':''}">${gbp(c.cashAfter,2)}</span></div>
     <div><span>You’ll hold</span><span>${qty(buy?c.held+c.u:Math.max(0,c.held-c.u))} units</span></div>
-    ${!buy&&avg?`<div><span>Profit/loss on this sale</span><span>${pct2(c.u*(p.price-avg),c.u*avg)}</span></div>`:''}`;
+    ${!buy&&avg?`<div><span>Profit/loss on this sale</span><span>${pct2(c.u*(c.px-avg),c.u*avg)}</span></div>`:''}`;
   q('err').textContent=c.err;
   const go=q('go');go.disabled=!c.u||!!c.err;go.textContent=c.u?`${buy?'Buy':'Sell'} ${qty(c.u)} for ${gbp(c.cost,2)}`:(buy?'Enter an amount to buy':'Enter an amount to sell');
   if(q('stopat'))q('stopat').innerHTML=TK.stopOn?`the price · at <b>${lvl(c.stopPrice,p.dp)}</b>`:'the price';
@@ -174,8 +174,8 @@ function bindTicket(){
   q('val').addEventListener('input',e=>{const c=e.target.value.replace(/[^0-9.,]/g,'');if(c!==e.target.value)e.target.value=c;updateTicket()});
   q('val').addEventListener('keydown',e=>{if(e.key==='Enter'&&!q('go').disabled)q('go').click()});
   td.querySelectorAll('[data-fill]').forEach(b=>b.onclick=()=>{const f=+b.dataset.fill,p=G.prices.find(x=>x.ticker===TK.t);let v;
-    if(TK.side==='buy'){const amt=Math.floor(G.me.cash*f*100)/100;v=TK.mode==='gbp'?amt:Math.floor(amt/p.price*1e6)/1e6}
-    else{const h=Number(G.me.positions?.[TK.t]||0)*f;v=TK.mode==='units'?Math.floor(h*1e6)/1e6:Math.floor(h*p.price*100)/100}
+    if(TK.side==='buy'){const amt=Math.floor(G.me.cash*f*100)/100;v=TK.mode==='gbp'?amt:Math.floor(amt/p.offer*1e6)/1e6}
+    else{const h=Number(G.me.positions?.[TK.t]||0)*f;v=TK.mode==='units'?Math.floor(h*1e6)/1e6:Math.floor(h*p.bid*100)/100}
     q('val').value=String(v);updateTicket()});
   q('close').onclick=()=>{document.querySelectorAll('tr.ticket').forEach(r=>r.remove());TK=null};
   if(q('stopon')){q('stopon').onchange=e=>{TK.stopOn=e.target.checked;updateTicket()};q('stoppct').oninput=e=>{TK.stopPct=Math.max(1,Math.min(90,parseFloat(e.target.value)||10));updateTicket()}}
@@ -184,7 +184,7 @@ function bindTicket(){
   q('go').onclick=async()=>{const c=ticketCalc();if(!c.u||c.err)return;q('go').disabled=true;q('go').textContent='Placing your trade…';
     const r=await post({action:'trade',ticker:TK.t,side:TK.side,shares:c.u,stopPrice:c.stopPrice});
     if(!r.ok){toast(r.data.error||'Trade failed.');updateTicket();return}
-    const a=r.data.account,map=Object.fromEntries(G.prices.map(x=>[x.ticker,x.price]));
+    const a=r.data.account,map=Object.fromEntries(G.prices.map(x=>[x.ticker,x.bid]));
     G.me={...G.me,...a,value:a.cash+Object.entries(a.positions).reduce((s,[k,v])=>s+v*(map[k]||0),0),trades:[{day:G.game.day,ticker:TK.t,side:TK.side,shares:c.u,price:r.data.price},...(G.me.trades||[])]};
     toast(`${TK.side==='buy'?'Bought':'Sold'} ${qty(c.u)} ${c.p.name} at ${lvl(r.data.price,c.p.dp)} for ${gbp(r.data.cost,2)}${c.stopPrice?` · stop loss at ${lvl(c.stopPrice,c.p.dp)}`:''}`);
     TK=null;render();load()};
