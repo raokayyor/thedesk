@@ -18,7 +18,7 @@ export default async function handler(req,res){
   profile={};for(const k of ['name','university','course','year','grade','targetSector','targetDivision','programme','targetFirm']){const v=req.body.profile?.[k];if(v!=null&&(typeof v!=='string'||v.length>200))throw new Error('Invalid profile field.');profile[k]=String(v||'').trim();}
   if(!profile.name||!profile.targetSector)throw new Error('Enter your name and chosen route.');
   const bank=questionsForRoute(profile.targetSector);if(req.body.questionBankId&&req.body.questionBankId!==bank.id)throw new Error('The route question bank changed. Please retake the test.');quiz=gradeAnswers(req.body.answers,profile.targetSector);ats=assessAtsReadiness({cvText,profile});if(ats.score===null)throw new Error('Choose a supported target route.');
-  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(!parent?.paid_at||Date.now()-new Date(parent.paid_at).getTime()>30*86400000||parent.rechecks_used>=2)throw new Error('Your two rechecks are available for 30 days after purchase.');}
+  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(!parent?.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000||parent.rechecks_used>=12)throw new Error('Membership includes up to 12 rechecks in the 12 months after purchase.');}
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
   await initStore();const h=owner(req,res,true);
@@ -71,7 +71,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]});
   if(!result)throw new Error('Assessment quality checks failed. Please retry.');
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
   const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers});
-  if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND paid_at>now()-interval '30 days' AND rechecks_used<2 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id]);if(!inserted.length)throw new Error('Recheck unavailable');}
+  if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND paid_at>now()-interval '365 days' AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
   return res.json({success:true,id,...publicAssessment(result,quiz,cvText)});
  }catch(e){return apiFailure(res,e);}
