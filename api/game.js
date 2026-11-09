@@ -25,7 +25,14 @@ function init() {
     await sql().query(`CREATE TABLE IF NOT EXISTS desk_game_trades (id bigserial PRIMARY KEY, game_id text NOT NULL, principal text NOT NULL, day integer NOT NULL, ticker text NOT NULL, side text NOT NULL, shares numeric NOT NULL, price numeric NOT NULL, at timestamptz NOT NULL DEFAULT now())`);
   })().catch(e => { ready = null; throw e; });
 }
-const liveGame = async () => (await sql().query(`SELECT * FROM desk_game WHERE status='live' ORDER BY created_at DESC LIMIT 1`))[0] || null;
+// The live game. If the list of investments has grown since it started, the new ones join at their default level.
+async function liveGame() {
+  const g = (await sql().query(`SELECT * FROM desk_game WHERE status='live' ORDER BY created_at DESC LIMIT 1`))[0] || null;
+  if (!g) return null;
+  const have = new Set((await sql().query('SELECT ticker FROM desk_game_prices WHERE game_id=$1', [g.id])).map(r => r.ticker));
+  for (const c of UNIVERSE) if (!have.has(c.ticker)) await sql().query('INSERT INTO desk_game_prices(game_id, ticker, name, sector, price, history) VALUES($1,$2,$3,$4,$5,$6::jsonb) ON CONFLICT DO NOTHING', [g.id, c.ticker, c.name, c.sector, c.price, JSON.stringify([[g.day, c.price]])]);
+  return g;
+}
 async function newGame(name, levels = {}) {
   await sql().query(`UPDATE desk_game SET status='ended' WHERE status='live'`);
   const id = randomBytes(8).toString('hex');

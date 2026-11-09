@@ -42,8 +42,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:5px 6px;b
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let S=null;
-try{$('#key').value=sessionStorage.getItem('deskStaffKey')||''}catch(e){}
-const key=()=>{const k=$('#key').value.trim();try{sessionStorage.setItem('deskStaffKey',k)}catch(e){}return k};
+try{$('#key').value=localStorage.getItem('deskStaffKey')||''}catch(e){}
+const key=()=>{const k=$('#key').value.trim();try{localStorage.setItem('deskStaffKey',k)}catch(e){}return k};
 const api=async(method,body,q='')=>{const r=await fetch('/api/game'+q,{method,headers:{Authorization:'Bearer '+key(),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'HTTP '+r.status);return d};
 const pct=x=>`<span class="${x>0?'up':x<0?'down':''}">${x>0?'+':''}${Number(x).toFixed(1)}%</span>`;
 async function load(){
