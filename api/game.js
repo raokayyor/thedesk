@@ -1,3 +1,4 @@
+import {sharedEvent,commProfile} from '../lib/community-store.mjs';
 // The Desk · trading game (simulated market). See lib/trading-game.mjs for the companies, news presets and maths.
 // Students (members only; up to MAX_HOLDINGS different investments): GET -> market, news, my portfolio, league.  POST {action:'join', displayName, university} | {action:'trade', ticker, side:'buy'|'sell', shares}
 // Staff (Authorization: Bearer PRACTITIONER_SUPPORT_KEY):
@@ -172,6 +173,8 @@ export default async function handler(req, res) {
       const sp = Number(b.stopPrice);
       if (side === 'buy' && b.stopPrice != null && b.stopPrice !== '' && sp > 0 && sp < qt.bid) await sql().query(`UPDATE desk_game_accounts SET stops=jsonb_set(stops, ARRAY[$3::text], to_jsonb($4::numeric)) WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker, sp]);
       const after = await account();
+      if(p.startsWith('account:')){try{const cp=await commProfile(p.slice(8));if(cp){await sql().query('UPDATE desk_game_accounts SET university=$3 WHERE game_id=$1 AND principal=$2',[g.id,p,cp.university]);const pricesMap=Object.fromEntries((await prices(g.id)).map(x=>[x.ticker,x.bid]));const returnPct=(portfolioValue(after.cash,after.positions,pricesMap)-100000)/1000;const previous=(await sql().query("SELECT data FROM desk_comm_events WHERE event_key=$1",['trading:'+p+':'+g.id+':'+g.day]))[0];const beforeReturn=Number(previous?.data?.returnPct||0);await sharedEvent(p,'trading',{returnPct,move:returnPct-beforeReturn},'trading:'+p+':'+g.id+':'+g.day);}}catch{}}
+
       if (side === 'sell' && !after.positions[ticker] && after.stops[ticker]) { await sql().query(`UPDATE desk_game_accounts SET stops=stops-$3::text WHERE game_id=$1 AND principal=$2`, [g.id, p, ticker]); delete after.stops[ticker]; }
       return res.json({ success: true, price, cost, cash: after.cash, account: after });
     }

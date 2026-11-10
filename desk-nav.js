@@ -11,13 +11,15 @@
   if (!/^\/interview-start\.html\?id=[a-f0-9]{48}$/.test(interview || '')) interview = null;
   var links = [
     ['My Desk', '/my.html', /\/my\.html$/],
-    ['Report', report || '/my.html#report', /\/(fullcycle|result-final-design)\.html$/],
+    ['Report', '/report.html', /\/(fullcycle|result-final-design)\.html$/],
     ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
     ['Tests', '/tests.html', /\/tests\.html$/],
     ['Trading', '/trading.html', /\/(trading|challenge)\.html$/],
     ['Tracker', '/tracker.html', /\/tracker\.html$/],
     ['Library', '/library.html', /\/library\.html$/],
-    ['News', '/my.html#news', /$^/]
+    ['News', '/news.html', /\/news\.html$/],
+    ['Community','/community.html',/\/community(-question)?\.html$/],
+    ['Events','/events.html',/\/events\.html$/]
   ];
   var css = '.desk-nav{background:#11191e;font:600 14px "DM Sans",Arial,sans-serif;position:relative;z-index:30}' +
     '.desk-nav-in{max-width:1200px;margin:0 auto;padding:0 16px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}' +

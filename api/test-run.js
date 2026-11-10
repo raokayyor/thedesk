@@ -1,3 +1,4 @@
+import {upsertAccount,startSession} from '../lib/accounts.mjs';
 // Staff-only test runner: runs the free assessment and the paid Full Cycle report
 // for the fictional personas in samples/test-personas.json, so staff can compare
 // what a student gets free against what they get for £89.
@@ -64,6 +65,12 @@ export default async function handler(req, res) {
   if (!staffOk(req)) return res.status(401).json({ error: 'Staff key required.' });
   try {
     await initRuns();
+    if(req.method==='GET'&&req.query?.view==='community-review'){
+      if(process.env.VERCEL_ENV!=='preview')return res.status(404).end();
+      const key=['a','b','c'].includes(req.query.persona)?req.query.persona:'a';
+      const account=await upsertAccount('community-review-'+key+'@example.invalid');await startSession(res,account.id);
+      res.statusCode=302;res.setHeader('Location','/community.html');return res.end();
+    }
     if (req.method === 'GET' && req.query?.view) {
       // Open the real student pages for a test record: sets this browser's desk_owner cookie
       // to the test owner (preview only) and redirects. "free" uses an unpaid copy so the page

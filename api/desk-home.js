@@ -1,3 +1,4 @@
+import {sharedEvent} from '../lib/community-store.mjs';
 // My Desk: one endpoint behind the student's home page.
 // GET                         -> everything the home page shows (membership, readiness, actions, tools, applications)
 // GET  ?view=test             -> a fresh 10-question test (5 commercial/technical + 5 numerical), answers withheld
@@ -178,13 +179,14 @@ export default async function handler(req, res) {
       if (p.startsWith('account:')) { const e = await entitlement(p.slice(8)); until = e.active ? e.until : null; }
       else if (paidRow) until = new Date(new Date(paidRow.paidAt).getTime() + 365 * 86400000).toISOString();
       const now = timeline[timeline.length - 1] || null, first = timeline[0] || null;
+      if(now&&first&&now.score>first.score)await sharedEvent(p,'readiness',{from:first.score,to:now.score},'readiness:'+p+':'+now.score);
       const scores = practice.map(x => x.data?.feedback?.overall).filter(Number.isFinite);
       const left = paid ? await A.quotaLeft('fb:' + p, PAID_PER_DAY).catch(() => null) : Math.max(0, FREE_PER_WEEK - await A.countItems(p, 'interview', 7));
       const short = await getShortlist(p);
-      const progs = Object.keys(short.list).length ? (await loadProgrammes().catch(() => ({ programmes: [] }))).programmes : [];
+      const progs = (await loadProgrammes().catch(() => ({ programmes: [] }))).programmes;
       const byKey = Object.fromEntries(progs.map(x => [x.firm + '|' + x.name, x]));
       const fromTracker = Object.entries(short.list).map(([k, v]) => { const x = byKey[k]; const [firm, ...rest] = k.split('|'); return { id: 't:' + k, source: 'tracker', firm: x?.firm || firm, programme: x?.name || rest.join('|'), stage: v.stage, deadline: x?.closes || '', rolling: !!x?.rolling, url: x?.url || '' }; });
-      const applications = [...fromTracker, ...apps.map(a => ({ id: a.id, source: 'manual', ...a.data, createdAt: a.createdAt }))].sort((x, y) => String(x.deadline || '9999').localeCompare(String(y.deadline || '9999')));
+      const applications = [...fromTracker, ...apps.map(a => {const live=byKey[a.data.firm+'|'+a.data.programme];return {id:a.id,source:'manual',...a.data,...(live?{deadline:live.closes||'',rolling:!!live.rolling,url:live.url||a.data.url}:{}),createdAt:a.createdAt};})].sort((x, y) => String(x.deadline || '9999').localeCompare(String(y.deadline || '9999')));
       const profile = latest?.profile || {};
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
@@ -280,6 +282,9 @@ export default async function handler(req, res) {
         });
       }
       const { review, ...stored } = out;
+      const testScore=['commercial','numerical'].reduce((s,k)=>s+(out[k]?.correct||0),0),testOf=['commercial','numerical'].reduce((s,k)=>s+(out[k]?.total||0),0);
+      const previousTests=await items(p,['test'],100),pastRates=previousTests.filter(x=>x.data?.section===out.section).map(x=>{const parts=['commercial','numerical'].map(k=>x.data[k]).filter(Boolean);return parts.reduce((s,x)=>s+x.correct,0)/Math.max(1,parts.reduce((s,x)=>s+x.total,0));});
+      await sharedEvent(p,'test',{section:out.section,score:testScore,of:testOf,bestYet:testOf>0&&testScore/testOf>Math.max(0,...pastRates)},'test:'+pend.id);
       await sql().query(`UPDATE desk_value_items SET kind='test', data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [pend.id, p, JSON.stringify(stored)]);
       const s = await A.ownerSummary(p);
       const assessments = s.assessments.filter(a => !a.refundedAt);
@@ -310,6 +315,7 @@ export default async function handler(req, res) {
       const cur = await getShortlist(p), k = String(b.id).slice(2);
       if (!cur.list[k] || !STAGES.includes(b.stage)) return res.status(400).json({ error: 'Unknown application.' });
       cur.list[k] = { stage: b.stage };
+      await sharedEvent(p,'stage',{firm:k.split('|')[0],stage:b.stage},'stage:'+p+':'+k+':'+b.stage);
       await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list: cur.list })]);
       return res.json({ success: true });
     }
@@ -321,6 +327,7 @@ export default async function handler(req, res) {
         if (!/^\d{1,18}$/.test(String(b.id))) return res.status(400).json({ error: 'Unknown application.' });
         const r = await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2 AND kind='application' RETURNING id::text`, [String(b.id), p, JSON.stringify(data)]);
         if (!r.length) return res.status(404).json({ error: 'Unknown application.' });
+        await sharedEvent(p,'stage',{firm:data.firm,stage:data.stage},'stage:'+p+':'+r[0].id+':'+data.stage);
         return res.json({ success: true, id: r[0].id });
       }
       const n = (await sql().query(`SELECT count(*)::int AS n FROM desk_value_items WHERE principal=$1 AND kind='application'`, [p]))[0].n;

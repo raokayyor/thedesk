@@ -1,0 +1,116 @@
+{
+  "questions": [
+    {
+      "id": "91001",
+      "title": "Preparing for a recorded video interview: how should I use the thinking time?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Interviews",
+      "firm": "Barclays",
+      "votes": 34,
+      "answers": 7,
+      "has_practitioner": true,
+      "status": "open",
+      "identity": "Bristol, 2nd year",
+      "university": "University of Bristol",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    },
+    {
+      "id": "91002",
+      "title": "Applying for a spring week after securing a summer internship: how would you explain it?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Spring weeks",
+      "firm": "",
+      "votes": 21,
+      "answers": 12,
+      "has_practitioner": false,
+      "status": "open",
+      "identity": "Warwick, 3rd year",
+      "university": "University of Warwick",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    },
+    {
+      "id": "91003",
+      "title": "Discussing a recent transaction in an advisory interview: what should I cover?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Interviews",
+      "firm": "Rothschild & Co",
+      "votes": 18,
+      "answers": 5,
+      "has_practitioner": true,
+      "status": "open",
+      "identity": "Bristol, 2nd year",
+      "university": "University of Bristol",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    },
+    {
+      "id": "91004",
+      "title": "Percentage questions under time pressure: which calculation habits help?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Online tests",
+      "firm": "",
+      "votes": 12,
+      "answers": 9,
+      "has_practitioner": false,
+      "status": "open",
+      "identity": "Warwick, 3rd year",
+      "university": "University of Warwick",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    },
+    {
+      "id": "91005",
+      "title": "How can I explain what motivates me in a professional-services interview?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Interviews",
+      "firm": "EY",
+      "votes": 9,
+      "answers": 4,
+      "has_practitioner": true,
+      "status": "open",
+      "identity": "Bristol, 2nd year",
+      "university": "University of Bristol",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    },
+    {
+      "id": "91006",
+      "title": "Preparing an investment idea: when would you discuss an ETF instead of one company?",
+      "body": "This is a fictional discussion for the community design preview. What would be a useful way to structure my preparation and explain my own reasoning?",
+      "topic": "Interviews",
+      "firm": "BlackRock",
+      "votes": 6,
+      "answers": 0,
+      "has_practitioner": false,
+      "status": "open",
+      "identity": "Warwick, 3rd year",
+      "university": "University of Warwick",
+      "createdAt": "2026-11-10T10:00:00Z",
+      "voted": false
+    }
+  ],
+  "answers": [
+    {
+      "id": "92001",
+      "identity": "Example practitioner",
+      "practitioner": "Example practitioner",
+      "body": "Illustrative guidance for this demo: check the invitation and on-screen instructions rather than assuming every employer uses the same timings. Use preparation time for a few bullet prompts: the point you want to make, your personal contribution and the outcome. Practise explaining it naturally, then review whether you answered the question.",
+      "votes": 58,
+      "status": "visible",
+      "checkedBy": null,
+      "createdAt": "2026-11-10T10:30:00Z"
+    },
+    {
+      "id": "92002",
+      "identity": "Bristol, 3rd year",
+      "practitioner": null,
+      "body": "Fictional student reply: I found it more useful to practise one example and review the recording than to memorise a whole script.",
+      "votes": 22,
+      "status": "visible",
+      "checkedBy": null,
+      "createdAt": "2026-11-10T10:45:00Z"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import {sharedEvent} from '../lib/community-store.mjs';
 import {teaserFeedbackPreview} from '../lib/interview-teaser-preview.mjs';
 import {employerPracticeContext} from '../lib/employer-practice.mjs';
 import {chooseFramework} from '../lib/interview-frameworks.mjs';
@@ -48,6 +49,7 @@ export default async function handler(req, res) {
     if(!paid&&v.input.kind==='teaser')feedback=teaserFeedbackPreview(feedback);
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);
+    if(savedId)await sharedEvent(ownerHash,'practice',{count:1});
     return res.json({ success: true, researchAvailable:research.available, paid, left:paid?await quotaLeft(key,limit):Math.max(0,weekLeft-1), feedback });
   } catch (e) { return apiFailure(res, e); }
 }
