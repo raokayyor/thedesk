@@ -144,6 +144,14 @@
         <div class="dc-row"><span>${top[0] ? 'Open with point 1, then use one more as your example.' : ''}</span><button class="dc-btn" type="button" data-dc="full">${showFull ? 'Hide my full CV' : 'Show my full CV, highlighted'}</button></div>
         ${showFull ? `<div class="dc-full">${fullHtml}</div>` : ''}`;
       if(top[0])panel.insertAdjacentHTML('beforeend',`<details class="dc-answer-example"><summary>Example wording from your CV</summary><p>CV evidence: “${esc(top[0].text)}.”</p><p>“My responsibility was [your specific task]. I personally [explain your action and why]. The outcome was [the result you can support], which taught me [your reflection].”</p><p class="dc-empty">Complete the brackets with facts from your experience. This is a practice draft.</p></details>`);
+      const create=document.createElement('button');create.type='button';create.className='dc-btn dc-create-answer';create.textContent='Create answer from my CV';create.style.cssText='margin-top:16px;background:#1d4e89;color:white;min-height:44px';
+      const builder=document.querySelector('.cv-answer-builder');create.disabled=!top.length||!builder||builder.hidden;
+      if(!builder?.hidden){panel.append(create);create.onclick=()=>{
+        const evidence=document.getElementById('answerCvEvidence');const matching=[...(evidence?.options||[])].find(o=>o.value.includes(top[0]?.text));if(matching)evidence.value=matching.value;
+        document.getElementById('buildCvAnswer')?.click();
+        let box=panel.querySelector('.dc-created-answer');if(!box){box=document.createElement('div');box.className='dc-created-answer';box.innerHTML='<label style="display:block;font-weight:700;margin-top:16px">Your editable practice answer<textarea class="dc-created-text" style="display:block;width:100%;min-height:280px;margin-top:8px;font:14px/1.65 Arial;padding:12px;border:1px solid #cdd4d9;border-radius:8px"></textarea></label><p class="dc-empty" role="status">Drafted from your saved CV. Complete the bracketed details and check it before practising in your own words.</p><a href="#answerCvEvidence">Refine your example and add details →</a>';panel.append(box);box.querySelector('textarea').addEventListener('input',e=>{document.getElementById('cvAnswerDraft').value=e.target.value});box.querySelector('a').onclick=()=>{const fold=document.querySelector('.practice-tools-fold');if(fold)fold.open=true;document.getElementById('practice-tab-cv')?.click()};}
+        box.querySelector('textarea').value=document.getElementById('cvAnswerDraft')?.value||'';box.querySelector('textarea').focus();
+      };}
       panel.querySelector('[data-dc=full]').onclick = () => { showFull = !showFull; render(); };
     }
     const lead=reasoning?'reasoning':themes[0]?.key||'motivation', employer=globalThis.DeskEmployerPractice?.context($('firmSelect')?.value,$('roleSelect')?.value);const checks=employer&&!reasoning?employer.checks:(LISTEN[lead]||LISTEN.motivation);
