@@ -199,11 +199,11 @@ async function loadNews(){
 function extrasRow(){
   const ints=(ME.items||[]).filter(i=>i.kind==='interview');
   const call='';
-  const signin=D.signedIn?'':`<div class="card"><h3>Keep your desk on every device</h3><p class="mute" style="margin:6px 0 0">Everything here is saved in this browser. Sign in with your email (no password) to open it on your phone and laptop.</p><form class="signin" id="signin"><input type="email" id="email" required placeholder="you@university.ac.uk" autocomplete="email" aria-label="Email address"><button class="btn">Email me a sign-in link</button></form><p class="mute" id="smsg" role="status"></p></div>`;
+
   const saved=ints.length?`<details class="card"><summary>Your saved interview answers (${ints.length})</summary><div style="margin-top:8px">${ints.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span style="color:var(--accent-ink);margin-left:6px">${f.overall??''}</span></summary><p class="mute">${esc(day(i.createdAt))}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p style="font-size:14px"><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p style="font-size:14px"><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-delans="${esc(i.id)}" style="min-height:32px;padding:4px 12px">Delete</button></details>`}).join('')}</div></details>`:'';
   const outcome=`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`;
   const history=(ME.assessments||[]).length?`<details class="card"><summary>Your assessment history (${ME.assessments.length})</summary><ul class="list">${ME.assessments.map(a=>`<li><span><b>${esc(a.firm||'Assessment')}</b>${a.route?' · '+esc(a.route):''}<br><span class="mute">${esc(day(a.createdAt))}${a.rootId?' · recheck':''}</span></span><span>${a.overall!==null?`<b>${Math.round(a.overall)}</b> `:''}${a.paidAt&&!a.refundedAt?`<a class="btn" href="/fullcycle.html?id=${encodeURIComponent(a.id)}">Full Cycle report</a> `:''}<a class="btn ghost" href="/result-final-design.html?id=${encodeURIComponent(a.id)}">Result</a></span></li>`).join('')}</ul></details>`:'';
-  return signin+call+history+saved+outcome;
+  return call+history+saved+outcome;
 }
 // Free accounts: the assessment, a look at what members get, and a 30-second interview check. Everything else is shown locked.
 function freeRow(){
@@ -262,7 +262,7 @@ async function join(){
 function bind(){
   ['join','join2','join3','join4','join5'].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=join});
   const o=document.getElementById('out');if(o)o.onclick=async()=>{await post('/api/value-account',{action:'signout'});location.href='/my.html'};
-  const s=document.getElementById('signin');if(s)s.onsubmit=async e=>{e.preventDefault();const r=await post('/api/value-account',{action:'request',email:document.getElementById('email').value,next:'/my.html'});document.getElementById('smsg').textContent=r.ok?'Check your inbox for the link (and your spam folder). It works for 30 minutes.':(r.data.error||'Something went wrong.')};
+
   const more=document.getElementById('appMore');if(more)more.onclick=()=>{showAll=!showAll;render();document.getElementById('applications').scrollIntoView()};
   const t=document.getElementById('addToggle'),f=document.getElementById('addForm');
   const panel=document.getElementById('addPanel');
