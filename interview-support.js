@@ -43,11 +43,11 @@
         reading=false;lock(false);
         document.getElementById('camStatus').textContent=stream?(stream.getVideoTracks().length?'Camera ready':'Microphone ready'):'Camera off';
         if(success){spokenQuestion=question;hearButton.textContent='Repeat question';voiceStatus.textContent='Question finished. Click Start recording when you are ready; nothing is recording yet.';updateRecordLabel()}
-        else voiceStatus.textContent='Voice could not play. Try again, or switch off “Read questions aloud” and answer the displayed question.';
+        else voiceStatus.textContent=window.DeskNaturalVoice?.error||'Question audio could not play. Try Hear question again.';
         resolve(success);
       };
       const timeout=setTimeout(()=>{window.DeskNaturalVoice?.cancel();if(browserVoiceAvailable)window.speechSynthesis.cancel();finish(false)},45000);
-      if(window.DeskNaturalVoice?.enabled){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,assessment?.id).then(finish);return}
+      if(window.DeskNaturalVoice){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,new URLSearchParams(location.search).has('sample')?undefined:assessment?.id).then(finish);return}
       finish(false); // Do not silently substitute device speech for the interviewer voice.
     });
   }

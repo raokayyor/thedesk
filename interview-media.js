@@ -10,6 +10,7 @@
    if(stream)stream.getTracks().forEach(t=>t.stop());stream=next;
    const preview=document.getElementById('preview');preview.srcObject=stream;preview.muted=true;preview.controls=false;preview.play().catch(()=>{});
    const hasVideo=stream.getVideoTracks().length>0;
+   try{localStorage.setItem('desk-interview-media',hasVideo?'camera':'microphone')}catch{}
    document.getElementById('camStatus').textContent=hasVideo?'Camera + microphone ready':'Audio-only practice · microphone ready';
    document.getElementById('recordBtn').disabled=false;
    audioButton.textContent=hasVideo?'Switch to microphone only':'Microphone enabled';
@@ -19,6 +20,12 @@
   finally{audioButton.disabled=false;cameraButton.disabled=false}
  }
  window.DeskInterviewMedia={connect};
+ async function reconnect(){
+  let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}
+  if(!choice||!navigator.permissions?.query)return;
+  try{const mic=await navigator.permissions.query({name:'microphone'});const camera=choice==='camera'?await navigator.permissions.query({name:'camera'}):null;if(mic.state==='granted'&&(!camera||camera.state==='granted'))await connect(choice==='camera')}catch{}
+ }
+ setTimeout(reconnect,0);
  cameraButton.onclick=()=>connect(true);audioButton.onclick=()=>connect(false);
  let generation=0;
  const baseDerive=derive;
