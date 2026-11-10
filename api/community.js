@@ -20,6 +20,7 @@ async function questionRows(where,args,accountId,order='q.created_at DESC',limit
 const HOT=`(q.votes+2*(SELECT count(*) FROM desk_comm_answers a WHERE a.question_id=q.id AND a.status='visible')+CASE WHEN EXISTS(SELECT 1 FROM desk_comm_answers a WHERE a.question_id=q.id AND a.practitioner IS NOT NULL AND a.status='visible') THEN 5 ELSE 0 END)/POWER(EXTRACT(EPOCH FROM(now()-q.created_at))/3600+2,1.5) DESC,q.id DESC`;
 export default async function handler(req,res){res.setHeader('Cache-Control','private, no-store');try{
  if(!['GET','POST'].includes(req.method))return res.status(405).end();if(req.method==='POST'&&!sameOrigin(req,res))return;
+ if(req.method==='GET'&&req.query?.view==='mode')return res.json({showcase:process.env.VERCEL_ENV==='preview'});
  await initCommunity();const account=await currentAccount(req),accountId=account?.id||null,p=await commProfile(accountId),q=req.query||{},b=req.body||{},staff=staffOk(req);
  if(req.method==='GET'&&q.demo==='1'&&process.env.VERCEL_ENV==='preview'){
   const fixture=JSON.parse(await readFile(new URL('../data/community-preview.json',import.meta.url),'utf8'));const demoProfile={university:'University of Bristol',society_label:'Bristol Investment Society',society_key:'example investment society',year:'2nd year',identity:'Bristol, 2nd year',share:shareSettings(),display:'anon'};const now=new Date().toISOString();fixture.questions=fixture.questions.map(x=>({...x,createdAt:now}));
