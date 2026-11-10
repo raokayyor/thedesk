@@ -312,6 +312,23 @@ export default async function handler(req, res) {
       await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list: cur.list })]);
       return res.json({ success: true });
     }
+    if (b.action === 'signup-profile') {
+      // Sign-up details (university, year…) saved on this desk; carried over when they sign in by email.
+      const data = { university: clean(b.university, 80), year: clean(b.year, 20), society: clean(b.society, 80), area: clean(b.area, 60), plan: ['free', 'member', 'coaching', 'society'].includes(b.plan) ? b.plan : 'free', updates: !!b.updates, at: new Date().toISOString() };
+      if (!data.university || !data.year) return res.status(400).json({ error: 'Choose your university and year.' });
+      const prev = await sql().query(`SELECT id FROM desk_value_items WHERE principal=$1 AND kind='signup' ORDER BY id DESC LIMIT 1`, [p]);
+      if (prev[0]) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [prev[0].id, p, JSON.stringify(data)]);
+      else await A.saveItem(p, 'signup', data);
+      return res.json({ success: true });
+    }
+    if (b.action === 'coaching-interest') {
+      // 1:1 coaching or society enquiries. Staff read them with: SELECT data FROM desk_value_items WHERE principal='leads:coaching'.
+      const email = clean(b.email, 120).toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Enter a valid email address.' });
+      if (!await A.useQuota('coaching-interest:' + p, 3)) return res.status(429).json({ error: 'We already have your request. We’ll be in touch.' });
+      await A.saveItem('leads:coaching', 'coaching-lead', { type: b.type === 'society' ? 'society' : 'coaching', name: clean(b.name, 80), email, university: clean(b.university, 80), note: clean(b.note, 1000), from: p, at: new Date().toISOString() });
+      return res.json({ success: true });
+    }
     if (b.action === 'app-save') {
       const firm = clean(b.firm, 80);
       if (!firm) return res.status(400).json({ error: 'Enter the firm.' });

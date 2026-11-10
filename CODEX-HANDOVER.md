@@ -115,6 +115,15 @@ interview work is lost.**
 - Hooks: `.camera`, `#preview`, `#camStatus`, `#voiceStatus`, `#question`; detects ElevenLabs audio, device speech and MediaRecorder.
 - `ELEVENLABS_API_KEY` is set on Production but **not Preview**; add it to Preview to hear the natural voice there.
 
+### Sign-up page (`signup.html`)
+- Three plans: Free, Member (£89 a year, paid once), 1:1 with a practitioner ("Talk to us", no price shown yet), plus a
+  societies enquiry. Compare table and FAQ.
+- Free: saves university/year/aim/society (`/api/desk-home` action `signup-profile`, kind `signup`) and emails a sign-in link
+  (`/api/value-account` `request`). Member: same, then Stripe checkout if they have an assessment, otherwise sends them to
+  the free assessment first. 1:1 and societies: `coaching-interest`, stored under principal `leads:coaching`
+  (no staff screen yet: `SELECT data FROM desk_value_items WHERE principal='leads:coaching' ORDER BY id DESC`).
+- Link it from the homepage and the free My Desk ("Join" / "Become a member").
+
 ## New database tables (created automatically on first use)
 `desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,
 `desk_game_accounts`, `desk_game_trades`. Saved items reuse `desk_value_items` with kinds `test`, `test-pending`,

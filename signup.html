@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join The Desk | Free or member</title>
+<meta name="description" content="Join The Desk free, become a member for £89 a year, or work 1:1 with a practitioner who has hired for banks.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+main{max-width:1160px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,5vw,46px)}h2{font-size:26px}h3{font-size:22px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.hero{display:flex;flex-direction:column;gap:10px;max-width:760px}
+.hero p{margin:0;font-size:17px;color:#3b4652}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;position:relative}
+.plan.best{background:var(--ink);color:#fff;border-color:var(--ink)}
+.plan.best .mute,.plan.best li{color:#d5dce0}
+.plan .tag{position:absolute;top:-12px;left:22px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:5px 11px}
+.price{display:flex;align-items:baseline;gap:8px}.price b{font:500 44px/1 "Fraunces",Georgia,serif}.plan.best .price b{color:#ff8a52}
+.plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:15px}
+.plan li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start}
+.plan li svg{margin-top:4px}
+.plan .go{margin-top:auto}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;width:100%}
+.btn:hover{color:#fff;opacity:.92}.btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.plan.best .btn.ghost{color:#fff;border-color:#fff}
+.btn[disabled]{opacity:.6;cursor:wait}
+.small{font-size:12px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px}
+.panel[hidden]{display:none}
+.steps{margin:12px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#3b4652;font-size:15px}
+form{display:flex;flex-direction:column;gap:14px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+input[type=text],input[type=email],select,textarea{font:inherit;font-size:15px;font-weight:400;padding:12px 13px;border:1px solid #c9c1b5;border-radius:10px;background:#fff;min-height:46px;width:100%;color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+.check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;color:#3b4652}
+.check input{width:20px;height:20px;margin-top:2px;flex:none}
+.msg{border-radius:12px;padding:14px 16px;font-size:15px}.msg[hidden]{display:none}
+.msg.ok{background:#dcfce7;color:#14532d;border:1px solid #bbf7d0}.msg.err{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}.msg.info{background:var(--navy-soft);color:var(--navy);border:1px solid #bfd0e6}
+.switch{display:flex;gap:6px;flex-wrap:wrap}
+.switch button{font:600 14px "DM Sans",Arial,sans-serif;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;min-height:42px;cursor:pointer;color:var(--ink)}
+.switch button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.compare{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px;font-size:15px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+thead th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+td.y{color:var(--ok);font-weight:700}td.n{color:#8a949c}
+.panelband{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:var(--navy-soft);border-radius:18px;padding:18px 22px}
+.faces{display:flex}.faces span{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--navy);border:2px solid var(--navy-soft);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}.faces span:first-child{margin-left:0}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;color:#3b4652;font-size:15px}
+.society{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--card);border:1px dashed #c9c1b5;border-radius:16px;padding:16px 20px}
+.society .btn{width:auto}
+@media (max-width:900px){.plans,.panel,.faq{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="kicker">Join The Desk</div>
+    <h1>Start free. Go further when it matters.</h1>
+    <p>Built by people who have hired for banks. Free gets you your assessment, the community and the trading game. Members get the full preparation for the firms they’re applying to.</p>
+  </section>
+
+  <section class="plans" aria-label="Plans">
+    <article class="plan">
+      <div><h3>Free</h3><div class="mute">For anyone starting out</div></div>
+      <div class="price"><b>£0</b><span class="mute">always</span></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your free assessment and readiness score</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Community: ask, answer, leaderboards for your university and society</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Trading game and the Society Cup</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Deadline tracker, library and brain teasers</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>A 30-second interview check every week</span></li>
+      </ul>
+      <button class="btn ghost go" type="button" data-plan="free">Join free</button>
+    </article>
+
+    <article class="plan best">
+      <span class="tag">Most students</span>
+      <div><h3>Member</h3><div class="mute">Everything for this recruiting year</div></div>
+      <div class="price"><b>£89</b><span class="mute">a year · paid once · no auto-renewal</span></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Free</b>, plus:</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your full report: CV rewrites, model answers, a plan, rechecks all year (up to 12)</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Interview coach: firm-specific questions, your CV highlighted, feedback on every answer</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Firm packs: what recent candidates were asked at your firms</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Numerical and commercial tests that move your readiness</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Ask the panel: one private question to a practitioner, plus group sessions</span></li>
+      </ul>
+      <button class="btn hot go" type="button" data-plan="member">Become a member</button>
+    </article>
+
+    <article class="plan">
+      <div><h3>1:1 with a practitioner</h3><div class="mute">For your most important applications</div></div>
+      <div class="price"><b style="font-size:30px">Talk to us</b></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>A named practitioner working with you from application to offer</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Live mock interviews with feedback</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your CV and applications reviewed line by line before you send them</span></li>
+      </ul>
+      <button class="btn ghost go" type="button" data-plan="coaching">Ask about 1:1</button>
+    </article>
+  </section>
+
+  <section class="panel" id="formPanel" hidden aria-live="polite">
+    <div>
+      <div class="kicker" id="fKicker">Join free</div>
+      <h2 id="fTitle">Create your desk</h2>
+      <p class="mute" id="fIntro"></p>
+      <ol class="steps" id="fSteps"></ol>
+      <div class="switch" role="group" aria-label="Choose plan" style="margin-top:16px">
+        <button type="button" data-plan="free">Free</button>
+        <button type="button" data-plan="member">Member · £89</button>
+        <button type="button" data-plan="coaching">1:1</button>
+      </div>
+    </div>
+    <div>
+      <form id="joinForm" novalidate>
+        <label>Email<input type="email" id="email" autocomplete="email" required placeholder="you@university.ac.uk"></label>
+        <div class="row">
+          <label>University<input type="text" id="uni" list="unis" autocomplete="organization" required placeholder="Start typing"></label>
+          <label>Year
+            <select id="year" required><option value="">Choose</option><option>1st year</option><option>2nd year</option><option>3rd year</option><option>4th year</option><option>Masters</option><option>Graduate</option></select>
+          </label>
+        </div>
+        <div class="row" id="memberFields">
+          <label>What are you aiming for?
+            <select id="area"><option value="">Choose</option><option>Investment Banking</option><option>Markets / Sales &amp; Trading</option><option>Asset Management</option><option>Big Four / Audit &amp; Advisory</option><option>Corporate Banking</option><option>Not sure yet</option></select>
+          </label>
+          <label>Society <span class="mute" style="font-weight:400">(optional)</span><input type="text" id="society" placeholder="e.g. Investment Society"></label>
+        </div>
+        <label id="noteWrap" hidden>What do you need help with?<textarea id="note" placeholder="Firms, deadlines, where you are now"></textarea></label>
+        <label class="check"><input type="checkbox" id="updates"> Email me deadline alerts and the weekly briefing. You can stop any time.</label>
+        <div class="msg" id="msg" hidden></div>
+        <button class="btn hot" type="submit" id="submit">Create my free desk</button>
+        <p class="mute small" style="margin:0">No password: we email you a sign-in link. See our <a href="/site-privacy.html">privacy notice</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="panelband">
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div>
+      <div style="font-size:15px;line-height:1.45;max-width:640px"><b>Built on what our practitioners look for.</b> Kayyor Rao, Peter Cheley, Neil Robertson, Jim Staples and Chris Sharkey have hired for banks and professional-services firms. Their approved points sit behind the scoring, the firm packs and the feedback.</div>
+    </div>
+  </section>
+
+  <section class="compare" aria-labelledby="cmpH">
+    <h2 id="cmpH" style="margin-bottom:10px">Compare</h2>
+    <table>
+      <thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Member</th><th scope="col">1:1</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Assessment and readiness score</th><td class="y">Yes</td><td class="y">Yes, plus up to 12 rechecks</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Full report: CV rewrites, model answers, plan</th><td class="n">Sample only</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Interview practice with feedback</th><td>30 seconds a week</td><td class="y">Every day</td><td class="y">Plus live mocks</td></tr>
+        <tr><th scope="row">Firm interview packs</th><td class="n">No</td><td class="y">17 firms</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Numerical and commercial tests</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you</td></tr>
+        <tr><th scope="row">Community, trading game, Society Cup</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Group sessions with practitioners</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="society">
+    <div style="font-size:15px;line-height:1.45"><b>Run a finance society?</b> Enter the Society Cup, get a society leaderboard, and ask us about a session for your members.</div>
+    <button class="btn ghost" type="button" data-plan="society">Get in touch</button>
+  </section>
+
+  <section aria-labelledby="faqH" style="display:flex;flex-direction:column;gap:12px">
+    <h2 id="faqH">Questions</h2>
+    <div class="faq">
+      <details><summary>Is Free really free?</summary><p>Yes. No card needed. You keep your assessment, the community, the trading game and the tracker for as long as you like.</p></details>
+      <details><summary>What does £89 cover?</summary><p>12 months of membership for one person, paid once. It doesn’t renew automatically.</p></details>
+      <details><summary>Why do I take the assessment before paying?</summary><p>Membership is built on it: your report, your CV rewrites and your interview questions all come from your assessment, so it has to come first. It’s free.</p></details>
+      <details><summary>Can I upgrade later?</summary><p>Yes, any time from My Desk. Everything you’ve done on Free carries over.</p></details>
+      <details><summary>Who are the practitioners?</summary><p>People who have interviewed and hired for banks and professional-services firms. Their approved points shape the scoring and feedback, and they answer members’ questions.</p></details>
+      <details><summary>What do you do with my details?</summary><p>We use them to run your desk and, if you tick the box, send deadline alerts and the briefing. Community posts show your university and year, not your name.</p></details>
+    </div>
+  </section>
+</main>
+
+<datalist id="unis">
+  <option>University of Bristol</option><option>University of Bath</option><option>University of Birmingham</option><option>University of Cambridge</option><option>Cardiff University</option><option>City St George’s, University of London</option><option>Durham University</option><option>University of Edinburgh</option><option>University of Exeter</option><option>University of Glasgow</option><option>Imperial College London</option><option>King’s College London</option><option>Lancaster University</option><option>University of Leeds</option><option>University of Liverpool</option><option>London School of Economics</option><option>Loughborough University</option><option>University of Manchester</option><option>Newcastle University</option><option>University of Nottingham</option><option>University of Oxford</option><option>Queen Mary University of London</option><option>Queen’s University Belfast</option><option>University of Reading</option><option>Royal Holloway, University of London</option><option>University of Sheffield</option><option>University of Southampton</option><option>University of St Andrews</option><option>University of Surrey</option><option>UCL</option><option>University of Warwick</option><option>University of York</option><option>Other</option>
+</datalist>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const panel = $('formPanel'), form = $('joinForm'), msg = $('msg'), submit = $('submit');
+  let plan = 'free', desk = null;
+  const COPY = {
+    free: { k: 'Join free', t: 'Create your free desk', i: 'Takes a minute. We email you a link to sign in: no password.', s: ['Tell us your university and year', 'Open the link we email you', 'Take your free assessment from My Desk'], b: 'Create my free desk' },
+    member: { k: 'Member · £89 a year', t: 'Become a member', i: 'Membership is built on your assessment, so you take that first (free, about 10 minutes), then pay.', s: ['Tell us your university and year', 'Take your free assessment (or use the one you’ve done)', 'Pay £89 once for 12 months'], b: 'Continue' },
+    coaching: { k: '1:1 with a practitioner', t: 'Ask about 1:1', i: 'Tell us where you are and what you need. A practitioner will email you to arrange a short call.', s: ['Send this form', 'Short call with a practitioner', 'Agree a plan and price'], b: 'Send' },
+    society: { k: 'Finance societies', t: 'Get your society involved', i: 'Tell us your society and university. We’ll email you about the Society Cup and sessions.', s: ['Send this form', 'We email you within a few days'], b: 'Send' }
+  };
+  function show(type, text) { msg.className = 'msg ' + type; msg.textContent = text; msg.hidden = false; }
+  function choose(p, scroll) {
+    plan = p; const c = COPY[p];
+    $('fKicker').textContent = c.k; $('fTitle').textContent = c.t; $('fIntro').textContent = c.i; submit.textContent = c.b;
+    $('fSteps').innerHTML = c.s.map(x => '<li>' + x.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) + '</li>').join('');
+    $('noteWrap').hidden = !(p === 'coaching' || p === 'society');
+    $('memberFields').hidden = p === 'society';
+    $('society').placeholder = p === 'society' ? 'Your society' : 'e.g. Investment Society';
+    $('updates').closest('label').hidden = p === 'society';
+    document.querySelectorAll('.switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.plan === p)));
+    if (p === 'member' && desk?.member) show('info', 'You’re already a member' + (desk.until ? ' until ' + new Date(desk.until).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : '') + '. Go to My Desk.');
+    else if (p === 'member' && desk?.report?.assessmentId) show('info', 'We found your assessment. After this step you’ll go straight to payment.');
+    else msg.hidden = true;
+    panel.hidden = false;
+    if (scroll) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try { history.replaceState(null, '', '?plan=' + p); } catch (e) {}
+  }
+  document.querySelectorAll('[data-plan]').forEach(b => b.addEventListener('click', () => choose(b.dataset.plan, !b.closest('.switch'))));
+
+  // Prefill from this desk (if they've done an assessment already).
+  fetch('/api/desk-home', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).then(d => {
+    desk = d; if (!d) return;
+    if (d.email && !$('email').value) $('email').value = d.email;
+    const t = d.profile?.targetSector || ''; const opt = [...$('area').options].find(o => t && o.text.toLowerCase().includes(t.split(/[ /]/)[0].toLowerCase())); if (opt) $('area').value = opt.text;
+    if (panel.hidden === false) choose(plan, false);
+  }).catch(() => {});
+
+  const post = (url, body) => fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(async r => ({ ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) }));
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); msg.hidden = true;
+    const email = $('email').value.trim(), university = $('uni').value.trim(), year = $('year').value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return show('err', 'Enter a valid email address.');
+    if (!university) return show('err', 'Tell us your university.');
+    if (plan !== 'society' && !year) return show('err', 'Choose your year.');
+    if (plan === 'member' && desk?.member) { location.href = '/my.html'; return; }
+    submit.disabled = true; const label = submit.textContent; submit.textContent = 'One moment…';
+    try {
+      if (plan === 'coaching' || plan === 'society') {
+        const r = await post('/api/desk-home', { action: 'coaching-interest', type: plan, email, university, name: '', note: [$('society').value.trim(), $('area').value, year, $('note').value.trim()].filter(Boolean).join(' · ') });
+        if (!r.ok) return show('err', r.data.error || 'That didn’t send. Try again in a minute.');
+        form.reset(); return show('ok', plan === 'society' ? 'Thanks. We’ll email you about the Society Cup and sessions.' : 'Thanks. A practitioner will email you to arrange a short call.');
+      }
+      const p = await post('/api/desk-home', { action: 'signup-profile', plan, university, year, society: $('society').value.trim(), area: $('area').value, updates: $('updates').checked });
+      if (!p.ok) return show('err', p.data.error || 'We couldn’t save that. Try again.');
+      try { localStorage.setItem('desk-signup', JSON.stringify({ university, year, society: $('society').value.trim(), area: $('area').value, plan })); } catch (e2) {}
+      const id = desk?.report?.assessmentId;
+      const next = plan === 'member' ? (id ? '/my.html?join=1' : '/assessment-start.html?plan=member') : '/my.html';
+      const link = await post('/api/value-account', { action: 'request', email, next });
+      if (plan === 'member' && id) {
+        const c = await post('/api/start-checkout', { assessmentId: id });
+        if (c.data.url) { location.href = c.data.url; return; }
+        return show('err', c.data.error || 'Payment couldn’t start. Try again from My Desk.');
+      }
+      if (plan === 'member') { show('ok', link.ok ? 'Saved. Check your inbox for a sign-in link, then take your free assessment. Taking you there now…' : 'Saved. Taking you to your free assessment now…'); setTimeout(() => { location.href = '/assessment-start.html?plan=member'; }, 1800); return; }
+      if (link.ok) return show('ok', 'Check your inbox. We’ve sent a sign-in link to ' + email + '. It works once and expires in 30 minutes.');
+      return show('info', link.status === 503 ? 'Your desk is saved in this browser. Email sign-in isn’t switched on yet, so you can carry on here: go to My Desk.' : (link.data.error || 'Your desk is saved in this browser. Go to My Desk.'));
+    } catch (err) { show('err', 'Something went wrong. Check your connection and try again.'); }
+    finally { submit.disabled = false; submit.textContent = label; }
+  });
+
+  const q = new URLSearchParams(location.search).get('plan');
+  if (q && COPY[q]) choose(q, true);
+})();
+</script>
+</body>
+</html>
