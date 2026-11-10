@@ -33,7 +33,7 @@ textarea{width:100%;font:inherit;font-size:15px;padding:12px;border:1px solid va
 <body>
 <header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
 <main id="app"><p class="mute">Loading…</p></main>
-<script src="/interview-teaser-media.js"></script>
+<script src="/interview-teaser-transcript.js"></script><script src="/interview-teaser-media.js"></script>
 <script>
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app=document.getElementById('app'),LIMIT=30;
@@ -60,15 +60,13 @@ async function submit(text,secs){
   const f=d.feedback,s=f.strengths?.[0],x=f.fixes?.[0];
   app.innerHTML=`<div class="kicker">Your 30-second check</div>
   <div class="card"><div class="score"><b>${esc(f.overall)}</b><div><div style="font:500 22px/1.25 Fraunces,Georgia,serif">${esc(f.verdictTitle)}</div><div class="mute">out of 100, on your opening 30 seconds</div></div></div>
-  ${f.verdict?`<p style="margin:14px 0 0">${esc(f.verdict)}</p>`:''}
-  ${s?`<p style="margin:14px 0 0"><b style="color:var(--ok)">What worked:</b> ${esc(s.point)}${s.quote?` <span class="mute">(“${esc(s.quote)}”)</span>`:''}</p>`:''}
-  ${x?`<p style="margin:8px 0 0"><b style="color:var(--accent-ink)">Fix first:</b> ${esc(x.fix)}${x.quote?` <span class="mute">You said: “${esc(x.quote)}”</span>`:''}</p>`:''}
-  <p class="mute" style="margin:14px 0 0">Your answer: ${esc(text)}</p></div>${lock()}`;
+  <div class="feedback-preview" style="margin-top:16px"><p>${esc(f.verdict||'Focus on a clear introduction that answers the question.')}</p><p><b>What worked:</b> ${esc(s?.point||'No clear strength was evidenced in this short sample.')}</p><p><b>Improve first:</b> ${esc(x?.fix||'Connect your experience directly to your chosen career.')}</p></div>
+  </div><section class="card" style="position:relative;overflow:hidden"><h2>Unlock your detailed feedback</h2><p class="mute">Structure, evidence, delivery, a stronger opening and your follow-up question. Available to members.</p><div aria-hidden="true" style="filter:blur(5px);user-select:none;pointer-events:none;opacity:.45"><p>Answer structure &nbsp; ▰▰▰▰▰▰▰▰▰▰▰▰</p><p>Your evidence &nbsp; ▰▰▰▰▰▰▰▰▰▰</p><p>A stronger opening &nbsp; ▰▰▰▰▰▰▰▰▰▰▰</p><p>Prepare for the follow-up &nbsp; ▰▰▰▰▰▰▰▰</p></div><p class="mute">Detailed feedback is locked with membership.</p></section>${lock()}`;
   bindJoin();
 }
 function lock(){
   return `<div class="lockbox"><div class="kicker" style="color:#9a3412">Members get the full interview coach</div><h2 style="margin-top:6px">The interviewer would push back on that answer.</h2>
-  <p style="margin:6px 0 0;font-size:14px;color:#3b4652">Members answer the follow-up, get marked on full two-minute answers and practise the questions their firms ask.</p>
+  <p style="margin:6px 0 0;font-size:14px;color:#3b4652">Members get the detailed review, answer the follow-up and practise full two-minute answers for their chosen firm and role.</p>
   <ul><li>Full feedback on structure, evidence, relevance and delivery</li><li>The interviewer’s follow-up question, and feedback on your answer to it</li><li>Seven model answers built from your own CV</li><li>Up to 60 answers a day, HireVue-style timing</li><li>Notes from practitioners who’ve hired for banks</li></ul>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn hot" id="joinT">£89 for the whole year</button><a class="btn ghost" href="/fullcycle.html?sample=amelia">See a member’s report</a></div></div>`;
 }

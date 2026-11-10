@@ -4,10 +4,10 @@ window.DeskTeaserMedia = {
     root.innerHTML = `<p class="mute">The same opening question for everyone. Hear it, then record up to 30 seconds. Review your transcript before marking. One free check a week.</p>
       <video id="teaserPreview" autoplay muted playsinline hidden style="width:100%;max-height:240px;background:#111;border-radius:12px"></video>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><button class="btn ghost" id="teaserHear">Hear question</button><button class="btn ghost" id="teaserCamera">Enable camera + mic</button><button class="btn hot" id="teaserStart">Start recording · microphone</button><button class="btn" id="teaserStop" disabled>Stop & review</button></div>
-      <div class="clock" id="teaserClock">0:30</div><p class="mute" id="teaserStatus" role="status">Ready. Your camera is optional. Your transcript appears after you stop recording.</p>
-      <audio id="teaserPlayback" controls hidden style="width:100%"></audio><label for="teaserText">Your answer — review or type here</label><textarea id="teaserText" placeholder="Your transcript will appear after you stop recording."></textarea><button class="btn hot" id="teaserMark" style="margin-top:12px">Mark my answer</button>`;
+      <div class="clock" id="teaserClock">0:30</div><p class="mute" id="teaserStatus" role="status">Ready. Your camera is optional. Your words appear as you speak.</p>
+      <audio id="teaserPlayback" controls hidden style="width:100%"></audio><label for="teaserText">Your answer — review or type here</label><textarea id="teaserText" placeholder="Your words will appear here as you speak."></textarea><button class="btn hot" id="teaserMark" style="margin-top:12px">Mark my answer</button>`;
     const $ = id => root.querySelector('#'+id);
-    let stream, recorder, timer, started=0, seconds=0, audio, audioUrl, playbackUrl, busy=false, chunks=[];
+    let live, stream, recorder, timer, started=0, seconds=0, audio, audioUrl, playbackUrl, busy=false, chunks=[];
     const status = message => $('teaserStatus').textContent=message;
     const release = () => { stream?.getTracks().forEach(t=>t.stop()); stream=null; $('teaserPreview').srcObject=null; };
     const controls = () => {
@@ -50,7 +50,9 @@ window.DeskTeaserMedia = {
         recorder.onstop=async()=>{
           release();
           try{
+            const liveText=await live?.finish();
             const blob=new Blob(chunks,{type:recorder.mimeType});if(playbackUrl)URL.revokeObjectURL(playbackUrl);playbackUrl=URL.createObjectURL(blob);$('teaserPlayback').src=playbackUrl;$('teaserPlayback').hidden=false;
+            if(liveText?.trim()){$('teaserText').value=liveText;status('Transcript ready. Review it, then mark your answer.');return;}
             const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=reject;reader.readAsDataURL(blob);});
             const d=await jsonRequest('/api/interview-transcribe',{audio:base64,mimeType:recorder.mimeType.split(';')[0]});
             $('teaserText').value=d.text||'';status(d.text?'Transcript ready. Review it, then mark your answer.':'No speech detected. Play the recording, retry or type your answer.');
@@ -58,14 +60,14 @@ window.DeskTeaserMedia = {
           finally{busy=false;controls();}
         };
         recorder.onerror=()=>{clearInterval(timer);release();busy=false;controls();status('Recording failed. Retry or type your answer.');};
-        recorder.start();started=performance.now();seconds=0;busy=false;controls();status('Recording your answer. You have 30 seconds.');
+        live?.cancel();$('teaserText').value='';live=window.DeskTeaserTranscript?.start(stream,text=>{$('teaserText').value=text;},status);recorder.start();started=performance.now();seconds=0;busy=false;controls();status('Recording your answer. You have 30 seconds.');
         timer=setInterval(()=>{const left=Math.max(0,30-(performance.now()-started)/1000);$('teaserClock').textContent='0:'+String(Math.ceil(left)).padStart(2,'0');if(!left)stop();},100);
       }catch(e){release();busy=false;controls();status(e.message||'Microphone access failed. Allow access or type your answer.');}
     };
     $('teaserMark').onclick=()=>{
       const text=$('teaserText').value.trim();if(text.split(/\s+/).filter(Boolean).length<20){status('Add at least 20 words before marking your answer.');return;}
-      release();clearInterval(timer);audio?.pause();if(audioUrl)URL.revokeObjectURL(audioUrl);if(playbackUrl)URL.revokeObjectURL(playbackUrl);submit(text,seconds);
+      live?.cancel();release();clearInterval(timer);audio?.pause();if(audioUrl)URL.revokeObjectURL(audioUrl);if(playbackUrl)URL.revokeObjectURL(playbackUrl);submit(text,seconds);
     };
-    window.addEventListener('pagehide',()=>{clearInterval(timer);audio?.pause();release();if(audioUrl)URL.revokeObjectURL(audioUrl);if(playbackUrl)URL.revokeObjectURL(playbackUrl);},{once:true});
+    window.addEventListener('pagehide',()=>{live?.cancel();clearInterval(timer);audio?.pause();release();if(audioUrl)URL.revokeObjectURL(audioUrl);if(playbackUrl)URL.revokeObjectURL(playbackUrl);},{once:true});
   }
 };

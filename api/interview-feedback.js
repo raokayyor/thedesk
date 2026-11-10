@@ -1,3 +1,4 @@
+import {teaserFeedbackPreview} from '../lib/interview-teaser-preview.mjs';
 import {employerPracticeContext} from '../lib/employer-practice.mjs';
 import {chooseFramework} from '../lib/interview-frameworks.mjs';
 import {retrieveGuidance,sourcePrompt,saveResearchAudit} from '../lib/source-guidance.mjs';
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
     if (v.error) return res.status(400).json({ error: v.error });
     if(!paid&&v.input.followUpOf)return res.status(402).json({error:'Answering the interviewer’s follow-up is part of membership.',upgrade:true});
     if(!paid&&weekLeft<=0)return res.status(429).json({error:'Free accounts get one 30-second interview check a week. Members get up to 60 a day.',upgrade:true});
-    if(!paid){v.input.transcript=(v.input.transcript.match(/\S+/g)||[]).slice(0,TEASER_WORDS).join(' ');v.input.seconds=Math.min(v.input.seconds||TEASER_SECONDS,TEASER_SECONDS);}
+    if(!paid){if(v.input.kind!=='teaser')v.input.transcript=(v.input.transcript.match(/\S+/g)||[]).slice(0,TEASER_WORDS).join(' ');v.input.seconds=Math.min(v.input.seconds||TEASER_SECONDS,TEASER_SECONDS);}
     if (!await useQuota(key, limit)) return res.status(429).json({ error: paid ? 'That’s a lot of practice for one day. Come back tomorrow.' : `You’ve used today’s ${FREE_PER_DAY} free feedbacks. Full Cycle includes 60 detailed feedbacks a day.`, upgrade: !paid });
     const framework=chooseFramework(v.input);
     const research=await retrieveGuidance({question:v.input.question,framework});
@@ -44,6 +45,7 @@ export default async function handler(req, res) {
     let feedback = validateFeedback(t.input, { transcript: v.input.transcript, seconds: v.input.seconds, followUp: !!v.input.followUpOf, framework });
     const employer=employerPracticeContext(v.input.firm,v.input.role);if(employer)feedback.employerPractice={label:employer.label,role:employer.role,focus:employer.roleFocus};
     if(!paid)feedback={...feedback,strengths:feedback.strengths.slice(0,1),fixes:feedback.fixes.slice(0,1),strongerOpening:'',followUp:null,teaser:true};
+    if(!paid&&v.input.kind==='teaser')feedback=teaserFeedbackPreview(feedback);
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);
     return res.json({ success: true, researchAvailable:research.available, paid, left:paid?await quotaLeft(key,limit):Math.max(0,weekLeft-1), feedback });
