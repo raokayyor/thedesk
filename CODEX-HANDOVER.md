@@ -123,6 +123,11 @@ interview work is lost.**
   the free assessment first. 1:1 and societies: `coaching-interest`, stored under principal `leads:coaching`
   (no staff screen yet: `SELECT data FROM desk_value_items WHERE principal='leads:coaching' ORDER BY id DESC`).
 - Link it from the homepage and the free My Desk ("Join" / "Become a member").
+- **Pay in 3 (Klarna)**: `GET /api/start-checkout` reports whether Klarna is active on the Stripe account; the page only shows
+  "3 payments of £29.67" when it is. Turn Klarna on in Stripe Dashboard → Settings → Payment methods (Checkout uses dashboard methods;
+  the webhook already handles `checkout.session.async_payment_succeeded`). The Stripe product description was updated (it still said
+  "two rechecks within 30 days").
+- **Founding price**: `FOUNDING` in `signup.html`, empty = hidden. Only set it if the price really rises on that date.
 
 ## New database tables (created automatically on first use)
 `desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,
