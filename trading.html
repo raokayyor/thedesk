@@ -65,7 +65,8 @@ let G=null,P=null,showOld=false;const F={q:'',s:'all'};let SECTS=[];
 function spark(h){if(!h||h.length<2)return '';const v=h.map(x=>+x[1]),mn=Math.min(...v),mx=Math.max(...v),w=70,ht=22;const pts=v.map((y,i)=>`${(i/(v.length-1)*w).toFixed(1)},${(ht-(mx===mn?ht/2:(y-mn)/(mx-mn)*ht)).toFixed(1)}`).join(' ');const c=v[v.length-1]>=v[0]?'#15803d':'#b91c1c';return `<svg width="${w}" height="${ht}" viewBox="0 0 ${w} ${ht}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.6"/></svg>`}
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
 async function load(){
-  const [g,d]=await Promise.all([fetch('/api/game',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null),fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  const [g,d]=await Promise.all([fetch('/api/game',{credentials:'same-origin'}).then(async r=>r.status===402?{locked:true}:r.ok?r.json():null).catch(()=>null),fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(g?.locked){app.innerHTML='<section class="lockbox"><div class="kicker">Members only</div><h1>Trading game</h1><p>Trade with £100,000 of virtual cash, react to market news and join the league with Full Cycle membership.</p><a class="btn hot" href="/my.html">See membership in My Desk</a> <a class="btn ghost" href="/signin.html">Already a member? Sign in</a></section>';return;}
   if(!g){app.innerHTML='<div class="card">We couldn’t load the market. Refresh to try again.</div>';return}
   G=g;P=d?.profile||{};SECTS=[...new Set((g.prices||[]).filter(p=>p.region).map(p=>p.sector))].sort();render();
 }

@@ -221,6 +221,7 @@ export default async function handler(req, res) {
       } catch (e) { challenge = null; }   // tables appear once the first challenge is posted
       let game = null;
       try {
+        if (paid) {
         const g = (await sql().query(`SELECT id, name, day FROM desk_game WHERE status='live' ORDER BY created_at DESC LIMIT 1`))[0];
         if (g) {
           const px = Object.fromEntries((await sql().query('SELECT ticker, price FROM desk_game_prices WHERE game_id=$1', [g.id])).map(r => [r.ticker, +r.price]));
@@ -230,7 +231,7 @@ export default async function handler(req, res) {
           const head = (await sql().query('SELECT headline FROM desk_game_events WHERE game_id=$1 AND day=$2 ORDER BY id LIMIT 1', [g.id, g.day]))[0];
           game = { name: g.name, day: g.day, headline: head?.headline || '', me: i >= 0 ? { value: Math.round(ranked[i].v), rank: i + 1, players: ranked.length } : null };
         }
-      } catch (e) { game = null; }   // tables appear once the first game starts
+      } } catch (e) { game = null; }   // tables appear once the first game starts
       if (!paid && practitioners.myth) practitioners.myth = { locked: true, by: practitioners.myth.by, init: practitioners.myth.init };
       if (!paid) {
         // Free accounts: the assessment, a look at what members get, and the 30-second interview check.

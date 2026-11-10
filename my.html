@@ -52,8 +52,10 @@ details.ans{border-top:1px solid var(--soft);padding:10px 0}details.ans:first-ch
 .pnote .av{width:24px;height:24px;font-size:10px}.pnote b{font-size:13px}
 .ask{background:var(--warm);border:1px solid var(--warm-line);border-radius:12px;padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:10px}
 .myth{display:flex;flex-direction:column;gap:8px}.myth s{color:var(--mute)}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.grid4>*{min-width:0}
+@media(max-width:1100px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .grid3.twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(max-width:900px){.grid3.twocol{grid-template-columns:1fr}.panel{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.span2{grid-column:auto}.hero{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}.big{font-size:60px}}
+@media(max-width:900px){.grid4{grid-template-columns:1fr}.grid3.twocol{grid-template-columns:1fr}.panel{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.span2{grid-column:auto}.hero{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}.big{font-size:60px}}
 </style>
 <script src="/desk-me.js" defer></script>
 <script src="/desk-nav.js" defer></script>
@@ -144,7 +146,8 @@ function toolsRow(){
       ${T.last?`${T.last.commercial!=null?`<div class="row"><span>Commercial &amp; technical</span><b>${T.last.commercial}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.commercial}%"></i></div>`:''}${T.last.numerical!=null?`<div class="row"><span>Numerical</span><b>${T.last.numerical}%</b></div><div class="bar" style="height:6px"><i style="width:${T.last.numerical}%"></i></div>`:''}<div class="mute">Last test ${esc(day(T.last.at))}</div>`:`<p style="margin:0;font-size:14px;color:#3b4652">Fresh questions for your route from a bank of over 2,000. Your best of the last 3 in each section moves your readiness.</p>`}
       ${T.freeEveryDays?`<p class="lock" style="margin:0">Free: one fresh test a month. Members: unlimited.</p>`:''}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto"><a class="btn ghost" href="/tests.html?section=numerical">Numerical</a><a class="btn ghost" href="/tests.html?section=commercial">Commercial</a></div></div>`;
-  return `<section class="grid3">${report}${interview}${tests}</section>`;
+  const booked=`<div class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Got an interview?</h3><span class="mute">Members</span></div><p class="mute">Choose your firm, role and interview format. Build answers from your CV, then practise your upcoming interview.</p><a class="btn hot" href="${esc(D.interviewUrl)}">Prepare for my interview</a></div>`;
+  return `<section class="grid4">${report}${interview}${tests}${booked}</section>`;
 }
 function appsCard(){
   const A=D.applications,stages=D.stages;const today=new Date();today.setHours(0,0,0,0);
@@ -161,6 +164,7 @@ function appsCard(){
     <p class="mute" style="margin:10px 0 0">Programmes you add in the tracker appear here. ${D.signedIn?'Saved to your account.':'Saved in this browser. Sign in to keep them on every device.'}</p></section>`;
 }
 function gameCard(){
+  if(!D.member)return `<section class="card tool"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Trading game</h3><span class="mute">Members</span></div><p class="mute">Trade with £100,000 of virtual cash, respond to market news and track your place in the league. Included with membership.</p></section>`;
   const g=D.game;if(!g)return '';
   const m=g.me,ret=m?(m.value/100000-1)*100:0;
   return `<section class="card" style="display:flex;flex-direction:column;gap:8px"><div class="kicker">Trading game · Day ${g.day}</div>
@@ -212,7 +216,7 @@ function freeRow(){
 }
 function lockedRow(){
   const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
-  return `<section class="grid3">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}</section>
+  return `<section class="grid4">${item('Fresh tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}${item('Got an interview?','Prepare for your firm, role and interview format, build answers from your CV and practise before the day.')}</section>
   <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
 }
 function render(){
@@ -224,7 +228,7 @@ function render(){
     <section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
     ${actionsCard()}${D.member?toolsRow():freeRow()}
-    ${!D.member&&D.game?`<section class="grid3"><div class="span2" style="display:flex;flex-direction:column;gap:16px">${gameCard()}</div></section>`:''}
+    ${!D.member?`<section class="grid3"><div class="span2" style="display:flex;flex-direction:column;gap:16px">${gameCard()}</div></section>`:''}
     ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
     ${extrasRow()}`;
   bind();if(D.member)loadNews();
