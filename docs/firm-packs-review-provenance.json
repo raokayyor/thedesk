@@ -1,0 +1,124 @@
+{
+  "blackrock": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ie/Interview/BlackRock-Interview-E9331-RVW91379954.htm",
+      "https://www.glassdoor.com/Interview/BlackRock-Interview-E9331-RVW98487490.htm"
+    ],
+    "reportedNotes": "- HireVue first: about 3 questions, roughly 2 minutes each with prep time\n- Then several interviews, often framed around BlackRock’s principles, plus scenario questions\n- Some roles add a task and a final round\n- Why BlackRock (3)\n- A recent global market or economic event and its impact (2)\n- CV and past examples tied to BlackRock’s principles (1)\n- Mostly behavioural, light technicals (2)\n\nSources: [Glassdoor, London analyst reviews 2024–26](https://www.glassdoor.ie/Interview/BlackRock-Interview-E9331-RVW91379954.htm) · [Glassdoor, further reviews](https://www.glassdoor.com/Interview/BlackRock-Interview-E9331-RVW98487490.htm)"
+  },
+  "rothschild": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ie/Interview/Rothschild-and-Co-Interview-E9944-RVW96916386.htm",
+      "https://www.wallstreetoasis.com/forum/investment-banking/rothschild-first-round"
+    ],
+    "reportedNotes": "- One-to-one first round (analyst + associate): CV, motivation, technicals\n- Assessment centre with commercial awareness and market news\n- Some offices run a group investment-case discussion\n- Why Rothschild / what sets it apart from other banks (2)\n- Valuation: DCF, methods and their assumptions (2)\n- Equity bridge (enterprise value to equity value) (1)\n- Market news and commercial awareness (1)\n- Restructuring team is more technical than M&A (1)\n\nSources: [Glassdoor, London analyst Apr 2025 + others](https://www.glassdoor.ie/Interview/Rothschild-and-Co-Interview-E9944-RVW96916386.htm) · [WallStreetOasis thread (older)](https://www.wallstreetoasis.com/forum/investment-banking/rothschild-first-round)"
+  },
+  "lazard": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.com/Interview/Lazard-Interview-E5784-RVW100668965.htm"
+    ],
+    "reportedNotes": "- London first round: about three behavioural questions, no technicals\n- Other offices: technical phone screens (e.g. valuing a drug with a DCF)\n- Why investment banking (1)\n- DCF in a sector context (1)\n- Interviewers push back on answers (1)\n\nSources: [Glassdoor, summer analyst 2025–26](https://www.glassdoor.com/Interview/Lazard-Interview-E5784-RVW100668965.htm)"
+  },
+  "evercore": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.com.au/Interview/Evercore-Interview-E2725411-RVW101217635.htm"
+    ],
+    "reportedNotes": "- London: CV screen, video interview, first round with HR plus technicals, assessment centre\n- US rounds are heavily technical (incl. LBO-style cases)\n- Accretion / dilution (1)\n- Why Evercore and which industry (2)\n- Hard technicals (3)\n\nSources: [Glassdoor, summer analyst 2025–26](https://www.glassdoor.com.au/Interview/Evercore-Interview-E2725411-RVW101217635.htm)"
+  },
+  "jpm": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ca/Interview/J-P-Morgan-Interview-E145-RVW102774299.htm"
+    ],
+    "reportedNotes": "- London IB summer analyst: group activity, two fit interviews and one technical\n- Elsewhere: HireVue (about 3 questions) then a superday of three interviews\n- Walk through the three financial statements (2)\n- Mix of fit and technical in each round (3)\n- Commitment: would you accept an offer? (1)\n\nSources: [Glassdoor, IB summer analyst 2026](https://www.glassdoor.ca/Interview/J-P-Morgan-Interview-E145-RVW102774299.htm)"
+  },
+  "gs": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ca/Interview/Goldman-Sachs-Interview-E2800-RVW103673692.htm"
+    ],
+    "reportedNotes": "- HireVue (one report: 6 questions, 90 seconds each, mostly behavioural), then a superday of three interviews\n- Reports are for Sales & Trading\n- Know your CV in depth (2)\n- Views on markets and the economy (2)\n- Options / probability for markets roles (2)\n- Mostly behavioural (2)\n\nSources: [Glassdoor, S&T summer analyst 2026](https://www.glassdoor.ca/Interview/Goldman-Sachs-Interview-E2800-RVW103673692.htm)"
+  },
+  "ms": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.sg/Interview/Morgan-Stanley-Interview-E2282-RVW103595519.htm"
+    ],
+    "reportedNotes": "- Online assessment, HireVue (3–5 questions), phone interview, assessment centre of three interviews\n- Reports are for Sales & Trading\n- Why Morgan Stanley / why this division (3)\n- Current market news (2)\n- Pitch a stock or a quick trade idea (1)\n- Core values; a time you failed; handling pressure (2)\n- Brain teasers (1)\n\nSources: [Glassdoor, S&T summer analyst 2025–26](https://www.glassdoor.sg/Interview/Morgan-Stanley-Interview-E2282-RVW103595519.htm)"
+  },
+  "barclays": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.sg/Interview/Barclays-Interview-E3456-RVW102790221.htm"
+    ],
+    "reportedNotes": "- London IB: case study, then three interviews (one goes through your case study)\n- Why Barclays (over other banks) (1)\n- Enterprise vs equity value (2)\n- A deal you have followed (1)\n- Mostly behavioural; easy-to-moderate technicals (2)\n\nSources: [Glassdoor, IB summer analyst 2026](https://www.glassdoor.sg/Interview/Barclays-Interview-E3456-RVW102790221.htm)"
+  },
+  "hsbc": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ie/Interview/HSBC-Interview-E3482-RVW71241352.htm",
+      "https://static.glassdoor.es/Interview/HSBC-Summer-Analyst-Interview-Questions-EI_IE3482.0,4_KO5,19_IP2.htm"
+    ],
+    "reportedNotes": "- Online job simulation (situational judgement, written and timed video answers), HireVue interviews, then an assessment centre\n- Values-based situational questions (2)\n- Prioritising tasks / building a timetable on the spot (2)\n- Recent events and why they interest you (1)\n- Wealth-client case in a video interview (1)\n\nSources: [Glassdoor, Global Markets summer intern](https://www.glassdoor.ie/Interview/HSBC-Interview-E3482-RVW71241352.htm) · [Glassdoor, summer analyst overview](https://static.glassdoor.es/Interview/HSBC-Summer-Analyst-Interview-Questions-EI_IE3482.0,4_KO5,19_IP2.htm)"
+  },
+  "citi": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.com/Interview/Citi-Interview-E8843-RVW101158359.htm"
+    ],
+    "reportedNotes": "- London: online tests (Plum), first round of two interviews, assessment centre of three\n- Introduce yourself; why banking and why Citi (1)\n- Standard IB technicals (2)\n- Case study with comps (some offices) (1)\n\nSources: [Glassdoor, IB summer analyst 2025–26](https://www.glassdoor.com/Interview/Citi-Interview-E8843-RVW101158359.htm)"
+  },
+  "db": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.sg/Interview/Deutsche-Bank-Interview-E3150-RVW95052476.htm"
+    ],
+    "reportedNotes": "- London: three rounds (case study, technical, competency), about 45 minutes each, associate to MD\n- DCF (1)\n- Equity value to enterprise value bridge (1)\n- Past experience and industry knowledge (1)\n\nSources: [Glassdoor, IB summer analyst 2025–26](https://www.glassdoor.sg/Interview/Deutsche-Bank-Interview-E3150-RVW95052476.htm)"
+  },
+  "bofa": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.com.au/Interview/Bank-of-America-Investment-Banking-Summer-Analyst-Interview-Questions-EI_IE8874.0,15_KO16,49.htm"
+    ],
+    "reportedNotes": "- London first round: about 25 minutes with an analyst, conversational\n- Maths brain teasers (1)\n- Behavioural questions (2)\n- Financial statements and value bridges (US) (1)\n\nSources: [Glassdoor, IB summer analyst](https://www.glassdoor.com.au/Interview/Bank-of-America-Investment-Banking-Summer-Analyst-Interview-Questions-EI_IE8874.0,15_KO16,49.htm)"
+  },
+  "ubs": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ca/Interview/UBS-Interview-E3419-RVW97951128.htm"
+    ],
+    "reportedNotes": "- Online tests (numerical from charts, reading true/false), then HireVue: 5 questions, 30s to prepare, 2 min to answer\n- Behavioural only at video stage (1)\n- A time you worked outside your comfort zone (1)\n- Where you see yourself in five years (1)\n\nSources: [Glassdoor, graduate programme 2025–26](https://www.glassdoor.ca/Interview/UBS-Interview-E3419-RVW97951128.htm)"
+  },
+  "ey": {
+    "approval": "pending",
+    "sources": [
+      "https://static.glassdoor.de/Interview/EY-Audit-Graduate-Trainee-Interview-Questions-EI_IE2784.0,2_KO3,25.htm"
+    ],
+    "reportedNotes": "- Online assessment: situational judgement, reasoning, numerical, recorded video answers\n- A written email task analysing a profit and loss statement\n- Assessment centre: group task, presentation, interview (often with a partner)\n- Spot errors in financial data and explain them in a professional email (1)\n- Link answers to EY’s values, especially integrity (1)\n- Group problem-solving (2)\n\nSources: [Glassdoor, Audit graduate London 2026 + Edinburgh](https://static.glassdoor.de/Interview/EY-Audit-Graduate-Trainee-Interview-Questions-EI_IE2784.0,2_KO3,25.htm)"
+  },
+  "pwc": {
+    "approval": "pending",
+    "sources": [
+      "https://static.glassdoor.de/Interview/PwC-Interview-E8450-RVW103946350.htm"
+    ],
+    "reportedNotes": "- Online assessment, recorded video interview (about 4 questions, 2 minutes each), virtual assessment centre, partner interview\n- Behavioural and motivational questions (3)\n- Detailed, specific examples (partner pushes) (1)\n- Understand the role and PwC’s career path (1)\n- Timed numerical questions (1)\n\nSources: [Glassdoor, Audit graduate 2026](https://static.glassdoor.de/Interview/PwC-Interview-E8450-RVW103946350.htm)"
+  },
+  "deloitte": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.com.au/Interview/Deloitte-Interview-E10177265-RVW92951198.htm"
+    ],
+    "reportedNotes": "- London audit: presentation on set questions, then a motivational and strengths-based interview\n- Some interviews go into the ACA qualification\n- Strengths and motivation (2)\n- Knowledge of the ACA qualification (1)\n- Competency questions (1)\n\nSources: [Glassdoor, Audit London 2024–26](https://www.glassdoor.com.au/Interview/Deloitte-Interview-E10177265-RVW92951198.htm)"
+  },
+  "kpmg": {
+    "approval": "pending",
+    "sources": [
+      "https://www.glassdoor.ie/Interview/KPMG-Interview-E2867-RVW100390018.htm"
+    ],
+    "reportedNotes": "- Proctored online tests (situational, logical, numerical), recorded strengths-based video interview, assessment centre\n- Assessment centre: group exercise (e.g. recommend a strategy for KPMG), then a partner interview\n- Why KPMG and why this role (1)\n- Time management (1)\n- Group strategy exercise (1)\n\nSources: [Glassdoor, Graduate Audit UK 2025–26](https://www.glassdoor.ie/Interview/KPMG-Interview-E2867-RVW100390018.htm)"
+  }
+}

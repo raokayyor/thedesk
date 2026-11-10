@@ -156,7 +156,7 @@
     if (caseQ && items[2]?.kind === 'case') items[2] = { ...items[2], q: caseQ, hint: tag + items[2].hint, firmSpecific: true };
     if (items[4]?.kind === 'motivation' && pack.why) items[4] = { ...items[4], q: pack.why, guide: WHY, hint: tag + 'Specific beats impressive.', firmSpecific: true };
     // Two firm questions, inserted after the first five so the page's own round settings still line up.
-    const rng = o.rng || Math.random, pool = [...(pack.qs || [])];
+    const rng = o.rng || Math.random, pool = (pack.qs || []).filter(q=>!q.roles||q.roles.includes(rk));
     const extra = [];
     while (pool.length && extra.length < 2) extra.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]);
     const add = extra.map((x, i) => ({ id: key + '-pack-' + i, kind: x.kind, q: x.q, hint: tag + (x.hint || 'Answer for this firm, not any firm.'), guide: { shape: x.guide.shape, points: [...x.guide.points] }, firmSpecific: true }));
