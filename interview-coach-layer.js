@@ -130,9 +130,9 @@
     // Best point from each different experience first, so the student has a range of examples; then fill up.
     const top = [], seen = new Set();
     const themed = p => p.why.some(w => w !== 'has a number you can quote');
-    for (const p of ranked) { if (top.length === 3) break; if (themed(p) && !seen.has(p.source)) { top.push(p); seen.add(p.source); } }
-    for (const p of ranked) { if (top.length === 3) break; if (themed(p) && !top.includes(p)) top.push(p); }
-    for (const p of ranked) { if (top.length === 3) break; if (!top.includes(p)) top.push(p); }
+    for (const p of ranked) { if (top.length === 2) break; if (themed(p) && !seen.has(p.source)) { top.push(p); seen.add(p.source); } }
+    for (const p of ranked) { if (top.length === 2) break; if (themed(p) && !top.includes(p)) top.push(p); }
+    for (const p of ranked) { if (top.length === 2) break; if (!top.includes(p)) top.push(p); }
     const label = themes.map(t => t.label).slice(0, 2).join(' and ');
     if (!pts.length) {
       panel.innerHTML = `<div class="dc-k">Your CV for this question</div><h3>Add your CV to see your best evidence here.</h3><p class="dc-empty">Load your saved CV from My Desk or take the free assessment to see relevant evidence here. You can also practise with a genuine example of your own.</p>`;
