@@ -105,7 +105,8 @@ interview work is lost.**
   (including the existing J.P. Morgan, Goldman, Barclays, UBS, DB, BofA, EY, PwC).
 - Each session for that firm gets: the firm's own "why us" question, a firm case for the role, and two firm questions inserted after
   question 5 (so `applyContext`'s positional edits still line up). Tagged "Likely at <firm> (The Desk's view)".
-- A "Your <firm> interview" brief card: what that firm's interviews test, and things to know. Practitioners should review the wording.
+- A "Your <firm> interview" brief card: what that firm's interviews test, things to know, and **what recent candidates reported** (format, topics with report counts, source links; from public reviews, Nov 2026). One question per session comes from candidate reports where we have them.
+- `FIRM-PACKS-REVIEW.md`: sign-off sheet for the practitioners. Get it approved before launch.
 - Wraps `DeskInterviewBank.buildSession`; works with the live and GitHub bank (same API, checked on live).
 
 ### Interviewer layer (`interview-interviewer.js`)

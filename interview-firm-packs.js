@@ -142,6 +142,75 @@
     deloitte: { tests: ['Strengths and behaviours', 'Why Deloitte and the service line', 'Commercial awareness'], know: ['Big Four firm: audit & assurance, consulting, tax and financial advisory.', 'Early rounds often use video and strengths-style questions.'], why: 'Why Deloitte, and why this service line?', qs: [{ kind: 'cv', q: 'What do you think you are better at than most people? Give an example that proves it.', guide: STAR }, { kind: 'technical', q: 'How do you think AI will change audit or advisory work over the next five years?', guide: KNOW }] },
     kpmg: { tests: ['Values: integrity and courage', 'Judgement and scepticism', 'Why KPMG'], know: ['Big Four firm: audit, tax and advisory (including deal advisory).', 'Its values include integrity and courage: expect questions about speaking up.'], why: 'Why KPMG, and why this service line?', qs: [{ kind: 'cv', q: 'Tell me about a time you spoke up about something you thought was wrong.', guide: STAR }, { kind: 'case', q: 'You notice a colleague has made a mistake in a client file just before a deadline. What do you do?', guide: CASE }] }
   };
+  // What real candidates reported (Glassdoor and similar, mostly 2024–26, paraphrased, never copied).
+  // n = how many of the reports we read mention it. Practitioners review before students see it as advice.
+  const R = {
+    rothschild: { checked: 'Nov 2026', format: ['One-to-one first round (analyst + associate): CV, motivation, technicals', 'Assessment centre with commercial awareness and market news', 'Some offices run a group investment-case discussion'],
+      seen: [['Why Rothschild / what sets it apart from other banks', 2], ['Valuation: DCF, methods and their assumptions', 2], ['Equity bridge (enterprise value to equity value)', 1], ['Market news and commercial awareness', 1], ['Restructuring team is more technical than M&A', 1]],
+      add: [{ kind: 'technical', q: 'Walk me from enterprise value to equity value. What sits in the bridge, and why?', guide: KNOW }, { kind: 'motivation', q: 'What sets Rothschild & Co apart from the other banks you are applying to?', guide: WHY }],
+      sources: [['Glassdoor, London analyst Apr 2025 + others', 'https://www.glassdoor.ie/Interview/Rothschild-and-Co-Interview-E9944-RVW96916386.htm'], ['WallStreetOasis thread (older)', 'https://www.wallstreetoasis.com/forum/investment-banking/rothschild-first-round']] },
+    blackrock: { checked: 'Nov 2026', format: ['HireVue first: about 3 questions, roughly 2 minutes each with prep time', 'Then several interviews, often framed around BlackRock’s principles, plus scenario questions', 'Some roles add a task and a final round'],
+      seen: [['Why BlackRock', 3], ['A recent global market or economic event and its impact', 2], ['CV and past examples tied to BlackRock’s principles', 1], ['Mostly behavioural, light technicals', 2]],
+      add: [{ kind: 'technical', q: 'Pick a recent global market event. What happened, and what does it mean for investors or businesses?', guide: KNOW }],
+      sources: [['Glassdoor, London analyst reviews 2024–26', 'https://www.glassdoor.ie/Interview/BlackRock-Interview-E9331-RVW91379954.htm'], ['Glassdoor, further reviews', 'https://www.glassdoor.com/Interview/BlackRock-Interview-E9331-RVW98487490.htm']] },
+    jpm: { checked: 'Nov 2026', format: ['London IB summer analyst: group activity, two fit interviews and one technical', 'Elsewhere: HireVue (about 3 questions) then a superday of three interviews'],
+      seen: [['Walk through the three financial statements', 2], ['Mix of fit and technical in each round', 3], ['Commitment: would you accept an offer?', 1]],
+      add: [{ kind: 'technical', q: 'Walk me through the three financial statements and how they link.', guide: KNOW }],
+      sources: [['Glassdoor, IB summer analyst 2026', 'https://www.glassdoor.ca/Interview/J-P-Morgan-Interview-E145-RVW102774299.htm']] },
+    lazard: { checked: 'Nov 2026', format: ['London first round: about three behavioural questions, no technicals', 'Other offices: technical phone screens (e.g. valuing a drug with a DCF)'],
+      seen: [['Why investment banking', 1], ['DCF in a sector context', 1], ['Interviewers push back on answers', 1]],
+      add: [], sources: [['Glassdoor, summer analyst 2025–26', 'https://www.glassdoor.com/Interview/Lazard-Interview-E5784-RVW100668965.htm']] },
+    evercore: { checked: 'Nov 2026', format: ['London: CV screen, video interview, first round with HR plus technicals, assessment centre', 'US rounds are heavily technical (incl. LBO-style cases)'],
+      seen: [['Accretion / dilution', 1], ['Why Evercore and which industry', 2], ['Hard technicals', 3]],
+      add: [{ kind: 'technical', q: 'A company buys another using shares. How would you work out whether the deal is accretive or dilutive to earnings per share?', guide: KNOW }],
+      sources: [['Glassdoor, summer analyst 2025–26', 'https://www.glassdoor.com.au/Interview/Evercore-Interview-E2725411-RVW101217635.htm']] },
+    ms: { checked: 'Nov 2026', format: ['Online assessment, HireVue (3–5 questions), phone interview, assessment centre of three interviews', 'Reports are for Sales & Trading'],
+      seen: [['Why Morgan Stanley / why this division', 3], ['Current market news', 2], ['Pitch a stock or a quick trade idea', 1], ['Core values; a time you failed; handling pressure', 2], ['Brain teasers', 1]],
+      add: [{ kind: 'technical', q: 'Give me a quick trade idea: what, why now, and how you would know you are wrong.', guide: KNOW }],
+      sources: [['Glassdoor, S&T summer analyst 2025–26', 'https://www.glassdoor.sg/Interview/Morgan-Stanley-Interview-E2282-RVW103595519.htm']] },
+    gs: { checked: 'Nov 2026', format: ['HireVue (one report: 6 questions, 90 seconds each, mostly behavioural), then a superday of three interviews', 'Reports are for Sales & Trading'],
+      seen: [['Know your CV in depth', 2], ['Views on markets and the economy', 2], ['Options / probability for markets roles', 2], ['Mostly behavioural', 2]],
+      add: [], sources: [['Glassdoor, S&T summer analyst 2026', 'https://www.glassdoor.ca/Interview/Goldman-Sachs-Interview-E2800-RVW103673692.htm']] },
+    barclays: { checked: 'Nov 2026', format: ['London IB: case study, then three interviews (one goes through your case study)'],
+      seen: [['Why Barclays (over other banks)', 1], ['Enterprise vs equity value', 2], ['A deal you have followed', 1], ['Mostly behavioural; easy-to-moderate technicals', 2]],
+      add: [{ kind: 'motivation', q: 'Why Barclays rather than a US bank like Goldman Sachs?', guide: WHY }],
+      sources: [['Glassdoor, IB summer analyst 2026', 'https://www.glassdoor.sg/Interview/Barclays-Interview-E3456-RVW102790221.htm']] },
+    citi: { checked: 'Nov 2026', format: ['London: online tests (Plum), first round of two interviews, assessment centre of three'],
+      seen: [['Introduce yourself; why banking and why Citi', 1], ['Standard IB technicals', 2], ['Case study with comps (some offices)', 1]],
+      add: [], sources: [['Glassdoor, IB summer analyst 2025–26', 'https://www.glassdoor.com/Interview/Citi-Interview-E8843-RVW101158359.htm']] },
+    db: { checked: 'Nov 2026', format: ['London: three rounds (case study, technical, competency), about 45 minutes each, associate to MD'],
+      seen: [['DCF', 1], ['Equity value to enterprise value bridge', 1], ['Past experience and industry knowledge', 1]],
+      add: [{ kind: 'technical', q: 'Talk me through how you would build a simple DCF, step by step.', guide: KNOW }],
+      sources: [['Glassdoor, IB summer analyst 2025–26', 'https://www.glassdoor.sg/Interview/Deutsche-Bank-Interview-E3150-RVW95052476.htm']] },
+    bofa: { checked: 'Nov 2026', format: ['London first round: about 25 minutes with an analyst, conversational'],
+      seen: [['Maths brain teasers', 1], ['Behavioural questions', 2], ['Financial statements and value bridges (US)', 1]],
+      add: [], sources: [['Glassdoor, IB summer analyst', 'https://www.glassdoor.com.au/Interview/Bank-of-America-Investment-Banking-Summer-Analyst-Interview-Questions-EI_IE8874.0,15_KO16,49.htm']] },
+    ubs: { checked: 'Nov 2026', format: ['Online tests (numerical from charts, reading true/false), then HireVue: 5 questions, 30s to prepare, 2 min to answer'],
+      seen: [['Behavioural only at video stage', 1], ['A time you worked outside your comfort zone', 1], ['Where you see yourself in five years', 1]],
+      add: [{ kind: 'cv', q: 'Tell me about a time you had to work outside your comfort zone.', guide: STAR }],
+      sources: [['Glassdoor, graduate programme 2025–26', 'https://www.glassdoor.ca/Interview/UBS-Interview-E3419-RVW97951128.htm']] },
+    hsbc: { checked: 'Nov 2026', format: ['Online job simulation (situational judgement, written and timed video answers), HireVue interviews, then an assessment centre'],
+      seen: [['Values-based situational questions', 2], ['Prioritising tasks / building a timetable on the spot', 2], ['Recent events and why they interest you', 1], ['Wealth-client case in a video interview', 1]],
+      add: [{ kind: 'case', q: 'You are given five tasks from three people, all due today. How do you decide the order, and who do you tell?', guide: CASE }],
+      sources: [['Glassdoor, Global Markets summer intern', 'https://www.glassdoor.ie/Interview/HSBC-Interview-E3482-RVW71241352.htm'], ['Glassdoor, summer analyst overview', 'https://static.glassdoor.es/Interview/HSBC-Summer-Analyst-Interview-Questions-EI_IE3482.0,4_KO5,19_IP2.htm']] },
+    ey: { checked: 'Nov 2026', format: ['Online assessment: situational judgement, reasoning, numerical, recorded video answers', 'A written email task analysing a profit and loss statement', 'Assessment centre: group task, presentation, interview (often with a partner)'],
+      seen: [['Spot errors in financial data and explain them in a professional email', 1], ['Link answers to EY’s values, especially integrity', 1], ['Group problem-solving', 2]],
+      add: [{ kind: 'case', q: 'You are sent a profit and loss summary with two numbers that do not add up. Talk me through the email you would send your manager.', guide: CASE }],
+      sources: [['Glassdoor, Audit graduate London 2026 + Edinburgh', 'https://static.glassdoor.de/Interview/EY-Audit-Graduate-Trainee-Interview-Questions-EI_IE2784.0,2_KO3,25.htm']] },
+    pwc: { checked: 'Nov 2026', format: ['Online assessment, recorded video interview (about 4 questions, 2 minutes each), virtual assessment centre, partner interview'],
+      seen: [['Behavioural and motivational questions', 3], ['Detailed, specific examples (partner pushes)', 1], ['Understand the role and PwC’s career path', 1], ['Timed numerical questions', 1]],
+      add: [{ kind: 'motivation', q: 'What will you actually be doing in your first two years at PwC, and what qualification will you be working towards?', guide: KNOW }],
+      sources: [['Glassdoor, Audit graduate 2026', 'https://static.glassdoor.de/Interview/PwC-Interview-E8450-RVW103946350.htm']] },
+    deloitte: { checked: 'Nov 2026', format: ['London audit: presentation on set questions, then a motivational and strengths-based interview', 'Some interviews go into the ACA qualification'],
+      seen: [['Strengths and motivation', 2], ['Knowledge of the ACA qualification', 1], ['Competency questions', 1]],
+      add: [{ kind: 'motivation', q: 'What is the ACA, how is it structured, and why does it matter for this role?', guide: KNOW }],
+      sources: [['Glassdoor, Audit London 2024–26', 'https://www.glassdoor.com.au/Interview/Deloitte-Interview-E10177265-RVW92951198.htm']] },
+    kpmg: { checked: 'Nov 2026', format: ['Proctored online tests (situational, logical, numerical), recorded strengths-based video interview, assessment centre', 'Assessment centre: group exercise (e.g. recommend a strategy for KPMG), then a partner interview'],
+      seen: [['Why KPMG and why this role', 1], ['Time management', 1], ['Group strategy exercise', 1]],
+      add: [{ kind: 'case', q: 'In a group of four you have 30 minutes to recommend one new service a firm like KPMG should launch. How would you run the discussion?', guide: CASE }],
+      sources: [['Glassdoor, Graduate Audit UK 2025–26', 'https://www.glassdoor.ie/Interview/KPMG-Interview-E2867-RVW100390018.htm']] }
+  };
+  for (const [k, r] of Object.entries(R)) if (P[k]) { P[k].reports = r; P[k].qs = [...(P[k].qs || []), ...r.add.map(x => ({ ...x, sourced: true }))]; }
   bank.firmPacks = P;
 
   const roleKeyOf = role => Object.keys(bank.roles).find(k => bank.roles[k] === role);
@@ -158,8 +227,11 @@
     // Two firm questions, inserted after the first five so the page's own round settings still line up.
     const rng = o.rng || Math.random, pool = [...(pack.qs || [])];
     const extra = [];
+    // One question candidates actually reported (if we have one), then one more from the pack.
+    const takeFrom = list => list.length ? pool.splice(pool.indexOf(list[Math.floor(rng() * list.length)]), 1)[0] : null;
+    const first = takeFrom(pool.filter(x => x.sourced)); if (first) extra.push(first);
     while (pool.length && extra.length < 2) extra.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]);
-    const add = extra.map((x, i) => ({ id: key + '-pack-' + i, kind: x.kind, q: x.q, hint: tag + (x.hint || 'Answer for this firm, not any firm.'), guide: { shape: x.guide.shape, points: [...x.guide.points] }, firmSpecific: true }));
+    const add = extra.map((x, i) => ({ id: key + '-pack-' + i, kind: x.kind, q: x.q, hint: (x.sourced ? 'Reported by recent ' + firm.label + ' candidates. ' : tag) + (x.hint || 'Answer for this firm, not any firm.'), guide: { shape: x.guide.shape, points: [...x.guide.points] }, firmSpecific: true }));
     items.splice(Math.min(5, items.length), 0, ...add);
     return items;
   };
@@ -169,15 +241,19 @@
     const pack = P[key], firm = bank.firms[key];
     if (!pack || !firm) return null;
     const el = document.createElement('section'); el.className = 'dc-brief';
+    const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const li = a => a.map(t => '<li>' + t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])) + '</li>').join('');
-    el.innerHTML = `<div class="dc-brief-k">Your ${firm.label} interview</div><div class="dc-brief-g"><div><h4>What ${firm.label} interviews tend to test</h4><ul>${li(pack.tests || [])}</ul></div><div><h4>Know before you go</h4><ul>${li(pack.know || [])}</ul></div></div><p class="dc-brief-n">Your practice questions now include ${firm.label}-specific ones. The Desk’s view from our practitioners, not confirmed employer questions.</p>`;
+    const r = pack.reports;
+    const linkList = r ? r.sources.map(([t, u]) => '<a href="' + u + '" target="_blank" rel="noopener noreferrer">' + esc(t) + '</a>').join(' · ') : '';
+    const reported = r ? `<div class="dc-brief-r"><h4>What recent candidates reported</h4><ul>${r.format.map(t => '<li>' + esc(t) + '</li>').join('')}</ul><ul class="dc-brief-seen">${r.seen.map(([t, n]) => '<li><span>' + esc(t) + '</span><b>' + n + (n === 1 ? ' report' : ' reports') + '</b></li>').join('')}</ul><p class="dc-brief-n">From public candidate reviews, checked ${esc(r.checked)}. Individual experiences, paraphrased; processes change. Sources: ${linkList}</p></div>` : '';
+    el.innerHTML = `<div class="dc-brief-k">Your ${firm.label} interview</div><div class="dc-brief-g"><div><h4>What ${firm.label} interviews tend to test</h4><ul>${li(pack.tests || [])}</ul></div><div><h4>Know before you go</h4><ul>${li(pack.know || [])}</ul></div></div>${reported}<p class="dc-brief-n">Your practice questions now include ${firm.label}-specific ones${r ? ', including ones recent candidates reported' : ''}. The Desk’s view, reviewed by our practitioners; not confirmed employer questions.</p>`;
     return el;
   }
   const style = document.createElement('style');
   style.textContent = `.dc-brief{background:#fff;border:1px solid #e3ddd3;border-left:4px solid #ff6a2b;border-radius:10px;padding:16px 18px;margin:12px 0}
   .dc-brief-k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#d2541b;font-weight:700;margin-bottom:8px}
   .dc-brief-g{display:grid;grid-template-columns:1fr 1fr;gap:18px}.dc-brief h4{margin:0 0 6px;font-size:14px}.dc-brief ul{margin:0;padding-left:18px;font-size:13px;line-height:1.5}
-  .dc-brief-n{margin:10px 0 0;font-size:11px;color:#6b6b6b}@media(max-width:700px){.dc-brief-g{grid-template-columns:1fr}}`;
+  .dc-brief-n{margin:10px 0 0;font-size:11px;color:#6b6b6b}.dc-brief-n a{color:#6b6b6b}.dc-brief-r{margin-top:14px;padding-top:12px;border-top:1px solid #eee7dd}.dc-brief-seen{list-style:none;padding:0!important;margin-top:8px!important}.dc-brief-seen li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed #eee7dd;padding:4px 0}.dc-brief-seen b{font-size:11px;color:#9a3412;white-space:nowrap}@media(max-width:700px){.dc-brief-g{grid-template-columns:1fr}}`;
   const mount = () => {
     document.head.appendChild(style);
     const sel = document.getElementById('firmSelect') || document.getElementById('setupFirm'); if (!sel) return;
