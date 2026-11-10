@@ -1,6 +1,6 @@
 import authHandler from './auth.js';
 import { timingSafeEqual } from 'node:crypto';
-import { owner, sameOrigin, apiFailure, hash } from '../lib/report-store.mjs';
+import { owner, sameOrigin, apiFailure, hash, sql } from '../lib/report-store.mjs';
 import * as A from '../lib/value-accounts.mjs';
 import * as O from '../lib/outcomes.mjs';
 
@@ -31,6 +31,7 @@ export default async function handler(req, res) {
       if (!staffOk(req)) return res.status(401).json({ error: 'Staff access required.' });
       return res.json({ items: await O.listOutcomes(['pending', 'approved', 'rejected'].includes(q.status) ? q.status : 'pending'), stages: O.STAGES });
     }
+    if(req.method==='GET'&&q.view==='staff-enquiries'){if(!staffOk(req))return res.status(401).json({error:'Staff access required.'});await A.principal(req,res);return res.json({items:await sql().query("SELECT id::text,data,created_at FROM desk_value_items WHERE kind='enquiry' ORDER BY created_at DESC LIMIT 100")});}
     if (req.method === 'GET') {
       const account = await A.currentAccount(req);
       const s = await A.ownerSummary(await A.principal(req, res));
@@ -64,6 +65,11 @@ export default async function handler(req, res) {
       return res.json({ success: true });
     }
     if (b.action === 'signout') { await A.signOut(req, res); return res.json({ success: true }); }
+    if(b.action==='enquiry'){
+      const email=String(b.email||'').trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254||!['coaching','society'].includes(b.type)||!String(b.name||'').trim()||!String(b.university||'').trim())return res.status(400).json({error:'Add your name, email and university.'});
+      const p=await A.principal(req,res);if(!await A.useQuota('enquiry:'+hash(A.clientKey(req)),5))return res.status(429).json({error:'You’ve sent several enquiries today. Please try again tomorrow.'});
+      return res.json({success:true,id:await A.saveItem(p,'enquiry',{type:b.type,name:String(b.name).trim().slice(0,80),email,university:String(b.university).trim().slice(0,120),note:String(b.note||'').trim().slice(0,2000)})});
+    }
     if(b.action==='save-answer'){
       if(typeof b.question!=='string'||b.question.trim().length<10||b.question.length>1600||typeof b.text!=='string'||b.text.trim().length<20||b.text.length>12000)return res.status(400).json({error:'Add a question and an answer between 20 and 12,000 characters.'});
       const p=await A.principal(req,res);if(!await A.useQuota('save-answer:'+p,60))return res.status(429).json({error:'You’ve saved plenty of answers today. Try again tomorrow.'});

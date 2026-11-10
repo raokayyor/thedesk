@@ -266,11 +266,8 @@ async function addKeys(keys){
   try{localStorage.setItem('desk_mylist',JSON.stringify(r.data.list))}catch(e){}
   showAll=true;await load();const pn=document.getElementById('addPanel');if(pn){pn.hidden=false;loadProgrammes();document.getElementById('addMsg').textContent=`Added ${r.data.added} programme${r.data.added===1?'':'s'}.`}
 }
-async function join(){
-  const id=D.report?.assessmentId;if(!id){location.href='/assessment.html';return}
-  const r=await post('/api/start-checkout',{assessmentId:id});
-  if(r.ok&&r.data.url)location.href=r.data.url;else location.href=D.report.url;
-}
+async function join(){location.href='/signup.html?plan=member'}
+
 function bind(){
   const composer=document.getElementById('panelCompose'),questionForm=document.getElementById('panelQuestionForm');
   function compose(text){if(!questionForm)return;questionForm.hidden=false;if(text)document.getElementById('panelQuestion').value=text;composer.style.display='none';document.getElementById('panelQuestion').focus();}
