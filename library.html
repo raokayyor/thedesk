@@ -118,9 +118,14 @@ details p,details li{font-size:15px;color:#2b353d}details ul,details ol{padding-
 
 <h2 id="help">Get help</h2>
 <div class="help"><div><b style="font-size:17px">Stuck on something specific?</b><br><span style="color:#cfd6db;font-size:14px">Members can ask our practitioner panel one question, answered within 48 hours, and book a call.</span></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="/my.html">Go to My Desk</a><a href="/mentor.html" style="color:#fff;font-weight:700;align-self:center">1-to-1 mentor support →</a></div></div>
+<section id="technicalTopics" aria-label="Technical interview concepts"><h2>Technical interview concepts</h2></section>
 <p class="mute" id="none" hidden>Nothing matches that. Try a shorter word.</p>
 </main>
+<script src="/interview-technical-examples.js"></script>
 <script>
+const technicalHost=document.getElementById('technicalTopics');
+for(const topic of DeskTechnicalExamples.topics){const fold=document.createElement('details');fold.id=topic.id;const summary=document.createElement('summary');summary.textContent=topic.title;fold.append(summary);for(const text of [topic.answer,topic.example,topic.pitfall]){const p=document.createElement('p');p.textContent=text;fold.append(p)}technicalHost.append(fold)}
+const requestedTopic=new URLSearchParams(location.search).get('topic');const linkedTopic=DeskTechnicalExamples.topics.find(t=>t.id===requestedTopic);if(linkedTopic){const fold=document.getElementById(linkedTopic.id);fold.open=true;requestAnimationFrame(()=>fold.scrollIntoView({block:'start'}));}
 const q=document.getElementById('q'),all=[...document.querySelectorAll('main details')];
 q.addEventListener('input',()=>{const t=q.value.trim().toLowerCase();let n=0;all.forEach(d=>{const hit=!t||d.textContent.toLowerCase().includes(t);d.hidden=!hit;if(hit)n++;if(t&&hit)d.open=true;if(!t)d.open=false});document.getElementById('none').hidden=n>0});
 </script>

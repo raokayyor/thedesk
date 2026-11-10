@@ -134,7 +134,17 @@
     for (const p of ranked) { if (top.length === 2) break; if (themed(p) && !top.includes(p)) top.push(p); }
     for (const p of ranked) { if (top.length === 2) break; if (!top.includes(p)) top.push(p); }
     const label = themes.map(t => t.label).slice(0, 2).join(' and ');
-    if (!pts.length) {
+    if (/technical/i.test(type) || questions[current]?.kind==='technical') {
+      const topic=window.DeskTechnicalExamples?.find(q);
+      panel.innerHTML='<div class="dc-k">Technical preparation</div><h3>How to answer this question</h3><p class="dc-empty">Explain the concept, show the method and discuss the assumptions.</p>';
+      const button=document.createElement('button');button.type='button';button.className='dc-btn';button.textContent='See an example answer';panel.append(button);
+      const content=document.createElement('div');content.hidden=true;panel.append(content);
+      button.onclick=()=>{content.hidden=!content.hidden;button.textContent=content.hidden?'See an example answer':'Hide example answer';};
+      const add=(tag,text)=>{const el=document.createElement(tag);el.textContent=text;content.append(el);return el};
+      if(topic){add('h4','Example spoken answer');add('p',topic.answer);add('h4','Why this works');const list=add('ol','');for(const step of topic.steps){const li=document.createElement('li');li.textContent=step;list.append(li)}add('h4','Worked example');add('p',topic.example);add('h4','Common mistake');add('p',topic.pitfall);add('p','Practise explaining the logic in your own words. The figures are illustrative.').className='dc-empty';}
+      else {add('p',questions[current]?.guide?.shape||'Define the concept, explain the mechanism, give an example and discuss limitations.');for(const point of questions[current]?.guide?.points||[])add('p',point);button.textContent='See how to structure your answer';}
+      const link=document.createElement('a');link.href='/library.html'+(topic?'?topic='+topic.id:'#finance');link.textContent=topic?'Understand '+topic.title+' in the library →':'Explore technical topics in the library →';link.style.cssText='display:block;margin-top:16px;font-weight:700';panel.append(link);
+    } else if (!pts.length) {
       panel.innerHTML = `<div class="dc-k">Your CV for this question</div><h3>Add your CV to see your best evidence here.</h3><p class="dc-empty">Load your saved CV from My Desk or take the free assessment to see relevant evidence here. You can also practise with a genuine example of your own.</p>`;
     } else {
       const fullHtml = (() => { let h = esc(($('cvText')?.value || '').replace(/\s*\[CONFIRM:[^\]]*\]/gi, '')); top.forEach((t, i) => { const e = esc(t.text); if (h.includes(e)) h = h.replace(e, `<span class="hl" title="Point ${i + 1}">${mark(t.text, themes)}</span>`); }); return h; })();
@@ -149,7 +159,7 @@
       if(!builder?.hidden){panel.append(create);create.onclick=()=>window.DeskAnswerDraft?.show(panel,'script');}
       panel.querySelector('[data-dc=full]').onclick = () => { showFull = !showFull; render(); };
     }
-    if(pts.length){const fold=document.createElement('details');fold.className='dc-evidence-fold';fold.open=false;fold.addEventListener('toggle',()=>{if(fold.open)window.DeskAnswerDraft?.show(panel,'evidence')});const summary=document.createElement('summary');summary.textContent='View your CV evidence for this question';fold.append(summary);for(const node of [...panel.children])if(!node.classList.contains('dc-create-answer')&&!node.classList.contains('dc-created-answer'))fold.append(node);panel.prepend(fold);}
+    if(pts.length&&!/technical/i.test(type)&&questions[current]?.kind!=='technical'){const fold=document.createElement('details');fold.className='dc-evidence-fold';fold.open=false;fold.addEventListener('toggle',()=>{if(fold.open)window.DeskAnswerDraft?.show(panel,'evidence')});const summary=document.createElement('summary');summary.textContent='View your CV evidence for this question';fold.append(summary);for(const node of [...panel.children])if(!node.classList.contains('dc-create-answer')&&!node.classList.contains('dc-created-answer'))fold.append(node);panel.prepend(fold);}
     const technical=/technical/i.test(type);const lead=reasoning?'reasoning':technical?'analysis':themes[0]?.key||'motivation', employer=globalThis.DeskEmployerPractice?.context($('firmSelect')?.value,$('roleSelect')?.value);const checks=technical?['Answer the technical question directly.','Explain the method, inputs and assumptions.','Discuss a limitation and check your conclusion.']:employer&&!reasoning?employer.checks:(LISTEN[lead]||LISTEN.motivation);
     pr.innerHTML = `<div class="dc-faces" aria-hidden="true">${PANEL.slice(0, 4).map(([i]) => `<span class="dc-av">${i}</span>`).join('')}</div>
       <div><div class="dc-k k2">${employer?esc(employer.label)+' practice focus':'What to demonstrate'}</div><ul>${checks.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
