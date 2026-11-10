@@ -10,7 +10,7 @@
 <script src="/desk-nav.js" defer></script>
 <style>
 :root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--warm-line:#fed7aa;--ok:#15803d;--bad:#b91c1c;--navy:#123459;--navy-soft:#dbe5f1}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
 a{color:var(--ink)}a:hover{color:var(--accent-ink)}
 main{max-width:1160px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:22px}
 h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
@@ -264,7 +264,8 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       }
       if (plan === 'member') { show('ok', link.ok ? 'Saved. Check your inbox for a sign-in link, then take your free assessment. Taking you there now…' : 'Saved. Taking you to your free assessment now…'); setTimeout(() => { location.href = '/assessment-start.html?plan=member'; }, 1800); return; }
       if (link.ok) return show('ok', 'Check your inbox. We’ve sent a sign-in link to ' + email + '. It works once and expires in 30 minutes.');
-      return show('info', link.status === 503 ? 'Your desk is saved in this browser. Email sign-in isn’t switched on yet, so you can carry on here: go to My Desk.' : (link.data.error || 'Your desk is saved in this browser. Go to My Desk.'));
+      show('info', link.status === 503 ? 'Your desk is saved in this browser. Email sign-in isn’t switched on yet, so carry on here. ' : (link.data.error || 'Your desk is saved in this browser. '));
+      const a = document.createElement('a'); a.href = '/my.html'; a.textContent = 'Go to My Desk →'; a.style.fontWeight = '700'; msg.appendChild(a); return;
     } catch (err) { show('err', 'Something went wrong. Check your connection and try again.'); }
     finally { submit.disabled = false; submit.textContent = label; }
   });
