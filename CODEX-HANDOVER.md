@@ -34,6 +34,10 @@ interview work is lost.**
 | `lib/practitioner-questions.mjs` | `PRACTITIONERS` adds `'Chris Sharkey'` (he's on the panel shown in the report). |
 | `tracker.html` | Shortlist (`localStorage desk_mylist`) also syncs to `/api/desk-home` (`tracker-sync`) and is pulled back if the browser has none. |
 | `vercel.json` | `api/test-run.js` maxDuration 300. |
+| `interview.html`, `interview-start.html` | Add `<script src="/interview-firm-packs.js"></script>` **straight after** `<script src="/interview-bank.js"></script>` (must run before the firm list is built). |
+| `interview.html` | Add `<script src="/interview-interviewer.js" defer></script>` after the coach layer tag. |
+| `interview-start.js` | Reads `?firm=` (e.g. from My Desk application rows) and preselects that firm. |
+| `interview.html` | Add `<script src="/interview-coach-layer.js" defer></script>` before `</body>` (loaded last). Written and tested against the **live** interview page (it reads `#question`, `#questionType`, `#cvText`, `.qbox`, `#answerCvEvidence`). |
 
 ## What's new (all on this branch)
 
@@ -74,6 +78,19 @@ interview work is lost.**
 - Staff set starting levels when a game starts (paste `TICKER price` lines). Defaults are placeholders.
 - A running game automatically gains any investments added to the list later.
 
+### Interview coach layer (`interview-coach-layer.js`)
+- Under each question: **"Your CV for this question"**, the 3 CV points that best answer it (best point from each experience first),
+  key words highlighted, why each works, a "check the detail" flag on lines with `[CONFIRM: …]`, and the full CV with the points marked.
+  Re-picks on every question; pre-selects the best example in the existing answer builder.
+- **"What the interviewer is listening for"**, by question type, credited to the practitioner panel.
+- Calmer page: smaller hero, slimmer session bar, shorter transcript column (scoped CSS, `body.dc-on`).
+
+### Trading game extras
+- Bid/offer spreads (buy at offer, sell at bid, holdings valued at bid), cash earns Bank Rate interest each news day
+  (BoE stories move the rate; staff can set it), stop losses, average price paid and P&L per holding, trade ticket.
+- News desk: live BBC/Guardian business headlines (RSS) with "Turn into a story" (AI draft of text and moves; staff edit and publish).
+  New table columns: `desk_game.cash_rate`, `desk_game_accounts.stops`, `.costs`, `.interest`.
+
 ### Weekly challenge (`challenge.html`, `challenge-admin.html`, `api/challenge.js`)
 - Earlier format (weekly scenario, split £100k, staff score from public weekly moves). Still works but no longer in the
   top bar; the trading game replaced it. Remove if not wanted.
@@ -82,6 +99,20 @@ interview work is lost.**
 - Runs 10 fictional students through the real free assessment and Full Cycle and shows free vs paid side by side,
   with "Open free results page" / "Open paid report page" as that student. Preview deployments skip the staff key
   (they're behind Vercel login); production needs it.
+
+### Firm interview packs (`interview-firm-packs.js`)
+- Adds BlackRock, Rothschild & Co, Lazard, Evercore, Morgan Stanley, Citi, HSBC, Deloitte and KPMG to the firm list, and a pack for every firm
+  (including the existing J.P. Morgan, Goldman, Barclays, UBS, DB, BofA, EY, PwC).
+- Each session for that firm gets: the firm's own "why us" question, a firm case for the role, and two firm questions inserted after
+  question 5 (so `applyContext`'s positional edits still line up). Tagged "Likely at <firm> (The Desk's view)".
+- A "Your <firm> interview" brief card: what that firm's interviews test, and things to know. Practitioners should review the wording.
+- Wraps `DeskInterviewBank.buildSession`; works with the live and GitHub bank (same API, checked on live).
+
+### Interviewer layer (`interview-interviewer.js`)
+- AI interviewer tile on the video (firm initials, "Asking the question" / "Listening to your answer" / "Waiting", real voice and mic levels),
+  live captions in step with the voice, and a tools bar: Captions, Framing guide (eye line), Mirror, mic level, which voice is used.
+- Hooks: `.camera`, `#preview`, `#camStatus`, `#voiceStatus`, `#question`; detects ElevenLabs audio, device speech and MediaRecorder.
+- `ELEVENLABS_API_KEY` is set on Production but **not Preview**; add it to Preview to hear the natural voice there.
 
 ## New database tables (created automatically on first use)
 `desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,

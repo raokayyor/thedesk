@@ -33,42 +33,22 @@ textarea{width:100%;font:inherit;font-size:15px;padding:12px;border:1px solid va
 <body>
 <header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
 <main id="app"><p class="mute">Loading…</p></main>
+<script src="/interview-teaser-media.js"></script>
 <script>
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app=document.getElementById('app'),LIMIT=30;
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
 let Q='',firm='',role='',rec=null,finalText='',started=0,timer=null;
 async function init(){
   const d=await fetch('/api/desk-home',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).catch(()=>null);
   firm=d?.profile?.targetFirm||'';role=d?.profile?.targetDivision||d?.profile?.targetSector||'';
   if(d?.member){location.href='/interview-start.html';return}
-  Q=firm?`Why do you want to work at ${firm}?`:'Tell me about yourself, and why this career.';
+  Q='Tell me about yourself, and why this career.';
   intro();
 }
 function intro(){
-  app.innerHTML=`<div class="kicker">Free · 30-second interview check</div><h1>Answer one question. Get a straight read on it.</h1>
-  <div class="q"><div class="kicker">Your question</div><p>${esc(Q)}</p></div>
-  <div class="card"><ul class="mute" style="margin:0;padding-left:18px"><li>You get 30 seconds. Answer out loud, as you would on a video interview.</li><li>We mark the opening, which is what interviewers judge first.</li><li>${SR?'Your words appear as you speak. Nothing is recorded or kept as audio.':'Your browser can’t transcribe speech, so type what you’d say instead (about 75 words).'}</li><li>One free check a week.</li></ul>
-  <div style="margin-top:18px">${SR?'<button class="btn hot" id="go">Start: 30 seconds</button>':'<textarea id="typed" placeholder="Type your answer…" aria-label="Your answer"></textarea><button class="btn hot" id="send" style="margin-top:12px">Mark my answer</button>'}</div><p class="mute" id="err" role="status"></p></div>`;
-  const g=document.getElementById('go');if(g)g.onclick=start;
-  const s=document.getElementById('send');if(s)s.onclick=()=>submit(document.getElementById('typed').value,0);
-}
-function start(){
-  finalText='';started=Date.now();
-  app.innerHTML=`<div class="q"><div class="kicker">Answer now</div><p>${esc(Q)}</p></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div class="clock" id="clock" aria-live="off">0:30</div><button class="btn" id="stop">I’m done</button></div>
-  <div class="bar" style="margin-top:12px"><i id="bar"></i></div><p class="mute" style="margin:14px 0 4px">What we heard:</p><div class="live" id="live">Listening…</div></div>`;
-  rec=new SR();rec.lang='en-GB';rec.continuous=true;rec.interimResults=true;
-  rec.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)finalText+=t+' ';else interim+=t}document.getElementById('live').textContent=(finalText+interim)||'Listening…'};
-  rec.onerror=e=>{if(e.error==='not-allowed'){clearInterval(timer);app.innerHTML='<div class="card">We need your microphone for this. Allow it in your browser and <a href="/interview-teaser.html">try again</a>.</div>'}};
-  try{rec.start()}catch(e){}
-  timer=setInterval(()=>{const s=(Date.now()-started)/1000,left=Math.max(0,LIMIT-s);const c=document.getElementById('clock');if(c)c.textContent='0:'+String(Math.ceil(left)).padStart(2,'0');const b=document.getElementById('bar');if(b)b.style.width=Math.min(100,s/LIMIT*100)+'%';if(left<=0)stop()},200);
-  document.getElementById('stop').onclick=stop;
-}
-function stop(){
-  if(!timer)return;clearInterval(timer);timer=null;const secs=Math.min(LIMIT,Math.round((Date.now()-started)/1000));
-  try{rec.stop()}catch(e){}
-  setTimeout(()=>submit((finalText||document.getElementById('live')?.textContent||'').replace(/^Listening…$/,''),secs),700);
+  app.innerHTML=`<div class="kicker">Free · 30-second interview check</div><h1>Answer one question. Get a straight read on it.</h1><div class="q"><div class="kicker">Your question</div><p>${esc(Q)}</p></div><section class="card" id="teaserMedia"></section>`;
+  window.DeskTeaserMedia.mount(document.getElementById('teaserMedia'),Q,submit);
 }
 async function submit(text,secs){
   text=String(text||'').trim();

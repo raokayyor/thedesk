@@ -1,3 +1,4 @@
+import {employerPracticeContext} from '../lib/employer-practice.mjs';
 import {chooseFramework} from '../lib/interview-frameworks.mjs';
 import {retrieveGuidance,sourcePrompt,saveResearchAudit} from '../lib/source-guidance.mjs';
 import { knowledgeBlock } from '../lib/knowledge.mjs';
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
     const t = r.content.find(c => c.type === 'tool_use');
     if (!t) throw new Error('Missing structured feedback');
     let feedback = validateFeedback(t.input, { transcript: v.input.transcript, seconds: v.input.seconds, followUp: !!v.input.followUpOf, framework });
+    const employer=employerPracticeContext(v.input.firm,v.input.role);if(employer)feedback.employerPractice={label:employer.label,role:employer.role,focus:employer.roleFocus};
     if(!paid)feedback={...feedback,strengths:feedback.strengths.slice(0,1),fixes:feedback.fixes.slice(0,1),strongerOpening:'',followUp:null,teaser:true};
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);

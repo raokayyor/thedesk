@@ -23,6 +23,7 @@
   const extra = () => { let el = $('#fbExtra'); if (!el) { el = document.createElement('div'); el.id = 'fbExtra'; el.className = 'fb-extra'; const body = $('#feedback .feedbackBody'); if (body) body.before(el); else $('#feedback').append(el); } return el; };
 
   function show(f, paid) {
+    let employer=document.getElementById('employerFeedbackLens');if(employer)employer.remove();if(f.employerPractice){employer=document.createElement('p');employer.id='employerFeedbackLens';employer.className='employer-feedback-lens';employer.style.cssText='padding:12px 18px;background:#fff3e8;border-bottom:1px solid #e3ddd3;font-size:13px';employer.textContent=f.employerPractice.label+' / '+f.employerPractice.role+' practice review · '+f.employerPractice.focus;document.getElementById('feedback').prepend(employer);}
     $('#overallScore').textContent = f.overall;
     $('#mStructure').textContent = f.scores.structure; $('#mSpecificity').textContent = f.scores.evidence; $('#mRelevance').textContent = f.scores.relevance; $('#mConfidence').textContent = f.pushback === null ? f.scores.delivery : f.pushback;
     label('mSpecificity', 'Evidence'); label('mConfidence', f.pushback === null ? 'Delivery' : 'Handling push-back');

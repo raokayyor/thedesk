@@ -30,6 +30,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:5px 6px;b
 <main>
 <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><h1>Trading game · news desk</h1><div style="display:flex;gap:8px"><input id="key" type="password" placeholder="Staff key" style="width:180px" autocomplete="off"><button class="btn" id="load">Load</button></div></div>
 <div class="card" id="status"><p class="mute">Enter the staff key and press Load.</p></div>
+<div class="card" id="feed" hidden><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><h2>Real headlines today</h2><button class="btn ghost" id="loadFeed" type="button">Refresh</button></div>
+  <p class="mute">Live business headlines from BBC and The Guardian. Press <b>Turn into a story</b> and the AI drafts a game story in our words, with suggested market moves, for you to check, edit and publish.</p><div id="feedList"><p class="mute">Loading…</p></div></div>
 <div class="card" id="desk" hidden>
   <h2>Today’s news</h2><p class="mute">Pick a story from the list or write your own, set how much it moves the market, sectors or single companies, then publish. Prices move the moment you publish, plus a little random movement (bigger for crypto and oil, smaller for gilts and the pound).</p>
   <div id="items"></div>
@@ -49,14 +51,16 @@ const pct=x=>`<span class="${x>0?'up':x<0?'down':''}">${x>0?'+':''}${Number(x).t
 async function load(){
   try{S=await api('GET',null,'?view=staff')}catch(e){$('#status').innerHTML=`<p class="mute">${esc(e.message)}</p>`;return}
   const g=S.game;
-  $('#status').innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><div>${g?`<h2>${esc(g.name)}</h2><p class="mute" style="margin:2px 0 0">Day ${g.day} · ${g.players} player${g.players===1?'':'s'} · <a href="/trading.html" target="_blank">open the student view ↗</a></p>`:'<h2>No game running</h2><p class="mute">Start one: everyone who joins gets £100,000.</p>'}</div>
+  $('#status').innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><div>${g?`<h2>${esc(g.name)}</h2><p class="mute" style="margin:2px 0 0">Day ${g.day} · ${g.players} player${g.players===1?'':'s'} · Bank Rate (cash earns) <input id="rate" type="number" step="0.05" value="${g.cashRate}" style="width:80px;display:inline-block;padding:4px 6px">% <button class="btn ghost" id="setRate" type="button" style="padding:4px 10px">Set</button> · <a href="/trading.html" target="_blank">open the student view ↗</a></p>`:'<h2>No game running</h2><p class="mute">Start one: everyone who joins gets £100,000.</p>'}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><input id="gname" placeholder="Game name" value="${esc(g?'':'The Desk trading game · '+new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'}))}" style="width:260px"><button class="btn ${g?'ghost':'hot'}" id="newGame">${g?'Start a new game':'Start the game'}</button></div></div>
     <details ${g?'':'open'} style="margin-top:12px"><summary style="cursor:pointer;font-weight:700">Starting levels for a new game</summary><p class="mute">Put in today’s real closing levels (from any market website) so the game starts where the real market is. The defaults are rough placeholders. Quickest: paste lines like <code>SHEL 27.15</code> or <code>BTC, 91500</code> (UK shares in pounds, so 2,715p = 27.15) and press Fill.</p>
     <textarea id="paste" placeholder="SHEL 27.15&#10;HSBA 10.42&#10;BTC 91500" style="min-height:90px"></textarea><button class="btn ghost" type="button" id="fillLv" style="margin:6px 0 10px">Fill</button> <span class="mute" id="fillMsg"></span>
     <div class="sectors">${S.universe.map(u=>`<div><label style="margin:0 0 2px;font-weight:600">${esc(u.name)}</label><input type="number" step="any" data-lvl="${esc(u.ticker)}" value="${u.price}"></div>`).join('')}</div></details>`;
   const fl=$('#fillLv');if(fl)fl.onclick=()=>{let n=0,bad=[];$('#paste').value.split(/\n/).forEach(l=>{const m=l.trim().match(/^([A-Za-z0-9.]+)[\s,;:=]+£?([\d.,]+)/);if(!m)return;const t=m[1].toUpperCase(),v=parseFloat(m[2].replace(/,/g,''));const i=document.querySelector(`[data-lvl="${t}"]`);if(i&&v>0){i.value=v;n++}else bad.push(t)});$('#fillMsg').textContent=`Filled ${n}.`+(bad.length?` Not recognised: ${bad.slice(0,8).join(', ')}`:'')};
   $('#newGame').onclick=async()=>{if(g&&!confirm('Start a new game? Everyone goes back to £100,000 and prices reset. The current game is kept as ended.'))return;const levels={};document.querySelectorAll('[data-lvl]').forEach(i=>levels[i.dataset.lvl]=parseFloat(i.value));try{await api('POST',{action:'staff-new-game',name:$('#gname').value||'The Desk trading game',levels});$('#items').innerHTML='';load()}catch(e){alert(e.message)}};
-  $('#desk').hidden=!g;$('#recent').hidden=!g;
+  $('#desk').hidden=!g;$('#recent').hidden=!g;$('#feed').hidden=!g;
+  const sr=$('#setRate');if(sr)sr.onclick=async()=>{try{const d=await api('POST',{action:'staff-rate',rate:parseFloat($('#rate').value)});alert('Bank Rate set to '+d.cashRate+'%.')}catch(e){alert(e.message)}};
+  if(g&&!$('#feedList').dataset.loaded)loadFeed();
   if(!g)return;
   if(!$('#items').children.length)addItem();
   preview();
@@ -69,11 +73,11 @@ function addItem(){
     <label>Headline</label><input data-h maxlength="160">
     <label>Story (what happened)</label><textarea data-b></textarea>
     <label>Why it moves markets (students read this after it’s published)</label><textarea data-w></textarea>
-    <div class="three"><div><label>Risk appetite % (shares; crypto moves 2×)</label><input type="number" step="0.1" data-m value="0"></div><div><label>One asset</label><select data-stk><option value="">None</option>${S.prices.map(p=>`<option value="${esc(p.ticker)}">${esc(p.name)}</option>`).join('')}</select></div><div><label>That asset %</label><input type="number" step="0.1" data-sv value="0"></div></div>
+    <div class="three"><div><label>Risk appetite % (shares; crypto moves 2×)</label><input type="number" step="0.1" data-m value="0"><label>Bank Rate change (e.g. -0.25)</label><input type="number" step="0.05" data-br value="0"></div><div><label>One asset</label><select data-stk><option value="">None</option>${S.prices.map(p=>`<option value="${esc(p.ticker)}">${esc(p.name)}</option>`).join('')}</select></div><div><label>That asset %</label><input type="number" step="0.1" data-sv value="0"></div></div>
     <label>Asset group moves %</label><div class="sectors">${S.sectors.map(s=>`<div><label style="margin:0 0 2px;font-weight:600">${esc(s)}</label><input type="number" step="0.1" data-sec="${esc(s)}" value="0"></div>`).join('')}</div>
     <div style="margin-top:10px"><button class="btn ghost" type="button" data-rm>Remove this story</button></div>`;
   d.querySelector('[data-rm]').onclick=()=>{d.remove();preview()};
-  d.querySelector('[data-preset]').onchange=e=>{const p=S.presets.find(x=>x.id===e.target.value);if(!p)return;d.querySelector('[data-h]').value=p.headline;d.querySelector('[data-b]').value=p.body;d.querySelector('[data-w]').value=p.why;d.querySelector('[data-m]').value=p.effects.market||0;
+  d.querySelector('[data-preset]').onchange=e=>{const p=S.presets.find(x=>x.id===e.target.value);if(!p)return;d.querySelector('[data-h]').value=p.headline;d.querySelector('[data-b]').value=p.body;d.querySelector('[data-w]').value=p.why;d.querySelector('[data-m]').value=p.effects.market||0;d.querySelector('[data-br]').value=p.effects.bankRate||0;
     d.querySelectorAll('[data-sec]').forEach(i=>i.value=p.effects.sectors?.[i.dataset.sec]||0);
     if(p.needsStock){const dflt={target:25,warning:-20,beat:6,miss:-7}[p.needsStock]||0;d.querySelector('[data-sv]').value=dflt;d.querySelector('[data-h]').value=p.headline;d.querySelector('[data-stk]').focus();$('#pmsg').textContent='Pick the company in “One asset” and replace [Company] in the headline with its name.'}
     else{d.querySelector('[data-stk]').value='';d.querySelector('[data-sv]').value=0}
@@ -82,12 +86,28 @@ function addItem(){
   $('#items').appendChild(d);
 }
 function events(){return [...document.querySelectorAll('#items .item')].map(d=>{const sectors={};d.querySelectorAll('[data-sec]').forEach(i=>{const v=parseFloat(i.value);if(v)sectors[i.dataset.sec]=v});const stocks={};const t=d.querySelector('[data-stk]').value,sv=parseFloat(d.querySelector('[data-sv]').value);if(t&&sv)stocks[t]=sv;
-  return {headline:d.querySelector('[data-h]').value,body:d.querySelector('[data-b]').value,why:d.querySelector('[data-w]').value,practitioner:d.querySelector('[data-by]').value,effects:{market:parseFloat(d.querySelector('[data-m]').value)||0,sectors,stocks}}})}
+  return {headline:d.querySelector('[data-h]').value,body:d.querySelector('[data-b]').value,why:d.querySelector('[data-w]').value,practitioner:d.querySelector('[data-by]').value,effects:{bankRate:parseFloat(d.querySelector('[data-br]').value)||0,market:parseFloat(d.querySelector('[data-m]').value)||0,sectors,stocks}}})}
 function preview(){
   if(!S?.prices)return;const ev=events();
   const RISK=['UK shares','US shares','Crypto'];const rows=S.prices.map(p=>{let m=0;ev.forEach(e=>{if(RISK.includes(p.sector))m+=(e.effects.market||0)*(p.sector==='Crypto'?2:1);m+=e.effects.sectors[p.sector]||0;m+=e.effects.stocks[p.ticker]||0});return {...p,m}});
   $('#preview').innerHTML=`<table><thead><tr><th>ASSET</th><th>GROUP</th><th class="n">NOW</th><th class="n">MOVE</th><th class="n">NEW PRICE</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.sector)}</td><td class="n">${r.price.toFixed(r.dp)}</td><td class="n">${pct(r.m)}</td><td class="n">${(r.price*(1+r.m/100)).toFixed(r.dp)}</td></tr>`).join('')}</tbody></table>`;
 }
+async function loadFeed(){
+  $('#feedList').dataset.loaded='1';$('#feedList').innerHTML='<p class="mute">Loading…</p>';
+  try{const d=await api('GET',null,'?view=headlines');
+    $('#feedList').innerHTML=d.headlines.length?d.headlines.slice(0,20).map((h,i)=>`<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid var(--soft);padding:8px 0"><div><b>${esc(h.title)}</b><div class="mute">${esc(h.source)}${h.publishedAt?' · '+new Date(h.publishedAt).toLocaleString('en-GB',{weekday:'short',hour:'2-digit',minute:'2-digit'}):''} · <a href="${esc(h.link)}" target="_blank" rel="noopener">read</a></div></div><button class="btn" type="button" data-draft="${i}" style="white-space:nowrap">Turn into a story</button></div>`).join(''):'<p class="mute">No headlines came back from the feeds just now. Try Refresh in a minute.</p>';
+    document.querySelectorAll('[data-draft]').forEach(b=>b.onclick=async()=>{const h=d.headlines[+b.dataset.draft];b.disabled=true;b.textContent='Drafting…';
+      try{const r=await api('POST',{action:'staff-draft',headline:h.title,summary:h.summary});
+        // Put the draft in the first empty story, or a new one.
+        let item=[...document.querySelectorAll('#items .item')].find(x=>!x.querySelector('[data-h]').value.trim());if(!item){addItem();item=[...document.querySelectorAll('#items .item')].pop()}
+        const D=r.draft;item.querySelector('[data-h]').value=D.headline;item.querySelector('[data-b]').value=D.body;item.querySelector('[data-w]').value=D.why;item.querySelector('[data-m]').value=D.effects.market||0;item.querySelector('[data-br]').value=D.effects.bankRate||0;
+        item.querySelectorAll('[data-sec]').forEach(i=>i.value=D.effects.sectors?.[i.dataset.sec]||0);
+        const st=Object.entries(D.effects.stocks||{})[0];item.querySelector('[data-stk]').value=st?st[0]:'';item.querySelector('[data-sv]').value=st?st[1]:0;
+        preview();item.scrollIntoView({behavior:'smooth',block:'start'});b.textContent='Drafted ✓';$('#pmsg').textContent=Object.keys(D.effects.stocks||{}).length>1?'The draft also moved: '+Object.entries(D.effects.stocks).slice(1).map(([k,v])=>k+' '+v+'%').join(', ')+'. Add them as extra stories if you want them.':'';
+      }catch(e){b.disabled=false;b.textContent='Turn into a story';alert(e.message)}});
+  }catch(e){$('#feedList').innerHTML=`<p class="mute">${esc(e.message)}</p>`}
+}
+$('#loadFeed').onclick=loadFeed;
 $('#addItem').onclick=()=>{addItem();preview()};
 $('#publish').onclick=async()=>{const ev=events();if(ev.some(e=>/\[company\]/i.test(e.headline))){$('#pmsg').textContent='Replace “[company]” in the headline with the company’s name.';return}
   if(!confirm(`Publish ${ev.length} stor${ev.length===1?'y':'ies'} and move prices to day ${S.game.day+1}?`))return;
