@@ -1,6 +1,6 @@
 import {signupProfile} from '../lib/signup-profile.mjs';
 import { timingSafeEqual } from 'node:crypto';
-import { sameOrigin, apiFailure } from '../lib/report-store.mjs';
+import { sameOrigin, apiFailure, owner, sql, initStore } from '../lib/report-store.mjs';
 import { normEmail, validEmail, createLoginLink, redeemLoginToken, startSession, endSession, emailConfigured, sendLoginEmail, allow, upsertAccount } from '../lib/accounts.mjs';
 
 // POST { action: 'request', email }   → emails a one-time sign-in link (same answer whether or not the email has an account)
@@ -20,7 +20,8 @@ export default async function handler(req, res) {
       if (!emailConfigured()) return res.status(503).json({ error: 'Email sign-in isn’t switched on yet. Contact us and we’ll send you a sign-in link.' });
       if (!await allow('login-ip:' + ip, 10) || !await allow('login-email:' + email, 3)) return res.status(429).json({ error: 'Too many sign-in requests. Try again in an hour.' });
       let profile=null;if(body.action==='signup'){try{profile=signupProfile(body)}catch(e){return res.status(400).json({error:e.message})}}
-      await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile}));
+      let assessmentId=null;if(profile){const browserOwner=owner(req,res);if(browserOwner){await initStore();assessmentId=(await sql().query('SELECT id FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[browserOwner]))[0]?.id||null;}}
+      await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile,assessmentId}));
       return res.json({ success: true, message: 'Check your inbox for a sign-in link. It works once and expires in 30 minutes.' });
     }
     if (body.action === 'verify') {

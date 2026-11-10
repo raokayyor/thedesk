@@ -236,6 +236,7 @@ function render(){
   const target=[D.profile.targetFirm,D.profile.targetDivision||D.profile.targetSector,D.profile.programme].filter(Boolean).join(' · ');
   app.innerHTML=`${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><div id="sectorInterests" class="sector-interests" aria-label="Your sector interests"><span class="mute">Choose your sectors</span></div></div>
+    ${!D.member?`<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0 20px">${!D.signedIn?'<a class="btn hot" href="/signup.html?plan=free">Save your Desk — join free</a>':''}<a class="btn ghost" href="/signup.html?plan=member">Explore membership →</a></div>`:''}
     ${!D.member&&qp.has('assessment')?'<div class="notice" role="status">Your free assessment is ready. Your initial score and result are saved below.</div>':''}<section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
     ${actionsCard()}${D.member?toolsRow():freeRow()}
