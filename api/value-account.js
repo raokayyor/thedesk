@@ -64,6 +64,12 @@ export default async function handler(req, res) {
       return res.json({ success: true });
     }
     if (b.action === 'signout') { await A.signOut(req, res); return res.json({ success: true }); }
+    if(b.action==='save-answer'){
+      if(typeof b.question!=='string'||b.question.trim().length<10||b.question.length>1600||typeof b.text!=='string'||b.text.trim().length<20||b.text.length>12000)return res.status(400).json({error:'Add a question and an answer between 20 and 12,000 characters.'});
+      const p=await A.principal(req,res);if(!await A.useQuota('save-answer:'+p,60))return res.status(429).json({error:'You’ve saved plenty of answers today. Try again tomorrow.'});
+      const data={question:b.question.trim(),text:b.text.trim(),firm:String(b.firm||'').slice(0,120),role:String(b.role||'').slice(0,160),kind:String(b.kind||'cv').slice(0,40),source:b.source==='transcript'?'transcript':'draft'};
+      return res.json({success:true,id:await A.saveItem(p,'answer',data)});
+    }
     if (b.action === 'delete-item') return res.json({ success: await A.deleteItem(await A.principal(req, res), b.id) });
     if (b.action === 'outcome') {
       if (!await A.useQuota('outcome:' + hash(A.clientKey(req)), 10)) return res.status(429).json({ error: 'Thanks, that’s plenty for today.' });
