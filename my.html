@@ -89,6 +89,7 @@ function headerBits(){
   if(D.member)parts.push(`<span class="pill">Member${D.until?' until '+esc(dayY(D.until)):''}</span>`);
   else if(D.report)parts.push(`<button class="btn hot" id="join" style="min-height:40px;padding:9px 16px">Become a member · £89 a year</button>`);
   if(D.signedIn)parts.push(`<span>${esc(D.email)}</span><button class="btn ghost" id="out" style="min-height:36px;padding:6px 12px">Sign out</button>`);
+  else parts.push('<a class="btn ghost" href="/signin.html" style="min-height:36px;padding:6px 12px">Sign in</a>');
   who.innerHTML=parts.join('');
 }
 function panelBand(){
@@ -201,7 +202,7 @@ function extrasRow(){
   const call='';
 
   const saved=ints.length?`<details class="card"><summary>Your saved interview answers (${ints.length})</summary><div style="margin-top:8px">${ints.slice(0,20).map(i=>{const f=i.data.feedback||{};return `<details class="ans"><summary>${esc(i.data.followUp?'Follow-up: ':'')}${esc(i.data.question)} <span style="color:var(--accent-ink);margin-left:6px">${f.overall??''}</span></summary><p class="mute">${esc(day(i.createdAt))}${i.data.firm?' · '+esc(i.data.firm):''}</p>${f.verdictTitle?`<p style="font-size:14px"><b>${esc(f.verdictTitle)}</b> ${esc(f.verdict||'')}</p>`:''}${(f.fixes||[]).length?`<p style="font-size:14px"><b>Fix next time:</b> ${f.fixes.map(x=>esc(x.fix)).join(' ')}</p>`:''}<p class="mute">Your answer: ${esc(i.data.transcript)}</p><button class="btn ghost" data-delans="${esc(i.id)}" style="min-height:32px;padding:4px 12px">Delete</button></details>`}).join('')}</div></details>`:'';
-  const outcome=`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`;
+  const outcome=D.member?`<div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:14px"><b>Had an interview?</b><br>Tell us what you were asked. Two minutes, and it keeps the firm guides accurate.</div><button class="btn ghost" id="outcome">How did it go?</button></div>`:'';
   const history=(ME.assessments||[]).length?`<details class="card"><summary>Your assessment history (${ME.assessments.length})</summary><ul class="list">${ME.assessments.map(a=>`<li><span><b>${esc(a.firm||'Assessment')}</b>${a.route?' · '+esc(a.route):''}<br><span class="mute">${esc(day(a.createdAt))}${a.rootId?' · recheck':''}</span></span><span>${a.overall!==null?`<b>${Math.round(a.overall)}</b> `:''}${a.paidAt&&!a.refundedAt?`<a class="btn" href="/fullcycle.html?id=${encodeURIComponent(a.id)}">Full Cycle report</a> `:''}<a class="btn ghost" href="/result-final-design.html?id=${encodeURIComponent(a.id)}">Result</a></span></li>`).join('')}</ul></details>`:'';
   return call+history+saved+outcome;
 }
@@ -216,7 +217,10 @@ function freeRow(){
 function lockedRow(){
   const item=(t,d)=>`<div class="card tool" style="opacity:.92"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>${t}</h3><span class="mute">Members</span></div><p style="margin:0;font-size:14px;color:#3b4652">${d}</p></div>`;
   return `<section class="grid4">${item('Numeracy and commercial tests','Unlimited 10-question tests for your route from a bank of over 2,000. Your best of the last 3 moves your readiness.')}${item('Applications and deadlines','Your shortlist from the tracker, deadlines, firm prep and practice in one list, with reminders.')}${item('Your practitioners','Notes from the panel on your next steps, the advice they disagree with, a question answered within 48 hours and a call.')}${item('Practise HireVue &amp; interviews','Practise HireVue / recorded video, live video, phone or in-person interviews, with CV-based answers and practitioner guidance.')}</section>
-  <div class="card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div style="font-size:15px"><b>Everything on this page, for a year.</b><br><span class="mute">£89 once. No subscription.</span></div>${D.report?'<button class="btn hot" id="join5">Become a member · £89 a year</button>':'<a class="btn hot" href="/assessment.html">Start with the free assessment</a>'}</div>`;
+`;
+}
+function communityCard(){
+ return `<section class="card"><div style="display:flex;justify-content:space-between;gap:14px;align-items:baseline"><div><div class="kicker">The Desk community</div><h2>Prepare together.</h2></div><span class="mute">Members</span></div><p class="mute">Ask questions, share what you’re learning and find people working towards the same next step.</p><div class="grid3"><a class="act" href="/community.html?category=questions"><b>Forum &amp; questions</b><span class="d">Compare application approaches, ask a question and help someone else move forward.</span></a><a class="act" href="/community.html?category=practice"><b>Find a practice partner</b><span class="d">Arrange mock interviews, discuss technical questions and prepare together.</span></a><a class="act" href="/community.html?category=interviews"><b>Share interview experiences</b><span class="d">Talk through what you learned and support members preparing for their next round.</span></a></div></section>`;
 }
 function render(){
   headerBits();
@@ -228,7 +232,7 @@ function render(){
     ${panelBand()}
     ${actionsCard()}${D.member?toolsRow():freeRow()}
     ${D.member?`<section class="grid3">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
-    ${extrasRow()}`;
+    ${communityCard()}${extrasRow()}`;
   bind();if(D.member)loadNews();
   if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}
 }
