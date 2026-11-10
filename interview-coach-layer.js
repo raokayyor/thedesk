@@ -154,6 +154,7 @@
       };}
       panel.querySelector('[data-dc=full]').onclick = () => { showFull = !showFull; render(); };
     }
+    if(pts.length){const fold=document.createElement('details');fold.className='dc-evidence-fold';const summary=document.createElement('summary');summary.textContent='View your CV evidence for this question';fold.append(summary);for(const node of [...panel.children])if(!node.classList.contains('dc-create-answer')&&!node.classList.contains('dc-created-answer'))fold.append(node);panel.prepend(fold);}
     const lead=reasoning?'reasoning':themes[0]?.key||'motivation', employer=globalThis.DeskEmployerPractice?.context($('firmSelect')?.value,$('roleSelect')?.value);const checks=employer&&!reasoning?employer.checks:(LISTEN[lead]||LISTEN.motivation);
     pr.innerHTML = `<div class="dc-faces" aria-hidden="true">${PANEL.slice(0, 4).map(([i]) => `<span class="dc-av">${i}</span>`).join('')}</div>
       <div><div class="dc-k k2">${employer?esc(employer.label)+' practice focus':'What to demonstrate'}</div><ul>${checks.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
