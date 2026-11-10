@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {signupProfile} from '../lib/signup-profile.mjs';
+const valid={name:'Alex Morgan',university:'University of Bristol',course:'Economics',year:'2nd year',sectors:['Banking'],plan:'free'};
+test('signup validates required fields and filters interest values',()=>{assert.deepEqual(signupProfile({...valid,sectors:['Banking','Banking','invented']}),valid);for(const key of ['name','university','course','year'])assert.throws(()=>signupProfile({...valid,[key]:''}));assert.throws(()=>signupProfile({...valid,sectors:[]}));});
+test('paid signup is a preference and does not carry an entitlement',()=>{const p=signupProfile({...valid,plan:'paid',member:true,paid_at:'2026-11-10',email:'private@example.com'});assert.equal(p.plan,'paid');assert.equal(p.member,undefined);assert.equal(p.paid_at,undefined);assert.equal(p.email,undefined)});

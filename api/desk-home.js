@@ -187,7 +187,8 @@ export default async function handler(req, res) {
       const byKey = Object.fromEntries(progs.map(x => [x.firm + '|' + x.name, x]));
       const fromTracker = Object.entries(short.list).map(([k, v]) => { const x = byKey[k]; const [firm, ...rest] = k.split('|'); return { id: 't:' + k, source: 'tracker', firm: x?.firm || firm, programme: x?.name || rest.join('|'), stage: v.stage, deadline: x?.closes || '', rolling: !!x?.rolling, url: x?.url || '' }; });
       const applications = [...fromTracker, ...apps.map(a => {const live=byKey[a.data.firm+'|'+a.data.programme];return {id:a.id,source:'manual',...a.data,...(live?{deadline:live.closes||'',rolling:!!live.rolling,url:live.url||a.data.url}:{}),createdAt:a.createdAt};})].sort((x, y) => String(x.deadline || '9999').localeCompare(String(y.deadline || '9999')));
-      const profile = latest?.profile || {};
+      const signupSaved=account?(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[account.id]))[0]?.data:null;
+      const profile = {...(signupSaved||{}),...(latest?.profile||{})};
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
       const reportUrl = paidRow ? '/fullcycle.html?id=' + paidRow.id : latest ? '/result-final-design.html?id=' + latest.id : null;

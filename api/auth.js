@@ -1,3 +1,4 @@
+import {signupProfile} from '../lib/signup-profile.mjs';
 import { timingSafeEqual } from 'node:crypto';
 import { sameOrigin, apiFailure } from '../lib/report-store.mjs';
 import { normEmail, validEmail, createLoginLink, redeemLoginToken, startSession, endSession, emailConfigured, sendLoginEmail, allow, upsertAccount } from '../lib/accounts.mjs';
@@ -13,12 +14,13 @@ export default async function handler(req, res) {
   const origin = new URL(process.env.VERCEL_ENV==='preview'?`https://${req.headers.host}`:process.env.APP_ORIGIN || `https://${req.headers.host}`).origin;
   const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   try {
-    if (body.action === 'request') {
+    if (body.action === 'request'||body.action==='signup') {
       const email = normEmail(body.email);
       if (!validEmail(email)) return res.status(400).json({ error: 'Enter a valid email address.' });
       if (!emailConfigured()) return res.status(503).json({ error: 'Email sign-in isn’t switched on yet. Contact us and we’ll send you a sign-in link.' });
       if (!await allow('login-ip:' + ip, 10) || !await allow('login-email:' + email, 3)) return res.status(429).json({ error: 'Too many sign-in requests. Try again in an hour.' });
-      await sendLoginEmail(email, await createLoginLink(email, origin));
+      let profile=null;if(body.action==='signup'){try{profile=signupProfile(body)}catch(e){return res.status(400).json({error:e.message})}}
+      await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile}));
       return res.json({ success: true, message: 'Check your inbox for a sign-in link. It works once and expires in 30 minutes.' });
     }
     if (body.action === 'verify') {
@@ -26,7 +28,7 @@ export default async function handler(req, res) {
       const account = await redeemLoginToken(body.token);
       if (!account) return res.status(400).json({ error: 'This sign-in link has expired or has already been used. Ask for a new one.' });
       await startSession(res, account.id);
-      return res.json({ success: true });
+      return res.json({ success: true, next:account.signupPlan==='paid'?'/membership-start.html':'/my.html' });
     }
     if (body.action === 'signout') { await endSession(req, res); return res.json({ success: true }); }
     if (body.action === 'staff-link') {

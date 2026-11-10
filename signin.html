@@ -23,7 +23,7 @@
       <div class="row"><button class="btn or" id="send">Email me a sign-in link</button></div>
       <p class="mute" id="msg" role="status" style="font-size:15px;margin:12px 0 0"></p>
     </form>
-    <p class="foot">Already signed in? Go to <a href="/community.html">My Desk</a>.</p>
+    <p class="foot">New here? <a href="/signup.html">Create your account</a>.</p><p class="foot">Already signed in? Go to <a href="/my.html">My Desk</a>.</p>
   </div>
 </main>
 <script type="module">
@@ -34,7 +34,7 @@ if (token) {
   // Arriving from the email link: sign this device in, then go to My Desk.
   $('#title').textContent = 'Signing you inâ€¦'; $('#lede').textContent = ''; $('#form').classList.add('hidden');
   history.replaceState(null, '', '/signin.html');
-  try { await post({ action: 'verify', token }); location.replace('/my.html'); }
+  try { const verified=await post({ action: 'verify', token }); location.replace(verified.next==='/membership-start.html'?verified.next:'/my.html'); }
   catch (e) { $('#title').textContent = 'That link didnâ€™t work'; $('#lede').textContent = e.message; $('#form').classList.remove('hidden'); }
 }
 $('#form').addEventListener('submit', async e => {
