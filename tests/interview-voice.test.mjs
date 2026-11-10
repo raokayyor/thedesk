@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';import {registerHooks} from 'node:module';
 let calls=0,owned=true,allowed=true;
-registerHooks({resolve(s,c,n){return s.endsWith('/lib/report-store.mjs')||s==='../lib/report-store.mjs'?{url:'voice-test:store',shortCircuit:true}:n(s,c)},load(u,c,n){return u==='voice-test:store'?{format:'module',shortCircuit:true,source:`export const sameOrigin=(req,res)=>req.headers.origin==='https://desk.test'||(res.status(403).json({error:'origin'}),false);export const owner=req=>req.headers.cookie?'owner':null;export const ownedRecord=async()=>globalThis.__voiceOwned?{}:null;export const sql=()=>({query:async q=>q.startsWith('CREATE')?[]:(globalThis.__voiceAllowed?[{calls:1}]:[])});`}:n(u,c)}});
+registerHooks({resolve(s,c,n){return s.endsWith('/lib/report-store.mjs')||s==='../lib/report-store.mjs'?{url:'voice-test:store',shortCircuit:true}:n(s,c)},load(u,c,n){return u==='voice-test:store'?{format:'module',shortCircuit:true,source:`export const sameOrigin=(req,res)=>req.headers.origin==='https://desk.test'||(res.status(403).json({error:'origin'}),false);export const owner=(req,res,create)=>req.headers.cookie||create?'owner':null;export const ownedRecord=async()=>globalThis.__voiceOwned?{}:null;export const sql=()=>({query:async q=>q.startsWith('CREATE')?[]:(globalThis.__voiceAllowed?[{calls:1}]:[])});`}:n(u,c)}});
 const {default:handler}=await import('../api/interview-voice.js');globalThis.__voiceOwned=owned;globalThis.__voiceAllowed=allowed;
 const res=()=>({headers:{},code:200,setHeader(k,v){this.headers[k]=v},status(c){this.code=c;return this},json(v){this.body=v;return this},send(v){this.body=v;return this},end(){return this}});
 const request={method:'POST',headers:{origin:'https://desk.test',cookie:'test'},body:{assessmentId:'a'.repeat(48),text:'Tell me about your experience.'}};
@@ -13,3 +13,6 @@ globalThis.__voiceOwned=false;r=res();await handler(request,r);assert.equal(r.co
 globalThis.__voiceOwned=true;globalThis.__voiceAllowed=false;r=res();await handler(request,r);assert.equal(r.code,429);assert.equal(calls,0);
 globalThis.__voiceAllowed=true;r=res();await handler(request,r);assert.equal(r.code,200);assert.equal(r.headers['Content-Type'],'audio/mpeg');assert.equal(calls,1);
 console.log('PASS voice configuration, secret isolation, origin/ownership checks, daily allowance and provider request. No paid calls.');
+
+// General practice speaks only the caller's supplied question; CV access remains protected above.
+r=res();await handler({...request,headers:{origin:'https://desk.test'},body:{text:'Tell me about yourself.'}},r);assert.equal(r.code,200);assert.equal(calls,2);

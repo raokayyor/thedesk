@@ -28,7 +28,7 @@
     const token=speechToken;reading=true;lock(true);
     const preview = document.getElementById('preview');
     if (preview.src && !preview.srcObject) { preview.pause(); preview.removeAttribute('src'); preview.srcObject = stream; preview.muted = true; preview.controls = false; if (stream) preview.play().catch(() => {}); }
-    await window.DeskNaturalVoice?.ready;
+    await (window.DeskNaturalVoice?.ensureReady?.()||window.DeskNaturalVoice?.ready);
     if(token!==speechToken)return false;
     if (!voiceAvailable) { voiceStatus.textContent = 'Spoken questions are unavailable in this browser. Read the question above and start your answer.'; return false; }
     const question = questions[current].q;
@@ -47,12 +47,8 @@
         resolve(success);
       };
       const timeout=setTimeout(()=>{window.DeskNaturalVoice?.cancel();if(browserVoiceAvailable)window.speechSynthesis.cancel();finish(false)},45000);
-      if(window.DeskNaturalVoice?.enabled&&assessment?.id){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,assessment.id).then(finish);return}
-      if(!browserVoiceAvailable){finish(false);return}
-      const utterance=new SpeechSynthesisUtterance(question);utterance.lang='en-GB';utterance.rate=0.97;
-      const voices=window.speechSynthesis.getVoices();const preferred=voices.find(v=>/^en-GB/i.test(v.lang)&&/natural|online|neural/i.test(v.name))||voices.find(v=>/^en/i.test(v.lang)&&/natural|online|neural/i.test(v.name))||voices.find(v=>/^en-GB/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang));if(preferred)utterance.voice=preferred;
-      utterance.onend=()=>finish(true);utterance.onerror=()=>finish(false);
-      try{window.speechSynthesis.speak(utterance)}catch{finish(false)}
+      if(window.DeskNaturalVoice?.enabled){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,assessment?.id).then(finish);return}
+      finish(false); // Do not silently substitute device speech for the interviewer voice.
     });
   }
 

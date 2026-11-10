@@ -8,10 +8,10 @@ export default async function handler(req,res){
  if(!sameOrigin(req,res))return;
  if(!voiceConfigured())return res.status(503).json({error:'Natural voice is not configured yet.'});
  const text=voiceText(req.body?.text),id=req.body?.assessmentId;
- if(text.length<3||text.length>1600||typeof id!=='string'||!/^[a-f0-9]{48}$/.test(id))return res.status(400).json({error:'Invalid interview question.'});
- const who=owner(req,res);if(!who)return res.status(401).json({error:'Open your saved assessment to use natural voice.'});
+ if(text.length<3||text.length>1600||(id!=null&&(typeof id!=='string'||!/^[a-f0-9]{48}$/.test(id))))return res.status(400).json({error:'Invalid interview question.'});
+ const who=owner(req,res,id==null);if(!who)return res.status(401).json({error:'Open your saved assessment to use natural voice.'});
  try{
-  if(!await ownedRecord(req,res,id))return res.status(404).json({error:'Assessment unavailable.'});
+  if(id!=null&&!await ownedRecord(req,res,id))return res.status(404).json({error:'Assessment unavailable.'});
   await sql().query('CREATE TABLE IF NOT EXISTS desk_voice_limits (owner_hash text NOT NULL, day date NOT NULL, calls integer NOT NULL DEFAULT 0, PRIMARY KEY(owner_hash,day))');
   const allowed=await sql().query('INSERT INTO desk_voice_limits(owner_hash,day,calls) VALUES($1,CURRENT_DATE,1) ON CONFLICT(owner_hash,day) DO UPDATE SET calls=desk_voice_limits.calls+1 WHERE desk_voice_limits.calls<80 RETURNING calls',[who]);
   if(!allowed.length)return res.status(429).json({error:'Daily voice allowance reached. You can still read the questions.'});
