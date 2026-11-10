@@ -187,8 +187,8 @@
       const anchor = document.querySelector('.session-context') || document.getElementById('setupFramework')?.closest('section,.card') || sel.closest('section,.card,details');
       anchor ? anchor.insertAdjacentElement('afterend', el) : null;
     };
-    sel.addEventListener('change', () => setTimeout(place, 50));
-    setTimeout(place, 600);
+    let last = null; // the page sets the firm itself after loading the profile, without a change event
+    setInterval(() => { if (sel.value !== last) { last = sel.value; place(); } }, 400);
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
 })();

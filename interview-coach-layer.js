@@ -172,6 +172,8 @@
     const mo = new MutationObserver(() => { const q = ($('question')?.textContent || '').trim(); if (q && q !== lastQ) { showFull = false; if (sel) sel.dataset.dcTouched = ''; render(); } });
     ['question', 'questionType'].forEach(id => $(id) && mo.observe($(id), { childList: true, characterData: true, subtree: true }));
     const cv = $('cvText'); if (cv) cv.addEventListener('input', () => { clearTimeout(cv.__dc); cv.__dc = setTimeout(render, 500); });
+    // The page fills the CV box itself after loading the assessment (no input event), so also watch its length.
+    if (cv) { let len = cv.value.length; setInterval(() => { if (cv.value.length !== len) { len = cv.value.length; render(); } }, 700); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
