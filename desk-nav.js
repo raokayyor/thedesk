@@ -9,12 +9,14 @@
   var interview = null;
   try { interview = localStorage.getItem('desk-interview-url'); } catch (e) {}
   if (!/^\/interview-start\.html\?id=[a-f0-9]{48}$/.test(interview || '')) interview = null;
+  var previews={Report:'/report-preview.html',Interview:'/interview-preview.html','Application Help':'/application-preview.html','Assessment centres':'/assessment-centre-preview.html',Tests:'/tests-preview.html',Trading:'/trading-preview.html',Library:'/library-preview.html',Events:'/events-preview.html'};
+  var touring=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
   var links = [
     ['My Desk', '/my.html', /\/my\.html$/],
     ['Report', '/report.html', /\/(fullcycle|result-final-design)\.html$/],
     ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
     ['Application Help','/application-help.html',/\/application-help\.html$/],
-    ['Assessment centres','/assessment-centre.html',/\/(assessment-centre|ac-crib|group-exercise)\.html$/],
+    ['Assessment centres','/assessment-centre.html',/\/(assessment-centre|ac-crib|group-exercise|case-study|inbox-exercise)(-preview)?\.html$/],
     ['Tests', '/tests.html', /\/tests\.html$/],
     ['Trading', '/trading.html', /\/(trading|challenge)\.html$/],
     ['Tracker', '/tracker.html', /\/tracker\.html$/],
@@ -33,11 +35,12 @@
   var nav = document.createElement('nav'); nav.className = 'desk-nav'; nav.setAttribute('aria-label', 'Your Desk');
   var inner = document.createElement('div'); inner.className = 'desk-nav-in';
   links.forEach(function (l) {
-    var a = document.createElement('a'); a.href = l[1]; a.textContent = l[0];
-    if (l[2].test(path)) a.setAttribute('aria-current', 'page');
+    var a = document.createElement('a'); a.href = previews[l[0]]?(previews[l[0]]+(touring?'?tour=1':'')):l[0]==='Community'?'/community.html?demo=1':l[1];a.dataset.memberHref=l[1];a.dataset.navLabel=l[0]; a.textContent = l[0];
+    if (l[2].test(path)||previews[l[0]]===path||l[0]==='Report'&&path==='/report-sample.html') a.setAttribute('aria-current', 'page');
     inner.appendChild(a);
   });
   nav.appendChild(inner);
+  if(!touring)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(d=>{if(!d?.member)return;inner.querySelectorAll('a').forEach(a=>{a.href=a.dataset.navLabel==='Interview'&&/^\/interview-start\.html(?:\?id=[a-f0-9]{48})?$/.test(d.interviewUrl||'')?d.interviewUrl:a.dataset.memberHref;});}).catch(()=>{});
   function place() {
     var header = document.querySelector('body > header, header.top');
     if (header && header.parentNode) header.parentNode.insertBefore(nav, header.nextSibling);

@@ -1,0 +1,54 @@
+{
+  "id": "jamie",
+  "name": "Jamie Patel",
+  "firstName": "Jamie",
+  "university": "University of Bristol",
+  "course": "BSc Economics",
+  "grade": "Predicted 2:1",
+  "year": "Second year",
+  "targetFirm": "Goldman Sachs",
+  "targetSector": "Investment Banking / IBD",
+  "programme": "Summer internship",
+  "score": 54,
+  "band": "Developing",
+  "sample": true,
+  "cvText": "Jamie Patel\nUniversity of Bristol — BSc Economics, second year, predicted 2:1.\nEducation: studying corporate finance, statistics and microeconomics.\nCampus Café — Part-time Team Member, September 2025–present.\nWorked weekend shifts alongside university studies. Helped prioritise orders during busy periods and communicated delays to customers.\nEconomics group project — UK retail businesses, 2026.\nCompared public annual reports for three UK retailers and helped present a summary of revenue trends. The current CV does not explain Jamie’s individual conclusion or analytical method.\nBristol Economics Society — Member, 2025–present.\nAttended talks about financial markets and career options.\nSkills: Excel for basic tables and charts; PowerPoint presentations.\nNo banking internship, completed valuation model or evidenced leadership responsibility yet.",
+  "priorities": [
+    {
+      "title": "Make your analytical contribution clear",
+      "why": "The retail project names the task but does not explain your method or conclusion.",
+      "action": "Explain which measures you compared, what you found and the part you personally did."
+    },
+    {
+      "title": "Build technical foundations",
+      "why": "The CV does not yet evidence a DCF or valuation project.",
+      "action": "Learn enterprise versus equity value, practise a simple model and only add it once completed."
+    },
+    {
+      "title": "Make motivation specific",
+      "why": "Interest in finance is visible, but there is no researched connection to a firm or team.",
+      "action": "Choose one piece of the firm’s work and explain why it connects to your interests."
+    }
+  ],
+  "breakdown": [
+    {
+      "label": "CV and evidence",
+      "score": 21,
+      "max": 40
+    },
+    {
+      "label": "Competencies",
+      "score": 14,
+      "max": 25
+    },
+    {
+      "label": "Numeracy and commercial tests",
+      "score": 19,
+      "max": 35
+    }
+  ],
+  "before": "Compared public annual reports for three UK retailers and helped present a summary of revenue trends.",
+  "after": "Compared revenue trends across three UK retailers using their public annual reports and helped present the group’s findings. [Add the measures you compared, your conclusion and your personal contribution.]",
+  "opening": "I’m a second-year Economics student at the University of Bristol, working towards a 2:1. Alongside my studies, I work weekend shifts in a café, where I’ve learned to prioritise orders and communicate clearly under pressure. In a group project, I compared retailers’ annual reports and helped present revenue trends. That made me more interested in how businesses perform. [Add your own researched reason for this firm and role.]",
+  "application": "Studying Economics at Bristol has developed my interest in how businesses perform and make investment decisions. In a university group project, I compared public annual reports for three UK retailers and helped present revenue trends. I would strengthen this example by explaining my own conclusion and method. Alongside my degree, weekend café work has taught me to prioritise orders and communicate delays during busy periods. I would bring that combination of analytical curiosity and practical teamwork to an internship. [Add a specific, researched reason for Goldman Sachs and the team you are applying to.]"
+}
