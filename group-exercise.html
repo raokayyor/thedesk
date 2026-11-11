@@ -146,6 +146,8 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const NAMES = { you: 'You', dominic: 'Dominic', priya: 'Priya', sam: 'Sam' };
   const LIMIT = 20 * 60;
+  let speakerQueue=[],queueCursor=0;
+  function queuedSpeaker(){if(queueCursor>=speakerQueue.length){const next=['dominic','priya','sam'];for(let i=next.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[next[i],next[j]]=[next[j],next[i]];}if(next[0]===speakerQueue.at(-1))[next[0],next[1]]=[next[1],next[0]];speakerQueue.push(...next);}return speakerQueue[queueCursor];}
   let mode='open',generation=0,capture=null,readyMic=null,autoMic=false,floorRequested=false,floorResolve=null,candidateName='Jack',allocation=null,chair='you',newsCount=0,pendingNews=false;
   let info = null, scenario = null, transcript = [], startAt = 0, tick = null, busy = false, ended = false, lastActivity = 0, audioNow = null, rec = null, listening = false;
 
@@ -217,12 +219,13 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   async function chairNews(){if(!pendingNews||ended||busy)return;pendingNews=false;if(chair==='you'){$('roomMsg').textContent='New information has arrived. As chair, bring the group back to the changed facts.';if(autoMic&&!listening)await startMic();return;}if(capture){clearTimeout(capture.timeout);capture.live?.cancel();capture.recorder.stop();capture.stream.getTracks().forEach(t=>t.stop());capture=null;listening=false;$('mic').textContent='Use microphone';}await aiTurn('news');}
   async function aiTurn(reason) {
     if (ended || busy) return;
+    const normal=reason!=='start'&&reason!=='news';const head=normal?queuedSpeaker():null;const last=transcript.at(-1);const invited=normal&&reason==='reply'&&last?.who==='you'?['dominic','priya','sam'].find(n=>new RegExp('\\b'+n+'\\b','i').test(last.text)):null;const nextSpeaker=invited||head;
     const run=generation;setBusy(true, 'The group is preparing a response…');
-    const r = await post({ action: 'group-turn', scenario: scenario.id, transcript, elapsed: elapsed(), reason });
+    const r = await post({ action: 'group-turn', scenario: scenario.id, transcript, elapsed: elapsed(), reason, nextSpeaker });
     if(run!==generation||ended)return;
     if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
     if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
-    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;}if(pendingNews&&reason!=='news'&&!ended&&run===generation){setBusy(false);await chairNews();return;} }
+    for (const t of r.j.turns || []) { if (ended||run!==generation) break; if(normal&&t.speaker===head){queueCursor++;} addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;}if(pendingNews&&reason!=='news'&&!ended&&run===generation){setBusy(false);await chairNews();return;} }
     if(run!==generation||ended)return;if(floorRequested){await yieldFloor(chair==='you'?'dominic':chair);return;}if(pendingNews){setBusy(false);await chairNews();return;}lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');speaking('you');if(autoMic)await startMic();
   }
 
@@ -230,7 +233,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     $('start').disabled=true;try{const response=await fetch('/api/assessment-centre?view=info');const access=await response.json();if(!response.ok||!access.member){$('briefAccess').hidden=false;$('briefAccess').textContent='Membership access is required before starting. Sign in or open the sample paid Preview session above.';$('start').disabled=true;return;}}catch{$('briefAccess').hidden=false;$('briefAccess').textContent='Could not check access. Please try again.';$('start').disabled=false;return;}clearInterval(readT);$('start').disabled=true;$('start').textContent='Setting up microphone…';try{readyMic=await requestMicrophone();readyMic.getAudioTracks().forEach(t=>t.enabled=false);autoMic=true;}catch{autoMic=false;$('roomMsg').textContent='Microphone access was not granted. You can type your contribution.';}finally{$('start').disabled=false;$('start').textContent='Start discussion →';}
     candidateName=$('candidateName').value.trim().slice(0,40)||'You';NAMES.you=candidateName;floorRequested=false;generation++;busy=false;clearInterval(readT);
     $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);
-    pendingNews=false;newsCount=0;$('newsUpdates').textContent='No developments yet. Use the original brief.';$('nextUpdate').disabled=false;transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
+    speakerQueue=[];queueCursor=0;for(let i=0;i<300;i++){queuedSpeaker();queueCursor++;}queueCursor=0;pendingNews=false;newsCount=0;$('newsUpdates').textContent='No developments yet. Use the original brief.';$('nextUpdate').disabled=false;transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
     clearInterval(tick);
     tick = setInterval(() => {
       const scheduled=globalThis.DeskGroupUpdates.all(scenario.id).filter(u=>elapsed()>=u.at).length;while(!ended&&newsCount<scheduled)introduceUpdate();const left = Math.max(0, LIMIT - elapsed()); $('timer').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');

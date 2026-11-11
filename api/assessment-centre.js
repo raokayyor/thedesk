@@ -70,8 +70,10 @@ export default async function handler(req, res) {
         const reason = ['start', 'silence', 'reply','news'].includes(b.reason) ? b.reason : 'reply';
         if(reason==='news')return res.json({turns:newsTurns(chair,clean(b.candidateName,40),updates)});
         if(reason==='start')return res.json({turns:openingTurns(chair,clean(b.candidateName,40)||'you')});
-        const raw = await tool(FAST, TURN_SCHEMA, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason, mode, allocation), 400, 0.8);
-        return res.json({ turns: responseTurns(raw,transcript,chair) });
+        const target=Object.hasOwn(PERSONAS,b.nextSpeaker)?b.nextSpeaker:null;sc={...sc,nextSpeaker:target};
+        const schema=target?{...TURN_SCHEMA,properties:{...TURN_SCHEMA.properties,turns:{...TURN_SCHEMA.properties.turns,maxItems:1,items:{...TURN_SCHEMA.properties.turns.items,properties:{...TURN_SCHEMA.properties.turns.items.properties,speaker:{type:'string',enum:[target]}}}}}}:TURN_SCHEMA;
+        const raw = await tool(FAST, schema, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason, mode, allocation), 400, 0.8);
+        return res.json({ turns: responseTurns(raw,transcript,chair,target) });
       }
       if (transcript.filter(x => x.who === 'you').length < 1) return res.status(400).json({ error: 'Say something in the discussion first, then ask for feedback.' });
       if (!await useQuota('ac-feedback:' + p, 10)) return res.status(429).json({ error: 'That’s 10 group exercises today. Try again tomorrow.' });
