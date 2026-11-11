@@ -240,7 +240,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
 
   function takeFloor(){if(ended)return;generation++;audioNow?.pause();window.speechSynthesis?.cancel();setBusy(false,'You have the floor. Type or dictate your point, then Send contribution.');lastActivity=Date.now();speaking('you');$('say').focus();}
   $('takeFloor').onclick=takeFloor;
-  for(const [id,name]of [['askPriya','Priya'],['askSam','Sam']])$(id).onclick=async()=>{if(ended||listening)return;takeFloor();const draft=$('say').value.trim();if(draft){$('roomMsg').textContent='Your draft is preserved. Add your question for '+name+' and send it.';return;}$('say').value=name+', what is your view on the options and the biggest risk?';await send();};
+  for(const [id,name]of [['askPriya','Priya'],['askSam','Sam']])$(id).onclick=async()=>{if(ended)return;if(listening)await stopMic();takeFloor();const draft=$('say').value.trim();if(draft){$('roomMsg').textContent='Your draft is preserved. Add your question for '+name+' and send it.';return;}$('say').value=name+', what is your view on the options and the biggest risk?';await send();};
   async function send() {
     if(busy||ended)return;
     if (listening) await stopMic();
