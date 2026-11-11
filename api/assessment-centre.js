@@ -61,7 +61,8 @@ export default async function handler(req, res) {
     if (b.action === 'group-turn' || b.action === 'group-feedback') {
       if (!paid) return upsell(res);
       const mode=b.mode==='debate'?'debate':'open';
-      const sc = SCENARIOS[b.scenario]; if (!sc) return res.status(400).json({ error: 'Choose a scenario.' });
+      let sc = SCENARIOS[b.scenario]; if (!sc) return res.status(400).json({ error: 'Choose a scenario.' });
+      const chair=['you','dominic','priya','sam'].includes(b.chair)?b.chair:'you';const updates=globalThis.DeskGroupUpdates.list(sc.id,b.newsCount);sc={...sc,chair,extra:sc.extra+(updates.length?'\nFICTIONAL CASE UPDATES (newer facts supersede original values):\n'+updates.map((u,i)=>(i+1)+'. '+u.title+': '+u.text).join('\n')+'\nReassess the arguments and your recommendation using the revised facts.':'')};
       const allocation=mode==='debate'?globalThis.DeskGroupRoles.validate(sc,b.allocation):null;if(mode==='debate'&&!allocation)return res.status(400).json({error:'Choose a case again to load its role assignments.'});
       const transcript = validTranscript(b.transcript); if (!transcript) return res.status(400).json({ error: 'Transcript too long.' });
       if (b.action === 'group-turn') {
@@ -74,7 +75,7 @@ export default async function handler(req, res) {
       if (!await useQuota('ac-feedback:' + p, 10)) return res.status(429).json({ error: 'That’s 10 group exercises today. Try again tomorrow.' });
       const st = stats(transcript);
       const fb = validFeedback(await tool(SMART, FEEDBACK_SCHEMA, 'submit_feedback', feedbackPrompt(sc, transcript, st, mode, allocation), 1800, 0.2), transcript);
-      await saveItem(p, 'ac-group', { scenario: sc.id, mode, allocation, stats: st, feedback: fb, transcript }).catch(() => null);
+      await saveItem(p, 'ac-group', { scenario: sc.id, mode, allocation, chair, updates, stats: st, feedback: fb, transcript }).catch(() => null);
       return res.json({ stats: st, feedback: fb });
     }
 
