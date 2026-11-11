@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {SCENARIOS,discussionRoles,openingTurns,newsTurns,responseTurns,turnPrompt,validTranscript,validTurns,validFeedback,stats,validCrib} from '../lib/assessment-centre.mjs';
-test('three practice cases contain bounded decisions and source facts',()=>{assert.equal(Object.keys(SCENARIOS).length,3);for(const s of Object.values(SCENARIOS)){assert(s.brief.length>50);assert(s.options.length>=3)}});
+test('ten practice cases contain bounded decisions and source facts',()=>{assert.equal(Object.keys(SCENARIOS).length,10);for(const s of Object.values(SCENARIOS)){assert(s.brief.length>50);assert(s.options.length>=3)}});
 test('transcripts reject excessive history and unknown speakers',()=>{assert.equal(validTranscript(Array(161).fill({who:'you',text:'a'})),null);assert.deepEqual(validTranscript([{who:'staff',text:'wrong'},{who:'you',text:'My point'}]),[{who:'you',text:'My point'}])});
 test('simulated turns cannot impersonate the student',()=>{assert.deepEqual(validTurns({turns:[{speaker:'you',text:'Invented student turn'}]}),[])});
 test('feedback evidence must match the whole student quote',()=>{const text='I suggest we compare the costs and then ask Priya for her view.';const base={key:'contribution',score:4,evidence:text+' This sentence was invented.',note:'Example'};assert.equal(validFeedback({behaviours:[base]},[{who:'you',text}]).behaviours[0].evidence,'');base.evidence=text;assert.equal(validFeedback({behaviours:[base]},[{who:'you',text}]).behaviours[0].evidence,text)});
@@ -21,3 +21,5 @@ test('the assigned AI chair always opens and invites the named student',()=>{for
 test('chair reacts to new case facts and empty model replies cannot stall discussion',()=>{const news=globalThis.DeskGroupUpdates.list('mendip',1);const [t]=newsTurns('priya','Jack',news);assert.equal(t.speaker,'priya');assert.match(t.text,/£125m/);assert.match(t.text,/Jack/);assert.deepEqual(newsTurns('you','Jack',news),[]);assert.equal(responseTurns({},[{who:'you',text:'Priya, what do you think?'}],'sam')[0].speaker,'priya')});
 
  test("queued speaker overrides an off-queue model response",async()=>{const {responseTurns,turnPrompt,SCENARIOS}=await import("../lib/assessment-centre.mjs");const turns=responseTurns({turns:[{speaker:"sam",text:"A different speaker."}]},[],"dominic","priya");assert.equal(turns.length,1);assert.equal(turns[0].speaker,"priya");assert.match(turnPrompt({...SCENARIOS.mendip,nextSpeaker:"priya"},[],0,"reply"),/Privately evaluate the latest student contribution/);});
+
+test("every case has two timed developments and valid debate allocations",()=>{for(const sc of Object.values(SCENARIOS)){assert.equal(globalThis.DeskGroupUpdates.all(sc.id).length,2);assert(globalThis.DeskGroupRoles.validate(sc,globalThis.DeskGroupRoles.assign(sc)));}});
