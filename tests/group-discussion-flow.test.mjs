@@ -17,3 +17,9 @@ test('floor request waits for a candidate to finish, names student, then resumes
  el('say').value='My draft stays here';await el('pauseDiscussion').onclick();assert.match(el('roomMsg').textContent,/Discussion paused/);assert.equal(el('send').disabled,true);assert.equal(el('say').value,'My draft stays here');assert.equal(el('pauseDiscussion').textContent,'Resume discussion');await el('pauseDiscussion').onclick();assert.equal(el('send').disabled,false);assert.match(el('roomMsg').textContent,/Discussion resumed/);
  });
 
+
+test('news timing varies, remains ordered and leaves time to respond',()=>{
+ const early=globalThis.DeskGroupUpdates.schedule(()=>0),late=globalThis.DeskGroupUpdates.schedule(()=>0.999);
+ assert.notDeepEqual(early,late);
+ for(const times of [early,late]){assert(times[0]>=30);assert(times[1]>=times[0]+45);assert(times[1]<1200);}
+});

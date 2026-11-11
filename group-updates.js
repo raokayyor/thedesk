@@ -4,4 +4,5 @@
  harbour:[{at:300,title:'Drive-thru planning setback',text:'Planning permission has been refused for 10 of the proposed 25 drive-thru sites. Only the other 15 sites can now proceed on the original timetable; the assumed £1m per site cost is unchanged.'},{at:720,title:'Acquisition price revised',text:'Northern Bean’s seller now wants £30m rather than £35m. The 12 expiring leases and current 6% operating margin remain risks; no lease extensions are confirmed.'}],
  graduates:[{at:300,title:'Budget reduced',text:'The total graduate recruitment budget is now £750k rather than £1m. The option costs remain unchanged. Agree what to fund and what to stop.'},{at:720,title:'Spring-week capacity constrained',text:'The spring-week expansion can now take only 50 extra students, rather than 100, for the same £350k cost. Its historical 30% conversion rate is unchanged; it is not a guaranteed future outcome.'}]};
 function list(id,count){return(updates[id]||[]).slice(0,Math.max(0,Math.min(2,Math.floor(Number(count)||0))));}
-globalThis.DeskGroupUpdates={list,all:id=>updates[id]||[]};})();
+function schedule(rng=Math.random){const first=30+Math.floor(rng()*811);const second=first+45+Math.floor(rng()*(1141-first-45));return[first,second];}
+globalThis.DeskGroupUpdates={list,all:id=>updates[id]||[],schedule};})();
