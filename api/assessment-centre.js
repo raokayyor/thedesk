@@ -118,8 +118,8 @@ export default async function handler(req, res) {
     if (b.action === 'voice') {
       if (!paid) return upsell(res);
       if (!voiceConfigured()) return res.status(503).json({ error: 'Natural voice is not configured.' });
-      const persona = PERSONAS[b.speaker]; const text = clean(b.text, 400);
-      if (!persona || text.length < 2) return res.status(400).json({ error: 'Invalid line.' });
+      const persona = PERSONAS[b.speaker]; const text = typeof b.text==='string'?b.text.replace(/\s+/g,' ').trim():'';
+      if (!persona || text.length < 2 || text.length > 1600) return res.status(400).json({ error: 'Invalid line.' });
       if (!await useQuota('ac-voice:' + p, 300)) return res.status(429).json({ error: 'Daily voice limit reached.' });
       const custom = String(process.env.ELEVENLABS_GROUP_VOICES || '').split(',').map(x => x.trim());
       const voice = ({ dominic: custom[0], priya: custom[1], sam: custom[2] })[b.speaker] || persona.voice;

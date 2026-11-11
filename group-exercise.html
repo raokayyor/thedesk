@@ -87,11 +87,11 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
 
   <!-- 2. Brief -->
   <section id="briefStep" hidden class="card" style="display:flex;flex-direction:column;gap:12px">
-    <div class="kicker">Reading time · <span id="readTimer">3:00</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px;background:#11191e;color:white;border-radius:12px"><div><div class="kicker" style="color:#ffb38f">Reading &amp; preparation time</div><p style="margin:6px 0 0;font-size:14px">Read the case, compare the options and prepare your notes.</p></div><span id="readTimer" role="timer" aria-label="Reading time remaining" style="font:600 clamp(36px,5vw,52px)/1 Fraunces,Georgia,serif;font-variant-numeric:tabular-nums;white-space:nowrap">3:00</span></div>
     <h2 id="bTitle"></h2>
     <details><summary style="cursor:pointer;font-weight:700;padding:12px 0">Read the case brief</summary><div class="brief" id="bBody"></div></details><div id="roleBrief" class="msg info"></div>
     <p class="mute" style="margin:0">Tip: in the first two minutes, suggest how the group should use the time. Then bring Priya in.</p>
-    <div class="card" style="padding:18px"><h3>Are you ready?</h3><div id="briefAccess" class="msg info" hidden></div><p class="mute">Review the brief and your role. Clicking Start sets up your microphone, then begins the 20-minute discussion timer. You can type if microphone access is unavailable.</p><div class="controls"><button class="btn hot" type="button" id="start">Start discussion →</button><button class="btn ghost" type="button" id="back">Choose another case</button></div></div>
+    <div class="card" style="padding:18px"><h3>Are you ready?</h3><p><strong>Have your notes ready:</strong> your initial recommendation, two supporting facts or calculations, the main risk, and a question to ask the group. Keep them nearby so you can refer to them when you speak.</p><div id="briefAccess" class="msg info" hidden></div><p class="mute">Review the brief and your role. Clicking Start sets up your microphone, then begins the 20-minute discussion timer. You can type if microphone access is unavailable.</p><div class="controls"><button class="btn hot" type="button" id="start">Start discussion →</button><button class="btn ghost" type="button" id="back">Choose another case</button></div></div>
   </section>
 
   <!-- 3. Room -->
