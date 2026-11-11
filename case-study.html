@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case study practice | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+main{max-width:1160px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,4.5vw,40px)}h2{font-size:24px}h3{font-size:19px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn[disabled]{opacity:.5;cursor:not-allowed}.btn.rec{background:#b91c1c;border-color:#b91c1c}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pick button{all:unset;box-sizing:border-box;cursor:pointer;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.pick button:hover,.pick button:focus-visible{border-color:var(--accent);outline:none}
+.work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.pack{display:flex;flex-direction:column;gap:12px;font-size:15px}
+.pack table{border-collapse:collapse;width:100%;font-size:14px}.pack th,.pack td{border-bottom:1px solid var(--soft);padding:7px 8px;text-align:right}.pack th:first-child,.pack td:first-child{text-align:left}
+.mail{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14.5px}
+.timer{font:500 30px/1 "Fraunces",Georgia,serif}.timer.low{color:#b91c1c}
+textarea{font:inherit;font-size:15px;padding:12px;border:1px solid #c9c1b5;border-radius:10px;background:#fff;width:100%;resize:vertical}
+.sticky{position:sticky;top:12px}
+video{width:100%;max-width:420px;border-radius:12px;background:#000;aspect-ratio:4/3;object-fit:cover;transform:scaleX(-1)}
+.msg{border-radius:12px;padding:14px 16px;font-size:15px}.msg.err{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}.msg.info{background:var(--navy-soft);color:var(--navy)}
+.band{display:inline-block;border-radius:999px;padding:6px 14px;font-weight:700}
+.b-Strong{background:#dcfce7;color:#14532d}.b-Meets{background:var(--navy-soft);color:var(--navy)}.b-Developing{background:var(--warm);color:#9a3412}.b-Below{background:#fef2f2;color:#7f1d1d}
+.beh{display:grid;grid-template-columns:200px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--soft)}
+.meter{display:flex;gap:4px;margin-top:6px}.meter i{flex:1;height:8px;border-radius:4px;background:var(--soft)}.meter i.f{background:var(--accent)}
+.q{background:var(--ink);color:#fff;border-radius:14px;padding:16px;font-size:17px}
+@media (max-width:900px){.work,.pick{grid-template-columns:1fr}.beh{grid-template-columns:1fr}.sticky{position:static}}
+</style>
+</head>
+<body>
+<main>
+  <section id="s-pick" style="display:flex;flex-direction:column;gap:16px">
+    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+      <div class="kicker">Assessment centre · case study</div>
+      <h1>Write it, present it, defend it.</h1>
+      <p style="margin:0;color:#3b4652">Like the real thing: read a pack, write a recommendation against the clock, present it on camera, then answer two questions from the panel. You’re scored like an assessor would, and you see the model answer at the end.</p>
+      <p class="mute" style="margin:0">Your camera stays on your device: nothing is recorded or uploaded. Your speech is turned into text in the browser so it can be marked.</p>
+    </div>
+    <div class="pick" id="pick"></div>
+    <div class="msg info" id="pickMsg" hidden></div>
+  </section>
+
+  <section id="s-write" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="row" style="justify-content:space-between"><div><div class="kicker">Step 1 of 3 · read and write</div><h2 id="wTitle"></h2></div><div class="row"><span class="timer" id="wTimer">45:00</span></div></div>
+    <div class="work">
+      <div class="card pack" id="pack"></div>
+      <div class="card sticky" style="display:flex;flex-direction:column;gap:10px">
+        <label for="writeup" style="font-weight:700">Your recommendation</label>
+        <p class="mute" style="margin:0" id="taskText"></p>
+        <textarea id="writeup" rows="16" placeholder="Recommendation first. Then the numbers behind it. Then the risks and what you’d do about them."></textarea>
+        <div class="row" style="justify-content:space-between"><span class="mute" id="words">0 words</span><button class="btn hot" type="button" id="toPresent">Done: present it</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-present" hidden class="card" style="display:flex;flex-direction:column;gap:14px">
+    <div class="kicker">Step 2 of 3 · present</div>
+    <h2>Present your recommendation in 3 minutes.</h2>
+    <p class="mute" style="margin:0">Talk to the camera as if the board is in front of you. Recommendation first. Your notes are on the right.</p>
+    <div class="work">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <video id="cam" autoplay muted playsinline></video>
+        <div class="row"><button class="btn" type="button" id="camBtn">Turn camera on</button><button class="btn hot" type="button" id="talkBtn">Start presenting</button><span class="timer" id="pTimer">3:00</span></div>
+        <div class="mute" id="pMsg" aria-live="polite"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label for="talk" style="font-weight:700">What you said</label>
+        <textarea id="talk" rows="10" placeholder="Your words appear here as you speak (Chrome or Edge). You can also type a summary of what you would say."></textarea>
+        <div class="row"><button class="btn hot" type="button" id="toQs">Done: take questions</button><button class="btn ghost" type="button" id="skipTalk">Skip the presentation</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-qs" hidden class="card" style="display:flex;flex-direction:column;gap:14px">
+    <div class="kicker">Step 3 of 3 · questions from the panel</div>
+    <h2>Two questions.</h2>
+    <div id="qWrap" style="display:flex;flex-direction:column;gap:16px"></div>
+    <div class="row"><button class="btn hot" type="button" id="toFb">Finish and get feedback</button><span class="mute" id="qMsg" aria-live="polite"></span></div>
+  </section>
+
+  <section id="s-fb" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+      <div class="kicker">Assessor’s view</div>
+      <div class="row"><h2>How you did</h2><span class="band" id="band"></span></div>
+      <p style="margin:0" id="sum"></p>
+    </div>
+    <div class="card"><h3 style="margin-bottom:6px">Scored like the real thing</h3><p class="mute" style="margin:0">1 Below · 2 Developing · 3 Meets · 4 Strong</p><div id="scores"></div></div>
+    <div class="card" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px">
+      <div><h3 style="margin-bottom:6px">What you missed</h3><ul id="missed" style="margin:0;padding-left:18px"></ul></div>
+      <div><h3 style="margin-bottom:6px">Do this next time</h3><ol id="fixes" style="margin:0;padding-left:20px"></ol></div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="kicker">Model answer</div><h3 id="mHead"></h3><ul id="mPts" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px"></ul><p class="mute" style="margin:6px 0 0" id="mStruct"></p></div>
+    <div class="row"><button class="btn hot" type="button" id="again">Try another case</button><a class="btn ghost" href="/assessment-centre.html">Back to assessment centres</a></div>
+  </section>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const show = id => ['s-pick', 's-write', 's-present', 's-qs', 's-fb'].forEach(x => $(x).hidden = x !== id);
+  const fmt = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const post = b => fetch('/api/assessment-centre', { method: 'POST', signal:AbortSignal.timeout(115000), headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Your work is still here; please try again.'}}));
+  let data = null, kase = null, wT = null, pT = null, stream = null, rec = null, qrec=null, qs = [];
+
+  fetch('/api/assessment-centre?view=cases').then(r => r.json()).then(d => {
+    data = d;
+    $('pick').innerHTML = d.cases.map(c => `<button type="button" data-id="${c.id}"><span class="kicker">${c.minutes} minutes + presentation</span><b style="font-size:18px">${esc(c.title)}</b><span class="mute">${esc(c.summary)}</span></button>`).join('');
+    $('pick').querySelectorAll('button').forEach(b => b.addEventListener('click', () => start(b.dataset.id)));
+    if (!d.member) { $('pickMsg').innerHTML = 'Case study practice is part of membership: you can read the packs, but marking needs membership. <a href="/signup.html?plan=member">See membership</a>'; $('pickMsg').hidden = false; }
+  }).catch(() => { $('pickMsg').className = 'msg err'; $('pickMsg').textContent = 'Couldn’t load the cases. Refresh to try again.'; $('pickMsg').hidden = false; });
+
+  function start(id) {
+    kase = data.cases.find(c => c.id === id); if (!kase) return;
+    $('wTitle').textContent = kase.title; $('taskText').textContent = kase.task;
+    const t = kase.table;
+    $('pack').innerHTML = `<p style="margin:0"><b>${esc(kase.role)}</b> ${esc(kase.summary)}</p>
+      <div><b>${esc(t.title)}</b><table><thead><tr><th></th>${t.cols.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r => `<tr><th scope="row" style="font-weight:600">${esc(r[0])}</th>${r.slice(1).map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+      ${kase.emails.map(e => `<div class="mail"><b>From: ${esc(e.from)}</b><br>${esc(e.text)}</div>`).join('')}
+      <p style="margin:0" class="mail">${esc(kase.note)}</p>`;
+    $('writeup').value = ''; $('talk').value = ''; $('words').textContent = '0 words';
+    let left = kase.minutes * 60; clearInterval(wT); $('wTimer').textContent = fmt(left); $('wTimer').classList.remove('low');
+    wT = setInterval(() => { left = Math.max(0, left - 1); $('wTimer').textContent = left ? fmt(left) : 'time’s up'; $('wTimer').classList.toggle('low', left < 300); if (!left) clearInterval(wT); }, 1000);
+    show('s-write'); window.scrollTo(0, 0);
+  }
+  $('writeup').addEventListener('input', () => { const n = ($('writeup').value.match(/\S+/g) || []).length; $('words').textContent = n + ' words' + (n > 400 ? ' (over 400: tighten it)' : ''); });
+
+  $('toPresent').addEventListener('click', () => {
+    if (($('writeup').value.match(/\S+/g) || []).length < 15) { $('words').textContent = 'Write a few sentences first.'; return; }
+    clearInterval(wT); show('s-present'); window.scrollTo(0, 0);
+    if (!SR) $('pMsg').textContent = 'Speech to text needs Chrome or Edge. You can type a summary of what you’d say instead.';
+  });
+  $('camBtn').addEventListener('click', async () => {
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; $('cam').srcObject = null; $('camBtn').textContent = 'Turn camera on'; return; }
+    try { stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); $('cam').srcObject = stream; $('camBtn').textContent = 'Turn camera off'; }
+    catch { $('pMsg').textContent = 'Camera not available. You can still present without it.'; }
+  });
+  function stopTalk() { clearInterval(pT); if (rec) { rec.onend = null; try { rec.stop(); } catch {} rec = null; } $('talkBtn').textContent = 'Start presenting'; $('talkBtn').classList.remove('rec'); }
+  $('talkBtn').addEventListener('click', () => {
+    if (rec || $('talkBtn').classList.contains('rec')) { stopTalk(); return; }
+    let left = 180; $('pTimer').textContent = fmt(left);
+    pT = setInterval(() => { left = Math.max(0, left - 1); $('pTimer').textContent = fmt(left); if (!left) { stopTalk(); $('pMsg').textContent = 'Time. In the real thing you’d be stopped here.'; } }, 1000);
+    $('talkBtn').textContent = 'Stop'; $('talkBtn').classList.add('rec');
+    if (SR) {
+      rec = new SR(); rec.lang = 'en-GB'; rec.continuous = true; rec.interimResults = true; const base = $('talk').value ? $('talk').value.trim() + ' ' : '';
+      rec.onresult = e => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; $('talk').value = base + t.trim(); };
+      rec.onerror = e => { $('pMsg').textContent = e.error === 'not-allowed' ? 'Microphone blocked: allow it, or type instead.' : 'Microphone stopped.'; };
+      rec.onend = () => { if (rec) try { rec.start(); } catch {} };
+      try { rec.start(); } catch { $('pMsg').textContent = 'Couldn’t start the microphone. Type instead.'; }
+    }
+  });
+  async function toQuestions() {
+    stopTalk(); if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    show('s-qs'); window.scrollTo(0, 0); $('qWrap').innerHTML = '<p class="mute">The panel is reading your recommendation…</p>';
+    const r = await post({ action: 'case-questions', caseId: kase.id, writeup: $('writeup').value, presentation: $('talk').value });
+    if (r.status === 402) { $('qWrap').innerHTML = '<div class="msg info">Panel questions and marking are part of membership. <a href="/signup.html?plan=member">See membership</a></div>'; $('toFb').hidden = true; return; }
+    if (!r.ok) { $('qWrap').innerHTML = `<div class="msg err">${esc(r.j.error || 'Couldn’t get the questions. Try again.')}</div>`; return; }
+    qs = r.j.questions; $('toFb').hidden = false;
+    $('qWrap').innerHTML = qs.map((q, i) => `<div style="display:flex;flex-direction:column;gap:8px"><div class="q">${esc(q)}</div><label for="a${i}" class="mute">Your answer (speak or type)</label><textarea id="a${i}" rows="4"></textarea><div class="row"><button class="btn" type="button" data-mic="${i}">Speak</button><button class="btn ghost" type="button" data-hear="${i}">Hear the question</button></div></div>`).join('');
+    $('qWrap').querySelectorAll('[data-hear]').forEach(b => b.addEventListener('click', () => { if (!window.speechSynthesis) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(qs[+b.dataset.hear]); u.lang = 'en-GB'; speechSynthesis.speak(u); }));
+    qrec = null;
+    $('qWrap').querySelectorAll('[data-mic]').forEach(b => b.addEventListener('click', () => {
+      if (!SR) { $('qMsg').textContent = 'Speech to text needs Chrome or Edge. Type your answer.'; return; }
+      if (qrec) { qrec.onend = null; qrec.stop(); qrec = null; $('qWrap').querySelectorAll('[data-mic]').forEach(x => { x.textContent = 'Speak'; x.classList.remove('rec'); }); return; }
+      const box = $('a' + b.dataset.mic), base = box.value ? box.value.trim() + ' ' : '';
+      qrec = new SR(); qrec.lang = 'en-GB'; qrec.continuous = true; qrec.interimResults = true;
+      qrec.onresult = e => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; box.value = base + t.trim(); };
+      qrec.onend = () => { if (qrec) try { qrec.start(); } catch {} };
+      try { qrec.start(); b.textContent = 'Stop'; b.classList.add('rec'); } catch {}
+    }));
+    if (window.speechSynthesis && qs[0]) { const u = new SpeechSynthesisUtterance(qs[0]); u.lang = 'en-GB'; speechSynthesis.speak(u); }
+  }
+  $('toQs').addEventListener('click', toQuestions);
+  $('skipTalk').addEventListener('click', () => { $('talk').value = ''; toQuestions(); });
+
+  $('toFb').addEventListener('click', async () => {
+    if(qrec){qrec.onend=null;qrec.stop();qrec=null;}
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    $('toFb').disabled = true; $('qMsg').textContent = 'The assessor is marking… about 20 seconds';
+    const r = await post({ action: 'case-feedback', caseId: kase.id, writeup: $('writeup').value, presentation: $('talk').value, qa: qs.map((q, i) => ({ q, a: $('a' + i)?.value || '' })) });
+    $('toFb').disabled = false; $('qMsg').textContent = '';
+    if (!r.ok) { $('qMsg').textContent = r.j.error || 'Marking didn’t work. Try again.'; return; }
+    const f = r.j.feedback, m = r.j.model;
+    $('band').className = 'band b-' + f.overall; $('band').textContent = f.overall; $('sum').textContent = f.summary;
+    $('scores').innerHTML = f.scores.map(x => `<div class="beh"><div><b>${esc(x.label)}</b><div class="meter" aria-label="${x.score} out of 4">${[1, 2, 3, 4].map(i => `<i class="${i <= x.score ? 'f' : ''}"></i>`).join('')}</div></div><div>${esc(x.note)}</div></div>`).join('');
+    $('missed').innerHTML = f.missed.map(x => `<li>${esc(x)}</li>`).join('') || '<li>Nothing major.</li>';
+    $('fixes').innerHTML = f.fixes.map(x => `<li>${esc(x)}</li>`).join('');
+    $('mHead').textContent = m.headline; $('mPts').innerHTML = m.points.map(x => `<li>${esc(x)}</li>`).join(''); $('mStruct').textContent = 'Structure: ' + m.structure;
+    show('s-fb'); window.scrollTo(0, 0);
+  });
+  window.addEventListener('pagehide',()=>{clearInterval(wT);stopTalk();if(qrec){qrec.onend=null;qrec.stop();qrec=null;}stream?.getTracks().forEach(t=>t.stop());window.speechSynthesis?.cancel();});
+  $('again').addEventListener('click', () => { show('s-pick'); window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>

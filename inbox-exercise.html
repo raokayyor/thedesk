@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inbox exercise | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--navy:#123459;--navy-soft:#dbe5f1;--ok:#15803d}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+main{max-width:1200px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,4.5vw,40px)}h2{font-size:24px}h3{font-size:19px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn[disabled]{opacity:.5;cursor:wait}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.timer{font:500 30px/1 "Fraunces",Georgia,serif}.timer.low{color:#b91c1c}
+.box{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.mailrow{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:8px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--soft);cursor:pointer}
+.mailrow:hover{background:#fbf8f3}.mailrow.sel{background:var(--warm)}
+.mailrow .who{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mailrow .sub{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mailrow .tm{font-size:12px;color:var(--mute)}
+.mailrow button{all:unset;cursor:pointer;display:block}
+select,input[type=text],textarea{font:inherit;font-size:14px;padding:8px 10px;border:1px solid #c9c1b5;border-radius:8px;background:#fff;min-height:40px;width:100%}
+textarea{min-height:120px;resize:vertical}
+.reader{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;position:sticky;top:12px}
+.reader table{border-collapse:collapse;width:100%;font-size:14px}.reader td{padding:5px 8px;border-bottom:1px solid var(--soft)}.reader td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.pen{color:var(--accent-ink);font-weight:700}
+.msg{border-radius:12px;padding:14px 16px;font-size:15px}.msg.err{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}.msg.info{background:var(--navy-soft);color:var(--navy)}
+.res table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}.res th,.res td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--soft);vertical-align:top}
+.res thead th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.ok{color:var(--ok);font-weight:700}.no{color:#b91c1c;font-weight:700}.half{color:#9a3412;font-weight:700}
+.scroll{overflow-x:auto}
+.big{font:500 44px/1 "Fraunces",Georgia,serif}
+.meter{display:flex;gap:4px;margin:4px 0}.meter i{flex:1;height:8px;border-radius:4px;background:var(--soft)}.meter i.f{background:var(--accent)}
+@media (max-width:900px){.box{grid-template-columns:1fr}.reader{position:static}}
+</style>
+</head>
+<body>
+<main>
+  <section id="s-intro" class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="kicker">Assessment centre · inbox exercise</div>
+    <h1>30 minutes. 15 emails. What do you do first?</h1>
+    <p style="margin:0;color:#3b4652" id="setup"></p>
+    <p class="mute" style="margin:0">Priorities: <b>Now</b> (before anything else) · <b>Today</b> · <b>This week</b> · <b>Pass on</b> (someone else should handle it, or it needs flagging) · <b>No action</b>. Some emails are traps.</p>
+    <div class="row"><button class="btn hot" type="button" id="go">Start the clock</button></div>
+    <div class="msg info" id="introMsg" hidden></div>
+  </section>
+
+  <section id="s-work" hidden style="display:flex;flex-direction:column;gap:12px">
+    <div class="row" style="justify-content:space-between"><div><div class="kicker">Monday 08:30 · Kestrel Advisory</div><div class="mute"><span id="done">0</span> of 15 sorted · replies needed on emails marked <span class="pen">✎</span></div></div><div class="row"><span class="timer" id="timer">30:00</span><button class="btn hot" type="button" id="submit">Submit</button></div></div>
+    <div class="box">
+      <div class="list" id="list" role="list"></div>
+      <div class="reader" id="reader" aria-live="polite"><p class="mute" style="margin:0">Choose an email to read it.</p></div>
+    </div>
+    <div class="msg err" id="workMsg" hidden></div>
+  </section>
+
+  <section id="s-res" hidden class="res" style="display:flex;flex-direction:column;gap:16px">
+    <div class="card" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+      <div><div class="kicker">Prioritising</div><div class="big" id="rPct"></div><div class="mute">against the model answer (traps count double)</div></div>
+      <div><div class="kicker">Spotting the error</div><div class="big" id="rErr"></div><div class="mute" id="rErrWhy"></div></div>
+      <div><div class="kicker">Traps</div><div class="big" id="rTraps"></div><div class="mute">phishing, a client’s personal email, a confidential request</div></div>
+    </div>
+    <div class="card"><h3 style="margin-bottom:8px">Your replies</h3><div id="rReplies" style="display:flex;flex-direction:column;gap:18px"></div></div>
+    <div class="card"><h3 style="margin-bottom:8px">Every email: yours vs the model answer</h3><div class="scroll"><table><thead><tr><th scope="col">Email</th><th scope="col">You</th><th scope="col">Model</th><th scope="col">Why</th></tr></thead><tbody id="rRows"></tbody></table></div></div>
+    <div class="row"><button class="btn hot" type="button" id="again">Try again</button><a class="btn ghost" href="/assessment-centre.html">Back to assessment centres</a></div>
+  </section>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fmt = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
+  $('go').disabled=true;
+  let ib = null, pr = {}, replies = { 3: '', 4: '' }, errLine = '', errVal = '', T = null, current = null, member = false;
+  fetch('/api/assessment-centre?view=inbox').then(r => r.json()).then(d => {
+    ib = d.inbox;$('go').disabled=false; member = d.member; $('setup').textContent = ib.setup;
+    if (!member) { $('introMsg').innerHTML = 'You can try the inbox, but marking is part of membership. <a href="/signup.html?plan=member">See membership</a>'; $('introMsg').hidden = false; }
+  });
+  window.addEventListener('pagehide',()=>clearInterval(T));
+  function renderList() {
+    $('list').innerHTML = ib.emails.map(e => `<div class="mailrow${current === e.id ? ' sel' : ''}" role="listitem"><button type="button" data-open="${e.id}" aria-label="Open email from ${esc(e.from)}: ${esc(e.subject)}"><div class="who">${e.reply ? '<span class="pen">✎ </span>' : ''}${esc(e.from)}</div><div class="sub">${esc(e.subject)}</div><div class="tm">${esc(e.time)}</div></button><select aria-label="Priority for: ${esc(e.subject)}" data-pr="${e.id}"><option value="">Priority…</option>${ib.cats.map(c => `<option${pr[e.id] === c ? ' selected' : ''}>${c}</option>`).join('')}</select></div>`).join('');
+    $('list').querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => open(+b.dataset.open)));
+    $('list').querySelectorAll('[data-pr]').forEach(s => s.addEventListener('change', () => { pr[s.dataset.pr] = s.value; $('done').textContent = Object.values(pr).filter(Boolean).length; }));
+  }
+  function open(id) {
+    current = id; const e = ib.emails.find(x => x.id === id);
+    let html = `<div class="mute">${esc(e.time)} · From: <b style="color:var(--ink)">${esc(e.from)}</b></div><h3>${esc(e.subject)}</h3><p style="margin:0">${esc(e.body)}</p>`;
+    if (e.attachment) html += `<div style="margin-top:6px"><b>Attachment: ${esc(ib.attachment.title)}</b><table>${ib.attachment.rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table></div>
+      <div class="row" style="align-items:flex-end"><label style="flex:1;font-size:14px;font-weight:600">Line with the error<select id="errLine"><option value="">Choose…</option>${ib.lines.map(l => `<option${errLine === l ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label><label style="flex:1;font-size:14px;font-weight:600">Correct figure (£m)<input type="text" id="errVal" inputmode="decimal" value="${esc(errVal)}"></label></div>`;
+    if (e.reply) html += `<label for="rep" style="font-weight:700">Your reply</label><textarea id="rep">${esc(replies[id])}</textarea>`;
+    $('reader').innerHTML = html;
+    if ($('errLine')) { $('errLine').addEventListener('change', ev => errLine = ev.target.value); $('errVal').addEventListener('input', ev => errVal = ev.target.value); }
+    if ($('rep')) $('rep').addEventListener('input', ev => replies[id] = ev.target.value);
+    renderList();
+  }
+  $('go').addEventListener('click', () => {
+    if(!ib)return;pr = {}; replies = { 3: '', 4: '' }; errLine = ''; errVal = ''; current = null; $('done').textContent = '0';
+    $('s-intro').hidden = true; $('s-work').hidden = false; renderList(); open(ib.emails[0].id);
+    let left = ib.minutes * 60; clearInterval(T); $('timer').textContent = fmt(left);
+    T = setInterval(() => { left = Math.max(0, left - 1); $('timer').textContent = left ? fmt(left) : 'time’s up'; $('timer').classList.toggle('low', left < 300); if (!left) { clearInterval(T); submit(); } }, 1000);
+    window.scrollTo(0, 0);
+  });
+  async function submit() {
+    clearInterval(T); $('submit').disabled = true; $('submit').textContent = 'Marking…'; $('workMsg').hidden = true;
+    const r = await fetch('/api/assessment-centre', { method: 'POST', signal:AbortSignal.timeout(115000), headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'inbox-feedback', priorities: pr, errorLine: errLine, errorValue: errVal, replies }) }).then(async x => ({ ok: x.ok, status: x.status, j: await x.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Your work is still here; please try again.'}}));
+    $('submit').disabled = false; $('submit').textContent = 'Submit';
+    if (r.status === 402) { $('workMsg').className = 'msg info'; $('workMsg').innerHTML = 'Marking is part of membership. <a href="/signup.html?plan=member">See membership</a>'; $('workMsg').hidden = false; return; }
+    if (!r.ok) { $('workMsg').className = 'msg err'; $('workMsg').textContent = r.j.error || 'Marking didn’t work. Try again.'; $('workMsg').hidden = false; return; }
+    const { score: s, replies: rp } = r.j;
+    $('rPct').textContent = s.priority.pct + '%';
+    $('rErr').innerHTML = s.error.lineOk && s.error.valOk ? '<span class="ok">Spotted</span>' : s.error.lineOk ? '<span class="half">Half</span>' : '<span class="no">Missed</span>';
+    $('rErrWhy').textContent = s.error.why;
+    const tOk = s.traps.filter(t => t.ok).length; $('rTraps').innerHTML = `<span class="${tOk === s.traps.length ? 'ok' : tOk ? 'half' : 'no'}">${tOk} of ${s.traps.length}</span>`;
+    $('rReplies').innerHTML = rp.map(x => `<div><b>Reply to email ${x.id}</b><div class="meter" aria-label="${x.score} out of 4">${[1, 2, 3, 4].map(i => `<i class="${i <= x.score ? 'f' : ''}"></i>`).join('')}</div>${x.good ? `<div><span class="ok">Good:</span> ${esc(x.good)}</div>` : ''}<div><span class="half">Fix:</span> ${esc(x.fix)}</div><details style="margin-top:6px"><summary>Model reply</summary><p style="margin:6px 0 0">${esc(x.model)}</p></details></div>`).join('');
+    $('rRows').innerHTML = s.rows.map(x => `<tr><td><b>${esc(x.from)}</b><br>${esc(x.subject)}${x.trap ? ' <span class="pen">(trap)</span>' : ''}</td><td class="${x.pts === x.max ? 'ok' : x.pts ? 'half' : 'no'}">${esc(x.mine)}</td><td>${esc(x.model)}</td><td>${esc(x.why)}</td></tr>`).join('');
+    $('s-work').hidden = true; $('s-res').hidden = false; window.scrollTo(0, 0);
+  }
+  $('submit').addEventListener('click', submit);
+  $('again').addEventListener('click', () => { $('s-res').hidden = true; $('s-intro').hidden = false; window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>

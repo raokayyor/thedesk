@@ -1,3 +1,4 @@
+import {CASES,CASE_RUBRIC,publicCase,QUESTIONS_SCHEMA,caseQuestionsPrompt,CASE_FEEDBACK_SCHEMA,caseFeedbackPrompt,validCaseFeedback,publicInbox,scoreInbox,REPLY_SCHEMA,replyPrompt,validReplies} from '../lib/assessment-centre-exercises.mjs';
 // The Desk: assessment centre tools. Members only (except GET scenarios/behaviours).
 // GET  ?view=info                       -> scenarios, behaviours, membership, voice on/off
 // GET  ?view=crib&id=<assessment>&firm= -> latest saved crib sheet for that assessment + firm
@@ -36,6 +37,8 @@ export default async function handler(req, res) {
         const rows = await sql().query(`SELECT data, created_at FROM desk_value_items WHERE principal=$1 AND kind='ac-crib' AND data->>'id'=$2 AND data->>'firm'=$3 ORDER BY id DESC LIMIT 1`, [p, id, firm]).catch(() => []);
         return res.json({ crib: rows[0]?.data?.crib || null, at: rows[0]?.created_at || null });
       }
+      if(req.query.view==='cases')return res.json({member:paid,rubric:CASE_RUBRIC,cases:Object.values(CASES).map(publicCase)});
+      if(req.query.view==='inbox')return res.json({member:paid,inbox:publicInbox()});
       return res.json({ member: paid, preview: process.env.VERCEL_ENV==='preview', voice: voiceConfigured(), scale: SCALE, behaviours: BEHAVIOURS, scenarios: Object.values(SCENARIOS), personas: Object.fromEntries(Object.entries(PERSONAS).map(([k, v]) => [k, { name: v.name, style: v.style }])) });
     }
     if (req.method !== 'POST') return res.status(405).end();
@@ -81,6 +84,34 @@ export default async function handler(req, res) {
       const fb = validFeedback(await tool(SMART, FEEDBACK_SCHEMA, 'submit_feedback', feedbackPrompt(sc, transcript, st, mode, allocation), 1800, 0.2), transcript);
       await saveItem(p, 'ac-group', { scenario: sc.id, mode, allocation, chair, updates, stats: st, feedback: fb, transcript }).catch(() => null);
       return res.json({ stats: st, feedback: fb });
+    }
+
+    if (b.action === 'case-questions' || b.action === 'case-feedback') {
+      if (!paid) return upsell(res);
+      const c = CASES[b.caseId]; if (!c) return res.status(400).json({ error: 'Choose a case.' });
+      if(String(b.writeup||'').trim().split(/\s+/).length>400)return res.status(400).json({error:'Keep your written recommendation within 400 words.'});
+      const writeup = clean(b.writeup, 6000), talk = clean(b.presentation, 6000);
+      if (writeup.length < 60) return res.status(400).json({ error: 'Write your recommendation first (a few sentences at least).' });
+      if (b.action === 'case-questions') {
+        if (!await useQuota('ac-caseq:' + p, 20)) return res.status(429).json({ error: 'That’s a lot of case studies today. Try again tomorrow.' });
+        const raw = await tool(SMART, QUESTIONS_SCHEMA, 'ask_questions', caseQuestionsPrompt(c, writeup, talk), 500, 0.5);
+        return res.json({ questions: (raw.questions || []).map(q => clean(q, 500)).filter(Boolean).slice(0, 2) });
+      }
+      if (!await useQuota('ac-casef:' + p, 10)) return res.status(429).json({ error: 'That’s 10 case studies today. Try again tomorrow.' });
+      const qa = (Array.isArray(b.qa) ? b.qa : []).slice(0, 2).map(x => ({ q: clean(x?.q, 500), a: clean(x?.a, 3000) }));
+      const fb = validCaseFeedback(await tool(SMART, CASE_FEEDBACK_SCHEMA, 'submit_feedback', caseFeedbackPrompt(c, writeup, talk, qa), 2000, 0.2));
+      await saveItem(p, 'ac-case', { caseId: c.id, feedback: fb, writeup, presentation: talk, qa }).catch(() => null);
+      return res.json({ feedback: fb, model: c.model });
+    }
+
+    if (b.action === 'inbox-feedback') {
+      if (!paid) return upsell(res);
+      if (!await useQuota('ac-inbox:' + p, 10)) return res.status(429).json({ error: 'That’s 10 inbox exercises today. Try again tomorrow.' });
+      const score = scoreInbox(b.priorities || {}, b.errorLine, b.errorValue);
+      const replies = { 3: clean(b.replies?.[3], 2000), 4: clean(b.replies?.[4], 2000) };
+      const marked = (replies[3] || replies[4]) ? validReplies(await tool(SMART, REPLY_SCHEMA, 'mark_replies', replyPrompt(replies), 800, 0.2), replies) : validReplies({}, replies);
+      await saveItem(p, 'ac-inbox', { score: score.priority, error: { lineOk: score.error.lineOk, valOk: score.error.valOk }, replies: marked.map(r => ({ id: r.id, score: r.score })) }).catch(() => null);
+      return res.json({ score, replies: marked });
     }
 
     if (b.action === 'voice') {
