@@ -1,3 +1,4 @@
+import {roundCast} from '../lib/group-cast.mjs';
 import {CASES,CASE_RUBRIC,publicCase,QUESTIONS_SCHEMA,caseQuestionsPrompt,CASE_FEEDBACK_SCHEMA,caseFeedbackPrompt,validCaseFeedback,publicInbox,scoreInbox,REPLY_SCHEMA,replyPrompt,validReplies} from '../lib/assessment-centre-exercises.mjs';
 // The Desk: assessment centre tools. Members only (except GET scenarios/behaviours).
 // GET  ?view=info                       -> scenarios, behaviours, membership, voice on/off
@@ -65,7 +66,7 @@ export default async function handler(req, res) {
       if (!paid) return upsell(res);
       const mode=b.mode==='debate'?'debate':'open';
       let sc = SCENARIOS[b.scenario]; if (!sc) return res.status(400).json({ error: 'Choose a scenario.' });
-      const chair=['you','dominic','priya','sam'].includes(b.chair)?b.chair:'you';const updates=globalThis.DeskGroupUpdates.list(sc.id,b.newsCount);sc={...sc,chair,extra:sc.extra+(updates.length?'\nFICTIONAL CASE UPDATES (newer facts supersede original values):\n'+updates.map((u,i)=>(i+1)+'. '+u.title+': '+u.text).join('\n')+'\nReassess the arguments and your recommendation using the revised facts.':'')};
+      const chair=['you','dominic','priya','sam'].includes(b.chair)?b.chair:'you';const updates=globalThis.DeskGroupUpdates.list(sc.id,b.newsCount);sc={...sc,chair,cast:roundCast(b.roundSeed,sc.options.length),extra:sc.extra+(updates.length?'\nFICTIONAL CASE UPDATES (newer facts supersede original values):\n'+updates.map((u,i)=>(i+1)+'. '+u.title+': '+u.text).join('\n')+'\nReassess the arguments and your recommendation using the revised facts.':'')};
       const allocation=mode==='debate'?globalThis.DeskGroupRoles.validate(sc,b.allocation):null;if(mode==='debate'&&!allocation)return res.status(400).json({error:'Choose a case again to load its role assignments.'});
       const transcript = validTranscript(b.transcript); if (!transcript) return res.status(400).json({ error: 'Transcript too long.' });
       if (b.action === 'group-turn') {
