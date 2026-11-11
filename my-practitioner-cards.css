@@ -8,3 +8,5 @@
 .practitioner-profile-experience{font-size:10px;color:#64748b;line-height:1.4;margin:0 0 8px;min-height:14px}.practitioner-brand-strip{display:flex;gap:8px 7px;flex-wrap:wrap;align-items:center;align-content:start;min-height:44px;margin:0 0 7px}.practitioner-brand-strip img{width:46px;height:18px;object-fit:contain;display:block}.practitioner-brand-name{font:600 10px Georgia,serif;color:#52606d;min-width:40px}.practitioner-profile{min-height:216px}.practitioner-profile-role{margin-bottom:3px}
 
 .free-start>h2{font-size:24px;margin:0 0 14px}.free-sample-link{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:18px 0 24px;padding:16px 0;border-top:1px solid #e5ded5}.free-sample-link .mute{font-size:12px;line-height:1.5;max-width:430px}@media(max-width:650px){.free-sample-link{gap:10px;margin:16px 0 20px;padding:14px 0}.free-sample-link .btn{width:100%}}
+
+.member-tools-heading{font-size:24px;margin:0 0 14px}
