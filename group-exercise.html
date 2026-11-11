@@ -173,7 +173,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   $('back').addEventListener('click', () => { clearInterval(readT); $('briefStep').hidden = true; $('setup').hidden = false; });
 
   // ---------- room ----------
-  const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({...body,mode,allocation,chair,newsCount}),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
+  const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({...body,mode,allocation,chair,newsCount,candidateName}),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
   const elapsed = () => Math.floor((Date.now() - startAt) / 1000);
   function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => $('t-' + w).classList.toggle('on', w === who)); }
   function addLine(who, text) {
@@ -239,7 +239,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
       if (!busy && !listening && !ended && Date.now() - lastActivity > 15000 && !$('say').value.trim()) { lastActivity = Date.now(); aiTurn('silence'); }
     }, 1000);
     window.scrollTo(0, 0);
-    aiTurn('start');
+    if(chair==='you'){setBusy(false,'You are chair. Open the discussion, suggest a structure and invite someone in.');if(autoMic)await startMic();}else aiTurn('start');
   });
 
   async function yieldFloor(speaker='dominic'){
