@@ -141,6 +141,13 @@ interview work is lost.**
   20-minute timer; the others carry on if the student is silent for 30 s. Feedback scored on 6 behaviours with exact quotes and
   measured stats (talk share, turns, invites, numbers). Saved as `ac-group`. Quotas: 400 turns, 10 feedbacks, 10 cribs, 300 voice lines a day.
 - `lib/interview-voice.mjs`: `generateInterviewSpeech(text, {voice})` now takes an optional voice id.
+- **Case study** (`case-study.html`, members): 2 fictional packs (Fenwick Tools takeover bid; Atlas Gyms expand vs pay down debt) with
+  consistent numbers; 45-min timed write-up, 3-min presentation (camera preview stays on the device, speech-to-text in the browser),
+  2 panel follow-up questions (Sonnet), then scored on 6 areas with "what you missed", fixes and a written model answer. Saved as `ac-case`.
+- **Inbox exercise** (`inbox-exercise.html`, members): 15 emails in 30 min, priorities Now / Today / This week / Pass on / No action,
+  3 traps (client asking for files to personal Gmail, phishing, confidential request across teams), a P&L with one error (EBIT),
+  and two replies. Priorities and the error are marked by fixed rules; only the replies use AI. Model answer for every email. Saved as `ac-inbox`.
+- All five tools are members-only server-side (402 for free); free users can read the hub, cases and inbox.
 - Link the hub from My Desk (member tools) and the top bar's "More" menu. Library already links to it.
 
 ## New database tables (created automatically on first use)

@@ -81,10 +81,10 @@ export default async function handler(req, res) {
       if (b.action === 'case-questions') {
         if (!await useQuota('ac-caseq:' + p, 20)) return res.status(429).json({ error: 'That’s a lot of case studies today. Try again tomorrow.' });
         const raw = await tool(SMART, QUESTIONS_SCHEMA, 'ask_questions', caseQuestionsPrompt(c, writeup, talk), 500, 0.5);
-        return res.json({ questions: (raw.questions || []).map(q => clean(q, 260)).filter(Boolean).slice(0, 2) });
+        return res.json({ questions: (raw.questions || []).map(q => clean(q, 500)).filter(Boolean).slice(0, 2) });
       }
       if (!await useQuota('ac-casef:' + p, 10)) return res.status(429).json({ error: 'That’s 10 case studies today. Try again tomorrow.' });
-      const qa = (Array.isArray(b.qa) ? b.qa : []).slice(0, 2).map(x => ({ q: clean(x?.q, 260), a: clean(x?.a, 3000) }));
+      const qa = (Array.isArray(b.qa) ? b.qa : []).slice(0, 2).map(x => ({ q: clean(x?.q, 500), a: clean(x?.a, 3000) }));
       const fb = validCaseFeedback(await tool(SMART, CASE_FEEDBACK_SCHEMA, 'submit_feedback', caseFeedbackPrompt(c, writeup, talk, qa), 2000, 0.2));
       await saveItem(p, 'ac-case', { caseId: c.id, feedback: fb, writeup, presentation: talk, qa }).catch(() => null);
       return res.json({ feedback: fb, model: c.model });
