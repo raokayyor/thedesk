@@ -1,5 +1,5 @@
 // Original fictional practice cases, shared by browser and server.
- globalThis.DeskExtraGroupCases={
+globalThis.DeskExtraGroupCases={
   "cases": {
     "northstar": {
       "id": "northstar",
@@ -140,6 +140,66 @@
         }
       ],
       "extra": "Demand and utilisation are estimates. Staff surveys show fatigue concerns. Identify quality checks and do not count appointment capacity as completed revenue. All values are fictional and exclude tax."
+    },
+    "fairbridge": {
+      "id": "fairbridge",
+      "title": "Fairbridge Partners: choose a community investment portfolio",
+      "brief": "A professional-services firm has £600,000 to invest in community projects. Agree a portfolio within the budget in 20 minutes, comparing measurable reach, delivery risk and long-term impact.",
+      "options": [
+        {
+          "name": "A. Digital skills programme",
+          "facts": "£300,000 funds 1,200 training places. A pilot had 70% completion; completion is not the same as employment. Delivery partner has two years of experience."
+        },
+        {
+          "name": "B. Small-business advice clinics",
+          "facts": "£250,000 supports 250 firms with five advice sessions each. Requires 1,000 staff volunteer hours, of which only 700 are confirmed."
+        },
+        {
+          "name": "C. University access bursaries",
+          "facts": "£200,000 funds 40 bursaries of £5,000. Applicants must meet published eligibility criteria. Outcomes take three years to assess."
+        }
+      ],
+      "extra": "Projects are indivisible, but combinations are allowed. Unspent funds can be retained. Management prefers visible results within a year; community representatives want sustainable access. Agree how you would measure success without equating unlike outcomes."
+    },
+    "elmstone": {
+      "id": "elmstone",
+      "title": "Elmstone Consumer: select a new product launch",
+      "brief": "A consumer-products business has £4m for one product launch. Compare the financial forecast and customer research, then recommend the most feasible option for the next 18 months.",
+      "options": [
+        {
+          "name": "A. Refillable cleaning spray",
+          "facts": "£3m launch spend. Forecast year-one sales 500,000 units at £8, with £5 variable cost each. Refill adoption is untested; packaging supplier can serve 600,000 units."
+        },
+        {
+          "name": "B. Concentrated laundry sheets",
+          "facts": "£4m launch spend. Forecast 800,000 units at £7 with £4 variable cost each. A small trial found 65% repurchase intent, not actual repeat sales."
+        },
+        {
+          "name": "C. Fragrance-free household range",
+          "facts": "£2m launch spend. Forecast 300,000 units at £10 with £6 variable cost each. Two retailers expressed interest but neither has signed a distribution agreement."
+        }
+      ],
+      "extra": "Launch spend is separate from unit variable costs. Unit contribution is not net profit or cash payback. Forecasts are not orders. Consider distribution, product quality, environmental claims and a sensible stop/go test. All company names and figures are invented for this exercise."
+    },
+    "cairn": {
+      "id": "cairn",
+      "title": "Cairn Bank: introduce a new customer service",
+      "brief": "A bank with 500,000 customers has £5m to introduce a service that improves access and reduces avoidable customer contacts. Recommend a rollout approach, balancing benefits, operational risk and fairness.",
+      "options": [
+        {
+          "name": "A. Launch a digital budgeting service",
+          "facts": "£4m setup plus £1m first-year running cost. Forecast adoption 100,000 customers; a 2,000-person pilot achieved 15% adoption. No verified reduction in contact volumes."
+        },
+        {
+          "name": "B. Add video appointments",
+          "facts": "£2m setup plus £2m annual staff cost. Capacity 80,000 appointments a year, with forecast utilisation of 60%. Each replaces a branch appointment only when the customer chooses it."
+        },
+        {
+          "name": "C. Pilot assisted digital support",
+          "facts": "£1m setup plus £1m annual delivery cost for 20 branches. Can support 40,000 customers. A pilot improved task completion from 55% to 75%, but did not measure longer-term retention."
+        }
+      ],
+      "extra": "At least 50,000 customers do not regularly use online banking. The board wants measurable benefits within 12 months and a fallback for customers unable to use digital channels. Do not assume adoption equals benefit or invent a regulatory obligation."
     }
   },
   "updates": {
@@ -225,6 +285,42 @@
         "at": 720,
         "title": "Booking forecast reduced",
         "text": "The booking-system supplier revises the forecast from 3,000 to 1,800 additional completed appointments; its setup and annual running costs are unchanged."
+      }
+    ],
+    "fairbridge": [
+      {
+        "at": 300,
+        "title": "Volunteer capacity drops",
+        "text": "Only 400 volunteer hours are now confirmed for the advice clinics. Full delivery still requires 1,000 hours; no extra staff budget is offered."
+      },
+      {
+        "at": 720,
+        "title": "Matched funding offered",
+        "text": "A donor offers £100,000 toward the bursary programme, reducing the firm’s contribution to £100,000. Eligibility and 40 places are unchanged."
+      }
+    ],
+    "elmstone": [
+      {
+        "at": 300,
+        "title": "Supplier constraint",
+        "text": "The refillable spray supplier can deliver only 250,000 units in year one, not 600,000. Its price and £3m launch spend are unchanged."
+      },
+      {
+        "at": 720,
+        "title": "Retailer requires discount",
+        "text": "One retailer offers distribution for the fragrance-free range only at £9 per unit rather than £10; the 300,000-unit forecast is still uncommitted."
+      }
+    ],
+    "cairn": [
+      {
+        "at": 300,
+        "title": "Accessibility testing fails",
+        "text": "Testing finds the budgeting service is unusable with one common screen-reader configuration. Fixing it requires £0.5m beyond the stated costs; the £5m budget is unchanged."
+      },
+      {
+        "at": 720,
+        "title": "Video staffing shortage",
+        "text": "Video appointment staffing can support only 50,000 appointments a year, rather than 80,000, within the original £2m staff budget."
       }
     ]
   }

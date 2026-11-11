@@ -1,0 +1,64 @@
+{
+  "reviewedAt": "2026-11-11",
+  "policy": "Public first-hand accounts inform exercise formats only. Employer authenticity and current recruitment formats are not verified. All practice company names, figures, news developments and follow-up wording are original. No third-party transcript is served to students.",
+  "sources": [
+    {
+      "id": "ambs-2022",
+      "url": "https://www.alliancembs.manchester.ac.uk/blogs/my-experience-of-assessment-centres/",
+      "type": "university-hosted first-person blog",
+      "status": "read",
+      "published": "2022-02-23",
+      "finding": "Group evaluated prospective products using qualitative and quantitative information; later individual task compared stores and product lines.",
+      "appliedTo": [
+        "elmstone"
+      ],
+      "confidence": "Verified published account; underlying candidate experience not independently verified"
+    },
+    {
+      "id": "reddit-ey",
+      "url": "https://www.reddit.com/r/FinancialCareers/comments/v1t0xb/ey_experience_day_tomorrow_any_tips/",
+      "type": "candidate account",
+      "status": "read",
+      "finding": "Commenter recalls ranking differently priced investment options within a budget and agreeing a selection.",
+      "appliedTo": [
+        "fairbridge"
+      ],
+      "confidence": "Unverified retrospective anecdote; not current EY content"
+    },
+    {
+      "id": "reddit-nab",
+      "url": "https://www.reddit.com/r/cscareerquestionsOCE/comments/1n07kvv/nabbanks_assessment_centre/",
+      "type": "candidate account",
+      "status": "read",
+      "finding": "Commenter describes discussing a proposed customer implementation and involving teammates.",
+      "appliedTo": [
+        "cairn"
+      ],
+      "confidence": "Unverified anecdote; not a NAB case reproduction"
+    },
+    {
+      "id": "youtube-tems",
+      "url": "https://www.youtube.com/watch?v=rKi76yWyGgw",
+      "type": "creator first-person advice",
+      "status": "captions retrieved and relevant teamwork section reviewed",
+      "captionCharacters": 18550,
+      "finding": "Show collaboration through structure, timekeeping, inclusion and critical listening, without talking over others.",
+      "appliedTo": [
+        "simulation follow-up prompts"
+      ],
+      "confidence": "Creator advice, not an employer scoring standard"
+    },
+    {
+      "id": "jpm-historical",
+      "url": "https://www.efinancialcareers.com/news/2009/03/first-hand-finance-assessment-centre-jpmorgan",
+      "status": "search discovery only; full page blocked 403",
+      "appliedTo": []
+    },
+    {
+      "id": "reddit-bat",
+      "url": "https://www.reddit.com/r/interviews/comments/1gxxltt/bat_assessment_centre_help/",
+      "status": "read accessible thread; detailed role claim not visible in fetched comments",
+      "appliedTo": []
+    }
+  ]
+}
