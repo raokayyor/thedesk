@@ -86,7 +86,7 @@ export const PANEL = [
   { init: 'KR', name: 'Kayyor Rao', role: 'Banking · MD · 20 years', firms: 'UBS · Commerzbank · BGC · Knight · Stifel', routes: ['Investment Banking / IBD', 'Sales & Trading / Markets', 'General Finance'] },
   { init: 'PC', name: 'Peter Cheley', role: 'Banking & Asset Management · MD · 40 years', firms: 'SocGen · Commerzbank · JPM IM · BGC', routes: ['Asset Management / Investing'] },
   { init: 'NR', name: 'Neil Robertson', role: 'Banking · MD · 30 years', firms: 'UBS · Knight · Stifel · Aurel', routes: ['Sales & Trading / Markets'] },
-  { init: 'JS', name: 'Jim Staples', role: 'Banking · MD · 30 years', firms: 'Barclays · BGC', routes: ['Investment Banking / IBD'] },
+  { init: 'JS', name: 'Jim Staples', role: 'Banking · MD · 30 years', firms: 'Barclays · SocGen · BGC', routes: ['Investment Banking / IBD'] },
   { init: 'CS', name: 'Chris Sharkey', role: 'Audit, Accounting & Insurance · MD · 20+ years', firms: 'Lancashire Insurance · EY', routes: ['Accounting / Audit'] }
 ];
 const panelMember = name => PANEL.find(m => m.name === name || m.name.split(' ').includes(name)) || null;
