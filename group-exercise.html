@@ -70,9 +70,9 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
         <div class="who"><span class="av" style="background:#7c3aed">P</span><span><b>Priya</b><br><span class="mute">Sharp with numbers, but quiet unless asked</span></span></div>
         <div class="who"><span class="av" style="background:#0f766e">S</span><span><b>Sam</b><br><span class="mute">Friendly, drifts off the brief</span></span></div>
       </div>
-      <p class="mute" style="margin:0">They’re AI characters, not real people. Your speech is turned into text in your browser; we keep the transcript with your feedback on your desk.</p>
+      <p class="mute" style="margin:0">They’re AI characters, not real people. Your microphone audio is transcribed for this exercise; we keep the transcript with your feedback on your desk.</p>
     </div>
-    <h2>Choose a case</h2>
+    <div class="card"><label for="discussionMode"><b>Choose how to practise</b></label><select id="discussionMode" style="display:block;width:100%;padding:12px;margin-top:8px"><option value="open">Open discussion — explore the options together</option><option value="debate">Assigned-position debate — each candidate defends an option</option></select><p class="mute">In debate mode you chair: test each argument, involve everyone and agree a recommendation.</p></div><h2>Choose a case</h2>
     <div class="scen" id="scen"></div>
     <div class="card controls">
       <label style="display:flex;gap:8px;align-items:center;font-weight:600"><input type="checkbox" id="voice" checked style="width:20px;height:20px"> Hear the others speak</label>
@@ -87,7 +87,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   <section id="briefStep" hidden class="card" style="display:flex;flex-direction:column;gap:12px">
     <div class="kicker">Reading time · <span id="readTimer">3:00</span></div>
     <h2 id="bTitle"></h2>
-    <div class="brief" id="bBody"></div>
+    <div class="brief" id="bBody"></div><div id="roleBrief" class="msg info"></div>
     <p class="mute" style="margin:0">Tip: in the first two minutes, suggest how the group should use the time. Then bring Priya in.</p>
     <div class="controls"><button class="btn hot" type="button" id="start">Start the discussion</button><button class="btn ghost" type="button" id="back">Choose another case</button></div>
   </section>
@@ -98,20 +98,20 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
       <div><div class="kicker" id="rTitle"></div><div class="mute">Agree one recommendation with risks before time runs out.</div></div>
       <div style="display:flex;gap:14px;align-items:center"><span class="timer" id="timer" aria-live="off">20:00</span><button class="btn ghost" type="button" id="end">End and get feedback</button></div>
     </div>
-    <div class="room">
+    <div id="roomRoles" class="msg info"></div><div class="room">
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="tiles">
+        <div class="controls"><button class="btn ghost" type="button" id="takeFloor">Interrupt / take the floor</button><button class="btn ghost" type="button" id="askPriya">Ask Priya</button><button class="btn ghost" type="button" id="askSam">Ask Sam</button></div><div class="tiles">
           <div class="tile you" id="t-you"><div class="top"><span class="av" style="background:#15803d">You</span><div><div class="nm">You</div><div class="st" id="s-you">Your turn when ready</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="tile" id="t-dominic"><div class="top"><span class="av" style="background:#123459">D</span><div><div class="nm">Dominic</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="tile" id="t-priya"><div class="top"><span class="av" style="background:#7c3aed">P</span><div><div class="nm">Priya</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="tile" id="t-sam"><div class="top"><span class="av" style="background:#0f766e">S</span><div><div class="nm">Sam</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
         </div>
         <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:10px">
-          <label for="say" style="font-weight:700">Your point</label>
-          <textarea id="say" placeholder="Press Speak and talk, or type here. Address people by name to bring them in."></textarea>
+          <label for="say" style="font-weight:700">Your contribution</label><p class="mute" style="margin:0">1. Type or dictate. 2. Review your words. 3. Click Send contribution so the group can respond.</p>
+          <textarea id="say" placeholder="Type your contribution, or use the microphone to dictate it. Address people by name to bring them in."></textarea>
           <div class="controls">
-            <button class="btn" type="button" id="mic">Speak</button>
-            <button class="btn hot" type="button" id="send">Say it</button>
+            <button class="btn" type="button" id="mic">Use microphone</button>
+            <button class="btn hot" type="button" id="send">Send contribution</button>
             <span class="mute" id="roomMsg" aria-live="polite"></span>
           </div>
         </div>
@@ -139,12 +139,14 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     <div class="controls"><button class="btn hot" type="button" id="again">Try again</button><a class="btn ghost" href="/assessment-centre.html">Back to assessment centres</a></div>
   </section>
 </main>
+<script src="/interview-teaser-transcript.js"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
   const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const NAMES = { you: 'You', dominic: 'Dominic', priya: 'Priya', sam: 'Sam' };
   const LIMIT = 20 * 60;
+  let mode='open',generation=0,capture=null;
   let info = null, scenario = null, transcript = [], startAt = 0, tick = null, busy = false, ended = false, lastActivity = 0, audioNow = null, rec = null, listening = false;
 
   // ---------- set up ----------
@@ -156,12 +158,13 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     if (!d.member) { const m = $('setupMsg'); m.innerHTML = 'The AI group exercise is part of membership. You can read the cases here. <a href="/signup.html?plan=member">See membership</a>'; m.hidden = false; }
   }).catch(() => { const m = $('setupMsg'); m.className = 'msg err'; m.textContent = 'Couldn’t load the cases. Refresh to try again.'; m.hidden = false; });
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  $('micNote').textContent = SR ? 'Your microphone is used to turn speech into text.' : 'Speech to text isn’t available in this browser (try Chrome). You can type instead.';
+  $('micNote').textContent = 'Dictate with your microphone or type. Review your words before sending.';
 
   function briefHtml(s) { return `<p style="margin:0 0 6px">${esc(s.brief)}</p><ul>${s.options.map(o => `<li><b>${esc(o.name)}</b>: ${esc(o.facts)}</li>`).join('')}</ul><p style="margin:6px 0 0"><b>Also:</b> ${esc(s.extra)}</p>`; }
   let readT = null;
   $('toBrief').addEventListener('click', () => {
     if (!scenario) return;
+    mode=$('discussionMode').value;const positions=mode==='debate'?scenario.options.slice(0,3).map((o,i)=>NAMES[['dominic','priya','sam'][i]]+': '+o.name).join(' · '):'No fixed positions. Everyone can explore and change their view.';$('roleBrief').textContent=(mode==='debate'?'Assigned positions — ':'Open discussion — ')+positions+(mode==='debate'?' · You chair: challenge the arguments and agree a recommendation.':'');$('roomRoles').textContent=$('roleBrief').textContent;
     $('setup').hidden = true; $('briefStep').hidden = false; $('bTitle').textContent = scenario.title; $('bBody').innerHTML = briefHtml(scenario);
     let left = 180; clearInterval(readT); readT = setInterval(() => { left--; $('readTimer').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); if (left <= 0) { clearInterval(readT); $('readTimer').textContent = 'time’s up'; } }, 1000);
     window.scrollTo(0, 0);
@@ -169,7 +172,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   $('back').addEventListener('click', () => { clearInterval(readT); $('briefStep').hidden = true; $('setup').hidden = false; });
 
   // ---------- room ----------
-  const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
+  const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({...body,mode}),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
   const elapsed = () => Math.floor((Date.now() - startAt) / 1000);
   function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => $('t-' + w).classList.toggle('on', w === who)); }
   function addLine(who, text) {
@@ -177,22 +180,25 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     const d = document.createElement('div'); d.className = 'line' + (who === 'you' ? ' you' : ''); d.innerHTML = `<b>${NAMES[who]}</b><br>${esc(text)}`;
     $('log').appendChild(d); $('log').scrollTop = $('log').scrollHeight;
   }
-  function setBusy(b, note) { busy = b; $('send').disabled = b; $('mic').disabled = b && !listening; $('roomMsg').textContent = note || ''; }
+  function setBusy(b, note) { busy = b; $('send').disabled = b||ended; $('mic').disabled = (b && !listening)||ended; $('roomMsg').textContent = note || ''; }
 
   async function speak(who, text) {
+    const voiceRun=generation;
     speaking(who);
     const done = () => speaking(null);
     if (!$('voice').checked) { await new Promise(r => setTimeout(r, Math.min(4000, 400 + text.length * 25))); return done(); }
     if (info?.voice) {
       try {
-        const r = await fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'voice', speaker: who, text }) });
+        const r = await fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'voice', speaker: who, text }),signal:AbortSignal.timeout(20000) });
+        if(voiceRun!==generation||ended)return;
         if (r.ok) {
           const url = URL.createObjectURL(await r.blob()); const a = new Audio(url); audioNow = a;
-          await new Promise(res => { a.onended = res; a.onerror = res; a.play().catch(res); });
+          await new Promise(res => {const timeout=setTimeout(()=>{a.pause();res();},25000);const finish=()=>{clearTimeout(timeout);res();};a.onended=finish;a.onerror=finish;a.onpause=finish;a.play().catch(finish);});
           URL.revokeObjectURL(url); audioNow = null; return done();
         }
       } catch {}
     }
+    if(voiceRun!==generation||ended)return;
     if (window.speechSynthesis) {
       await new Promise(res => {
         const u = new SpeechSynthesisUtterance(text); const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
@@ -206,16 +212,17 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
 
   async function aiTurn(reason) {
     if (ended || busy) return;
-    setBusy(true, 'The others are thinking…');
+    const run=generation;setBusy(true, 'The group is preparing a response…');
     const r = await post({ action: 'group-turn', scenario: scenario.id, transcript, elapsed: elapsed(), reason });
+    if(run!==generation||ended)return;
     if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
     if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
-    for (const t of r.j.turns || []) { if (ended) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text); }
-    lastActivity = Date.now(); setBusy(false, 'Your turn: respond, or bring someone in by name.');
+    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text); }
+    if(run!==generation||ended)return;lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');
   }
 
   $('start').addEventListener('click', () => {
-    clearInterval(readT);
+    generation++;busy=false;clearInterval(readT);
     $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);
     transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
     clearInterval(tick);
@@ -230,9 +237,13 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     aiTurn('start');
   });
 
+  function takeFloor(){if(ended)return;generation++;audioNow?.pause();window.speechSynthesis?.cancel();setBusy(false,'You have the floor. Type or dictate your point, then Send contribution.');lastActivity=Date.now();speaking('you');$('say').focus();}
+  $('takeFloor').onclick=takeFloor;
+  for(const [id,name]of [['askPriya','Priya'],['askSam','Sam']])$(id).onclick=async()=>{if(ended||listening)return;takeFloor();const draft=$('say').value.trim();if(draft){$('roomMsg').textContent='Your draft is preserved. Add your question for '+name+' and send it.';return;}$('say').value=name+', what is your view on the options and the biggest risk?';await send();};
   async function send() {
-    const text = $('say').value.trim(); if (!text || busy || ended) return;
-    if (listening) stopMic();
+    if(busy||ended)return;
+    if (listening) await stopMic();
+    const text=$('say').value.trim();if(!text)return;
     if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel();
     $('say').value = ''; addLine('you', text); lastActivity = Date.now();
     await aiTurn('reply');
@@ -240,23 +251,20 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   $('send').addEventListener('click', send);
   $('say').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
 
-  // ---------- microphone (speech to text in the browser) ----------
-  function stopMic() { listening = false; try { rec && rec.stop(); } catch {} $('mic').textContent = 'Speak'; $('mic').classList.remove('rec'); speaking(null); $('s-you').textContent = 'Your turn when ready'; }
-  $('mic').addEventListener('click', () => {
-    if (!SR) { $('roomMsg').textContent = 'Speech to text needs Chrome or Edge. Type your point instead.'; return; }
-    if (listening) { stopMic(); return; }
-    if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel();
-    rec = new SR(); rec.lang = 'en-GB'; rec.continuous = true; rec.interimResults = true;
-    const base = $('say').value ? $('say').value.trim() + ' ' : '';
-    rec.onresult = e => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; $('say').value = base + t.trim(); lastActivity = Date.now(); };
-    rec.onerror = e => { $('roomMsg').textContent = e.error === 'not-allowed' ? 'Microphone blocked. Allow it in the browser, or type.' : 'Microphone stopped. Press Speak again, or type.'; stopMic(); };
-    rec.onend = () => { if (listening) { try { rec.start(); } catch { stopMic(); } } };
-    try { rec.start(); listening = true; $('mic').textContent = 'Stop'; $('mic').classList.add('rec'); speaking('you'); $('s-you').textContent = 'Listening… press Say it when done'; } catch { $('roomMsg').textContent = 'Couldn’t start the microphone. Type instead.'; }
+  // Dictation uses live transcription with recorded-audio recovery.
+  async function stopMic(){
+    if(!capture)return;const c=capture;clearTimeout(c.timeout);capture=null;listening=false;$('mic').textContent='Use microphone';$('mic').classList.remove('rec');setBusy(true,'Finishing your transcript…');
+    const blob=await new Promise(resolve=>{c.recorder.onstop=()=>resolve(new Blob(c.parts,{type:c.recorder.mimeType}));c.recorder.stop();});
+    try{let text=await c.live?.finish();if(!text){const audio=await new Promise(resolve=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.readAsDataURL(blob);});const r=await fetch('/api/interview-transcribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({audio,mimeType:blob.type.split(';')[0]}),signal:AbortSignal.timeout(60000)});const d=await r.json();if(!r.ok)throw Error(d.error||'Transcription unavailable.');text=d.text;}$('say').value=(c.base+' '+(text||'')).trim();setBusy(false,'Review your words, then click Send contribution.');}catch(e){setBusy(false,e.message+' You can type or correct your contribution.');}finally{c.stream.getTracks().forEach(t=>t.stop());c.live?.cancel();speaking(null);lastActivity=Date.now();}
+  }
+  $('mic').addEventListener('click',async()=>{
+    if(listening){await stopMic();return;}if(busy||ended)return;
+    try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});const recorder=new MediaRecorder(stream),parts=[],base=$('say').value.trim();const c={stream,recorder,parts,base};capture=c;recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};c.live=window.DeskTeaserTranscript.start(stream,text=>{$('say').value=(base+' '+text).trim();},text=>{$('roomMsg').textContent=text;});recorder.start();c.timeout=setTimeout(()=>{if(capture===c)stopMic();},120000);listening=true;$('mic').textContent='Stop dictation';$('mic').classList.add('rec');speaking('you');$('roomMsg').textContent='Listening. Click Stop dictation, review your words, then Send contribution.';}catch{setBusy(false,'Microphone unavailable. Allow access or type your contribution.');}
   });
 
   // ---------- finish and feedback ----------
   async function finish() {
-    if (ended) return; ended = true; clearInterval(tick); if (listening) stopMic(); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
+    if (ended) return;if(listening)await stopMic();if(!$('say').value.trim()&&!transcript.some(x=>x.who==='you')){$('roomMsg').textContent='Send at least one contribution before requesting feedback.';return;}if($('say').value.trim()){addLine('you',$('say').value.trim());$('say').value='';}generation++;ended = true; clearInterval(tick); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
     if (!transcript.some(x => x.who === 'you')) { $('roomMsg').textContent = 'You didn’t say anything, so there’s nothing to score. Try again and speak in the first two minutes.'; ended = false; return; }
     setBusy(true, 'The assessor is scoring your discussion… about 20 seconds');
     $('end').disabled = true;
@@ -273,7 +281,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     $('fixes').innerHTML = f.fixes.map(x => `<li>${esc(x)}</li>`).join('');
   }
   $('end').addEventListener('click', finish);
-  window.addEventListener('pagehide',()=>{ended=true;clearInterval(tick);clearInterval(readT);rec?.abort();audioNow?.pause();window.speechSynthesis?.cancel();});
+  window.addEventListener('pagehide',()=>{ended=true;clearInterval(tick);clearInterval(readT);capture?.live?.cancel();capture?.stream.getTracks().forEach(t=>t.stop());audioNow?.pause();window.speechSynthesis?.cancel();});
   $('again').addEventListener('click', () => { $('result').hidden = true; $('setup').hidden = false; window.scrollTo(0, 0); });
 })();
 </script>

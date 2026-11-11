@@ -60,19 +60,20 @@ export default async function handler(req, res) {
 
     if (b.action === 'group-turn' || b.action === 'group-feedback') {
       if (!paid) return upsell(res);
+      const mode=b.mode==='debate'?'debate':'open';
       const sc = SCENARIOS[b.scenario]; if (!sc) return res.status(400).json({ error: 'Choose a scenario.' });
       const transcript = validTranscript(b.transcript); if (!transcript) return res.status(400).json({ error: 'Transcript too long.' });
       if (b.action === 'group-turn') {
         if (!await useQuota('ac-turn:' + p, 400)) return res.status(429).json({ error: 'Daily practice limit reached. Come back tomorrow.' });
         const reason = ['start', 'silence', 'reply'].includes(b.reason) ? b.reason : 'reply';
-        const raw = await tool(FAST, TURN_SCHEMA, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason), 400, 0.8);
+        const raw = await tool(FAST, TURN_SCHEMA, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason, mode), 400, 0.8);
         return res.json({ turns: validTurns(raw) });
       }
       if (transcript.filter(x => x.who === 'you').length < 1) return res.status(400).json({ error: 'Say something in the discussion first, then ask for feedback.' });
       if (!await useQuota('ac-feedback:' + p, 10)) return res.status(429).json({ error: 'That’s 10 group exercises today. Try again tomorrow.' });
       const st = stats(transcript);
-      const fb = validFeedback(await tool(SMART, FEEDBACK_SCHEMA, 'submit_feedback', feedbackPrompt(sc, transcript, st), 1800, 0.2), transcript);
-      await saveItem(p, 'ac-group', { scenario: sc.id, stats: st, feedback: fb, transcript }).catch(() => null);
+      const fb = validFeedback(await tool(SMART, FEEDBACK_SCHEMA, 'submit_feedback', feedbackPrompt(sc, transcript, st, mode), 1800, 0.2), transcript);
+      await saveItem(p, 'ac-group', { scenario: sc.id, mode, stats: st, feedback: fb, transcript }).catch(() => null);
       return res.json({ stats: st, feedback: fb });
     }
 
