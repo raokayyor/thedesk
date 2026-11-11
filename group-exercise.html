@@ -178,7 +178,7 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   $('micNote').textContent = 'Dictate with your microphone or type. Review your words before sending.';
 
-  function briefHtml(s) { return `<p style="margin:0 0 6px">${esc(s.brief)}</p><ul>${s.options.map(o => `<li><b>${esc(o.name)}</b>: ${esc(o.facts)}</li>`).join('')}</ul><p style="margin:6px 0 0"><b>Also:</b> ${esc(s.extra)}</p>`; }
+  function briefHtml(s) { return `${s.background?`<section style="margin-bottom:18px"><div class="kicker">Case notes · fictional company background</div><h3 style="margin:10px 0 6px">The business</h3><p>${esc(s.background.company)}</p><h3>The market</h3><p>${esc(s.background.market)}</p><h3>What matters to the decision-makers</h3><p>${esc(s.background.pressure)}</p></section>`:''}<h3>Your decision and the figures</h3><p style="margin:0 0 6px">${esc(s.brief)}</p><ul>${s.options.map(o => `<li><b>${esc(o.name)}</b>: ${esc(o.facts)}</li>`).join('')}</ul><p style="margin:6px 0 0"><b>Also:</b> ${esc(s.extra)}</p>`; }
   let readT = null;
   $('toBrief').addEventListener('click', () => {
     if (!scenario) return;
