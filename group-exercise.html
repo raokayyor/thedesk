@@ -31,10 +31,10 @@ h1{font-size:clamp(28px,4.5vw,40px)}h2{font-size:24px}h3{font-size:19px}
 .room{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tile{background:var(--ink);color:#fff;border-radius:14px;padding:14px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;border:3px solid transparent;transition:border-color .15s}
-.tile.on{border-color:var(--accent)}.tile.you.on{border-color:#3ecf8e}
+.tile.on{border-color:#3ecf8e;background:#10392c;box-shadow:0 0 0 2px rgba(62,207,142,.18)}.tile.you.on{border-color:#3ecf8e}
 .tile .top{display:flex;gap:10px;align-items:center}.tile .nm{font-weight:700}.tile .st{font-size:12px;color:#cfd6db}
 .bars{display:flex;gap:3px;height:16px;align-items:flex-end}.bars i{width:4px;background:#5b666d;border-radius:2px;height:3px}
-.tile.on .bars i{background:#ff8a52;animation:b .6s ease-in-out infinite alternate}.tile.you.on .bars i{background:#3ecf8e}
+.tile.on .bars i{background:#3ecf8e;animation:b .6s ease-in-out infinite alternate}.tile.you.on .bars i{background:#3ecf8e}
 .bars i:nth-child(2){animation-delay:.1s}.bars i:nth-child(3){animation-delay:.2s}.bars i:nth-child(4){animation-delay:.3s}.bars i:nth-child(5){animation-delay:.15s}
 @keyframes b{from{height:3px}to{height:16px}}
 @media (prefers-reduced-motion:reduce){.tile.on .bars i{animation:none;height:10px}}
@@ -176,7 +176,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   // ---------- room ----------
   const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({...body,mode,allocation,chair,newsCount,candidateName}),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
   const elapsed = () => Math.floor((Date.now() - startAt) / 1000);
-  function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => $('t-' + w).classList.toggle('on', w === who)); }
+  function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => {const tile=$('t-'+w);tile.classList.toggle('on',w===who);tile.setAttribute('aria-label',(w==='you'?candidateName:NAMES[w])+(w===who?' — speaking':' — waiting'));const status=tile.querySelector?.('.st');if(status)status.textContent=w===who?'Speaking / your floor':w==='you'?'Your turn when ready':'AI candidate';}); }
   function addLine(who, text) {
     transcript.push({ who, text });
     const d = document.createElement('div'); d.className = 'line' + (who === 'you' ? ' you' : ''); d.innerHTML = `<b>${NAMES[who]}</b><br>${esc(text)}`;
@@ -222,8 +222,8 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     if(run!==generation||ended)return;
     if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
     if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
-    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(pendingNews&&reason!=='news'&&!ended&&run===generation){setBusy(false);await chairNews();return;}if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;} }
-    if(run!==generation||ended)return;if(pendingNews){setBusy(false);await chairNews();return;}lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');if(autoMic)await startMic();
+    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;}if(pendingNews&&reason!=='news'&&!ended&&run===generation){setBusy(false);await chairNews();return;} }
+    if(run!==generation||ended)return;if(floorRequested){await yieldFloor(chair==='you'?'dominic':chair);return;}if(pendingNews){setBusy(false);await chairNews();return;}lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');speaking('you');if(autoMic)await startMic();
   }
 
   $('start').addEventListener('click', async () => {
@@ -245,7 +245,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   });
 
   async function yieldFloor(speaker='dominic'){
-    floorRequested=false;setBusy(true,'The speaker is handing over to '+candidateName+'…');const line=candidateName+', go ahead.';addLine(speaker,line);await speak(speaker,line);if(ended)return;lastActivity=Date.now();setBusy(false,'Your turn, '+candidateName+'. Speak or type, then Send contribution.');if(autoMic&&!listening)await startMic();$('say').focus();floorResolve?.();floorResolve=null;
+    floorRequested=false;setBusy(true,'The speaker is handing over to '+candidateName+'…');const line=candidateName+', go ahead.';addLine(speaker,line);await speak(speaker,line);if(ended)return;lastActivity=Date.now();setBusy(false,'Your turn, '+candidateName+'. Speak or type, then Send contribution.');speaking('you');if(autoMic&&!listening)await startMic();$('say').focus();floorResolve?.();floorResolve=null;
   }
   function takeFloor(){
     if(ended)return Promise.resolve();if(listening)return Promise.resolve();if(floorRequested)return Promise.resolve();
@@ -259,7 +259,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     if (listening) await stopMic();
     const text=$('say').value.trim();if(!text)return;
     if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel();
-    floorRequested=false;$('say').value = ''; addLine('you', text); lastActivity = Date.now();
+    floorRequested=false;speaking('you');$('say').value = ''; addLine('you', text); lastActivity = Date.now();
     await aiTurn('reply');
   }
   $('send').addEventListener('click', send);

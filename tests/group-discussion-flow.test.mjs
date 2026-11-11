@@ -11,8 +11,8 @@ test('floor request waits for a candidate to finish, names student, then resumes
  const button=make();button.dataset={id:'mendip'};el('scen').querySelectorAll=()=>[button];
  // Reload creates listeners for the mocked case button.
  vm.runInContext(script,c);await flush();button.events.click();el('toBrief').events.click();await el('start').events.click();await flush();assert.equal(pending.length,1);
- el('takeFloor').onclick();assert.match(el('roomMsg').textContent,/Floor requested/);assert.equal(logs.length,0);
+ el('nextUpdate').onclick();el('takeFloor').onclick();assert.match(el('roomMsg').textContent,/Floor requested/);assert.equal(logs.length,0);
  pending[0].resolve([{speaker:'dominic',text:'Let me finish my recommendation.'},{speaker:'sam',text:'Should not precede handover.'}]);await flush();assert.match(logs[0],/finish my recommendation/);assert.match(logs[1],/Jack, go ahead/);assert.equal(logs.length,2);assert.equal(el('send').disabled,false);
- el('say').value='I would test the employment impact before deciding.';el('send').events.click();await flush();assert.equal(pending.length,2);assert.equal(pending[1].body.reason,'reply');assert.equal(pending[1].body.newsCount,0);pending[1].resolve([{speaker:'priya',text:'I agree we should test that risk.'}]);await flush();assert.match(logs.at(-1),/test that risk/);
+ el('say').value='I would test the employment impact before deciding.';el('send').events.click();await flush();assert.equal(pending.length,2);assert.equal(pending[1].body.reason,'reply');assert.equal(pending[1].body.newsCount,1);pending[1].resolve([{speaker:'priya',text:'I agree we should test that risk.'}]);await flush();assert(logs.some(x=>/test that risk/.test(x)));if(pending[2])pending[2].resolve([{speaker:'priya',text:'Let us reconsider the revised offer.'}]);await flush();
  });
 
