@@ -84,6 +84,7 @@ export default async function handler(req, res) {
       }
       res.setHeader('Set-Cookie', `desk_owner=${TEST_OWNER}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400${process.env.VERCEL ? '; Secure' : ''}`);
       res.statusCode = 302;
+      if(process.env.VERCEL_ENV==='preview'&&req.query.next==='group'){res.setHeader('Location','/group-exercise.html');return res.end();}
       res.setHeader('Location', (req.query.view === 'free' ? '/result-final-design.html?id=' : '/fullcycle.html?id=') + id);
       return res.end();
     }

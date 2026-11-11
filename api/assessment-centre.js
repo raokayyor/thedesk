@@ -36,7 +36,7 @@ export default async function handler(req, res) {
         const rows = await sql().query(`SELECT data, created_at FROM desk_value_items WHERE principal=$1 AND kind='ac-crib' AND data->>'id'=$2 AND data->>'firm'=$3 ORDER BY id DESC LIMIT 1`, [p, id, firm]).catch(() => []);
         return res.json({ crib: rows[0]?.data?.crib || null, at: rows[0]?.created_at || null });
       }
-      return res.json({ member: paid, voice: voiceConfigured(), scale: SCALE, behaviours: BEHAVIOURS, scenarios: Object.values(SCENARIOS), personas: Object.fromEntries(Object.entries(PERSONAS).map(([k, v]) => [k, { name: v.name, style: v.style }])) });
+      return res.json({ member: paid, preview: process.env.VERCEL_ENV==='preview', voice: voiceConfigured(), scale: SCALE, behaviours: BEHAVIOURS, scenarios: Object.values(SCENARIOS), personas: Object.fromEntries(Object.entries(PERSONAS).map(([k, v]) => [k, { name: v.name, style: v.style }])) });
     }
     if (req.method !== 'POST') return res.status(405).end();
     if (!sameOrigin(req, res)) return;
