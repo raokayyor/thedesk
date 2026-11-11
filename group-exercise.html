@@ -56,6 +56,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
 .quote{font-style:italic;color:#3b4652}
 @media (max-width:900px){.scen,.room{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.beh{grid-template-columns:1fr}}
 select,input,textarea,button{font-family:inherit;font-size:14px}select{line-height:1.45;color:#132b3a;background:#fff;min-height:46px}select option{font-family:inherit}label[for=chairMode],label[for=studentRole],label[for=candidateName]{display:block;margin-top:16px;margin-bottom:6px}
+ .assessment-spinner{width:40px;height:40px;border:4px solid var(--soft);border-top-color:var(--accent);border-radius:50%;animation:assess-spin 1s linear infinite;margin:24px 0}@keyframes assess-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.assessment-spinner{animation:none;border-top-color:var(--accent)}}
 </style>
 </head>
 <body>
@@ -97,7 +98,7 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
   <section id="room" hidden style="display:flex;flex-direction:column;gap:14px">
     <div class="controls" style="justify-content:space-between">
       <div><div class="kicker" id="rTitle"></div><div class="mute">Agree one recommendation with risks before time runs out.</div></div>
-      <div style="display:flex;gap:14px;align-items:center"><span class="timer" id="timer" aria-live="off">20:00</span><button class="btn ghost" type="button" id="end">Finish & assess discussion</button></div>
+      <div style="display:flex;gap:14px;align-items:center"><span class="timer" id="timer" aria-live="off">20:00</span><button class="btn ghost" type="button" id="end">End discussion & assess transcript</button></div>
     </div>
     <div id="roomRoles" class="msg info"></div><section class="card" style="padding:16px" aria-label="Case developments"><div class="controls"><b>Case developments · fictional practice news</b><button class="btn ghost" id="nextUpdate" type="button">Introduce next update</button></div><p class="mute">New information arrives at 5 and 12 minutes. You can introduce it earlier for practice.</p><div id="newsUpdates" aria-live="polite">No developments yet. Use the original brief.</div></section><div class="room">
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -119,11 +120,20 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
         <details class="card brief" id="rBrief"><summary>The brief</summary><div id="rBriefBody"></div></details>
-        <div class="card" style="padding:16px"><h3 style="margin-bottom:8px">Discussion</h3><div class="log" id="log" aria-live="polite"></div></div>
+        <div class="card" style="padding:16px"><h3 style="margin-bottom:8px">Discussion</h3><div class="log" id="log" aria-live="polite"></div><div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px"><button class="btn hot" type="button" id="endBelow">End discussion &amp; assess transcript</button><p class="mute" style="margin-bottom:0">Finish whenever you’re ready. Your assessment covers all your contributions across the discussion.</p></div></div>
       </div>
     </div>
   </section>
 
+  <section id="assessmentLoading" hidden class="card" aria-labelledby="assessmentLoadingTitle" aria-busy="true" style="max-width:760px;align-self:center;width:100%;padding:clamp(24px,5vw,52px)">
+    <div class="kicker">The Desk · Practitioner framework</div>
+    <div class="assessment-spinner" role="status" aria-label="Preparing your assessment"></div>
+    <h2 id="assessmentLoadingTitle">Assessing your whole discussion.</h2>
+    <p>Applying The Desk’s practitioner-developed framework to what you said and how you responded to the group.</p>
+    <div style="display:flex;align-items:center;gap:12px;margin:24px 0"><img src="/assets/kayyor-rao.jpg" alt="Kayyor Rao" width="48" height="48" style="border-radius:50%;object-fit:cover"><div><strong>Kayyor Rao &amp; The Desk practitioner panel</strong><div class="mute">Banking, investing, accounting and insurance</div></div></div>
+    <ul style="padding-left:20px;line-height:1.9"><li>Reviewing your contributions in the full transcript</li><li>Checking your reasoning against the brief and news updates</li><li>Looking at listening, challenge, inclusion and decision-making</li><li>Selecting evidence from your words and practical next steps</li></ul>
+    <p class="mute">Your feedback is generated using the panel’s framework. This is not a live personal review by the practitioners.</p>
+  </section>
   <!-- 4. Feedback -->
   <section id="result" hidden style="display:flex;flex-direction:column;gap:16px">
     <div class="card" style="display:flex;flex-direction:column;gap:12px">
@@ -289,10 +299,10 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
     if (ended) return;if(listening)await stopMic();if(!$('say').value.trim()&&!transcript.some(x=>x.who==='you')){$('roomMsg').textContent='Send at least one contribution before requesting feedback.';return;}if($('say').value.trim()){addLine('you',$('say').value.trim());$('say').value='';}floorRequested=false;floorResolve?.();floorResolve=null;generation++;ended = true;autoMic=false;readyMic?.getTracks().forEach(t=>t.stop());readyMic=null; clearInterval(tick); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
     if (!transcript.some(x => x.who === 'you')) { $('roomMsg').textContent = 'You didn’t say anything, so there’s nothing to score. Try again and speak in the first two minutes.'; ended = false; return; }
     setBusy(true, 'The assessor is scoring your discussion… about 20 seconds');
-    $('end').disabled = true;
+    $('end').disabled = true;$('endBelow').disabled=true;$('room').hidden=true;$('assessmentLoading').hidden=false;window.scrollTo(0,0);
     const r = await post({ action: 'group-feedback', scenario: scenario.id, transcript });
-    $('end').disabled = false; setBusy(false);
-    if (!r.ok) { ended = false; $('roomMsg').textContent = r.j.error || 'Scoring didn’t work. Try again.'; return; }
+    $('end').disabled = false;$('endBelow').disabled=false;$('assessmentLoading').hidden=true;setBusy(false);
+    if (!r.ok) { ended = false;$('room').hidden=false; $('roomMsg').textContent = r.j.error || 'Scoring didn’t work. Try again.'; return; }
     const { feedback: f, stats: s } = r.j;
     $('room').hidden = true; $('result').hidden = false; window.scrollTo(0, 0);
     $('band').className = 'band b-' + f.overall; $('band').textContent = f.overall; $('summary').textContent = f.summary;
@@ -302,7 +312,7 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
     $('best').textContent = f.bestMoment || '—';
     $('fixes').innerHTML = f.fixes.map(x => `<li>${esc(x)}</li>`).join('');
   }
-  $('end').addEventListener('click', finish);
+  $('end').addEventListener('click', finish);$('endBelow').addEventListener('click',finish);
   window.addEventListener('pagehide',()=>{ended=true;clearInterval(tick);clearInterval(readT);readyMic?.getTracks().forEach(t=>t.stop());capture?.live?.cancel();capture?.stream.getTracks().forEach(t=>t.stop());audioNow?.pause();window.speechSynthesis?.cancel();});
   $('again').addEventListener('click', () => { $('result').hidden = true; $('setup').hidden = false; window.scrollTo(0, 0); });
 })();
