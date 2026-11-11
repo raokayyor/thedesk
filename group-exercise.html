@@ -72,7 +72,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
       </div>
       <p class="mute" style="margin:0">They’re AI characters, not real people. Your microphone audio is transcribed for this exercise; we keep the transcript with your feedback on your desk.</p>
     </div>
-    <div class="card"><label for="discussionMode"><b>Choose how to practise</b></label><select id="discussionMode" style="display:block;width:100%;padding:12px;margin-top:8px"><option value="open">Open discussion — explore the options together</option><option value="debate">Assigned-position debate — each candidate defends an option</option></select><p class="mute">In debate mode you chair: test each argument, involve everyone and agree a recommendation.</p></div><h2>Choose a case</h2>
+    <div class="card"><label for="discussionMode"><b>Choose how to practise</b></label><select id="discussionMode" style="display:block;width:100%;padding:12px;margin-top:8px"><option value="open">Open discussion — explore the options together</option><option value="debate">Assigned-position debate — each candidate defends an option</option></select><p class="mute">In debate mode you chair: test each argument, involve everyone and agree a recommendation.</p></div><label for="candidateName"><b>Your first name</b></label><input id="candidateName" value="Jack" maxlength="40" autocomplete="given-name" style="padding:12px;border:1px solid #ddd7cf;border-radius:10px"><h2>Choose a case</h2>
     <div class="scen" id="scen"></div>
     <div class="card controls">
       <label style="display:flex;gap:8px;align-items:center;font-weight:600"><input type="checkbox" id="voice" checked style="width:20px;height:20px"> Hear the others speak</label>
@@ -146,9 +146,10 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const NAMES = { you: 'You', dominic: 'Dominic', priya: 'Priya', sam: 'Sam' };
   const LIMIT = 20 * 60;
-  let mode='open',generation=0,capture=null,readyMic=null,autoMic=false;
+  let mode='open',generation=0,capture=null,readyMic=null,autoMic=false,floorRequested=false,floorResolve=null,candidateName='Jack';
   let info = null, scenario = null, transcript = [], startAt = 0, tick = null, busy = false, ended = false, lastActivity = 0, audioNow = null, rec = null, listening = false;
 
+  fetch('/api/desk-home').then(r=>r.json()).then(d=>{const name=d.profile?.name?.trim().split(/\s+/)[0];if(name&&!$('candidateName').matches(':focus'))$('candidateName').value=name;}).catch(()=>{});
   // ---------- set up ----------
   fetch('/api/assessment-centre?view=info').then(r => r.json()).then(d => {
     info = d;
@@ -217,13 +218,13 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     if(run!==generation||ended)return;
     if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
     if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
-    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text); }
+    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;} }
     if(run!==generation||ended)return;lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');if(autoMic)await startMic();
   }
 
   $('start').addEventListener('click', async () => {
     $('start').disabled=true;try{readyMic=await navigator.mediaDevices.getUserMedia({audio:true});readyMic.getAudioTracks().forEach(t=>t.enabled=false);autoMic=true;}catch{autoMic=false;$('roomMsg').textContent='Microphone access was not granted. You can type your contribution.';}finally{$('start').disabled=false;}
-    generation++;busy=false;clearInterval(readT);
+    candidateName=$('candidateName').value.trim().slice(0,40)||'You';NAMES.you=candidateName;floorRequested=false;generation++;busy=false;clearInterval(readT);
     $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);
     transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
     clearInterval(tick);
@@ -232,15 +233,23 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
       if (left === 120) $('roomMsg').textContent = 'Two minutes left: time to land a recommendation.';
       if (left <= 0) finish();
       // If the candidate goes quiet for 30 seconds, the others carry on (like a real group).
-      if (!busy && !listening && !ended && Date.now() - lastActivity > 30000 && !$('say').value.trim()) { lastActivity = Date.now(); aiTurn('silence'); }
+      if(!busy&&!ended&&Date.now()-lastActivity>15000&&!$('say').value.trim()) {if(capture){clearTimeout(capture.timeout);capture.live?.cancel();capture.recorder.stop();capture.stream.getTracks().forEach(t=>t.stop());capture=null;listening=false;$('mic').textContent='Use microphone';$('mic').classList.remove('rec');}}
+      if (!busy && !listening && !ended && Date.now() - lastActivity > 15000 && !$('say').value.trim()) { lastActivity = Date.now(); aiTurn('silence'); }
     }, 1000);
     window.scrollTo(0, 0);
     aiTurn('start');
   });
 
-  function takeFloor(){if(ended)return;generation++;audioNow?.pause();window.speechSynthesis?.cancel();setBusy(false,'You have the floor. Type or dictate your point, then Send contribution.');lastActivity=Date.now();speaking('you');$('say').focus();}
-  $('takeFloor').onclick=takeFloor;
-  for(const [id,name]of [['askPriya','Priya'],['askSam','Sam']])$(id).onclick=async()=>{if(ended)return;if(listening)await stopMic();takeFloor();const draft=$('say').value.trim();if(draft){$('roomMsg').textContent='Your draft is preserved. Add your question for '+name+' and send it.';return;}$('say').value=name+', what is your view on the options and the biggest risk?';await send();};
+  async function yieldFloor(speaker='dominic'){
+    floorRequested=false;setBusy(true,'The speaker is handing over to '+candidateName+'…');const line=candidateName+', go ahead.';addLine(speaker,line);await speak(speaker,line);if(ended)return;lastActivity=Date.now();setBusy(false,'Your turn, '+candidateName+'. Speak or type, then Send contribution.');if(autoMic&&!listening)await startMic();$('say').focus();floorResolve?.();floorResolve=null;
+  }
+  function takeFloor(){
+    if(ended)return Promise.resolve();if(listening)return Promise.resolve();if(floorRequested)return Promise.resolve();
+    floorRequested=true;const waiting=new Promise(resolve=>floorResolve=resolve);
+    if(busy){$('roomMsg').textContent='Floor requested. The current speaker will finish, then invite '+candidateName+' in.';}else yieldFloor();return waiting;
+  }
+  $('takeFloor').onclick=()=>{takeFloor();};
+  for(const [id,name]of [['askPriya','Priya'],['askSam','Sam']])$(id).onclick=async()=>{if(ended)return;if(listening)await stopMic();await takeFloor();if(ended)return;if(listening)await stopMic();const draft=$('say').value.trim();if(draft){$('roomMsg').textContent='Your draft is preserved. Add your question for '+name+' and send it.';return;}$('say').value=name+', what is your view on the options and the biggest risk?';await send();};
   async function send() {
     if(busy||ended)return;
     if (listening) await stopMic();
@@ -260,13 +269,13 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   }
   async function startMic(){
     if(listening){await stopMic();return;}if(busy||ended)return;
-    try{const stream=readyMic?.getAudioTracks().some(t=>t.readyState==='live')?readyMic:await navigator.mediaDevices.getUserMedia({audio:true});readyMic=stream;stream.getAudioTracks().forEach(t=>t.enabled=true);const recorder=new MediaRecorder(stream),parts=[],base=$('say').value.trim();const c={stream,recorder,parts,base};capture=c;recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};c.live=window.DeskTeaserTranscript.start(stream,text=>{$('say').value=(base+' '+text).trim();},text=>{$('roomMsg').textContent=text;});recorder.start();c.timeout=setTimeout(()=>{if(capture===c)stopMic();},120000);listening=true;$('mic').textContent='Stop dictation';$('mic').classList.add('rec');speaking('you');$('roomMsg').textContent='Listening. Click Stop dictation, review your words, then Send contribution.';}catch{setBusy(false,'Microphone unavailable. Allow access or type your contribution.');}
+    try{const stream=readyMic?.getAudioTracks().some(t=>t.readyState==='live')?readyMic:await navigator.mediaDevices.getUserMedia({audio:true});readyMic=stream;stream.getAudioTracks().forEach(t=>t.enabled=true);const recorder=new MediaRecorder(stream),parts=[],base=$('say').value.trim();const c={stream,recorder,parts,base};capture=c;recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};c.live=window.DeskTeaserTranscript.start(stream,text=>{$('say').value=(base+' '+text).trim();if(text.trim())lastActivity=Date.now();},text=>{$('roomMsg').textContent=text;});recorder.start();c.timeout=setTimeout(()=>{if(capture===c)stopMic();},120000);listening=true;$('mic').textContent='Stop dictation';$('mic').classList.add('rec');speaking('you');$('roomMsg').textContent='Listening. Click Stop dictation, review your words, then Send contribution.';}catch{setBusy(false,'Microphone unavailable. Allow access or type your contribution.');}
   }
   $('mic').addEventListener('click',()=>{if(listening){autoMic=false;stopMic();}else{autoMic=true;startMic();}});
 
   // ---------- finish and feedback ----------
   async function finish() {
-    if (ended) return;if(listening)await stopMic();if(!$('say').value.trim()&&!transcript.some(x=>x.who==='you')){$('roomMsg').textContent='Send at least one contribution before requesting feedback.';return;}if($('say').value.trim()){addLine('you',$('say').value.trim());$('say').value='';}generation++;ended = true;autoMic=false;readyMic?.getTracks().forEach(t=>t.stop());readyMic=null; clearInterval(tick); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
+    if (ended) return;if(listening)await stopMic();if(!$('say').value.trim()&&!transcript.some(x=>x.who==='you')){$('roomMsg').textContent='Send at least one contribution before requesting feedback.';return;}if($('say').value.trim()){addLine('you',$('say').value.trim());$('say').value='';}floorRequested=false;floorResolve?.();floorResolve=null;generation++;ended = true;autoMic=false;readyMic?.getTracks().forEach(t=>t.stop());readyMic=null; clearInterval(tick); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
     if (!transcript.some(x => x.who === 'you')) { $('roomMsg').textContent = 'You didn’t say anything, so there’s nothing to score. Try again and speak in the first two minutes.'; ended = false; return; }
     setBusy(true, 'The assessor is scoring your discussion… about 20 seconds');
     $('end').disabled = true;
