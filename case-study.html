@@ -47,8 +47,8 @@ video{width:100%;max-width:420px;border-radius:12px;background:#000;aspect-ratio
     <div class="card" style="display:flex;flex-direction:column;gap:10px">
       <div class="kicker">Assessment centre · case study</div>
       <h1>Write it, present it, defend it.</h1>
-      <p style="margin:0;color:#3b4652">Like the real thing: read a pack, write a recommendation against the clock, present it on camera, then answer two questions from the panel. You’re scored like an assessor would, and you see the model answer at the end.</p>
-      <p class="mute" style="margin:0">Your camera stays on your device: nothing is recorded or uploaded. Your speech is turned into text in the browser so it can be marked.</p>
+      <p style="margin:0;color:#3b4652">Like the real thing: read a pack, write a recommendation against the clock, present it on camera, then answer two questions from the panel. Get feedback against The Desk’s practice framework and see a worked example at the end.</p>
+      <p class="mute" style="margin:0">Your camera stays on your device: nothing is recorded or uploaded. Your speech is turned into text in the browser so its content and structure can be assessed. Delivery, eye contact and vocal tone are not assessed.</p>
     </div>
     <div class="pick" id="pick"></div>
     <div class="msg info" id="pickMsg" hidden></div>
@@ -98,7 +98,7 @@ video{width:100%;max-width:420px;border-radius:12px;background:#000;aspect-ratio
       <div class="row"><h2>How you did</h2><span class="band" id="band"></span></div>
       <p style="margin:0" id="sum"></p>
     </div>
-    <div class="card"><h3 style="margin-bottom:6px">Scored like the real thing</h3><p class="mute" style="margin:0">1 Below · 2 Developing · 3 Meets · 4 Strong</p><div id="scores"></div></div>
+    <div class="card"><h3 style="margin-bottom:6px">The Desk’s practice assessment</h3><p class="mute" style="margin:0">1 Below · 2 Developing · 3 Meets · 4 Strong</p><div id="scores"></div></div>
     <div class="card" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px">
       <div><h3 style="margin-bottom:6px">What you missed</h3><ul id="missed" style="margin:0;padding-left:18px"></ul></div>
       <div><h3 style="margin-bottom:6px">Do this next time</h3><ol id="fixes" style="margin:0;padding-left:20px"></ol></div>
@@ -165,11 +165,11 @@ video{width:100%;max-width:420px;border-radius:12px;background:#000;aspect-ratio
   });
   async function toQuestions() {
     stopTalk(); if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-    show('s-qs'); window.scrollTo(0, 0); $('qWrap').innerHTML = '<p class="mute">The panel is reading your recommendation…</p>';
+    $('toFb').disabled=true;show('s-qs'); window.scrollTo(0, 0); $('qWrap').innerHTML = '<p class="mute">The panel is reading your recommendation…</p>';
     const r = await post({ action: 'case-questions', caseId: kase.id, writeup: $('writeup').value, presentation: $('talk').value });
     if (r.status === 402) { $('qWrap').innerHTML = '<div class="msg info">Panel questions and marking are part of membership. <a href="/signup.html?plan=member">See membership</a></div>'; $('toFb').hidden = true; return; }
     if (!r.ok) { $('qWrap').innerHTML = `<div class="msg err">${esc(r.j.error || 'Couldn’t get the questions. Try again.')}</div>`; return; }
-    qs = r.j.questions; $('toFb').hidden = false;
+    qs = r.j.questions;$('toFb').disabled=false; $('toFb').hidden = false;
     $('qWrap').innerHTML = qs.map((q, i) => `<div style="display:flex;flex-direction:column;gap:8px"><div class="q">${esc(q)}</div><label for="a${i}" class="mute">Your answer (speak or type)</label><textarea id="a${i}" rows="4"></textarea><div class="row"><button class="btn" type="button" data-mic="${i}">Speak</button><button class="btn ghost" type="button" data-hear="${i}">Hear the question</button></div></div>`).join('');
     $('qWrap').querySelectorAll('[data-hear]').forEach(b => b.addEventListener('click', () => { if (!window.speechSynthesis) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(qs[+b.dataset.hear]); u.lang = 'en-GB'; speechSynthesis.speak(u); }));
     qrec = null;
