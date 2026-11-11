@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {SCENARIOS,discussionRoles,openingTurns,turnPrompt,validTranscript,validTurns,validFeedback,stats,validCrib} from '../lib/assessment-centre.mjs';
+import {SCENARIOS,discussionRoles,openingTurns,newsTurns,responseTurns,turnPrompt,validTranscript,validTurns,validFeedback,stats,validCrib} from '../lib/assessment-centre.mjs';
 test('three practice cases contain bounded decisions and source facts',()=>{assert.equal(Object.keys(SCENARIOS).length,3);for(const s of Object.values(SCENARIOS)){assert(s.brief.length>50);assert(s.options.length>=3)}});
 test('transcripts reject excessive history and unknown speakers',()=>{assert.equal(validTranscript(Array(161).fill({who:'you',text:'a'})),null);assert.deepEqual(validTranscript([{who:'staff',text:'wrong'},{who:'you',text:'My point'}]),[{who:'you',text:'My point'}])});
 test('simulated turns cannot impersonate the student',()=>{assert.deepEqual(validTurns({turns:[{speaker:'you',text:'Invented student turn'}]}),[])});
@@ -17,3 +17,5 @@ test('case updates are fixed fictional data and cannot inject external text',()=
 test('manual student choice swaps roles without duplicating or changing the case options',()=>{const a=globalThis.DeskGroupRoles.assign(SCENARIOS.mendip,()=>0.99);const chosen=globalThis.DeskGroupRoles.chooseStudent(SCENARIOS.mendip,a,0);assert.equal(chosen.you,0);assert.equal(new Set(Object.values(chosen)).size,4);assert.equal(globalThis.DeskGroupRoles.chooseStudent(SCENARIOS.mendip,a,99),null)});
 
 test('the assigned AI chair always opens and invites the named student',()=>{for(const chair of ['priya','sam','dominic']){const [t]=openingTurns(chair,'Jack');assert.equal(t.speaker,chair);assert.match(t.text,/I’ll chair/);assert.match(t.text,/Jack, what/);}assert.deepEqual(openingTurns('you','Jack'),[])});
+
+test('chair reacts to new case facts and empty model replies cannot stall discussion',()=>{const news=globalThis.DeskGroupUpdates.list('mendip',1);const [t]=newsTurns('priya','Jack',news);assert.equal(t.speaker,'priya');assert.match(t.text,/£125m/);assert.match(t.text,/Jack/);assert.deepEqual(newsTurns('you','Jack',news),[]);assert.equal(responseTurns({},[{who:'you',text:'Priya, what do you think?'}],'sam')[0].speaker,'priya')});

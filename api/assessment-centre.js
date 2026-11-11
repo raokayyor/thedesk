@@ -11,7 +11,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { ownedRecord, sameOrigin, apiFailure, sql } from '../lib/report-store.mjs';
 import { principal, isPaidOwner, useQuota, saveItem } from '../lib/value-accounts.mjs';
 import { voiceConfigured, generateInterviewSpeech } from '../lib/interview-voice.mjs';
-import { SCENARIOS, PERSONAS, BEHAVIOURS, SCALE, TURN_SCHEMA, FEEDBACK_SCHEMA, CRIB_SCHEMA, validTranscript, openingTurns, turnPrompt, validTurns, stats, feedbackPrompt, validFeedback, cribPrompt, validCrib, clean } from '../lib/assessment-centre.mjs';
+import { SCENARIOS, PERSONAS, BEHAVIOURS, SCALE, TURN_SCHEMA, FEEDBACK_SCHEMA, CRIB_SCHEMA, validTranscript, openingTurns, newsTurns, responseTurns, turnPrompt, validTurns, stats, feedbackPrompt, validFeedback, cribPrompt, validCrib, clean } from '../lib/assessment-centre.mjs';
 
 export const maxDuration = 120;
 export const config = { api: { bodyParser: { sizeLimit: '200kb' } } };
@@ -67,10 +67,11 @@ export default async function handler(req, res) {
       const transcript = validTranscript(b.transcript); if (!transcript) return res.status(400).json({ error: 'Transcript too long.' });
       if (b.action === 'group-turn') {
         if (!await useQuota('ac-turn:' + p, 400)) return res.status(429).json({ error: 'Daily practice limit reached. Come back tomorrow.' });
-        const reason = ['start', 'silence', 'reply'].includes(b.reason) ? b.reason : 'reply';
+        const reason = ['start', 'silence', 'reply','news'].includes(b.reason) ? b.reason : 'reply';
+        if(reason==='news')return res.json({turns:newsTurns(chair,clean(b.candidateName,40),updates)});
         if(reason==='start')return res.json({turns:openingTurns(chair,clean(b.candidateName,40)||'you')});
         const raw = await tool(FAST, TURN_SCHEMA, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason, mode, allocation), 400, 0.8);
-        return res.json({ turns: validTurns(raw) });
+        return res.json({ turns: responseTurns(raw,transcript,chair) });
       }
       if (transcript.filter(x => x.who === 'you').length < 1) return res.status(400).json({ error: 'Say something in the discussion first, then ask for feedback.' });
       if (!await useQuota('ac-feedback:' + p, 10)) return res.status(429).json({ error: 'That’s 10 group exercises today. Try again tomorrow.' });

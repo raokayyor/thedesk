@@ -146,7 +146,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
   const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const NAMES = { you: 'You', dominic: 'Dominic', priya: 'Priya', sam: 'Sam' };
   const LIMIT = 20 * 60;
-  let mode='open',generation=0,capture=null,readyMic=null,autoMic=false,floorRequested=false,floorResolve=null,candidateName='Jack',allocation=null,chair='you',newsCount=0;
+  let mode='open',generation=0,capture=null,readyMic=null,autoMic=false,floorRequested=false,floorResolve=null,candidateName='Jack',allocation=null,chair='you',newsCount=0,pendingNews=false;
   let info = null, scenario = null, transcript = [], startAt = 0, tick = null, busy = false, ended = false, lastActivity = 0, audioNow = null, rec = null, listening = false;
 
   fetch('/api/desk-home').then(r=>r.json()).then(d=>{const name=d.profile?.name?.trim().split(/\s+/)[0];if(name&&!$('candidateName').matches(':focus'))$('candidateName').value=name;}).catch(()=>{});
@@ -212,8 +212,9 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     done();
   }
 
-  function introduceUpdate(){if(ended||newsCount>=2)return;newsCount++;const rows=globalThis.DeskGroupUpdates.list(scenario.id,newsCount);$('newsUpdates').innerHTML=rows.map((u,i)=>'<article style="padding:12px 0;border-top:1px solid #ddd7cf"><b>Update '+(i+1)+': '+esc(u.title)+'</b><p>'+esc(u.text)+'</p></article>').join('');$('nextUpdate').disabled=newsCount>=2;}
+  function introduceUpdate(){if(ended||newsCount>=2)return;newsCount++;const rows=globalThis.DeskGroupUpdates.list(scenario.id,newsCount);$('newsUpdates').innerHTML=rows.map((u,i)=>'<article style="padding:12px 0;border-top:1px solid #ddd7cf"><b>Update '+(i+1)+': '+esc(u.title)+'</b><p>'+esc(u.text)+'</p></article>').join('');$('nextUpdate').disabled=newsCount>=2;pendingNews=true;if(!busy&&!$('say').value.trim())chairNews();}
   $('nextUpdate').onclick=introduceUpdate;
+  async function chairNews(){if(!pendingNews||ended||busy)return;pendingNews=false;if(chair==='you'){$('roomMsg').textContent='New information has arrived. As chair, bring the group back to the changed facts.';if(autoMic&&!listening)await startMic();return;}if(capture){clearTimeout(capture.timeout);capture.live?.cancel();capture.recorder.stop();capture.stream.getTracks().forEach(t=>t.stop());capture=null;listening=false;$('mic').textContent='Use microphone';}await aiTurn('news');}
   async function aiTurn(reason) {
     if (ended || busy) return;
     const run=generation;setBusy(true, 'The group is preparing a response…');
@@ -221,15 +222,15 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     if(run!==generation||ended)return;
     if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
     if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
-    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;} }
-    if(run!==generation||ended)return;lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');if(autoMic)await startMic();
+    for (const t of r.j.turns || []) { if (ended||run!==generation) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text);if(pendingNews&&reason!=='news'&&!ended&&run===generation){setBusy(false);await chairNews();return;}if(floorRequested&&!ended&&run===generation){await yieldFloor(t.speaker);return;} }
+    if(run!==generation||ended)return;if(pendingNews){setBusy(false);await chairNews();return;}lastActivity = Date.now(); setBusy(false, 'Your turn. Type or dictate, then click Send contribution.');if(autoMic)await startMic();
   }
 
   $('start').addEventListener('click', async () => {
     $('start').disabled=true;try{const response=await fetch('/api/assessment-centre?view=info');const access=await response.json();if(!response.ok||!access.member){$('briefAccess').hidden=false;$('briefAccess').textContent='Membership access is required before starting. Sign in or open the sample paid Preview session above.';$('start').disabled=true;return;}}catch{$('briefAccess').hidden=false;$('briefAccess').textContent='Could not check access. Please try again.';$('start').disabled=false;return;}clearInterval(readT);$('start').disabled=true;$('start').textContent='Setting up microphone…';try{readyMic=await requestMicrophone();readyMic.getAudioTracks().forEach(t=>t.enabled=false);autoMic=true;}catch{autoMic=false;$('roomMsg').textContent='Microphone access was not granted. You can type your contribution.';}finally{$('start').disabled=false;$('start').textContent='Start discussion →';}
     candidateName=$('candidateName').value.trim().slice(0,40)||'You';NAMES.you=candidateName;floorRequested=false;generation++;busy=false;clearInterval(readT);
     $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);
-    newsCount=0;$('newsUpdates').textContent='No developments yet. Use the original brief.';$('nextUpdate').disabled=false;transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
+    pendingNews=false;newsCount=0;$('newsUpdates').textContent='No developments yet. Use the original brief.';$('nextUpdate').disabled=false;transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
     clearInterval(tick);
     tick = setInterval(() => {
       const scheduled=globalThis.DeskGroupUpdates.all(scenario.id).filter(u=>elapsed()>=u.at).length;while(!ended&&newsCount<scheduled)introduceUpdate();const left = Math.max(0, LIMIT - elapsed()); $('timer').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
@@ -262,6 +263,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     await aiTurn('reply');
   }
   $('send').addEventListener('click', send);
+  $('say').addEventListener('input',()=>{lastActivity=Date.now();});
   $('say').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
 
   // Dictation uses live transcription with recorded-audio recovery.
