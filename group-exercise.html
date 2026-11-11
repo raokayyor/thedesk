@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Group exercise practice | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--ok:#15803d;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+main{max-width:1160px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,4.5vw,40px)}h2{font-size:24px}h3{font-size:19px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.rec{background:#b91c1c;border-color:#b91c1c}
+.scen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.scen button{all:unset;box-sizing:border-box;cursor:pointer;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.scen button[aria-pressed=true]{border-color:var(--accent);background:var(--warm)}
+.scen button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.people{display:flex;flex-wrap:wrap;gap:10px}
+.who{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px}
+.av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:none}
+.room{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:var(--ink);color:#fff;border-radius:14px;padding:14px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;border:3px solid transparent;transition:border-color .15s}
+.tile.on{border-color:var(--accent)}.tile.you.on{border-color:#3ecf8e}
+.tile .top{display:flex;gap:10px;align-items:center}.tile .nm{font-weight:700}.tile .st{font-size:12px;color:#cfd6db}
+.bars{display:flex;gap:3px;height:16px;align-items:flex-end}.bars i{width:4px;background:#5b666d;border-radius:2px;height:3px}
+.tile.on .bars i{background:#ff8a52;animation:b .6s ease-in-out infinite alternate}.tile.you.on .bars i{background:#3ecf8e}
+.bars i:nth-child(2){animation-delay:.1s}.bars i:nth-child(3){animation-delay:.2s}.bars i:nth-child(4){animation-delay:.3s}.bars i:nth-child(5){animation-delay:.15s}
+@keyframes b{from{height:3px}to{height:16px}}
+@media (prefers-reduced-motion:reduce){.tile.on .bars i{animation:none;height:10px}}
+.timer{font:500 34px/1 "Fraunces",Georgia,serif}
+.log{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto;padding-right:4px}
+.line{font-size:15px;line-height:1.45;padding:8px 10px;border-radius:10px;background:var(--card);border:1px solid var(--soft)}
+.line b{font-size:13px}.line.you{background:#ecfdf3;border-color:#bbf7d0}
+textarea{font:inherit;font-size:15px;padding:12px;border:1px solid #c9c1b5;border-radius:10px;background:#fff;width:100%;min-height:84px;resize:vertical}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.brief{font-size:14px;line-height:1.5}.brief ul{margin:6px 0;padding-left:18px}.brief li{margin:4px 0}
+details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
+.msg{border-radius:12px;padding:14px 16px;font-size:15px}.msg.err{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}.msg.info{background:var(--navy-soft);color:var(--navy)}
+.band{display:inline-block;border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+.b-Strong{background:#dcfce7;color:#14532d}.b-Meets{background:var(--navy-soft);color:var(--navy)}.b-Developing{background:var(--warm);color:#9a3412}.b-Below{background:#fef2f2;color:#7f1d1d}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat{background:var(--soft);border-radius:12px;padding:12px}.stat b{display:block;font:500 28px/1.1 "Fraunces",Georgia,serif}
+.beh{display:grid;grid-template-columns:200px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--soft)}
+.meter{display:flex;gap:4px;margin-top:6px}.meter i{flex:1;height:8px;border-radius:4px;background:var(--soft)}.meter i.f{background:var(--accent)}
+.quote{font-style:italic;color:#3b4652}
+@media (max-width:900px){.scen,.room{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.beh{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <!-- 1. Set up -->
+  <section id="setup" style="display:flex;flex-direction:column;gap:18px">
+    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+      <div class="kicker">Assessment centre · group exercise</div>
+      <h1>Practise the group exercise out loud.</h1>
+      <p style="margin:0;color:#3b4652">Twenty minutes with three AI candidates. You’ll read a short brief, then discuss it and agree a recommendation. Afterwards you’re scored on what assessors write down: contribution, listening, bringing others in, use of numbers, structure and reaching a decision.</p>
+      <div class="people" aria-label="The other candidates">
+        <div class="who"><span class="av" style="background:#123459">D</span><span><b>Dominic</b><br><span class="mute">Confident, pushes his idea, talks over people</span></span></div>
+        <div class="who"><span class="av" style="background:#7c3aed">P</span><span><b>Priya</b><br><span class="mute">Sharp with numbers, but quiet unless asked</span></span></div>
+        <div class="who"><span class="av" style="background:#0f766e">S</span><span><b>Sam</b><br><span class="mute">Friendly, drifts off the brief</span></span></div>
+      </div>
+      <p class="mute" style="margin:0">They’re AI characters, not real people. Your speech is turned into text in your browser; we keep the transcript with your feedback on your desk.</p>
+    </div>
+    <h2>Choose a case</h2>
+    <div class="scen" id="scen"></div>
+    <div class="card controls">
+      <label style="display:flex;gap:8px;align-items:center;font-weight:600"><input type="checkbox" id="voice" checked style="width:20px;height:20px"> Hear the others speak</label>
+      <span class="mute" id="micNote"></span>
+      <span style="flex:1"></span>
+      <button class="btn hot" type="button" id="toBrief" disabled>Read the brief</button>
+    </div>
+    <div class="msg info" id="setupMsg" hidden></div>
+  </section>
+
+  <!-- 2. Brief -->
+  <section id="briefStep" hidden class="card" style="display:flex;flex-direction:column;gap:12px">
+    <div class="kicker">Reading time · <span id="readTimer">3:00</span></div>
+    <h2 id="bTitle"></h2>
+    <div class="brief" id="bBody"></div>
+    <p class="mute" style="margin:0">Tip: in the first two minutes, suggest how the group should use the time. Then bring Priya in.</p>
+    <div class="controls"><button class="btn hot" type="button" id="start">Start the discussion</button><button class="btn ghost" type="button" id="back">Choose another case</button></div>
+  </section>
+
+  <!-- 3. Room -->
+  <section id="room" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="controls" style="justify-content:space-between">
+      <div><div class="kicker" id="rTitle"></div><div class="mute">Agree one recommendation with risks before time runs out.</div></div>
+      <div style="display:flex;gap:14px;align-items:center"><span class="timer" id="timer" aria-live="off">20:00</span><button class="btn ghost" type="button" id="end">End and get feedback</button></div>
+    </div>
+    <div class="room">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="tiles">
+          <div class="tile you" id="t-you"><div class="top"><span class="av" style="background:#15803d">You</span><div><div class="nm">You</div><div class="st" id="s-you">Your turn when ready</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="tile" id="t-dominic"><div class="top"><span class="av" style="background:#123459">D</span><div><div class="nm">Dominic</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="tile" id="t-priya"><div class="top"><span class="av" style="background:#7c3aed">P</span><div><div class="nm">Priya</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="tile" id="t-sam"><div class="top"><span class="av" style="background:#0f766e">S</span><div><div class="nm">Sam</div><div class="st">AI candidate</div></div></div><div class="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+          <label for="say" style="font-weight:700">Your point</label>
+          <textarea id="say" placeholder="Press Speak and talk, or type here. Address people by name to bring them in."></textarea>
+          <div class="controls">
+            <button class="btn" type="button" id="mic">Speak</button>
+            <button class="btn hot" type="button" id="send">Say it</button>
+            <span class="mute" id="roomMsg" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <details class="card brief" id="rBrief"><summary>The brief</summary><div id="rBriefBody"></div></details>
+        <div class="card" style="padding:16px"><h3 style="margin-bottom:8px">Discussion</h3><div class="log" id="log" aria-live="polite"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Feedback -->
+  <section id="result" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div class="kicker">Assessor’s view</div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><h2>How you came across</h2><span class="band" id="band"></span></div>
+      <p style="margin:0" id="summary"></p>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="card"><h3 style="margin-bottom:4px">Scored like the real thing</h3><p class="mute" style="margin:0 0 6px">1 Below · 2 Developing · 3 Meets · 4 Strong. Quotes are your own words.</p><div id="behs"></div></div>
+    <div class="card" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px" id="fixWrap">
+      <div><h3 style="margin-bottom:6px">Your best moment</h3><p style="margin:0" id="best"></p></div>
+      <div><h3 style="margin-bottom:6px">Do this next time</h3><ol id="fixes" style="margin:0;padding-left:20px"></ol></div>
+    </div>
+    <div class="controls"><button class="btn hot" type="button" id="again">Try again</button><a class="btn ghost" href="/assessment-centre.html">Back to assessment centres</a></div>
+  </section>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const NAMES = { you: 'You', dominic: 'Dominic', priya: 'Priya', sam: 'Sam' };
+  const LIMIT = 20 * 60;
+  let info = null, scenario = null, transcript = [], startAt = 0, tick = null, busy = false, ended = false, lastActivity = 0, audioNow = null, rec = null, listening = false;
+
+  // ---------- set up ----------
+  fetch('/api/assessment-centre?view=info').then(r => r.json()).then(d => {
+    info = d;
+    $('scen').innerHTML = d.scenarios.map(s => `<button type="button" aria-pressed="false" data-id="${s.id}"><b style="font-size:17px">${esc(s.title)}</b><span class="mute">${esc(s.brief)}</span></button>`).join('');
+    $('scen').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { $('scen').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true'); scenario = d.scenarios.find(s => s.id === b.dataset.id); $('toBrief').disabled = false; }));
+    if (!d.voice) { $('voice').checked = false; $('voice').closest('label').title = 'Natural voices aren’t switched on; your device voice will be used.'; }
+    if (!d.member) { const m = $('setupMsg'); m.innerHTML = 'The AI group exercise is part of membership. You can read the cases here. <a href="/signup.html?plan=member">See membership</a>'; m.hidden = false; }
+  }).catch(() => { const m = $('setupMsg'); m.className = 'msg err'; m.textContent = 'Couldn’t load the cases. Refresh to try again.'; m.hidden = false; });
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  $('micNote').textContent = SR ? 'Your microphone is used to turn speech into text.' : 'Speech to text isn’t available in this browser (try Chrome). You can type instead.';
+
+  function briefHtml(s) { return `<p style="margin:0 0 6px">${esc(s.brief)}</p><ul>${s.options.map(o => `<li><b>${esc(o.name)}</b>: ${esc(o.facts)}</li>`).join('')}</ul><p style="margin:6px 0 0"><b>Also:</b> ${esc(s.extra)}</p>`; }
+  let readT = null;
+  $('toBrief').addEventListener('click', () => {
+    if (!scenario) return;
+    $('setup').hidden = true; $('briefStep').hidden = false; $('bTitle').textContent = scenario.title; $('bBody').innerHTML = briefHtml(scenario);
+    let left = 180; clearInterval(readT); readT = setInterval(() => { left--; $('readTimer').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); if (left <= 0) { clearInterval(readT); $('readTimer').textContent = 'time’s up'; } }, 1000);
+    window.scrollTo(0, 0);
+  });
+  $('back').addEventListener('click', () => { clearInterval(readT); $('briefStep').hidden = true; $('setup').hidden = false; });
+
+  // ---------- room ----------
+  const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) }));
+  const elapsed = () => Math.floor((Date.now() - startAt) / 1000);
+  function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => $('t-' + w).classList.toggle('on', w === who)); }
+  function addLine(who, text) {
+    transcript.push({ who, text });
+    const d = document.createElement('div'); d.className = 'line' + (who === 'you' ? ' you' : ''); d.innerHTML = `<b>${NAMES[who]}</b><br>${esc(text)}`;
+    $('log').appendChild(d); $('log').scrollTop = $('log').scrollHeight;
+  }
+  function setBusy(b, note) { busy = b; $('send').disabled = b; $('mic').disabled = b && !listening; $('roomMsg').textContent = note || ''; }
+
+  async function speak(who, text) {
+    speaking(who);
+    const done = () => speaking(null);
+    if (!$('voice').checked) { await new Promise(r => setTimeout(r, Math.min(4000, 400 + text.length * 25))); return done(); }
+    if (info?.voice) {
+      try {
+        const r = await fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'voice', speaker: who, text }) });
+        if (r.ok) {
+          const url = URL.createObjectURL(await r.blob()); const a = new Audio(url); audioNow = a;
+          await new Promise(res => { a.onended = res; a.onerror = res; a.play().catch(res); });
+          URL.revokeObjectURL(url); audioNow = null; return done();
+        }
+      } catch {}
+    }
+    if (window.speechSynthesis) {
+      await new Promise(res => {
+        const u = new SpeechSynthesisUtterance(text); const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+        const pick = { dominic: 0, priya: 1, sam: 2 }[who] || 0; if (vs.length) u.voice = vs[pick % vs.length];
+        u.pitch = { dominic: 0.9, priya: 1.15, sam: 1.05 }[who] || 1; u.rate = 1.03; u.onend = res; u.onerror = res; speechSynthesis.speak(u);
+        setTimeout(res, 20000);
+      });
+    }
+    done();
+  }
+
+  async function aiTurn(reason) {
+    if (ended) return;
+    setBusy(true, 'The others are thinking…');
+    const r = await post({ action: 'group-turn', scenario: scenario.id, transcript, elapsed: elapsed(), reason });
+    if (r.status === 402) { setBusy(false); $('roomMsg').innerHTML = 'Group practice is part of membership. <a href="/signup.html?plan=member">See membership</a>'; return; }
+    if (!r.ok) { setBusy(false, r.j.error || 'Couldn’t reach the others. Say something to carry on.'); return; }
+    for (const t of r.j.turns || []) { if (ended) break; addLine(t.speaker, t.text); await speak(t.speaker, t.text); }
+    lastActivity = Date.now(); setBusy(false, 'Your turn: respond, or bring someone in by name.');
+  }
+
+  $('start').addEventListener('click', () => {
+    clearInterval(readT);
+    $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);
+    transcript = []; $('log').innerHTML = ''; ended = false; startAt = Date.now(); lastActivity = Date.now();
+    clearInterval(tick);
+    tick = setInterval(() => {
+      const left = Math.max(0, LIMIT - elapsed()); $('timer').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+      if (left === 120) $('roomMsg').textContent = 'Two minutes left: time to land a recommendation.';
+      if (left <= 0) finish();
+      // If the candidate goes quiet for 30 seconds, the others carry on (like a real group).
+      if (!busy && !listening && !ended && Date.now() - lastActivity > 30000 && !$('say').value.trim()) { lastActivity = Date.now(); aiTurn('silence'); }
+    }, 1000);
+    window.scrollTo(0, 0);
+    aiTurn('start');
+  });
+
+  async function send() {
+    const text = $('say').value.trim(); if (!text || busy || ended) return;
+    if (listening) stopMic();
+    if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel();
+    $('say').value = ''; addLine('you', text); lastActivity = Date.now();
+    await aiTurn('reply');
+  }
+  $('send').addEventListener('click', send);
+  $('say').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+
+  // ---------- microphone (speech to text in the browser) ----------
+  function stopMic() { listening = false; try { rec && rec.stop(); } catch {} $('mic').textContent = 'Speak'; $('mic').classList.remove('rec'); speaking(null); $('s-you').textContent = 'Your turn when ready'; }
+  $('mic').addEventListener('click', () => {
+    if (!SR) { $('roomMsg').textContent = 'Speech to text needs Chrome or Edge. Type your point instead.'; return; }
+    if (listening) { stopMic(); return; }
+    if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel();
+    rec = new SR(); rec.lang = 'en-GB'; rec.continuous = true; rec.interimResults = true;
+    const base = $('say').value ? $('say').value.trim() + ' ' : '';
+    rec.onresult = e => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; $('say').value = base + t.trim(); lastActivity = Date.now(); };
+    rec.onerror = e => { $('roomMsg').textContent = e.error === 'not-allowed' ? 'Microphone blocked. Allow it in the browser, or type.' : 'Microphone stopped. Press Speak again, or type.'; stopMic(); };
+    rec.onend = () => { if (listening) { try { rec.start(); } catch { stopMic(); } } };
+    try { rec.start(); listening = true; $('mic').textContent = 'Stop'; $('mic').classList.add('rec'); speaking('you'); $('s-you').textContent = 'Listening… press Say it when done'; } catch { $('roomMsg').textContent = 'Couldn’t start the microphone. Type instead.'; }
+  });
+
+  // ---------- finish and feedback ----------
+  async function finish() {
+    if (ended) return; ended = true; clearInterval(tick); if (listening) stopMic(); if (audioNow) audioNow.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); speaking(null);
+    if (!transcript.some(x => x.who === 'you')) { $('roomMsg').textContent = 'You didn’t say anything, so there’s nothing to score. Try again and speak in the first two minutes.'; ended = false; return; }
+    setBusy(true, 'The assessor is scoring your discussion… about 20 seconds');
+    $('end').disabled = true;
+    const r = await post({ action: 'group-feedback', scenario: scenario.id, transcript });
+    $('end').disabled = false; setBusy(false);
+    if (!r.ok) { ended = false; $('roomMsg').textContent = r.j.error || 'Scoring didn’t work. Try again.'; return; }
+    const { feedback: f, stats: s } = r.j;
+    $('room').hidden = true; $('result').hidden = false; window.scrollTo(0, 0);
+    $('band').className = 'band b-' + f.overall; $('band').textContent = f.overall; $('summary').textContent = f.summary;
+    const shareNote = s.share < 15 ? 'too quiet' : s.share > 40 ? 'dominating' : 'about right';
+    $('stats').innerHTML = `<div class="stat"><b>${s.share}%</b>of the talking (${shareNote}; 25% is an even share)</div><div class="stat"><b>${s.turns}</b>times you spoke</div><div class="stat"><b>${s.invites}</b>times you brought someone in</div><div class="stat"><b>${s.numbers}</b>numbers you used</div>`;
+    $('behs').innerHTML = f.behaviours.map(b => `<div class="beh"><div><b>${esc(b.label)}</b><div class="meter" aria-label="${b.score} out of 4">${[1, 2, 3, 4].map(i => `<i class="${i <= b.score ? 'f' : ''}"></i>`).join('')}</div><div class="mute">${esc(info.scale[b.score])}</div></div><div>${b.evidence ? `<div class="quote">“${esc(b.evidence)}”</div>` : ''}<div>${esc(b.note)}</div></div></div>`).join('');
+    $('best').textContent = f.bestMoment || '—';
+    $('fixes').innerHTML = f.fixes.map(x => `<li>${esc(x)}</li>`).join('');
+  }
+  $('end').addEventListener('click', finish);
+  $('again').addEventListener('click', () => { $('result').hidden = true; $('setup').hidden = false; window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>

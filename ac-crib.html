@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Assessment centre crib sheet | The Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<script src="/interview-bank.js"></script>
+<script src="/interview-firm-packs.js"></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,4.5vw,40px)}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;border-radius:10px;background:#fff;min-height:46px;min-width:220px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px}
+.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.btn[disabled]{opacity:.6;cursor:wait}
+.msg{border-radius:12px;padding:14px 16px;font-size:15px}.msg.err{background:#fef2f2;color:#7f1d1d;border:1px solid #fecaca}.msg.info{background:#dbe5f1;color:#123459}
+/* the sheet */
+.sheet{background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px 30px;display:flex;flex-direction:column;gap:16px}
+.sheet header{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.sheet h2{font-size:26px}.sheet h3{font-size:15px;font-family:"DM Sans",Arial,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:6px}
+.opening{font-size:16px;line-height:1.55;background:var(--warm);border-radius:8px;padding:12px 14px}
+.stories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.story{border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45;break-inside:avoid}
+.story .c{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.story b{font-size:14.5px}.story .src{color:var(--mute);font-size:12px}
+.story p{margin:4px 0 0}.story .num{display:inline-block;background:var(--soft);border-radius:4px;padding:0 6px;font-weight:700}
+.flag{color:#b91c1c;font-size:12px;font-weight:700}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sheet ul{margin:0;padding-left:18px;font-size:14px}.sheet li{margin:3px 0}
+.fill{border-bottom:1px solid #bbb;height:22px;margin:6px 0}
+.foot{font-size:11px;color:var(--mute);border-top:1px solid var(--soft);padding-top:8px}
+@media (max-width:760px){.stories,.cols{grid-template-columns:1fr}.sheet{padding:18px}}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}.desk-nav,.no-print{display:none!important}
+  main{padding:0;max-width:none}.sheet{border:0;padding:0;gap:10px}
+  .stories{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:repeat(2,1fr)}
+  .story{font-size:11.5px;padding:7px 9px}.opening{font-size:13px}.sheet ul{font-size:12px}
+}
+</style>
+</head>
+<body>
+<main>
+  <section class="card no-print" style="display:flex;flex-direction:column;gap:12px">
+    <div class="kicker">Assessment centre · crib sheet</div>
+    <h1>One page to take in with you.</h1>
+    <p class="mute" style="margin:0">Built only from your own CV and our research on your firm: your 30-second intro, six stories matched to what assessors score, questions to ask, and the gaps they’re likely to probe. Print it the night before.</p>
+    <div class="bar">
+      <label for="firm">Firm<select id="firm"></select></label>
+      <button class="btn hot" type="button" id="build">Build my crib sheet</button>
+      <button class="btn ghost" type="button" id="print" hidden>Print or save as PDF</button>
+    </div>
+    <div class="msg info" id="msg" hidden></div>
+  </section>
+
+  <article class="sheet" id="sheet" hidden aria-live="polite"></article>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const bank = globalThis.DeskInterviewBank, packs = bank?.firmPacks || {};
+  const msg = (t, cls = 'info', html) => { const m = $('msg'); m.className = 'msg ' + cls; if (html) m.innerHTML = t; else m.textContent = t; m.hidden = !t; };
+  const keys = Object.keys(packs).sort((a, b) => bank.firms[a].label.localeCompare(bank.firms[b].label));
+  $('firm').innerHTML = keys.map(k => `<option value="${k}">${esc(bank.firms[k].label)}</option>`).join('');
+  let assessmentId = null;
+
+  function brief(k) {
+    const p = packs[k]; if (!p) return '';
+    const r = p.reports;
+    return ['Tends to test: ' + (p.tests || []).join('; '), 'Know: ' + (p.know || []).join(' '), r ? 'Recent candidates reported: ' + r.format.join('; ') + '. Topics: ' + r.seen.map(x => x[0]).join('; ') : ''].join('\n');
+  }
+  function render(c, k) {
+    const p = packs[k] || {}, label = bank.firms[k]?.label || c.firm;
+    const looks = [...(p.tests || [])].slice(0, 5);
+    const rep = (p.reports?.format || []).slice(0, 3);
+    $('sheet').innerHTML = `
+      <header><div><div class="kicker">${esc(label)} · assessment centre</div><h2>${esc(c.name || 'Your')} crib sheet</h2></div><div class="mute">${esc(c.route || '')}</div></header>
+      <section><h3>Your 30-second intro</h3><div class="opening">${esc(c.opening)}</div></section>
+      <section><h3>Your six stories</h3><div class="stories">${c.stories.map(s => `<div class="story"><div class="c">${esc(s.competency)}</div><b>${esc(s.title)}</b> <span class="src">· ${esc(s.source)}</span>${s.number ? ` <span class="num">${esc(s.number)}</span>` : ''}<p><b>S</b> ${esc(s.situation)}</p><p><b>A</b> ${esc(s.action)}</p><p><b>R</b> ${esc(s.result)}</p>${s.check ? '<div class="flag">Check this detail before you say it</div>' : ''}</div>`).join('')}</div></section>
+      <section class="cols">
+        <div><h3>What ${esc(label)} looks for</h3><ul>${looks.map(t => `<li>${esc(t)}</li>`).join('')}</ul>${rep.length ? `<h3 style="margin-top:12px">What recent candidates reported</h3><ul>${rep.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</div>
+        <div><h3>They may probe</h3><ul>${c.watchOuts.map(t => `<li>${esc(t)}</li>`).join('') || '<li>Nothing obvious: keep your numbers ready.</li>'}</ul>
+        <h3 style="margin-top:12px">Questions to ask</h3><ul>${c.questionsToAsk.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
+      </section>
+      <section class="cols">
+        <div><h3>The deal you’ll talk about</h3><div class="mute">Name, value, why the buyer did it, how it was paid for, your view.</div><div class="fill"></div><div class="fill"></div></div>
+        <div><h3>Your market view today</h3><div class="mute">One story from today’s news, what it means, your view.</div><div class="fill"></div><div class="fill"></div></div>
+      </section>
+      <div class="foot">Built by The Desk from your CV on ${new Date().toLocaleDateString('en-GB')}. Firm research is from recent candidate reports and our practitioners; formats change, so check your invitation. Only say what you can back up.</div>`;
+    $('sheet').hidden = false; $('print').hidden = false;
+  }
+  async function load(k) {
+    if (!assessmentId) return;
+    const d = await fetch(`/api/assessment-centre?view=crib&id=${assessmentId}&firm=${encodeURIComponent(bank.firms[k].label)}`).then(r => r.json().then(j => ({ ok: r.ok, status: r.status, j }))).catch(() => null);
+    if (d?.ok && d.j.crib) { render(d.j.crib, k); msg('Your saved crib sheet for ' + bank.firms[k].label + '. Build it again after you update your CV.'); }
+    else { $('sheet').hidden = true; $('print').hidden = true; if (d?.status === 402) msg('The crib sheet is part of membership. <a href="/signup.html?plan=member">See membership</a>', 'info', true); else msg(''); }
+  }
+  $('build').addEventListener('click', async () => {
+    const k = $('firm').value; if (!k) return;
+    if (!assessmentId) return msg('Take your assessment first: the crib sheet is built from your CV. <a href="/assessment-start.html">Start the free assessment</a>', 'info', true);
+    $('build').disabled = true; $('build').textContent = 'Building… about 20 seconds'; msg('');
+    try {
+      const r = await fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'crib', assessmentId, firm: bank.firms[k].label, brief: brief(k) }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.status === 402) return msg('The crib sheet is part of membership. <a href="/signup.html?plan=member">See membership</a>', 'info', true);
+      if (!r.ok) return msg(j.error || 'That didn’t work. Try again.', 'err');
+      render(j.crib, k); $('sheet').scrollIntoView({ behavior: 'smooth' });
+    } catch { msg('Something went wrong. Check your connection and try again.', 'err'); }
+    finally { $('build').disabled = false; $('build').textContent = 'Build my crib sheet'; }
+  });
+  $('print').addEventListener('click', () => window.print());
+  $('firm').addEventListener('change', () => load($('firm').value));
+  const wanted = new URLSearchParams(location.search).get('firm');
+  fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
+    assessmentId = d?.report?.assessmentId || null;
+    const k = (wanted && packs[wanted]) ? wanted : bank.resolveFirm(d?.profile?.targetFirm || '');
+    if (packs[k]) $('firm').value = k;
+    load($('firm').value);
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>

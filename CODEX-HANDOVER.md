@@ -129,6 +129,20 @@ interview work is lost.**
   "two rechecks within 30 days").
 - **Founding price**: `FOUNDING` in `signup.html`, empty = hidden. Only set it if the price really rises on that date.
 
+### Assessment centres (`assessment-centre.html`, `ac-crib.html`, `group-exercise.html`, `api/assessment-centre.js`, `lib/assessment-centre.mjs`)
+- Hub: firm picker showing what recent candidates reported (from the firm packs), the four exercise types and how people fail,
+  "What the assessor writes down" (group-exercise scoring sheet, The Desk's draft for practitioner sign-off), night-before / on-the-day checklists.
+- **Crib sheet** (members): one printable A4 page built by Claude from the student's own CV (assessment `input.cvText`) for a chosen
+  firm: 30-second intro, 6 STAR stories mapped to competencies (numbers only if they appear in the CV), questions to ask, likely probes,
+  plus the firm's "tends to test" and reported formats. Saved as item kind `ac-crib`.
+- **AI group exercise** (members): 3 fictional cases, 3 AI candidates (Dominic dominant, Priya quiet, Sam drifts) via a fast model
+  (`GROUP_MODEL`, default claude-haiku-4-5-20251001); browser speech-to-text (Chrome/Edge) or typing; voices via ElevenLabs with one
+  voice per character (`ELEVENLABS_GROUP_VOICES` = three comma-separated voice ids to override the defaults), device voice fallback.
+  20-minute timer; the others carry on if the student is silent for 30 s. Feedback scored on 6 behaviours with exact quotes and
+  measured stats (talk share, turns, invites, numbers). Saved as `ac-group`. Quotas: 400 turns, 10 feedbacks, 10 cribs, 300 voice lines a day.
+- `lib/interview-voice.mjs`: `generateInterviewSpeech(text, {voice})` now takes an optional voice id.
+- Link the hub from My Desk (member tools) and the top bar's "More" menu. Library already links to it.
+
 ## New database tables (created automatically on first use)
 `desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,
 `desk_game_accounts`, `desk_game_trades`. Saved items reuse `desk_value_items` with kinds `test`, `test-pending`,
