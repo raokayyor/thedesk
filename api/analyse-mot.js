@@ -1,3 +1,5 @@
+import {recordMembershipAccess} from '../lib/account-memberships.mjs';
+import {currentAccount,linkAssessment} from '../lib/accounts.mjs';
 import {namedCvDetails} from '../lib/named-cv-details.mjs';
 import {anchorPriorityLabels} from '../lib/assessment-priority-labels.mjs';
 import {validateStudentContent} from '../lib/result-rules.mjs';
@@ -13,17 +15,17 @@ const shape={applicationCriteria:[{name:'contribution',points:0,quotes:['Exact C
 function schema(v){if(Array.isArray(v))return{type:'array',items:schema(v[0])};if(v&&typeof v==='object')return{type:'object',properties:Object.fromEntries(Object.entries(v).map(([k,x])=>[k,schema(x)])),required:Object.keys(v),additionalProperties:false};return{type:typeof v==='number'?'integer':'string'};}
 export default async function handler(req,res){
  if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
- let profile,cvText,quiz,ats,parent;
+ let profile,cvText,quiz,ats,parent,parentMembership=false;
  try{
   if(req.body?.consent!==true)throw new Error('Confirm that your CV can be processed to generate your assessment.');
   cvText=req.body?.cv?.text;if(typeof cvText!=='string'||cvText.trim().length<100||cvText.length>40000)throw new Error('Provide a readable CV between 100 and 40,000 characters.');
   profile={};for(const k of ['name','university','course','year','grade','targetSector','targetDivision','programme','targetFirm']){const v=req.body.profile?.[k];if(v!=null&&(typeof v!=='string'||v.length>200))throw new Error('Invalid profile field.');profile[k]=String(v||'').trim();}
   if(!profile.name||!profile.targetSector)throw new Error('Enter your name and chosen route.');
   const bank=questionsForRoute(profile.targetSector);if(req.body.questionBankId&&req.body.questionBankId!==bank.id)throw new Error('The route question bank changed. Please retake the test.');quiz=gradeAnswers(req.body.answers,profile.targetSector);ats=assessAtsReadiness({cvText,profile});if(ats.score===null)throw new Error('Choose a supported target route.');
-  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(!parent?.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000||parent.rechecks_used>=12)throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
+  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(parent)parentMembership=await recordMembershipAccess(parent);if(!parent||(!parentMembership&&(!parent.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000))||parent.rechecks_used>=12)throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
-  await initStore();const h=owner(req,res,true);
+  await initStore();const h=parent?.owner_hash||owner(req,res,true);
   // Assessment quotas temporarily disabled for owner testing.
   const catalog=getEvidenceCatalog(cvText),ids=catalog.map(x=>x.id),contract=schema(shape);
   const namedDetails=namedCvDetails(catalog,profile);
@@ -75,8 +77,9 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   if(!result)throw new Error('Assessment quality checks failed. Please retry.');
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
   const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers});
-  if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND paid_at>now()-interval '365 days' AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id]);if(!inserted.length)throw new Error('Recheck unavailable');}
+  if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
+  const signedAccount=await currentAccount(req);if(signedAccount)await linkAssessment(signedAccount.id,id);
   return res.json({success:true,id,...publicAssessment(result,quiz,cvText)});
  }catch(e){return apiFailure(res,e);}
 }

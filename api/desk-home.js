@@ -191,7 +191,7 @@ export default async function handler(req, res) {
       const profile = {...(signupSaved||{}),...(latest?.profile||{})};
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
-      const reportUrl = paidRow ? '/fullcycle.html?id=' + paidRow.id : latest ? '/result-final-design.html?id=' + latest.id : null;
+      const reportUrl = paid && latest ? '/fullcycle.html?id=' + (paidRow||latest).id : latest ? '/result-final-design.html?id=' + latest.id : null;
       // The interview coach loads the student's CV and target from their (paid, else latest) assessment.
       const interviewUrl = latest ? '/interview-start.html?id=' + (paidRow || latest).id : '/interview-start.html';
 
@@ -251,10 +251,10 @@ export default async function handler(req, res) {
         if (n && !usedNotes.has(n.text)) { a.note = paid ? n : { locked: true, by: n.by, init: n.init }; usedNotes.add(n.text); }   // one note per action, never twice; free accounts see who has a note, not the note
       }
       return res.json({
-        signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
-        member: paid, until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
+        testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
+        member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         readiness: now ? { score: now.score, band: band(now.score), change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
-        interviewUrl, report: latest ? { url: reportUrl, paid: !!paidRow, assessmentId: (paidRow || latest).id, breakdown: paidRow ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
+        interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: (paidRow || latest).id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
         applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge, game,

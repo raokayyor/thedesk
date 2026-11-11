@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{registerHooks}from'node:module';
+const S=globalThis.__memberAPI={account:null,active:false,grant:false,code:'',allowed:true,owned:false};
+registerHooks({resolve(s,c,n){for(const suffix of ['accounts.mjs','account-memberships.mjs','report-store.mjs'])if(s.endsWith('/'+suffix))return{url:'test:membership-'+suffix,shortCircuit:true};return n(s,c)},load(u,c,n){const modules={
+ 'test:membership-accounts.mjs':`const S=globalThis.__memberAPI;export const currentAccount=async()=>S.account;export const entitlement=async()=>({active:S.active});export const latestAssessment=async()=>null;export const allow=async()=>S.allowed;`,
+ 'test:membership-account-memberships.mjs':`const S=globalThis.__memberAPI;export const initMemberships=async()=>{};export const redeemTesterCode=async(id,code)=>{S.code=code;return S.grant};export const grantAccountPayment=async()=>true;`,
+ 'test:membership-report-store.mjs':`export const sameOrigin=()=>true;export const sql=()=>({query:async()=>globalThis.__memberAPI.owned?[{}]:[]});export const apiFailure=(r,e)=>r.status(503).json({error:e.message});`};return modules[u]?{format:'module',shortCircuit:true,source:modules[u]}:n(u,c)}});
+const{default:handler}=await import('../api/membership.js');async function run(body,method='POST'){const r={code:200,setHeader(){},status(n){this.code=n;return this},json(x){this.body=x;return this},end(){}};await handler({method,body,headers:{host:'example.test'}},r);return r;}
+test('codes require a signed-in account',async()=>{assert.equal((await run({action:'redeem',code:'x'})).code,401);});
+test('free account can activate membership without a CV or card',async()=>{S.account={id:'a',email:'a@example.test'};S.grant=true;const r=await run({action:'redeem',code:'tester'});assert.equal(r.code,200);assert.equal(r.body.next,'/my.html');assert.equal(r.body.paid_at,undefined);});
+test('invalid or over-limit codes do not activate',async()=>{S.grant=false;assert.equal((await run({action:'redeem',code:'wrong'})).code,400);S.allowed=false;assert.equal((await run({action:'redeem',code:'tester'})).code,429);S.allowed=true;});
+test('a payment return cannot verify someone else’s checkout',async()=>{assert.equal((await run({action:'verify',sessionId:'cs_unowned123456'})).code,403);});

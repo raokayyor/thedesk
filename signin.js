@@ -1,0 +1,7 @@
+const $=id=>document.getElementById(id);
+async function post(body){const r=await fetch('/api/auth',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'We couldn’t send your link. Please try again.');return d;}
+const token=new URLSearchParams(location.search).get('token');
+if(token){$('title').textContent='Opening your Desk…';$('lede').textContent='Verifying your secure sign-in link.';$('form').hidden=true;history.replaceState(null,'','/signin.html');try{const d=await post({action:'verify',token});location.replace(d.next==='/membership-start.html'?d.next:'/my.html');}catch(e){$('title').textContent='Let’s get you a new link.';$('lede').textContent=e.message;$('form').hidden=false;}}
+else fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store'}).then(r=>r.json()).then(d=>{$('signedIn').hidden=!d.signedIn;}).catch(()=>{});
+$('form').onsubmit=async e=>{e.preventDefault();$('send').disabled=true;$('send').textContent='Sending your link…';$('msg').textContent='';try{await post({action:'request',email:$('email').value});$('sentEmail').textContent=$('email').value.trim();$('form').hidden=true;$('sent').hidden=false;}catch(e){$('msg').textContent=e.message;}finally{$('send').disabled=false;$('send').textContent='Email me a sign-in link →';}};
+$('again').onclick=()=>{$('sent').hidden=true;$('form').hidden=false;$('msg').textContent='';$('email').focus();};

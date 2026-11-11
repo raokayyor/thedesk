@@ -87,13 +87,13 @@ async function load(){
    D={...d,member:false,until:null,profile:{},report:null,readiness:null,tests:{last:null,count:0},interview:{left:1,recent:[],count:0,per:'this week'},interviewUrl:'/interview-start.html',applications:[],news:[],game:null,challenge:null,actions:[{tag:'Start here',title:'Take the free assessment',detail:'Add your CV and complete two short tests to get your free assessment score.',href:'/assessment.html'},{tag:'Try it',title:'Try the 30-second interview check',detail:'Record one answer and see a short feedback preview.',href:'/interview-teaser.html'},{tag:'Explore',title:'See a sample Deep Assessment',detail:'A fictional example of the paid report and preparation plan.',href:'/report-sample.html'}],practitioners:d.practitioners?{...d.practitioners,question:null,canAsk:false}:null};
    ME={...ME,items:[],assessments:[],call:null};
   }
-  document.title=D.member?'My Desk | The Desk':'My Desk Preview | The Desk';
+  document.title=D.member?'Member Dashboard | The Desk':D.signedIn?'Free Account | The Desk':'My Desk Preview | The Desk';
   try{if(d.interviewUrl)localStorage.setItem('desk-interview-url',d.interviewUrl);if(d.report?.url){localStorage.setItem('desk-report-url',d.report.url);document.querySelectorAll('.desk-nav a').forEach(a=>{if(a.textContent==='Report')a.href='/report.html'})}}catch(e){}
   render();
 }
 function headerBits(){
   const parts=[];
-  if(!D.member)parts.push('<span class="pill">My Desk Preview</span>');
+  if(!D.member)parts.push('<span class="pill">'+(D.signedIn?'Free account':'My Desk Preview')+'</span>');
   if(D.member)parts.push(`<span class="pill">Member${D.until?' until '+esc(dayY(D.until)):''}</span>`);
   else if(D.report)parts.push(`<button class="btn hot" id="join" style="min-height:40px;padding:9px 16px">Become a member · £89 a year</button>`);
   if(D.signedIn)parts.push(`<span>${esc(D.email)}</span><button class="btn ghost" id="out" style="min-height:36px;padding:6px 12px">Sign out</button>`);
@@ -237,10 +237,10 @@ function render(){
   headerBits();
   const name=D.profile.firstName;
   const target=[D.profile.targetFirm,D.profile.targetDivision||D.profile.targetSector,D.profile.programme].filter(Boolean).join(' · ');
-  app.innerHTML=`${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
-    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><div><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><p class="mute" style="max-width:610px;margin:8px 0 0;line-height:1.6">Your finance career dashboard, built with The Desk’s practitioners to help you improve your CV, prepare for interviews and keep your applications on track.</p></div><div id="sectorInterests" class="sector-interests" aria-label="Your sector interests"><span class="mute">Choose your sectors</span></div></div>
-    ${!D.member?`<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0 20px">${!D.signedIn?'':''}<a class="btn ghost" href="/signup.html?plan=member">Explore membership →</a></div>`:''}
-    ${!D.member&&qp.has('assessment')?'<div class="notice" role="status">Your free assessment is ready. Your initial score and result are saved below.</div>':''}<section class="grid3">${readinessCard()}${sideCard()}</section>
+  app.innerHTML=`${D.testFixture?'<div class="notice">Synthetic test account · no payment or email was sent. Use sign-up for a real student account.</div>':''}${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><div><div class="kicker">${D.member?'Member dashboard':D.signedIn?'Free account':'Explore My Desk'}</div><h1>${esc(greet())}${name?', '+esc(name):''}.</h1><p class="mute" style="max-width:610px;margin:8px 0 0;line-height:1.6">Your finance career dashboard, built with The Desk’s practitioners to help you improve your CV, prepare for interviews and keep your applications on track.</p></div><div id="sectorInterests" class="sector-interests" aria-label="Your sector interests"><span class="mute">Choose your sectors</span></div></div>
+    ${!D.member?`<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0 20px">${!D.signedIn?'<a class="btn hot" href="/signup.html?plan=free">Create free account</a><a class="btn ghost" href="/signin.html">Log in</a>':'<a class="btn hot" href="/membership-start.html">Upgrade or enter tester code →</a>'}<a class="btn ghost" href="/signup.html?plan=member">Explore membership →</a></div>`:''}
+    ${D.needsAssessment?'<section class="card" style="margin:18px 0;border:2px solid #ff5a14"><div class="kicker">Membership active · Step 1</div><h2>Complete your assessment to personalise your Desk.</h2><p>Add your CV and complete the short tests. Your report, application answers and interview evidence will then use your own experience.</p><a class="btn hot" href="/assessment.html">Start my assessment →</a></section>':''}${!D.member&&qp.has('assessment')?'<div class="notice" role="status">Your free assessment is ready. Your initial score and result are saved below.</div>':''}<section class="grid3">${readinessCard()}${sideCard()}</section>
     ${panelBand()}
     ${D.member?actionsCard()+toolsRow():freeRow()}
     ${D.member?`<section class="grid3" style="align-items:start">${appsCard()}<div style="display:flex;flex-direction:column;gap:16px">${gameCard()}${challengeCard()}${mythCard()}${newsCard()}</div></section>`:lockedRow()}
