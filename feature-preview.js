@@ -5,6 +5,7 @@ const link=(url,label,kind='hot')=>`<a class="btn ${kind}" href="${url}">${label
 const [access,student]=await Promise.allSettled([fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>{if(!r.ok)throw Error();return r.json()}),fetch('/data/preview-student.json').then(r=>{if(!r.ok)throw Error();return r.json()})]);
 const d=access.status==='fulfilled'?access.value:null;
 if(d?.member&&!sampleReport&&!new URLSearchParams(location.search).has('tour')){location.replace(memberDestination(key,d));}
+else if(key==='interviews'){location.replace('/interview-teaser.html?walkthrough=1');}
 else if(key==='report'){location.replace('/fullcycle.html?sample=amelia');}
 else if(student.status!=='fulfilled'){root.innerHTML='<h1>Preview temporarily unavailable</h1><p>Please try again, or explore your Desk.</p>'+link('/my.html','Open My Desk');}
 else{
