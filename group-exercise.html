@@ -273,7 +273,7 @@ details.brief summary{cursor:pointer;font-weight:700;min-height:28px}
     $('fixes').innerHTML = f.fixes.map(x => `<li>${esc(x)}</li>`).join('');
   }
   $('end').addEventListener('click', finish);
-  window.addEventListener('pagehide',()=>{ended=true;clearInterval(tick);clearInterval(readT);rec?.abort();audioNow?.pause();speechSynthesis?.cancel();});
+  window.addEventListener('pagehide',()=>{ended=true;clearInterval(tick);clearInterval(readT);rec?.abort();audioNow?.pause();window.speechSynthesis?.cancel();});
   $('again').addEventListener('click', () => { $('result').hidden = true; $('setup').hidden = false; window.scrollTo(0, 0); });
 })();
 </script>

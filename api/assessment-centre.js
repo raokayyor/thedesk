@@ -8,7 +8,7 @@
 import {currentAccount,accountOwnsAssessment} from '../lib/accounts.mjs';
 import {latestCv} from '../lib/saved-cv.mjs';
 import Anthropic from '@anthropic-ai/sdk';
-import { ownedRecord, hasAccess, sameOrigin, apiFailure, sql } from '../lib/report-store.mjs';
+import { ownedRecord, sameOrigin, apiFailure, sql } from '../lib/report-store.mjs';
 import { principal, isPaidOwner, useQuota, saveItem } from '../lib/value-accounts.mjs';
 import { voiceConfigured, generateInterviewSpeech } from '../lib/interview-voice.mjs';
 import { SCENARIOS, PERSONAS, BEHAVIOURS, SCALE, TURN_SCHEMA, FEEDBACK_SCHEMA, CRIB_SCHEMA, validTranscript, turnPrompt, validTurns, stats, feedbackPrompt, validFeedback, cribPrompt, validCrib, clean } from '../lib/assessment-centre.mjs';
