@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Assessment centres | The Desk</title>
+<meta name="description" content="Rehearse the assessment centre before the day: your crib sheet, an AI group exercise, and what assessors actually write down.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script src="/desk-nav.js" defer></script>
+<script src="/interview-bank.js"></script>
+<script src="/interview-firm-packs.js"></script>
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--navy:#123459;--navy-soft:#dbe5f1;--ok:#15803d}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}a:hover{color:var(--accent-ink)}
+main{max-width:1160px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,5vw,44px)}h2{font-size:26px}h3{font-size:20px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.dark .mute{color:#cfd6db}.dark .kicker{color:#ffb38f}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.btn{font:700 15px "DM Sans",Arial,sans-serif;border:1px solid var(--ink);border-radius:999px;padding:12px 18px;background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px}
+.btn:hover{color:#fff;opacity:.92}.btn.hot{background:var(--accent);border-color:var(--accent)}.btn.ghost{background:transparent;color:var(--ink)}.dark .btn.ghost{color:#fff;border-color:#fff}
+.tool{display:flex;flex-direction:column;gap:10px}.tool .btn{margin-top:auto;align-self:flex-start}
+.tag{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;background:var(--soft);color:#3b4652}
+.tag.m{background:var(--warm);color:#9a3412}
+ul{margin:0;padding-left:18px}li{margin:3px 0}
+.ex h3{margin-bottom:6px}.ex dl{margin:10px 0 0;display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 10px;font-size:14px}.ex dt{font-weight:700;color:var(--mute)}.ex dd{margin:0}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:680px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+thead th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.scroll{overflow-x:auto}
+.firmbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;border-radius:10px;background:#fff;min-height:46px}
+.reported li span{color:var(--mute);font-size:13px}
+.check li{list-style:none;margin-left:-18px;padding-left:26px;position:relative}.check li:before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;border:2px solid var(--accent);border-radius:4px}
+@media (max-width:900px){.grid3,.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <section class="card dark" style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px" id="hero">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="kicker">Assessment centres and superdays</div>
+      <h1>Rehearse the day before the day.</h1>
+      <p style="margin:0;color:#d5dce0;font-size:17px">Most students walk into the group exercise and case study cold. Practise them here, with your own CV and your firm in mind, and see what the assessor is actually writing down.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn hot" href="/group-exercise.html">Try the group exercise</a><a class="btn ghost" href="/ac-crib.html">Build my crib sheet</a></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;border-left:1px solid rgba(255,255,255,.15);padding-left:22px">
+      <div class="kicker">Your assessment centre</div>
+      <div class="firmbar"><label for="firm" class="mute">Firm</label><select id="firm"></select></div>
+      <div id="firmInfo" class="mute">Choose a firm to see what recent candidates reported.</div>
+    </div>
+  </section>
+
+  <section class="grid3" aria-label="Tools">
+    <div class="card tool"><span class="tag m">Members</span><h3>Your crib sheet</h3><p class="mute" style="margin:0">One printable page built from your CV for your firm: your 30-second intro, six stories matched to what assessors score, questions to ask, and the gaps they’ll probe.</p><a class="btn" href="/ac-crib.html" id="cribLink">Build it</a></div>
+    <div class="card tool"><span class="tag m">Members</span><h3>AI group exercise</h3><p class="mute" style="margin:0">A 20-minute case discussion with three AI candidates: one dominates, one is quiet, one drifts. Speak out loud, then get scored the way an assessor would.</p><a class="btn hot" href="/group-exercise.html">Start a group exercise</a></div>
+    <div class="card tool"><span class="tag">Coming next</span><h3>Case study and inbox</h3><p class="mute" style="margin:0">A timed case pack you write up and present on camera, and a 30-minute inbox of emails to prioritise, with a model answer.</p><a class="btn ghost" href="/interview-start.html">Practise interviews meanwhile</a></div>
+  </section>
+
+  <section class="card" aria-labelledby="exH">
+    <h2 id="exH" style="margin-bottom:6px">What happens on the day</h2>
+    <p class="mute" style="margin:0 0 14px">Formats vary by firm. These are the exercises that come up most, and how people lose marks.</p>
+    <div class="grid2">
+      <div class="ex"><h3>Group exercise</h3><dl><dt>What it is</dt><dd>4–8 candidates discuss a business problem and agree a recommendation, often 20–40 minutes, assessors silent at the side.</dd><dt>Testing</dt><dd>Teamwork, influence, commercial judgement, structure.</dd><dt>How people fail</dt><dd>Saying nothing; talking over others; no numbers; no decision by the end.</dd></dl></div>
+      <div class="ex"><h3>Case study and presentation</h3><dl><dt>What it is</dt><dd>A pack of company information, numbers and emails; you write a recommendation, then present it and take questions.</dd><dt>Testing</dt><dd>Analysis under time pressure, clear structure, defending a view.</dd><dt>How people fail</dt><dd>Summarising the pack instead of recommending; running out of time; no risks.</dd></dl></div>
+      <div class="ex"><h3>Inbox or written exercise</h3><dl><dt>What it is</dt><dd>Emails and documents to prioritise and reply to, sometimes with an error to spot in the numbers.</dd><dt>Testing</dt><dd>Prioritising, attention to detail, professional writing, judgement.</dd><dt>How people fail</dt><dd>Doing the easy tasks first; missing the error; casual tone.</dd></dl></div>
+      <div class="ex"><h3>Interviews (superday)</h3><dl><dt>What it is</dt><dd>Two to four back-to-back interviews, often analyst/associate, then VP, then MD or partner.</dd><dt>Testing</dt><dd>Motivation, your CV in depth, technicals, markets, and how you hold up by round three.</dd><dt>How people fail</dt><dd>Same story every round; vague “why us”; fading by the last interview.</dd></dl></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="sheetH">
+    <div class="kicker">What the assessor writes down</div>
+    <h2 id="sheetH" style="margin:4px 0 6px">The group exercise scoring sheet</h2>
+    <p class="mute" style="margin:0 0 12px">Assessors usually score a handful of behaviours on a 4-point scale and write down what you actually said. This is The Desk’s version, written with our practitioners. The AI group exercise scores you against it.</p>
+    <div class="scroll"><table>
+      <thead><tr><th scope="col">Behaviour</th><th scope="col">What “strong” looks like</th><th scope="col">What gets marked down</th></tr></thead>
+      <tbody id="rubric"></tbody>
+    </table></div>
+    <p class="mute" style="margin:12px 0 0">Scale: 1 Below · 2 Developing · 3 Meets · 4 Strong. Assessors note evidence (“said X, brought in Y”), not impressions, so what you say out loud is what counts.</p>
+  </section>
+
+  <section class="grid2">
+    <div class="card"><h3 style="margin-bottom:8px">The night before</h3><ul class="check">
+      <li>Print your crib sheet and read your six stories out loud once.</li>
+      <li>Read today’s business news: pick one story and your view on it.</li>
+      <li>Re-read the firm’s recent results or a deal it worked on.</li>
+      <li>Plan the journey (or test camera, sound and internet if virtual).</li>
+      <li>Prepare two questions for each interviewer.</li></ul></div>
+    <div class="card"><h3 style="margin-bottom:8px">On the day</h3><ul class="check">
+      <li>In the group: speak in the first two minutes, then bring someone else in.</li>
+      <li>Use one number from the brief in every point you make.</li>
+      <li>Be the one who says “we’ve got five minutes, shall we agree?”</li>
+      <li>In the case study: recommendation first, then reasons, then risks.</li>
+      <li>Afterwards: tell us how it went, so the next student is better prepared.</li></ul></div>
+  </section>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const bank = globalThis.DeskInterviewBank, packs = bank?.firmPacks || {};
+  const keys = Object.keys(packs).sort((a, b) => bank.firms[a].label.localeCompare(bank.firms[b].label));
+  $('firm').innerHTML = '<option value="">Choose a firm</option>' + keys.map(k => `<option value="${k}">${esc(bank.firms[k].label)}</option>`).join('');
+  function showFirm() {
+    const k = $('firm').value, p = packs[k];
+    if (!p) { $('firmInfo').textContent = 'Choose a firm to see what recent candidates reported.'; return; }
+    const r = p.reports, label = bank.firms[k].label;
+    const fmt = (r?.format || []).map(t => `<li>${esc(t)}</li>`).join('');
+    $('firmInfo').innerHTML = `<div style="color:#fff;font-weight:700;margin-bottom:6px">${esc(label)}: what recent candidates reported</div>${fmt ? `<ul class="reported" style="color:#d5dce0">${fmt}</ul>` : '<div>No candidate reports yet.</div>'}<div style="margin-top:8px">What they tend to test: ${esc((p.tests || []).join(' · '))}</div>`;
+    $('cribLink').href = '/ac-crib.html?firm=' + encodeURIComponent(k);
+  }
+  $('firm').addEventListener('change', showFirm);
+  fetch('/api/assessment-centre?view=info').then(r => r.ok ? r.json() : null).then(d => {
+    if (!d) return;
+    $('rubric').innerHTML = d.behaviours.map(b => `<tr><th scope="row">${esc(b.label)}</th><td>${esc(b.strong)}</td><td>${esc(b.below)}</td></tr>`).join('');
+  }).catch(() => {});
+  fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
+    const t = d?.profile?.targetFirm; if (!t || !bank) return;
+    const k = bank.resolveFirm(t); if (packs[k]) { $('firm').value = k; showFirm(); }
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>

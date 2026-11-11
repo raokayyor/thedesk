@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {SCENARIOS,validTranscript,validTurns,validFeedback,stats,validCrib} from '../lib/assessment-centre.mjs';
+test('three practice cases contain bounded decisions and source facts',()=>{assert.equal(Object.keys(SCENARIOS).length,3);for(const s of Object.values(SCENARIOS)){assert(s.brief.length>50);assert(s.options.length>=3)}});
+test('transcripts reject excessive history and unknown speakers',()=>{assert.equal(validTranscript(Array(161).fill({who:'you',text:'a'})),null);assert.deepEqual(validTranscript([{who:'staff',text:'wrong'},{who:'you',text:'My point'}]),[{who:'you',text:'My point'}])});
+test('simulated turns cannot impersonate the student',()=>{assert.deepEqual(validTurns({turns:[{speaker:'you',text:'Invented student turn'}]}),[])});
+test('feedback evidence must match the whole student quote',()=>{const text='I suggest we compare the costs and then ask Priya for her view.';const base={key:'contribution',score:4,evidence:text+' This sentence was invented.',note:'Example'};assert.equal(validFeedback({behaviours:[base]},[{who:'you',text}]).behaviours[0].evidence,'');base.evidence=text;assert.equal(validFeedback({behaviours:[base]},[{who:'you',text}]).behaviours[0].evidence,text)});
+test('measured discussion stats exclude other candidates',()=>{const s=stats([{who:'you',text:'Priya what do you think? 25 million'},{who:'sam',text:'Other contribution'}]);assert.equal(s.turns,1);assert.equal(s.invites,1);assert.equal(s.numbers,1);assert(s.share<100)});
+test('crib sheet drops numbers absent from the CV',()=>{const x=validCrib({stories:[{title:'Work',action:'Compared costs',number:'99%'}]},'Compared costs by 12%');assert.equal(x.stories[0].number,'')});

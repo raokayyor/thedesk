@@ -14,6 +14,7 @@
     ['Report', '/report.html', /\/(fullcycle|result-final-design)\.html$/],
     ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
     ['Application Help','/application-help.html',/\/application-help\.html$/],
+    ['Assessment centres','/assessment-centre.html',/\/(assessment-centre|ac-crib|group-exercise)\.html$/],
     ['Tests', '/tests.html', /\/tests\.html$/],
     ['Trading', '/trading.html', /\/(trading|challenge)\.html$/],
     ['Tracker', '/tracker.html', /\/tracker\.html$/],
