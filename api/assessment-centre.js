@@ -70,7 +70,7 @@ export default async function handler(req, res) {
         const reason = ['start', 'silence', 'reply','news'].includes(b.reason) ? b.reason : 'reply';
         if(reason==='news')return res.json({turns:newsTurns(chair,clean(b.candidateName,40),updates)});
         if(reason==='start')return res.json({turns:openingTurns(chair,clean(b.candidateName,40)||'you')});
-        const target=Object.hasOwn(PERSONAS,b.nextSpeaker)?b.nextSpeaker:null;const recipients=['you',...Object.keys(PERSONAS).filter(n=>n!==chair)];const chairTurns=transcript.filter(t=>t.who===chair).length;const challengeTarget=target===chair?recipients[Math.max(0,chairTurns-1)%recipients.length]:null;sc={...sc,nextSpeaker:target,challengeTarget};
+        const target=Object.hasOwn(PERSONAS,b.nextSpeaker)?b.nextSpeaker:null;const others=Object.keys(PERSONAS).filter(n=>n!==chair);const recipients=['you','you',others[0],'you','you',others[1]];const chairTurns=transcript.filter(t=>t.who===chair).length;const challengeTarget=target===chair?recipients[Math.max(0,chairTurns-1)%recipients.length]:null;sc={...sc,nextSpeaker:target,challengeTarget};
         const schema=target?{...TURN_SCHEMA,properties:{...TURN_SCHEMA.properties,turns:{...TURN_SCHEMA.properties.turns,maxItems:1,items:{...TURN_SCHEMA.properties.turns.items,properties:{...TURN_SCHEMA.properties.turns.items.properties,speaker:{type:'string',enum:[target]}}}}}}:TURN_SCHEMA;
         const raw = await tool(FAST, schema, 'next_turns', turnPrompt(sc, transcript, Math.max(0, Math.min(3600, Number(b.elapsed) || 0)), reason, mode, allocation), 400, 0.8);
         return res.json({ turns: responseTurns(raw,transcript,chair,target).map(t=>({...t,...(challengeTarget?{addressedTo:challengeTarget}:{})})) });
