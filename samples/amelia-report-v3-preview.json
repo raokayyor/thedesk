@@ -9,7 +9,7 @@
   },
   "profile": {
     "name": "Amelia Chen",
-    "year": "1st Year",
+    "year": "2nd Year",
     "grade": "2:1 (predicted)",
     "course": "Economics (BSc)",
     "programme": "Summer Internship",
@@ -19,7 +19,7 @@
     "targetDivision": "Investment Banking / IBD"
   },
   "result": {
-    "band": "Borderline",
+    "band": "Weak",
     "weights": {
       "ats": 10,
       "numerical": 15,
@@ -31,8 +31,8 @@
       "ats": 9,
       "numerical": 9,
       "technical": 12,
-      "competency": 18,
-      "application": 23
+      "competency": 11,
+      "application": 13
     },
     "cvPreview": {
       "issue": "The bullet ends with a disclaimer ('No transaction completion or client outcome was confirmed') which, while honest, closes on a negative and undersells the analytical rigour already described. The selection rationale — recurring revenue models matching the screen brief — is the strongest part but is buried at the end of a long sentence.",
@@ -54,7 +54,7 @@
       }
     ],
     "targetFirm": "Barclays",
-    "deskSummary": "Amelia presents a coherent early-stage IBD profile. Her Redcliffe Partners internship and LVMH project together demonstrate hands-on financial modelling (DCF, trading comps, sensitivity analysis) and structured analytical reasoning — both directly relevant to summer internship work. Her part-time role adds sustained commitment and a minor operational-accuracy moment. The main gaps to address before interview are: (1) sharpening the 'so what' narrative on her analysis outputs, (2) building a leadership data point beyond peer training, and (3) closing the four quiz concept gaps (equity dilution, strategic buyer, net debt, percentage fall) which are likely to surface in commercial and numerical interview rounds. No evidence of a committee role or client-facing outcome currently limits her leadership and commercial-impact scores, but her technical foundation is solid for a final-year candidate.",
+    "deskSummary": "Amelia presents a coherent early-stage IBD profile. Her Redcliffe Partners internship and LVMH project together demonstrate hands-on financial modelling (DCF, trading comps, sensitivity analysis) and structured analytical reasoning — both directly relevant to summer internship work. Her part-time role adds sustained commitment and a minor operational-accuracy moment. The main gaps to address before interview are: (1) sharpening the 'so what' narrative on her analysis outputs, (2) building a leadership data point beyond peer training, and (3) closing the four quiz concept gaps (equity dilution, strategic buyer, net debt, percentage fall) which are likely to surface in commercial and numerical interview rounds. No evidence of a committee role or client-facing outcome currently limits her leadership and commercial-impact scores, but her technical foundation is solid for a penultimate-year candidate.",
     "atsReadiness": {
       "band": "Ready to refine",
       "score": 86,
@@ -334,10 +334,10 @@
   "paid": {
     "paidTitle": "Amelia Chen — Barclays Investment Banking / IBD Summer Internship: Full Cycle Application Repair Report",
     "executiveVerdict": {
-      "summary": "Amelia scores 71/100 (Borderline band) with a solid technical foundation: a real corporate finance internship at Redcliffe Partners, a DCF/trading-comps LVMH project, and confirmed Excel modelling skills. The profile is credible for a final-year Bristol Economics student. Key drags are a weak leadership data point (only peer training at Pho House), four missed quiz concepts that are standard IBD interview topics, two missing ATS keywords, and acquisition-screen bullets that close on disclaimers rather than analytical insight. All three gaps are fixable before a typical summer internship deadline.",
+      "summary": "Amelia scores 54/100 (Weak band) with a solid technical foundation: a real corporate finance internship at Redcliffe Partners, a DCF/trading-comps LVMH project, and confirmed Excel modelling skills. The profile is credible for a penultimate-year Bristol Economics student. Key drags are a weak leadership data point (only peer training at Pho House), four missed quiz concepts that are standard IBD interview topics, two missing ATS keywords, and acquisition-screen bullets that close on disclaimers rather than analytical insight. All three gaps are fixable before a typical summer internship deadline.",
       "submitAdvice": "Before submitting: (1) close all four quiz gaps — equity dilution, strategic buyer, net debt, percentage fall — by drilling worked answers aloud; (2) add 'due diligence' and 'mergers and acquisitions' to the CV only where genuinely supported by your Redcliffe work; (3) secure or name a leadership data point beyond peer training. No score outcome or offer is guaranteed by any of these actions.",
       "mostImportantFix": "Reframe the Redcliffe acquisition-screen bullet to lead with the recurring-revenue selection criterion and remove the closing disclaimer; this directly lifts the Application score (weighted 30%), which is the single largest scoring component.",
-      "readinessVerdict": "Overall score: 71/100 — Borderline band. ATS 9/10 · Numerical 9/15 · Technical 12/20 · Competency 18/25 · Application 23/30."
+      "readinessVerdict": "Overall score: 54/100 — Weak band. ATS 9/10 · Numerical 9/15 · Technical 12/20 · Competency 11/25 · Application 13/30."
     },
     "applicationRiskMap": [
       {
@@ -897,16 +897,7 @@
         "whyItMatters": "Inconsistency between written answers and CV detail is a common interview failure point; answers must be defensible under follow-up questioning."
       }
     ],
-    "profileWarnings": [
-      {
-        "type": "year_mismatch",
-        "message": "Your profile says \"1st Year\" but your CV says final year. Check which is right: it changes which programmes you can apply to."
-      },
-      {
-        "type": "programme_stage",
-        "message": "Summer internships in banking are usually aimed at penultimate-year students. In your final year, the graduate programme is normally the right route. Check the eligibility on the firm's page."
-      }
-    ],
+    "profileWarnings": [],
     "weeksTwoToFour": [
       {
         "week": "Week 2",
@@ -1024,7 +1015,7 @@
   "cv": {
     "candidateName": "Amelia Chen",
     "targetRole": "Investment Banking / IBD at Barclays",
-    "sourceText": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nApplied a recurring-revenue model screen to 12 UK software companies, recording revenue and EBITDA where publicly available in an Excel comparison table; flagged 4 candidates whose business models matched the acquisition brief and presented selection rationale to an associate.\nPho House — Part-time Team Member, September 2023–present\nMaintained 12 hours per week of customer-facing work alongside a full university timetable; trained 3 new colleagues on ordering and till procedures; during a busy service, identified a duplicate payment and escalated to the shift lead, supporting the correction process.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using LVMH public annual-report data; benchmarked against 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%, identifying dependence on growth and margin inputs; presented sensitivity findings and their implications to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
+    "sourceText": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Penultimate year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nApplied a recurring-revenue model screen to 12 UK software companies, recording revenue and EBITDA where publicly available in an Excel comparison table; flagged 4 candidates whose business models matched the acquisition brief and presented selection rationale to an associate.\nPho House — Part-time Team Member, September 2023–present\nMaintained 12 hours per week of customer-facing work alongside a full university timetable; trained 3 new colleagues on ordering and till procedures; during a busy service, identified a duplicate payment and escalated to the shift lead, supporting the correction process.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using LVMH public annual-report data; benchmarked against 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%, identifying dependence on growth and margin inputs; presented sensitivity findings and their implications to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
     "sections": [
       {
         "title": "Contact",
@@ -1040,7 +1031,7 @@
         "title": "Education",
         "items": [
           {
-            "heading": "University of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.",
+            "heading": "University of Bristol — BSc Economics, 2023–2026. Penultimate year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.",
             "subheading": "",
             "bullets": []
           }
@@ -1177,6 +1168,6 @@
     ],
     "buildFirst": []
   },
-  "repairedCvDraft": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Final year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nApplied a recurring-revenue model screen to 12 UK software companies, recording revenue and EBITDA where publicly available in an Excel comparison table; flagged 4 candidates whose business models matched the acquisition brief and presented selection rationale to an associate.\nPho House — Part-time Team Member, September 2023–present\nMaintained 12 hours per week of customer-facing work alongside a full university timetable; trained 3 new colleagues on ordering and till procedures; during a busy service, identified a duplicate payment and escalated to the shift lead, supporting the correction process.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using LVMH public annual-report data; benchmarked against 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%, identifying dependence on growth and margin inputs; presented sensitivity findings and their implications to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
+  "repairedCvDraft": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Penultimate year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nApplied a recurring-revenue model screen to 12 UK software companies, recording revenue and EBITDA where publicly available in an Excel comparison table; flagged 4 candidates whose business models matched the acquisition brief and presented selection rationale to an associate.\nPho House — Part-time Team Member, September 2023–present\nMaintained 12 hours per week of customer-facing work alongside a full university timetable; trained 3 new colleagues on ordering and till procedures; during a busy service, identified a duplicate payment and escalated to the shift lead, supporting the correction process.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using LVMH public annual-report data; benchmarked against 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%, identifying dependence on growth and margin inputs; presented sensitivity findings and their implications to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
   "preview": true
 }

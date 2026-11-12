@@ -303,7 +303,7 @@ h3{font-size:20px;line-height:1.3;margin:0}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
 .report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
-</head>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{font-family:Figtree,Arial,sans-serif!important}h1,h2,h3,.score{font-family:"EB Garamond",Georgia,serif!important;font-weight:600!important}.btn{background:#1f2a2e!important;border-radius:8px!important}.sample-label{font:13px/1.5 Figtree,Arial,sans-serif;color:#6b747a;padding:12px 0}.sample-links{font-size:14px;line-height:1.8}.sample-links a{display:inline-block;padding:8px}</style></head>
 <body>
 <header class="top"><div class="top-in">
   <a class="logo" href="/">The <i>Desk</i></a>
@@ -434,8 +434,8 @@ function render(R){
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
-  document.getElementById("sampleTag").textContent=R.preview?'V3 design preview':'Sample report';
-  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
+  document.getElementById("sampleTag").textContent='Sample deep assessment';
+  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.textContent='Fictional sample student. Your report is built from your own CV.';
   document.getElementById("dlTop").disabled=false;
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
@@ -791,7 +791,7 @@ function wire(R,S){
       if(l.indexOf("## ")===0)return'<p style="margin:8pt 0 2pt"><b>'+esc(l.slice(3))+'</b></p>';
       if(l.indexOf("• ")===0)return'<p style="margin:2pt 0 2pt 14pt;text-indent:-10pt">• '+esc(l.slice(2))+'</p>';
       return'<p style="margin:3pt 0">'+esc(l)+'</p>';}).join("");
-    var doc='<html><head><meta charset="utf-8"></head><body style="font-family:Georgia;font-size:11pt">'+body+'</body></html>';
+    var doc='<html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{font-family:Figtree,Arial,sans-serif!important}h1,h2,h3,.score{font-family:"EB Garamond",Georgia,serif!important;font-weight:600!important}.btn{background:#1f2a2e!important;border-radius:8px!important}.sample-label{font:13px/1.5 Figtree,Arial,sans-serif;color:#6b747a;padding:12px 0}.sample-links{font-size:14px;line-height:1.8}.sample-links a{display:inline-block;padding:8px}</style></head><body style="font-family:Georgia;font-size:11pt">'+body+'</body></html>';
     var name=((R.profile||{}).name||"cv").replace(/\s+/g,"-")+"-CV-repaired.doc";
     var b=new Blob(["﻿"+doc],{type:"application/msword"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   }

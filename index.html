@@ -6,7 +6,7 @@
 <title>The Desk | Your finance career preparation</title>
 <meta name="description" content="140 applications for every graduate job. Find out why you'd be rejected, and fix it before you apply. A free readiness score from people who've spent their careers in finance.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Version C: calm, members'-club feel. Garamond headlines, Figtree text, ink buttons, orange only for scores and small accents. */
 :root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a}
@@ -14,12 +14,13 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--ink)}
-h1,h2,h3,.serif{font-family:"EB Garamond",Georgia,serif;font-weight:400;margin:0;letter-spacing:-.01em}
+h1,h2,h3,.serif{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.015em}
+.lead-person .name,.panel .name,.tier .big,.route .now,.route .to{font-weight:600!important}
 .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
 .kicker{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
 .mute{color:var(--mute)}
 header.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
-.logo{font:500 28px "EB Garamond",Georgia,serif;text-decoration:none;letter-spacing:-.01em}
+.logo{font:600 28px "EB Garamond",Georgia,serif;text-decoration:none;letter-spacing:-.01em}
 .top nav{display:flex;gap:24px;align-items:center;font-size:15px;font-weight:500}
 .top nav a{text-decoration:none}.top nav a:hover{text-decoration:underline}
 /* hero */
@@ -60,6 +61,7 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .gapsmini{display:flex;flex-direction:column;gap:7px;font-size:14px;color:#cdd5d9;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
 .gapsmini div{display:flex;justify-content:space-between;gap:10px}.gapsmini span:last-child{color:#e8a283;font-weight:600;white-space:nowrap}
 .sample .mine{font-size:13px;color:#aab4b9}
+.sample .samples{font-size:14px;color:#cdd5d9;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}.sample .samples a{color:#fff;font-weight:600}
 /* sections */
 section.band{padding:64px 0;border-top:1px solid var(--line)}
 section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch}
@@ -99,8 +101,9 @@ section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch
 .panel .name{font:400 22px/1.15 "EB Garamond",Georgia,serif}
 .panel .role{font-size:14px;color:var(--ink-2);margin-top:3px}
 .logos{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;align-items:center}
-.logos .lg{width:72px;height:22px;display:flex;align-items:center;justify-content:flex-start}
-.logos .lg img{max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);opacity:.72}
+.logos{gap:10px 16px}
+.logos .lg{height:30px;display:flex;align-items:center}
+.logos .lg img{height:18px;width:auto;filter:grayscale(1);opacity:.72}
 .logos .tx{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.02em}
 /* pricing */
 .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
@@ -161,7 +164,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       </div>
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="for" id="for" aria-live="polite"></div>
-      <div class="small">Free · no card · <a href="/my.html">or look around first</a></div>
+      <div class="small">Free · no card · <a href="/amelia-result.html">see a sample report first</a></div>
       <p class="student-proof" style="font-size:13px;color:var(--mute);margin:12px 0 0">Used by students at Bristol, Warwick and LSE</p>
     </div>
 
@@ -239,6 +242,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <div class="tiers">
       <div class="tier main"><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div>
         <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
+        <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
         <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
       <div class="tier"><div class="nm">Member + Practitioner</div><div class="big" data-plus-price>£199</div><div class="mute">a year · paid once</div>
         <ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul>
@@ -266,7 +270,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 let mod; try { mod = await import('/data/home-practitioners.mjs'); } catch (e) { mod = await import('/data/firm-logos.mjs'); }
 const { FIRM_LOGOS, PRACTITIONERS } = mod;
 const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
-const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
+// Optical sizing: every logo gets roughly the same visual area, whatever its shape.
+// BOOST corrects files with lots of built-in whitespace.
+const BOOST = { 'commerzbank.svg': 1.6, 'lancashire.png': 1.4, 'ey.svg': 1.35, 'barclays.svg': 1.15, 'socgen.svg': 1.1 };
+window.sizeLogo = img => { const r = img.naturalWidth / img.naturalHeight; if (!r) return; const k = BOOST[img.getAttribute('src').split('/').pop()] || 1; const h = Math.min(26, Math.max(13, Math.sqrt(1150 / r))) * k; img.style.height = h.toFixed(1) + 'px'; img.style.width = (h * r).toFixed(1) + 'px'; };
+const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}" onload="sizeLogo(this)"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
 const [lead, ...rest] = PRACTITIONERS;
 document.getElementById('people').innerHTML =
   `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +
@@ -291,7 +299,8 @@ document.getElementById('people').innerHTML =
       <div class="est">Fix 3 gaps and recheck: an estimated ${s.est} points.</div>
       <div class="line good"><b>Your line, rewritten</b>${esc(s.fix)}</div>
       <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
-      <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>`;
+      <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>
+      <div class="samples">See a full sample report: <a href="/amelia-result.html">Free</a> · <a href="/fullcycle-amelia.html">Member</a></div>`;
   }
   sample('ib');
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
