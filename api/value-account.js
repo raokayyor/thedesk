@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     }
     if (b.action === 'signout') { await A.signOut(req, res); return res.json({ success: true }); }
     if(b.action==='enquiry'){
-      const email=String(b.email||'').trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254||!['coaching','society'].includes(b.type)||!String(b.name||'').trim()||!String(b.university||'').trim())return res.status(400).json({error:'Add your name, email and university.'});
+      const email=String(b.email||'').trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254||!['coaching','society','plus'].includes(b.type)||!String(b.name||'').trim()||!String(b.university||'').trim())return res.status(400).json({error:'Add your name, email and university.'});
       const p=await A.principal(req,res);if(!await A.useQuota('enquiry:'+hash(A.clientKey(req)),5))return res.status(429).json({error:'You’ve sent several enquiries today. Please try again tomorrow.'});
       return res.json({success:true,id:await A.saveItem(p,'enquiry',{type:b.type,name:String(b.name).trim().slice(0,80),email,university:String(b.university).trim().slice(0,120),note:String(b.note||'').trim().slice(0,2000)})});
     }

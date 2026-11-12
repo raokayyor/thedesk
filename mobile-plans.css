@@ -1,0 +1,51 @@
+.practitioner-initials{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#dbe5f1;color:#173959;font:700 23px Arial,sans-serif;margin-bottom:16px}
+.practitioner-firm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.practitioner-firm-chips span{background:#eee8df;border-radius:5px;padding:4px 7px;font:600 12px/1.4 Arial,sans-serif;color:#3b4652}
+.plan-more{border:0;background:transparent;padding:0;margin:0;color:inherit;border-radius:0}
+.plan-more summary{padding:8px 0;min-height:44px;color:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.plan-more ul{margin:6px 0 0}
+.plan-comparison{padding:16px 18px;border:1px solid #ddd7cf;border-radius:14px;background:#fffdfa}
+.plan-comparison>summary{min-height:28px;cursor:pointer;font-weight:600}
+.plan-comparison .compare{border:0;padding:16px 0 0}
+@media(min-width:701px){.plan-more>summary{display:none}.offer .plan-more{margin-bottom:24px}.offer .plan-more ul{margin:0}}
+@media(max-width:700px){
+ .plans{gap:22px}
+ .plan{padding:22px 20px;gap:12px;min-height:0}
+ .plan h3{font-size:24px}
+ .plan .price{display:flex;flex-wrap:wrap;gap:6px 12px}
+ .plan .price b{font-size:42px}
+ .plan .price .mute{font-size:13px;line-height:1.4;max-width:180px}
+ .plan ul{font-size:15px;line-height:1.5;gap:10px}
+ .plan .go{margin-top:4px;min-height:48px}
+ .plan .value{font-size:12px;padding-top:8px}
+ .plan.best .tag{font-size:10px}
+ .plans~.panelband{padding:18px}
+ .hero h1{font-size:32px;line-height:1.12}
+ .hero p{font-size:16px;line-height:1.5}
+ .panel{padding:20px;gap:18px}
+ .switch button{min-height:44px;font-size:13px}
+ .plan-comparison{margin-top:0}
+ .pricing{padding-top:44px}
+ .pricing-head{margin-bottom:24px;text-align:left}
+ .offers{gap:16px}
+ .offer{padding:24px!important;border:1px solid #ddd7cf;border-radius:18px!important;min-height:0}
+ .offer.blue{background:#11191e!important;border-color:#11191e}
+ .offer>h3,.offer.blue>h3{font-size:23px!important}
+ .offer .price{font-size:44px!important;line-height:1.1;margin-top:16px!important}
+ .offer .price small{display:block!important;margin-top:8px!important;white-space:normal;font-size:13px!important;line-height:1.4}
+ .offer>ul{margin:20px 0 0!important;gap:10px!important}
+ .offer li{font-size:15px!important;line-height:1.5!important}
+ .offer .plan-more ul{margin:0 0 10px!important;gap:10px!important}
+ .offer>.btn{margin-top:14px!important;width:100%;min-height:48px}
+ .people-heading{display:block!important}
+ .people-heading>p{margin-top:12px;font-size:15px!important}
+ .practitioner-lineup{display:flex!important;overflow-x:auto;gap:12px!important;scroll-snap-type:x mandatory;padding:2px 0 12px!important}
+ .practitioner-card{flex:0 0 78%;scroll-snap-align:start;min-width:0!important;padding:20px!important;border:1px solid #ddd7cf;border-radius:16px!important}
+ .practitioner-card img,.practitioner-initials{width:52px!important;height:52px!important;object-fit:cover;margin-bottom:12px!important}
+ .practitioner-card h3{font-size:20px!important;margin-bottom:8px!important}
+ .practitioner-card .practitioner-area{font-size:14px!important;line-height:1.5;min-height:0!important}
+ .practitioner-firm-chips{margin-top:12px}
+ .people-caption{font-size:12px!important;line-height:1.5}
+}
+
+@media(max-width:700px){body>header>a:first-child{white-space:nowrap;font-size:26px!important;flex-shrink:0}body>header{gap:18px}body>header>a:last-child{text-align:right;font-size:12px!important;line-height:1.4}}

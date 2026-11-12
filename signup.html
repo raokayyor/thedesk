@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Join The Desk | Free or member</title>
-<meta name="description" content="Join The Desk free, become a member for £89 a year, or work 1:1 with a practitioner who has hired for banks.">
+<meta name="description" content="Join The Desk free, become a member for £89 a year, or work 1:1 with an experienced finance practitioner.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <script src="/desk-nav.js" defer></script>
@@ -19,7 +19,7 @@ h1{font-size:clamp(30px,5vw,46px)}h2{font-size:26px}h3{font-size:22px}
 .mute{color:var(--mute);font-size:14px}
 .hero{display:flex;flex-direction:column;gap:10px;max-width:760px}
 .hero p{margin:0;font-size:17px;color:#3b4652}
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
 .plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;position:relative}
 .plan.best{background:var(--ink);color:#fff;border-color:var(--ink)}
 .plan.best .mute,.plan.best li{color:#d5dce0}
@@ -66,14 +66,14 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
 @media (max-width:900px){.plans,.panel,.faq{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
 /* Keep the hero and plan headings on the same text-size letterforms. */
 .hero h1,.plan h3{font-family:"Fraunces",Georgia,serif;font-weight:500;font-optical-sizing:none;font-variation-settings:"opsz" 24,"SOFT" 0,"WONK" 0;font-feature-settings:"liga" 0,"clig" 0}
-</style>
-<link rel="stylesheet" href="/mobile-entry.css"></head>
+@media(min-width:901px) and (max-width:1199px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}.compare{overflow-x:auto}.compare table{min-width:700px}.plan .price{flex-wrap:wrap}.plan .price span{min-width:0}.plan .price b{white-space:nowrap}</style>
+<link rel="stylesheet" href="/mobile-entry.css"><link rel="stylesheet" href="/mobile-plans.css"><script src="/mobile-plans.js" defer></script></head>
 <body><header style="max-width:1160px;margin:auto;padding:20px 16px;display:flex;align-items:center;justify-content:space-between"><a href="/" style="font:600 30px Georgia;text-decoration:none">The Desk</a><a href="/signin.html" style="font-size:13px">Already have an account? Sign in →</a></header>
 <main>
   <section class="hero">
     <div class="kicker">Join The Desk</div>
     <h1>Start free. Go further when it matters.</h1>
-    <p>Built by people who have hired for financial organisations. Free gets you your assessment, the community and a first look at the member tools. Members get the full preparation for the firms they’re applying to.</p>
+    <p>Start with your free score and sample tools. Membership adds your deep assessment, CV fixes and practice for every round. Add practitioner calls when you want personal help.</p>
   </section>
 
   <section class="plans" aria-label="Plans">
@@ -81,12 +81,11 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <div><h3>Free</h3><div class="mute">For anyone starting out</div></div>
       <div class="price"><b>£0</b><span class="mute">always</span></div>
       <ul>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Basic assessment</b>: your readiness score, where you stand and priority fixes to start with</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Basic assessment</b>: your readiness score, where you stand and one fix to start with</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Community: ask, answer, leaderboards for your university and society</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Sector news and student discussions</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Deadline tracker</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Preparation library and brain teasers.</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Trading game with cash-prize competitions</b>. Prizes announced for each competition.</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Trading game and the Society Cup</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Deadline tracker, library and brain teasers</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>One-question interview preview with limited feedback</span></li>
       </ul>
       <button class="btn ghost go" type="button" data-plan="free">Join free</button>
     </article>
@@ -97,31 +96,42 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <div class="price"><b>£89</b><span class="mute">a year · paid once · no auto-renewal</span></div>
       <div class="value">
         <div class="payin3" data-payin3 hidden>or <b>3 interest-free payments of £29.67</b> with Klarna</div>
-        <div>About £1.71 a week for the whole recruiting year. </div>
+        <div>About £1.71 a week for the whole recruiting year.</div>
         <div class="founding" data-founding hidden></div>
       </div>
       <ul>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Free</b>, plus:</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Deep assessment of your CV and applications</b>, with personalised fixes, CV rewrites and a 30-day plan. Up to 12 rechecks.</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>HireVue practice</b> with preparation and answer timers, plus technical and regular interviews.</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Interview answers generated from your CV</b>, shaped by practitioner-developed guidance.</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Firm application guides and interview packs</b> across 17 firms and growing.</span></li>
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Numeracy and commercial tests that move your readiness.</span></li>
-
-
-<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>One private question to the panel, plus <b>practitioner ask-me-anything Zoom seminars</b>.</span></li>
-</ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Free</b>, plus:</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Deep assessment</b>: a deep dive on your CV and evidence, with follow-up questions, a separate CV evidence score, CV rewrites, model answers and a plan. Tests are optional. Rechecks all year (up to 12)</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Interview coach: firm-specific questions, your CV highlighted, feedback on every answer</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Firm interview packs for 17 firms and growing: what recent candidates were asked</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Numerical and commercial tests that move your readiness</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8a52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Ask the panel: one private question to a practitioner, plus group sessions</span></li>
+      </ul>
       <button class="btn hot go" type="button" data-plan="member">Become a member</button>
     </article>
 
     <article class="plan">
-      <div><h3>1:1 with a practitioner</h3><div class="mute">For your most important applications</div></div>
-      <div class="price"><b style="font-size:30px">Talk to us</b></div>
+      <div><h3>Member + Practitioner</h3><div class="mute">The tools, plus two calls with a person</div></div>
+      <div class="price"><b data-plus-price>£199</b><span class="mute">a year · paid once</span></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Two calls with a practitioner</b>, 30–45 minutes each</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Call 1: your CV and applications reviewed with you</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Call 2: a mock interview or assessment centre prep</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Written notes after each call</span></li>
+      </ul>
+      <div class="mute small">Already a member? Ask about upgrading for £110. We’ll confirm the arrangements before payment.</div>
+      <button class="btn ghost go" type="button" data-plan="plus">Add a practitioner</button>
+    </article>
+
+    <article class="plan">
+      <div><h3>1:1 support</h3><div class="mute">For your most important applications</div></div>
+      <div class="price"><b>£3,000</b><span class="mute">for your recruiting season</span></div>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>A named practitioner working with you from application to offer</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Live mock interviews with feedback</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your CV and applications reviewed line by line before you send them</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your CV and applications reviewed before you send them</span></li>
       </ul>
       <button class="btn ghost go" type="button" data-plan="coaching">Ask about 1:1</button>
     </article>
@@ -136,7 +146,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <div class="switch" role="group" aria-label="Choose plan" style="margin-top:16px">
         <button type="button" data-plan="free">Free</button>
         <button type="button" data-plan="member">Member · £89</button>
-        <button type="button" data-plan="coaching">1:1</button>
+        <button type="button" data-plan="plus">Member + Practitioner · £199</button><button type="button" data-plan="coaching">1:1</button>
       </div>
     </div>
     <div>
@@ -166,26 +176,27 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
   <section class="panelband">
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       <div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div>
-      <div style="font-size:15px;line-height:1.45;max-width:640px"><b>Built on what our practitioners look for.</b> Kayyor Rao, Peter Cheley, Neil Robertson, Jim Staples and Chris Sharkey have hired for banks and professional-services firms. Their preparation frameworks inform the scoring and feedback.</div>
+      <div style="font-size:15px;line-height:1.45;max-width:640px"><b>Built on what our practitioners look for.</b> Kayyor Rao, Peter Cheley, Neil Robertson, Jim Staples and Chris Sharkey bring experience across banking, asset management, audit and insurance. Their preparation frameworks inform the scoring and feedback.</div>
     </div>
   </section>
 
   <section class="compare" aria-labelledby="cmpH">
     <h2 id="cmpH" style="margin-bottom:10px">Compare</h2>
     <table>
-      <thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Member</th><th scope="col">1:1</th></tr></thead>
+      <thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Member</th><th scope="col">+ Practitioner</th><th scope="col">1:1</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Assessment</th><td><b>Basic</b><br><span class="mute">Readiness score, where you stand, priority fixes</span></td><td class="y"><b>Deep</b><br><span class="mute" style="font-weight:400">A deep dive on your CV and evidence, competencies and tests scored, what your target firm looks for</span></td><td class="y"><b>Deep</b>, plus a practitioner reads it with you</td></tr>
-        <tr><th scope="row">CV rewrites, model answers, 30-day plan</th><td class="n">Sample only</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Rechecks as your CV improves</th><td class="n">No</td><td class="y">Up to 12 in the year</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Interview practice with feedback</th><td>30 seconds a week</td><td class="y">Every day</td><td class="y">Plus live mocks</td></tr>
-        <tr><th scope="row">Preparation library and brain teasers</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr><tr><th scope="row">Firm application guides and interview packs</th><td class="n">No</td><td class="y">17 firms and growing</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Numerical and commercial tests</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you</td></tr>
-        <tr><th scope="row">Community questions and student replies</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr><tr><th scope="row">Full practitioner answers</th><td class="n">Locked preview</td><td class="y">Yes</td><td class="y">Yes</td></tr><tr><th scope="row">Trading game and cash-prize competitions</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
-        <tr><th scope="row">Practitioner ask-me-anything Zoom seminars</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td>Agreed with you</td></tr>
+        <tr><th scope="row">Assessment</th><td><b>Basic</b><br><span class="mute">Readiness score, where you stand, one fix</span></td><td class="y"><b>Deep</b><br><span class="mute" style="font-weight:400">CV and follow-up evidence, with practical fixes for your target role</span></td><td class="y"><b>Deep</b>, reviewed with you on a call</td><td class="y"><b>Deep</b>, plus a practitioner reads it with you</td></tr>
+        <tr><th scope="row">CV rewrites, model answers, 30-day plan</th><td class="n">Sample only</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Rechecks as your CV improves</th><td class="n">No</td><td class="y">Up to 12 in the year</td><td class="y">Up to 12 in the year</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Interview practice with feedback</th><td>One fixed question</td><td class="y">Every day</td><td class="y">Every day, plus a live mock</td><td class="y">Plus live mocks</td></tr>
+        <tr><th scope="row">Firm interview packs</th><td class="n">No</td><td class="y">17 firms and growing</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Numerical and commercial tests</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you on a call</td><td class="y">Reviewed with you</td></tr>
+        <tr><th scope="row">Community, trading game, Society Cup</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Calls with a practitioner</th><td class="n">No</td><td class="n">No</td><td class="y">2 calls</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Group sessions with practitioners</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td><b data-plus-price>£199</b>, paid once</td><td><b>£3,000</b> for the season</td></tr>
       </tbody>
     </table>
   </section>
@@ -204,7 +215,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <details><summary>Why do I take the basic assessment before paying?</summary><p>The deep assessment is built on it: your report, your CV rewrites and your interview questions all start from what you entered, so it comes first. It’s free.</p></details>
       <details data-payin3 hidden><summary>Can I spread the cost?</summary><p>Yes. At checkout you can choose Klarna and pay in 3 interest-free monthly payments of about £29.67. Klarna checks eligibility; missed payments can affect your credit.</p></details>
       <details><summary>Can I upgrade later?</summary><p>Yes, any time from My Desk. Everything you’ve done on Free carries over.</p></details>
-      <details><summary>Who are the practitioners?</summary><p>People who have interviewed and hired for banks and professional-services firms. Their preparation frameworks shape the scoring and feedback, and they answer members’ questions.</p></details>
+      <details><summary>Who are the practitioners?</summary><p>People with experience inside banking, asset management, audit and insurance. Their preparation frameworks shape the scoring and feedback, and they answer members’ questions.</p></details>
       <details><summary>What do you do with my details?</summary><p>We use them to run your desk and, if you tick the box, send deadline alerts. Community posts show your university and year, not your name.</p></details>
     </div>
   </section>
