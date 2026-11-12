@@ -1,0 +1,6 @@
+// Interactive layout preview: a transparent, fact-preserving rewrite of this sample line.
+const finding=document.getElementById('finding'),form=document.getElementById('rewriteForm'),result=document.getElementById('rewriteResult'),line=document.getElementById('rewrittenLine'),status=document.getElementById('rewriteStatus');
+document.getElementById('useExample').onclick=()=>{finding.value='The EV/EBITDA range was 9–11x, and the target traded at a discount to peers.';finding.focus();};
+form.onsubmit=event=>{event.preventDefault();const fact=finding.value.trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');if(fact.length<12){status.textContent='Add a little more about what your work showed.';return;}line.textContent='Built a trading comparables table for 12 listed UK software companies and presented findings to an associate. The comparison showed: '+fact.charAt(0).toLowerCase()+fact.slice(1)+'.';result.hidden=false;form.hidden=true;status.textContent='';};
+document.getElementById('editFinding').onclick=()=>{result.hidden=true;form.hidden=false;finding.focus();};
+document.getElementById('copyLine').onclick=async event=>{try{await navigator.clipboard.writeText(line.textContent);event.target.textContent='Copied ✓';}catch{event.target.textContent='Select the line above to copy';}};
