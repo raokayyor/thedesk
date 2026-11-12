@@ -47,6 +47,10 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .cmp .row span:nth-child(2){color:var(--mute)}.cmp .head span:nth-child(2){color:#cfd6db}
 .cmp .row span:first-child{font-weight:700}
 @media (max-width:600px){.cmp .row{grid-template-columns:1fr 1fr;row-gap:4px}.cmp .row span:first-child{grid-column:1/-1}.cmp .head span:first-child{display:none}}
+.lb{display:flex;flex-direction:column;gap:4px;margin-top:6px}.lb div{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:6px;padding:4px 6px;border-radius:6px}.lb b{color:var(--ok)}.lb .me{background:var(--warm);font-weight:700}
+.tickerline{margin-top:8px;font-size:12px;color:var(--mute);border-top:1px solid var(--soft);padding-top:6px}
+.cup{margin-top:8px}.cup div{display:flex;justify-content:space-between;gap:8px}.cup i{display:block;height:6px;border-radius:3px;background:var(--accent);margin-top:4px}
+.qa{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid var(--soft)}.qa span{color:var(--mute);font-size:12px}.qa.pract{flex-direction:row;align-items:center;gap:8px;font-weight:700;color:var(--ink)}.qa.pract span:last-child{color:var(--ink);font-size:12px}
 .trust{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:14px;color:#3b4652}
 .faces{display:flex}.faces span{width:34px;height:34px;border-radius:50%;background:var(--navy-soft);color:var(--navy);border:2px solid var(--paper);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.faces span:first-child{margin-left:0;background:var(--ink);color:#fff}
 /* sample result card */
@@ -152,6 +156,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
       <div class="row" role="row"><span role="rowheader">Your progress</span><span role="cell">Starts again each chat</span><span role="cell"><b>A readiness score you watch rise</b></span></div>
       <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Your firm’s questions on camera, with your CV beside them</b></span></div>
       <div class="row" role="row"><span role="rowheader">Assessment centres</span><span role="cell">Tips</span><span role="cell"><b>Rehearse the group exercise, case study and inbox, scored like the real thing</b></span></div>
+      <div class="row" role="row"><span role="rowheader">People preparing with you</span><span role="cell">Just you and a chat box</span><span role="cell"><b>Students at your university and society, a trading league and a Society Cup</b></span></div>
       <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
     </div>
     <p class="mute" style="margin:14px 0 0;font-size:14px">Our tools do the heavy lifting. The judgement comes from people who have sat on the other side of the table.</p>
@@ -208,6 +213,38 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
         <div><span>Reaching a decision</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
       </div>
     </div>
+  </section>
+
+  <section class="band" aria-labelledby="cn">
+    <div class="kicker">Free to join · the network</div>
+    <h2 id="cn">Don’t prepare alone.</h2>
+    <p class="lead">Join students at your university and society going for the same jobs. Ask questions, see what others were asked, and trade against them with £100,000 of virtual money. Free for everyone.</p>
+    <div class="three">
+      <article class="tile">
+        <h3>Trading game</h3>
+        <div class="ui" aria-hidden="true"><div class="k">This week · your university</div>
+          <div class="lb"><div><span>1</span><span>Wei · Investment Society</span><b>+6.2%</b></div><div><span>2</span><span>Oliver</span><b>+5.4%</b></div><div><span>3</span><span>Amara · Investment Society</span><b>+4.9%</b></div><div class="me"><span>12</span><span>You</span><b>+2.3%</b></div></div>
+          <div class="tickerline">Today’s news: Bank of England holds rates · Gold +1.8%</div></div>
+        <p>£100,000 of virtual money, real markets, and news that moves prices every day. Climb the league, and learn why markets move. Great material for interviews.</p>
+      </article>
+      <article class="tile">
+        <h3>Society Cup</h3>
+        <div class="ui" aria-hidden="true"><div class="k">Week 3 of 6</div>
+          <div class="cup"><div><span>Bristol Investment Society</span><b>+4.1%</b></div><i style="width:82%"></i></div>
+          <div class="cup"><div><span>Warwick Finance Society</span><b>+3.6%</b></div><i style="width:72%;background:var(--navy)"></i></div>
+          <div class="cup"><div><span>Durham Finance Society</span><b>+2.2%</b></div><i style="width:44%;background:var(--mute)"></i></div></div>
+        <p>Your society against theirs. The winners get a certificate they can put on their CV.</p>
+      </article>
+      <article class="tile">
+        <h3>Ask &amp; answer</h3>
+        <div class="ui" aria-hidden="true"><div class="qa"><b>Barclays HireVue next week: how long do you get to think?</b><span>Bristol, 2nd year · 7 answers</span></div>
+          <div class="qa pract"><span class="av sm">KR</span><span>Practitioner answer</span></div>
+          <div class="qa"><b>Rothschild first round: which deal did you use?</b><span>Bristol, 3rd year · 5 answers</span></div></div>
+        <p>Ask what you can’t ask a recruiter. Students answer, and our practitioners mark the best answers.</p>
+      </article>
+    </div>
+    <a class="cta" href="/my.html" style="max-width:320px;background:var(--ink)">Join the network free →</a>
+    <p class="mute" style="margin:8px 0 0;font-size:13px">Examples shown are illustrative. You post as your university and year, not your name.</p>
   </section>
 
   <section class="band" aria-labelledby="c4">
