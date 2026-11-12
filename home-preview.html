@@ -116,7 +116,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
 
     <aside class="sample" aria-label="Example result">
       <div class="kicker">What you get back · sample student</div>
-      <div style="font-size:14px;color:#cfd6db">Jamie · Bristol Economics · J.P. Morgan IBD</div>
+      <div style="font-size:14px;color:#cfd6db">Jamie · Bristol Economics · Investment banking</div>
       <div class="route" aria-label="Score 54, estimated 62 to 68 after three fixes"><span class="now">54</span><i aria-hidden="true"></i><span class="to">62–68</span></div>
       <div style="font-size:14px;color:#d5dce0">Fix 3 gaps and recheck: an estimated +8 to 14 points.</div>
       <div class="line bad"><b>Your CV now</b>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate</div>
@@ -155,7 +155,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
     <div class="kicker">With you at every round</div>
     <h2 id="c2">From the first application to the final round.</h2>
     <ol class="timeline">
-      <li><span class="n">1</span><div><h3>Applying</h3><p>Your free score for the firm you want. Then your weakest CV lines rewritten, and application answers for each firm built from your own experience.</p></div></li>
+      <li><span class="n">1</span><div><h3>Applying</h3><p>Your free readiness score. Then your weakest CV lines rewritten, and application answers for each firm built from your own experience.</p></div></li>
       <li><span class="n">2</span><div><h3>Online tests</h3><p>Numerical and commercial practice from 2,000+ questions, every answer explained. Your best scores raise your readiness.</p></div></li>
       <li><span class="n">3</span><div><h3>HireVue and first rounds</h3><p>Your firm’s questions on camera, timed like the real thing, with your CV highlighted and feedback on every answer.</p></div></li>
       <li><span class="n">4</span><div><h3>Assessment centre</h3><p>A group exercise against three AI candidates, a case study you present, a 30-minute inbox, and a printable crib sheet built from your CV.</p></div></li>
@@ -212,8 +212,8 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
 <script>
 (() => {
   const V = {
-    1: { h: 'Firms won’t tell you why you were rejected. We will, before you apply.', s: 'Your free score for the role you want, the line that’s holding you back, and how to fix it.' },
-    2: { h: 'One line on your CV is costing you interviews. Find it in 10 minutes.', s: 'Free, and marked against what your target role looks for, by a framework built with people who’ve hired in finance.' }
+    1: { h: 'Find out why you’d be rejected, before you apply.', s: 'Your free readiness score, the line on your CV that’s holding you back, and how to fix it.' },
+    2: { h: 'One line on your CV is costing you interviews. Find it in 10 minutes.', s: 'Your free readiness score, marked by a framework built with people who’ve hired in finance.' }
   };
   const v = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1;
   document.getElementById('h').textContent = V[v].h; document.getElementById('sub').textContent = V[v].s;
@@ -227,7 +227,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
     cta.href = href; cta2.href = href;
-    document.getElementById('for').textContent = r[2] ? 'Scored against what ' + r[2] + ' employers look for.' : 'We’ll help you find your route as you go.';
+    document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();
 </script>
