@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Every tool, round by round | The Desk</title>
+<meta name="description" content="Your free finance readiness score, the line on your CV holding you back, and how to fix it. Then a coach for every round, built by people who've hired for banks.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--ok:#15803d;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.12;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+.logo{font:600 24px "Fraunces",Georgia,serif;text-decoration:none}
+.top nav{display:flex;gap:16px;align-items:center;font-weight:600;font-size:15px}
+.ver{display:flex;gap:6px;justify-content:center;padding:8px;background:#11191e;color:#cfd6db;font-size:12px}
+.ver a{color:#fff;font-weight:700}.ver a[aria-current=true]{color:#ff8a52}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px;align-items:center;padding:18px 0 36px}
+.hero h1{font-size:clamp(34px,6.4vw,58px);letter-spacing:-.01em}
+.hero .sub{font-size:clamp(17px,2.4vw,20px);color:#3b4652;margin:14px 0 0;max-width:34ch}
+.firms{margin-top:20px}.firms .q{font-size:14px;font-weight:700;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:600 14px "DM Sans",Arial,sans-serif;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;min-height:44px;cursor:pointer;color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cta{display:flex;align-items:center;justify-content:center;width:100%;max-width:420px;margin-top:16px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:18px;border-radius:999px;min-height:56px;padding:0 22px}
+.cta:hover{filter:brightness(.95)}
+.small{font-size:13px;color:var(--mute);margin-top:8px}
+.voice{margin:20px 0 0;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;max-width:520px}
+.voice blockquote{margin:0;font:500 18px/1.4 "Fraunces",Georgia,serif}
+.voice figcaption{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13.5px;line-height:1.4}
+.av{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+.av.sm{width:30px;height:30px;font-size:11px;background:#ff8a52;color:var(--ink)}
+.note{display:flex;gap:10px;align-items:center;background:#fff7ed;color:#11191e;border-radius:12px;padding:10px 12px;font:500 14.5px/1.35 "Fraunces",Georgia,serif}
+.vs h2{max-width:24ch}
+.cmp{margin-top:22px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card);max-width:860px}
+.cmp .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:12px;padding:12px 16px;border-top:1px solid var(--soft);font-size:15px;align-items:start}
+.cmp .row:first-child{border-top:0}
+.cmp .head{background:var(--ink);color:#fff;font-weight:700;font-size:13px;letter-spacing:.04em}
+.cmp .row span:nth-child(2){color:var(--mute)}.cmp .head span:nth-child(2){color:#cfd6db}
+.cmp .row span:first-child{font-weight:700}
+@media (max-width:600px){.cmp .row{grid-template-columns:1fr 1fr;row-gap:4px}.cmp .row span:first-child{grid-column:1/-1}.cmp .head span:first-child{display:none}}
+.lb{display:flex;flex-direction:column;gap:4px;margin-top:6px}.lb div{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:6px;padding:4px 6px;border-radius:6px}.lb b{color:var(--ok)}.lb .me{background:var(--warm);font-weight:700}
+.tickerline{margin-top:8px;font-size:12px;color:var(--mute);border-top:1px solid var(--soft);padding-top:6px}
+.cup{margin-top:8px}.cup div{display:flex;justify-content:space-between;gap:8px}.cup i{display:block;height:6px;border-radius:3px;background:var(--accent);margin-top:4px}
+.qa{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid var(--soft)}.qa span{color:var(--mute);font-size:12px}.qa.pract{flex-direction:row;align-items:center;gap:8px;font-weight:700;color:var(--ink)}.qa.pract span:last-child{color:var(--ink);font-size:12px}
+.mine{font-size:13.5px;color:#cfd6db;border-top:1px solid rgba(255,255,255,.12);padding-top:10px}.mine b{color:#fff}
+.netcard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:center}
+.netlist{margin:10px 0 0;padding-left:18px;color:#3b4652}.netlist li{margin:5px 0}
+.netbtns{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+@media (max-width:860px){.netcard{grid-template-columns:1fr}}
+.trust{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:14px;color:#3b4652}
+.faces{display:flex}.faces span{width:34px;height:34px;border-radius:50%;background:var(--navy-soft);color:var(--navy);border:2px solid var(--paper);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.faces span:first-child{margin-left:0;background:var(--ink);color:#fff}
+/* sample result card */
+.sample{background:var(--ink);color:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 40px rgba(17,25,30,.15)}
+.sample .kicker{color:#ffb38f}
+.route{display:flex;align-items:center;gap:12px}.route .now{font:500 40px/1 "Fraunces",Georgia,serif;color:#cfd6db}.route .to{font:500 40px/1 "Fraunces",Georgia,serif;color:#86efac}
+.route i{flex:1;height:3px;background:linear-gradient(90deg,#5b666d,#86efac);border-radius:2px;position:relative}.route i:after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:#86efac}
+.line{border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
+.line.bad{background:rgba(255,255,255,.06);border-left:3px solid #f87171;color:#d5dce0}
+.line.good{background:rgba(134,239,172,.1);border-left:3px solid #86efac;color:#ecfdf3}
+.line b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.line.bad b{color:#fca5a5}.line.good b{color:#86efac}
+.gapsmini{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#d5dce0}.gapsmini div{display:flex;justify-content:space-between;gap:10px}.gapsmini span:last-child{color:#86efac;font-weight:700;white-space:nowrap}
+/* sections */
+section.band{padding:44px 0;border-top:1px solid var(--line)}
+section.band h2{font-size:clamp(28px,4.6vw,40px);max-width:22ch}
+.lead{font-size:18px;color:#3b4652;max-width:56ch;margin:12px 0 0}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.tile h3{font-size:21px}.tile p{margin:0;color:#3b4652;font-size:15px}
+.ui{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px;line-height:1.45}
+.ui .q{background:var(--ink);color:#fff;border-radius:8px;padding:10px;font-family:"Fraunces",Georgia,serif;font-size:15px}
+.ui mark{background:#ffe8d6;border-radius:3px;padding:0 3px}
+.ui .pts{display:flex;flex-direction:column;gap:6px;margin-top:8px}.ui .pts div{border:1px solid var(--soft);border-radius:8px;padding:7px 8px}
+.ui .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.ui ul{margin:4px 0 0;padding-left:16px}
+.ui .next{border:1px solid #fed7aa;background:var(--warm);border-radius:10px;padding:10px}
+.ui .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ui .btns span{background:var(--ink);color:#fff;border-radius:999px;padding:5px 10px;font-weight:700;font-size:12px}
+.timeline{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:0;max-width:760px}
+.timeline li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding-bottom:22px;position:relative}
+.timeline li:before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child:before{display:none}
+.timeline .n{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.timeline h3{font-size:21px;margin-top:8px}.timeline p{margin:4px 0 0;color:#3b4652}
+.quote{background:var(--navy);color:#fff;border-radius:22px;padding:26px;margin-top:22px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:center}
+.quote blockquote{margin:0;font:500 clamp(20px,3vw,26px)/1.35 "Fraunces",Georgia,serif}
+.quote .kicker{color:#bfd0e6}
+.meters{display:flex;flex-direction:column;gap:8px;font-size:14px;color:#dbe5f1}
+.meters div{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:8px;align-items:center}
+.meters .m{display:flex;gap:3px}.meters .m i{flex:1;height:7px;border-radius:3px;background:rgba(255,255,255,.15)}.meters .m i.f{background:#ff8a52}
+.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:22px}
+.person{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;font-size:14px}
+.person .av{width:46px;height:46px;border-radius:50%;background:var(--navy-soft);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:8px}
+.person b{display:block;font-size:15px}
+.price{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;margin-top:22px}
+.plan{background:var(--ink);color:#fff;border-radius:22px;padding:24px}
+.plan .big{font:500 56px/1 "Fraunces",Georgia,serif;color:#ff8a52}
+.plan ul{margin:12px 0 0;padding-left:18px;color:#d5dce0}.plan li{margin:4px 0}
+.side{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.final{text-align:center;padding:56px 0 80px}
+.final h2{margin:0 auto;max-width:20ch}
+.final .cta{margin:22px auto 0}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color:var(--mute)}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:22px;padding-top:6px}
+  .three,.price,.quote{grid-template-columns:1fr}
+  .people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .top nav .hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="logo" href="/">The Desk</a><nav><a class="hide-sm" href="/signup.html">Membership</a><a href="/my.html">Log in</a></nav></header>
+  <section style="padding:10px 0 6px"><div class="kicker">How it works</div><h1 style="font-size:clamp(32px,5.5vw,48px);max-width:20ch">Every tool, round by round. All built on your CV.</h1>
+  <p class="lead">From your first application to the final round. Every tool uses your own CV and the role you’re going for.</p>
+  <a class="cta" href="/assessment-start.html">Get my free score →</a></section>
+  <section class="band" aria-labelledby="c2">
+    <div class="kicker">With you at every round</div>
+    <h2 id="c2">From the first application to the final round.</h2>
+    <ol class="timeline">
+      <li><span class="n">1</span><div><h3>Applying</h3><p>Your free readiness score. Then your weakest CV lines rewritten, and application answers for each firm built from your own experience.</p></div></li>
+      <li><span class="n">2</span><div><h3>Online tests</h3><p>Numerical and commercial practice from 2,000+ questions, every answer explained. Your best scores raise your readiness.</p></div></li>
+      <li><span class="n">3</span><div><h3>HireVue and first rounds</h3><p>Your firm’s questions on camera, timed like the real thing, with your CV highlighted and feedback on every answer.</p></div></li>
+      <li><span class="n">4</span><div><h3>Assessment centre</h3><p>A group exercise against three practice candidates, a case study you present, a 30-minute inbox, and a printable crib sheet built from your CV.</p></div></li>
+      <li><span class="n">5</span><div><h3>Final round</h3><p>Firm packs, back-to-back interview practice, and a question answered by one of our practitioners.</p></div></li>
+    </ol>
+  </section>
+  <section class="band" aria-labelledby="c3">
+    <div class="kicker">Coached the way assessors mark</div>
+    <h2 id="c3">Honest, specific feedback. Not “great answer!”</h2>
+    <div class="quote">
+      <div><div class="kicker">Example feedback · group exercise</div>
+        <blockquote>“You proposed a time plan in the first minute: the strongest structural move in the group. But you didn’t bring Sam back to the brief, and you mixed up which option Dominic backed.”</blockquote></div>
+      <div class="meters" aria-label="Example scores out of 4">
+        <div><span>Structure and time</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
+        <div><span>Commercial reasoning</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+        <div><span>Bringing others in</span><span class="m"><i class="f"></i><i class="f"></i><i></i><i></i></span></div>
+        <div><span>Reaching a decision</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+      </div>
+    </div>
+  </section>
+  <section class="band" id="network" aria-labelledby="cn">
+    <div class="kicker">Free to join · the network</div>
+    <h2 id="cn">Don’t prepare alone.</h2>
+    <p class="lead">Join students at your university and society going for the same jobs. Ask questions, see what others were asked, and trade against them with £100,000 of virtual money. Free for everyone.</p>
+    <div class="three">
+      <article class="tile">
+        <h3>Trading game</h3>
+        <div class="ui" aria-hidden="true"><div class="k">This week · your university</div>
+          <div class="lb"><div><span>1</span><span>Wei · Investment Society</span><b>+6.2%</b></div><div><span>2</span><span>Oliver</span><b>+5.4%</b></div><div><span>3</span><span>Amara · Investment Society</span><b>+4.9%</b></div><div class="me"><span>12</span><span>You</span><b>+2.3%</b></div></div>
+          <div class="tickerline">Today’s news: Bank of England holds rates · Gold +1.8%</div></div>
+        <p>£100,000 of virtual money across real companies, currencies and commodities, with prices moved by the day’s news. Climb the league, and learn why markets move. Great material for interviews.</p>
+      </article>
+      <article class="tile">
+        <h3>Society Cup</h3>
+        <div class="ui" aria-hidden="true"><div class="k">Week 3 of 6</div>
+          <div class="cup"><div><span>Bristol Investment Society</span><b>+4.1%</b></div><i style="width:82%"></i></div>
+          <div class="cup"><div><span>Warwick Finance Society</span><b>+3.6%</b></div><i style="width:72%;background:var(--navy)"></i></div>
+          <div class="cup"><div><span>Durham Finance Society</span><b>+2.2%</b></div><i style="width:44%;background:var(--mute)"></i></div></div>
+        <p>Your society against theirs, on one league table. Bragging rights included.</p>
+      </article>
+      <article class="tile">
+        <h3>Ask &amp; answer</h3>
+        <div class="ui" aria-hidden="true"><div class="qa"><b>Barclays HireVue next week: how long do you get to think?</b><span>Bristol, 2nd year · 7 answers</span></div>
+          <div class="qa pract"><span class="av sm">KR</span><span>Practitioner answer</span></div>
+          <div class="qa"><b>Rothschild first round: which deal did you use?</b><span>Bristol, 3rd year · 5 answers</span></div></div>
+        <p>Ask what you can’t ask a recruiter. Students answer, and our practitioners mark the best answers.</p>
+      </article>
+    </div>
+    <a class="cta" href="/my.html" style="max-width:320px;background:var(--ink)">Join the network free →</a>
+    <p class="mute" style="margin:8px 0 0;font-size:13px">Examples shown are illustrative. You post as your university and year, not your name.</p>
+  </section>
+  <section class="final" aria-labelledby="tf"><h2 id="tf">Start with your free score.</h2><a class="cta" href="/assessment-start.html">Get my free score →</a><div class="small">10 minutes · free · no card</div></section>
+</div>
+<footer><div class="wrap">The Desk is independent and not endorsed by the firms named. Examples are illustrative. · <a href="/privacy.html">Privacy</a></div></footer>
+</body>
+</html>

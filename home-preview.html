@@ -51,6 +51,11 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .tickerline{margin-top:8px;font-size:12px;color:var(--mute);border-top:1px solid var(--soft);padding-top:6px}
 .cup{margin-top:8px}.cup div{display:flex;justify-content:space-between;gap:8px}.cup i{display:block;height:6px;border-radius:3px;background:var(--accent);margin-top:4px}
 .qa{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid var(--soft)}.qa span{color:var(--mute);font-size:12px}.qa.pract{flex-direction:row;align-items:center;gap:8px;font-weight:700;color:var(--ink)}.qa.pract span:last-child{color:var(--ink);font-size:12px}
+.mine{font-size:13.5px;color:#cfd6db;border-top:1px solid rgba(255,255,255,.12);padding-top:10px}.mine b{color:#fff}
+.netcard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:center}
+.netlist{margin:10px 0 0;padding-left:18px;color:#3b4652}.netlist li{margin:5px 0}
+.netbtns{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+@media (max-width:860px){.netcard{grid-template-columns:1fr}}
 .trust{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:14px;color:#3b4652}
 .faces{display:flex}.faces span{width:34px;height:34px;border-radius:50%;background:var(--navy-soft);color:var(--navy);border:2px solid var(--paper);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.faces span:first-child{margin-left:0;background:var(--ink);color:#fff}
 /* sample result card */
@@ -141,6 +146,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
       <div class="line bad"><b>Your CV now</b>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate</div>
       <div class="note"><span class="av sm">KR</span><span>“This is where I’d stop reading. You built it: tell me what it showed.”</span></div>
       <div class="line good"><b>Rewritten</b>Built a trading comparables table for 12 listed UK software companies, identifying an EV/EBITDA range of 9–11x that showed the target trading at a discount to peers; presented findings to an associate</div>
+      <div class="mine">Everything here comes from <b>your</b> CV: your score, your weak lines, your fixes.</div>
       <div class="gapsmini"><div><span>Show your own role in the team</span><span>+3–5</span></div><div><span>Percentage-point margin questions</span><span>+2–4</span></div></div>
     </aside>
   </section>
@@ -164,8 +170,8 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
 
   <section class="band" aria-labelledby="c1">
     <div class="kicker">Your personal preparation coach</div>
-    <h2 id="c1">Like having a finance coach who’s read your CV. For £89 a year.</h2>
-    <p class="lead">What a coach does in one session, every day of your recruiting year. It knows your CV, your firms and your next round, and tells you what to do next.</p>
+    <h2 id="c1">Your CV, applied to every question.</h2>
+    <p class="lead">Like a coach who’s read your CV, for £89 a year. Every score, fix and interview question is built from your own experience, for the role and firms you’re going for.</p>
     <div class="three">
       <article class="tile">
         <h3>It knows your CV</h3>
@@ -186,65 +192,18 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
         <p>Your deadlines and interview dates turn into the next three things to do, every time you open your desk.</p>
       </article>
     </div>
+    <a href="/tools.html" style="display:inline-block;margin-top:18px;font-weight:700">See every tool, round by round →</a>
   </section>
 
-  <section class="band" aria-labelledby="c2">
-    <div class="kicker">With you at every round</div>
-    <h2 id="c2">From the first application to the final round.</h2>
-    <ol class="timeline">
-      <li><span class="n">1</span><div><h3>Applying</h3><p>Your free readiness score. Then your weakest CV lines rewritten, and application answers for each firm built from your own experience.</p></div></li>
-      <li><span class="n">2</span><div><h3>Online tests</h3><p>Numerical and commercial practice from 2,000+ questions, every answer explained. Your best scores raise your readiness.</p></div></li>
-      <li><span class="n">3</span><div><h3>HireVue and first rounds</h3><p>Your firm’s questions on camera, timed like the real thing, with your CV highlighted and feedback on every answer.</p></div></li>
-      <li><span class="n">4</span><div><h3>Assessment centre</h3><p>A group exercise against three practice candidates, a case study you present, a 30-minute inbox, and a printable crib sheet built from your CV.</p></div></li>
-      <li><span class="n">5</span><div><h3>Final round</h3><p>Firm packs, back-to-back interview practice, and a question answered by one of our practitioners.</p></div></li>
-    </ol>
-  </section>
 
-  <section class="band" aria-labelledby="c3">
-    <div class="kicker">Coached the way assessors mark</div>
-    <h2 id="c3">Honest, specific feedback. Not “great answer!”</h2>
-    <div class="quote">
-      <div><div class="kicker">Example feedback · group exercise</div>
-        <blockquote>“You proposed a time plan in the first minute: the strongest structural move in the group. But you didn’t bring Sam back to the brief, and you mixed up which option Dominic backed.”</blockquote></div>
-      <div class="meters" aria-label="Example scores out of 4">
-        <div><span>Structure and time</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
-        <div><span>Commercial reasoning</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
-        <div><span>Bringing others in</span><span class="m"><i class="f"></i><i class="f"></i><i></i><i></i></span></div>
-        <div><span>Reaching a decision</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
-      </div>
-    </div>
-  </section>
 
   <section class="band" aria-labelledby="cn">
-    <div class="kicker">Free to join · the network</div>
-    <h2 id="cn">Don’t prepare alone.</h2>
-    <p class="lead">Join students at your university and society going for the same jobs. Ask questions, see what others were asked, and trade against them with £100,000 of virtual money. Free for everyone.</p>
-    <div class="three">
-      <article class="tile">
-        <h3>Trading game</h3>
-        <div class="ui" aria-hidden="true"><div class="k">This week · your university</div>
-          <div class="lb"><div><span>1</span><span>Wei · Investment Society</span><b>+6.2%</b></div><div><span>2</span><span>Oliver</span><b>+5.4%</b></div><div><span>3</span><span>Amara · Investment Society</span><b>+4.9%</b></div><div class="me"><span>12</span><span>You</span><b>+2.3%</b></div></div>
-          <div class="tickerline">Today’s news: Bank of England holds rates · Gold +1.8%</div></div>
-        <p>£100,000 of virtual money across real companies, currencies and commodities, with prices moved by the day’s news. Climb the league, and learn why markets move. Great material for interviews.</p>
-      </article>
-      <article class="tile">
-        <h3>Society Cup</h3>
-        <div class="ui" aria-hidden="true"><div class="k">Week 3 of 6</div>
-          <div class="cup"><div><span>Bristol Investment Society</span><b>+4.1%</b></div><i style="width:82%"></i></div>
-          <div class="cup"><div><span>Warwick Finance Society</span><b>+3.6%</b></div><i style="width:72%;background:var(--navy)"></i></div>
-          <div class="cup"><div><span>Durham Finance Society</span><b>+2.2%</b></div><i style="width:44%;background:var(--mute)"></i></div></div>
-        <p>Your society against theirs, on one league table. Bragging rights included.</p>
-      </article>
-      <article class="tile">
-        <h3>Ask &amp; answer</h3>
-        <div class="ui" aria-hidden="true"><div class="qa"><b>Barclays HireVue next week: how long do you get to think?</b><span>Bristol, 2nd year · 7 answers</span></div>
-          <div class="qa pract"><span class="av sm">KR</span><span>Practitioner answer</span></div>
-          <div class="qa"><b>Rothschild first round: which deal did you use?</b><span>Bristol, 3rd year · 5 answers</span></div></div>
-        <p>Ask what you can’t ask a recruiter. Students answer, and our practitioners mark the best answers.</p>
-      </article>
+    <div class="netcard">
+      <div><div class="kicker">Free to join · the network</div>
+        <h2 id="cn" style="font-size:clamp(26px,4vw,34px)">Don’t prepare alone.</h2>
+        <ul class="netlist"><li><b>Trading game:</b> £100,000 of virtual money and a league for your university</li><li><b>Society Cup:</b> your finance society against theirs</li><li><b>Ask &amp; answer:</b> what others were asked, with practitioner answers</li></ul></div>
+      <div class="netbtns"><a class="cta" href="/my.html" style="background:var(--ink);margin-top:0">Join free →</a><a href="/tools.html#network" style="font-weight:700">See the network →</a></div>
     </div>
-    <a class="cta" href="/my.html" style="max-width:320px;background:var(--ink)">Join the network free →</a>
-    <p class="mute" style="margin:8px 0 0;font-size:13px">Examples shown are illustrative. You post as your university and year, not your name.</p>
   </section>
 
   <section class="band" aria-labelledby="c4">
