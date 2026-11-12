@@ -99,8 +99,9 @@ section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch
 .panel .name{font:400 22px/1.15 "EB Garamond",Georgia,serif}
 .panel .role{font-size:14px;color:var(--ink-2);margin-top:3px}
 .logos{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;align-items:center}
-.logos .lg{width:72px;height:22px;display:flex;align-items:center;justify-content:flex-start}
-.logos .lg img{max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);opacity:.72}
+.logos{gap:10px 16px}
+.logos .lg{height:30px;display:flex;align-items:center}
+.logos .lg img{height:18px;width:auto;filter:grayscale(1);opacity:.72}
 .logos .tx{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.02em}
 /* pricing */
 .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
@@ -259,7 +260,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 let mod; try { mod = await import('/data/home-practitioners.mjs'); } catch (e) { mod = await import('/data/firm-logos.mjs'); }
 const { FIRM_LOGOS, PRACTITIONERS } = mod;
 const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
-const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
+// Optical sizing: every logo gets roughly the same visual area, whatever its shape.
+// BOOST corrects files with lots of built-in whitespace.
+const BOOST = { 'commerzbank.svg': 1.6, 'lancashire.png': 1.4, 'ey.svg': 1.35, 'barclays.svg': 1.15, 'socgen.svg': 1.1 };
+window.sizeLogo = img => { const r = img.naturalWidth / img.naturalHeight; if (!r) return; const k = BOOST[img.getAttribute('src').split('/').pop()] || 1; const h = Math.min(26, Math.max(13, Math.sqrt(1150 / r))) * k; img.style.height = h.toFixed(1) + 'px'; img.style.width = (h * r).toFixed(1) + 'px'; };
+const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}" onload="sizeLogo(this)"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
 const [lead, ...rest] = PRACTITIONERS;
 document.getElementById('people').innerHTML =
   `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +

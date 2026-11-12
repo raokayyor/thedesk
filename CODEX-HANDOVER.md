@@ -214,3 +214,4 @@ Rao has approved this direction. Replace the live index.html with home-c.html. I
 - **Pricing:** same three tiers. On phones, Member shows first.
 - **Photo:** uses `/assets/kayyor-rao.jpg` and falls back to `/assets/people/kayyor-rao.jpg`.
 - Same fonts and button style later for signup.html, tools.html and My Desk, so the site feels like one place.
+- **Logo sizing fix (after reviewing preview thedesk-3ralh6er8):** a fixed 72×22 box still made Commerzbank, Lancashire and EY tiny (their files have a lot of built-in whitespace or a very wide shape). home-c.html now sizes each logo to the same visual area (`sizeLogo`, height = √(1150/aspect), clamped 13–26px) with per-file corrections in `BOOST`. Take the updated home-c.html.
