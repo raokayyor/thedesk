@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Desk | Your finance career preparation</title>
+<meta name="description" content="140 applications for every graduate job. Find out why you'd be rejected, and fix it before you apply. A free readiness score from people who've spent their careers in finance.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Version C: calm, members'-club feel. Garamond headlines, Figtree text, ink buttons, orange only for scores and small accents. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink)}
+h1,h2,h3,.serif{font-family:"EB Garamond",Georgia,serif;font-weight:400;margin:0;letter-spacing:-.01em}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.kicker{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.mute{color:var(--mute)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font:500 28px "EB Garamond",Georgia,serif;text-decoration:none;letter-spacing:-.01em}
+.top nav{display:flex;gap:24px;align-items:center;font-size:15px;font-weight:500}
+.top nav a{text-decoration:none}.top nav a:hover{text-decoration:underline}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start;padding:20px 0 56px}
+.hero h1{font-size:clamp(40px,5vw,56px);line-height:1.03;max-width:16ch}
+.right{display:flex;flex-direction:column;gap:16px}
+.stat{margin:18px 0 0;font-size:17px;color:var(--ink-2);max-width:40ch}
+.stat b{color:var(--ink);font-weight:700}
+.stat sup a{text-decoration:none;color:var(--mute);font-size:11px}
+.redpen{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;max-width:520px}
+.redpen .cv{font-size:15px;color:var(--ink-2);line-height:1.55}
+.redpen .cv s{text-decoration:none;background:linear-gradient(transparent 62%,#f3d6cb 62%)}
+.redpen .say{display:flex;gap:12px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--soft)}
+.redpen .say img{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:none}
+.redpen .say q{font:italic 400 20px/1.3 "EB Garamond",Georgia,serif;quotes:"“" "”"}
+.redpen .who{font-size:12.5px;color:var(--mute);margin-top:2px}
+.firms{margin-top:22px}.firms .q{font-size:14px;font-weight:600;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:500 14px Figtree,Arial,sans-serif;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:9px 13px;min-height:42px;cursor:pointer;color:var(--ink)}
+.chips button:hover{border-color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cta{display:flex;align-items:center;justify-content:center;width:100%;max-width:420px;margin-top:18px;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:16.5px;letter-spacing:.01em;border-radius:8px;min-height:56px;padding:0 22px}
+.cta:hover{background:#000}
+.small{font-size:13.5px;color:var(--mute);margin-top:9px}
+.for{font-size:14px;color:var(--ink);font-weight:600;margin-top:9px;min-height:1px}
+/* sample card */
+.sample{background:var(--ink);color:#fff;border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.sample .kicker{color:#aab4b9}
+.sample .who{font-size:14px;color:#cdd5d9}
+.route{display:flex;align-items:center;gap:14px}
+.route .now,.route .to{font:400 52px/1 "EB Garamond",Georgia,serif}
+.route .now{color:#cdd5d9}.route .to{color:#e8a283}
+.route i{flex:1;height:1px;background:#6b777c;position:relative}.route i:after{content:"";position:absolute;right:-1px;top:-4px;border:4.5px solid transparent;border-left-color:#6b777c}
+.sample .est{font-size:14px;color:#cdd5d9}
+.line{border-radius:8px;padding:12px 14px;font-size:14.5px;line-height:1.5}
+.line b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;font-weight:600}
+.line.good{background:rgba(255,255,255,.07);color:#f1f4f5}.line.good b{color:#9fd3b1}
+.gapsmini{display:flex;flex-direction:column;gap:7px;font-size:14px;color:#cdd5d9;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
+.gapsmini div{display:flex;justify-content:space-between;gap:10px}.gapsmini span:last-child{color:#e8a283;font-weight:600;white-space:nowrap}
+.sample .mine{font-size:13px;color:#aab4b9}
+/* sections */
+section.band{padding:64px 0;border-top:1px solid var(--line)}
+section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch}
+.lead{font-size:17.5px;color:var(--ink-2);max-width:58ch;margin:16px 0 0}
+.evidence{display:flex;gap:16px;align-items:baseline;margin:22px 0 0;max-width:640px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.evidence .n{font:400 46px/1 "EB Garamond",Georgia,serif;color:var(--accent);flex:none}
+.evidence p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.cmp{margin-top:26px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);max-width:860px}
+.cmp .row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.3fr);gap:20px;padding:16px 20px;border-top:1px solid var(--soft);font-size:15px;align-items:start}
+.cmp .row:first-child{border-top:0}
+.cmp .head{background:var(--soft);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.cmp .row span:nth-child(2){color:var(--mute)}.cmp .row span:first-child{font-weight:600}
+.after{margin:16px 0 0;font-size:15px;color:var(--mute)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.tile h3{font-size:25px}.tile p{margin:0;color:var(--ink-2);font-size:15px}
+.ui{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13.5px;line-height:1.5}
+.ui .q{background:var(--ink);color:#fff;border-radius:6px;padding:10px 12px;font:italic 400 17px/1.35 "EB Garamond",Georgia,serif}
+.ui mark{background:#f6e2d7;border-radius:2px;padding:0 2px}
+.ui .pts{display:flex;flex-direction:column;gap:6px;margin-top:8px}.ui .pts div{border:1px solid var(--soft);border-radius:6px;padding:7px 9px}
+.ui .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.ui ul{margin:4px 0 0;padding-left:16px}
+.ui .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ui .btns span{background:var(--ink);color:#fff;border-radius:6px;padding:5px 9px;font-weight:600;font-size:12px}
+.more{display:inline-block;margin-top:20px;font-weight:600}
+.netcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:center}
+.netlist{margin:12px 0 0;padding-left:18px;color:var(--ink-2)}.netlist li{margin:6px 0}
+.netbtns{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.ghost{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--ink);border-radius:8px;min-height:50px;padding:0 20px;font-weight:600;text-decoration:none}
+.ghost:hover{background:var(--ink);color:#fff}
+/* people */
+.lead-person{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:center;margin-top:30px;max-width:760px}
+.lead-person img{width:120px;height:120px;border-radius:50%;object-fit:cover}
+.lead-person .name{font:400 30px/1.1 "EB Garamond",Georgia,serif}
+.lead-person .role{color:var(--ink-2);margin-top:4px}
+.panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:30px;border-top:1px solid var(--line)}
+.panel>div{padding:18px 18px 18px 0;border-bottom:1px solid var(--line)}
+.panel .name{font:400 22px/1.15 "EB Garamond",Georgia,serif}
+.panel .role{font-size:14px;color:var(--ink-2);margin-top:3px}
+.logos{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;align-items:center}
+.logos .lg{width:72px;height:22px;display:flex;align-items:center;justify-content:flex-start}
+.logos .lg img{max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);opacity:.72}
+.logos .tx{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.02em}
+/* pricing */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
+.tier{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.tier.main{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tier .nm{font-weight:600;font-size:17px}
+.tier .big{font:400 50px/1 "EB Garamond",Georgia,serif}
+.tier.main .per{color:#cdd5d9}
+.tier ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:7px;font-size:15px;line-height:1.5}
+.tier .go{margin-top:auto;padding-top:14px;font-weight:600}
+.tier.main .cta{background:#fff;color:var(--ink);max-width:none}
+.tier.main .cta:hover{background:#ebe6de}
+.fine{font-size:13.5px;color:var(--mute);margin:14px 0 0}
+.final{text-align:center;padding:72px 0 88px;border-top:1px solid var(--line)}
+.final h2{margin:0 auto;max-width:18ch;font-size:clamp(34px,5vw,50px);line-height:1.06}
+.final .cta{margin:26px auto 0}
+footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color:var(--mute);line-height:1.6}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:28px;padding-top:8px}
+  .three,.tiers,.netcard{grid-template-columns:1fr}
+  .panel{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  header.top{padding:16px 0}.logo{font-size:25px}.top nav{gap:16px;font-size:14px}
+  .hero h1{font-size:38px}
+  .stat{font-size:16px}
+  .redpen .say q{font-size:18px}
+  section.band{padding:48px 0}
+  .lead{font-size:16.5px}
+  .cmp .row{grid-template-columns:1fr 1fr;gap:4px 14px;padding:14px 16px}.cmp .row span:first-child{grid-column:1/-1}.cmp .head span:first-child{display:none}
+  .lead-person{grid-template-columns:84px minmax(0,1fr);gap:16px}.lead-person img{width:84px;height:84px}.lead-person .name{font-size:25px}
+  .panel{grid-template-columns:1fr}
+  .tier.main{order:-1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/signin.html">Log in</a></nav></header>
+
+  <section class="hero" aria-labelledby="h">
+    <div>
+      <div class="kicker">Built on experience inside finance</div>
+      <h1 id="h" style="margin-top:14px">Find out why you’d be rejected, and let’s fix it before you apply.</h1>
+      <p class="stat"><b>140 applications for every graduate job</b>, the most ever recorded.<sup><a href="#src">1</a></sup> See your CV the way someone from inside the industry reads it, and fix it while you still can.</p>
+
+
+      <div class="firms">
+        <div class="q" id="fq">What are you aiming for?</div>
+        <div class="chips" role="group" aria-labelledby="fq" id="chips"></div>
+      </div>
+      <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
+      <div class="for" id="for" aria-live="polite"></div>
+      <div class="small">10 minutes · free · no card · <a href="/my.html">or look around first</a></div>
+    </div>
+
+    <div class="right">
+        <figure class="redpen" style="margin:0">
+        <div class="cv"><span class="mute" style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">A line from a student’s CV</span><br><s>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate.</s></div>
+        <figcaption class="say"><img src="/assets/kayyor-rao.jpg" alt="Kayyor Rao" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><q>This is where I’d stop reading. You built it: tell me what it showed.</q><div class="who">Kayyor Rao, MD · 20+ years in banking at UBS, Commerzbank and BGC</div></div></figcaption>
+      </figure>
+      <aside class="sample" aria-label="Example result" id="sample"></aside>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="c0">
+    <div class="kicker">Why not just ask ChatGPT?</div>
+    <h2 id="c0" style="margin-top:12px">Don’t let a chatbot decide your future.</h2>
+    <p class="lead">ChatGPT can make your CV sound good. It has never worked a day in finance, so it doesn’t know what an MD is listening for, which lines get a CV put down, or how an assessor scores you.</p>
+    <div class="evidence"><span class="n">48%</span><p>of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
+    <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
+      <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
+      <div class="row" role="row"><span role="rowheader">Who decides what “good” is</span><span role="cell">The model</span><span role="cell"><b>People who’ve spent their careers in finance</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Your CV</span><span role="cell">Rewrites what you paste in</span><span role="cell"><b>Scores it, finds the weak lines, then fixes them</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Your firm’s questions on camera, with your CV beside them</b></span></div>
+      <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
+    </div>
+    <p class="after">Our tools do the heavy lifting. The judgement comes from people who’ve spent their careers in finance.</p>
+  </section>
+
+  <section class="band" aria-labelledby="c1">
+    <div class="kicker">Your personal preparation coach</div>
+    <h2 id="c1" style="margin-top:12px">Your CV, applied to every question.</h2>
+    <p class="lead">Like a coach who’s read your CV, for £89 a year. Every score, fix and interview question is built from your own experience, for the role and firms you’re going for.</p>
+    <div class="three">
+      <article class="tile">
+        <h3>It knows your CV</h3>
+        <div class="ui" aria-hidden="true"><div class="q">“Tell me about a time you balanced competing priorities.”</div>
+          <div class="k" style="margin-top:9px">Your CV for this question</div>
+          <div class="pts"><div>Maintained <mark>12 hours per week</mark> of customer-facing work alongside a <mark>full university timetable</mark></div><div>Applied a recurring-revenue screen to <mark>12</mark> UK software companies</div></div></div>
+        <p>When the question plays, the best points from your own CV appear underneath, with the words the interviewer listens for highlighted.</p>
+      </article>
+      <article class="tile">
+        <h3>It knows your firms</h3>
+        <div class="ui" aria-hidden="true"><div class="k">Your Rothschild &amp; Co interview</div><b>What recent candidates reported</b>
+          <ul><li>One-to-one first round: CV, motivation, technicals</li><li>Valuation and the equity bridge</li><li>Market news at the assessment centre</li></ul></div>
+        <p>17 firm packs and growing: what each firm’s interviews test, and questions recent candidates were actually asked.</p>
+      </article>
+      <article class="tile">
+        <h3>It knows what’s next</h3>
+        <div class="ui" aria-hidden="true"><div class="k">Interview in 2 days</div><b style="font-size:15px">Rothschild &amp; Co · Global Advisory</b><div class="btns"><span>Practise Rothschild questions</span><span>My crib sheet</span><span>Group exercise</span></div></div>
+        <p>Your deadlines and interview dates turn into the next three things to do, every time you open your desk.</p>
+      </article>
+    </div>
+    <a class="more" href="/tools.html">See every tool, round by round →</a>
+  </section>
+
+  <section class="band" aria-labelledby="cn">
+    <div class="netcard">
+      <div><div class="kicker">Free to join · the network</div>
+        <h2 id="cn" style="margin-top:12px;font-size:clamp(30px,4vw,40px)">Don’t prepare alone.</h2>
+        <ul class="netlist"><li><b>Trading game:</b> £100,000 of virtual money and a league for your university</li><li><b>Society Cup:</b> your finance society against theirs</li><li><b>Ask &amp; answer:</b> what others were asked, with practitioner answers</li></ul></div>
+      <div class="netbtns"><a class="ghost" href="/my.html">Join free →</a><a href="/tools.html#network" style="font-weight:600">See the network →</a></div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="c4">
+    <div class="kicker">The people behind it</div>
+    <h2 id="c4" style="margin-top:12px">Built and checked by people who’ve done the job.</h2>
+    <p class="lead">Our practitioners built the framework behind every score, firm pack and piece of feedback, and they answer members’ questions. Want a person in the room too? Add calls with them.</p>
+    <div id="people"></div>
+  </section>
+
+  <section class="band" aria-labelledby="c5">
+    <div class="kicker">Membership</div>
+    <h2 id="c5" style="margin-top:12px">A whole recruiting year for less than one CV rewrite.</h2>
+    <p class="lead">A professional CV rewrite alone typically costs around £99, and an hour with a paid interview coach £75–£300.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">3</a></sup> Membership covers your CV, applications, tests, interviews and assessment centres for 12 months.</p>
+    <div class="tiers">
+      <div class="tier main"><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div>
+        <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
+        <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
+      <div class="tier"><div class="nm">Member + Practitioner</div><div class="big" data-plus-price>£199</div><div class="mute">a year · paid once</div>
+        <ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul>
+        <a class="go" href="/signup.html?plan=plus">See how it works →</a></div>
+      <div class="tier"><div class="nm">1:1 support</div><div class="big">£3,000</div><div class="mute">for your recruiting season</div>
+        <ul><li>Everything in Member</li><li>A named practitioner from application to offer</li><li>Live mock interviews with feedback</li><li>Every CV and application reviewed before you send it</li></ul>
+        <a class="go" href="/signup.html?plan=coaching">Ask about 1:1 →</a></div>
+    </div>
+    <p class="fine">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Feedback in membership comes from our tools, built on our practitioners’ framework.</p>
+  </section>
+
+  <section class="final" aria-labelledby="c6">
+    <h2 id="c6">Find out what the recruiter will see. Then fix it.</h2>
+    <a class="cta" href="/assessment-start.html" id="cta2">Get my free score →</a>
+    <div class="small">10 minutes · free · no card</div>
+  </section>
+</div>
+<footer><div class="wrap">
+  <p style="margin:0 0 8px">The Desk is independent. Firm names and logos show where our practitioners previously worked, not endorsements. Scores are preparation guidance, not hiring predictions. Sample students are illustrative. · <a href="/site-privacy.html">Privacy</a> · <a href="/how-we-score.html">How we score</a></p>
+  <p id="src" style="margin:0">Sources: 1, 2 · Institute of Student Employers, Student Recruitment Survey 2025. 3 · Published prices from TopCV (CV writing) and finance interview-coaching services, 2025–26.</p>
+</div></footer>
+
+<script type="module">
+// Practitioners: live site keeps them in /data/home-practitioners.mjs; fall back to /data/firm-logos.mjs on the preview branch.
+let mod; try { mod = await import('/data/home-practitioners.mjs'); } catch (e) { mod = await import('/data/firm-logos.mjs'); }
+const { FIRM_LOGOS, PRACTITIONERS } = mod;
+const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
+const [lead, ...rest] = PRACTITIONERS;
+document.getElementById('people').innerHTML =
+  `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +
+  `<div class="panel">${rest.map(p => `<div><div class="name">${esc(p.name)}</div><div class="role">${esc(p.area)}</div>${logos(p)}</div>`).join('')}</div>`;
+</script>
+<script>
+(() => {
+  // Illustrative sample students, one per route. The sample card changes with the route the student picks.
+  const SAMPLES = {
+    ib: { who: 'Jamie · Bristol Economics · Investment banking', now: 54, to: '62–68', est: '+8 to 14', fix: 'Built a trading comparables table for 12 listed UK software companies, identifying an EV/EBITDA range of 9–11x that showed the target trading at a discount to peers; presented findings to an associate', gaps: [['Show your own role in the team', '+3–5'], ['Percentage-point margin questions', '+2–4']] },
+    markets: { who: 'Priya · Warwick Maths · Sales & trading', now: 51, to: '58–64', est: '+7 to 13', fix: 'Ran a paper-trading portfolio for six weeks, sizing each position to a 2% risk limit; finished up 4.1% against a FTSE 100 rise of 1.3% and logged the reason for every trade', gaps: [['Explain a market move in two sentences', '+3–5'], ['Mental maths under time pressure', '+2–4']] },
+    am: { who: 'Tom · Durham PPE · Asset management', now: 56, to: '63–68', est: '+7 to 12', fix: 'Wrote a 1,500-word buy recommendation on a UK mid-cap for the investment society, built on a three-scenario DCF; the society added it to its model portfolio', gaps: [['A stock pitch with a clear view', '+3–5'], ['Why this firm’s investment style', '+2–3']] },
+    big4: { who: 'Aisha · Leeds Accounting · Big Four audit', now: 58, to: '64–69', est: '+6 to 11', fix: 'Reconciled 400 supplier invoices against purchase orders during a summer finance placement, finding £6,200 of duplicate payments that were recovered', gaps: [['Evidence of attention to detail', '+3–4'], ['Why audit, not advisory', '+2–3']] }
+  };
+  const MAP = { ib: 'ib', pe: 'ib', corporate: 'ib', markets: 'markets', am: 'am', insurance: 'big4', big4: 'big4', unsure: 'ib' };
+  const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  const card = document.getElementById('sample');
+  function sample(k) {
+    const s = SAMPLES[MAP[k] || 'ib'];
+    card.innerHTML = `<div class="kicker">What you get back · sample student</div><div class="who">${esc(s.who)}</div>
+      <div class="route" aria-label="Score ${s.now}, estimated ${s.to} after three fixes"><span class="now">${s.now}</span><i aria-hidden="true"></i><span class="to">${s.to}</span></div>
+      <div class="est">Fix 3 gaps and recheck: an estimated ${s.est} points.</div>
+      <div class="line good"><b>Your line, rewritten</b>${esc(s.fix)}</div>
+      <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
+      <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>`;
+  }
+  sample('ib');
+  const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
+  const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
+  chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
+  chips.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    const r = ROUTES.find(x => x[0] === b.dataset.k);
+    const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
+    cta.href = href; cta2.href = href; sample(r[0]);
+    document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
+  });
+})();
+</script>
+</body>
+</html>

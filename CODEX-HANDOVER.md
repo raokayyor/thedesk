@@ -203,3 +203,14 @@ Kayyor's 20 years are in banking, not in hiring. Don't claim the team "has hired
   - No Stripe product yet: `plan=plus` goes through the existing `coaching-interest` form (desk-home.js now stores `type: 'plus'`), and we email a payment link by hand. Later: add a Stripe price, plus "upgrade by paying the difference" (£110) from My Desk for existing members.
 - **People**: new `data/firm-logos.mjs` holds `PRACTITIONERS` + `FIRM_LOGOS`; the homepage renders the people grid from it. Kayyor's photo is at `assets/people/kayyor-rao.jpg`; the others show initials until their photos arrive (add `photo:` to their entry).
   - Logos: every value is `null` for now, so firm names show as text chips. To show a logo, drop an official file in `assets/logos/` and set the path. Use each firm's own brand/press-kit file, and keep the footer line "Firm names and logos show where our practitioners previously worked… not endorsed".
+
+## Homepage version C: calmer look + stronger hook (12 Nov) → `home-c.html`
+Rao has approved this direction. Replace the live index.html with home-c.html. It's self-contained: it does NOT load public-polish.css or mobile-home.css, so drop those from the homepage only.
+- **Look:** EB Garamond for headlines and Figtree for text (Google Fonts). Dark ink buttons with 8px corners instead of orange pills, background #f4f1ec, small grey uppercase labels. Orange (#c4562a) is used only for score numbers and small accents.
+- **Hero:** headline unchanged. New line under it: "140 applications for every graduate job, the most ever recorded" (ISE Student Recruitment Survey 2025, footnoted). The "This is where I'd stop reading" red-pen card with Kayyor's photo now sits top right, above the sample card, so it's the first thing people see. The button stays above the fold on desktop and phone.
+- **Sample card changes with the route chosen:** IB/PE/corporate → Jamie, markets → Priya, AM → Tom, Big Four/insurance → Aisha. All illustrative, and the footer says so.
+- **ChatGPT section:** heading "Don't let a chatbot decide your future." Adds the ISE stat that 48% of employers think candidates' AI use misrepresents their abilities. Table cut to 4 rows. "Sat on the other side of the table" removed.
+- **People:** Kayyor large with photo; the other four as a text row with no initials circles. Logos sit in a fixed 72×22 box, greyscale at 72% opacity, so they all look the same size. It reads `/data/home-practitioners.mjs` (live) and falls back to `/data/firm-logos.mjs`.
+- **Pricing:** same three tiers. On phones, Member shows first.
+- **Photo:** uses `/assets/kayyor-rao.jpg` and falls back to `/assets/people/kayyor-rao.jpg`.
+- Same fonts and button style later for signup.html, tools.html and My Desk, so the site feels like one place.
