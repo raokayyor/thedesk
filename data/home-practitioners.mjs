@@ -6,7 +6,7 @@ export const FIRM_LOGOS = {
   // The Barclays and JP Morgan images in bank-logos.mjs are small thumbnails that look worse than text here,
   // so every firm shows as its name until proper logo files are added (e.g. '/assets/logos/ubs.svg').
   'Barclays': '/assets/practitioner-firms/barclays.svg', 'J.P. Morgan': '/assets/practitioner-firms/jpm-im.svg',
-  'UBS': '/assets/practitioner-firms/ubs.svg', 'Commerzbank': '/assets/practitioner-firms/commerzbank.svg', 'BGC': '/assets/practitioner-firms/bgc.png', 'Société Générale': '/assets/practitioner-firms/socgen.svg',
+  'UBS': '/assets/practitioner-firms/ubs.svg', 'Commerzbank': '/assets/practitioner-firms/commerzbank.svg', 'BGC': '/assets/practitioner-firms/bgc-mark.svg', 'Société Générale': '/assets/practitioner-firms/socgen.svg',
   'Knight': '/assets/practitioner-firms/knight.svg', 'Stifel': '/assets/practitioner-firms/stifel.svg', 'EY': '/assets/practitioner-firms/ey.svg', 'Lancashire Insurance': '/assets/practitioner-firms/lancashire.png'
 };
 export const PRACTITIONERS = [

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap');
+body{-webkit-font-smoothing:antialiased;color:#202a2d}
+h1,h2,h3,.hero h1,.logo,.voice blockquote,.quote blockquote{font-family:'Lora',Georgia,serif;font-weight:400;letter-spacing:-.025em}
+.hero h1{font-size:clamp(34px,4.7vw,53px);line-height:1.18;max-width:19ch}
+h2{line-height:1.22!important}h3{line-height:1.3!important}
+body .logo{font-family:'Lora',Georgia,serif;font-size:28px;font-weight:600;letter-spacing:-1.3px;white-space:nowrap;position:relative;padding-bottom:5px}
+body .logo:after{content:'';position:absolute;left:0;bottom:0;width:26px;height:2px;background:#df6b39;border-radius:2px}
+header.top{padding:22px 0;gap:20px}header.top nav{margin-left:auto;font-weight:500;gap:22px}
+.kicker{font-size:10px;letter-spacing:.12em;font-weight:600;color:#a94c2b}
+.hero .sub,.lead{line-height:1.65;color:#586269}.hero .sub{font-size:18px}.lead{font-size:17px}
+section.band{padding:52px 0}.cta{font-size:16px;font-weight:600}.chips button{font-weight:500}
+.cmp{margin-top:24px;width:100%;max-width:none;background:#fffdfa;border-color:#e1dcd5}
+.cmp .row{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.3fr);padding:20px 22px;gap:24px;align-items:start;line-height:1.6;font-size:14px}
+.cmp .row span:first-child{font-weight:600}.cmp .head{padding-top:16px;padding-bottom:16px}.cmp .row:not(.head):nth-child(odd){background:#f3f0e9}
+.cmp .row span{min-width:0}.person{padding:18px 14px}.person .logos{min-height:48px;align-content:flex-start;gap:10px 8px}
+.logos img{height:20px!important;width:auto!important;max-width:90px!important;object-fit:contain;padding:0!important;border-radius:0;background:transparent!important}
+.tier{border-radius:18px}.tier ul{line-height:1.65}.hero .sample{box-shadow:0 10px 28px rgba(17,25,30,.06)}
+@media(max-width:600px){
+ header.top{padding:18px 0}.top nav{gap:18px!important}.logo{font-size:26px!important}
+ .hero h1{font-size:35px;line-height:1.2;letter-spacing:-.035em}.hero .sub{font-size:16px;line-height:1.65}
+ .cmp .row{grid-template-columns:1fr 1fr;gap:12px 18px;padding:18px;font-size:14px}.cmp .row span:first-child{grid-column:1/-1;padding-bottom:3px}.cmp .head span:first-child{display:none}.cmp .head{font-size:12px}
+ section.band{padding:36px 0}.lead{font-size:16px}.person{padding:18px}.kicker{letter-spacing:.1em}.hero .kicker{font-size:9px}
+}
+@media(max-width:600px){header.top .hide-sm{display:inline!important}.top nav{gap:14px!important;font-size:12px!important}}
