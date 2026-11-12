@@ -326,7 +326,7 @@ export default async function handler(req, res) {
       const email = clean(b.email, 120).toLowerCase();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Enter a valid email address.' });
       if (!await A.useQuota('coaching-interest:' + p, 3)) return res.status(429).json({ error: 'We already have your request. We’ll be in touch.' });
-      await A.saveItem('leads:coaching', 'coaching-lead', { type: b.type === 'society' ? 'society' : 'coaching', name: clean(b.name, 80), email, university: clean(b.university, 80), note: clean(b.note, 1000), from: p, at: new Date().toISOString() });
+      await A.saveItem('leads:coaching', 'coaching-lead', { type: ['society', 'plus'].includes(b.type) ? b.type : 'coaching', name: clean(b.name, 80), email, university: clean(b.university, 80), note: clean(b.note, 1000), from: p, at: new Date().toISOString() });
       return res.json({ success: true });
     }
     if (b.action === 'app-save') {

@@ -196,3 +196,10 @@ Kayyor's 20 years are in banking, not in hiring. Don't claim the team "has hired
 - Live pages to change too:
   - index.html + homepage-translations.json `expertise`: "Built on experience from the hiring side of the table." → "Built on 20 years' experience inside finance."
   - mentor.html Kayyor bio: drop "Has hired, assessed and mentored candidates…" and check the firm list (says Barclays; elsewhere UBS · Commerzbank · BGC · Knight · Stifel).
+
+## Pricing: three tiers + practitioner photos/logos (12 Nov)
+- **Tiers** (signup.html, home-preview.html price section): Free · Member £89 · **Member + Practitioner £199** (two 30–45 min calls: CV/applications review, then a mock interview or AC prep, written notes) · 1:1 support £3,000. The old £399 "Membership + Coaching" is gone everywhere.
+  - £199 is a placeholder until practitioner call pay is agreed. Every place it appears has `data-plus-price`, so it's one find-and-replace.
+  - No Stripe product yet: `plan=plus` goes through the existing `coaching-interest` form (desk-home.js now stores `type: 'plus'`), and we email a payment link by hand. Later: add a Stripe price, plus "upgrade by paying the difference" (£110) from My Desk for existing members.
+- **People**: new `data/firm-logos.mjs` holds `PRACTITIONERS` + `FIRM_LOGOS`; the homepage renders the people grid from it. Kayyor's photo is at `assets/people/kayyor-rao.jpg`; the others show initials until their photos arrive (add `photo:` to their entry).
+  - Logos: every value is `null` for now, so firm names show as text chips. To show a logo, drop an official file in `assets/logos/` and set the path. Use each firm's own brand/press-kit file, and keep the footer line "Firm names and logos show where our practitioners previously worked… not endorsed".

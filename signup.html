@@ -19,7 +19,9 @@ h1{font-size:clamp(30px,5vw,46px)}h2{font-size:26px}h3{font-size:22px}
 .mute{color:var(--mute);font-size:14px}
 .hero{display:flex;flex-direction:column;gap:10px;max-width:760px}
 .hero p{margin:0;font-size:17px;color:#3b4652}
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:1100px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.faces img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--navy-soft);margin-left:-8px}
 .plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;position:relative}
 .plan.best{background:var(--ink);color:#fff;border-color:var(--ink)}
 .plan.best .mute,.plan.best li{color:#d5dce0}
@@ -109,13 +111,27 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     </article>
 
     <article class="plan">
-      <div><h3>1:1 with a practitioner</h3><div class="mute">For your most important applications</div></div>
-      <div class="price"><b style="font-size:30px">Talk to us</b></div>
+      <div><h3>Member + Practitioner</h3><div class="mute">The tools, plus two calls with a person</div></div>
+      <div class="price"><b data-plus-price>£199</b><span class="mute">a year · paid once</span></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Two calls with a practitioner</b>, 30–45 minutes each</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Call 1: your CV and applications reviewed with you</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Call 2: a mock interview or assessment centre prep</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Written notes after each call</span></li>
+      </ul>
+      <div class="mute small">Already a member? Upgrade by paying the difference.</div>
+      <button class="btn ghost go" type="button" data-plan="plus">Add a practitioner</button>
+    </article>
+
+    <article class="plan">
+      <div><h3>1:1 support</h3><div class="mute">For your most important applications</div></div>
+      <div class="price"><b>£3,000</b><span class="mute">for your recruiting season</span></div>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>A named practitioner working with you from application to offer</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Live mock interviews with feedback</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your CV and applications reviewed line by line before you send them</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Your CV and applications reviewed before you send them</span></li>
       </ul>
       <button class="btn ghost go" type="button" data-plan="coaching">Ask about 1:1</button>
     </article>
@@ -130,6 +146,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <div class="switch" role="group" aria-label="Choose plan" style="margin-top:16px">
         <button type="button" data-plan="free">Free</button>
         <button type="button" data-plan="member">Member · £89</button>
+        <button type="button" data-plan="plus">+ Practitioner</button>
         <button type="button" data-plan="coaching">1:1</button>
       </div>
     </div>
@@ -159,7 +176,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
 
   <section class="panelband">
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-      <div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div>
+      <div class="faces" aria-hidden="true"><img src="/assets/people/kayyor-rao.jpg" alt=""><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div>
       <div style="font-size:15px;line-height:1.45;max-width:640px"><b>Built on what our practitioners look for.</b> Kayyor Rao, Peter Cheley, Neil Robertson, Jim Staples and Chris Sharkey have spent their careers in banks and professional-services firms. Their approved points sit behind the scoring, the firm packs and the feedback.</div>
     </div>
   </section>
@@ -167,19 +184,20 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
   <section class="compare" aria-labelledby="cmpH">
     <h2 id="cmpH" style="margin-bottom:10px">Compare</h2>
     <table>
-      <thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Member</th><th scope="col">1:1</th></tr></thead>
+      <thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Member</th><th scope="col">+ Practitioner</th><th scope="col">1:1</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Assessment</th><td><b>Basic</b><br><span class="mute">Readiness score, where you stand, one fix</span></td><td class="y"><b>Deep</b><br><span class="mute" style="font-weight:400">A deep dive on your CV and evidence, competencies and tests scored, what your target firm looks for</span></td><td class="y"><b>Deep</b>, plus a practitioner reads it with you</td></tr>
-        <tr><th scope="row">CV rewrites, model answers, 30-day plan</th><td class="n">Sample only</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Rechecks as your CV improves</th><td class="n">No</td><td class="y">Up to 12 in the year</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Interview practice with feedback</th><td>30 seconds a week</td><td class="y">Every day</td><td class="y">Plus live mocks</td></tr>
-        <tr><th scope="row">Firm interview packs</th><td class="n">No</td><td class="y">17 firms and growing</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Numerical and commercial tests</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you</td></tr>
-        <tr><th scope="row">Community, trading game, Society Cup</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
-        <tr><th scope="row">Group sessions with practitioners</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td>Agreed with you</td></tr>
+        <tr><th scope="row">Assessment</th><td><b>Basic</b><br><span class="mute">Readiness score, where you stand, one fix</span></td><td class="y"><b>Deep</b><br><span class="mute" style="font-weight:400">A deep dive on your CV and evidence, competencies and tests scored, what your target firm looks for</span></td><td class="y"><b>Deep</b>, reviewed with you on a call</td><td class="y"><b>Deep</b>, plus a practitioner reads it with you</td></tr>
+        <tr><th scope="row">CV rewrites, model answers, 30-day plan</th><td class="n">Sample only</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Rechecks as your CV improves</th><td class="n">No</td><td class="y">Up to 12 in the year</td><td class="y">Up to 12 in the year</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Interview practice with feedback</th><td>30 seconds a week</td><td class="y">Every day</td><td class="y">Every day, plus a live mock</td><td class="y">Plus live mocks</td></tr>
+        <tr><th scope="row">Firm interview packs</th><td class="n">No</td><td class="y">17 firms and growing</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Numerical and commercial tests</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you on a call</td><td class="y">Reviewed with you</td></tr>
+        <tr><th scope="row">Community, trading game, Society Cup</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Calls with a practitioner</th><td class="n">No</td><td class="n">No</td><td class="y">2 calls</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Group sessions with practitioners</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td><b data-plus-price>£199</b>, paid once</td><td><b>£3,000</b> for the season</td></tr>
       </tbody>
     </table>
   </section>
@@ -197,7 +215,8 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <details><summary>What’s the difference between the basic and deep assessment?</summary><p>The free basic assessment gives you a readiness score, shows where you stand and gives you one fix. The deep assessment that comes with membership is a deep dive on your CV and evidence, scores your competencies and tests against your target firm, and turns it into CV rewrites, model answers and a plan.</p></details>
       <details><summary>Why do I take the basic assessment before paying?</summary><p>The deep assessment is built on it: your report, your CV rewrites and your interview questions all start from what you entered, so it comes first. It’s free.</p></details>
       <details data-payin3 hidden><summary>Can I spread the cost?</summary><p>Yes. At checkout you can choose Klarna and pay in 3 interest-free monthly payments of about £29.67. Klarna checks eligibility; missed payments can affect your credit.</p></details>
-      <details><summary>Can I upgrade later?</summary><p>Yes, any time from My Desk. Everything you’ve done on Free carries over.</p></details>
+      <details><summary>What happens on the practitioner calls?</summary><p>Two calls of 30–45 minutes, booked when you need them. The first goes through your CV and applications. The second is a mock interview or assessment centre prep for a firm you’re applying to. You get written notes after each.</p></details>
+      <details><summary>Can I upgrade later?</summary><p>Yes, any time from My Desk. Everything you’ve done on Free carries over, and members can add a practitioner by paying the difference.</p></details>
       <details><summary>Who are the practitioners?</summary><p>People with long careers in banks and professional-services firms. Their approved points shape the scoring and feedback, and they answer members’ questions.</p></details>
       <details><summary>What do you do with my details?</summary><p>We use them to run your desk and, if you tick the box, send deadline alerts and the briefing. Community posts show your university and year, not your name.</p></details>
     </div>
@@ -216,7 +235,8 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
   const COPY = {
     free: { k: 'Join free', t: 'Create your free desk', i: 'Takes a minute. We email you a link to sign in: no password.', s: ['Tell us your university and year', 'Open the link we email you', 'Take your free assessment from My Desk'], b: 'Create my free desk' },
     member: { k: 'Member · £89 a year', t: 'Become a member', i: 'Membership is built on your assessment, so you take that first (free, about 10 minutes), then pay.', s: ['Tell us your university and year', 'Take your free assessment (or use the one you’ve done)', 'Pay £89 once for 12 months'], b: 'Continue' },
-    coaching: { k: '1:1 with a practitioner', t: 'Ask about 1:1', i: 'Tell us where you are and what you need. A practitioner will email you to arrange a short call.', s: ['Send this form', 'Short call with a practitioner', 'Agree a plan and price'], b: 'Send' },
+    plus: { k: 'Member + Practitioner', t: 'Add a practitioner', i: 'Tell us where you are and which firms you’re applying to. We’ll email you to book your two calls and send the payment link.', s: ['Send this form', 'We email you a payment link', 'Book your two calls when you need them'], b: 'Send' },
+    coaching: { k: '1:1 support · £3,000', t: 'Ask about 1:1', i: 'Tell us where you are and what you need. A practitioner will email you to arrange a short call.', s: ['Send this form', 'Short call with a practitioner', 'Agree a plan and price'], b: 'Send' },
     society: { k: 'Finance societies', t: 'Get your society involved', i: 'Tell us your society and university. We’ll email you about the Society Cup and sessions.', s: ['Send this form', 'We email you within a few days'], b: 'Send' }
   };
   function show(type, text) { msg.className = 'msg ' + type; msg.textContent = text; msg.hidden = false; }
@@ -224,7 +244,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     plan = p; const c = COPY[p];
     $('fKicker').textContent = c.k; $('fTitle').textContent = c.t; $('fIntro').textContent = c.i; submit.textContent = c.b;
     $('fSteps').innerHTML = c.s.map(x => '<li>' + x.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) + '</li>').join('');
-    $('noteWrap').hidden = !(p === 'coaching' || p === 'society');
+    $('noteWrap').hidden = !(p === 'coaching' || p === 'society' || p === 'plus');
     $('memberFields').hidden = p === 'society';
     $('society').placeholder = p === 'society' ? 'Your society' : 'e.g. Investment Society';
     $('updates').closest('label').hidden = p === 'society';
@@ -257,10 +277,10 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     if (plan === 'member' && desk?.member) { location.href = '/my.html'; return; }
     submit.disabled = true; const label = submit.textContent; submit.textContent = 'One moment…';
     try {
-      if (plan === 'coaching' || plan === 'society') {
+      if (plan === 'coaching' || plan === 'society' || plan === 'plus') {
         const r = await post('/api/desk-home', { action: 'coaching-interest', type: plan, email, university, name: '', note: [$('society').value.trim(), $('area').value, year, $('note').value.trim()].filter(Boolean).join(' · ') });
         if (!r.ok) return show('err', r.data.error || 'That didn’t send. Try again in a minute.');
-        form.reset(); return show('ok', plan === 'society' ? 'Thanks. We’ll email you about the Society Cup and sessions.' : 'Thanks. A practitioner will email you to arrange a short call.');
+        form.reset(); return show('ok', plan === 'society' ? 'Thanks. We’ll email you about the Society Cup and sessions.' : plan === 'plus' ? 'Thanks. We’ll email you a payment link and how to book your calls.' : 'Thanks. A practitioner will email you to arrange a short call.');
       }
       const p = await post('/api/desk-home', { action: 'signup-profile', plan, university, year, society: $('society').value.trim(), area: $('area').value, updates: $('updates').checked });
       if (!p.ok) return show('err', p.data.error || 'We couldn’t save that. Try again.');
