@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your result | The Desk</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--ok:#15803d;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;max-width:640px;margin:0 auto}
+.logo{font:600 22px "Fraunces",Georgia,serif;text-decoration:none}
+main{max-width:640px;margin:0 auto;padding:0 16px 120px;display:flex;flex-direction:column;gap:14px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute);font-size:14px}
+.hero{background:var(--ink);color:#fff;border-radius:20px;padding:22px 20px;display:flex;flex-direction:column;gap:10px}
+.hero .kicker{color:#ffb38f}
+.score{display:flex;align-items:baseline;gap:10px}.score b{font:500 72px/1 "Fraunces",Georgia,serif;color:#ff8a52}.score span{font-size:18px;font-weight:700}
+.verdict{font:500 22px/1.25 "Fraunces",Georgia,serif}
+.scale{display:flex;gap:4px;margin-top:4px}.scale i{flex:1;height:6px;border-radius:3px;background:#3b4652}.scale i.on{background:#ff8a52}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.gap h2{font-size:22px;margin:4px 0 10px}
+.quote{background:#fff;border:1px solid var(--line);border-left:4px solid #b91c1c;border-radius:10px;padding:12px 14px;font-size:15px}
+.better{background:#ecfdf3;border:1px solid #bbf7d0;border-left:4px solid var(--ok);border-radius:10px;padding:12px 14px;font-size:15px}
+.better mark{background:#fef3c7;border-radius:3px;padding:0 3px}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:12px 0 6px}
+.lbl.bad{color:#b91c1c}.lbl.good{color:var(--ok)}
+.why{font-size:15px;color:#3b4652;margin:10px 0 0}
+.next{display:flex;flex-direction:column;gap:10px}
+.lock{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.lock svg{margin-top:2px}
+.btn{font:700 16px "DM Sans",Arial,sans-serif;border:0;border-radius:999px;padding:15px 20px;background:var(--accent);color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;min-height:52px;text-align:center}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.offer{display:flex;flex-direction:column;gap:10px}
+.offer ul{margin:0;padding-left:18px;font-size:15px}.offer li{margin:3px 0}
+.who{display:flex;gap:12px;align-items:center;font-size:14px;line-height:1.4}
+.av{width:44px;height:44px;border-radius:50%;background:var(--navy-soft);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+details.more{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 20px}
+details.more summary{cursor:pointer;font-weight:700;min-height:28px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 60px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--soft);font-size:15px}
+.bar .t{height:6px;background:var(--soft);border-radius:3px;margin-top:5px}.bar .t i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.bar b{text-align:right}
+.comp{padding:10px 0;border-bottom:1px solid var(--soft);font-size:14.5px}.comp b{font-size:15px}
+.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,253,250,.97);border-top:1px solid var(--line);padding:10px 16px;display:flex;justify-content:center;transform:translateY(110%);transition:transform .25s}
+.sticky.show{transform:none}.sticky .btn{max-width:608px;width:100%}
+@media (prefers-reduced-motion:reduce){.sticky{transition:none}}
+.err{background:#fef2f2;border:1px solid #fecaca;color:#7f1d1d;border-radius:12px;padding:16px}
+</style>
+</head>
+<body>
+<header class="top"><a class="logo" href="/">The Desk</a><a class="mute" href="/my.html">My Desk</a></header>
+<main id="app"><p class="mute">Loading your result…</p></main>
+<div class="sticky" id="sticky"><a class="btn" id="stickyBtn" href="#">Get all your fixes · £89 a year</a></div>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const id = new URLSearchParams(location.search).get('id');
+  const LOCK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f6b76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  const VERDICT = { Competitive: f => `You’re in the running for ${f}. Fix these gaps to stand out.`, Borderline: f => `Close for ${f}. A few fixes stand between you and competitive.`, Weak: f => `Not ready for ${f} yet. Here’s where to start.` };
+  const PARTS = [['application', 'Applications and CV evidence'], ['competency', 'Competencies'], ['technical', 'Commercial and technical test'], ['numerical', 'Numerical test'], ['ats', 'CV screening (ATS)']];
+  if (!id) { $('app').innerHTML = '<div class="err">We couldn’t find your assessment. <a href="/assessment-start.html">Take the free assessment</a></div>'; return; }
+  fetch('/api/assessment-result?id=' + encodeURIComponent(id), { credentials: 'same-origin' }).then(r => r.ok ? r.json() : Promise.reject(r.status)).then(j => {
+    const r = j.result || {}, p = j.profile || {}, firm = r.targetFirm || p.targetFirm || 'your target firm';
+    const band = r.band || 'Borderline', score = Math.round(r.overallScore || 0);
+    const plan = '/fullcycle-plan.html?id=' + encodeURIComponent(id);
+    const pr = Array.isArray(r.priorities) ? r.priorities : [], cv = r.cvPreview || {};
+    const better = esc(cv.structure || '').replace(/\[([^\]]+)\]/g, '<mark>$1</mark>');
+    const filled = Math.max(1, Math.min(10, Math.round(score / 10)));
+    const route = [p.targetDivision || p.targetSector, firm].filter(Boolean).join(' · ');
+    const q = j.quiz || {};
+    $('app').innerHTML = `
+      <section class="hero" aria-labelledby="sc">
+        <div class="kicker">${esc(p.name || 'Your')} · ${esc(route)}</div>
+        <div class="score" id="sc"><b>${score}</b><span>${esc(band)}</span></div>
+        <div class="scale" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<i class="${i < filled ? 'on' : ''}"></i>`).join('')}</div>
+        <div class="verdict">${esc((VERDICT[band] || VERDICT.Borderline)(firm))}</div>
+      </section>
+
+      ${pr[0] ? `<section class="card gap" aria-labelledby="g1">
+        <div class="kicker">Your biggest gap</div>
+        <h2 id="g1">${esc(pr[0].title)}</h2>
+        ${cv.original ? `<div class="lbl bad">Your CV now</div><div class="quote">${esc(cv.original)}${cv.source ? `<div class="mute" style="margin-top:4px">${esc(cv.source)}</div>` : ''}</div>
+        <p class="why">${esc(cv.issue || pr[0].description)}</p>
+        ${better ? `<div class="lbl good">Stronger</div><div class="better">${better}</div><p class="mute" style="margin:8px 0 0">Fill in the highlighted parts with your real numbers.</p>` : ''}` : `<p class="why">${esc(pr[0].description)}</p>`}
+      </section>` : ''}
+
+      ${pr.length > 1 ? `<section class="card next" aria-labelledby="g2">
+        <div class="kicker">Your next ${pr.length - 1 === 1 ? 'gap' : (pr.length - 1) + ' gaps'}</div>
+        <h2 id="g2" style="font-size:20px">Found in your CV and tests</h2>
+        ${pr.slice(1, 3).map(x => `<div class="lock">${LOCK}<div><b>${esc(x.title)}</b><div class="mute">The fix, with your CV line rewritten, is in your deep assessment.</div></div></div>`).join('')}
+      </section>` : ''}
+
+      <section class="card offer" aria-labelledby="off" id="offer">
+        <div class="kicker">Membership · £89 a year</div>
+        <h2 id="off" style="font-size:22px">Get every fix, then practise for ${esc(firm)}.</h2>
+        <ul>
+          <li>Your deep assessment: every gap fixed, your weakest CV lines rewritten</li>
+          <li>Interview practice with ${esc(firm)}-style questions and feedback on every answer</li>
+          <li>Tests, assessment centre practice and a question to our practitioners</li>
+        </ul>
+        <a class="btn" href="${plan}" id="mainCta">Get all your fixes · £89 a year</a>
+        <div class="mute" style="text-align:center">Paid once for 12 months. No auto-renewal.</div>
+      </section>
+
+      <section class="who"><span class="av">KR</span><span>Built with practitioners who have hired for banks, led by Kayyor Rao (UBS, Commerzbank, BGC).</span></section>
+
+      <details class="more"><summary>See your full breakdown</summary>
+        <div class="lbl" style="color:var(--mute)">How your ${score} is made up</div>
+        ${PARTS.filter(([k]) => r.breakdown && r.weights && r.weights[k]).map(([k, label]) => { const got = +r.breakdown[k] || 0, max = +r.weights[k]; return `<div class="bar"><div>${esc(label)}<div class="t"><i style="width:${Math.round(got / max * 100)}%"></i></div></div><b>${got}/${max}</b></div>`; }).join('')}
+        ${q.numericalTotal ? `<p class="mute" style="margin:10px 0 0">Tests: numerical ${q.numericalCorrect}/${q.numericalTotal} · commercial ${q.commercialCorrect}/${q.commercialTotal}</p>` : ''}
+        ${Array.isArray(r.competencies) ? `<div class="lbl" style="color:var(--mute)">What we saw in your CV</div>${r.competencies.map(c => `<div class="comp"><b>${esc(c.name)} · ${esc(c.score)}</b><div>${esc(c.reason)}</div></div>`).join('')}` : ''}
+        ${r.deskSummary ? `<p style="margin:12px 0 0">${esc(r.deskSummary)}</p>` : ''}
+      </details>
+      <p class="mute" style="text-align:center"><a href="/result-final-design.html?id=${encodeURIComponent(id)}">See the detailed version of this page</a></p>`;
+    $('stickyBtn').href = plan;
+    // Sticky button appears once the first button has scrolled out of view.
+    const io = new IntersectionObserver(es => { const below = es[0].boundingClientRect.top < 0; $('sticky').classList.toggle('show', !es[0].isIntersecting && below); });
+    io.observe($('mainCta'));
+    if (j.paid) { $('mainCta').textContent = 'Open your deep assessment'; $('mainCta').href = '/fullcycle.html?id=' + encodeURIComponent(id); $('stickyBtn').parentElement.remove(); document.querySelectorAll('.lock .mute').forEach(e => e.textContent = 'Open your deep assessment for the fix.'); }
+  }).catch(() => { $('app').innerHTML = '<div class="err">We couldn’t load your result. Refresh to try again, or <a href="/my.html">go to My Desk</a>.</div>'; });
+})();
+</script>
+</body>
+</html>
