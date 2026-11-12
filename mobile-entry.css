@@ -1,0 +1,43 @@
+/* Phone-first entry journey. Desktop layouts retain their existing grid. */
+.mobile-home-controls{display:none}
+@media(max-width:700px){
+ body{overflow-wrap:break-word}
+ input,select,textarea{font-size:16px!important}
+ .header.wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;flex-wrap:wrap}
+ .header .logo{font-size:30px}
+ .mobile-home-controls{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:600}
+ .mobile-home-controls button{background:transparent;border:1px solid #c9c5bd;border-radius:8px;padding:10px 12px;min-height:44px;color:inherit}
+ .header .nav{display:none!important;margin:0!important;padding:12px 0 4px;border-top:1px solid var(--line);gap:8px;width:100%}
+ .header .nav.mobile-open{display:grid!important;grid-template-columns:1fr 1fr}
+ .header .nav a{display:flex!important;padding:12px!important;min-height:44px;font-size:14px!important}
+ .header .language-control{position:static!important}.header .language-control select{max-width:none;width:100%;min-height:44px}
+ .hero.wrap{padding:26px 0 32px;gap:24px;grid-template-columns:1fr}
+ .hero h1{font-size:38px;line-height:1.1;letter-spacing:-.035em}
+ .hero-copy>p{font-size:17px;line-height:1.55;margin-top:18px}
+ .hero .actions{margin-top:22px}.hero .actions .btn{width:100%;min-height:50px;background:#ff5a14;border-color:#ff5a14;font-size:17px}
+ .hero .small{font-size:13px;margin-top:10px}.rounds-message{margin-top:20px;padding-left:12px}.rounds-message span{display:none}
+ .hero .result{padding:20px;border-radius:16px}.result-top{flex-wrap:wrap;gap:6px}.component{grid-template-columns:minmax(0,1fr) 60px 38px!important;gap:8px!important}
+ .hero .result-score{flex-wrap:wrap}.hero .score{font-size:64px}.hero .fix-box{margin-top:16px}
+ body:not(.member-dashboard) main#app{gap:20px;padding-top:20px}
+ body:not(.member-dashboard) .free-overview{display:flex;flex-direction:column;gap:14px}
+ body:not(.member-dashboard) .free-score{padding:22px;display:block}
+ body:not(.member-dashboard) .free-score h2{font-size:26px!important}
+ body:not(.member-dashboard) .free-score>.score-explanation{display:none}
+ body:not(.member-dashboard) .free-overview>.free-membership-offer{display:none!important}
+ body:not(.member-dashboard) .free-start{order:1}
+ body:not(.member-dashboard) .explore-practitioners{order:3}
+ body:not(.member-dashboard) .member-tools-heading{order:4;margin:8px 0 0}
+ body:not(.member-dashboard) .member-benefits-grid{order:5}
+ body:not(.member-dashboard) .community-preview-card{order:6}
+ body:not(.member-dashboard) .free-start .grid4{display:grid;grid-template-columns:1fr;gap:12px}
+ body:not(.member-dashboard) .free-start .tool{padding:20px;gap:12px;min-height:0}
+ body:not(.member-dashboard) .free-start h2{margin-bottom:14px}
+ body:not(.member-dashboard) .free-start h3{font-size:21px}
+ body:not(.member-dashboard) .free-start .tool .btn{width:100%;min-height:48px;margin-top:4px}
+ body:not(.member-dashboard) .free-start .tool .mute{font-size:14px}
+ body:not(.member-dashboard) .free-sample-link{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:18px 0;margin-top:12px}
+ body:not(.member-dashboard) .free-sample-link .btn{white-space:normal}
+ body:not(.member-dashboard) .entry-account-actions{margin:0!important;gap:10px!important}
+ body:not(.member-dashboard) .entry-account-actions>.btn{font-size:13px;min-height:44px}
+ body:not(.member-dashboard) .entry-intro .mute{font-size:14px;line-height:1.55!important}
+}

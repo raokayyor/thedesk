@@ -25,7 +25,7 @@
     ['Community','/community.html',/\/community(-question)?\.html$/],
     ['Events','/events.html',/\/events\.html$/]
   ];
-  var css = '.desk-nav{background:#11191e;font:600 14px "DM Sans",Arial,sans-serif;position:relative;z-index:30}' +
+  var css = '.desk-menu-toggle{display:none}@media(max-width:700px){.desk-menu-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;padding:13px 20px;background:#11191e;color:white;font:600 15px Arial;min-height:48px}.desk-nav .desk-nav-in{display:none;grid-template-columns:1fr 1fr;padding:8px 12px 12px}.desk-nav.is-open .desk-nav-in{display:grid}.desk-nav .desk-nav-in a{white-space:normal;min-height:44px}}' + '.desk-nav{background:#11191e;font:600 14px "DM Sans",Arial,sans-serif;position:relative;z-index:30}' +
     '.desk-nav-in{max-width:1200px;margin:0 auto;padding:0 16px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}' +
     '.desk-nav-in::-webkit-scrollbar{display:none}' +
     '.desk-nav a{flex:none;color:#cfd6db;text-decoration:none;padding:11px 12px;border-bottom:3px solid transparent}' +
@@ -39,7 +39,7 @@
     if (l[2].test(path)||previews[l[0]]===path||l[0]==='Report'&&path==='/report-sample.html') a.setAttribute('aria-current', 'page');
     inner.appendChild(a);
   });
-  nav.appendChild(inner);
+  inner.id='deskNavigation';var toggle=document.createElement('button');toggle.type='button';toggle.className='desk-menu-toggle';toggle.setAttribute('aria-controls','deskNavigation');toggle.setAttribute('aria-expanded','false');toggle.innerHTML='Your Desk <span aria-hidden="true">☰</span>';toggle.onclick=function(){var open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav.classList.toggle('is-open',open);};nav.appendChild(toggle);nav.appendChild(inner);nav.addEventListener('keydown',function(e){if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');nav.classList.remove('is-open');toggle.focus();}});
   if(!touring)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(d=>{if(!d?.member)return;inner.querySelectorAll('a').forEach(a=>{a.href=a.dataset.navLabel==='Interview'&&/^\/interview-start\.html(?:\?id=[a-f0-9]{48})?$/.test(d.interviewUrl||'')?d.interviewUrl:a.dataset.memberHref;});}).catch(()=>{});
   function place() {
     var header = document.querySelector('body > header, header.top');

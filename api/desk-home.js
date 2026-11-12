@@ -251,7 +251,7 @@ export default async function handler(req, res) {
         if (n && !usedNotes.has(n.text)) { a.note = paid ? n : { locked: true, by: n.by, init: n.init }; usedNotes.add(n.text); }   // one note per action, never twice; free accounts see who has a note, not the note
       }
       return res.json({
-        testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
+        testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: signupSaved?.pilotAccess?'':account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
         member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         prep:paid?{total:(byId[latest?.id]?.plan?.sevenDayActionPlan?.length||0)+(byId[latest?.id]?.plan?.finalSubmissionChecklist?.length||0),next:byId[latest?.id]?.plan?.sevenDayActionPlan?.[0]?.focus||'Open your report to build your plan'}:null,
         readiness: now ? { score: now.score, band: band(now.score), change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,

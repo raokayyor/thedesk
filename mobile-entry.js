@@ -1,0 +1,2 @@
+const menu=document.getElementById('homeMenuToggle');
+if(menu){const nav=document.getElementById('homeNavigation');function close(){menu.setAttribute('aria-expanded','false');nav.classList.remove('mobile-open');}menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('mobile-open',open);});nav.addEventListener('click',e=>{if(e.target.closest('a'))close();});document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();menu.focus();}});}
