@@ -28,7 +28,7 @@
  body:not(.member-dashboard) .explore-practitioners{order:3}
  body:not(.member-dashboard) .member-tools-heading{order:4;margin:8px 0 0}
  body:not(.member-dashboard) .member-benefits-grid{order:5}
- body:not(.member-dashboard) .community-preview-card{order:6}
+ body:not(.member-dashboard) .explore-community-card{order:6}
  body:not(.member-dashboard) .free-start .grid4{display:grid;grid-template-columns:1fr;gap:12px}
  body:not(.member-dashboard) .free-start .tool{padding:20px;gap:12px;min-height:0}
  body:not(.member-dashboard) .free-start h2{margin-bottom:14px}
