@@ -30,13 +30,32 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .stat{margin:18px 0 0;font-size:17px;color:var(--ink-2);max-width:40ch}
 .stat b{color:var(--ink);font-weight:700}
 .stat sup a{text-decoration:none;color:var(--mute);font-size:11px}
-.redpen{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;max-width:520px}
-.redpen .cv{font-size:15px;color:var(--ink-2);line-height:1.55}
-.redpen .cv s{text-decoration:none;background:linear-gradient(transparent 62%,#f3d6cb 62%)}
-.redpen .say{display:flex;gap:12px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--soft)}
-.redpen .say img{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:none}
-.redpen .say q{font:italic 400 20px/1.3 "EB Garamond",Georgia,serif;quotes:"“" "”"}
-.redpen .who{font-size:12.5px;color:var(--mute);margin-top:2px}
+.redpen{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden}
+.rp-step{padding:12px 18px;border-top:1px solid var(--soft)}
+.rp-step:first-child{border-top:0}
+.rp-k{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--mute);margin-bottom:6px}
+.rp-chip{letter-spacing:.06em;text-transform:none;font-size:12px;font-weight:600;color:var(--bad);background:#f7e4df;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.rp-line{font-size:15.5px;line-height:1.5;color:var(--ink)}
+.rp-line span{background:linear-gradient(transparent 60%,#f3d0c4 60%)}
+.rp-read{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start}
+.rp-read img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.rp-read q{display:block;font:italic 400 18.5px/1.32 "EB Garamond",Georgia,serif;quotes:"“" "”"}
+.rp-who{font-size:12.5px;color:var(--mute);margin-top:4px}
+.rp-chat{display:flex;flex-direction:column;gap:6px;font-size:14.5px;line-height:1.45}
+.rp-chat .ask{align-self:flex-start;background:var(--ink);color:#fff;border-radius:12px 12px 12px 3px;padding:8px 12px;max-width:92%}
+.rp-chat .ans{align-self:flex-end;background:var(--soft);color:var(--ink);border-radius:12px 12px 3px 12px;padding:8px 12px;max-width:92%}
+.rp-after{background:var(--good-soft)}
+.rp-after .rp-k{color:var(--good)}
+.rp-up{letter-spacing:.02em;text-transform:none;font-size:13px;font-weight:700;color:#fff;background:var(--good);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.rp-was{font-size:13.5px;color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(180,67,58,.6);margin-bottom:6px}
+.rp-new{font:600 21px/1.3 "EB Garamond",Georgia,serif;color:var(--ink)}
+.rp-reads{margin-top:10px;font-size:14px;color:var(--good)}.rp-reads b{font-weight:700}
+.rp-unlock{margin-top:10px;padding-top:10px;border-top:1px solid rgba(47,122,79,.18);font-size:14px;color:var(--ink-2)}
+.rp-unlock b{display:block;color:var(--ink);font-weight:600;margin-bottom:4px}
+.rp-unlock ul{margin:0;padding-left:18px}.rp-unlock li{margin:2px 0}
+.rp-note{font-size:12.5px;color:var(--mute);padding:10px 18px;background:var(--paper);border-top:1px solid var(--soft)}
+@media (prefers-reduced-motion:no-preference){.redpen.play .rp-step{animation:rpIn .5s ease both}.redpen.play .rp-step:nth-child(2){animation-delay:.35s}.redpen.play .rp-step:nth-child(3){animation-delay:.8s}.redpen.play .rp-step:nth-child(4){animation-delay:1.25s}}
+@keyframes rpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .firms{margin-top:22px}.firms .q{font-size:14px;font-weight:600;margin-bottom:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips button{font:500 14px Figtree,Arial,sans-serif;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:9px 13px;min-height:42px;cursor:pointer;color:var(--ink)}
@@ -131,7 +150,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   header.top{padding:16px 0}.logo{font-size:25px}.top nav{gap:16px;font-size:14px}
   .hero h1{font-size:38px}
   .stat{font-size:16px}
-  .redpen .say q{font-size:18px}
+  .rp-read q{font-size:17.5px}.rp-step{padding:13px 15px}
   section.band{padding:48px 0}
   .lead{font-size:16.5px}
   .cmp .row{grid-template-columns:1fr 1fr;gap:4px 14px;padding:14px 16px}.cmp .row span:first-child{grid-column:1/-1}.cmp .head span:first-child{display:none}
@@ -162,10 +181,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     </div>
 
     <div class="right">
-        <figure class="redpen" style="margin:0">
-        <div class="cv"><span class="mute" style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">A line from a student’s CV</span><br><s>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate.</s></div>
-        <figcaption class="say"><img src="/assets/kayyor-rao.jpg" alt="Kayyor Rao" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><q>This is where I’d stop reading. You built it: tell me what it showed.</q><div class="who">Kayyor Rao, MD · 20+ years in banking at UBS, Commerzbank and BGC</div></div></figcaption>
-      </figure>
+      <figure class="redpen" id="redpen" aria-live="polite"></figure>
       <aside class="sample" aria-label="Example result" id="sample"></aside>
     </div>
   </section>
@@ -282,20 +298,46 @@ document.getElementById('people').innerHTML =
     am: { who: 'Tom · Durham PPE · Asset management', now: 56, to: '63–68', est: '+7 to 12', fix: 'Wrote a 1,500-word buy recommendation on a UK mid-cap for the investment society, built on a three-scenario DCF; the society added it to its model portfolio', gaps: [['A stock pitch with a clear view', '+3–5'], ['Why this firm’s investment style', '+2–3']] },
     big4: { who: 'Aisha · Leeds Accounting · Big Four audit', now: 58, to: '64–69', est: '+6 to 11', fix: 'Reconciled 400 supplier invoices against purchase orders during a summer finance placement, finding £6,200 of duplicate payments that were recovered', gaps: [['Evidence of attention to detail', '+3–4'], ['Why audit, not advisory', '+2–3']] }
   };
-  const MAP = { ib: 'ib', pe: 'ib', corporate: 'ib', markets: 'markets', am: 'am', insurance: 'big4', big4: 'big4', unsure: 'ib' };
+  SAMPLES.start = { who: 'Sam · Nottingham Economics · Finance, route still open', now: 49, to: '55–60', est: '+6 to 11', gaps: [['Turn part-time work into evidence', '+3–5'], ['Why finance, and why this firm', '+2–4'], ['Numerical reasoning under time', '+1–3']] };
+  SAMPLES.ib.gaps.push(['Why this bank, not its rivals', '+1–3']); SAMPLES.markets.gaps.push(['A trade idea you can defend', '+1–3']); SAMPLES.am.gaps.push(['Numerical reasoning under time', '+1–3']); SAMPLES.big4.gaps.push(['Commercial awareness of a client', '+1–3']);
+  const MAP = { ib: 'ib', pe: 'ib', corporate: 'ib', markets: 'markets', am: 'am', insurance: 'big4', big4: 'big4', unsure: 'start', start: 'start' };
+  // The red-pen card: one weak CV line, what a practitioner thinks reading it, the question we ask, and the line rebuilt ONLY from the student's answer.
+  // Practitioner wording is a draft: Kayyor to rewrite in his own words before launch.
+  const LINES = {
+    start: { chip: 'Underselling', line: 'Barista, independent coffee shop (part-time), 2023–present.', read: 'Most students bury this line. Don’t. Two years of early shifts during term tells me you turn up and get trusted. That’s half of what an analyst needs, and you haven’t said it.', ask: 'How many hours a week, alongside what? And what were you trusted to do on your own?', ans: 'About 15 hours a week, all through uni. I open the shop on weekday mornings by myself and I’ve trained 4 new starters.', after: 'Opened the shop single-handed on weekday mornings and trained four new starters, while working 15 hours a week alongside a full-time Economics degree.', pts: '+3–5 points · resilience, reliability', reads: 'Reliable. Trusted early. Handles a heavy load.', unlocks: ['Tell me about a time you worked under pressure.', 'How do you manage your time?', 'When were you trusted with real responsibility?'] },
+    ib: { chip: 'Stops the reader', line: 'Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate.', read: 'This is where I’d stop reading. You did the work, then stopped before the only part I care about: what did it tell you? Banks hire judgement, not spreadsheets.', ask: 'What range did you land on, and what did it say about the company?', ans: 'Peers were about 9–11x. Our target was at 7x, so it looked cheap.', after: 'Identified a target trading at 7x EV/EBITDA against a 9–11x peer range by building a comparables table across 12 listed UK software companies; presented the discount to an associate.', pts: '+3–5 points · commercial judgement', reads: 'Has a view. Understands valuation. Can explain it.', unlocks: ['Walk me through a comps table.', 'Why might a company trade at a discount to peers?', 'What would you have looked at next?'] },
+    markets: { chip: 'Title, no proof', line: 'Treasurer, University Investment Society (2024–25).', read: 'A title isn’t an achievement. Every society has a treasurer. What’s different because you did the job?', ask: 'What did you manage, and what changed while you were treasurer?', ans: 'A £4,200 budget. I brought in two sponsors, which paid for our trip to London.', after: 'Brought in two sponsors as treasurer of the Investment Society, funding its trip to London, while managing a £4,200 budget.', pts: '+2–4 points · ownership, results', reads: 'Takes ownership. Persuades people. Delivers.', unlocks: ['Tell me about a time you persuaded someone.', 'How did you decide where the money went?', 'What would you do differently?'] },
+    am: { chip: 'Title, no proof', line: 'Treasurer, University Investment Society (2024–25).', read: 'A title isn’t an achievement. Every society has a treasurer. What’s different because you did the job?', ask: 'What did you manage, and what changed while you were treasurer?', ans: 'A £4,200 budget. I brought in two sponsors, which paid for our trip to London.', after: 'Brought in two sponsors as treasurer of the Investment Society, funding its trip to London, while managing a £4,200 budget.', pts: '+2–4 points · ownership, results', reads: 'Takes ownership. Persuades people. Delivers.', unlocks: ['Tell me about a time you persuaded someone.', 'How did you decide where the money went?', 'What would you do differently?'] },
+    big4: { chip: 'Skipped', line: 'Highly motivated finance student with strong analytical and communication skills.', read: 'Every CV I’ve read says this, so I skip it. Claiming a skill costs nothing. One line of evidence beats three adjectives.', ask: 'When did you last spot something everyone else missed?', ans: 'On my summer placement I found the same supplier invoices paid twice, about £6,000 in total.', after: 'Spotted around £6,000 of supplier invoices that had been paid twice during a summer finance placement.', pts: '+3–4 points · attention to detail', reads: 'Detail-minded. Exactly what audit hires for.', unlocks: ['Tell me about a time you noticed a mistake.', 'What did you do once you’d found it?', 'Why audit?'] }
+  };
+  const PHOTO = '/assets/kayyor-rao.jpg';
+  const pen = document.getElementById('redpen');
+  function redpen(k) {
+    const l = LINES[MAP[k] || 'start'];
+    pen.classList.remove('play'); void pen.offsetWidth;
+    pen.innerHTML = `<div class="rp-step"><div class="rp-k"><span>A line from a student’s CV</span><span class="rp-chip">${esc(l.chip)}</span></div><div class="rp-line"><span>${esc(l.line)}</span></div></div>
+      <div class="rp-step"><div class="rp-k">What I think when I read it</div><div class="rp-read"><img src="${PHOTO}" alt="Kayyor Rao" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><q>${esc(l.read)}</q><div class="rp-who">Kayyor Rao, MD · 20+ years in banking</div></div></div></div>
+      <div class="rp-step"><div class="rp-k">We ask. They answer.</div><div class="rp-chat"><div class="ask">${esc(l.ask)}</div><div class="ans">${esc(l.ans)}</div></div></div>
+      <div class="rp-step rp-after"><div class="rp-k"><span>The same line, rebuilt from their answer</span><span class="rp-up">${esc(l.pts.split(' · ')[0])}</span></div>
+        <div class="rp-was">${esc(l.line)}</div>
+        <div class="rp-new">${esc(l.after)}</div>
+        <div class="rp-reads"><b>How it reads now:</b> ${esc(l.reads)}</div>
+        <div class="rp-unlock"><b>It now answers ${l.unlocks.length} interview questions</b><ul>${l.unlocks.map(u => `<li>${esc(u)}</li>`).join('')}</ul></div></div>
+      <div class="rp-note">Nothing is made up: every fact comes from the student’s answer. One line, ten seconds of their time. Imagine the rest of your CV.</div>`;
+    pen.classList.add('play');
+  }
   const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
   const card = document.getElementById('sample');
   function sample(k) {
-    const s = SAMPLES[MAP[k] || 'ib'];
+    const s = SAMPLES[MAP[k] || 'start'];
     card.innerHTML = `<div class="kicker">What you get back · sample student</div><div class="who">${esc(s.who)}</div>
       <div class="route" aria-label="Score ${s.now}, estimated ${s.to} after three fixes"><span class="now">${s.now}</span><i aria-hidden="true"></i><span class="to">${s.to}</span></div>
-      <div class="est">Fix 3 gaps and recheck: an estimated ${s.est} points.</div>
-      <div class="line good"><b>Your line, rewritten</b>${esc(s.fix)}</div>
+      <div class="est">Fix ${s.gaps.length} gaps and recheck: an estimated ${s.est} points.</div>
       <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
       <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>
       <div class="samples">See a full sample report: <a href="/amelia-result.html">Free</a> · <a href="/fullcycle-amelia.html">Member</a></div>`;
   }
-  sample('ib');
+  sample('start'); redpen('start');
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
   const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
   chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
@@ -304,7 +346,7 @@ document.getElementById('people').innerHTML =
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
-    cta.href = href; cta2.href = href; sample(r[0]);
+    cta.href = href; cta2.href = href; sample(r[0]); redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();

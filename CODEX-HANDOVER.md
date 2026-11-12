@@ -222,3 +222,10 @@ Rao has approved this direction. Replace the live index.html with home-c.html. I
   3. amelia-result.html has no "sample" label. Add the same fictional-sample line at the top.
   4. The two reports disagree: free says 67/100, member says 71/100 for the same student. Make them match, or show the member report as a recheck after fixes ("67 → 71 after her first rewrites").
   5. Restyle both in the version C fonts and buttons.
+- **Hero "red pen" card rebuilt (12 Nov):** the top-right card is now a 4-step story drawn by `redpen(route)` in home-c.html:
+  1. a weak CV line with a verdict chip
+  2. what Kayyor thinks reading it
+  3. the question we ask and the student's answer, as a chat
+  4. the same line rebuilt only from that answer, with the old line struck through, "+points", "How it reads now", and the 3 interview questions it now answers.
+
+  The steps fade in one after another, which is switched off for users who prefer reduced motion. Default (and "Not sure yet") is the barista line; IB/PE/corporate shows the comps line; markets and AM show society treasurer; Big Four and insurance show the generic opener. The dark score card underneath no longer repeats the rewrite, and its default sample is Sam (49 → 55–60). **Kayyor to rewrite the quotes (the `read:` fields in `LINES`) in his own words before launch.** Every rewrite uses only facts from the student's answer. Keep it that way if you edit them.
