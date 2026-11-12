@@ -136,6 +136,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .panel{grid-template-columns:1fr}
   .tier.main{order:-1}
 }
+@media(max-width:760px){.hero>.hero-intro>.redpen{margin:20px 0 0!important;padding:14px}.hero-intro>.redpen .cv{font-size:13px}.hero-intro>.redpen .say{margin-top:10px;padding-top:10px}.hero-intro>.redpen .say q{font-size:18px}.hero-intro>.redpen .who{font-size:11px}}
 </style>
 </head>
 <body>
@@ -143,7 +144,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/signin.html">Log in</a></nav></header>
 
   <section class="hero" aria-labelledby="h">
-    <div>
+    <div class="hero-intro">
       <div class="kicker">Built on experience inside finance</div>
       <h1 id="h" style="margin-top:14px">Find out why you’d be rejected, and let’s fix it before you apply.</h1>
       <p class="stat"><b>140 applications for every graduate job</b>, the most ever recorded.<sup><a href="#src">1</a></sup> See your CV the way someone from inside the industry reads it, and fix it while you still can.</p>
@@ -300,5 +301,7 @@ document.getElementById('people').innerHTML =
   });
 })();
 </script>
-</body>
+<script>
+(() => {const media=matchMedia('(max-width:760px)'),proof=document.querySelector('.redpen'),choices=document.querySelector('.firms'),right=document.querySelector('.hero .right');function positionProof(){if(media.matches)choices.before(proof);else right.prepend(proof)}media.addEventListener('change',positionProof);positionProof()})();
+</script></body>
 </html>
