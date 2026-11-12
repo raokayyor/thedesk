@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Desk | Your finance coach, built by people who hire</title>
+<meta name="description" content="Your free readiness score for the firm you want, the line holding you back, and how to fix it. Then a coach for every round, built by people who've hired for banks.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--ok:#15803d;--navy:#123459;--navy-soft:#dbe5f1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "DM Sans",Arial,sans-serif}
+a{color:var(--ink)}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.12;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.mute{color:var(--mute)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+.logo{font:600 24px "Fraunces",Georgia,serif;text-decoration:none}
+.top nav{display:flex;gap:16px;align-items:center;font-weight:600;font-size:15px}
+.ver{display:flex;gap:6px;justify-content:center;padding:8px;background:#11191e;color:#cfd6db;font-size:12px}
+.ver a{color:#fff;font-weight:700}.ver a[aria-current=true]{color:#ff8a52}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px;align-items:center;padding:18px 0 36px}
+.hero h1{font-size:clamp(34px,6.4vw,58px);letter-spacing:-.01em}
+.hero .sub{font-size:clamp(17px,2.4vw,20px);color:#3b4652;margin:14px 0 0;max-width:34ch}
+.firms{margin-top:20px}.firms .q{font-size:14px;font-weight:700;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:600 14px "DM Sans",Arial,sans-serif;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;min-height:44px;cursor:pointer;color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cta{display:flex;align-items:center;justify-content:center;width:100%;max-width:420px;margin-top:16px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:18px;border-radius:999px;min-height:56px;padding:0 22px}
+.cta:hover{filter:brightness(.95)}
+.small{font-size:13px;color:var(--mute);margin-top:8px}
+.trust{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:14px;color:#3b4652}
+.faces{display:flex}.faces span{width:34px;height:34px;border-radius:50%;background:var(--navy-soft);color:var(--navy);border:2px solid var(--paper);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.faces span:first-child{margin-left:0;background:var(--ink);color:#fff}
+/* sample result card */
+.sample{background:var(--ink);color:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 40px rgba(17,25,30,.15)}
+.sample .kicker{color:#ffb38f}
+.route{display:flex;align-items:center;gap:12px}.route .now{font:500 40px/1 "Fraunces",Georgia,serif;color:#cfd6db}.route .to{font:500 40px/1 "Fraunces",Georgia,serif;color:#86efac}
+.route i{flex:1;height:3px;background:linear-gradient(90deg,#5b666d,#86efac);border-radius:2px;position:relative}.route i:after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:#86efac}
+.line{border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
+.line.bad{background:rgba(255,255,255,.06);border-left:3px solid #f87171;color:#d5dce0}
+.line.good{background:rgba(134,239,172,.1);border-left:3px solid #86efac;color:#ecfdf3}
+.line b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.line.bad b{color:#fca5a5}.line.good b{color:#86efac}
+.gapsmini{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#d5dce0}.gapsmini div{display:flex;justify-content:space-between;gap:10px}.gapsmini span:last-child{color:#86efac;font-weight:700;white-space:nowrap}
+/* sections */
+section.band{padding:44px 0;border-top:1px solid var(--line)}
+section.band h2{font-size:clamp(28px,4.6vw,40px);max-width:22ch}
+.lead{font-size:18px;color:#3b4652;max-width:56ch;margin:12px 0 0}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.tile h3{font-size:21px}.tile p{margin:0;color:#3b4652;font-size:15px}
+.ui{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px;line-height:1.45}
+.ui .q{background:var(--ink);color:#fff;border-radius:8px;padding:10px;font-family:"Fraunces",Georgia,serif;font-size:15px}
+.ui mark{background:#ffe8d6;border-radius:3px;padding:0 3px}
+.ui .pts{display:flex;flex-direction:column;gap:6px;margin-top:8px}.ui .pts div{border:1px solid var(--soft);border-radius:8px;padding:7px 8px}
+.ui .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.ui ul{margin:4px 0 0;padding-left:16px}
+.ui .next{border:1px solid #fed7aa;background:var(--warm);border-radius:10px;padding:10px}
+.ui .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ui .btns span{background:var(--ink);color:#fff;border-radius:999px;padding:5px 10px;font-weight:700;font-size:12px}
+.timeline{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:0;max-width:760px}
+.timeline li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding-bottom:22px;position:relative}
+.timeline li:before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child:before{display:none}
+.timeline .n{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.timeline h3{font-size:21px;margin-top:8px}.timeline p{margin:4px 0 0;color:#3b4652}
+.quote{background:var(--navy);color:#fff;border-radius:22px;padding:26px;margin-top:22px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:center}
+.quote blockquote{margin:0;font:500 clamp(20px,3vw,26px)/1.35 "Fraunces",Georgia,serif}
+.quote .kicker{color:#bfd0e6}
+.meters{display:flex;flex-direction:column;gap:8px;font-size:14px;color:#dbe5f1}
+.meters div{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:8px;align-items:center}
+.meters .m{display:flex;gap:3px}.meters .m i{flex:1;height:7px;border-radius:3px;background:rgba(255,255,255,.15)}.meters .m i.f{background:#ff8a52}
+.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:22px}
+.person{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;font-size:14px}
+.person .av{width:46px;height:46px;border-radius:50%;background:var(--navy-soft);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:8px}
+.person b{display:block;font-size:15px}
+.price{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;margin-top:22px}
+.plan{background:var(--ink);color:#fff;border-radius:22px;padding:24px}
+.plan .big{font:500 56px/1 "Fraunces",Georgia,serif;color:#ff8a52}
+.plan ul{margin:12px 0 0;padding-left:18px;color:#d5dce0}.plan li{margin:4px 0}
+.side{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.final{text-align:center;padding:56px 0 80px}
+.final h2{margin:0 auto;max-width:20ch}
+.final .cta{margin:22px auto 0}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color:var(--mute)}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:22px;padding-top:6px}
+  .three,.price,.quote{grid-template-columns:1fr}
+  .people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .top nav .hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+<div class="ver" role="navigation" aria-label="Preview versions">Preview headline: <a href="?v=1" id="v1">Version 1</a> · <a href="?v=2" id="v2">Version 2</a></div>
+<div class="wrap">
+  <header class="top"><a class="logo" href="/">The Desk</a><nav><a class="hide-sm" href="/signup.html">Membership</a><a href="/my.html">Log in</a></nav></header>
+
+  <section class="hero" aria-labelledby="h">
+    <div>
+      <div class="kicker">Finance careers · built by people who hire</div>
+      <h1 id="h"></h1>
+      <p class="sub" id="sub"></p>
+      <div class="firms">
+        <div class="q" id="fq">Which firm are you applying to?</div>
+        <div class="chips" role="group" aria-labelledby="fq" id="chips"></div>
+      </div>
+      <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
+      <div class="small">10 minutes · free · no card. <a href="/my.html">Or look around first →</a></div>
+      <div class="trust"><div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div><span>Built by MDs from UBS, Barclays, SocGen and EY.</span></div>
+    </div>
+
+    <aside class="sample" aria-label="Example result">
+      <div class="kicker">What you get back · sample student</div>
+      <div style="font-size:14px;color:#cfd6db">Jamie · Bristol Economics · J.P. Morgan IBD</div>
+      <div class="route" aria-label="Score 54, estimated 62 to 68 after three fixes"><span class="now">54</span><i aria-hidden="true"></i><span class="to">62–68</span></div>
+      <div style="font-size:14px;color:#d5dce0">Fix 3 gaps and recheck: an estimated +8 to 14 points.</div>
+      <div class="line bad"><b>Your CV now</b>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate</div>
+      <div class="line good"><b>Rewritten</b>Built a trading comparables table for 12 listed UK software companies, identifying an EV/EBITDA range of 9–11x that showed the target trading at a discount to peers; presented findings to an associate</div>
+      <div class="gapsmini"><div><span>Show your own role in the team</span><span>+3–5</span></div><div><span>Percentage-point margin questions</span><span>+2–4</span></div></div>
+    </aside>
+  </section>
+
+  <section class="band" aria-labelledby="c1">
+    <div class="kicker">Your personal preparation coach</div>
+    <h2 id="c1">Like having a finance coach who’s read your CV. For £89 a year.</h2>
+    <p class="lead">What a coach does in one session, every day of your recruiting year. It knows your CV, your firms and your next round, and tells you what to do next.</p>
+    <div class="three">
+      <article class="tile">
+        <h3>It knows your CV</h3>
+        <div class="ui" aria-hidden="true"><div class="q">“Tell me about a time you balanced competing priorities.”</div>
+          <div class="k" style="margin-top:8px">Your CV for this question</div>
+          <div class="pts"><div>Maintained <mark>12 hours per week</mark> of customer-facing work alongside a <mark>full university timetable</mark></div><div>Applied a recurring-revenue screen to <mark>12</mark> UK software companies</div></div></div>
+        <p>When the interview question plays, the best points from your own CV appear underneath, with the words the interviewer listens for highlighted.</p>
+      </article>
+      <article class="tile">
+        <h3>It knows your firms</h3>
+        <div class="ui" aria-hidden="true"><div class="k">Your Rothschild &amp; Co interview</div><b>What recent candidates reported</b>
+          <ul><li>One-to-one first round: CV, motivation, technicals</li><li>Valuation and the equity bridge</li><li>Market news at the assessment centre</li></ul></div>
+        <p>17 firm packs and growing: what that firm’s interviews test, and questions recent candidates were actually asked.</p>
+      </article>
+      <article class="tile">
+        <h3>It knows what’s next</h3>
+        <div class="ui" aria-hidden="true"><div class="next"><div class="k">Interview in 2 days</div><b style="font-size:15px">Rothschild &amp; Co · Global Advisory</b><div class="btns"><span>Practise Rothschild questions</span><span>My crib sheet</span><span>Group exercise</span></div></div></div>
+        <p>Your deadlines and interview dates turn into the next three things to do, every time you open your desk.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="c2">
+    <div class="kicker">With you at every round</div>
+    <h2 id="c2">From the first application to the final round.</h2>
+    <ol class="timeline">
+      <li><span class="n">1</span><div><h3>Applying</h3><p>Your free score for the firm you want. Then your weakest CV lines rewritten, and application answers for each firm built from your own experience.</p></div></li>
+      <li><span class="n">2</span><div><h3>Online tests</h3><p>Numerical and commercial practice from 2,000+ questions, every answer explained. Your best scores raise your readiness.</p></div></li>
+      <li><span class="n">3</span><div><h3>HireVue and first rounds</h3><p>Your firm’s questions on camera, timed like the real thing, with your CV highlighted and feedback on every answer.</p></div></li>
+      <li><span class="n">4</span><div><h3>Assessment centre</h3><p>A group exercise against three AI candidates, a case study you present, a 30-minute inbox, and a printable crib sheet built from your CV.</p></div></li>
+      <li><span class="n">5</span><div><h3>Final round</h3><p>Firm packs, back-to-back interview practice, and a question answered by one of our practitioners.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="band" aria-labelledby="c3">
+    <div class="kicker">Coached the way assessors mark</div>
+    <h2 id="c3">Honest, specific feedback. Not “great answer!”</h2>
+    <div class="quote">
+      <div><div class="kicker">Example feedback · AI group exercise</div>
+        <blockquote>“You proposed a time plan in the first minute: the strongest structural move in the group. But you didn’t bring Sam back to the brief, and you mixed up which option Dominic backed.”</blockquote></div>
+      <div class="meters" aria-label="Example scores out of 4">
+        <div><span>Structure and time</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
+        <div><span>Commercial reasoning</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+        <div><span>Bringing others in</span><span class="m"><i class="f"></i><i class="f"></i><i></i><i></i></span></div>
+        <div><span>Reaching a decision</span><span class="m"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="c4">
+    <div class="kicker">The people behind it</div>
+    <h2 id="c4">Built and checked by people who’ve hired.</h2>
+    <p class="lead">Our practitioners built the framework behind every score, firm pack and piece of feedback, and they answer members’ questions. Want a human in the room too? Add mock interviews with them.</p>
+    <div class="people">
+      <div class="person"><span class="av" style="background:var(--ink);color:#fff">KR</span><b>Kayyor Rao</b>Banking · 20+ years<br><span class="mute">UBS · Commerzbank · BGC</span></div>
+      <div class="person"><span class="av">PC</span><b>Peter Cheley</b>Banking &amp; asset management · 30 years<br><span class="mute">SocGen · JPM IM · BGC</span></div>
+      <div class="person"><span class="av">NR</span><b>Neil Robertson</b>Banking · 30 years<br><span class="mute">UBS · Knight · Stifel</span></div>
+      <div class="person"><span class="av">JS</span><b>Jim Staples</b>Banking · 30 years<br><span class="mute">Barclays · BGC</span></div>
+      <div class="person"><span class="av">CS</span><b>Chris Sharkey</b>Audit &amp; insurance · 20+ years<br><span class="mute">EY · Lancashire Insurance</span></div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="c5">
+    <div class="kicker">One price for the year</div>
+    <h2 id="c5">Less than one hour with most paid interview coaches.</h2>
+    <div class="price">
+      <div class="plan"><div class="big">£89</div><div style="color:#cfd6db">a year · paid once · no auto-renewal</div>
+        <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to watch your score rise</li></ul>
+        <a class="cta" href="/assessment-start.html" style="margin-top:18px">Start with your free score →</a></div>
+      <div class="side"><b style="font-size:18px">Want a practitioner too?</b><p style="margin:0;color:#3b4652">Membership + Coaching (£399) adds two mock interviews with feedback. Personal 1:1 support is available for your most important applications.</p><a href="/signup.html" style="font-weight:700">Compare options →</a><p class="mute" style="margin:6px 0 0;font-size:13px">Feedback in membership comes from our tools, built on our practitioners’ framework. Calls and mock interviews with a practitioner are part of coaching.</p></div>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="c6">
+    <h2 id="c6">Find out what the recruiter will see. Then fix it.</h2>
+    <a class="cta" href="/assessment-start.html" id="cta2">Get my free score →</a>
+    <div class="small">10 minutes · free · no card</div>
+  </section>
+</div>
+<footer><div class="wrap">The Desk is independent and not endorsed by the firms named. Scores and estimates are preparation guidance, not hiring predictions. Sample student is illustrative. · <a href="/privacy.html">Privacy</a></div></footer>
+<script>
+(() => {
+  const V = {
+    1: { h: 'Banks won’t tell you why you were rejected. We will, before you apply.', s: 'Your free score for the firm you want, the line that’s holding you back, and how to fix it.' },
+    2: { h: 'One line on your CV is costing you interviews. Find it in 10 minutes.', s: 'Free, and marked against what your target firm looks for, by a framework built with people who’ve hired for banks.' }
+  };
+  const v = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1;
+  document.getElementById('h').textContent = V[v].h; document.getElementById('sub').textContent = V[v].s;
+  document.getElementById('v' + v).setAttribute('aria-current', 'true');
+  const FIRMS = [['jpm', 'J.P. Morgan'], ['gs', 'Goldman Sachs'], ['barclays', 'Barclays'], ['rothschild', 'Rothschild'], ['blackrock', 'BlackRock'], ['ey', 'EY'], ['pwc', 'PwC'], ['other', 'Another firm']];
+  const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
+  chips.innerHTML = FIRMS.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}" data-l="${l}">${l}</button>`).join('');
+  chips.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    const firm = b.dataset.k === 'other' ? '' : b.dataset.l;
+    const href = '/assessment-start.html' + (firm ? '?firm=' + encodeURIComponent(firm) : '');
+    cta.href = href; cta2.href = href;
+    cta.textContent = firm ? `Get my free ${firm} score →` : 'Get my free score →';
+  });
+})();
+</script>
+</body>
+</html>
