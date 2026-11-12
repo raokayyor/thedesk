@@ -189,3 +189,10 @@ interview work is lost.**
 4. `/trading-admin.html`: start a game with real levels, publish a story; `/trading.html` buys and sells, league updates.
 5. Live interview pages still behave exactly as before (the live work you pushed in step 1), with the new top bar.
 6. Run `node --test tests/` with dependencies installed.
+
+## Copy fix: no "hiring side" claims (12 Nov)
+Kayyor's 20 years are in banking, not in hiring. Don't claim the team "has hired" until a practitioner who did hire (or an HR/recruiting person) is on the panel and has confirmed it.
+- Already changed on this branch: home-preview.html, tools.html, signup.html, result-hook.html, result-simple.html.
+- Live pages to change too:
+  - index.html + homepage-translations.json `expertise`: "Built on experience from the hiring side of the table." → "Built on 20 years' experience inside finance."
+  - mentor.html Kayyor bio: drop "Has hired, assessed and mentored candidates…" and check the firm list (says Barclays; elsewhere UBS · Commerzbank · BGC · Knight · Stifel).
