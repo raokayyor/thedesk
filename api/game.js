@@ -1,6 +1,6 @@
 import {sharedEvent,commProfile} from '../lib/community-store.mjs';
 // The Desk · trading game (simulated market). See lib/trading-game.mjs for the companies, news presets and maths.
-// Students (members only; up to MAX_HOLDINGS different investments): GET -> market, news, my portfolio, league.  POST {action:'join', displayName, university} | {action:'trade', ticker, side:'buy'|'sell', shares}
+// Students (free access; up to MAX_HOLDINGS different investments): GET -> market, news, my portfolio, league.  POST {action:'join', displayName, university} | {action:'trade', ticker, side:'buy'|'sell', shares}
 // Staff (Authorization: Bearer PRACTITIONER_SUPPORT_KEY):
 //   GET ?view=staff                         -> game, prices, presets, sectors, recent news
 //   POST {action:'staff-new-game', name}    -> starts a fresh game (everyone back to £100,000; the old one is kept as ended)
@@ -102,7 +102,6 @@ export default async function handler(req, res) {
     const p = await A.principal(req, res);
     const member = await A.isPaidOwner(p);
 
-    if (!member && !staffOk(req) && !(req.method === 'POST' && String(req.body?.action || '').startsWith('staff-'))) return res.status(402).json({ error: 'The trading game is a members-only feature.', membershipRequired: true });
     if (q.view === 'quote') {
       const g = await liveGame(); if (!g) return res.status(404).json({ error: 'No game is running right now.' });
       const r = (await sql().query('SELECT price, sector FROM desk_game_prices WHERE game_id=$1 AND ticker=$2', [g.id, String(q.ticker || '')]))[0];

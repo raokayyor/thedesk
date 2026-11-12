@@ -1,0 +1,12 @@
+.member-dashboard .compact-panel{padding:18px 22px}
+.compact-panel-head h2{font-size:22px;margin:0 0 4px}.compact-panel-head p{margin:0}
+.compact-panel>.mute,.compact-panel>.panel-included{display:none}
+.compact-panel>.btn{margin-top:12px}.compact-panel .panel-prompts{border:0;padding-top:10px;margin-top:0}
+.compact-panel .panel-state p{margin:5px 0}.compact-panel .panel-state{margin-top:10px}
+.dashboard-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.upcoming-interview{border-left:4px solid #ff5a14;background:#fff7ed}.upcoming-interview h2{margin:8px 0;font-size:27px}
+.member-resources{align-items:stretch}.member-resources .tool{height:100%}
+.coaching-line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px}
+.coaching-line p{margin:0;font-size:14px}.coaching-line a{font-size:13px;font-weight:700;flex-shrink:0}
+.dashboard-market{align-items:stretch}.dashboard-market [hidden]{display:none!important}
+@media(max-width:600px){.member-resources,.paid-tools,.dashboard-market{grid-template-columns:minmax(0,1fr)!important}.dashboard-buttons{display:grid}.dashboard-buttons .btn{white-space:normal;text-align:center}.coaching-line{align-items:flex-start;flex-direction:column}.upcoming-interview h2{font-size:23px}.member-dashboard main{padding-left:12px;padding-right:12px}}

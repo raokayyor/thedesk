@@ -9,7 +9,7 @@
   var interview = null;
   try { interview = localStorage.getItem('desk-interview-url'); } catch (e) {}
   if (!/^\/interview-start\.html\?id=[a-f0-9]{48}$/.test(interview || '')) interview = null;
-  var previews={Report:'/report-preview.html',Interview:'/interview-preview.html','Application Help':'/application-preview.html','Assessment centres':'/assessment-centre-preview.html',Tests:'/tests-preview.html',Trading:'/trading-preview.html',Library:'/library-preview.html',Events:'/events-preview.html'};
+  var previews={Report:'/report-preview.html',Interview:'/interview-preview.html','Application Help':'/application-preview.html','Assessment centres':'/assessment-centre-preview.html',Tests:'/tests-preview.html',Events:'/events-preview.html'};
   var touring=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
   var links = [
     ['My Desk', '/my.html', /\/my\.html$/],

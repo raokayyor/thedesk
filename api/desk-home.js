@@ -84,8 +84,8 @@ const findQ = (group, id) => bank()[group === 'commercial' ? 'technical' : 'nume
 // The practitioner panel, as presented across the site (fullcycle.html).
 export const PANEL = [
   { init: 'KR', name: 'Kayyor Rao', role: 'Banking · MD · 20 years', firms: 'UBS · Commerzbank · BGC · Knight · Stifel', routes: ['Investment Banking / IBD', 'Sales & Trading / Markets', 'General Finance'] },
-  { init: 'PC', name: 'Peter Cheley', role: 'Banking & Asset Management · MD · 40 years', firms: 'SocGen · Commerzbank · JPM IM · BGC', routes: ['Asset Management / Investing'] },
-  { init: 'NR', name: 'Neil Robertson', role: 'Banking · MD · 30 years', firms: 'UBS · Knight · Stifel · Aurel', routes: ['Sales & Trading / Markets'] },
+  { init: 'PC', name: 'Peter Cheley', role: 'Banking & Asset Management · MD · 30 years', firms: 'SocGen · Commerzbank · JPM IM · BGC', routes: ['Asset Management / Investing'] },
+  { init: 'NR', name: 'Neil Robertson', role: 'Banking · MD · 30 years', firms: 'UBS · Knight · Stifel · BGC', routes: ['Sales & Trading / Markets'] },
   { init: 'JS', name: 'Jim Staples', role: 'Banking · MD · 30 years', firms: 'Barclays · SocGen · BGC', routes: ['Investment Banking / IBD'] },
   { init: 'CS', name: 'Chris Sharkey', role: 'Audit, Accounting & Insurance · MD · 20+ years', firms: 'Lancashire Insurance · EY', routes: ['Accounting / Audit'] }
 ];
@@ -168,7 +168,7 @@ export default async function handler(req, res) {
       const s = await A.ownerSummary(p);
       const account = await A.currentAccount(req);
       const ids = s.assessments.map(a => a.id);
-      const full = ids.length ? await sql().query(`SELECT id, result->'breakdown' AS breakdown, result->'priorities' AS priorities, result->>'band' AS band, input->'profile' AS profile FROM desk_assessments WHERE id = ANY($1)`, [ids]) : [];
+      const full = ids.length ? await sql().query(`SELECT id, result->'breakdown' AS breakdown, result->'priorities' AS priorities, result->>'band' AS band, input->'profile' AS profile, report->'plan' AS plan FROM desk_assessments WHERE id = ANY($1)`, [ids]) : [];
       const byId = Object.fromEntries(full.map(r => [r.id, r]));
       const assessments = s.assessments.filter(a => !a.refundedAt).map(a => ({ ...a, breakdown: byId[a.id]?.breakdown, priorities: byId[a.id]?.priorities, profile: byId[a.id]?.profile }));
       const [tests, apps, practice] = await Promise.all([items(p, ['test'], 50), items(p, ['application'], 100), items(p, ['interview'], 30)]);
@@ -253,6 +253,7 @@ export default async function handler(req, res) {
       return res.json({
         testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
         member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
+        prep:paid?{total:(byId[latest?.id]?.plan?.sevenDayActionPlan?.length||0)+(byId[latest?.id]?.plan?.finalSubmissionChecklist?.length||0),next:byId[latest?.id]?.plan?.sevenDayActionPlan?.[0]?.focus||'Open your report to build your plan'}:null,
         readiness: now ? { score: now.score, band: band(now.score), change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
         interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: (paidRow || latest).id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },

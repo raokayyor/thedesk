@@ -124,7 +124,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     $('rubric').innerHTML = d.behaviours.map(b => `<tr><th scope="row">${esc(b.label)}</th><td>${esc(b.strong)}</td><td>${esc(b.below)}</td></tr>`).join('');
   }).catch(() => {});
   fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
-    const t = d?.profile?.targetFirm; if (!t || !bank) return;
+    const t = new URLSearchParams(location.search).get('firm') || d?.profile?.targetFirm; if (!t || !bank) return;
     const k = bank.resolveFirm(t); if (packs[k]) { $('firm').value = k; showFirm(); }
   }).catch(() => {});
 })();
