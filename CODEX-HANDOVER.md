@@ -150,6 +150,26 @@ interview work is lost.**
 - All five tools are members-only server-side (402 for free); free users can read the hub, cases and inbox.
 - Link the hub from My Desk (member tools) and the top bar's "More" menu. Library already links to it.
 
+### New homepage (`home-preview.html` → becomes `index.html`)
+- Rao has approved this as the new homepage. Replace the live `index.html` with it (keep the live footer links, analytics and
+  the real practitioner photos from the live site; swap the initials for Kayyor's photo). Remove the preview version bar at the top
+  and the `?v=` switch: use **version 1** only (headline "Find out why you’d be rejected, and let’s fix it before you apply.").
+  Remove `<meta name="robots" content="noindex">`.
+- Route buttons link to `/assessment-start.html?route=<key>`. **Carry `route` through to `/assessment.html` and preselect
+  `#sector1`:** ib → "Investment Banking / IBD", markets → "Sales & Trading / Markets", am → "Asset Management / Investing",
+  pe → "Investment Banking / IBD" (show a one-line note: "Most private equity careers start in investment banking: we’ll score you
+  for that"), corporate → "Corporate Banking", big4 → "Accounting / Audit", insurance → "General Finance", unsure → leave blank.
+- The main button goes straight to the assessment (not My Desk); "Or look around first" goes to My Desk. Logged-in users who
+  already have an assessment should get "Go to My Desk" as the main button instead.
+- Practitioner quotes in Kayyor's name are his to edit before launch.
+
+### Result page options (`result-simple.html`, `result-hook.html`, `api/result-rewrite.js`)
+- Two shorter versions of the free result page to test with students against `result-final-design.html`. `result-hook.html`
+  (Rao's current preference) shows an estimated score route (e.g. 54 → 62–68, 30–50% of the points lost in each area, max 5 per gap,
+  always labelled as an estimate), points per gap, a free "fix it now" rewrite of the weakest CV line (`POST /api/result-rewrite`,
+  owner only, 3 a day per assessment, Haiku, only facts from the line and the student's answer), the next two gaps with reasons and
+  the fix locked, and "a question <firm> could ask you" from the CV. Don't make either the default until Rao decides after testing.
+
 ## New database tables (created automatically on first use)
 `desk_test_runs`, `desk_challenges`, `desk_challenge_entries`, `desk_game`, `desk_game_prices`, `desk_game_events`,
 `desk_game_accounts`, `desk_game_trades`. Saved items reuse `desk_value_items` with kinds `test`, `test-pending`,
