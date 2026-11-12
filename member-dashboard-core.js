@@ -3,7 +3,7 @@
  function upcoming(applications,now=new Date()){
   const day=new Date(now);day.setHours(0,0,0,0);
   const remaining=value=>{if(!value)return null;const d=new Date(String(value).slice(0,10)+'T00:00:00');return Number.isFinite(+d)?Math.round((d-day)/86400000):null;};
-  return (applications||[]).filter(a=>!['Rejected','Withdrawn','Offer','Accepted','Closed'].includes(a.stage)).map(a=>{
+  return (applications||[]).filter(a=>!['Rejected','Unsuccessful','Withdrawn','Offer','Accepted','Closed'].includes(a.stage)).map(a=>{
    const interview=/^interview$/i.test(a.stage||'');
    const days=remaining(interview?(a.interviewDate||a.deadline):a.deadline);
    return {...a,interview,days};

@@ -135,7 +135,7 @@ function readinessCard(){
 function sideCard(){
   if(D.member&&!D.report)return `<div class="card"><div class="kicker">Your preparation plan</div><h2>Start with your assessment.</h2><p class="mute">Your personalised plan and progress appear here once your CV and test results are ready.</p><a class="btn hot" href="/assessment.html">Complete step 1 →</a></div>`;
   if(D.member){
-    let p=null;try{const x=JSON.parse(localStorage.getItem('desk-progress')||'null');if(x&&x.id===D.report?.assessmentId)p=x}catch(e){}
+    let p=null;try{const x=JSON.parse(localStorage.getItem('desk-progress')||'null');if(x&&x.id===D.report?.assessmentId)p={...x,done:x.planDone??0,tot:x.planTotal??D.prep?.total??0}}catch(e){}
     return `<div class="card" style="display:flex;flex-direction:column;gap:12px"><div class="kicker">Prep progress</div>
       ${(p?.tot||D.prep?.total)?`<div style="font:500 34px Fraunces,Georgia,serif">${p?.done||0} <span style="font-size:18px;color:var(--mute)">of ${p?.tot||D.prep?.total} tasks</span></div><div class="bar"><i style="width:${p?.tot?Math.round(p.done/p.tot*100):0}%"></i></div>`:`<p style="margin:0;font-size:14px;color:#3b4652">0 tasks · next: open your report to build your preparation plan.</p>`}
       <p class="mute" style="margin:0">${p?.done===p?.tot&&p?.tot?'Plan complete':'Next: '+esc(p?.next||D.prep?.next||'Open your preparation plan')}</p><a href="${esc(D.report.url)}#plan" style="font-weight:700;font-size:14px;margin-top:auto">Open your plan →</a></div>`;
