@@ -137,6 +137,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .tier.main{order:-1}
 }
 @media(max-width:760px){.hero>.hero-intro>.redpen{margin:20px 0 0!important;padding:14px}.hero-intro>.redpen .cv{font-size:13px}.hero-intro>.redpen .say{margin-top:10px;padding-top:10px}.hero-intro>.redpen .say q{font-size:18px}.hero-intro>.redpen .who{font-size:11px}}
+
+.cmp .row{grid-template-columns:minmax(210px,1fr) minmax(0,1fr) minmax(0,1.35fr);align-items:start;column-gap:24px;line-height:1.5}
+.cmp [role="rowheader"]{min-width:0;margin:0;line-height:1.5;font-weight:600}
+.cmp .keep-together{font:inherit;font-style:normal;white-space:nowrap}
+@media(max-width:600px){.cmp .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 18px;padding:18px 16px}.cmp [role="rowheader"]{grid-column:1/-1;padding-bottom:2px}.cmp .head{gap:18px}.cmp .row [role="cell"]{line-height:1.55}}
 </style>
 </head>
 <body>
@@ -176,7 +181,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <div class="evidence"><span class="n">48%</span><p>of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
     <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
       <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
-      <div class="row" role="row"><span role="rowheader">Who decides what “good” is</span><span role="cell">The model</span><span role="cell"><b>People who’ve spent their careers in finance</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Who decides what <em class="keep-together">“good” is</em></span><span role="cell">The model</span><span role="cell"><b>People who’ve spent their careers in finance</b></span></div>
       <div class="row" role="row"><span role="rowheader">Your CV</span><span role="cell">Rewrites what you paste in</span><span role="cell"><b>Scores it, finds the weak lines, then fixes them</b></span></div>
       <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Your firm’s questions on camera, with your CV beside them</b></span></div>
       <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
