@@ -33,6 +33,20 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .cta{display:flex;align-items:center;justify-content:center;width:100%;max-width:420px;margin-top:16px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:18px;border-radius:999px;min-height:56px;padding:0 22px}
 .cta:hover{filter:brightness(.95)}
 .small{font-size:13px;color:var(--mute);margin-top:8px}
+.voice{margin:20px 0 0;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;max-width:520px}
+.voice blockquote{margin:0;font:500 18px/1.4 "Fraunces",Georgia,serif}
+.voice figcaption{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13.5px;line-height:1.4}
+.av{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+.av.sm{width:30px;height:30px;font-size:11px;background:#ff8a52;color:var(--ink)}
+.note{display:flex;gap:10px;align-items:center;background:#fff7ed;color:#11191e;border-radius:12px;padding:10px 12px;font:500 14.5px/1.35 "Fraunces",Georgia,serif}
+.vs h2{max-width:24ch}
+.cmp{margin-top:22px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card);max-width:860px}
+.cmp .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:12px;padding:12px 16px;border-top:1px solid var(--soft);font-size:15px;align-items:start}
+.cmp .row:first-child{border-top:0}
+.cmp .head{background:var(--ink);color:#fff;font-weight:700;font-size:13px;letter-spacing:.04em}
+.cmp .row span:nth-child(2){color:var(--mute)}.cmp .head span:nth-child(2){color:#cfd6db}
+.cmp .row span:first-child{font-weight:700}
+@media (max-width:600px){.cmp .row{grid-template-columns:1fr 1fr;row-gap:4px}.cmp .row span:first-child{grid-column:1/-1}.cmp .head span:first-child{display:none}}
 .trust{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:14px;color:#3b4652}
 .faces{display:flex}.faces span{width:34px;height:34px;border-radius:50%;background:var(--navy-soft);color:var(--navy);border:2px solid var(--paper);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}.faces span:first-child{margin-left:0;background:var(--ink);color:#fff}
 /* sample result card */
@@ -111,7 +125,8 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="small" id="for" aria-live="polite" style="font-weight:600;color:var(--ink)"></div>
       <div class="small">10 minutes · free · no card. <a href="/my.html">Or look around first →</a></div>
-      <div class="trust"><div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div><span>Built by MDs from UBS, Barclays, SocGen, JPM Asset Management and EY.</span></div>
+      <figure class="voice"><blockquote>“I’ve spent 20 years on the hiring side. Most rejections come down to a few lines a student never knew were weak. That’s what we find and fix.”</blockquote>
+        <figcaption><span class="av">KR</span><span><b>Kayyor Rao</b>, MD · 20+ years at UBS, Commerzbank and BGC<br><span class="mute">With Peter Cheley, Neil Robertson, Jim Staples and Chris Sharkey</span></span></figcaption></figure>
     </div>
 
     <aside class="sample" aria-label="Example result">
@@ -120,9 +135,26 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
       <div class="route" aria-label="Score 54, estimated 62 to 68 after three fixes"><span class="now">54</span><i aria-hidden="true"></i><span class="to">62–68</span></div>
       <div style="font-size:14px;color:#d5dce0">Fix 3 gaps and recheck: an estimated +8 to 14 points.</div>
       <div class="line bad"><b>Your CV now</b>Built a trading comparables table for 12 listed UK software companies and presented EV/EBITDA ranges to an associate</div>
+      <div class="note"><span class="av sm">KR</span><span>“This is where I’d stop reading. You built it: tell me what it showed.”</span></div>
       <div class="line good"><b>Rewritten</b>Built a trading comparables table for 12 listed UK software companies, identifying an EV/EBITDA range of 9–11x that showed the target trading at a discount to peers; presented findings to an associate</div>
       <div class="gapsmini"><div><span>Show your own role in the team</span><span>+3–5</span></div><div><span>Percentage-point margin questions</span><span>+2–4</span></div></div>
     </aside>
+  </section>
+
+  <section class="band vs" aria-labelledby="c0">
+    <div class="kicker">Why not just ask ChatGPT?</div>
+    <h2 id="c0">ChatGPT can write your CV. It’s never hired anyone.</h2>
+    <p class="lead">General AI is great at making words sound good. It doesn’t know what an MD is listening for, which lines get a CV put down, or how an assessor scores you. Don’t let a chatbot decide your future.</p>
+    <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
+      <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
+      <div class="row" role="row"><span role="rowheader">Who decides what “good” is</span><span role="cell">The model</span><span role="cell"><b>MDs who’ve hired in finance</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Your CV</span><span role="cell">Rewrites what you paste in</span><span role="cell"><b>Scores it, finds the weak lines, then fixes them</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Your progress</span><span role="cell">Starts again each chat</span><span role="cell"><b>A readiness score you watch rise</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Your firm’s questions on camera, with your CV beside them</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Assessment centres</span><span role="cell">Tips</span><span role="cell"><b>Rehearse the group exercise, case study and inbox, scored like the real thing</b></span></div>
+      <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
+    </div>
+    <p class="mute" style="margin:14px 0 0;font-size:14px">We use AI too: it does the heavy lifting. The judgement comes from people who have sat on the other side of the table.</p>
   </section>
 
   <section class="band" aria-labelledby="c1">
