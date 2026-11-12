@@ -1,3 +1,4 @@
+import {deepFor} from '../lib/deep-assessment.mjs';
 import {sharedEvent} from '../lib/community-store.mjs';
 // My Desk: one endpoint behind the student's home page.
 // GET                         -> everything the home page shows (membership, readiness, actions, tools, applications)
@@ -191,7 +192,10 @@ export default async function handler(req, res) {
       const profile = {...(signupSaved||{}),...(latest?.profile||{})};
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
-      const reportUrl = paid && latest ? '/fullcycle.html?id=' + (paidRow||latest).id : latest ? '/result-final-design.html?id=' + latest.id : null;
+      const deepRow=paid&&latest?(await sql().query('SELECT id,input,result FROM desk_assessments WHERE id=$1',[(paidRow||latest).id]))[0]:null;
+      const deep=deepRow?await deepFor(deepRow):null;
+      const deepReady=deep?.status==='complete';
+      const reportUrl = paid && latest ? (deepReady?'/fullcycle.html?id=':'/deep-assessment.html?id=') + (paidRow||latest).id : latest ? '/result-final-design.html?id=' + latest.id : null;
       // The interview coach loads the student's CV and target from their (paid, else latest) assessment.
       const interviewUrl = latest ? '/interview-start.html?id=' + (paidRow || latest).id : '/interview-start.html';
 
@@ -252,7 +256,7 @@ export default async function handler(req, res) {
       }
       return res.json({
         testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: signupSaved?.pilotAccess?'':account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
-        member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
+        deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         prep:paid?{total:(byId[latest?.id]?.plan?.sevenDayActionPlan?.length||0)+(byId[latest?.id]?.plan?.finalSubmissionChecklist?.length||0),next:byId[latest?.id]?.plan?.sevenDayActionPlan?.[0]?.focus||'Open your report to build your plan'}:null,
         readiness: now ? { score: now.score, band: band(now.score), change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
         interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: (paidRow || latest).id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,

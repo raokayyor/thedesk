@@ -1,3 +1,4 @@
+import {deepFor,evidenceText} from '../lib/deep-assessment.mjs';
 import {currentAccount,entitlement} from '../lib/accounts.mjs';
 import {FULL_CYCLE_REVIEW_MODE,fullCycleAccess} from '../lib/full-cycle-access.mjs';
 import {ownedRecord,hasAccess,apiFailure,sql} from '../lib/report-store.mjs';
@@ -9,7 +10,8 @@ export default async function handler(req,res){
  const paid=await hasAccess(row),unlocked=await fullCycleAccess(row);const root=row.root_id?(await sql().query('SELECT id,paid_at,rechecks_used FROM desk_assessments WHERE id=$1 AND owner_hash=$2',[row.root_id,row.owner_hash]))[0]:row;
  const account=await currentAccount(req);const access=account?await entitlement(account.id):null;const expiresAt=access?.active?access.until:root?.paid_at?new Date(new Date(root.paid_at).getTime()+365*86400000).toISOString():null;
  const recheck=paid?{rootId:root.id,remaining:Date.now()<new Date(expiresAt).getTime()?Math.max(0,12-root.rechecks_used):0,expiresAt}:null;
- if(unlocked && row.report?.repair) row.report.repair=parsePart(JSON.stringify(row.report.repair),'repair',row.input.cvText);
- return res.json({success:true,id:row.id,profile:row.input.profile,...publicAssessment(row.result,row.input.quiz,row.input.cvText),paid,fullCycleReview:FULL_CYCLE_REVIEW_MODE,recheck,report:unlocked?row.report:undefined});}catch(e){return apiFailure(res,e);}
+ const deep=unlocked?await deepFor(row):null;const deepReady=deep?.status==='complete';
+ if(deepReady && row.report?.repair) row.report.repair=parsePart(JSON.stringify(row.report.repair),'repair',evidenceText(row,deep));
+ return res.json({success:true,id:row.id,profile:row.input.profile,...publicAssessment(row.result,row.input.quiz,row.input.cvText),paid,fullCycleReview:FULL_CYCLE_REVIEW_MODE,recheck,deep:unlocked?{status:deepReady?'complete':'draft',evaluation:deep?.evaluation,testChoice:deep?.testChoice,testsDate:row.created_at}:undefined,report:deepReady?row.report:undefined});}catch(e){return apiFailure(res,e);}
 }
 

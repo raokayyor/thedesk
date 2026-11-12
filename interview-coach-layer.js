@@ -145,7 +145,7 @@
       else {add('p',questions[current]?.guide?.shape||'Define the concept, explain the mechanism, give an example and discuss limitations.');for(const point of questions[current]?.guide?.points||[])add('p',point);button.textContent='See how to structure your answer';}
       const link=document.createElement('a');link.href='/library.html'+(topic?'?topic='+topic.id:'#finance');link.textContent=topic?'Understand '+topic.title+' in the library →':'Explore technical topics in the library →';link.style.cssText='display:block;margin-top:16px;font-weight:700';panel.append(link);
     } else if (!pts.length) {
-      panel.innerHTML = `<div class="dc-k">Your CV for this question</div><h3>Add your CV to see your best evidence here.</h3><p class="dc-empty">Load your saved CV from My Desk or take the free assessment to see relevant evidence here. You can also practise with a genuine example of your own.</p>`;
+      panel.innerHTML = `<div class="dc-k">Your CV for this question</div><h3>${$('cvText')?.value.trim()?'Your CV is loaded. Choose an example to discuss.':'Your CV evidence is loading or unavailable.'}</h3><p class="dc-empty">Load your saved CV from My Desk or take the free assessment to see relevant evidence here. You can also practise with a genuine example of your own.</p>`;
     } else {
       const fullHtml = (() => { let h = esc(($('cvText')?.value || '').replace(/\s*\[CONFIRM:[^\]]*\]/gi, '')); top.forEach((t, i) => { const e = esc(t.text); if (h.includes(e)) h = h.replace(e, `<span class="hl" title="Point ${i + 1}">${mark(t.text, themes)}</span>`); }); return h; })();
       panel.innerHTML = `<div class="dc-k">Your CV for this question</div><h3>Consider the ${top.length === 1 ? 'point' : top.length + ' points'} from your CV for this question</h3>
@@ -187,6 +187,8 @@
     document.body.classList.add('dc-on');
     const sel = $('answerCvEvidence'); if (sel) sel.addEventListener('change', e => { if (e.isTrusted) sel.dataset.dcTouched = '1'; });
     render();
+    // The profile loads asynchronously; setting textarea.value does not fire input.
+    Promise.resolve(window.interviewProfileReady).then(()=>{showFull=false;render();});
     const mo = new MutationObserver(() => { const q = ($('question')?.textContent || '').trim(); if (q && q !== lastQ) { showFull = false; if (sel) sel.dataset.dcTouched = ''; render(); } });
     ['question', 'questionType'].forEach(id => $(id) && mo.observe($(id), { childList: true, characterData: true, subtree: true }));
     const cv = $('cvText'); if (cv) cv.addEventListener('input', () => { clearTimeout(cv.__dc); cv.__dc = setTimeout(render, 500); });

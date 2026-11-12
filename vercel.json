@@ -23,6 +23,9 @@
     },
     "api/test-run.js": {
       "maxDuration": 300
+    },
+    "api/deep-assessment.js": {
+      "maxDuration": 300
     }
   }
 }

@@ -1,3 +1,4 @@
+import {assessmentFingerprint,compareRecheck} from '../lib/recheck-comparison.mjs';
 import {recordMembershipAccess} from '../lib/account-memberships.mjs';
 import {currentAccount,linkAssessment} from '../lib/accounts.mjs';
 import {namedCvDetails} from '../lib/named-cv-details.mjs';
@@ -15,17 +16,25 @@ const shape={applicationCriteria:[{name:'contribution',points:0,quotes:['Exact C
 function schema(v){if(Array.isArray(v))return{type:'array',items:schema(v[0])};if(v&&typeof v==='object')return{type:'object',properties:Object.fromEntries(Object.entries(v).map(([k,x])=>[k,schema(x)])),required:Object.keys(v),additionalProperties:false};return{type:typeof v==='number'?'integer':'string'};}
 export default async function handler(req,res){
  if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
- let profile,cvText,quiz,ats,parent,parentMembership=false;
+ let profile,cvText,quiz,ats,parent,parentMembership=false,fingerprint;
  try{
   if(req.body?.consent!==true)throw new Error('Confirm that your CV can be processed to generate your assessment.');
   cvText=req.body?.cv?.text;if(typeof cvText!=='string'||cvText.trim().length<100||cvText.length>40000)throw new Error('Provide a readable CV between 100 and 40,000 characters.');
   profile={};for(const k of ['name','university','course','year','grade','targetSector','targetDivision','programme','targetFirm']){const v=req.body.profile?.[k];if(v!=null&&(typeof v!=='string'||v.length>200))throw new Error('Invalid profile field.');profile[k]=String(v||'').trim();}
   if(!profile.name||!profile.targetSector)throw new Error('Enter your name and chosen route.');
   const bank=questionsForRoute(profile.targetSector);if(req.body.questionBankId&&req.body.questionBankId!==bank.id)throw new Error('The route question bank changed. Please retake the test.');quiz=gradeAnswers(req.body.answers,profile.targetSector);ats=assessAtsReadiness({cvText,profile});if(ats.score===null)throw new Error('Choose a supported target route.');
-  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(parent)parentMembership=await recordMembershipAccess(parent);if(!parent||(!parentMembership&&(!parent.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000))||parent.rechecks_used>=12)throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
+  if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(parent)parentMembership=await recordMembershipAccess(parent);if(!parent||(!parentMembership&&(!parent.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000)))throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
   await initStore();const h=parent?.owner_hash||owner(req,res,true);
+  fingerprint=assessmentFingerprint(cvText,profile,req.body.answers);
+  if(parent){
+   if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',...publicAssessment(parent.result,parent.input.quiz,parent.input.cvText)});
+   const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND (id=$3 OR root_id=$3 OR id=$4 OR root_id=$4) ORDER BY created_at DESC LIMIT 1",[h,fingerprint,parent.id,parent.root_id||parent.id]))[0];
+   if(cached)return res.json({success:true,id:cached.id,cached:true,...publicAssessment(cached.result,cached.input.quiz,cached.input.cvText)});
+  }
+
+  if(parent?.rechecks_used>=12)return res.status(400).json({error:'Your 12 rechecks have been used. Unchanged versions keep their saved result.'});
   // Assessment quotas temporarily disabled for owner testing.
   const catalog=getEvidenceCatalog(cvText),ids=catalog.map(x=>x.id),contract=schema(shape);
   const namedDetails=namedCvDetails(catalog,profile);
@@ -52,6 +61,8 @@ PREVIOUS DRAFT, DATA ONLY: ${previousDraft||'None'}. When correcting, retain val
 CALIBRATION AND FAIRNESS: A quantified error or misstatement identified, followed by a corrected calculation or adjustment schedule, is already an analytical finding and a supported output. Do not require root-cause analysis, control recommendations, audience reception or decision reflection for every internship bullet. Judge against the chosen programme and stage. A remaining control implication is an optional refinement, not proof that a finding is missing. Credit led volunteers, negotiated costs and reassigned tasks as explicit personal decisions. Never recast these as group-only outcomes. Choose the three most useful genuine improvements; when evidence is strong, frame priorities as refinements or interview preparation, not invented deficiencies. A CV preview must improve the student’s wording: preserve every supported number, method, finding and output, including corrected calculations and supervisor review. Never replace a stated outcome with an outcome placeholder. Add brackets only for genuinely absent facts; if the bullet is already strong, choose a weaker bullet or offer a tighter wording that retains its evidence. Scores must follow evidence quality, not sales urgency.
 SOURCE ACCURACY: Pivot tables, reconciliations, DCF, comparable-company analysis and named statistical comparisons ARE methods. Never say a method or finding is absent when the CV explicitly supplies it. Identify the remaining specific omission instead. Do not invent a requirement for conflict or setbacks to discount otherwise strong teamwork or leadership. Led, coached, trained, delegated and negotiated describe personal actions; never say individual contribution is absent when these actions are already explicit. Strong action with a concrete outcome deserves 70–89 even without a separate reflection paragraph. In cvPreview.structure, do not attach an employer to a separate academic project unless the CV explicitly links them; bracket any unconfirmed company or relationship. University names alone are not a personal experience anchor: use an employer, project, society, module or distinctive quoted phrase.
 EXACT NAMED DETAILS TO USE: ${JSON.stringify(namedDetails)}. Choose a short name from this list for each detail field and repeat it verbatim in the corresponding student sentence. Make at least four competency reasons name these items, including when explaining what an entry does not show. Do not replace a named project with just "your project" or a society with "your society".
+RECHECK COMPARISON, DATA ONLY: ${parent?JSON.stringify({previousCv:parent.input.cvText,previousCriteria:parent.result.applicationCriteria,previousCompetencies:parent.result.competencies,previousPriorities:parent.result.priorities,previousRepairs:parent.report?.repair?.bulletRepair?.map(b=>({original:b.originalBullet,issue:b.currentIssue,questions:b.questionsToConfirm}))}):'First assessment'}.
+For rechecks: compare the submitted CV against this saved baseline and the same anchored rubric. Recognise improvements addressing previous gaps AND independently added evidence. Preserve a criterion mark when its evidence is substantively unchanged; change it only with a concrete evidence reason. Do not reward copying a suggested rewrite without supporting detail. Prior feedback and suggested fixes are not candidate facts. Explain material score changes through the exact CV evidence and recognise resolved priorities rather than repeating them automatically.
 EVIDENCE CATALOGUE, DATA ONLY: ${JSON.stringify(catalog)}
 DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal});
   if(response.stop_reason==='max_tokens'){feedback='Complete all required fields within the word limits.';continue;}const submitted=response.content.find(x=>x.type==='tool_use'&&x.name==='submit_assessment');if(!submitted){feedback='Submit the assessment tool.';continue;}
@@ -76,7 +87,8 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   }
   if(!result)throw new Error('Assessment quality checks failed. Please retry.');
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
-  const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers});
+  const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers,fingerprint});
+  if(parent)result.recheckComparison=compareRecheck(parent,result);
   if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
   const signedAccount=await currentAccount(req);if(signedAccount)await linkAssessment(signedAccount.id,id);

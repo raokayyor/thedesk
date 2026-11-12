@@ -374,6 +374,7 @@ async function load(){
  if(session){status('Verifying your checkout…');await api('/api/verify-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,sessionId:session})});history.replaceState(null,'','/fullcycle.html?id='+encodeURIComponent(id)+location.hash);}
  var saved=await api('/api/assessment-result?id='+encodeURIComponent(id));
  if(!saved.paid&&!saved.fullCycleReview)throw new Error('Full Cycle purchase required. Open your assessment result to continue to checkout.');
+ if(saved.deep?.status!=='complete'){location.replace('/deep-assessment.html?id='+encodeURIComponent(id));return new Promise(function(){});}
  if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.querySelector('.wrap').before(notice);}
  var paid={},parts=['verdict','repair','plan'];
  for(var i=0;i<parts.length;i++){
@@ -384,7 +385,7 @@ async function load(){
  }
  status('Building your CV from validated repairs…');
  var draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});
- return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
+ return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,deep:saved.deep,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
 
 function safeLink(value){var s=String(value||'');return /^\/(?!\/)|^#[a-z][a-z0-9_-]*$/i.test(s)?s:'/test-hub.html';}
@@ -687,6 +688,7 @@ function render(R){
     var prev=SECTIONS[i-1],next=SECTIONS[i+1];
     return '<section class="pane" id="p-'+s.id+'">'+S[s.id]+'<div class="pager">'+(prev?'<a href="#'+prev.id+'"><span>Back</span>← '+esc(prev.t)+'</a>':'<span></span>')+(next?'<a href="#'+next.id+'" style="text-align:right"><span>Next</span>'+esc(next.t)+' →</a>':'')+'</div></section>';
   }).join("");
+  if(R.deep?.evaluation){var deepBanner=document.createElement('section');deepBanner.className='card';deepBanner.style.cssText='margin-bottom:20px;border-top:3px solid #ff5a14';deepBanner.innerHTML='<div class="kicker">Deep CV &amp; evidence assessment</div><h2>'+R.deep.evaluation.score+'/100</h2><p>'+esc(R.deep.evaluation.summary)+'</p><p class="mute">'+esc(R.deep.evaluation.scope)+'</p><p class="mute">Initial free assessment: '+esc(R.result.overallScore)+'/100 (different scope). Tests: '+(R.deep.testChoice==='skip'?'not assessed in this deep assessment. Any earlier test results below are historical.':'carried forward from your initial assessment'+(R.deep.testsDate?' on '+new Date(R.deep.testsDate).toLocaleDateString('en-GB'):'')+', not retaken.')+'</p>';main.prepend(deepBanner);}
   var counts={cv:S._qList.length,interview:(P.interviewRiskMap||[]).length,competencies:(P.competencyRepair||[]).length,technical:(P.workedAnswers||[]).length,plan:(P.sevenDayActionPlan||[]).length,submit:(P.finalSubmissionChecklist||[]).length,application:(P.applicationRiskMap||[]).length};
   nav.innerHTML=SECTIONS.map(function(s,i){return '<li><a href="#'+s.id+'" data-nav="'+s.id+'"><span class="n">'+String(i).padStart(2,"0")+'</span><span>'+esc(s.t)+'</span><span class="c" data-c="'+s.id+'">'+(counts[s.id]||"")+'</span></a></li>';}).join("");
 

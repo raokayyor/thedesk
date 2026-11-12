@@ -20,6 +20,7 @@ if(row&&controls&&transcript){
  const body=document.createElement('div');fold.append(body);help.append(fold);
  function draw(){
   const bank=globalThis.DeskInterviewBank,key=document.getElementById('firmSelect')?.value,firm=bank?.firms?.[key],pack=bank?.firmPacks?.[key];
+  fold.hidden=!key||key==='general';if(fold.hidden)return;
   summary.textContent=(firm?.label||'Your firm')+' · preparation & practitioner tips';body.replaceChildren();
   const add=(tag,text)=>{const el=document.createElement(tag);el.textContent=text;body.append(el);return el};
   add('h4','Understand the firm');add('p',firm?.focus||'Choose your target firm in interview setup to see relevant preparation.');
@@ -28,5 +29,5 @@ if(row&&controls&&transcript){
   add('p','The Desk preparation guidance; these are practice themes, not confirmed employer questions.').style.cssText='font-size:11px;color:#64748b';
  }
  draw();document.addEventListener('desk:questionchange',draw);document.getElementById('firmSelect')?.addEventListener('change',draw);setTimeout(draw,1500);
- const style=document.createElement('style');style.textContent='.interview-recording-controls .voice-controls{padding:12px}.interview-cv-help details h4{margin:16px 0 6px}.interview-cv-help details p,.interview-cv-help details li{font-size:13px;line-height:1.6}.session-context{padding:14px 18px!important;min-height:0!important}.session-context h2{margin:6px 0!important}.session-context>div:empty{display:none}';document.head.append(style);
+ const style=document.createElement('style');style.textContent='.interview-recording-controls .voice-controls{padding:12px}.interview-cv-help .dc-cv[hidden]{display:none!important}.interview-cv-help details h4{margin:16px 0 6px}.interview-cv-help details p,.interview-cv-help details li{font-size:13px;line-height:1.6}.session-context{padding:14px 18px!important;min-height:0!important}.session-context h2{margin:6px 0!important}.session-context>div:empty{display:none}';document.head.append(style);
 })();

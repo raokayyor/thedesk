@@ -87,7 +87,7 @@ async function loadAssessment(){
   const cv=saved.cv?.text||saved.cv?.sourceText||'';
   $('#cvText').value=typeof cv==='string'?cv:'';
   $('#cvText').placeholder=cv?'Your saved CV is loaded.':'Add an experience you want to practise discussing.';
-  action.hidden=true;derive();
+  action.hidden=true;derive();$('#cvText').dispatchEvent(new Event('input',{bubbles:true}));document.dispatchEvent(new Event('desk:cvloaded'));
  }catch(e){
   $('#candidateName').textContent='Profile unavailable';
   $('#candidateSummary').textContent=e.name==='AbortError'?'Loading took too long. Refresh to retry, or use the CV option below.':e.message;
