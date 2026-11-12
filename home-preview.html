@@ -101,16 +101,16 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
 
   <section class="hero" aria-labelledby="h">
     <div>
-      <div class="kicker">Finance careers · built by people who hire</div>
+      <div class="kicker">Banking · markets · asset management · Big Four</div>
       <h1 id="h"></h1>
       <p class="sub" id="sub"></p>
       <div class="firms">
-        <div class="q" id="fq">Which firm are you applying to?</div>
+        <div class="q" id="fq">What are you aiming for?</div>
         <div class="chips" role="group" aria-labelledby="fq" id="chips"></div>
       </div>
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="small">10 minutes · free · no card. <a href="/my.html">Or look around first →</a></div>
-      <div class="trust"><div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div><span>Built by MDs from UBS, Barclays, SocGen and EY.</span></div>
+      <div class="trust"><div class="faces" aria-hidden="true"><span>KR</span><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div><span>Built by people who’ve hired at UBS, Barclays, SocGen, JPM Asset Management and EY.</span></div>
     </div>
 
     <aside class="sample" aria-label="Example result">
@@ -211,22 +211,22 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color
 <script>
 (() => {
   const V = {
-    1: { h: 'Banks won’t tell you why you were rejected. We will, before you apply.', s: 'Your free score for the firm you want, the line that’s holding you back, and how to fix it.' },
-    2: { h: 'One line on your CV is costing you interviews. Find it in 10 minutes.', s: 'Free, and marked against what your target firm looks for, by a framework built with people who’ve hired for banks.' }
+    1: { h: 'Banks won’t tell you why you were rejected. We will, before you apply.', s: 'Your free score for the role you want, the line that’s holding you back, and how to fix it.' },
+    2: { h: 'One line on your CV is costing you interviews. Find it in 10 minutes.', s: 'Free, and marked against what your target role looks for, by a framework built with people who’ve hired in finance.' }
   };
   const v = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1;
   document.getElementById('h').textContent = V[v].h; document.getElementById('sub').textContent = V[v].s;
   document.getElementById('v' + v).setAttribute('aria-current', 'true');
-  const FIRMS = [['jpm', 'J.P. Morgan'], ['gs', 'Goldman Sachs'], ['barclays', 'Barclays'], ['rothschild', 'Rothschild'], ['blackrock', 'BlackRock'], ['ey', 'EY'], ['pwc', 'PwC'], ['other', 'Another firm']];
+  const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
   const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
-  chips.innerHTML = FIRMS.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}" data-l="${l}">${l}</button>`).join('');
+  chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
   chips.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    const firm = b.dataset.k === 'other' ? '' : b.dataset.l;
-    const href = '/assessment-start.html' + (firm ? '?firm=' + encodeURIComponent(firm) : '');
+    const r = ROUTES.find(x => x[0] === b.dataset.k);
+    const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
     cta.href = href; cta2.href = href;
-    cta.textContent = firm ? `Get my free ${firm} score →` : 'Get my free score →';
+    cta.textContent = r[2] ? `Get my free ${r[2]} score →` : 'Get my free score →';
   });
 })();
 </script>
