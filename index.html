@@ -164,7 +164,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       </div>
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="for" id="for" aria-live="polite"></div>
-      <div class="small">Free · no card · <a href="/amelia-result.html">see a sample report first</a></div>
+      <div class="small">Free · no card · <a href="/report-sample.html">see a sample report first</a></div>
       <p class="student-proof" style="font-size:13px;color:var(--mute);margin:12px 0 0">Used by students at Bristol, Warwick and LSE</p>
     </div>
 
@@ -186,7 +186,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
       <div class="row" role="row"><span role="rowheader">Who decides what <em class="keep-together">“good” is</em></span><span role="cell">The model</span><span role="cell"><b>People who’ve spent their careers in finance</b></span></div>
       <div class="row" role="row"><span role="rowheader">Your CV</span><span role="cell">Rewrites what you paste in</span><span role="cell"><b>Scores it, finds the weak lines, then fixes them</b></span></div>
-      <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Your firm’s questions on camera, with your CV beside them</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Questions and answer guidance personalised to your CV and target firm, practised on camera</b></span></div>
+      <div class="row" role="row"><span role="rowheader">Assessment centre practice</span><span role="cell">Can suggest exercises and discuss your answers</span><span role="cell"><b>Interactive group exercises, case studies and feedback on your contributions, plus a crib sheet built from your CV</b></span></div>
       <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
     </div>
     <p class="after">Our tools do the heavy lifting. The judgement comes from people who’ve spent their careers in finance.</p>
@@ -300,7 +301,7 @@ document.getElementById('people').innerHTML =
       <div class="line good"><b>Your line, rewritten</b>${esc(s.fix)}</div>
       <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
       <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>
-      <div class="samples">See a full sample report: <a href="/amelia-result.html">Free</a> · <a href="/fullcycle-amelia.html">Member</a></div>`;
+      <div class="samples">See a full sample report: <a href="/report-sample.html">Free</a> · <a href="/fullcycle-amelia.html">Member</a></div>`;
   }
   sample('ib');
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
