@@ -195,6 +195,14 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
   $('back').addEventListener('click', () => { clearInterval(readT); $('briefStep').hidden = true; $('setup').hidden = false; });
 
   // ---------- room ----------
+  // Reuse the player unlocked by the Start gesture (required by mobile Safari).
+  let voicePlayer=null;
+  function unlockVoice(){
+    if(typeof Audio==='undefined')return Promise.resolve();
+    voicePlayer??=new Audio();
+    voicePlayer.src='data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==';
+    try{return voicePlayer.play().then(()=>voicePlayer.pause()).catch(()=>{});}catch{return Promise.resolve();}
+  }
   const post = body => fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({...body,mode,allocation,chair,newsCount,candidateName,roundSeed}),signal:AbortSignal.timeout(115000) }).then(async r => ({ ok: r.ok, status: r.status, j: await r.json().catch(() => ({})) })).catch(()=>({ok:false,status:0,j:{error:'Connection interrupted. Please try again.'}}));
   const elapsed = () => Math.floor(((paused?pauseAt:Date.now()) - startAt) / 1000);
   function speaking(who) { ['you', 'dominic', 'priya', 'sam'].forEach(w => {const tile=$('t-'+w);tile.classList.toggle('on',w===who);tile.setAttribute('aria-label',(w==='you'?candidateName:NAMES[w])+(w===who?' — speaking':' — waiting'));const status=tile.querySelector?.('.st');if(status)status.textContent=w===who?'Speaking / your floor':w==='you'?'Your turn when ready':'AI candidate';}); }
@@ -215,8 +223,13 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
         const r = await fetch('/api/assessment-centre', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'voice', speaker: who, text }),signal:AbortSignal.timeout(20000) });
         if(voiceRun!==generation||ended)return;
         if (r.ok) {
-          const url = URL.createObjectURL(await r.blob()); const a = new Audio(url); audioNow = a;
-          await new Promise(res => {let lastTime=0,lastProgress=Date.now();const watchdog=setInterval(()=>{if(a.currentTime>lastTime){lastTime=a.currentTime;lastProgress=Date.now();}else if(Date.now()-lastProgress>30000){a.pause();$('roomMsg').textContent='Audio stalled. The full contribution remains in the discussion transcript.';}},5000);const finish=()=>{clearInterval(watchdog);res();};a.onended=finish;a.onerror=finish;a.onpause=finish;a.play().catch(finish);});
+          const url = URL.createObjectURL(await r.blob()); const a = voicePlayer || new Audio(); voicePlayer=a; a.src=url; audioNow = a;
+          await new Promise(res => {let lastTime=0,lastProgress=Date.now();const watchdog=setInterval(()=>{if(a.currentTime>lastTime){lastTime=a.currentTime;lastProgress=Date.now();}else if(Date.now()-lastProgress>30000){a.pause();$('roomMsg').textContent='Audio stalled. The full contribution remains in the discussion transcript.';}},5000);const finish=()=>{clearInterval(watchdog);res();};a.onended=finish;a.onerror=finish;a.onpause=finish;a.play().catch(()=>{
+            if(ended||voiceRun!==generation)return finish();
+            const retry=document.createElement('button');retry.type='button';retry.className='btn hot';retry.textContent='Tap to hear '+NAMES[who];
+            $('roomMsg').textContent='Your browser needs a tap to enable discussion audio.';$('roomMsg').appendChild(retry);
+            retry.onclick=()=>{a.play().then(()=>retry.remove()).catch(()=>{$('roomMsg').textContent='Audio is unavailable. Read the opening in the discussion transcript.';finish();});};
+          });});
           URL.revokeObjectURL(url); audioNow = null; return done();
         }
       } catch {}
@@ -249,7 +262,7 @@ select,input,textarea,button{font-family:inherit;font-size:14px}select{line-heig
   }
 
   $('start').addEventListener('click', async () => {
-    $('start').disabled=true;await nameReady;try{const response=await fetch('/api/assessment-centre?view=info');const access=await response.json();if(!response.ok||!access.member){$('briefAccess').hidden=false;$('briefAccess').textContent='Membership access is required before starting. Sign in or open the sample paid Preview session above.';$('start').disabled=true;return;}}catch{$('briefAccess').hidden=false;$('briefAccess').textContent='Could not check access. Please try again.';$('start').disabled=false;return;}clearInterval(readT);$('start').disabled=true;$('start').textContent='Setting up microphone…';try{readyMic=await requestMicrophone();readyMic.getAudioTracks().forEach(t=>t.enabled=false);autoMic=true;}catch{autoMic=false;$('roomMsg').textContent='Microphone access was not granted. You can type your contribution.';}finally{$('start').disabled=false;$('start').textContent='Start discussion →';}
+    $('start').disabled=true;const voiceUnlocked=unlockVoice();await voiceUnlocked;await nameReady;try{const response=await fetch('/api/assessment-centre?view=info');const access=await response.json();if(!response.ok||!access.member){$('briefAccess').hidden=false;$('briefAccess').textContent='Membership access is required before starting. Sign in or open the sample paid Preview session above.';$('start').disabled=true;return;}}catch{$('briefAccess').hidden=false;$('briefAccess').textContent='Could not check access. Please try again.';$('start').disabled=false;return;}clearInterval(readT);$('start').disabled=true;$('start').textContent='Setting up microphone…';try{readyMic=await requestMicrophone();readyMic.getAudioTracks().forEach(t=>t.enabled=false);autoMic=true;}catch{autoMic=false;$('roomMsg').textContent='Microphone access was not granted. You can type your contribution.';}finally{$('start').disabled=false;$('start').textContent='Start discussion →';}
     candidateName=$('candidateName').value.trim().slice(0,40)||'You';NAMES.you=candidateName;floorRequested=false;generation++;busy=false;clearInterval(readT);
     $('briefStep').hidden = true; $('room').hidden = false; $('rTitle').textContent = scenario.title; $('rBriefBody').innerHTML = briefHtml(scenario);$('rBrief').open=false;
     directedSpeaker=null;userFloor=false;speakerQueue=[];queueCursor=0;for(let i=0;i<300;i++){queuedSpeaker();queueCursor++;}queueCursor=0;pendingNews=false;newsCount=0;newsSchedule=globalThis.DeskGroupUpdates.schedule();$('newsUpdates').textContent='No developments yet. Use the original brief.';$('nextUpdate').disabled=false;transcript = []; $('log').innerHTML = ''; paused=false;pauseAt=0;$('pauseDiscussion').textContent='Stop / pause discussion';ended = false; startAt = Date.now(); lastActivity = Date.now();

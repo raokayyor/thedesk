@@ -1,5 +1,8 @@
 {
   "functions": {
+    "api/pilot-access.js": {
+      "includeFiles": "samples/amelia-report-v3-preview.json"
+    },
     "api/analyse-mot.js": {
       "maxDuration": 300
     },

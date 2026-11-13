@@ -1,5 +1,6 @@
 import {randomBytes} from 'node:crypto';
-import {sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
+import {sameOrigin,sql,apiFailure,hash} from '../lib/report-store.mjs';
+import {seedAmeliaMember} from '../lib/amelia-member.mjs';
 import {normEmail,validEmail,initAccounts,upsertAccount,currentAccount,startSession,allow} from '../lib/accounts.mjs';
 import {initMemberships,accountMembership} from '../lib/account-memberships.mjs';
 import {validPilotCode,PILOT_EXPIRES} from '../lib/pilot-access.mjs';
@@ -15,12 +16,18 @@ export default async function handler(req,res){
   if(!validPilotCode(req.body?.code))return res.status(403).json({error:'That access code is incorrect or has expired.'});
   await initAccounts();await initMemberships();
   const existing=await currentAccount(req);
-  if(existing&&(await accountMembership(existing.id)).source==='pilot')return res.json({next:'/my.html',resumed:true});
+  const amelia=email==='ameliachen@gmail.com';
+  if(existing&&(await accountMembership(existing.id)).source==='pilot'){
+   const saved=(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[existing.id]))[0]?.data;
+   if(!!saved?.ameliaMember===amelia)return res.json({next:'/my.html',resumed:true});
+  }
   // Random internal identity: a shared code must never open a real account by email.
   const account=await upsertAccount('pilot-'+randomBytes(16).toString('hex')+'@access.thedesk.invalid');
-  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({pilotAccess:true,contactEmail:email})]);
+  const ownerToken=randomBytes(32).toString('hex');
+  const profile=amelia?await seedAmeliaMember(account.id,hash(ownerToken)):{};
+  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({...profile,pilotAccess:true,contactEmail:email,ameliaMember:amelia})]);
   await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'pilot',$3)",['pilot:'+account.id,account.id,PILOT_EXPIRES]);
-  res.setHeader('Set-Cookie',`desk_owner=${randomBytes(32).toString('hex')}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`);
+  res.setHeader('Set-Cookie',`desk_owner=${ownerToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`);
   await startSession(res,account.id);
   return res.json({next:'/my.html',resumed:false});
  }catch(e){return apiFailure(res,e);}
