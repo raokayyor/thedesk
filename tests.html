@@ -39,15 +39,22 @@ h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.2;margi
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app=document.getElementById('app');
 let T=null,qs=[],ans=[],i=0,started=0,tick=null;
-const SECTION=['numerical','commercial'].includes(new URLSearchParams(location.search).get('section'))?new URLSearchParams(location.search).get('section'):'both';
+let SECTION=['numerical','commercial'].includes(new URLSearchParams(location.search).get('section'))?new URLSearchParams(location.search).get('section'):'both';
 const LABEL={numerical:'Numerical test',commercial:'Commercial & technical test',both:'Mixed test'};
 function intro(){
-  const tab=(k,t,d)=>`<a href="/tests.html?section=${k}" class="card" style="text-decoration:none;display:block;${SECTION===k?'border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset':''}"><b>${t}</b><div class="mute">${d}</div></a>`;
+  const tab=(k,t,d)=>`<button type="button" data-section="${k}" aria-pressed="${SECTION===k}" class="card" style="font:inherit;color:inherit;text-align:left;cursor:pointer;display:block;${SECTION===k?'border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset':''}"><b>${t}</b><div class="mute">${d}</div></button>`;
   app.innerHTML=`<div class="kicker">Tests</div><h1>${esc(LABEL[SECTION])}</h1>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px" class="pick">${tab('numerical','Numerical','10 questions · about 8 min')}${tab('commercial','Commercial & technical','10 questions for your route')}${tab('both','Mixed','5 of each')}</div>
   <div class="card"><p style="margin:0">${SECTION==='numerical'?'Percentages, ratios, growth, margins and the quick maths banks test online.':SECTION==='commercial'?'Markets, accounting and deal questions for your route: the commercial awareness interviewers probe.':'Five commercial and technical questions for your route, then five numerical.'} New questions each time, from a bank of over 2,000.</p>
   <ul class="mute" style="margin:12px 0 0;padding-left:18px"><li>The clock is a guide, not a cut-off.</li><li>Your best of your last 3 results in each section counts towards your readiness score.</li><li>Every question you miss comes with the working.</li></ul>
   <div style="margin-top:18px"><button class="btn hot" id="go">Start the test</button></div><p class="mute" id="err" role="status"></p></div>`;
+  document.querySelectorAll('[data-section]').forEach(button=>button.onclick=()=>{
+    if(SECTION===button.dataset.section)return;
+    SECTION=button.dataset.section;
+    const url=new URL(location.href);url.searchParams.set('section',SECTION);history.replaceState(null,'',url);
+    intro();
+    document.querySelector('[data-section="'+SECTION+'"]').focus();
+  });
   document.getElementById('go').onclick=start;
 }
 async function start(){
