@@ -26,7 +26,8 @@ export default async function handler(req,res){
   const ownerToken=randomBytes(32).toString('hex');
   const profile=amelia?await seedAmeliaMember(account.id,hash(ownerToken)):{};
   await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({...profile,pilotAccess:true,contactEmail:email,ameliaMember:amelia})]);
-  await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'pilot',$3)",['pilot:'+account.id,account.id,PILOT_EXPIRES]);
+  const until=amelia?new Date(Date.now()+365*86400000).toISOString():PILOT_EXPIRES;
+  await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'pilot',$3)",['pilot:'+account.id,account.id,until]);
   res.setHeader('Set-Cookie',`desk_owner=${ownerToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`);
   await startSession(res,account.id);
   return res.json({next:'/my.html',resumed:false});

@@ -19,7 +19,8 @@
   }catch(error){const status=document.querySelector('.microphone-status');if(status)status.textContent=error.name==='NotAllowedError'?'Microphone access was blocked. Allow microphone access in your browser, then click Start answer again.':'No microphone is available. Check your input device, or type an answer in the transcript box.';notice(error.name==='NotAllowedError'?'Microphone permission was not granted. Allow access in your browser, or type your answer below.':'No microphone could be connected. You can still type your answer below.')}
   finally{audioButton.disabled=false;cameraButton.disabled=false}
  }
- window.DeskInterviewMedia={connect};
+ async function connectForAnswer(){let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}await connect(choice!=='microphone')}
+ window.DeskInterviewMedia={connect,connectForAnswer};
  async function reconnect(){
   let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}
   if(!choice||!navigator.permissions?.query)return;
