@@ -30,6 +30,16 @@
     },
     "api/deep-assessment.js": {
       "maxDuration": 300
+    },
+    "api/result-rewrite.js": {
+      "maxDuration": 60,
+      "includeFiles": "samples/amelia-report-v3-preview.json"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/result-email-cron",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }

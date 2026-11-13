@@ -3,8 +3,8 @@
  if(window.DeskNavigation)return;
  const dates=document.createElement('script');dates.src='/member-dashboard-core.js';dates.onload=()=>{const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=boot;document.head.append(core);};document.head.append(dates);
  const css=document.createElement('link');css.rel='stylesheet';css.href='/desk-navigation.css';document.head.append(css);
- let data={},root,account;
- window.DeskNavigation={update(d){data=d||{};if(root)draw();},get data(){return data}};
+ let data={},root,account,fetchVersion=0;
+ window.DeskNavigation={refresh(){const version=++fetchVersion;return fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d&&version===fetchVersion){data=d;try{sessionStorage.setItem('desk-navigation-cache',JSON.stringify(d))}catch{}if(root)draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}return d;}).catch(()=>null);},update(d){data=d||{};if(root)draw();},get data(){return data}};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const paths={desk:'<path d="M3 10.5 12 4l9 6.5M5 9.5V20h14V9.5M10 20v-5h4v5"/>',prac:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',apps:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/>',comm:'<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5"/><circle cx="18" cy="9" r="2.5"/><path d="M16 15c3 0 4 2 5 5"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',cam:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>',group:'<circle cx="12" cy="7" r="3"/><circle cx="5" cy="15" r="2.5"/><circle cx="19" cy="15" r="2.5"/><path d="M8 20c1-3 2-4 4-4s3 1 4 4"/>',case:'<path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h5"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h2M14 18h2"/>',sheet:'<path d="M7 3h10v18H7zM10 7h4M10 11h4M10 15h2"/>'};
  function icon(id){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+paths[id]+'</svg>';}
@@ -17,7 +17,7 @@
   try{data=JSON.parse(sessionStorage.getItem('desk-navigation-cache')||'{}')}catch{}
   draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:data}));
   const tour=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
-  if(!tour)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d){data=d;try{sessionStorage.setItem('desk-navigation-cache',JSON.stringify(d))}catch{}draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}}).catch(()=>{});
+  if(!tour)window.DeskNavigation.refresh();
   let focused=false;
   function syncVisibility(){
    const visible=id=>{const el=document.getElementById(id);return el&&!el.hidden&&getComputedStyle(el).display!=='none'};

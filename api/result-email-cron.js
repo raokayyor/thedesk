@@ -1,0 +1,8 @@
+import {timingSafeEqual} from 'node:crypto';
+import {sql,apiFailure} from '../lib/report-store.mjs';
+import {initResultEmails,sendResultJob} from '../lib/result-emails.mjs';
+import {initAccounts} from '../lib/accounts.mjs';
+import {initMemberships} from '../lib/account-memberships.mjs';
+import {emailReady} from '../lib/email.mjs';
+export const maxDuration=300;
+export default async function handler(req,res){const expected=process.env.CRON_SECRET||'',actual=String(req.headers.authorization||'').replace(/^Bearer /,'');if(!expected||Buffer.byteLength(actual)!==Buffer.byteLength(expected)||!timingSafeEqual(Buffer.from(actual),Buffer.from(expected)))return res.status(401).end();if(req.method!=='GET')return res.status(405).end();if(process.env.VERCEL_ENV!=='production'||!emailReady())return res.json({sent:0,disabled:true});try{await Promise.all([initResultEmails(),initAccounts(),initMemberships()]);const jobs=await sql().query(`SELECT s.*,j.kind,d.input,d.result,d.paid_at FROM desk_result_email_jobs j JOIN desk_result_emails s ON s.id=j.subscription_id JOIN desk_assessments d ON d.id=s.assessment_id WHERE j.sent_at IS NULL AND j.due_at<=now() AND s.unsubscribed_at IS NULL AND (j.lease_until IS NULL OR j.lease_until<now()) AND (j.kind='result' OR (d.paid_at IS NULL AND NOT EXISTS(SELECT 1 FROM desk_account_assessments a JOIN desk_account_memberships m ON m.account_id=a.account_id WHERE a.assessment_id=d.id AND m.until>now() AND m.revoked_at IS NULL))) ORDER BY j.due_at LIMIT 20`);let sent=0;for(const job of jobs){try{if(await sendResultJob(job,job.kind,{id:job.assessment_id,input:job.input,result:job.result}))sent++;}catch(e){console.error('result email delivery failed',{kind:job.kind});}}return res.json({sent});}catch(e){return apiFailure(res,e)}}
