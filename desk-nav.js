@@ -29,6 +29,12 @@
  function draw(){
   const C=window.DeskNavigationCore,p=new URLSearchParams(location.search),active=location.pathname==='/desk-section.html'?p.get('view'):C.groupFor(location.pathname);
   root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?'/my.html':'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+g.label+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a href="'+esc(C.href(key,data))+'">'+esc(title)+'</a>').join('')+'</div></section>';}).join('')+'</div>';
+  if(location.pathname==='/my.html'){
+   const header=document.querySelector('header .hin'),university=data.profile?.university||'';
+   let label=document.getElementById('desk-university');
+   if(header&&!label){label=document.createElement('span');label.id='desk-university';label.style.cssText='font:500 13px/1.3 Figtree,Arial,sans-serif;color:#5f6b76;margin-left:12px;margin-right:auto;max-width:40%;';header.querySelector('.logo')?.after(label);}
+   if(label){label.textContent=university;label.hidden=!university;}
+  }
   account.textContent=(data.profile?.name||data.profile?.firstName||'').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()||'•';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in or create an account');window.DeskNavigation.icon=icon;
  }
 })();

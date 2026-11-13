@@ -150,7 +150,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   <a class="logo" href="/" style="text-decoration:none">The Desk<small>Finance careers. Done properly.</small></a>
   <nav class="tabs" aria-label="Site navigation"><a href="/assessment-start.html">Assess your readiness</a><a id="backToPlan" href="/assessment-start.html">Full Cycle</a><span class="on">Graduate 2027</span></nav>
 </div></header>
-<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button><button type="button" id="sIN" aria-pressed="false">Insurance</button></nav>
+<nav class="sectors wrap" aria-label="Sector"><button type="button" id="sBB" aria-pressed="true">Bulge bracket banks</button><button type="button" id="sAM" aria-pressed="false">Asset management</button><button type="button" id="sB4" aria-pressed="false">Big 4 accountancy</button><button type="button" id="sIN" aria-pressed="false">Insurance</button></nav>
 
 <main class="wrap">
   <section class="hero">
@@ -169,7 +169,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
     <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="notyet">Not open yet</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
     <label class="toggle"><input type="checkbox" id="fEntry"> Open to anyone only</label>
     <label class="toggle"><input type="checkbox" id="fMine"> My list</label>
-    <span class="count" id="count"></span><button type="button" class="btn" id="trackAll" disabled>Track all shown</button>
+    <span class="count" id="count"></span><button type="button" class="btn" id="trackAll" disabled>Add all shown to my list</button>
   </div>
 
   <div class="list" id="list"></div>
@@ -365,6 +365,8 @@ P=P.concat([
   note:"Filled for this cycle. The window usually runs September to October, so set a reminder for next year.",url:"https://careers.munichre.com/munichre-actuarial-graduate-trainee-programme",src:"careers.munichre.com"}
 ]);
 P.forEach(function(p){if(!p.type)p.type="Graduate"});
+P=P.concat([{"sector": "am", "firm": "BlackRock", "name": "Full-Time Analyst Programme · EMEA", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.blackrock.com/students-and-graduates-emea", "src": "careers.blackrock.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "BlackRock", "name": "Summer Internship Programme · EMEA", "type": "Summer internship", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.blackrock.com/students-and-graduates-emea", "src": "careers.blackrock.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "Schroders", "name": "Graduate Programme", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://www.schroders.com/en/about-us/careers/graduates/", "src": "schroders.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "Fidelity International", "name": "Equity Research Graduate Programme · London", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://fidelityinternational.tal.net/vx/lang-en-GB/mobile-0/brand-5/candidate/so/pm/1/pl/1/opp/1406-Equity-Research-Graduate-Programme-2027-London/en-GB", "src": "fidelityinternational.tal.net", "checked": "2026-11-13"}, {"sector": "am", "firm": "Fidelity International", "name": "Summer Internship Programme", "type": "Summer internship", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.fidelityinternational.com/early-careers-overview/interns-and-insights/", "src": "careers.fidelityinternational.com", "checked": "2026-11-13"}]);
+var FIRMS_AM=[["BlackRock","Select your programme and location on the official EMEA early-careers page; check its application limits before choosing functions."],["Schroders","Check the graduate programme page for business areas and current vacancies."],["Fidelity International","Check each programme listing for eligibility and dates; graduate and internship opportunities vary by location."]];
 var FIRMS_IN=[
  ["Zurich","You can apply to only one Zurich programme. No visa sponsorship: you need indefinite UK right to work and 3 years' UK residence. Tests are run by Cappfinity, including a job simulation."],
  ["WTW","One WTW application per year. Online test and video interview, then an assessment centre. Strong interns can be offered the graduate programme."],
@@ -394,7 +396,7 @@ var EXS={bb:null,big4:{name:"Emily",overall:85,
   fixes:{"Audit & Assurance":["Prepare to explain your £3,100 cut-off finding","Practise explaining your decision when the speaker cancelled"],
          "Tax":["Show an interest in tax beyond your module","Practise explaining VAT and corporation tax simply"],
          "Deals & Advisory":["Add the client and business context to your Vale Accountancy work","Practise valuation basics: enterprise value and multiples"]}}};
-EXS.ins=EXS_INS;
+EXS.ins=EXS_INS;EXS.am=EXS.bb;
 var SECTOR="bb";
 function cur(){return P.filter(function(p){return p.sector===SECTOR})}
 var FIRMS=[
@@ -473,6 +475,9 @@ document.getElementById("stats").innerHTML=
  '<div class="stat"><b>'+openEntry.length+'</b><span>open to anyone</span></div>'+
  '<div class="stat"><b>'+interns.length+'</b><span>for the bank\'s own interns only</span></div>';
 document.getElementById("insight").innerHTML='<p>Of the <b>'+open.length+'</b> London graduate roles open right now, <b>'+interns.length+'</b> are only for that bank\'s own summer interns. At the bulge brackets, the graduate job is usually won a year earlier, in the summer internship.</p><a href="/assessment-start.html">See 2027 summer internships →</a>';
+}else if(SECTOR==="am"){
+ document.getElementById("stats").innerHTML='<div class="stat"><b>'+C.length+'</b><span>programmes to track</span></div><div class="stat"><b>'+new Set(C.map(function(p){return p.firm})).size+'</b><span>asset managers</span></div>';
+ document.getElementById("insight").innerHTML='<p>Explore graduate and internship routes in asset management. Dates and availability must be checked on the official firm pages.</p>';
 }else if(SECTOR==="ins"){
 var notyet=C.filter(function(p){return st(p)==="notyet"});
 var paid=C.filter(function(p){return (p.elig||[]).some(function(e){return e.indexOf("£")>-1})});
@@ -491,7 +496,7 @@ document.getElementById("stats").innerHTML=
  '<div class="stat"><b>1</b><span>PwC application per year, across every programme</span></div>';
 document.getElementById("insight").innerHTML='<p>None of the Big 4 publish a closing date. They recruit <b>until places are filled</b>, so a strong application in October has more seats to compete for than the same one in February.</p><a href="/assessment-start.html">Check my readiness now →</a>';
 }
-var T={bb:["Deadline tracker · Bulge bracket · London","2027 graduate programmes, checked against each bank's own site.","How each bank hires",FIRMS],
+var T={am:["Deadline tracker · Asset management","Asset management graduate programmes and internships.","Explore each asset manager",FIRMS_AM],bb:["Deadline tracker · Bulge bracket · London","2027 graduate programmes, checked against each bank's own site.","How each bank hires",FIRMS],
        big4:["Deadline tracker · Big 4 accountancy · UK","2027 Big 4 graduate schemes, checked against each firm's own site.","How each Big 4 firm hires",FIRMS_B4],
        ins:["Deadline tracker · Insurance · UK","Insurance graduate schemes, internships and placements for 2027.","How each insurer hires",FIRMS_IN]}[SECTOR];
 document.getElementById("kick").textContent=T[0];
@@ -549,7 +554,7 @@ function render(){
     if(fMine.checked&&!mine[key(p)])return false;
     return true;
   }).sort(function(a,b){return rank(a)-rank(b)});
-  shownRows=rows;var bulk=document.getElementById("trackAll");var untracked=rows.filter(function(p){return !mine[key(p)]});bulk.disabled=!trackerLoaded||!untracked.length;bulk.textContent=untracked.length?"Track all shown ("+untracked.length+")":"All shown are tracked";
+  shownRows=rows;var bulk=document.getElementById("trackAll");var untracked=rows.filter(function(p){return !mine[key(p)]});bulk.disabled=!trackerLoaded||!untracked.length;bulk.textContent=untracked.length?"Add all shown to my list ("+untracked.length+")":"All shown are tracked";
   document.getElementById("count").textContent=rows.length+" programme"+(rows.length===1?"":"s");
   var L=document.getElementById("list");
   if(!rows.length){
@@ -566,7 +571,7 @@ function render(){
     return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
       '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
-      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
+      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(p.checked||CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
       '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"||s==="notyet"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
@@ -579,15 +584,17 @@ function render(){
 
 }
 function setSector(x){
-  SECTOR=x;EX=EXS[x];
+  SECTOR=x;EX=EXS[x]||EXS.bb;
   document.getElementById("sBB").setAttribute("aria-pressed",String(x==="bb"));
   document.getElementById("sB4").setAttribute("aria-pressed",String(x==="big4"));
+  document.getElementById("sAM").setAttribute("aria-pressed",String(x==="am"));
   document.getElementById("sIN").setAttribute("aria-pressed",String(x==="ins"));
   fFirm.value="all";fDiv.value="all";fType.value="all";
   drawTop();render();
 }
 document.getElementById("sBB").onclick=function(){setSector("bb")};
 document.getElementById("sB4").onclick=function(){setSector("big4")};
+document.getElementById("sAM").onclick=function(){setSector("am")};
 document.getElementById("sIN").onclick=function(){setSector("ins")};
 
 

@@ -192,9 +192,10 @@ export default async function handler(req, res) {
       const short = await getShortlist(p);
       const progs = (await loadProgrammes().catch(() => ({ programmes: [] }))).programmes;
       const signupSaved=account?(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[account.id]))[0]?.data:null;
-      if(paid&&account&&signupSaved?.ameliaMember&&!signupSaved.pilotTrackingSeeded){
-        if(!apps.some(a=>/j[.]?p[.]?\s*morgan/i.test(a.data?.firm||''))&&!Object.keys(short.list).some(k=>/j[.]?p[.]?\s*morgan/i.test(k))){const data={firm:'J.P. Morgan',programme:'Summer internship',stage:'Shortlisted',deadline:'2026-11-20',pilotFixture:true};const id=await A.saveItem(p,'application',data);apps.unshift({id,data,createdAt:new Date().toISOString()});}
-        await sql().query("UPDATE desk_account_profiles SET data=data || $1::jsonb WHERE account_id=$2",[JSON.stringify({pilotTrackingSeeded:true}),account.id]);
+      if(paid&&account&&signupSaved?.ameliaMember){
+        const fixture={firm:'J.P. Morgan',programme:'Summer internship',stage:'Shortlisted',deadline:'2026-11-20',pilotFixture:true};
+        await sql().query("WITH claimed AS (UPDATE desk_account_profiles SET data=data || '{\"pilotTrackingSeeded\":true}'::jsonb WHERE account_id=$1 AND coalesce(data->>'pilotTrackingSeeded','false')<>'true' RETURNING account_id) INSERT INTO desk_value_items(principal,kind,data) SELECT $2,'application',$3::jsonb FROM claimed WHERE NOT EXISTS (SELECT 1 FROM desk_value_items WHERE principal=$2 AND kind='application' AND data->>'firm'='J.P. Morgan')",[account.id,p,JSON.stringify(fixture)]);
+        apps.splice(0,apps.length,...await items(p,['application'],100));
       }
       const byKey = Object.fromEntries(progs.map(x => [x.firm + '|' + x.name, x]));
       const fromTracker = Object.entries(short.list).map(([k, v]) => { const x = byKey[k]; const [firm, ...rest] = k.split('|'); return { id: 't:' + k, source: 'tracker', firm: x?.firm || firm, programme: x?.name || rest.join('|'), stage: v.stage, deadline: x?.closes || '', rolling: !!x?.rolling, url: x?.url || '' }; });
@@ -273,7 +274,7 @@ export default async function handler(req, res) {
       }
       return res.json({
         testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: signupSaved?.pilotAccess?'':account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
-        deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
+        deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { university: clean(profile.university || signupSaved?.university, 120), name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         prep:paid?{...prep,remaining:undefined}:null,
         readiness: deepReady ? {score:deep.evaluation.score,band:band(deep.evaluation.score),source:'deep',change:0,timeline:[]} : now ? { score: now.score, band: band(now.score), source:'free',change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
         interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: reference.id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
