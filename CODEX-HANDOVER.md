@@ -245,3 +245,20 @@ Design reference: `design/mydesk-tabbar-mock.html` plus the two PNGs next to it.
 - **Desktop (≥1024px):** the same 5 groups as a left sidebar, with each group's sections listed underneath.
 - **Header:** logo plus account initials only.
 - **Style:** homepage version C throughout (EB Garamond 600 headings, Figtree body text, ink buttons with 8px corners, background #f4f1ec, orange only for scores and urgent items).
+
+## Free result v2: free shows the diagnosis, membership is the fix (13 Nov)
+Visual reference: `design/free-result-v2-mock.html` and `design/free-result-v2.jpg` (Amelia, at phone size). Rebuild result-final-design.html in this order. Every section gives the student a real, specific finding from their own data for free; what's locked is the fix (the rewrite, the model answer, the worked answer). Never lock a finding with nothing visible.
+1. **Verdict:** "You'd get read, but not shortlisted yet." Then "Three things are holding you back. Fix them and you go from [score] to about [range]." Show the score with "after the fixes ~[range]", a band bar (Developing / 65 Borderline / 75 Competitive), and the five parts.
+2. **"If you applied to [firm] today"** (dark card): a skim view of their own CV. Show their real headings, highlight in their actual text the 2–4 phrases a screener's eye lands on (the first words of each bullet, plus any negative endings like "No outcome was confirmed"), dim the rest, and add a handwritten-style margin note, e.g. "Research, but no result. Every line ends on what didn't happen. No leadership. Next." Label it "Illustrative, based on your CV". Below: 140 applications per graduate job (ISE 2025, footnoted), "[N] points below our competitive benchmark (75)", and "[N] days until [firm]'s deadline" only if a real deadline exists.
+   - The margin note must come from the model's assessment of their CV, never a fixed string. Use a new short field `skimNote` (≤20 words) in the free assessment output.
+3. **What a practitioner sees:** a balanced quote (one real strength, then what stops a shortlist), plus 2 ✓ strengths and 2 ✕ gaps.
+4. **What's holding you back:** the 3 gaps ranked by points, each with a one-line reason from their data and a +points estimate.
+5. **Fix one line now, free:** the line, "Why it's holding you back", one question, their answer, and the rewrite from `/api/result-rewrite`.
+6. **Your CV:** "[N] more lines we'd change" (real count from `weakLines`). For each: the line's opening words in quotes, plus **"The problem:" in one sentence (free)**. The repaired line is blurred and locked.
+7. **The 7 things interviewers score:** all 7 bars, with the weakest 2 coloured. For the weakest 2: a one-sentence finding (free), with the model answer locked.
+8. **Your tests:** for each missed topic, what it is and why it's asked (free), with the worked answer and practice locked.
+9. **ATS:** score plus what it means (free); matched terms as green chips and missed terms as red chips (show 1 missed term free, count the rest); which lines to add them to is locked. Compute the terms from the actual job and route vocabulary. Don't hard-code them.
+10. **Feature tasters** inside sections (white cards with an icon and a "Members ·" label): the firm pack after the CV section; the interview coach with their weakest competency question after competencies; the 2,000+ test bank and the assessment centre tools after tests. Each one should be relevant to that section, not a generic advert.
+11. **Offer (dark card):** "Go from [score] to about [range] before [firm] closes in [N] days" (drop the deadline part if there isn't one), then an 8-tile grid of what members get (CV repaired, interview coach, assessment centres, 17 firm packs, 2,000+ test questions, model answers, application tracker, ask a practitioner), "Unlock everything · £89", and "Paid once · no auto-renewal · 12 months". Below it: the sample member report, the £199 practitioner calls, and "Email me my result".
+12. **Fixed bottom bar** throughout: "[score] → ~[range] · Unlock · £89".
+- Lock buttons never show a price. Copy rules: British English, no invented facts, use only the student's own CV text.
