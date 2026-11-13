@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Desk tab bar mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8}
+*{box-sizing:border-box}
+body{margin:0;background:#dcd6cc;font:15px/1.5 Figtree,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.stage{display:flex;gap:44px;padding:44px;align-items:flex-start;justify-content:center}
+.cap{font:600 13px Figtree;letter-spacing:.14em;text-transform:uppercase;color:#5b5348;text-align:center;margin-bottom:14px}
+.phone{width:390px;height:844px;background:var(--paper);border-radius:46px;box-shadow:0 0 0 10px #1b1f21,0 30px 60px rgba(0,0,0,.25);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{height:46px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 30px 6px;font:600 15px Figtree}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 8px}
+.logo{font:600 24px "EB Garamond",Georgia,serif}
+.me{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 13px Figtree}
+.scroll{flex:1;overflow:hidden;padding:4px 18px 120px}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.hello{font-size:30px;line-height:1.1;margin:4px 0 2px}
+.sub{color:var(--ink-2);font-size:14.5px}
+.score{background:var(--ink);color:#fff;border-radius:12px;padding:16px 18px;margin-top:14px}
+.score .row{display:flex;align-items:baseline;gap:10px}
+.score .n{font:600 46px/1 "EB Garamond",Georgia,serif}.score .of{color:#aab4b9}
+.score .up{margin-left:auto;background:rgba(159,211,177,.16);color:#9fd3b1;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:600}
+.bar{height:6px;background:rgba(255,255,255,.12);border-radius:3px;margin-top:12px;position:relative}.bar i{position:absolute;left:0;top:0;bottom:0;width:62%;background:#e8a283;border-radius:3px}
+.score .note{font-size:13px;color:#cdd5d9;margin-top:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px}
+.alert{border-color:#e8c2b2;background:#fbf1ec}
+.alert b{display:block;font:600 19px/1.2 "EB Garamond",Georgia,serif;margin:4px 0 8px}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{background:var(--ink);color:#fff;border-radius:8px;padding:8px 11px;font-weight:600;font-size:13px}
+.btn.g{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.todo{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.todo div{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--soft);font-size:14px}
+.todo div:first-child{border-top:0}
+.tick{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line)}
+.todo .pts{color:var(--good);font-weight:600;font-size:13px}
+/* tab bar */
+.tabbar{position:absolute;left:0;right:0;bottom:0;background:rgba(251,250,247,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px 28px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--mute);position:relative}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--ink)}
+.tab.on:before{content:"";position:absolute;top:-9px;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--ink)}
+.dot{position:absolute;top:-2px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--card)}
+.home-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#1b1f21}
+/* practise screen */
+.big{font-size:32px;line-height:1.1;margin:4px 0 4px}
+.tile{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}
+.ic{width:44px;height:44px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center}
+.ic svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font:600 19px/1.15 "EB Garamond",Georgia,serif;display:block}
+.tile span{font-size:13px;color:var(--mute)}
+.tile .go{font-size:20px;color:var(--mute)}
+.tile.hot{border-color:#e8c2b2;background:#fbf1ec}
+.chip{display:inline-block;background:var(--ink);color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;margin-left:6px;vertical-align:2px}
+/* desktop */
+.desk{width:1080px;height:680px;background:var(--paper);border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.18);overflow:hidden;display:grid;grid-template-columns:230px 1fr}
+.side{background:var(--card);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:4px}
+.side .logo{margin:0 8px 18px}
+.grp{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-weight:600;font-size:14.5px;color:var(--ink-2)}
+.grp svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.grp.on{background:var(--ink);color:#fff}
+.subs{display:flex;flex-direction:column;margin:2px 0 6px 40px;font-size:13.5px;color:var(--mute);gap:5px}
+.main{padding:28px 34px;overflow:hidden}
+.cols{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-desk" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-prac" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/></symbol>
+  <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 12.5h18"/></symbol>
+  <symbol id="i-comm" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.6c2.6.1 4.5 2 5 5.4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></symbol>
+  <symbol id="i-group" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="15" r="2.5"/><circle cx="19" cy="15" r="2.5"/><path d="M8 20c.8-2.6 2.2-4 4-4s3.2 1.4 4 4"/></symbol>
+  <symbol id="i-case" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 16h5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h2M14 18h2"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M10 7h4M10 11h4M10 15h2"/></symbol>
+</svg>
+<div class="stage">
+
+<div><div class="cap">1 · Desk (home)</div>
+<div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><div class="logo">The Desk</div><div class="me">AK</div></div>
+  <div class="scroll">
+    <div class="k">Wednesday · 3 applications open</div>
+    <h1 class="hello">Morning, Aisha.</h1>
+    <div class="sub">Two days until Rothschild. Here’s what matters today.</div>
+    <div class="score"><div class="k" style="color:#aab4b9">Your readiness</div><div class="row"><span class="n">62</span><span class="of">/ 100</span><span class="up">+8 since Monday</span></div><div class="bar"><i></i></div><div class="note">4 points from Competitive for investment banking.</div></div>
+    <div class="card alert"><div class="k" style="color:var(--accent)">Interview in 2 days</div><b>Rothschild &amp; Co · Global Advisory</b><div class="btns"><span class="btn">Practise questions</span><span class="btn g">Crib sheet</span></div></div>
+    <div class="card"><div class="k">Next three things</div><div class="todo">
+      <div><span class="tick"></span><span>Rewrite your Redcliffe internship line</span><span class="pts">+3–5</span></div>
+      <div><span class="tick"></span><span>10 percentage questions, timed</span><span class="pts">+2–4</span></div>
+      <div><span class="tick"></span><span>Why Rothschild, in 60 seconds</span><span class="pts">+1–3</span></div></div></div>
+  </div>
+  <nav class="tabbar">
+    <div class="tab on"><svg><use href="#i-desk"/></svg>Desk</div>
+    <div class="tab"><svg><use href="#i-prac"/></svg>Practise</div>
+    <div class="tab"><svg><use href="#i-apps"/></svg>Applications</div>
+    <div class="tab"><span class="dot"></span><svg><use href="#i-comm"/></svg>Community</div>
+    <div class="tab"><svg><use href="#i-more"/></svg>More</div>
+  </nav><div class="home-ind"></div>
+</div></div>
+
+<div><div class="cap">2 · Tap “Practise”</div>
+<div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><div class="logo">The Desk</div><div class="me">AK</div></div>
+  <div class="scroll">
+    <div class="k">Practise</div>
+    <h1 class="big">Get ready for Rothschild.</h1>
+    <div class="sub">Everything here uses your CV and your target firm.</div>
+    <div class="tile hot"><div class="ic"><svg><use href="#i-cam"/></svg></div><div><b>Interview coach<span class="chip">2 days</span></b><span>Rothschild questions, on camera</span></div><div class="go">›</div></div>
+    <div class="tile"><div class="ic"><svg><use href="#i-group"/></svg></div><div><b>Group exercise</b><span>Three AI candidates, scored live</span></div><div class="go">›</div></div>
+    <div class="tile"><div class="ic"><svg><use href="#i-case"/></svg></div><div><b>Case study</b><span>Read, recommend, present</span></div><div class="go">›</div></div>
+    <div class="tile"><div class="ic"><svg><use href="#i-mail"/></svg></div><div><b>Inbox exercise</b><span>15 emails, 3 traps, 40 minutes</span></div><div class="go">›</div></div>
+    <div class="tile"><div class="ic"><svg><use href="#i-calc"/></svg></div><div><b>Numerical tests</b><span>Your weakest area: percentages</span></div><div class="go">›</div></div>
+    <div class="tile"><div class="ic"><svg><use href="#i-sheet"/></svg></div><div><b>Crib sheet</b><span>Your one-page brief for the day</span></div><div class="go">›</div></div>
+  </div>
+  <nav class="tabbar">
+    <div class="tab"><svg><use href="#i-desk"/></svg>Desk</div>
+    <div class="tab on"><svg><use href="#i-prac"/></svg>Practise</div>
+    <div class="tab"><svg><use href="#i-apps"/></svg>Applications</div>
+    <div class="tab"><span class="dot"></span><svg><use href="#i-comm"/></svg>Community</div>
+    <div class="tab"><svg><use href="#i-more"/></svg>More</div>
+  </nav><div class="home-ind"></div>
+</div></div>
+
+</div>
+<div class="stage" style="padding-top:0">
+<div><div class="cap">3 · Desktop: same five groups as a sidebar</div>
+<div class="desk">
+  <aside class="side"><div class="logo">The Desk</div>
+    <div class="grp on"><svg><use href="#i-desk"/></svg>Desk</div>
+    <div class="grp"><svg><use href="#i-prac"/></svg>Practise</div>
+    <div class="subs"><span>Interview coach</span><span>Assessment centres</span><span>Tests</span></div>
+    <div class="grp"><svg><use href="#i-apps"/></svg>Applications</div>
+    <div class="subs"><span>Tracker</span><span>Application help</span><span>Firm packs</span></div>
+    <div class="grp"><svg><use href="#i-comm"/></svg>Community</div>
+    <div class="subs"><span>Ask &amp; answer</span><span>Trading league</span><span>Events</span></div>
+    <div class="grp"><svg><use href="#i-more"/></svg>More</div>
+    <div class="subs"><span>Report</span><span>Library</span><span>News</span></div>
+  </aside>
+  <main class="main">
+    <div class="k">Wednesday · 3 applications open</div>
+    <h1 class="hello" style="font-size:38px">Morning, Aisha.</h1>
+    <div class="sub">Two days until Rothschild. Here’s what matters today.</div>
+    <div class="cols" style="margin-top:6px">
+      <div class="score"><div class="k" style="color:#aab4b9">Your readiness</div><div class="row"><span class="n">62</span><span class="of">/ 100</span><span class="up">+8 since Monday</span></div><div class="bar"><i></i></div><div class="note">4 points from Competitive for investment banking.</div></div>
+      <div class="card alert" style="margin-top:14px"><div class="k" style="color:var(--accent)">Interview in 2 days</div><b>Rothschild &amp; Co · Global Advisory</b><div class="btns"><span class="btn">Practise questions</span><span class="btn g">Crib sheet</span><span class="btn g">Group exercise</span></div></div>
+    </div>
+    <div class="card"><div class="k">Next three things</div><div class="todo">
+      <div><span class="tick"></span><span>Rewrite your Redcliffe internship line</span><span class="pts">+3–5</span></div>
+      <div><span class="tick"></span><span>10 percentage questions, timed</span><span class="pts">+2–4</span></div>
+      <div><span class="tick"></span><span>Why Rothschild, in 60 seconds</span><span class="pts">+1–3</span></div></div></div>
+  </main>
+</div></div>
+</div>
+</body></html>

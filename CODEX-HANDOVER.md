@@ -229,3 +229,19 @@ Rao has approved this direction. Replace the live index.html with home-c.html. I
   4. the same line rebuilt only from that answer, with the old line struck through, "+points", "How it reads now", and the 3 interview questions it now answers.
 
   The steps fade in one after another, which is switched off for users who prefer reduced motion. Default (and "Not sure yet") is the barista line; IB/PE/corporate shows the comps line; markets and AM show society treasurer; Big Four and insurance show the generic opener. The dark score card underneath no longer repeats the rewrite, and its default sample is Sam (49 → 55–60). **Kayyor to rewrite the quotes (the `read:` fields in `LINES`) in his own words before launch.** Every rewrite uses only facts from the student's answer. Keep it that way if you edit them.
+
+## My Desk navigation: bottom tab bar on mobile, sidebar on desktop (13 Nov)
+Design reference: `design/mydesk-tabbar-mock.html` plus the two PNGs next to it. The icons are simple inline SVG line icons; reuse them.
+- **Mobile (<768px):** replace the "Your Desk ☰" top menu with a fixed bottom bar of 5 tabs: **Desk · Practise · Applications · Community · More**.
+  - Each tab is an icon with a label. The active tab is ink-coloured with a small bar above it; the others are muted. A dot on Community marks new replies.
+  - Allow for the phone's home bar (`padding-bottom: env(safe-area-inset-bottom)`) and pad the page bottom so the bar never covers content.
+  - Hide the bar while an input has focus and during live interview, group, case or inbox sessions.
+- **Group screens:** tapping a group tab opens a list of large tiles (icon, title, one-line description, chevron). Highlight whatever is urgent: e.g. "Interview coach · 2 days" in the warm alert style.
+  - Practise = Interview coach, Group exercise, Case study, Inbox, Numerical tests, Crib sheet.
+  - Applications = Tracker, Application help, Firm packs.
+  - Community = Ask & answer, Trading league, Society Cup, Events.
+  - More = Report, Library, News, Account.
+- **Desk (home):** greeting, readiness score card (score, change since last check, progress bar, points to the next band), the next interview card with action buttons, and "Next three things" with the points each one is worth.
+- **Desktop (≥1024px):** the same 5 groups as a left sidebar, with each group's sections listed underneath.
+- **Header:** logo plus account initials only.
+- **Style:** homepage version C throughout (EB Garamond 600 headings, Figtree body text, ink buttons with 8px corners, background #f4f1ec, orange only for scores and urgent items).
