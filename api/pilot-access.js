@@ -4,6 +4,7 @@ import {seedAmeliaMember} from '../lib/amelia-member.mjs';
 import {normEmail,validEmail,initAccounts,upsertAccount,currentAccount,startSession,allow} from '../lib/accounts.mjs';
 import {initMemberships,accountMembership} from '../lib/account-memberships.mjs';
 import {validPilotCode,PILOT_EXPIRES} from '../lib/pilot-access.mjs';
+export const maxDuration=300;
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');
  if(req.method!=='POST')return res.status(405).end();
@@ -19,13 +20,13 @@ export default async function handler(req,res){
   const amelia=email==='ameliachen@gmail.com';
   if(existing&&(await accountMembership(existing.id)).source==='pilot'){
    const saved=(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[existing.id]))[0]?.data;
-   if(!!saved?.ameliaMember===amelia)return res.json({next:'/my.html',resumed:true});
+   if(!!saved?.ameliaMember===amelia&&(!amelia||saved.ameliaVersion===2))return res.json({next:'/my.html',resumed:true});
   }
   // Random internal identity: a shared code must never open a real account by email.
   const account=await upsertAccount('pilot-'+randomBytes(16).toString('hex')+'@access.thedesk.invalid');
   const ownerToken=randomBytes(32).toString('hex');
   const profile=amelia?await seedAmeliaMember(account.id,hash(ownerToken)):{};
-  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({...profile,pilotAccess:true,contactEmail:email,ameliaMember:amelia})]);
+  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({...profile,pilotAccess:true,contactEmail:email,ameliaMember:amelia,ameliaVersion:amelia?2:undefined})]);
   const until=amelia?new Date(Date.now()+365*86400000).toISOString():PILOT_EXPIRES;
   await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'pilot',$3)",['pilot:'+account.id,account.id,until]);
   res.setHeader('Set-Cookie',`desk_owner=${ownerToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000; Secure`);

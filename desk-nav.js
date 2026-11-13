@@ -1,50 +1,34 @@
-// The Desk · one navigation bar on every student page, so every tool leads back to My Desk.
-// Add <script src="/desk-nav.js" defer></script> to a page. It sits under the page's own header.
-(function () {
-  if (document.querySelector('.desk-nav')) return;
-  var path = location.pathname.replace(/\/$/, '/index.html');
-  var report = null;
-  try { report = localStorage.getItem('desk-report-url'); } catch (e) {}
-  if (!/^\/(fullcycle|result-final-design)\.html\?id=[a-f0-9]{48}$/.test(report || '')) report = null;
-  var interview = null;
-  try { interview = localStorage.getItem('desk-interview-url'); } catch (e) {}
-  if (!/^\/interview-start\.html\?id=[a-f0-9]{48}$/.test(interview || '')) interview = null;
-  var previews={Report:'/report-preview.html',Interview:'/interview-preview.html','Application Help':'/application-preview.html','Assessment centres':'/assessment-centre-preview.html',Tests:'/tests-preview.html',Events:'/events-preview.html'};
-  var touring=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
-  var links = [
-    ['My Desk', '/my.html', /\/my\.html$/],
-    ['Report', '/report.html', /\/(fullcycle|result-final-design)\.html$/],
-    ['Interview', interview || '/interview-start.html', /\/interview(-start|-teaser)?\.html$/],
-    ['Application Help','/application-help.html',/\/application-help\.html$/],
-    ['Assessment centres','/assessment-centre.html',/\/(assessment-centre|ac-crib|group-exercise|case-study|inbox-exercise)(-preview)?\.html$/],
-    ['Tests', '/tests.html', /\/tests\.html$/],
-    ['Trading', '/trading.html', /\/(trading|challenge)\.html$/],
-    ['Tracker', '/tracker.html', /\/tracker\.html$/],
-    ['Library', '/library.html', /\/library\.html$/],
-    ['News', '/news.html', /\/news\.html$/],
-    ['Community','/community.html',/\/community(-question)?\.html$/],
-    ['Events','/events.html',/\/events\.html$/]
-  ];
-  var css = '.desk-menu-toggle{display:none}@media(max-width:700px){.desk-menu-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;padding:13px 20px;background:#11191e;color:white;font:600 15px Arial;min-height:48px}.desk-nav .desk-nav-in{display:none;grid-template-columns:1fr 1fr;padding:8px 12px 12px}.desk-nav.is-open .desk-nav-in{display:grid}.desk-nav .desk-nav-in a{white-space:normal;min-height:44px}}' + '.desk-nav{background:#11191e;font:600 14px "DM Sans",Arial,sans-serif;position:relative;z-index:30}' +
-    '.desk-nav-in{max-width:1200px;margin:0 auto;padding:0 16px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}' +
-    '.desk-nav-in::-webkit-scrollbar{display:none}' +
-    '.desk-nav a{flex:none;color:#cfd6db;text-decoration:none;padding:11px 12px;border-bottom:3px solid transparent}' +
-    '.desk-nav a:hover{color:#fff}.desk-nav a[aria-current=page]{color:#fff;border-bottom-color:#ff5a14}' +
-    '.desk-nav a:focus-visible{outline:2px solid #ff8a52;outline-offset:-2px}';
-  var style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
-  var nav = document.createElement('nav'); nav.className = 'desk-nav'; nav.setAttribute('aria-label', 'Your Desk');
-  var inner = document.createElement('div'); inner.className = 'desk-nav-in';
-  links.forEach(function (l) {
-    var a = document.createElement('a'); a.href = previews[l[0]]?(previews[l[0]]+(touring?'?tour=1':'')):l[0]==='Community'?'/community.html?demo=1':l[1];a.dataset.memberHref=l[1];a.dataset.navLabel=l[0]; a.textContent = l[0];
-    if (l[2].test(path)||previews[l[0]]===path||l[0]==='Report'&&path==='/report-sample.html') a.setAttribute('aria-current', 'page');
-    inner.appendChild(a);
-  });
-  inner.id='deskNavigation';var toggle=document.createElement('button');toggle.type='button';toggle.className='desk-menu-toggle';toggle.setAttribute('aria-controls','deskNavigation');toggle.setAttribute('aria-expanded','false');toggle.innerHTML='Your Desk <span aria-hidden="true">☰</span>';toggle.onclick=function(){var open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav.classList.toggle('is-open',open);};nav.appendChild(toggle);nav.appendChild(inner);nav.addEventListener('keydown',function(e){if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');nav.classList.remove('is-open');toggle.focus();}});
-  if(!touring)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(d=>{if(!d?.member)return;inner.querySelectorAll('a').forEach(a=>{a.href=a.dataset.navLabel==='Interview'&&/^\/interview-start\.html(?:\?id=[a-f0-9]{48})?$/.test(d.interviewUrl||'')?d.interviewUrl:a.dataset.memberHref;});}).catch(()=>{});
-  function place() {
-    var header = document.querySelector('body > header, header.top');
-    if (header && header.parentNode) header.parentNode.insertBefore(nav, header.nextSibling);
-    else document.body.insertBefore(nav, document.body.firstChild);
+// Shared grouped navigation; access stays enforced by the existing APIs.
+(function(){
+ if(window.DeskNavigation)return;
+ const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=boot;document.head.append(core);
+ const css=document.createElement('link');css.rel='stylesheet';css.href='/desk-navigation.css';document.head.append(css);
+ let data={},root,account;
+ window.DeskNavigation={update(d){data=d||{};if(root)draw();},get data(){return data}};
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const paths={desk:'<path d="M3 10.5 12 4l9 6.5M5 9.5V20h14V9.5M10 20v-5h4v5"/>',prac:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',apps:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/>',comm:'<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5"/><circle cx="18" cy="9" r="2.5"/><path d="M16 15c3 0 4 2 5 5"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',cam:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>',group:'<circle cx="12" cy="7" r="3"/><circle cx="5" cy="15" r="2.5"/><circle cx="19" cy="15" r="2.5"/><path d="M8 20c1-3 2-4 4-4s3 1 4 4"/>',case:'<path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h5"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h2M14 18h2"/>',sheet:'<path d="M7 3h10v18H7zM10 7h4M10 11h4M10 15h2"/>'};
+ function icon(id){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+paths[id]+'</svg>';}
+ function boot(){
+  document.body.classList.add('desk-shell');
+  const fonts=document.createElement('link');fonts.rel='stylesheet';fonts.href='https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap';document.head.append(fonts);
+  root=document.createElement('nav');root.className='desk-nav desk-group-nav';root.setAttribute('aria-label','Your Desk');document.body.append(root);
+  account=document.createElement('a');account.href='/desk-section.html?view=account';account.className='desk-account-avatar';
+  const header=document.querySelector('body>header,header.top,.page>header');if(header){header.classList.add('desk-shell-header');(header.querySelector('.hin')||header).append(account);}
+  draw();
+  const tour=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
+  if(!tour)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d){data=d;draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}}).catch(()=>{});
+  let focused=false;
+  function syncVisibility(){
+   const visible=id=>{const el=document.getElementById(id);return el&&!el.hidden&&getComputedStyle(el).display!=='none'};
+   const path=location.pathname,live=path==='/interview.html'&&(document.body.classList.contains('desk-answer-recording')||!!document.querySelector('#hvStage:not([hidden])'))||path==='/group-exercise.html'&&(visible('room')||visible('assessmentLoading'))||path==='/case-study.html'&&(visible('s-write')||visible('s-present')||visible('s-qs'))||path==='/inbox-exercise.html'&&visible('s-work');
+   const hide=focused||!!live;if(document.body.classList.contains('desk-nav-away')!==hide)document.body.classList.toggle('desk-nav-away',hide);
   }
-  if (document.body) place(); else document.addEventListener('DOMContentLoaded', place);
+  document.addEventListener('focusin',e=>{focused=e.target.matches('input,textarea,select,[contenteditable="true"]');syncVisibility();});document.addEventListener('focusout',()=>{focused=false;setTimeout(syncVisibility,0)});
+  new MutationObserver(syncVisibility).observe(document.body,{attributes:true,attributeFilter:['class','hidden'],subtree:true});document.addEventListener('desk:render',syncVisibility);syncVisibility();
+ }
+ function draw(){
+  const C=window.DeskNavigationCore,p=new URLSearchParams(location.search),active=location.pathname==='/desk-section.html'?p.get('view'):C.groupFor(location.pathname);
+  root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?'/my.html':'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+g.label+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a href="'+esc(C.href(key,data))+'">'+esc(title)+'</a>').join('')+'</div></section>';}).join('')+'</div>';
+  account.textContent=(data.profile?.name||data.profile?.firstName||'').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()||'•';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in or create an account');window.DeskNavigation.icon=icon;
+ }
 })();

@@ -449,15 +449,16 @@ function render(R){
 
   /* OVERVIEW */
   (function(){
-    var score=res.overallScore,band=res.band,gap=Math.max(0,75-score);
+    var deep=R.deep?.evaluation,score=deep?deep.score:res.overallScore,band=deep?(score>=75?'Competitive':score>=65?'Borderline':'Weak'):res.band,gap=Math.max(0,75-score);
     var rows=Object.keys(res.weights).map(function(k){return{k:k,max:res.weights[k],got:res.breakdown[k]};})
       .sort(function(a,b){return(b.max-b.got)-(a.max-a.got);});
+    if(deep)rows=[{k:'application',max:30/55*100,got:deep.application/55*100},{k:'competency',max:25/55*100,got:deep.competency/55*100}];
     var missing=rows.reduce(function(a,r){return a+(r.max-r.got);},0);
     var pr=res.priorities||[],links=["technical","competencies","cv"];
     var roleKey=(prof.targetFirm||"")+"|"+(prof.targetDivision||"").split(" /")[0];
     var role=TRACKER_ROLES[roleKey];
     S.overview=
-    '<div class="eyebrow">Full Cycle · your plan</div>'+
+    '<div class="eyebrow">Your membership · preparation plan</div>'+
     '<h1 class="mt8">'+esc(first)+', here’s your preparation plan.</h1>'+
     ((P.profileWarnings||[]).length?'<div class="warn"><b>Check this first</b>'+P.profileWarnings.map(function(w){return esc(w.message);}).join("<br>")+'</div>':'')+
     '<div class="hero mt32">'+
@@ -470,19 +471,19 @@ function render(R){
         '<div class="fix mt32"><div class="eyebrow">The one fix that matters most</div><p>'+h(P.executiveVerdict.mostImportantFix)+'</p><a class="mt8" style="display:inline-block;font-weight:700;color:var(--or-ink);font-size:15px" href="#cv">See it on your CV →</a></div>'+
       '</div>'+
       '<div class="card">'+
-        '<h3>Where your '+missing+' missing points are</h3>'+
+        '<h3>Where your '+Math.round(missing)+' missing points are</h3>'+
         '<p class="mute" style="margin:4px 0 18px;font-size:15px">Biggest gap first. Hatched = the difference from the framework maximum, not a promised score gain.</p>'+
         '<div class="pts">'+rows.map(function(r){
-          return '<div class="pt-row"><span>'+esc(LABELS[r.k]||r.k)+'</span><div class="pt-track"><b style="width:'+(r.got/30*100)+'%"></b><s style="left:'+(r.got/30*100)+'%;width:'+((r.max-r.got)/30*100)+'%"></s></div><span class="pt-miss num">'+(r.max-r.got?'+'+(r.max-r.got)+' pts':'full')+'</span></div>';
+          return '<div class="pt-row"><span>'+esc(LABELS[r.k]||r.k)+'</span><div class="pt-track"><b style="width:'+(r.got/(deep?100:30)*100)+'%"></b><s style="left:'+(r.got/(deep?100:30)*100)+'%;width:'+((r.max-r.got)/(deep?100:30)*100)+'%"></s></div><span class="pt-miss num">'+(r.max-r.got?'+'+Math.round(r.max-r.got)+' pts':'full')+'</span></div>';
         }).join("")+'</div>'+
-        '<p class="mute" style="font-size:13px;margin:16px 0 0">Bars drawn to the same scale. CV &amp; application is worth up to 30.</p>'+
+        '<p class="mute" style="font-size:13px;margin:16px 0 0">'+(deep?'Your deep assessment scores CV and competency evidence. Test results are tracked separately.':'Bars drawn to the same scale. CV &amp; application is worth up to 30.')+'</p>'+
       '</div>'+
     '</div>'+
     '<h2 class="mt48">Your three priorities</h2>'+
     '<ol class="prio mt16">'+pr.map(function(p,i){return '<li><div><h3>'+h(p.title)+'</h3><p>'+h(p.description)+'</p><a href="#'+(links[i]||"plan")+'">Go to '+esc((SECTIONS.filter(function(s){return s.id===links[i];})[0]||{t:"plan"}).t.toLowerCase())+' →</a></div></li>';}).join("")+'</ol>'+
     (role?'<div class="card mt32"><div class="route"><div><div class="eyebrow">Your target on the deadline tracker</div><h3 class="mt8">'+esc(prof.targetFirm)+' · '+esc(role.name)+'</h3><div class="mt8"><span class="status">'+esc(role.status)+'</span> <span class="mute" style="font-size:15px">· '+esc(role.when)+'</span></div><div class="steps">'+role.steps.map(function(s){return'<span>'+esc(s)+'</span>';}).join("")+'</div><p style="margin:12px 0 0;font-size:15px;color:var(--ink2)">'+esc(role.note)+' Your 7-day plan is timed to get you ready before you apply.</p></div><div style="display:grid;gap:8px"><a class="btn" href="/tracker.html">Open tracker</a><a class="btn ghost" href="'+esc(role.url)+'" target="_blank" rel="noopener">Barclays page ↗</a></div></div></div>':'')+
     '<div class="grid2 mt32">'+
-      '<div><div class="label">The Desk’s read</div><p class="verdict" style="margin:0">'+h(P.executiveVerdict.summary)+'</p></div>'+
+      '<div><div class="label">The Desk’s read</div><p class="verdict" style="margin:0">'+h(deep?deep.summary:P.executiveVerdict.summary)+'</p></div>'+
       '<div><div class="label">Is this route realistic?</div><p style="margin:0;color:var(--ink2)">'+h(P.targetRouteMeaning.isRouteRealistic)+'</p><div class="label mt16">If this cycle doesn’t work out</div><p style="margin:0;color:var(--ink2)">'+h(P.targetRouteMeaning.steppingStoneRoute)+'</p></div>'+
     '</div>';
   })();
@@ -688,7 +689,8 @@ function render(R){
     var prev=SECTIONS[i-1],next=SECTIONS[i+1];
     return '<section class="pane" id="p-'+s.id+'">'+S[s.id]+'<div class="pager">'+(prev?'<a href="#'+prev.id+'"><span>Back</span>← '+esc(prev.t)+'</a>':'<span></span>')+(next?'<a href="#'+next.id+'" style="text-align:right"><span>Next</span>'+esc(next.t)+' →</a>':'')+'</div></section>';
   }).join("");
-  if(R.deep?.evaluation){var deepBanner=document.createElement('section');deepBanner.className='card';deepBanner.style.cssText='margin-bottom:20px;border-top:3px solid #ff5a14';deepBanner.innerHTML='<div class="kicker">Deep CV &amp; evidence assessment</div><h2>'+R.deep.evaluation.score+'/100</h2><p>'+esc(R.deep.evaluation.summary)+'</p><p class="mute">'+esc(R.deep.evaluation.scope)+'</p><p class="mute">Initial free assessment: '+esc(R.result.overallScore)+'/100 (different scope). Tests: '+(R.deep.testChoice==='skip'?'not assessed in this deep assessment. Any earlier test results below are historical.':'carried forward from your initial assessment'+(R.deep.testsDate?' on '+new Date(R.deep.testsDate).toLocaleDateString('en-GB'):'')+', not retaken.')+'</p>';main.prepend(deepBanner);}
+  if(R.deep?.evaluation){var overview=main.querySelector('#p-overview');if(overview){var verdict=overview.querySelector('.deep-current-summary');if(!verdict){verdict=document.createElement('p');verdict.className='mute deep-current-summary';verdict.textContent='Your current reference is the completed deep assessment: '+R.deep.evaluation.score+'/100. '+R.deep.evaluation.scope;overview.querySelector('h1').after(verdict);}}}
+
   var counts={cv:S._qList.length,interview:(P.interviewRiskMap||[]).length,competencies:(P.competencyRepair||[]).length,technical:(P.workedAnswers||[]).length,plan:(P.sevenDayActionPlan||[]).length,submit:(P.finalSubmissionChecklist||[]).length,application:(P.applicationRiskMap||[]).length};
   nav.innerHTML=SECTIONS.map(function(s,i){return '<li><a href="#'+s.id+'" data-nav="'+s.id+'"><span class="n">'+String(i).padStart(2,"0")+'</span><span>'+esc(s.t)+'</span><span class="c" data-c="'+s.id+'">'+(counts[s.id]||"")+'</span></a></li>';}).join("");
 
