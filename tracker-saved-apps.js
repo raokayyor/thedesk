@@ -1,0 +1,18 @@
+(()=>{
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let data=null;
+ function draw(d){if(!Array.isArray(d?.applications))return;data=d;const box=document.getElementById('trackedApplications');if(!box)return;
+ const stages=d.stages||['Shortlisted','Preparing','Applied','Online tests','Interview','Offer','Unsuccessful'];
+ box.innerHTML='<h2>Your applications</h2><p class="mute">Your saved firms, dates and next steps.</p><div class="saved-application-grid">'+(d.applications.length?d.applications.map(a=>{
+ const date=a.interviewDate||a.deadline,n=date?Math.round((new Date(date+'T00:00:00')-new Date(new Date().toDateString()))/86400000):null;
+ const when=date?new Date(date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+(n<0?' · passed':n===0?' · today':' · '+n+' days left'):'Date not added';
+ return '<article class="saved-application"><h3>'+esc(a.firm)+'</h3><p>'+esc(a.programme||'Application')+'</p><label>Stage<select data-saved-stage="'+esc(a.id)+'">'+stages.map(s=>'<option'+(s===a.stage?' selected':'')+'>'+esc(s)+'</option>').join('')+'</select></label><p class="saved-deadline">'+esc(when)+'</p><div class="saved-app-actions"><a class="btn primary" href="/interview-start.html?'+(d.report?.assessmentId?'id='+encodeURIComponent(d.report.assessmentId)+'&':'')+'firm='+encodeURIComponent(a.firm)+'">Prepare</a><button type="button" class="btn" data-saved-remove="'+esc(a.id)+'">Remove</button></div></article>';
+ }).join(''):'<p>No applications saved yet. Choose programmes below, individually or with “Add all shown”.</p>')+'</div><p id="savedApplicationStatus" role="status"></p>';
+ box.querySelectorAll('[data-saved-stage]').forEach(el=>el.onchange=async()=>{const a=d.applications.find(a=>a.id===el.dataset.savedStage);el.disabled=true;try{await post(a.id.startsWith('t:')?{action:'app-stage',id:a.id,stage:el.value}:{...a,action:'app-save',stage:el.value});a.stage=el.value;document.dispatchEvent(new Event('desk:trackerchanged'));syncLocal(a.id,el.value);document.getElementById('savedApplicationStatus').textContent='Stage saved.';}catch(e){el.value=a.stage;document.getElementById('savedApplicationStatus').textContent=e.message;}finally{el.disabled=false;}});
+ box.querySelectorAll('[data-saved-remove]').forEach(el=>el.onclick=async()=>{el.disabled=true;try{await post({action:'app-delete',id:el.dataset.savedRemove});syncLocal(el.dataset.savedRemove,null);data.applications=data.applications.filter(a=>a.id!==el.dataset.savedRemove);draw(data);document.dispatchEvent(new Event('desk:trackerchanged'));}catch(e){el.disabled=false;document.getElementById('savedApplicationStatus').textContent=e.message;}});
+ }
+ function syncLocal(id,stage){if(!id.startsWith('t:'))return;try{const list=JSON.parse(localStorage.getItem('desk_mylist')||'{}');if(stage)list[id.slice(2)]={stage};else delete list[id.slice(2)];localStorage.setItem('desk_mylist',JSON.stringify(list));}catch{}}
+ async function post(body){const r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error||'Could not save. Please retry.');return d;}
+ document.addEventListener('desk:trackerchanged',()=>fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store'}).then(r=>r.ok?r.json():null).then(draw).catch(()=>{}));
+ document.addEventListener('desk:navigationready',e=>draw(e.detail));if(window.DeskNavigation)draw(window.DeskNavigation.data);
+})();

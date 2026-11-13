@@ -144,7 +144,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
 </style>
 
 <script src="/desk-nav.js" defer></script>
-</head>
+<script src="/tracker-saved-apps.js" defer></script></head>
 <body>
 <header class="top"><div class="wrap">
   <a class="logo" href="/" style="text-decoration:none">The Desk<small>Finance careers. Done properly.</small></a>
@@ -162,6 +162,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
 <p class="storage-note">Your tracked programmes and stages also appear in My Desk. Sign in to keep them across devices.</p><button class="btn export" id="exportList" type="button">Export my application list</button> <button class="btn export" id="exportCsv" type="button">Download spreadsheet (CSV)</button> <a class="btn" href="/my.html#applications">Open my dashboard →</a><p id="saveNotice" role="status" aria-live="polite"></p>
   </section>
 
+  <section id="trackedApplications" class="saved-applications" aria-label="Your applications"><h2>Your applications</h2><div class="desk-skeleton" style="height:90px" aria-label="Loading saved applications"></div></section>
   <div class="filters" role="group" aria-label="Filters">
     <label for="fFirm">Firm</label><select id="fFirm"></select>
     <label for="fDiv">Area</label><select id="fDiv"></select>
@@ -457,7 +458,7 @@ var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}")
 // The saved account list is authoritative; local storage is a browser cache.
 var trackerLoaded=false,shownRows=[],syncQueue=Promise.resolve();
 fetch('/api/desk-home?view=shortlist',{credentials:'same-origin',cache:'no-store'}).then(function(r){if(!r.ok)throw Error('Could not load your saved applications.');return r.json()}).then(function(d){mine=d.list||{};trackerLoaded=true;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.querySelector('.storage-note').textContent=d.signedIn?'Your tracked programmes and stages are saved to your account and shown in My Desk.':'Your programmes appear in My Desk on this browser. Sign in to keep them across devices.';render()}).catch(function(){document.getElementById('saveNotice').textContent='Your saved list could not load. Refresh before making changes.'});
-function save(){var snapshot=JSON.parse(JSON.stringify(mine));try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent='Saving to your dashboard…';syncQueue=syncQueue.catch(function(){}).then(async function(){var r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-sync',list:snapshot})});if(!r.ok)throw Error('Could not save');document.getElementById('saveNotice').textContent='Saved to your dashboard.'}).catch(function(){document.getElementById('saveNotice').textContent='Saved on this browser; dashboard sync failed. Try changing the stage again to retry.'});return syncQueue;}
+function save(){var snapshot=JSON.parse(JSON.stringify(mine));try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent='Saving to your dashboard…';syncQueue=syncQueue.catch(function(){}).then(async function(){var r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-sync',list:snapshot})});if(!r.ok)throw Error('Could not save');document.getElementById('saveNotice').textContent='Saved to your dashboard.';document.dispatchEvent(new Event('desk:trackerchanged'))}).catch(function(){document.getElementById('saveNotice').textContent='Saved on this browser; dashboard sync failed. Try changing the stage again to retry.'});return syncQueue;}
 function key(p){return p.firm+"|"+p.name}
 
 // stats + insight
@@ -600,9 +601,10 @@ document.getElementById("sIN").onclick=function(){setSector("ins")};
 
 
 [fFirm,fDiv,fStatus,fEntry,fMine,fType].forEach(function(el){el.onchange=render});
-document.getElementById('trackAll').onclick=async function(){if(!trackerLoaded)return;var button=this;button.disabled=true;var keys=shownRows.filter(function(p){return !mine[key(p)]}).map(key);try{await syncQueue;var r=await fetch('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-add',keys:keys})}),d=await r.json();if(!r.ok)throw Error(d.error||'Could not save');mine=d.list;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent=d.added+' programmes added to your dashboard.'+(d.added<keys.length?' Your list holds up to 200 programmes.':'');render()}catch(e){document.getElementById('saveNotice').textContent=e.message;button.disabled=false}};
+document.getElementById('trackAll').onclick=async function(){if(!trackerLoaded)return;var button=this;button.disabled=true;var keys=shownRows.filter(function(p){return !mine[key(p)]}).map(key);try{await syncQueue;var r=await fetch('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-add',keys:keys})}),d=await r.json();if(!r.ok)throw Error(d.error||'Could not save');mine=d.list;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent=d.added+' programmes added to your dashboard.'+(d.added<keys.length?' Your list holds up to 200 programmes.':'');document.dispatchEvent(new Event('desk:trackerchanged'));render()}catch(e){document.getElementById('saveNotice').textContent=e.message;button.disabled=false}};
 document.getElementById('exportCsv').onclick=function(){var quote=function(v){var s=String(v??'');if(/^[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'},rows=[['Firm','Programme','Sector','Deadline','Stage','Official application link']];P.filter(function(p){return mine[key(p)]}).forEach(function(p){rows.push([p.firm,p.name,p.area,p.closes,mine[key(p)].stage||'Shortlisted',p.url])});var blob=new Blob(['\ufeff'+rows.map(function(r){return r.map(quote).join(',')}).join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='the-desk-applications.csv';a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
 document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
+document.addEventListener('desk:trackerchanged',function(){fetch('/api/desk-home?view=shortlist',{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){if(d){mine=d.list||{};render();}}).catch(function(){})});
 if(contextSample==="emily")setSector("big4");else{drawTop();render();}
 })();
 </script>
