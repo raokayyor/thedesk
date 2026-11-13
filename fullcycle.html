@@ -377,7 +377,7 @@ async function load(){
   Object.assign(paid,section);
  }));
  status('Preparing your CV…');
- var draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});
+ var draft;try{draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});}catch(error){draft={cv:{sourceText:'',preparationError:true}};}
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,deep:saved.deep,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
 
@@ -539,6 +539,7 @@ function render(R){
         '<div class="card"><div class="label">Why each change</div><div class="why-list">'+why+'</div></div>'+
       '</aside>'+
     '</div>';
+    if(R.cv?.preparationError)S.cv='<div class="eyebrow">Your CV</div><h2>Preparing your CV…</h2><p>Your assessment is ready. The CV draft could not load yet; refresh to retry this section.</p><button class="btn" onclick="location.reload()">Retry CV preparation</button>';
     S._qList=qList;
   })();
 
@@ -799,9 +800,9 @@ function wire(R,S){
     var name=((R.profile||{}).name||"cv").replace(/\s+/g,"-")+"-CV-repaired.doc";
     var b=new Blob(["﻿"+doc],{type:"application/msword"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   }
-  document.getElementById("dlCv").onclick=download;
+  if(document.getElementById("dlCv"))document.getElementById("dlCv").onclick=download;
   
-  document.getElementById("copyCv").onclick=function(){var b=this;try{navigator.clipboard.writeText(cvText()).then(function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy text";},1500);});}catch(e){}};
+  if(document.getElementById("copyCv"))document.getElementById("copyCv").onclick=function(){var b=this;try{navigator.clipboard.writeText(cvText()).then(function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy text";},1500);});}catch(e){}};
 }
 
 

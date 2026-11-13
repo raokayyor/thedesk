@@ -29,7 +29,7 @@
  }
  function draw(){
   const C=window.DeskNavigationCore,p=new URLSearchParams(location.search),active=location.pathname==='/desk-section.html'?p.get('view'):C.groupFor(location.pathname);
-  root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?'/my.html':'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+g.label+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a href="'+esc(C.href(key,data))+'">'+esc(title)+'</a>').join('')+'</div></section>';}).join('')+'</div>';
+  root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?'/my.html':g.id==='cv'?C.href('cv',data):'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+g.label+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a href="'+esc(C.href(key,data))+'">'+esc(title)+'</a>').join('')+'</div></section>';}).join('')+'</div>';
   if(location.pathname==='/my.html'){
    const header=document.querySelector('header .hin'),university=data.profile?.university||'';
    let label=document.getElementById('desk-university');
