@@ -5,7 +5,7 @@ import vm from 'node:vm';
 const source=readFileSync(new URL('../api/analyse-mot.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'').replace('export const maxDuration=300;','').replace('export default async function handler','async function handler');
 test('identical first assessment reuses only the owner-scoped saved result without another model request',async()=>{
  let lookup,linked;
- const context={sameOrigin:()=>true,questionsForRoute:()=>({id:'bank'}),gradeAnswers:()=>({}),assessAtsReadiness:()=>({score:8}),initStore:async()=>{},currentAccount:async()=>({id:'account'}),owner:()=> 'browser-owner',assessmentFingerprint:()=> 'fingerprint',sql:()=>({query:async(query,args)=>{lookup={query,args};return [{id:'saved',input:{quiz:{},cvText:'CV'},result:{overallScore:58}}]}}),linkAssessment:async(...args)=>{linked=args},publicAssessment:r=>r,apiFailure:(_,e)=>{throw e}};
+ const context={sameOrigin:()=>true,questionsForRoute:()=>({id:'bank'}),gradeAnswers:()=>({}),assessAtsReadiness:()=>({score:8}),initStore:async()=>{},currentAccount:async()=>({id:'account'}),owner:()=> 'browser-owner',assessmentFingerprint:()=> 'fingerprint',sql:()=>({query:async(query,args)=>{lookup={query,args};return [{id:'saved',input:{quiz:{},cvText:'CV'},result:{overallScore:58,weakLines:[]}}]}}),linkAssessment:async(...args)=>{linked=args},publicAssessment:r=>r,apiFailure:(_,e)=>{throw e}};
  vm.createContext(context);vm.runInContext(source+';this.handler=handler',context);
  let result;const response={json:x=>{result=x},status:()=>response};
  await context.handler({method:'POST',body:{consent:true,profile:{name:'Student',targetSector:'Banking'},cv:{text:'Relevant CV experience and supported personal achievements. '.repeat(3)},answers:{}}},response);

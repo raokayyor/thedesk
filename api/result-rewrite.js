@@ -9,7 +9,7 @@ export default async function handler(req,res){if(req.method!=='POST')return res
  const b=req.body||{},row=b.assessmentId?await ownedRecord(req,res,b.assessmentId):null;
  if(!row&&b.sample!=='amelia')return res.status(404).json({error:'Open your saved assessment first.'});
  const sample=row?null:JSON.parse(await readFile(new URL('../samples/amelia-report-v3-preview.json',import.meta.url),'utf8'));
- const original=(row?.result||sample.result).cvPreview?.original,answer=typeof b.answer==='string'?b.answer.trim():'';
+ const result=row?.result||sample.result,original=result.weakLines?.[0]?.original||result.cvPreview?.original,answer=typeof b.answer==='string'?b.answer.trim():'';
  if(!original||answer.length<12||answer.length>1500)return res.status(400).json({error:'Add one factual sentence, up to 1,500 characters.'});
  const who=row?.owner_hash||owner(req,res,true),fingerprint=hash(original+'\n'+answer),saved=row?.input?.freeLineFix;
  if(saved?.fingerprint===fingerprint)return res.json({success:true,line:saved.line});

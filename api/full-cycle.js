@@ -1,3 +1,4 @@
+import {missingWeakRepairs} from '../lib/weak-lines.mjs';
 import {deepFor,evidenceText} from '../lib/deep-assessment.mjs';
 import {fullCycleAccess} from '../lib/full-cycle-access.mjs';
 import { knowledgeBlock } from '../lib/knowledge.mjs';
@@ -14,13 +15,14 @@ const MODEL = process.env.FULL_CYCLE_MODEL || 'claude-sonnet-4-6';
 export default async function handler(req, res) {
   if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
   const part=req.body?.part||'verdict';if(!['verdict','repair','plan'].includes(part))return res.status(400).json({error:'Unknown report section.'});
-  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await fullCycleAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});const deep=await deepFor(row);if(deep?.status!=='complete')return res.status(428).json({error:'Complete your CV follow-up questions before generating your deep assessment.',next:'/deep-assessment.html?id='+row.id});row.originalCvText=row.input.cvText;row.input={...row.input,cvText:evidenceText(row,deep)};if(row.report[part])return res.json({success:true,part,data:part==='repair'?parsePart(JSON.stringify(row.report[part]),part,row.input.cvText):row.report[part],cached:true});
+  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await fullCycleAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});const deep=await deepFor(row);if(deep?.status!=='complete')return res.status(428).json({error:'Complete your CV follow-up questions before generating your deep assessment.',next:'/deep-assessment.html?id='+row.id});row.originalCvText=row.input.cvText;row.input={...row.input,cvText:evidenceText(row,deep)};if(row.report[part]&&(part!=='repair'||!missingWeakRepairs(row.result.weakLines,row.report.repair?.bulletRepair).length))return res.json({success:true,part,data:part==='repair'?parsePart(JSON.stringify(row.report[part]),part,row.input.cvText):row.report[part],cached:true});
   const lease=await sql().query("UPDATE desk_assessments SET generation_lease=jsonb_set(generation_lease,ARRAY[$1],to_jsonb($2::bigint)) WHERE id=$3 AND COALESCE((generation_lease->>$1)::bigint,0)<$2::bigint-360000 RETURNING id",[part,Date.now(),row.id]);if(!lease.length)return res.status(409).json({error:'This section is being prepared. Please wait and retry.'});}catch(e){return apiFailure(res,e);}
   const {result,input:{cvText,profile,quiz}}=row;
   let ctx, prompt;
   try { ctx = buildContext(result, cvText, profile, quiz); prompt = buildPartPrompt(part, ctx); }
   catch (e) { return res.status(400).json({ success:false, error:e.message }); }
   prompt += '\nThe candidate completed a deeper evidence interview. CV text includes student-confirmed follow-up answers. Use these to make the fixes specific. For originalBullet, quote only the original CV before ADDITIONAL STUDENT-CONFIRMED EVIDENCE, never a question or answer from the supplement. Existing score facts in this report are the INITIAL free assessment; do not describe them as the new deep evidence score. Do not recommend repeating an already supplied follow-up question. Treat unconfirmed gaps as questions.';
+  if(part==='repair'&&result.weakLines?.length)prompt+='\nREPAIR COVERAGE, AUTHORITATIVE DATA: Repair EVERY one of these weakLines, exactly once, preserving each exact originalBullet (resolve to catalogue ID). Do not substitute other bullets. Use confirmed follow-up facts; if a missing fact remains unconfirmed, ask a question and retain a faithful source-grounded draft. '+JSON.stringify(result.weakLines);
   prompt += await knowledgeBlock({ firm: profile?.targetFirm || '', division: profile?.targetDivision || profile?.targetSector || '', sector: profile?.targetSector || '', use: 'report', limit: 24 });
   try {
     const response = await client.messages.create({ model:MODEL, max_tokens:part === 'repair' ? 12000 : 7000,
@@ -39,6 +41,9 @@ export default async function handler(req, res) {
     if (lint.notes.length) console.warn('full-cycle lint', JSON.stringify({part, notes: lint.notes}));
     if (part === 'verdict') data.profileWarnings = ctx.facts?.profile?.warnings || [];
     if (part === 'repair') {
+      const missing=missingWeakRepairs(result.weakLines,data.bulletRepair);
+      if(data.bulletRepair.length<(result.weakLines?.length||0)-1||missing.length)console.warn('full-cycle weak-line coverage shortfall',JSON.stringify({assessmentId:row.id,promised:result.weakLines?.length||0,produced:data.bulletRepair.length,missing:missing.length}));
+      if(missing.length)throw Error('Incomplete repair');
       const supplied = new Map((result.competencies || []).map(c => [c.name,c.score]));
       for (const c of data.competencyRepair) {
         if (!supplied.has(c.name) || c.score !== supplied.get(c.name)) throw new Error('Competency scores must match original assessment');
