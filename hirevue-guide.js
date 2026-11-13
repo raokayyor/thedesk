@@ -176,10 +176,10 @@
 
   // ---------- HireVue format practice ----------
   // Thinking countdown → recording starts (coach's start()) → answer countdown → recording stops (coach's stop()).
-  const S = { phase: '', timer: null, retakesLeft: 0, qIndex: -1 };
+  const S = { phase: '', timer: null, retakesLeft: 0, qIndex: -1, generation:0 };
   const fmt = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
   const currentQ = () => (typeof questions !== 'undefined' && questions[current]) ? questions[current].q : (document.getElementById('question') || {}).textContent || '';
-  function countdown(secs, onTick, onEnd) { clearInterval(S.timer); let left = secs; onTick(left); S.timer = setInterval(() => { left--; onTick(left); if (left <= 0) { clearInterval(S.timer); onEnd(); } }, 1000); }
+  function countdown(secs, onTick, onEnd) { clearInterval(S.timer); let left = secs; onTick(left); if(left<=0){onEnd();return} S.timer = setInterval(() => { left--; onTick(left); if (left <= 0) { clearInterval(S.timer); onEnd(); } }, 1000); }
   function setStatus(t) { $('#hvStatus').textContent = t; }
   async function hvStart(retake) {
     if (typeof start !== 'function' || typeof stop !== 'function') return setStatus('Practice mode needs the interview coach on this page.');
@@ -187,7 +187,14 @@
     if (!retake) { S.retakesLeft = +$('#hvRetakes').value; S.qIndex = typeof current !== 'undefined' ? current : -1; }
     const think = +$('#hvThink').value, answer = +$('#hvAnswer').value;
     $('#hvStage').hidden = false; $('#hvQ').textContent = currentQ(); $('#hvStart').disabled = true; $('#hvSkip').hidden = false; $('#hvEnd').hidden = true;
-    $('#hvStage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const token=++S.generation;
+    if(document.getElementById('voiceQuestions')?.checked){
+      S.phase='question';window.DeskInterviewStarting=true;$('#hvPhase').textContent='Listen to the question';$('#hvClock').textContent='—';$('#hvSkip').hidden=true;
+      const heard=await window.DeskInterviewVoice?.readQuestion();window.DeskInterviewStarting=false;
+      if(token!==S.generation)return;
+      if(!heard){S.phase='';$('#hvStart').disabled=false;setStatus('Question audio did not finish. Try Start again, or turn off Read questions aloud to continue.');return;}
+    }
+    $('#hvStage').scrollIntoView({ behavior: 'smooth', block: 'center' });$('#hvSkip').hidden=false;
     S.phase = 'think'; $('#hvPhase').textContent = 'Thinking time';
     countdown(think, l => { $('#hvClock').textContent = fmt(Math.max(l, 0)); }, () => beginAnswer(answer));
     setStatus(retake ? 'Retake started.' : '');
@@ -205,11 +212,11 @@
     $('#hvStatus').innerHTML = `Done. Watch it back with “Play recording”, then check your transcript and get feedback. ${left > 0 ? `<button class="hv-btn ghost" type="button" id="hvRetake">Retake (${left} left)</button>` : 'No retakes left, as in the real thing.'}`;
     const r = document.getElementById('hvRetake'); if (r) r.onclick = () => { S.retakesLeft--; hvStart(true); };
   }
-  document.addEventListener('desk:questionchange',()=>{clearInterval(S.timer);S.phase='';$('#hvStart').disabled=false;$('#hvStage').hidden=true;setStatus('');});
+  document.addEventListener('desk:questionchange',()=>{S.generation++;window.DeskInterviewStarting=false;clearInterval(S.timer);S.phase='';$('#hvStart').disabled=false;$('#hvStage').hidden=true;setStatus('');});
   $('#hvStart').onclick = () => hvStart(false);
   fetch('/api/interview-feedback', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).then(d => { if (d && !d.paid) $('#hvFree').textContent = `Your first ${d.limit} answers each day get detailed feedback free (${d.left} left today).`; }).catch(() => { });
   $('#hvSkip').onclick = () => beginAnswer(+$('#hvAnswer').value);
   $('#hvEnd').onclick = finish;
   const stopBtn = document.getElementById('stopBtn');
-  if (stopBtn) stopBtn.addEventListener('click', () => { if (S.phase === 'answer') finish(); });
+  if (stopBtn) stopBtn.addEventListener('click', () => { if (S.phase === 'answer') finish();else if(S.phase){S.generation++;window.DeskInterviewStarting=false;window.DeskInterviewVoice?.cancel();clearInterval(S.timer);S.phase='';$('#hvStage').hidden=true;$('#hvStart').disabled=false;} });
 })();

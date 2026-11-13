@@ -1,4 +1,5 @@
-import {deepFor} from '../lib/deep-assessment.mjs';
+import {prepProgress} from '../lib/prep-progress.mjs';
+import {deepFor,initDeep} from '../lib/deep-assessment.mjs';
 import {sharedEvent} from '../lib/community-store.mjs';
 // My Desk: one endpoint behind the student's home page.
 // GET                         -> everything the home page shows (membership, readiness, actions, tools, applications)
@@ -147,7 +148,12 @@ export default async function handler(req, res) {
       const sectors = Object.entries(SECTOR_LABELS).map(([key, label]) => ({ key, label, count: list.filter(x => x.sector === key).length })).filter(x => x.count);
       return res.json({ sectors, types: TYPES.filter(t => list.some(x => x.type === t)), programmes: list });
     }
-    if (req.method === 'GET' && req.query?.view === 'shortlist') return res.json({ list: (await getShortlist(p)).list });
+    if (req.method === 'GET' && req.query?.view === 'shortlist') return res.json({ list: (await getShortlist(p)).list,signedIn:p.startsWith('account:') });
+
+    if(req.method==='GET'&&req.query?.view==='progress'){
+      const summary=await A.ownerSummary(p),id=String(req.query.id||'');if(!summary.assessments.some(a=>a.id===id))return res.status(404).json({error:'Assessment not found.'});
+      const row=(await sql().query("SELECT data FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,id]))[0];return res.json(row?.data||{id,done:{}});
+    }
 
     if (req.method === 'GET' && req.query?.view === 'test') {
       const s = await A.ownerSummary(p);
@@ -185,19 +191,30 @@ export default async function handler(req, res) {
       const left = paid ? await A.quotaLeft('fb:' + p, PAID_PER_DAY).catch(() => null) : Math.max(0, FREE_PER_WEEK - await A.countItems(p, 'interview', 7));
       const short = await getShortlist(p);
       const progs = (await loadProgrammes().catch(() => ({ programmes: [] }))).programmes;
+      const signupSaved=account?(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[account.id]))[0]?.data:null;
+      if(paid&&account&&signupSaved?.ameliaMember&&!signupSaved.pilotTrackingSeeded){
+        if(!apps.some(a=>/j[.]?p[.]?\s*morgan/i.test(a.data?.firm||''))&&!Object.keys(short.list).some(k=>/j[.]?p[.]?\s*morgan/i.test(k))){const data={firm:'J.P. Morgan',programme:'Summer internship',stage:'Shortlisted',deadline:'2026-11-20',pilotFixture:true};const id=await A.saveItem(p,'application',data);apps.unshift({id,data,createdAt:new Date().toISOString()});}
+        await sql().query("UPDATE desk_account_profiles SET data=data || $1::jsonb WHERE account_id=$2",[JSON.stringify({pilotTrackingSeeded:true}),account.id]);
+      }
       const byKey = Object.fromEntries(progs.map(x => [x.firm + '|' + x.name, x]));
       const fromTracker = Object.entries(short.list).map(([k, v]) => { const x = byKey[k]; const [firm, ...rest] = k.split('|'); return { id: 't:' + k, source: 'tracker', firm: x?.firm || firm, programme: x?.name || rest.join('|'), stage: v.stage, deadline: x?.closes || '', rolling: !!x?.rolling, url: x?.url || '' }; });
       const applications = [...fromTracker, ...apps.map(a => {const live=byKey[a.data.firm+'|'+a.data.programme];return {id:a.id,source:'manual',...a.data,...(live?{deadline:live.closes||'',rolling:!!live.rolling,url:live.url||a.data.url}:{}),createdAt:a.createdAt};})].sort((x, y) => String(x.deadline || '9999').localeCompare(String(y.deadline || '9999')));
-      const signupSaved=account?(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[account.id]))[0]?.data:null;
+
       const profile = {...(signupSaved||{}),...(latest?.profile||{})};
       const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
-      const deepRow=paid&&latest?(await sql().query('SELECT id,input,result FROM desk_assessments WHERE id=$1',[(paidRow||latest).id]))[0]:null;
+      let reference=paidRow||latest;
+      if(paid&&ids.length){await initDeep();const completed=await sql().query("SELECT a.id,a.input FROM desk_assessments a JOIN desk_deep_assessments d ON d.assessment_id=a.id WHERE a.id=ANY($1) AND d.data->>'status'='complete' ORDER BY a.created_at DESC",[ids]);for(const row of completed){const valid=await deepFor(row);if(valid?.status==='complete'){reference=assessments.find(a=>a.id===row.id)||reference;break;}}}
+      const deepRow=paid&&reference?(await sql().query('SELECT id,input,result FROM desk_assessments WHERE id=$1',[reference.id]))[0]:null;
       const deep=deepRow?await deepFor(deepRow):null;
       const deepReady=deep?.status==='complete';
-      const reportUrl = paid && latest ? (deepReady?'/fullcycle.html?id=':'/deep-assessment.html?id=') + (paidRow||latest).id : latest ? '/result-final-design.html?id=' + latest.id : null;
+      const progressId=reference?.id;
+      const savedProgress=progressId?(await sql().query("SELECT data FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,progressId]))[0]?.data:null;
+      const prep=prepProgress(byId[progressId]?.plan||{},savedProgress||{});
+
+      const reportUrl = paid && latest ? (deepReady?'/fullcycle.html?id=':'/deep-assessment.html?id=') + reference.id : latest ? '/result-final-design.html?id=' + latest.id : null;
       // The interview coach loads the student's CV and target from their (paid, else latest) assessment.
-      const interviewUrl = latest ? '/interview-start.html?id=' + (paidRow || latest).id : '/interview-start.html';
+      const interviewUrl = latest ? '/interview-start.html?id=' + reference.id : '/interview-start.html';
 
       // Next actions, most urgent first.
       const actions = [];
@@ -208,10 +225,10 @@ export default async function handler(req, res) {
         if (days >= 0 && days <= 14) actions.push({ tag: 'Deadline · Applications', title: `Submit ${a.firm}${a.programme ? ' ' + a.programme : ''} by ${new Date(a.deadline + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}`, detail: days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `${days} days left`, href: '#applications', urgent: days <= 3 });
       }
       if (!latest) actions.push({ tag: 'Start here', title: 'Take the free assessment', detail: 'Upload your CV and answer 10 questions. About 10 minutes.', href: '/assessment.html' });
-      else if (paidRow) actions.push({ tag: 'Report', title: 'Work through your plan', detail: 'CV rewrites, model answers and this week’s tasks', href: reportUrl + '#plan' });
+      else if (paid&&deepReady) {if(prep.remaining.length)actions.push({tag:'Your next task',title:clean(prep.next,120),detail:'Complete this step in your preparation plan.',href:reportUrl+'#plan'});}
       else if (latest.priorities?.[0]) actions.push({ tag: 'Your top priority', title: clean(latest.priorities[0].title, 90), detail: clean(latest.priorities[0].description, 160), href: reportUrl });
       const lastTest = tests[0];
-      if (latest && (!lastTest || Date.now() - new Date(lastTest.createdAt).getTime() > 7 * 86400000)) actions.push({ tag: 'Test · moves readiness', title: 'Take a fresh 10-question test', detail: 'New questions for your route. About 8 minutes.', href: '/tests.html' });
+      if (latest && (!lastTest || Date.now() - new Date(lastTest.createdAt).getTime() > 7 * 86400000)) actions.push({ tag: deepReady?'Test · track your knowledge':'Test · moves readiness', title: 'Take a fresh 10-question test', detail: 'New questions for your route. About 8 minutes.', href: '/tests.html' });
       const lastPractice = practice[0];
       const target = profile.targetFirm || applications[0]?.firm;
       if (!lastPractice || Date.now() - new Date(lastPractice.createdAt).getTime() > 3 * 86400000) actions.push({ tag: 'Practise · Interview', title: target ? `Practise an interview question for ${target}` : 'Practise an interview question', detail: 'On camera, timed like the real thing', href: interviewUrl });
@@ -257,9 +274,9 @@ export default async function handler(req, res) {
       return res.json({
         testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: signupSaved?.pilotAccess?'':account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
         deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { name: clean(profile.name, 80), firstName: clean(profile.name, 80).split(' ')[0], targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
-        prep:paid?{total:(byId[latest?.id]?.plan?.sevenDayActionPlan?.length||0)+(byId[latest?.id]?.plan?.finalSubmissionChecklist?.length||0),next:byId[latest?.id]?.plan?.sevenDayActionPlan?.[0]?.focus||'Open your report to build your plan'}:null,
+        prep:paid?{...prep,remaining:undefined}:null,
         readiness: deepReady ? {score:deep.evaluation.score,band:band(deep.evaluation.score),source:'deep',change:0,timeline:[]} : now ? { score: now.score, band: band(now.score), source:'free',change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
-        interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: (paidRow || latest).id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
+        interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: reference.id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
         applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge, game,
@@ -270,6 +287,20 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end();
     if (!sameOrigin(req, res)) return;
     const b = req.body || {};
+    if(b.action==='progress'){
+      if(!paid)return res.status(402).json({error:'Membership required.'});const id=String(b.id||''),summary=await A.ownerSummary(p);if(!summary.assessments.some(a=>a.id===id))return res.status(404).json({error:'Assessment not found.'});
+      const row=(await sql().query("SELECT report->'plan' AS plan FROM desk_assessments WHERE id=$1",[id]))[0],progress=prepProgress(row?.plan||{},{done:b.done}),data={id,done:progress.done,updatedAt:new Date().toISOString()};
+      const prior=(await sql().query("SELECT id FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,id]))[0];
+      if(prior)await sql().query('UPDATE desk_value_items SET data=$1::jsonb,created_at=now() WHERE id=$2 AND principal=$3',[JSON.stringify(data),prior.id,p]);else await A.saveItem(p,'prep-progress',data);
+      return res.json({success:true,...progress,remaining:undefined});
+    }
+    if(b.action==='call-request'){
+      if(!paid)return res.status(402).json({error:'Log in with membership to request a call.'});const practitioner=PANEL.find(x=>x.init===b.practitioner),email=String(b.email||'').trim().toLowerCase();
+      if(!practitioner||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254)return res.status(400).json({error:'Choose a practitioner and add your email.'});
+      if(!await A.useQuota('call-request:'+p,5))return res.status(429).json({error:'Your requests are saved. Please wait for a reply before sending more.'});
+      const own=await A.ownerSummary(p),profile=own.assessments[0]?(await sql().query("SELECT input->'profile' AS profile FROM desk_assessments WHERE id=$1",[own.assessments[0].id]))[0]?.profile:{};const id=await A.saveItem(p,'enquiry',{type:'coaching',name:clean(profile?.name,80)||'Member',university:clean(profile?.university,120),email,practitioner:practitioner.name,note:'Call requested with '+practitioner.name+'\nTopic: '+clean(b.topic,1500)+'\nAvailability: '+clean(b.availability,500),status:'requested'});return res.json({success:true,id});
+    }
+
 
     if (b.action === 'test') {
       if (!/^\d{1,18}$/.test(String(b.attemptId || ''))) return res.status(400).json({ error: 'Start a new test.' });

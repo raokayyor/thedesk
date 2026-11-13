@@ -416,7 +416,8 @@ function splitStar(s){
 
 /* ---------- state (per-viewer convenience only) ---------- */
 var KEY,ST={done:{},answers:{},kept:{}};
-function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+var progressSyncTimer,lastSampleReport=true;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}if(activeAssessmentId&&!lastSampleReport){clearTimeout(progressSyncTimer);progressSyncTimer=setTimeout(function(){fetch('/api/desk-home',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'progress',id:activeAssessmentId,done:ST.done})}).catch(function(){});},250);}}
 function restore(){try{var v=localStorage.getItem(KEY);if(v){var o=JSON.parse(v);ST.done=o.done||{};ST.answers=o.answers||{};ST.kept=o.kept||{};}}catch(e){}}
 
 /* ---------- sections ---------- */
@@ -437,7 +438,7 @@ var SECTIONS=[
 function render(R){
   if(R.paid&&R.paid.weeksTwoToFour){SECTIONS.forEach(function(s){if(s.id==="plan")s.t="30-day plan";});}
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
-  KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();buildEvidenceMap(R);
+  KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();lastSampleReport=!!R.sample;if(R.prepState)ST.done=R.prepState.done||{};buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
   document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':R.preview?'V3 design preview':'Sample report';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
@@ -810,7 +811,7 @@ function wire(R,S){
 }
 
 document.getElementById('dlTop').disabled=true;
-load().then(render).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+load().then(async function(R){if(R.id&&!R.sample){try{var state=await api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id));if(state.updatedAt)R.prepState=state;else{try{var local=JSON.parse(localStorage.getItem('desk-fc-'+R.id)||'null');if(local?.done&&Object.keys(local.done).length)await api('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'progress',id:R.id,done:local.done})});}catch(e){}}}catch(e){}}render(R);}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 <script src="/desk-me.js" defer></script></body>

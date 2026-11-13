@@ -1,0 +1,11 @@
+(()=>{
+ const $=id=>document.getElementById(id),esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let selected=null;
+ fetch('/api/desk-home',{cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('Your membership could not load. Refresh to retry.');return r.json();}).then(d=>{
+  if(!d.member){$('access').innerHTML='Log in with membership to request a practitioner call. <a href="/signin.html">Log in →</a>';return;}
+  $('access').textContent='Choose a practitioner to get started.';const panel=d.practitioners?.panel||[];
+  $('people').innerHTML=panel.map(p=>'<button type="button" class="person" data-person="'+esc(p.init)+'" aria-pressed="false">'+(p.init==='KR'?'<img class="portrait" src="/assets/kayyor-rao.jpg" alt="">':'<span class="portrait" aria-hidden="true">'+esc(p.init)+'</span>')+'<strong>'+esc(p.name)+'</strong><span>'+esc(p.role)+'</span><span>'+esc(p.firms)+'</span><span class="choose">Choose practitioner →</span></button>').join('');
+  $('people').querySelectorAll('button').forEach(b=>b.onclick=()=>{selected=panel.find(p=>p.init===b.dataset.person);$('people').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('chosen').textContent='Request a call with '+selected.name;$('callForm').hidden=false;$('success').hidden=true;$('access').textContent='';$('callForm').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
+  $('email').value=d.email||'';
+ }).catch(e=>{$('access').textContent=e.message;});
+ $('callForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;$('send').disabled=true;$('status').textContent='Saving your request…';try{const r=await fetch('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'call-request',practitioner:selected.init,email:$('email').value,topic:$('topic').value,availability:$('availability').value})}),d=await r.json();if(!r.ok)throw Error(d.error||'Please try again.');$('callForm').hidden=true;$('success').hidden=false;$('receipt').textContent='Requested: '+selected.name+'. We’ll contact you at '+$('email').value+' to arrange the call.';$('success').scrollIntoView({block:'start'});}catch(e){$('status').textContent=e.message;}finally{$('send').disabled=false;}};
+})();

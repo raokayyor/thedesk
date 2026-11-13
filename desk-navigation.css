@@ -21,3 +21,7 @@ body.member-dashboard .desk-group-nav{display:block!important}body.desk-nav-away
 @media print{.desk-group-nav,.desk-account-avatar{display:none!important}body.desk-shell{padding:0!important}}
 
 .desk-shell-header .hin{display:flex;align-items:center;width:100%;gap:16px}.desk-shell .logo{font:600 28px 'EB Garamond',Georgia,serif}.desk-shell-header .hin>.desk-account-avatar{margin-left:auto}
+
+.dashboard-prep-column{display:flex;flex-direction:column;gap:16px;min-width:0}.dashboard-prep-column>.card{margin:0}.dashboard-prep-column .interview-help-priority{padding:18px}.dashboard-prep-column h2{font-size:25px!important}.dashboard-prep-column .dashboard-buttons{display:flex;gap:10px;flex-wrap:wrap}.dashboard-prep-column .dashboard-buttons .btn{flex:1;white-space:normal;text-align:center}
+
+.tracked-deadlines{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;margin:12px 0 4px}.tracked-deadlines>a{font-size:14px;color:#1f2a2e;text-decoration:none;padding:10px 12px;background:#ece9e2;border:1px solid #dcd6cc;border-radius:8px}.tracked-deadlines>.all-tracked{background:transparent;border-color:transparent;text-decoration:underline;font-size:12px}.tracked-deadlines .kicker{width:100%}@media(max-width:767px){.tracked-deadlines{gap:8px}.tracked-deadlines>a{width:100%}}

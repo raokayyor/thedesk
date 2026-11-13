@@ -4,9 +4,9 @@
   const voiceToggle = document.getElementById('voiceQuestions');
   const hearButton = document.getElementById('hearQuestion');
   const voiceStatus = document.getElementById('voiceStatus');
-  let speechToken = 0, spokenQuestion = '', reading = false, waiting = false;
+  let speechToken = 0, spokenQuestion = '', reading = false, waiting = false, startPending=false;
   function isRecording() { return recorder && recorder.state === 'recording'; }
-  function updateRecordLabel() { document.getElementById('recordBtn').textContent = isRecording() ? 'Recording your answer…' : 'Start recording'; }
+  function updateRecordLabel() { document.getElementById('recordBtn').textContent = isRecording() ? 'Recording your answer…' : 'Start answer'; }
   function lock(active) {
     for (const id of ['firmSelect','roleSelect','practiceFocus','logicToggle','newSessionBtn','cameraBtn','audioOnlyBtn']) { const control = document.getElementById(id); if (control) control.disabled = active; }
     document.getElementById('buildQuestions').disabled = active;
@@ -52,6 +52,8 @@
     });
   }
 
+  window.DeskInterviewVoice={readQuestion,cancel:cancelVoice};
+
   function renderGuide() {
     const course = [profile.course, profile.university].filter(Boolean).join(' at ');
     const role = profile.targetSector || 'your target role';
@@ -76,7 +78,7 @@
     if (recordingUrl) { URL.revokeObjectURL(recordingUrl); recordingUrl = ''; }
     spokenQuestion = ''; hearButton.textContent = 'Hear question';
     baseRender(); renderGuide(); lock(false); updateRecordLabel();
-    voiceStatus.textContent = voiceAvailable ? 'Click Hear question to listen, then Start recording when you are ready.' : 'Spoken questions are unavailable in this browser. The question is shown above.';
+    voiceStatus.textContent = voiceAvailable ? 'Click Start answer to hear the question and begin automatically. Hear question lets you listen without recording.' : 'Spoken questions are unavailable in this browser. The question is shown above.';
   };
   const baseStart = start;
   start = function() {
@@ -92,11 +94,11 @@
   hearButton.onclick = () => { if (!reading && !waiting) readQuestion(); };
   voiceToggle.onchange = () => { if (!voiceToggle.checked && reading) { stop(); } updateRecordLabel(); };
   document.getElementById('recordBtn').onclick = async () => {
-    if (!stream || isRecording()) return;
-    cancelVoice();
-    waiting = false;
-    start();
-    updateRecordLabel();
+    if (!stream || isRecording() || startPending) return;
+    startPending=true;window.DeskInterviewStarting=true;
+    const question=current;
+    try{if(voiceToggle.checked){const heard=await readQuestion();if(!heard||question!==current)return;}start();updateRecordLabel();}
+    finally{startPending=false;window.DeskInterviewStarting=false;}
   };
   document.getElementById('stopBtn').onclick = stop;
   const baseCamera = document.getElementById('cameraBtn').onclick;

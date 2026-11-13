@@ -159,7 +159,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
     <div class="checked">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
     <div class="stats" id="stats"></div>
     <div class="insight" id="insight"></div>
-<p class="storage-note">Your shortlist and application stages are saved on this browser only.</p><button class="btn export" id="exportList" type="button">Export my application list</button><p id="saveNotice" role="status" aria-live="polite"></p>
+<p class="storage-note">Your tracked programmes and stages also appear in My Desk. Sign in to keep them across devices.</p><button class="btn export" id="exportList" type="button">Export my application list</button> <button class="btn export" id="exportCsv" type="button">Download spreadsheet (CSV)</button> <a class="btn" href="/my.html#applications">Open my dashboard →</a><p id="saveNotice" role="status" aria-live="polite"></p>
   </section>
 
   <div class="filters" role="group" aria-label="Filters">
@@ -169,7 +169,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
     <select id="fStatus"><option value="all">All</option><option value="open">Open now</option><option value="notyet">Not open yet</option><option value="soon">Closing within 21 days</option><option value="closed">Closed</option><option value="unconfirmed">Not confirmed</option></select>
     <label class="toggle"><input type="checkbox" id="fEntry"> Open to anyone only</label>
     <label class="toggle"><input type="checkbox" id="fMine"> My list</label>
-    <span class="count" id="count"></span>
+    <span class="count" id="count"></span><button type="button" class="btn" id="trackAll" disabled>Track all shown</button>
   </div>
 
   <div class="list" id="list"></div>
@@ -452,10 +452,10 @@ function st(p){
 }
 function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;if(s==="open")return 500;if(s==="notyet")return 700;if(s==="unconfirmed")return 800;return 1000+(-(n||0))}
 var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}");if(stored&&typeof stored==="object"&&!Array.isArray(stored))mine=stored}catch(e){}
-// Keep the shortlist on the student's Desk too, so My Desk shows it and it follows them across devices.
-function deskSync(){try{fetch("/api/desk-home",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"tracker-sync",list:mine})}).catch(function(){})}catch(e){}}
-if(!Object.keys(mine).length){try{fetch("/api/desk-home?view=shortlist",{credentials:"same-origin"}).then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&d.list&&Object.keys(d.list).length&&!Object.keys(mine).length){mine=d.list;try{localStorage.setItem("desk_mylist",JSON.stringify(mine))}catch(e){}if(typeof render==="function")render()}}).catch(function(){})}catch(e){}}
-function save(){deskSync();try{localStorage.setItem("desk_mylist",JSON.stringify(mine));document.getElementById("saveNotice").textContent="Saved on this browser."}catch(e){document.getElementById("saveNotice").textContent="This browser could not save your changes. Export your list to keep a copy."}}
+// The saved account list is authoritative; local storage is a browser cache.
+var trackerLoaded=false,shownRows=[],syncQueue=Promise.resolve();
+fetch('/api/desk-home?view=shortlist',{credentials:'same-origin',cache:'no-store'}).then(function(r){if(!r.ok)throw Error('Could not load your saved applications.');return r.json()}).then(function(d){mine=d.list||{};trackerLoaded=true;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.querySelector('.storage-note').textContent=d.signedIn?'Your tracked programmes and stages are saved to your account and shown in My Desk.':'Your programmes appear in My Desk on this browser. Sign in to keep them across devices.';render()}).catch(function(){document.getElementById('saveNotice').textContent='Your saved list could not load. Refresh before making changes.'});
+function save(){var snapshot=JSON.parse(JSON.stringify(mine));try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent='Saving to your dashboard…';syncQueue=syncQueue.catch(function(){}).then(async function(){var r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-sync',list:snapshot})});if(!r.ok)throw Error('Could not save');document.getElementById('saveNotice').textContent='Saved to your dashboard.'}).catch(function(){document.getElementById('saveNotice').textContent='Saved on this browser; dashboard sync failed. Try changing the stage again to retry.'});return syncQueue;}
 function key(p){return p.firm+"|"+p.name}
 
 // stats + insight
@@ -549,6 +549,7 @@ function render(){
     if(fMine.checked&&!mine[key(p)])return false;
     return true;
   }).sort(function(a,b){return rank(a)-rank(b)});
+  shownRows=rows;var bulk=document.getElementById("trackAll");var untracked=rows.filter(function(p){return !mine[key(p)]});bulk.disabled=!trackerLoaded||!untracked.length;bulk.textContent=untracked.length?"Track all shown ("+untracked.length+")":"All shown are tracked";
   document.getElementById("count").textContent=rows.length+" programme"+(rows.length===1?"":"s");
   var L=document.getElementById("list");
   if(!rows.length){
@@ -573,8 +574,8 @@ function render(){
       (s==="open"&&p.entry==="open"?lockHtml(p):'')+'</article>';
   }).join("");
   L.querySelectorAll("button[data-info]").forEach(function(button){button.onclick=function(){var parent=button.closest(".main"),target=document.getElementById(button.dataset.info),show=target.hidden;parent.querySelectorAll(".role-info").forEach(function(panel){panel.hidden=true});parent.querySelectorAll("button[data-info]").forEach(function(tab){tab.setAttribute("aria-expanded","false")});if(show){target.hidden=false;button.setAttribute("aria-expanded","true")}}});
-  L.querySelectorAll("button[data-k]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-k");if(mine[k])delete mine[k];else mine[k]={stage:"Shortlisted"};save();render()}});
-  L.querySelectorAll("select[data-stage]").forEach(function(select){select.onchange=function(){mine[select.dataset.stage]={stage:select.value};save()}});
+  L.querySelectorAll("button[data-k]").forEach(function(b){b.disabled=!trackerLoaded;b.onclick=function(){if(!trackerLoaded)return;var k=b.getAttribute("data-k");if(mine[k])delete mine[k];else mine[k]={stage:"Shortlisted"};save();render()}});
+  L.querySelectorAll("select[data-stage]").forEach(function(select){select.disabled=!trackerLoaded;select.onchange=function(){mine[select.dataset.stage]={stage:select.value};save()}});
 
 }
 function setSector(x){
@@ -591,6 +592,8 @@ document.getElementById("sIN").onclick=function(){setSector("ins")};
 
 
 [fFirm,fDiv,fStatus,fEntry,fMine,fType].forEach(function(el){el.onchange=render});
+document.getElementById('trackAll').onclick=async function(){if(!trackerLoaded)return;var button=this;button.disabled=true;var keys=shownRows.filter(function(p){return !mine[key(p)]}).map(key);try{await syncQueue;var r=await fetch('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-add',keys:keys})}),d=await r.json();if(!r.ok)throw Error(d.error||'Could not save');mine=d.list;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent=d.added+' programmes added to your dashboard.'+(d.added<keys.length?' Your list holds up to 200 programmes.':'');render()}catch(e){document.getElementById('saveNotice').textContent=e.message;button.disabled=false}};
+document.getElementById('exportCsv').onclick=function(){var quote=function(v){var s=String(v??'');if(/^[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'},rows=[['Firm','Programme','Sector','Deadline','Stage','Official application link']];P.filter(function(p){return mine[key(p)]}).forEach(function(p){rows.push([p.firm,p.name,p.area,p.closes,mine[key(p)].stage||'Shortlisted',p.url])});var blob=new Blob(['\ufeff'+rows.map(function(r){return r.map(quote).join(',')}).join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='the-desk-applications.csv';a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
 document.getElementById("exportList").onclick=function(){var items=P.filter(function(p){return !!mine[key(p)]}).map(function(p){return{firm:p.firm,programme:p.name,deadline:p.closes,url:p.url,stage:mine[key(p)].stage||"Shortlisted"}});var blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),applications:items},null,2)],{type:"application/json"});var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="the-desk-applications.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)};
 if(contextSample==="emily")setSector("big4");else{drawTop();render();}
 })();

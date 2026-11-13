@@ -20,7 +20,7 @@
   let focused=false;
   function syncVisibility(){
    const visible=id=>{const el=document.getElementById(id);return el&&!el.hidden&&getComputedStyle(el).display!=='none'};
-   const path=location.pathname,live=path==='/interview.html'&&(document.body.classList.contains('desk-answer-recording')||!!document.querySelector('#hvStage:not([hidden])'))||path==='/group-exercise.html'&&(visible('room')||visible('assessmentLoading'))||path==='/case-study.html'&&(visible('s-write')||visible('s-present')||visible('s-qs'))||path==='/inbox-exercise.html'&&visible('s-work');
+   const path=location.pathname,live=path==='/group-exercise.html'&&(visible('room')||visible('assessmentLoading'))||path==='/case-study.html'&&(visible('s-write')||visible('s-present')||visible('s-qs'))||path==='/inbox-exercise.html'&&visible('s-work');
    const hide=focused||!!live;if(document.body.classList.contains('desk-nav-away')!==hide)document.body.classList.toggle('desk-nav-away',hide);
   }
   document.addEventListener('focusin',e=>{focused=e.target.matches('input,textarea,select,[contenteditable="true"]');syncVisibility();});document.addEventListener('focusout',()=>{focused=false;setTimeout(syncVisibility,0)});
