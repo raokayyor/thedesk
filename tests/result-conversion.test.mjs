@@ -17,3 +17,14 @@ test('CV previews count report repairs, not unrelated criteria quotes',()=>{
  const data=conversionFacts({...result,applicationCriteria:[{points:1,quotes:['This extra quote is not a report repair at all.']}]},{},'',{repair:{bulletRepair:[{originalBullet:other},{originalBullet:other}]}});
  assert.equal(data.cvLineCount,1);assert.equal(data.otherLines.length,1);
 });
+test('v2 findings omit unavailable reasons and never expose paid rewrites',()=>{
+ const original='Compared customer orders against the monthly sales ledger';
+ const result={overallScore:58,breakdown:{competency:11},weakLines:[{original,issue:'No conclusion stated',severity:2},{original:'Recorded invoices in the shared team spreadsheet',issue:'Individual contribution unclear',severity:2}],competencies:[{name:'Leadership',score:23}],skimNote:'Your ledger comparison needs its conclusion.'};
+ const facts=conversionFacts(result,{},original,{repair:{bulletRepair:[{originalBullet:original,exampleBullet:'SECRET PAID REPAIR'}]}});
+ assert.equal(facts.skimLines.length,1);
+ assert.equal(facts.competencyFindings[0].reason,'');
+ assert.equal(facts.otherLines[0].issue,'Individual contribution unclear');
+ assert.deepEqual(facts.atsTerms,{matched:[],missing:[]});
+ assert.equal(JSON.stringify(facts).includes('SECRET PAID REPAIR'),false);
+ assert.equal(conversionFacts({...result,skimNote:undefined}).skimNote,'');
+});

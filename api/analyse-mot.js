@@ -45,6 +45,7 @@ export default async function handler(req,res){
   if(parent?.rechecks_used>=12)return res.status(400).json({error:'Your 12 rechecks have been used. Unchanged versions keep their saved result.'});
   // Assessment quotas temporarily disabled for owner testing.
   const catalog=getEvidenceCatalog(cvText),ids=catalog.map(x=>x.id),contract=schema(shape);
+  contract.properties.skimNote={type:'string',description:'At most 20 words: a candid skim-read observation about the supplied CV. Name its actual evidence gap. No hiring prediction or invented quote.'};contract.required.push('skimNote');
   contract.properties.weakLines=structuredClone(WEAK_LINES_SCHEMA);contract.required.push('weakLines');contract.properties.weakLines.items.properties.original.enum=catalog.filter(x=>x.quote.trim().split(/\s+/).length>=4&&!/@|https?:/.test(x.quote)).map(x=>x.id);
   const namedDetails=namedCvDetails(catalog,profile);
   if(!namedDetails.length)namedDetails.push(...catalog.filter(x=>x.quote.trim().split(/\s+/).length>=6).slice(0,8).map(x=>x.quote.replace(/^\s*[-•]\s*/,'').split(/\s+/).slice(0,6).join(' ')));
@@ -88,7 +89,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   for(const c of analysis.competencies)c.detail=resolveDetail(c.detail,c.reason);
   if(analysis.cvPreview&&typeof analysis.cvPreview==='object'&&!Array.isArray(analysis.cvPreview))analysis.cvPreview.original=quotes.get(analysis.cvPreview.original);
   if(!Array.isArray(analysis.priorities)||analysis.priorities.length!==3||typeof analysis.deskSummary!=='string'||typeof analysis.cvPreview?.original!=='string'||!analysis.cvPreview.original.trim()||!cvText.includes(analysis.cvPreview.original)){feedback='Return three priorities, a summary, and one valid catalogue ID for the CV bullet.';continue;}
-  try{analysis.weakLines=validateWeakLines(analysis.weakLines,cvText,catalog);}catch(e){feedback=e.message;continue;}
+  try{analysis.weakLines=validateWeakLines(analysis.weakLines,cvText,catalog);if(typeof analysis.skimNote!=='string'||analysis.skimNote.trim().split(/\s+/).length>20)throw new Error('skimNote must contain at most 20 words.');}catch(e){feedback=e.message;continue;}
   if(analysis.weakLines.length){analysis.cvPreview.original=analysis.weakLines[0].original;}
   analysis.cvPreview=anchoredCvPreview(analysis.cvPreview,cvText);
   if(analysis.weakLines.length)analysis.cvPreview={...analysis.cvPreview,original:analysis.weakLines[0].original,issue:analysis.weakLines[0].issue};
