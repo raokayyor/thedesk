@@ -31,7 +31,7 @@ td{padding:8px;border-bottom:1px solid #eee8df;vertical-align:top}
 tr:hover td{background:#fff8f3}
 .cvname{font-weight:700}.tiny{font-size:9px;color:#777}
 .badge{display:inline-block;padding:3px 6px;border-radius:12px;font-size:9px;font-weight:700}
-.Competitive{background:#dbeee4;color:#235c42}.Borderline{background:#f5ead2;color:#7b571d}.Weak{background:#f3ddda;color:#843a31}.error{background:#f3ddda;color:#843a31}
+.Competitive{background:#dbeee4;color:#235c42}.Borderline{background:#f5ead2;color:#7b571d}.Developing{background:#f3ddda;color:#843a31}.error{background:#f3ddda;color:#843a31}
 .openBtn{padding:5px 8px;font-size:9px;background:#222;color:#fff}
 .cvBtn{padding:5px 8px;font-size:9px;background:#ece7df}
 details{font-size:10px;color:#555;max-width:260px}summary{cursor:pointer;font-weight:700}
@@ -56,7 +56,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
   <div class="panel">
     <div class="grid">
       <div><label>Batch size</label><select id="count"><option selected>1</option><option>10</option><option>25</option><option>50</option><option>100</option><option>200</option></select></div>
-      <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Weak-heavy</option></select></div>
+      <div><label>Candidate mix</label><select id="mix"><option value="mixed" selected>Fully mixed</option><option value="strong">Strong-heavy</option><option value="borderline">Borderline-heavy</option><option value="weak">Developing-heavy</option></select></div>
       <div><label>1st choice route</label><select id="division"><option value="mixed">Mixed</option><option>Investment Banking / IBD</option><option>Sales & Trading / Markets</option><option>Asset Management / Investing</option><option disabled>Corporate Banking — bank pending</option><option>Accounting / Audit</option><option disabled>Consulting / Advisory — bank pending</option><option>General Finance</option></select></div>
       <div><label>Programme / stage</label><select id="programme"><option value="mixed">Mixed</option><option>Spring Week / Insight Programme</option><option>Summer Internship</option><option>Industrial Placement / Year in Industry</option><option>Graduate Programme</option><option>Off-cycle Internship</option></select></div>
       <div><label>Concurrency</label><select id="concurrency"><option>1</option><option selected>2</option><option>3</option></select></div>
@@ -78,7 +78,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11px;line-height
     <div class="stat"><b id="sAvg">—</b><span>Avg score</span></div>
     <div class="stat"><b id="sComp">0</b><span>Competitive</span></div>
     <div class="stat"><b id="sBorder">0</b><span>Borderline</span></div>
-    <div class="stat"><b id="sWeak">0</b><span>Weak</span></div>
+    <div class="stat"><b id="sWeak">0</b><span>Developing</span></div>
     <div class="stat"><b id="sErrors">0</b><span>Errors</span></div>
   </div>
 
@@ -256,7 +256,7 @@ function stats(){
   document.getElementById('sAvg').textContent=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
   document.getElementById('sComp').textContent=done.filter(x=>x.result.band==='Competitive').length;
   document.getElementById('sBorder').textContent=done.filter(x=>x.result.band==='Borderline').length;
-  document.getElementById('sWeak').textContent=done.filter(x=>x.result.band==='Weak').length;
+  document.getElementById('sWeak').textContent=done.filter(x=>x.result.band==='Developing').length;
   document.getElementById('sErrors').textContent=batch.filter(x=>x.error).length;
   const finished=done.length+batch.filter(x=>x.error).length;
   document.getElementById('progressBar').style.width=(batch.length?finished/batch.length*100:0)+'%';

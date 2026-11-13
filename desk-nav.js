@@ -1,7 +1,7 @@
 // Shared grouped navigation; access stays enforced by the existing APIs.
 (function(){
  if(window.DeskNavigation)return;
- const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=boot;document.head.append(core);
+ const dates=document.createElement('script');dates.src='/member-dashboard-core.js';dates.onload=()=>{const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=boot;document.head.append(core);};document.head.append(dates);
  const css=document.createElement('link');css.rel='stylesheet';css.href='/desk-navigation.css';document.head.append(css);
  let data={},root,account;
  window.DeskNavigation={update(d){data=d||{};if(root)draw();},get data(){return data}};
@@ -14,9 +14,10 @@
   root=document.createElement('nav');root.className='desk-nav desk-group-nav';root.setAttribute('aria-label','Your Desk');document.body.append(root);
   account=document.createElement('a');account.href='/desk-section.html?view=account';account.className='desk-account-avatar';
   const header=document.querySelector('body>header,header.top,.page>header');if(header){header.classList.add('desk-shell-header');(header.querySelector('.hin')||header).append(account);}
-  draw();
+  try{data=JSON.parse(sessionStorage.getItem('desk-navigation-cache')||'{}')}catch{}
+  draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:data}));
   const tour=new URLSearchParams(location.search).get('preview')==='empty'||new URLSearchParams(location.search).has('tour');
-  if(!tour)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d){data=d;draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}}).catch(()=>{});
+  if(!tour)fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d){data=d;try{sessionStorage.setItem('desk-navigation-cache',JSON.stringify(d))}catch{}draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}}).catch(()=>{});
   let focused=false;
   function syncVisibility(){
    const visible=id=>{const el=document.getElementById(id);return el&&!el.hidden&&getComputedStyle(el).display!=='none'};

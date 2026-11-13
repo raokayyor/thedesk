@@ -573,7 +573,8 @@ function render(){
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
       '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(p.checked||CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
       '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"||s==="notyet"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
-      '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"✓ On my list":"Add to my list")+'</button>'+
+      '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"Remove from my list":"Add to my list")+'</button>'+
+      (saved?'<a class="btn" href="/interview-start.html?firm='+encodeURIComponent(p.firm)+'">Prepare</a>':'')+
       (saved?'<label class="application-stage">Application stage<select data-stage="'+esc(k)+'">'+["Shortlisted","Preparing","Applied","Online tests","Interview","Offer","Unsuccessful"].map(function(stage){return '<option'+((mine[k].stage||'Shortlisted')===stage?' selected':'')+'>'+esc(stage)+'</option>'}).join('')+'</select></label>':'')+
       (s==="open"&&p.entry==="open"&&MODE==="free"?'<a class="ready" href="/assessment-start.html">Check my readiness for this role →</a>':'')+'</div>'+
       (s==="open"&&p.entry==="open"?lockHtml(p):'')+'</article>';

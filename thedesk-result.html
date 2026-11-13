@@ -1021,7 +1021,7 @@ body{padding:0 18px}
     <div class="scoreBands">
       <div><span>75+</span><b>Competitive</b></div>
       <div class="current"><span>65–74</span><b>Borderline</b></div>
-      <div><span>&lt;65</span><b>Weak</b></div>
+      <div><span>&lt;65</span><b>Developing</b></div>
     </div>
   </div>
 </section>
@@ -1174,7 +1174,7 @@ body{padding:0 18px}
       return 58;
     }
     var oldScore=Math.round(Number(r.overallScore||0));
-    var oldBand=oldScore>=75?'Competitive':oldScore>=65?'Borderline':'Weak';
+    var oldBand=oldScore>=75?'Competitive':oldScore>=65?'Borderline':'Developing';
     var named=Array.isArray(r.namedCvDetails)?r.namedCvDetails:[];
     var top=dims.slice().sort(function(a,b){return Number(b.score||0)-Number(a.score||0);}).slice(0,4);
     while(top.length<4) top.push({name:named[top.length]||'Relevant evidence',visibleSummary:'Relevant evidence is present, but it needs sharper positioning.'});
@@ -1239,7 +1239,7 @@ body{padding:0 18px}
 
   var profile = d.profile || {};
   var score = Number(r.overallScore || p.overallScore || 0);
-  var band = score >= 75 ? 'Competitive' : score >= 65 ? 'Borderline' : 'Weak';
+  var band = score >= 75 ? 'Competitive' : score >= 65 ? 'Borderline' : 'Developing';
   var division = d.div || d.sector || profile.targetSector || profile.targetDivision || profile.track || '';
   var programme = d.programme || profile.programme || '';
   var course = d.crs || profile.course || '';

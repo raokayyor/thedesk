@@ -19,7 +19,7 @@
     "targetDivision": "Investment Banking / IBD"
   },
   "result": {
-    "band": "Weak",
+    "band": "Developing",
     "weights": {
       "ats": 10,
       "numerical": 15,
@@ -32,7 +32,7 @@
       "numerical": 9,
       "technical": 12,
       "competency": 11,
-      "application": 13
+      "application": 17
     },
     "cvPreview": {
       "issue": "The bullet ends with a disclaimer ('No transaction completion or client outcome was confirmed') which, while honest, closes on a negative and undersells the analytical rigour already described. The selection rationale — recurring revenue models matching the screen brief — is the strongest part but is buried at the end of a long sentence.",
@@ -248,7 +248,7 @@
         "reason": "Built a DCF and trading-comparables model in Excel using public annual-report data, ran a three-scenario sensitivity analysis, and constructed an acquisition-screen comparison table recording revenue and EBITDA. CV lists Excel, financial modelling, and valuation as skills, corroborated by the project and internship evidence."
       }
     ],
-    "overallScore": 54,
+    "overallScore": 58,
     "candidateName": "Amelia Chen",
     "scoringVersion": "desk-readiness-v2",
     "applicationCriteria": [
@@ -334,7 +334,7 @@
   "paid": {
     "paidTitle": "Amelia Chen — Barclays Investment Banking / IBD Summer Internship: Full Cycle Application Repair Report",
     "executiveVerdict": {
-      "summary": "Amelia scores 54/100 (Weak band) with a solid technical foundation: a real corporate finance internship at Redcliffe Partners, a DCF/trading-comps LVMH project, and confirmed Excel modelling skills. The profile is credible for a penultimate-year Bristol Economics student. Key drags are a weak leadership data point (only peer training at Pho House), four missed quiz concepts that are standard IBD interview topics, two missing ATS keywords, and acquisition-screen bullets that close on disclaimers rather than analytical insight. All three gaps are fixable before a typical summer internship deadline.",
+      "summary": "Amelia scores 58/100 (Developing band) with a solid technical foundation: a real corporate finance internship at Redcliffe Partners, a DCF/trading-comps LVMH project, and confirmed Excel modelling skills. The profile is credible for a penultimate-year Bristol Economics student. Key drags are a weak leadership data point (only peer training at Pho House), four missed quiz concepts that are standard IBD interview topics, two missing ATS keywords, and acquisition-screen bullets that close on disclaimers rather than analytical insight. All three gaps are fixable before a typical summer internship deadline.",
       "submitAdvice": "Before submitting: (1) close all four quiz gaps — equity dilution, strategic buyer, net debt, percentage fall — by drilling worked answers aloud; (2) add 'due diligence' and 'mergers and acquisitions' to the CV only where genuinely supported by your Redcliffe work; (3) secure or name a leadership data point beyond peer training. No score outcome or offer is guaranteed by any of these actions.",
       "mostImportantFix": "Reframe the Redcliffe acquisition-screen bullet to lead with the recurring-revenue selection criterion and remove the closing disclaimer; this directly lifts the Application score (weighted 30%), which is the single largest scoring component.",
       "readinessVerdict": "Overall score: 54/100 — Weak band. ATS 9/10 · Numerical 9/15 · Technical 12/20 · Competency 11/25 · Application 13/30."
@@ -1169,5 +1169,22 @@
     "buildFirst": []
   },
   "repairedCvDraft": "Amelia Chen\nEmail: amelia@example.com\nEDUCATION\nUniversity of Bristol — BSc Economics, 2023–2026. Penultimate year. Predicted 2:1. Modules: Corporate Finance, Financial Accounting, Econometrics.\nEXPERIENCE\nRedcliffe Partners — Corporate Finance Intern, July–August 2025\nApplied a recurring-revenue model screen to 12 UK software companies, recording revenue and EBITDA where publicly available in an Excel comparison table; flagged 4 candidates whose business models matched the acquisition brief and presented selection rationale to an associate.\nPho House — Part-time Team Member, September 2023–present\nMaintained 12 hours per week of customer-facing work alongside a full university timetable; trained 3 new colleagues on ordering and till procedures; during a busy service, identified a duplicate payment and escalated to the shift lead, supporting the correction process.\nPROJECTS\nLVMH valuation — University Corporate Finance project, 2025\nBuilt a DCF and trading-comparables valuation in Excel using LVMH public annual-report data; benchmarked against 3 luxury-sector peers and tested revenue growth assumptions of 3%, 5% and 7%, identifying dependence on growth and margin inputs; presented sensitivity findings and their implications to a 4-person seminar team.\nACTIVITIES\nEconomics Society — Member, 2024–2026. Attended employer talks.\nSKILLS\nExcel, financial analysis, financial modelling, valuation, research, presentation. Languages: English and conversational Mandarin.",
-  "preview": true
+  "preview": true,
+  "scoreStory": {
+    "baseline": 58,
+    "recheckTargets": [
+      67,
+      71
+    ],
+    "note": "Illustrative recheck milestones, not completed reassessments or guaranteed gains."
+  },
+  "deep": {
+    "status": "complete",
+    "evaluation": {
+      "score": 58,
+      "application": 17,
+      "competency": 15,
+      "scope": "CV and competency evidence only; tests tracked separately."
+    }
+  }
 }

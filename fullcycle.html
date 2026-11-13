@@ -303,28 +303,21 @@ h3{font-size:20px;line-height:1.3;margin:0}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
 .report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
-<script src="/desk-nav.js" defer></script>
+<link rel="stylesheet" href="/desk-navigation.css"><script src="/desk-nav.js" defer></script>
 </head>
-<body>
-<header class="top"><div class="top-in">
-  <a class="logo" href="/">The <i>Desk</i></a>
-  <span class="top-meta" id="topMeta"></span>
-  <div class="top-right">
-    <span class="tag" id="sampleTag" hidden>Sample report</span>
-    <button class="btn or" id="dlTop">Download CV</button>
-  </div>
-</div></header>
+<body class="report-page">
+<header class="desk-hub-header"><a href="/my.html">The Desk</a><span id="topMeta" hidden></span><span id="sampleTag" hidden></span></header>
 
 <div id="reportNotice" class="report-notice" role="status" hidden></div><div class="wrap">
   <nav class="side" aria-label="Report sections">
-    <ol id="nav"></ol>
+    <ol id="nav"><li>Overview</li><li>Your CV</li><li>Interview questions</li><li>30-day plan</li></ol>
     <div class="prog">
       <div class="label">Your progress</div>
       <div class="bar"><i id="progBar"></i></div>
       <div class="mt8" style="font-size:14px"><b id="progTxt">0</b> <span class="mute" id="progOf"></span></div>
     </div>
   </nav>
-  <main id="main"><div class="card"><h1>Your Full Cycle report</h1><p id="loadStatus" role="status">Loading your saved assessment…</p></div></main>
+  <main id="main" aria-busy="true"><div class="eyebrow">Your deep assessment</div><h1>Your report and preparation plan.</h1><p id="loadStatus" role="status">Loading your saved assessment…</p><div class="card desk-skeleton" style="height:180px;margin-top:24px"></div><div class="card desk-skeleton" style="height:240px;margin-top:20px"></div></main>
 </div>
 
 <div class="pop" id="pop" role="dialog" aria-modal="false">
@@ -377,13 +370,13 @@ async function load(){
  if(saved.deep?.status!=='complete'){location.replace('/deep-assessment.html?id='+encodeURIComponent(id));return new Promise(function(){});}
  if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.querySelector('.wrap').before(notice);}
  var paid={},parts=['verdict','repair','plan'];
- for(var i=0;i<parts.length;i++){
-  var part=parts[i];status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
+ await Promise.all(parts.map(async function(part,i){
+  status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
   var section=saved.report&&saved.report[part];
   if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}finally{clearTimeout(timeout);}}
   Object.assign(paid,section);
- }
- status('Building your CV from validated repairs…');
+ }));
+ status('Preparing your CV…');
  var draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,deep:saved.deep,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
@@ -440,17 +433,18 @@ function render(R){
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();lastSampleReport=!!R.sample;if(R.prepState)ST.done=R.prepState.done||{};buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
-  document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':R.preview?'V3 design preview':'Sample report';
-  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample · V3 design preview.</strong> Some STAR drafts and firm-preparation wording are hand-written examples of the intended output, not newly generated v3 results. Payment, practitioner submission and rechecks are disabled here. <a href="/assessment-start.html">Start your own assessment →</a>';
+  document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':'Sample report';
+  var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample student.</strong> Explore the CV fixes, interview preparation and plan. Rechecks and practitioner submissions are available with your own membership. <a href="/assessment-start.html">Start your own assessment →</a>';
+  if(R.sample&&R.scoreStory)notice.innerHTML+='<p>Current score: 58. Example recheck milestones: 67, then 71. Illustrative targets, not completed reassessments or guaranteed gains.</p>';
   if(R.generatedReview)notice.innerHTML='<strong>Generated fictional student · Full Cycle £89 output.</strong> Created through the current report generator and validators. Test answers were simulated ('+R.reviewAssumptions.correctPerSection+'/5 in each section), not inferred from the CV. No human review or purchase took place. Drafts still need factual checks.';
-  document.getElementById("dlTop").disabled=false;
+  
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
   var S={};
 
   /* OVERVIEW */
   (function(){
-    var deep=R.deep?.evaluation,score=deep?deep.score:res.overallScore,band=deep?(score>=75?'Competitive':score>=65?'Borderline':'Weak'):res.band,gap=Math.max(0,75-score);
+    var deep=R.deep?.evaluation,score=deep?deep.score:res.overallScore,band=score>=75?'Competitive':score>=65?'Borderline':'Developing',gap=Math.max(0,75-score);
     var rows=Object.keys(res.weights).map(function(k){return{k:k,max:res.weights[k],got:res.breakdown[k]};})
       .sort(function(a,b){return(b.max-b.got)-(a.max-a.got);});
     if(deep)rows=[{k:'application',max:30/55*100,got:deep.application/55*100},{k:'competency',max:25/55*100,got:deep.competency/55*100}];
@@ -468,7 +462,7 @@ function render(R){
         '<div class="mt16"><span class="band">'+esc(band)+'</span> '+
         (gap?'<span style="margin-left:8px;font-weight:600">'+gap+' points from Competitive</span>':'<span style="margin-left:8px;font-weight:600">In the Competitive band</span>')+'</div>'+
         '<div class="scale"><i style="left:calc('+score+'% - 2px)"></i></div>'+
-        '<div class="scale-l"><span style="left:0">Weak</span><span style="left:65%">65</span><span style="left:75%">75 · Competitive</span></div>'+
+        '<div class="scale-l"><span style="left:0">Developing</span><span style="left:65%">65</span><span style="left:75%">75 · Competitive</span></div>'+
         '<div class="fix mt32"><div class="eyebrow">The one fix that matters most</div><p>'+h(P.executiveVerdict.mostImportantFix)+'</p><a class="mt8" style="display:inline-block;font-weight:700;color:var(--or-ink);font-size:15px" href="#cv">See it on your CV →</a></div>'+
       '</div>'+
       '<div class="card">'+
@@ -537,7 +531,7 @@ function render(R){
     (removed.length?'<p class="removed">Removed from your CV: '+removed.map(function(r){return'<s>'+esc(r.text)+'</s>';}).join(" · ")+'</p>':'')+
     '<div class="cv-layout mt32">'+
       '<div><div class="paper" id="paper">'+html+'</div>'+
-        '<div class="mt16" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn or" id="dlCv">Download as Word</button><button class="btn ghost" id="copyCv">Copy text</button></div></div>'+
+        '<div class="mt16" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn or" id="dlCv">Download CV</button><button class="btn ghost" id="copyCv">Copy text</button></div></div>'+
       '<aside class="side-notes">'+
         '<div class="card"><div class="label">To confirm · <span id="qCount"></span></div><ul class="confirm-list" id="qList">'+flagsHtml+'</ul>'+
           (extraFlags>0?'<p class="mute" style="font-size:13px;margin:12px 0 0">'+extraFlags+' more questions to check are in “Before you submit”.</p>':'')+'</div>'+
@@ -727,7 +721,7 @@ function wire(R,S){
     var np=document.querySelector('[data-c="plan"]');if(np)np.textContent=pd+"/"+(P.sevenDayActionPlan||[]).length;
     var ns=document.querySelector('[data-c="submit"]');if(ns)ns.textContent=cD+"/"+cN;
   }
-  progress();
+  progress();document.addEventListener('desk:progressloaded',progress);
 
   document.addEventListener("change",function(e){
     var id=e.target.getAttribute&&e.target.getAttribute("data-done");if(!id)return;
@@ -806,12 +800,14 @@ function wire(R,S){
     var b=new Blob(["﻿"+doc],{type:"application/msword"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   }
   document.getElementById("dlCv").onclick=download;
-  document.getElementById("dlTop").onclick=download;
+  
   document.getElementById("copyCv").onclick=function(){var b=this;try{navigator.clipboard.writeText(cvText()).then(function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy text";},1500);});}catch(e){}};
 }
 
-document.getElementById('dlTop').disabled=true;
-load().then(async function(R){if(R.id&&!R.sample){try{var state=await api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id));if(state.updatedAt)R.prepState=state;else{try{var local=JSON.parse(localStorage.getItem('desk-fc-'+R.id)||'null');if(local?.done&&Object.keys(local.done).length)await api('/api/desk-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'progress',id:R.id,done:local.done})});}catch(e){}}}catch(e){}}render(R);}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+
+var reportCacheKey='desk-report-cache:'+location.pathname+location.search;
+try{var cached=JSON.parse(sessionStorage.getItem(reportCacheKey)||'null');if(cached){document.getElementById('main').innerHTML='<p class="mute" role="status">Updating your saved report…</p>'+cached.main;document.getElementById('nav').innerHTML=cached.nav;document.getElementById('main').querySelectorAll('button,input,textarea,select').forEach(function(el){el.disabled=true;});}}catch(e){}
+load().then(function(R){render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 <script src="/desk-me.js" defer></script></body>

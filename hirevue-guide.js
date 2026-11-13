@@ -104,7 +104,7 @@
       <div class="hv-types">${TYPES.map(t => `<article class="hv-card"><h3>${esc(t.name)}</h3><p class="hv-shape"><b>Shape:</b> ${esc(t.shape)} <span class="hv-mute">· aim for ${esc(t.time)}</span></p>
         <p class="hv-mute">For example: ${t.qs.map(q => '“' + esc(q) + '”').join(' or ')}</p>
         ${t.strong ? `<details class="hv-ex"><summary>See illustrative weak, average and stronger answers (fictional examples)</summary>
-          <div class="hv-ans weak"><span>Weak</span>${esc(t.weak)}</div><div class="hv-ans ok"><span>Average</span>${esc(t.ok)}</div><div class="hv-ans strong"><span>Strong</span>${esc(t.strong)}</div>
+          <div class="hv-ans weak"><span>Developing</span>${esc(t.weak)}</div><div class="hv-ans ok"><span>Average</span>${esc(t.ok)}</div><div class="hv-ans strong"><span>Strong</span>${esc(t.strong)}</div>
           <div class="hv-notes"><b>What makes the example stronger</b><ul>${t.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div></details>` : ''}
       </article>`).join('')}</div></details>
 

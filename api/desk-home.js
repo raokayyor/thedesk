@@ -31,7 +31,7 @@ export const STAGES = ['Shortlisted', 'Preparing', 'Applied', 'Online tests', 'I
 const OPEN_STAGES = ['Shortlisted', 'Preparing'];
 const FIRM_NEWS = [[/deutsche/i, 'db'], [/bank of america|bofa/i, 'bofa'], [/goldman/i, 'gs'], [/j\.?\s?p\.?\s?morgan|jpm/i, 'jpm'], [/barclays/i, 'barclays'], [/\bubs\b/i, 'ubs'], [/\bey\b|ernst/i, 'ey'], [/pwc|pricewaterhouse/i, 'pwc']];
 export const newsKeyFor = firm => (FIRM_NEWS.find(([re]) => re.test(String(firm || ''))) || [])[1] || null;
-export const band = s => s >= 75 ? 'Competitive' : s >= 65 ? 'Borderline' : 'Weak';
+export const band = s => s >= 75 ? 'Competitive' : s >= 65 ? 'Borderline' : 'Developing';
 const TEST_FREE_DAYS = 30, TEST_PAID_PER_DAY = 10;
 const clean = (v, n) => String(v ?? '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, n);
 
@@ -223,10 +223,13 @@ export default async function handler(req, res) {
       for (const a of applications) {
         if (!a.deadline || !OPEN_STAGES.includes(a.stage)) continue;
         const days = Math.round((new Date(a.deadline + 'T00:00:00Z') - today) / 86400000);
-        if (days >= 0 && days <= 14) actions.push({ tag: 'Deadline · Applications', title: `Submit ${a.firm}${a.programme ? ' ' + a.programme : ''} by ${new Date(a.deadline + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}`, detail: days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `${days} days left`, href: '#applications', urgent: days <= 3 });
+        if (days >= 0 && days <= 14) actions.push({ tag: 'Deadline · Applications', title: `Submit ${a.firm}${a.programme ? ' ' + a.programme : ''} by ${new Date(a.deadline + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}`, detail: days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `${days} days left`, href: '/tracker.html', urgent: days <= 3 });
       }
       if (!latest) actions.push({ tag: 'Start here', title: 'Take the free assessment', detail: 'Upload your CV and answer 10 questions. About 10 minutes.', href: '/assessment.html' });
-      else if (paid&&deepReady) {if(prep.remaining.length)actions.push({tag:'Your next task',title:clean(prep.next,120),detail:'Complete this step in your preparation plan.',href:reportUrl+'#plan'});}
+      else if (paid&&deepReady) {for(const task of prep.remaining.slice(0,3)){
+        const criteria=deep.evaluation.applicationCriteria||[],title=String(task.title)+' '+String(task.detail),name=/analys|valuation|finding|conclusion/i.test(title)?'analysis':/role|job|firm/i.test(title)?'roleRelevance':/result|output|outcome/i.test(title)?'outputs':/own|contribution|responsib/i.test(title)?'contribution':'clarity',criterion=criteria.find(c=>c.name===name);
+        actions.push({tag:'Your next task',title:clean(task.title,120),detail:clean(task.detail,160)||'Complete this step in your preparation plan.',href:reportUrl+'#plan',pointsLabel:/test|numer|quiz|commercial/i.test(title)?'0 deep-score points · knowledge practice':criterion?name.replace('roleRelevance','Role relevance')+': '+criterion.points+'/5 evidence points · recheck to improve':'Evidence points assessed on recheck'});
+      }}
       else if (latest.priorities?.[0]) actions.push({ tag: 'Your top priority', title: clean(latest.priorities[0].title, 90), detail: clean(latest.priorities[0].description, 160), href: reportUrl });
       const lastTest = tests[0];
       if (latest && (!lastTest || Date.now() - new Date(lastTest.createdAt).getTime() > 7 * 86400000)) actions.push({ tag: deepReady?'Test · track your knowledge':'Test · moves readiness', title: 'Take a fresh 10-question test', detail: 'New questions for your route. About 8 minutes.', href: '/tests.html' });
@@ -236,6 +239,12 @@ export default async function handler(req, res) {
       else { const weak = practice.filter(x => Number.isFinite(x.data?.feedback?.overall)).sort((a, b) => a.data.feedback.overall - b.data.feedback.overall)[0]; if (weak) actions.push({ tag: 'Practise · Interview', title: 'Retry your weakest answer', detail: `“${clean(weak.data.question, 90)}” scored ${weak.data.feedback.overall}`, href: interviewUrl }); }
       if (!applications.length) actions.push({ tag: 'Applications', title: 'Pick the programmes you’re applying for', detail: 'Live deadlines from the tracker, in one list with your prep', href: '/tracker.html' });
 
+      for(const action of actions){
+        if(/test/i.test(action.tag))action.pointsLabel=deepReady?'Knowledge score · separate from deep score':'Readiness points assessed after test';
+        else if(/deadline/i.test(action.tag))action.pointsLabel='0 score points · application deadline';
+        else if(/interview/i.test(action.tag))action.pointsLabel='Practice feedback · separate score';
+        else action.pointsLabel=action.pointsLabel||'Evidence points assessed on recheck';
+      }
       const practitioners = await practitionerLayer(req, res, profile, paid);
       let challenge = null;
       try {
@@ -280,7 +289,7 @@ export default async function handler(req, res) {
         interviewUrl, report: latest ? { url: reportUrl, paid: paid, assessmentId: reference.id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
-        applications, stages: STAGES, news, actions: actions.slice(0, 3), practitioners, challenge, game,
+        applications, stages: STAGES, news, actions: actions.slice(0, 8), practitioners, challenge, game,
         prices: { membership: '£89 a year' }
       });
     }
