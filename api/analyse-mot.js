@@ -26,12 +26,19 @@ export default async function handler(req,res){
   if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(parent)parentMembership=await recordMembershipAccess(parent);if(!parent||(!parentMembership&&(!parent.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000)))throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
-  await initStore();const h=parent?.owner_hash||owner(req,res,true);
+  const [,signedAccount]=await Promise.all([initStore(),currentAccount(req)]);const h=parent?.owner_hash||owner(req,res,true);
   fingerprint=assessmentFingerprint(cvText,profile,req.body.answers);
   if(parent){
    if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',...publicAssessment(parent.result,parent.input.quiz,parent.input.cvText)});
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND (id=$3 OR root_id=$3 OR id=$4 OR root_id=$4) ORDER BY created_at DESC LIMIT 1",[h,fingerprint,parent.id,parent.root_id||parent.id]))[0];
    if(cached)return res.json({success:true,id:cached.id,cached:true,...publicAssessment(cached.result,cached.input.quiz,cached.input.cvText)});
+  }
+
+  // Reopening identical first-assessment inputs needs no new model pass.
+  // Restrict reuse to this browser owner and first assessments, never other accounts or rechecks.
+  if(!parent){
+   const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,fingerprint]))[0];
+   if(cached){if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,...publicAssessment(cached.result,cached.input.quiz,cached.input.cvText)});}
   }
 
   if(parent?.rechecks_used>=12)return res.status(400).json({error:'Your 12 rechecks have been used. Unchanged versions keep their saved result.'});
@@ -91,7 +98,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   if(parent)result.recheckComparison=compareRecheck(parent,result);
   if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
-  const signedAccount=await currentAccount(req);if(signedAccount)await linkAssessment(signedAccount.id,id);
+  if(signedAccount)await linkAssessment(signedAccount.id,id);
   return res.json({success:true,id,...publicAssessment(result,quiz,cvText)});
  }catch(e){return apiFailure(res,e);}
 }
