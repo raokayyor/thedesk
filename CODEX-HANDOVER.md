@@ -309,3 +309,6 @@ New files: `practice-tests.html` and `data/aptitude-practice.mjs`. Preview image
   - link from deutsche-bank.html (its "ability tests and situational judgement" section) and from tracker prep for firms whose steps mention SJT or verbal tests: DB, UBS, Aviva and others
   - save results via the existing test-result storage so rechecks can count them
 - **More content:** the data file is built to hold more tests. Aim for 3 SJT tests (36 situations) and 3 verbal tests (12 passages) before marketing it as a full product.
+
+## Homepage: "One membership. Every round." tools section (16 Nov)
+Goal: the homepage currently reads like a CV checker. Keep the CV hook as the way in, and show the whole personalised toolkit straight after it. Full spec is in Rao's Codex prompt of 16 Nov (same text as below).
