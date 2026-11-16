@@ -52,3 +52,17 @@
 @media(max-width:599px){.mobile-desk-refreshed .mobile-fixes>summary{font:600 25px/1.2 'EB Garamond',Georgia,serif;cursor:pointer;min-height:32px}.mobile-desk-refreshed .mobile-fixes>summary span{font:400 13px Figtree,sans-serif;color:var(--mute);margin-left:8px}.mobile-desk-refreshed .mobile-fixes[open] .next-actions{display:grid;gap:10px;margin:16px 0}.mobile-desk-refreshed .deadline-more>summary{cursor:pointer;font-size:14px;font-weight:600;min-height:44px;padding:14px 0}.mobile-desk-refreshed .mobile-fixes .act{padding:14px}.mobile-desk-refreshed .mobile-fixes>.btn{margin-top:8px}}
 
 .event-host{display:flex;align-items:center;gap:12px}.event-host img{border-radius:50%;object-fit:cover}.event-host p{margin:3px 0!important}.live-event-card{gap:14px}
+
+@media(max-width:599px){
+ .mobile-desk-refreshed .mobile-deadlines>.kicker{font:600 10px/1.4 Figtree,sans-serif;letter-spacing:.13em;color:#d44813;margin-bottom:16px}
+ .mobile-deadline-entry{padding:16px 0;border-top:1px solid var(--line)}
+ .mobile-desk-refreshed .mobile-deadline-entry h3{font:600 24px/1.15 'EB Garamond',Georgia,serif;margin:0 0 5px}
+ .mobile-desk-refreshed .mobile-deadline-entry p{margin:3px 0;font-size:13px}
+ .mobile-deadline-entry .deadline-date{color:#9b461e}
+ .deadline-primary-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+ .deadline-primary-actions .btn{padding:10px 7px!important;font-size:12px;white-space:normal;text-align:center;min-height:44px}
+ .deadline-prepare{display:inline-flex;align-items:center;min-height:44px;font-size:13px;font-weight:600;margin-top:5px}
+ .deadline-tracker{display:block;border-top:1px solid var(--line);padding-top:16px;font-size:13px;font-weight:600}
+ .mobile-desk-refreshed .prep-fixes{border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+ .mobile-desk-refreshed .prep-fixes>summary{font:600 14px/1.4 Figtree,sans-serif;min-height:36px}
+}
