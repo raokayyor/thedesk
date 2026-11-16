@@ -208,7 +208,6 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
         <div class="proof-before"><span class="proof-label">Before · what most students write</span><s>Barista, Caffè Nero (part-time)</s></div>
         <div class="proof-after"><span class="proof-label">After · rebuilt from their own answers</span><p>Opened the shop single-handed and trained four new starters, alongside a full-time degree.</p></div>
         <b class="proof-points">+3–5 points on their readiness score</b>
-        <p class="proof-note">We ask you two questions. You give the facts. We never make anything up.</p>
         <button class="proof-toggle" type="button" aria-expanded="false" aria-controls="proof-steps">See how we rebuilt it · 3 steps ↓</button>
         <div id="proof-steps" hidden></div>
       </section>
@@ -345,7 +344,7 @@ document.getElementById('people').innerHTML =
         <div class="rp-new">${esc(l.after)}</div>
         <div class="rp-reads"><b>How it reads now:</b> ${esc(l.reads)}</div>
         <div class="rp-unlock"><b>It now answers ${l.unlocks.length} interview questions</b><ul>${l.unlocks.map(u => `<li>${esc(u)}</li>`).join('')}</ul></div></div>
-      <div class="rp-note">Nothing is made up: every fact comes from the student’s answer. One line, ten seconds of their time. Imagine the rest of your CV.</div>`;
+      <div class="rp-note">We ask you two questions. You give the facts. We never make anything up. Imagine the rest of your CV.</div>`;
     const steps=document.getElementById('proof-steps');
     steps.innerHTML=pen.innerHTML;
     steps.firstElementChild.remove();
