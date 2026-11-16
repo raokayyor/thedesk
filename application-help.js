@@ -19,7 +19,7 @@ async function restoreSaved(){const id=new URLSearchParams(location.search).get(
 let overlaySequence=0,overlayRequest;
 async function guide(){
  baseGuide();const firm=firms[$('applicationFirm').value];if(!firm)return;
- const role=$('applicationRole').value,person=['audit','tax','deals'].includes(role)?{name:'Chris Sharkey',area:'Accounting, audit & insurance',initials:'CS'}:role==='asset'?{name:'Peter Cheley',area:'Asset management',initials:'PC'}:{name:'Kayyor Rao',area:'Banking & Markets',photo:'/assets/kayyor-rao.jpg',initials:'KR'};
+ const role=$('applicationRole').value,person=['audit','tax','deals'].includes(role)?{name:'Chris Sharkey',area:'Accounting, audit & insurance',initials:'CS',photo:'/assets/people/chris-sharkey.jpg'}:role==='asset'?{name:'Peter Cheley',area:'Asset management',initials:'PC'}:{name:'Kayyor Rao',area:'Banking & Markets',photo:'/assets/kayyor-rao.jpg',initials:'KR'};
  let identity=$('applicationPractitioner');if(!identity){identity=document.createElement('div');identity.id='applicationPractitioner';$('practitionerTitle').before(identity)}identity.replaceChildren();
  const avatar=person.photo?document.createElement('img'):document.createElement('span');avatar.className='application-practitioner-avatar';if(person.photo){avatar.src=person.photo;avatar.alt=person.name}else{avatar.textContent=person.initials;avatar.setAttribute('aria-hidden','true')}
  const detail=document.createElement('div'),name=document.createElement('strong'),area=document.createElement('div');name.textContent=person.name;area.textContent=person.area+' practitioner';detail.append(name,area);identity.append(avatar,detail);
