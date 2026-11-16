@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Situational judgement and verbal reasoning practice | The Desk</title>
+<meta name="description" content="Practise situational judgement and verbal reasoning tests for finance applications, with an explanation for every answer.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f7e4df}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink)}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 100px}
+.k{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.logo{font:600 26px "EB Garamond",Georgia,serif;text-decoration:none}
+header nav{display:flex;gap:20px;font-size:15px;font-weight:500}header nav a{text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border:0;border-radius:8px;min-height:50px;padding:0 22px;font:600 16px Figtree,Arial,sans-serif;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.35;cursor:default}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+/* hub */
+.hub h1{font-size:clamp(34px,5vw,48px);line-height:1.06;margin-top:10px}
+.lead{font-size:17.5px;color:var(--ink-2);margin:12px 0 0;max-width:60ch}
+.firm{margin-top:20px;border-left:3px solid var(--accent);padding:12px 16px;background:var(--card);border-radius:0 10px 10px 0;font-size:15px;color:var(--ink-2)}
+.firm b{color:var(--ink)}
+.tests{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.tests .card h2{font-size:26px;margin-top:6px}
+.tests .card p{font-size:15px;color:var(--ink-2);margin:8px 0 14px}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px;color:var(--mute);margin-bottom:14px}
+.tips{margin-top:28px}.tips h3{font-size:22px}.tips ul{padding-left:20px;color:var(--ink-2)}.tips li{margin:6px 0}
+.note{font-size:13px;color:var(--mute);margin-top:22px}
+/* runner */
+.bar{position:sticky;top:0;z-index:5;background:rgba(244,241,236,.96);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+.bar .t{font-weight:600;font-size:14.5px}
+.prog{flex:1;height:6px;background:var(--soft);border-radius:3px;overflow:hidden}.prog i{display:block;height:100%;background:var(--ink);width:0;transition:width .25s}
+.clock{font:600 15px Figtree;min-width:58px;text-align:right}.clock.low{color:var(--bad)}
+.timed{font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.q{margin-top:22px}
+.scenario{font:400 21px/1.42 "EB Garamond",Georgia,serif;color:var(--ink)}
+.comp{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.06em;margin-bottom:8px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.opt{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.opt .l{width:26px;height:26px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.opt .txt{font-size:15.5px}
+.pick{display:flex;gap:6px}
+.pick button{font:600 12.5px Figtree;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;color:var(--ink-2);white-space:nowrap}
+.pick button[aria-pressed=true].most{background:var(--good);border-color:var(--good);color:#fff}
+.pick button[aria-pressed=true].least{background:var(--bad);border-color:var(--bad);color:#fff}
+.passage{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;font-size:15.5px;line-height:1.7;color:var(--ink-2)}
+.passage .k{display:block;margin-bottom:6px}
+.stmt{margin-top:16px}
+.stmt .s{font:600 19px/1.4 "EB Garamond",Georgia,serif}
+.tfc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tfc button{font:600 15px Figtree;border:1px solid var(--line);background:var(--card);border-radius:8px;min-height:48px;cursor:pointer;color:var(--ink)}
+.tfc button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+.hint{font-size:13.5px;color:var(--mute)}
+/* results */
+.res h1{font-size:36px;line-height:1.1;margin-top:8px}
+.score{display:flex;align-items:baseline;gap:10px;margin-top:10px}.score b{font:600 64px/1 "EB Garamond",Georgia,serif}.score span{color:var(--mute)}
+.band{margin-top:6px;font-weight:600}
+.bycomp{margin-top:18px;display:flex;flex-direction:column;gap:6px}
+.bycomp div{display:grid;grid-template-columns:1fr 54px;gap:10px;font-size:14.5px}
+.rev{margin-top:26px}
+.item{border-top:1px solid var(--line);padding:16px 0}
+.item h3{font-size:19px;line-height:1.35}
+.ans{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14.5px;margin-top:8px}
+.ok{color:var(--good);font-weight:700}.no{color:var(--bad);font-weight:700}
+.why{font-size:14.5px;color:var(--ink-2);margin-top:6px}
+.optrev{font-size:14px;color:var(--ink-2);margin:6px 0 0;padding-left:18px}.optrev li{margin:4px 0}
+.optrev .tag{font-weight:700;font-size:12px;margin-right:6px}
+.lock{margin-top:24px;background:var(--ink);color:#fff;border-radius:12px;padding:22px}
+.lock h2{font-size:26px}.lock p{color:#d5dce0;font-size:15px;margin:8px 0 16px}
+.lock .btn{background:#fff;color:var(--ink)}
+@media (max-width:640px){.tests{grid-template-columns:1fr}.opt{grid-template-columns:26px 1fr}.pick{grid-column:2;margin-top:4px}.scenario{font-size:19.5px}.wrap{padding:0 16px 90px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/tests.html">All tests</a><a href="/my.html">My Desk</a></nav></header>
+  <main id="app" aria-live="polite"></main>
+</div>
+<script type="module">
+import { SJT, VERBAL, FIRM_NOTES, FREE } from '/data/aptitude-practice.mjs';
+const $app = document.getElementById('app');
+const qs = new URLSearchParams(location.search);
+const firm = FIRM_NOTES[qs.get('firm')] || null;
+const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+const L = 'ABCD';
+let member = qs.get('preview') === 'member';
+try { const r = await fetch('/api/assessment-centre?view=info'); if (r.ok) member = member || !!(await r.json()).member; } catch (e) {}
+
+// ---------- hub ----------
+function hub() {
+  $app.innerHTML = `<section class="hub" style="padding-top:28px">
+    <div class="k">Online tests${firm ? ' · ' + esc(firm.name) : ''}</div>
+    <h1>Situational judgement and verbal reasoning, practised properly.</h1>
+    <p class="lead">Timed practice in the formats banks use, with an explanation for every answer, so you learn the reasoning, not just the score.</p>
+    ${firm ? `<div class="firm"><b>Preparing for ${esc(firm.name)}?</b> ${esc(firm.note)} <a href="${firm.link}" target="_blank" rel="noopener">${esc(firm.name)}’s own guidance ↗</a></div>` : ''}
+    <div class="tests">
+      <div class="card"><div class="k">Situational judgement</div><h2>What would you do?</h2><p>Realistic situations from a first year in a bank. Pick the most and least effective action for each.</p>
+        <div class="meta"><span>${SJT.items.length} situations</span><span>About ${SJT.minutes} minutes</span></div>
+        <button class="btn" data-go="sjt">Start practice →</button></div>
+      <div class="card"><div class="k">Verbal reasoning</div><h2>True, false or cannot say?</h2><p>Short business passages. Judge each statement using only what the passage says.</p>
+        <div class="meta"><span>${VERBAL.passages.reduce((n, p) => n + p.statements.length, 0)} statements</span><span>${VERBAL.minutes} minutes, timed</span></div>
+        <button class="btn" data-go="verbal">Start practice →</button></div>
+    </div>
+    <div class="tips"><h3>How to do well</h3><ul>
+      <li><b>Situational judgement:</b> banks look for honesty, raising problems early, respecting confidentiality and putting the client and the team first. The “least effective” answer is usually the one that hides a problem or breaks a rule.</li>
+      <li><b>Verbal reasoning:</b> use only the passage, never what you already know. “Cannot say” is right whenever the passage doesn’t settle it. Watch for words like <i>some</i>, <i>all</i>, <i>usually</i> and <i>caused</i>.</li>
+      <li>Practise timed. In the real test, a wrong answer and no answer often score the same, so don’t leave blanks.</li></ul></div>
+    <p class="note">All practice questions are written by The Desk. They are not questions from any firm’s real test. Always follow the instructions in your own test invitation.</p>
+  </section>`;
+  $app.querySelectorAll('[data-go]').forEach(b => b.onclick = () => (b.dataset.go === 'sjt' ? runSJT() : runVerbal()));
+}
+
+// ---------- shared bits ----------
+function lockCard(kind) {
+  return `<div class="lock"><div class="k" style="color:#e8a283">Members</div><h2>Finish the full test, and practise every format.</h2>
+    <p>You’ve tried the first ${FREE[kind]} questions. Members get the full ${kind === 'sjt' ? 'situational judgement' : 'verbal reasoning'} test with explanations, plus numerical and commercial tests, interview practice with your firm’s questions, and assessment centre practice.</p>
+    <a class="btn" href="/signup.html?from=tests-${kind}">Unlock with membership · £89</a>
+    <div style="font-size:12.5px;color:#aab4b9;margin-top:8px">Paid once · no auto-renewal · 12 months</div></div>`;
+}
+function timer(minutes, onEnd) {
+  let left = minutes * 60, id;
+  const el = () => document.getElementById('clock');
+  const draw = () => { const e = el(); if (!e) return; e.textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); e.classList.toggle('low', left <= 60); };
+  return { start() { draw(); id = setInterval(() => { left--; draw(); if (left <= 0) { clearInterval(id); onEnd(); } }, 1000); }, stop() { clearInterval(id); }, used() { return minutes * 60 - left; } };
+}
+
+// ---------- SJT ----------
+function runSJT() {
+  const items = member ? SJT.items : SJT.items.slice(0, FREE.sjt);
+  const picks = items.map(() => ({ most: null, least: null }));
+  let i = 0;
+  const t = timer(SJT.minutes, () => finish(true));
+  function view() {
+    const it = items[i], p = picks[i];
+    $app.innerHTML = `<div class="bar"><span class="t">${i + 1} / ${items.length}</span><span class="prog"><i style="width:${(i / items.length) * 100}%"></i></span><span class="clock" id="clock"></span></div>
+      <section class="q"><div class="comp">${esc(it.competency)}</div><div class="scenario">${esc(it.scenario)}</div>
+      <div class="hint" style="margin-top:10px">Choose the <b>most</b> effective and the <b>least</b> effective action.</div>
+      <div class="opts">${it.options.map((o, k) => `<div class="opt"><span class="l">${L[k]}</span><span class="txt">${esc(o)}</span>
+        <span class="pick"><button class="most" data-k="${k}" data-r="most" aria-pressed="${p.most === k}">Most</button><button class="least" data-k="${k}" data-r="least" aria-pressed="${p.least === k}">Least</button></span></div>`).join('')}</div>
+      <div class="nav"><button class="btn ghost" id="back" ${i ? '' : 'disabled'}>← Back</button><span class="hint" id="h">${p.most !== null && p.least !== null ? '' : 'Pick one of each'}</span><button class="btn" id="next" ${p.most !== null && p.least !== null ? '' : 'disabled'}>${i === items.length - 1 ? 'See my results' : 'Next →'}</button></div></section>`;
+    $app.querySelectorAll('.pick button').forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, r = b.dataset.r, o = r === 'most' ? 'least' : 'most';
+      p[r] = k; if (p[o] === k) p[o] = null; view();
+    });
+    document.getElementById('back').onclick = () => { i--; view(); };
+    document.getElementById('next').onclick = () => { if (i < items.length - 1) { i++; view(); window.scrollTo(0, 0); } else finish(false); };
+  }
+  function finish(timeUp) {
+    t.stop();
+    let score = 0; const byC = {};
+    items.forEach((it, n) => { const s = (picks[n].most === it.best) + (picks[n].least === it.worst); score += s; (byC[it.competency] ||= [0, 0]); byC[it.competency][0] += s; byC[it.competency][1] += 2; });
+    const max = items.length * 2, pct = Math.round(score / max * 100);
+    const band = pct >= 80 ? 'Strong: your judgement matches what banks look for.' : pct >= 60 ? 'Solid, with a few calls to rethink.' : 'Worth more practice: read the explanations below.';
+    $app.innerHTML = `<section class="res" style="padding-top:26px"><div class="k">Situational judgement · your result${timeUp ? ' · time ran out' : ''}</div>
+      <h1>You matched ${score} of ${max} judgements.</h1>
+      <div class="score"><b>${pct}%</b><span>${band}</span></div>
+      <div class="bycomp">${Object.entries(byC).map(([c, [a, b]]) => `<div><span>${esc(c)}</span><span style="text-align:right;font-weight:600">${a}/${b}</span></div>`).join('')}</div>
+      ${member ? '' : lockCard('sjt')}
+      <div class="rev"><h2 style="font-size:28px">Every answer, explained</h2>
+      ${items.map((it, n) => { const p = picks[n]; return `<div class="item"><div class="comp">${esc(it.competency)}</div><h3>${esc(it.scenario)}</h3>
+        <div class="ans"><span class="${p.most === it.best ? 'ok' : 'no'}">${p.most === it.best ? '✓' : '✕'}</span><span>Most effective: you chose ${p.most === null ? '–' : L[p.most]}, best answer ${L[it.best]}</span>
+        <span class="${p.least === it.worst ? 'ok' : 'no'}">${p.least === it.worst ? '✓' : '✕'}</span><span>Least effective: you chose ${p.least === null ? '–' : L[p.least]}, best answer ${L[it.worst]}</span></div>
+        <ul class="optrev">${it.options.map((o, k) => `<li><span class="tag" style="color:${k === it.best ? 'var(--good)' : k === it.worst ? 'var(--bad)' : 'var(--mute)'}">${L[k]}${k === it.best ? ' · MOST' : k === it.worst ? ' · LEAST' : ''}</span>${esc(it.why[k])}</li>`).join('')}</ul></div>`; }).join('')}
+      </div><div class="nav"><button class="btn ghost" id="home">← All practice</button><button class="btn" id="again">Try again</button></div></section>`;
+    document.getElementById('home').onclick = hub; document.getElementById('again').onclick = runSJT; window.scrollTo(0, 0);
+  }
+  view(); t.start();
+}
+
+// ---------- Verbal ----------
+function runVerbal() {
+  const all = VERBAL.passages.flatMap(p => p.statements.map(s => ({ ...s, passage: p })));
+  const items = member ? all : all.slice(0, FREE.verbal);
+  const ans = items.map(() => null);
+  let i = 0;
+  const t = timer(VERBAL.minutes, () => finish(true));
+  function view() {
+    const it = items[i];
+    $app.innerHTML = `<div class="bar"><span class="t">${i + 1} / ${items.length}</span><span class="prog"><i style="width:${(i / items.length) * 100}%"></i></span><span class="clock" id="clock"></span></div>
+      <section class="q"><div class="passage"><span class="k">${esc(it.passage.topic)}</span>${esc(it.passage.text)}</div>
+      <div class="stmt"><div class="hint">Statement ${it.passage.statements.indexOf(it.passage.statements.find(s => s.id === it.id)) + 1} of ${it.passage.statements.length} for this passage</div><div class="s">${esc(it.text)}</div>
+      <div class="tfc">${[['T', 'True'], ['F', 'False'], ['C', 'Cannot say']].map(([v, l]) => `<button data-v="${v}" aria-pressed="${ans[i] === v}">${l}</button>`).join('')}</div></div>
+      <div class="nav"><button class="btn ghost" id="back" ${i ? '' : 'disabled'}>← Back</button><button class="btn" id="next" ${ans[i] ? '' : 'disabled'}>${i === items.length - 1 ? 'See my results' : 'Next →'}</button></div></section>`;
+    $app.querySelectorAll('.tfc button').forEach(b => b.onclick = () => { ans[i] = b.dataset.v; view(); });
+    document.getElementById('back').onclick = () => { i--; view(); };
+    document.getElementById('next').onclick = () => { if (i < items.length - 1) { i++; view(); } else finish(false); };
+  }
+  function finish(timeUp) {
+    t.stop();
+    const right = items.filter((it, n) => ans[n] === it.answer).length, pct = Math.round(right / items.length * 100);
+    const cs = items.filter(it => it.answer === 'C'), csRight = cs.filter(it => ans[items.indexOf(it)] === 'C').length;
+    const name = { T: 'True', F: 'False', C: 'Cannot say' };
+    $app.innerHTML = `<section class="res" style="padding-top:26px"><div class="k">Verbal reasoning · your result${timeUp ? ' · time ran out' : ''}</div>
+      <h1>${right} of ${items.length} correct${timeUp ? '' : ` in ${Math.ceil(t.used() / 60)} min`}.</h1>
+      <div class="score"><b>${pct}%</b><span>${pct >= 80 ? 'Strong.' : pct >= 60 ? 'Solid. Check the ones you missed.' : 'Keep practising: read the explanations below.'}</span></div>
+      ${cs.length ? `<p class="lead" style="font-size:15.5px">“Cannot say” questions: ${csRight} of ${cs.length} right. ${csRight < cs.length ? 'This is where most people lose marks: if the passage doesn’t settle it, the answer is Cannot say.' : 'Good: that’s where most people lose marks.'}</p>` : ''}
+      ${member ? '' : lockCard('verbal')}
+      <div class="rev"><h2 style="font-size:28px">Every answer, explained</h2>
+      ${items.map((it, n) => `<div class="item"><div class="k">${esc(it.passage.topic)}</div><h3>${esc(it.text)}</h3>
+        <div class="ans"><span class="${ans[n] === it.answer ? 'ok' : 'no'}">${ans[n] === it.answer ? '✓' : '✕'}</span><span>You said ${ans[n] ? name[ans[n]] : '–'}. Answer: <b>${name[it.answer]}</b></span></div>
+        <div class="why">${esc(it.why)}</div></div>`).join('')}
+      </div><div class="nav"><button class="btn ghost" id="home">← All practice</button><button class="btn" id="again">Try again</button></div></section>`;
+    document.getElementById('home').onclick = hub; document.getElementById('again').onclick = runVerbal; window.scrollTo(0, 0);
+  }
+  view(); t.start();
+}
+
+const start = qs.get('type');
+start === 'sjt' ? runSJT() : start === 'verbal' ? runVerbal() : hub();
+</script>
+</body>
+</html>

@@ -294,3 +294,18 @@ Visual reference: `design/free-result-v2-mock.html` and `design/free-result-v2.j
 | Any "Loading your tools…" | | "Opening your desk…" |
 
 Also do a search for "generated", "engine", "instant", "tool" and "model" across student-facing pages for anything this table misses. Change it if it's marketing copy; leave it if it's a legal or transparency disclosure.
+
+## Situational judgement + verbal reasoning practice (16 Nov)
+New files: `practice-tests.html` and `data/aptitude-practice.mjs`. Preview image: `design/practice-tests.jpg`.
+- **Formats:**
+  - Situational judgement: pick the most and least effective of 4 actions; 1 point for each match with the key; 12 situations; about 20 minutes; scores broken down by competency.
+  - Verbal reasoning: True / False / Cannot say on short business passages; 4 passages × 4 statements; 16 minutes, timed.
+  - Every answer has an explanation, and the results page shows them all.
+- **Content** is original and written by The Desk. Never present it as a real firm's questions. The page already says so. Practitioners must sign off the SJT keys before launch. Add them to FIRM-PACKS-REVIEW.md.
+- **URLs:** `/practice-tests.html` (hub), `?type=sjt`, `?type=verbal`, `?firm=db` (adds the Deutsche Bank note with a link to DB's own guidance). Add more firms to `FIRM_NOTES`, using only what each firm says publicly.
+- **Membership:** free users get the first 4 items (`FREE` in the data file), then the lock card. `member` comes from `GET /api/assessment-centre?view=info`. Swap in the site's standard member check if there is one. `?preview=member` is for testing only; remove it before launch or restrict it to staff.
+- **Wire it in:**
+  - add "Situational judgement" and "Verbal reasoning" to tests.html / test-hub.html and the Practise tab
+  - link from deutsche-bank.html (its "ability tests and situational judgement" section) and from tracker prep for firms whose steps mention SJT or verbal tests: DB, UBS, Aviva and others
+  - save results via the existing test-result storage so rechecks can count them
+- **More content:** the data file is built to hold more tests. Aim for 3 SJT tests (36 situations) and 3 verbal tests (12 passages) before marketing it as a full product.
