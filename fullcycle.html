@@ -578,7 +578,7 @@ function render(R){
       return '<div class="iq"><div class="iq-top"><div><div class="label">Question '+(i+1)+'</div><div class="qq">“'+h(q.likelyQuestion)+'”</div></div>'+
         '<div class="timer"><span class="t num" data-timer="'+i+'">1:30</span><button class="btn ghost" data-start="'+i+'">Start</button></div></div>'+
         '<div class="iq-why"><b>Why they’ll ask it:</b> '+h(q.whyThisQuestionExposesRisk)+'</div>'+
-        '<div class="iq-ab"><div class="weak"><div class="label">A weak answer sounds like</div>'+h(q.weakAnswerPattern)+'</div><div class="strong"><div class="label">A strong answer goes</div>'+h(q.strongAnswerStructure)+'</div></div>'+
+        '<div class="iq-ab"><div class="weak"><div class="label">A weak answer sounds like</div>'+h(q.weakAnswerPattern)+'</div><div class="strong"><div class="label">A strong answer goes</div>'+h(q.strongAnswerStructure)+'</div></div><button class="btn" type="button" data-spoken-draft>Write a spoken example from my CV</button><p class="mute">Use the example to practise, then put it in your own words. Check every detail.</p>'+
         '<div class="iq-ev"><b>Use this evidence:</b> '+h(q.candidateEvidenceToUse)+'</div></div>';
     }).join("");
   })();
@@ -816,7 +816,7 @@ try{var cached=JSON.parse(sessionStorage.getItem(reportCacheKey)||'null');if(cac
 load().then(function(R){render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
-<script src="/desk-me.js" defer></script></body>
+<script src="/desk-me.js" defer></script><script src="/interview-natural-voice.js"></script><script src="/report-interview-practice.js"></script></body>
 </html>
 
 

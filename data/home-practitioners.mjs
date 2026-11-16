@@ -10,9 +10,9 @@ export const FIRM_LOGOS = {
   'Knight': '/assets/practitioner-firms/knight.svg', 'Stifel': '/assets/practitioner-firms/stifel.svg', 'EY': '/assets/practitioner-firms/ey.svg', 'Lancashire Insurance': '/assets/practitioner-firms/lancashire.png'
 };
 export const PRACTITIONERS = [
-  { init: 'KR', name: 'Kayyor Rao', area: 'Banking & Markets · 20+ years', linkedin: 'https://www.linkedin.com/in/kayyor-rao-b46141409/', firms: ['UBS', 'Commerzbank', 'Aurel BGC'], photo: '/assets/kayyor-rao.jpg' },
+  { init: 'KR', name: 'Kayyor Rao', area: 'Banking & Markets · 20+ years', linkedin: 'https://www.linkedin.com/in/kayyor-rao-b46141409/', firms: ['UBS', 'Commerzbank', 'Aurel BGC', 'Knight', 'Stifel'], photo: '/assets/kayyor-rao.jpg' },
   { init: 'PC', name: 'Peter Cheley', area: 'Banking & asset management · 30 years', firms: ['Société Générale', 'J.P. Morgan', 'BGC'] },
   { init: 'NR', name: 'Neil Robertson', area: 'Banking · 30 years', firms: ['UBS', 'Knight', 'Stifel'] },
-  { init: 'JS', name: 'Jim Staples', area: 'Banking · 30 years', firms: ['Barclays', 'BGC'] },
-  { init: 'CS', name: 'Chris Sharkey', area: 'Audit & insurance · 20+ years', firms: ['EY', 'Lancashire Insurance'] }
+  { init: 'JS', name: 'Jim Staples', area: 'Banking · 30 years', firms: ['Barclays', 'Société Générale', 'BGC'] },
+  { init: 'CS', name: 'Chris Sharkey', area: 'Big 4 & insurance · 20+ years', firms: ['EY', 'Lancashire Insurance'] }
 ];
