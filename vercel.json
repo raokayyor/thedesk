@@ -41,5 +41,15 @@
       "path": "/api/result-email-cron",
       "schedule": "0 9 * * *"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/lib/aptitude-practice-data.mjs",
+      "destination": "/api/aptitude-practice?view=blocked"
+    },
+    {
+      "source": "/lib/reasoning-practice-data.mjs",
+      "destination": "/api/aptitude-practice?view=blocked"
+    }
   ]
 }
