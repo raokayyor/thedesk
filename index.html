@@ -181,6 +181,14 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
  .redpen-wrap:not(.is-open) .redpen{display:none}.redpen-wrap.is-open .redpen{margin-top:12px}
  section.band{padding:28px 0}.hero{padding-bottom:28px}.final{padding:28px 0}.evidence{margin-top:18px}.cmp{margin-top:18px}
 }
+/* Same content, with a fuller desktop view and compact phone presentation. */
+.people-compact{display:block}.full-panel,.desktop-meet,.desktop-network,.desktop-tier{display:none}.people-section>.kicker,.people-section>h2,.people-section>.lead{display:none}
+.compact-person{display:grid;grid-template-columns:56px minmax(0,1fr);align-items:center;gap:14px}.compact-person img{width:56px;height:56px;object-fit:cover;border-radius:50%}.compact-person strong{font:600 21px/1.15 "EB Garamond",Georgia,serif}.compact-names{font-size:12px;color:var(--mute);margin:12px 0}.people-compact .logos{flex-wrap:nowrap;overflow-x:auto;gap:12px;max-width:100%;padding:0 0 8px;scrollbar-width:none}.people-compact .logos .lg{flex-shrink:0}.meet-panel{display:inline-block;font-size:14px;font-weight:600;margin-top:12px}.popular{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#eed6c6;font-weight:600}
+@media(min-width:1024px){
+ .desktop-network{display:block;padding:28px 0}.network-slim{display:flex;align-items:center;justify-content:space-between;gap:20px}.network-slim h2{font-size:27px!important}.network-slim span{font-size:14px}.network-slim .ghost{min-height:42px}
+ .people-compact,.mobile-pricing{display:none}.people-section>.kicker,.people-section>h2,.people-section>.lead{display:block}.full-panel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:26px}.person-card{border:1px solid var(--line);border-radius:12px;padding:18px 14px;background:var(--card);min-width:0}.person-avatar{width:56px;height:56px;object-fit:cover;border-radius:50%;display:flex;align-items:center;justify-content:center}.initials{background:var(--soft);font:600 22px "EB Garamond",Georgia,serif}.person-card h3{font-size:23px;line-height:1.1;margin-top:12px}.person-card p{font-size:13px;line-height:1.4;min-height:55px;margin:8px 0}.person-card .logos{gap:8px}.person-card .lg{max-width:100%;overflow:hidden}.person-card .lg img{max-width:100%;object-fit:contain}.desktop-meet{display:inline-block}
+ .tiers{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}.desktop-tier{display:flex}.season-tier{background:transparent}.season-tier .big{font-size:38px}.season-tier ul,.season-tier .mute{color:var(--mute)}
+}
 </style>
 <script src="/public-about-links.js" defer></script></head>
 <body>
@@ -251,7 +259,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   </section>
 
 
-  <section class="band" aria-labelledby="c4">
+  <section class="band desktop-network" aria-label="Don’t prepare alone">
+    <div class="network-slim"><h2>Don’t prepare alone.</h2><span>Trading league</span><span>Society Cup</span><span>Ask &amp; answer</span><a class="ghost" href="/my.html">Join free →</a></div>
+  </section>
+
+  <section class="band people-section" aria-labelledby="c4">
     <div class="kicker">The people behind it</div>
     <h2 id="c4" style="margin-top:12px">Built and checked by people who’ve done the job.</h2>
     <p class="lead">Our practitioners built the framework behind every score, firm pack and piece of feedback, and they answer members’ questions. Want a person in the room too? Add calls with them.</p>
@@ -263,13 +275,15 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <h2 id="c5" style="margin-top:12px">A whole recruiting year for less than one CV rewrite.</h2>
     <p class="lead">A professional CV rewrite alone typically costs around £99, and an hour with a paid interview coach £75–£300.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">3</a></sup> Membership covers your CV, applications, tests, interviews and assessment centres for 12 months.</p>
     <div class="tiers">
-      <div class="tier main"><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div>
+      <div class="tier main"><div class="popular">Most popular</div><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div>
         <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
         <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
         <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
+      <div class="tier desktop-tier"><div class="nm">Member + Practitioner</div><div class="big">£199</div><div class="mute">a year · paid once</div><ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul><a class="go" href="/signup.html?plan=plus">See how it works →</a></div>
+      <div class="tier desktop-tier season-tier"><div class="nm">1:1 support</div><div class="big">£3,000</div><div class="mute">for your recruiting season</div><ul><li>Everything in Member</li><li>A named practitioner from application to offer</li><li>Live mock interviews with feedback</li><li>Every CV and application reviewed before you send it</li></ul><a class="go" href="/signup.html?plan=coaching">Ask about 1:1 →</a></div>
     </div>
-    <p>Want a person too? <a href="/signup.html?plan=plus"><b>Member + Practitioner, £199</b>: two calls with written notes →</a></p>
-    <p class="fine"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
+    <p class="mobile-pricing">Want a person too? <a href="/signup.html?plan=plus"><b>Member + Practitioner, £199</b>: two calls with written notes →</a></p>
+    <p class="fine mobile-pricing"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
     <p class="fine">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Every score and piece of feedback follows our practitioners’ framework, applied to your own CV.</p>
   </section>
 
@@ -295,9 +309,10 @@ const BOOST = { 'commerzbank.svg': 1.6, 'lancashire.png': 1.4, 'ey.svg': 1.35, '
 window.sizeLogo = img => { const r = img.naturalWidth / img.naturalHeight; if (!r) return; const k = BOOST[img.getAttribute('src').split('/').pop()] || 1; const h = Math.min(26, Math.max(13, Math.sqrt(1150 / r))) * k; img.style.height = h.toFixed(1) + 'px'; img.style.width = (h * r).toFixed(1) + 'px'; };
 const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}" onload="sizeLogo(this)"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
 const [lead, ...rest] = PRACTITIONERS;
+const allFirms=[...new Set(PRACTITIONERS.flatMap(p=>p.firms))];
 document.getElementById('people').innerHTML =
-  `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${lead.linkedin?`<a href="${esc(lead.linkedin)}" target="_blank" rel="noopener">${esc(lead.name)}</a>`:esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +
-  `<div class="panel">${rest.map(p => `<div><div class="name">${esc(p.name)}</div><div class="role">${esc(p.area)}</div>${logos(p)}</div>`).join('')}</div>`;
+  `<div class="people-compact"><div class="compact-person"><img src="${lead.photo}" alt="Kayyor Rao" width="56" height="56"><strong>Kayyor Rao and four practitioners · 130+ years in finance</strong></div><p class="compact-names">${rest.map(p=>esc(p.name)).join(' · ')}</p>${logos({firms:allFirms})}<a class="meet-panel" href="/about.html">Meet the panel →</a></div>` +
+  `<div class="full-panel">${PRACTITIONERS.map(p=>`<article class="person-card">${p.photo?`<img class="person-avatar" src="${esc(p.photo)}" alt="${esc(p.name)}" width="56" height="56">`:`<span class="person-avatar initials" aria-hidden="true">${esc(p.init)}</span>`}<h3>${esc(p.name)}</h3><p>${esc(p.area)}</p>${logos(p)}</article>`).join('')}</div><a class="meet-panel desktop-meet" href="/about.html">Meet the panel →</a>`;
 </script>
 <script>
 (() => {
