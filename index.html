@@ -309,10 +309,12 @@ const BOOST = { 'commerzbank.svg': 1.6, 'lancashire.png': 1.4, 'ey.svg': 1.35, '
 window.sizeLogo = img => { const r = img.naturalWidth / img.naturalHeight; if (!r) return; const k = BOOST[img.getAttribute('src').split('/').pop()] || 1; const h = Math.min(26, Math.max(13, Math.sqrt(1150 / r))) * k; img.style.height = h.toFixed(1) + 'px'; img.style.width = (h * r).toFixed(1) + 'px'; };
 const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}" onload="sizeLogo(this)"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
 const [lead, ...rest] = PRACTITIONERS;
-const allFirms=[...new Set(PRACTITIONERS.flatMap(p=>p.firms))];
+// Aurel BGC and BGC share a mark: show each logo asset once in the compact strip.
+const seenFirmMarks=new Set();
+const allFirms=PRACTITIONERS.flatMap(p=>p.firms).filter(f=>{const mark=FIRM_LOGOS[f]||f;if(seenFirmMarks.has(mark))return false;seenFirmMarks.add(mark);return true;});
 document.getElementById('people').innerHTML =
-  `<div class="people-compact"><div class="compact-person"><img src="${lead.photo}" alt="Kayyor Rao" width="56" height="56"><strong>Kayyor Rao and four practitioners · 130+ years in finance</strong></div><p class="compact-names">${rest.map(p=>esc(p.name)).join(' · ')}</p>${logos({firms:allFirms})}<a class="meet-panel" href="/about.html">Meet the panel →</a></div>` +
-  `<div class="full-panel">${PRACTITIONERS.map(p=>`<article class="person-card">${p.photo?`<img class="person-avatar" src="${esc(p.photo)}" alt="${esc(p.name)}" width="56" height="56">`:`<span class="person-avatar initials" aria-hidden="true">${esc(p.init)}</span>`}<h3>${esc(p.name)}</h3><p>${esc(p.area)}</p>${logos(p)}</article>`).join('')}</div><a class="meet-panel desktop-meet" href="/about.html">Meet the panel →</a>`;
+  `<div class="people-compact"><div class="compact-person"><img src="${lead.photo}" alt="Kayyor Rao" width="56" height="56"><strong>Kayyor Rao and four practitioners · 130+ years in finance</strong></div><p class="compact-names">${rest.map(p=>esc(p.name)).join(' · ')}</p>${logos({firms:allFirms})}</div>` +
+  `<div class="full-panel">${PRACTITIONERS.map(p=>`<article class="person-card">${p.photo?`<img class="person-avatar" src="${esc(p.photo)}" alt="${esc(p.name)}" width="56" height="56">`:`<span class="person-avatar initials" aria-hidden="true">${esc(p.init)}</span>`}<h3>${esc(p.name)}</h3><p>${esc(p.area)}</p>${logos(p)}</article>`).join('')}</div><a class="meet-panel" href="/about.html">Meet the panel →</a>`;
 </script>
 <script>
 (() => {
