@@ -184,7 +184,7 @@
     const sel = document.getElementById('firmSelect'); if (!sel) return;
     const place = () => {
       document.querySelectorAll('.dc-brief').forEach(x => x.remove());
-      const el = brief(sel.value); if (!el) return;
+      const el = brief(sel.value);const fold=document.querySelector('.focus-firm-fold');if(fold)fold.hidden=!el;if(!el)return;
       const anchor = document.querySelector('.session-context') || document.getElementById('setupFramework')?.closest('section,.card') || sel.closest('section,.card,details');
       const setup=document.querySelector('.focus-firm-fold');const panel=document.getElementById('practice-panel-practitioner');if(setup)setup.append(el);else if(panel)panel.append(el);
     };
