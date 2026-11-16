@@ -54,6 +54,7 @@ h2{font-size:clamp(32px,4.4vw,44px);line-height:1.08;max-width:20ch;margin-top:1
 .step .n{font:600 40px/1 "EB Garamond",Georgia,serif;color:var(--accent)}
 .step h3{font-size:24px;margin-top:10px}.step p{margin:8px 0 0;font-size:15.5px;color:var(--ink-2)}
 .honest{margin-top:22px;font-size:15px;color:var(--ink-2);max-width:70ch;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.howl{margin:22px 0 0;padding-left:22px;max-width:62ch;font-size:16.5px;color:var(--ink-2)}.howl li{margin:8px 0}.howl b{color:var(--ink)}
 /* promises */
 .promises{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}
 .promises li{padding:14px 0;border-top:1px solid var(--line);font-size:16px}
@@ -69,7 +70,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .founder{grid-template-columns:1fr;gap:24px}.portrait,.ph{width:100%;max-width:340px;height:300px}
   .panel,.how,.promises{grid-template-columns:1fr}
 }
-@media (max-width:600px){.wrap{padding:0 16px}section{padding:48px 0}.hero h1{font-size:40px}.hero p{font-size:17px}.story p{font-size:17px}.pull{font-size:23px}}
+@media (max-width:600px){.stats{gap:18px!important;flex-wrap:nowrap}.stats div{min-width:0}.stats b{font-size:32px}.stats span{font-size:12.5px}.founder>div:first-child{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center}.portrait,.ph{width:88px!important;height:88px!important;border-radius:50%!important;font-size:30px!important}.founder>div:first-child .li{grid-column:2;margin-top:-6px}.cap{margin-top:0}.p{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:16px 0;grid-template-columns:52px minmax(0,1fr);gap:12px}.av{width:52px;height:52px;font-size:19px}.p h3{font-size:21px}.looks{border-top:0;padding-top:0;margin-top:6px}.looks b{display:inline;margin-right:6px}.panel{gap:0}.hiring{border-top:1px dashed var(--line)!important}.stats{gap:24px}.wrap{padding:0 16px}section{padding:48px 0}.hero h1{font-size:40px}.hero p{font-size:17px}.story p{font-size:17px}.pull{font-size:23px}}
 </style>
 </head>
 <body>
@@ -97,8 +98,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
         <a class="li" href="#">LinkedIn →</a>
       </div>
       <div class="story">
-        <p>I spent more than twenty years in banking. Over that time I met a lot of bright students, and kept seeing the same thing: they had done good work, at university, in a part-time job or on an internship, but their CV didn’t show it. They described tasks, not results. They hid the most interesting thing they had done at the bottom of the page.</p>
-        <p>Nobody had told them. Careers advice is general, the firms are too busy to explain, and the students who did know the unwritten rules usually had a parent or a family friend in the industry.</p>
+        <p>I spent more than twenty years in banking. Over that time I met a lot of bright students, and kept seeing the same thing: they had done good work, at university, in a part-time job or on an internship, but their CV didn’t show it. They described tasks, not results. Nobody had told them: careers advice is general, the firms are too busy to explain, and the students who knew the unwritten rules usually had a parent or a family friend in the industry.</p>
         <div class="pull">The difference between a rejection and a first round is often two or three lines on a CV.</div>
         <p>So I asked four people I trust, people who between them have spent more than a century in banks, brokers, asset managers and audit firms, to help me write down what we actually look for. That became The Desk: our standard, applied to your CV and your answers, so you can practise against it every day instead of finding out after the rejection email.</p>
         <p>We can’t get you a job, and we won’t pretend to. What we can do is show you what someone from inside the industry sees when they read your application, and help you fix it before you apply.</p>
@@ -124,11 +124,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   <section aria-labelledby="hw">
     <div class="k">How The Desk works</div>
     <h2 id="hw">People set the standard. You practise against it.</h2>
-    <div class="how">
-      <div class="step"><div class="n">1</div><h3>We set the standard</h3><p>The panel wrote down what a strong application looks like for each route: the evidence, the competencies, the technical knowledge and what each firm’s process tests.</p></div>
-      <div class="step"><div class="n">2</div><h3>You practise every day</h3><p>Your CV, your answers and your interviews are measured against that standard whenever you want, so you can improve between rounds, not just once.</p></div>
-      <div class="step"><div class="n">3</div><h3>A person when you need one</h3><p>Members can send the panel a question. If you want more, book calls with a practitioner or work with one through your whole season.</p></div>
-    </div>
+    <ol class="howl">
+      <li><b>We set the standard.</b> The panel wrote down what a strong application looks like for each route and each firm’s process.</li>
+      <li><b>You practise every day.</b> Your CV, answers and interviews are measured against it whenever you want.</li>
+      <li><b>A person when you need one.</b> Members can ask the panel, book calls, or work with a practitioner all season.</li>
+    </ol>
     <div class="honest"><b>How the tools work, honestly.</b> Our software, which uses AI, applies the panel’s framework to your CV and answers so you get feedback instantly and as often as you like. A practitioner hasn’t personally read your CV unless you book a call. Everything we tell you is checked against your own CV, and we never invent experience for you. <a href="/how-we-score.html">How we score →</a></div>
   </section>
 
@@ -140,15 +140,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <li><b>We never promise a job.</b>Our score is preparation guidance, not a hiring decision.</li>
       <li><b>Paid once, no auto-renewal.</b>Membership lasts 12 months and then stops. No surprise charges.</li>
       <li><b>Your CV stays yours.</b>We don’t sell your data or share it with employers. <a href="/site-privacy.html">Privacy →</a></li>
-      <li><b>Real reviews only.</b>Every student quote on our site is real and used with permission.</li>
-      <li><b>Independent.</b>We’re not endorsed by any firm we name. Firm names show where we used to work.</li>
     </ul>
   </section>
 
   <section aria-labelledby="fu">
     <div class="k">Find us</div>
-    <h2 id="fu">Check us out.</h2>
-    <p class="lead">Look us up before you trust us with your CV. You’ll find the panel on LinkedIn, and short videos of us reading real (anonymised) CV lines on TikTok, Instagram and YouTube.</p>
+    <h2 id="fu">Look us up before you trust us with your CV.</h2>
     <div class="find"><a href="#">LinkedIn</a><a href="#">TikTok</a><a href="#">Instagram</a><a href="#">YouTube</a><a href="mailto:[contact email]">Email us</a></div>
     <p style="font-size:13.5px;color:var(--mute);margin:18px 0 0">The Desk is a trading name of [Company name Ltd], registered in England and Wales, company number [number]. Registered office: [address].</p>
   </section>
