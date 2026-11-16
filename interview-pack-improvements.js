@@ -7,7 +7,7 @@
  if(simulation){simulation.open=false;simulation.classList.add('hv','interview-timed-simulation');simulation.querySelector('summary').textContent='HireVue timing settings';row.after(simulation);const original=$('hvStart').onclick;$('hvStart').onclick=async()=>{if(!stream)await window.DeskInterviewMedia.connectForAnswer();if(stream)original()};for(const id of ['hvThink','hvAnswer','hvRetakes'])$(id)?.addEventListener('change',update)}
  const record=$('recordBtn');function timedMode(){const setup=DeskInterviewSession.readSelection();return !setup||setup.format==='hirevue'}
  record.addEventListener('click',event=>{if(!timedMode())return;event.preventDefault();event.stopImmediatePropagation();simulation.open=true;$('hvStart').click()},true);
- const buttonLabel=()=>{if(timedMode()&&!record.disabled&&record.textContent!=='Start timed HireVue answer')record.textContent='Start timed HireVue answer';};new MutationObserver(buttonLabel).observe(record,{childList:true});buttonLabel();
+ const buttonLabel=()=>{if(!document.body.classList.contains('interview-focus')&&timedMode()&&!record.disabled&&record.textContent!=='Start timed HireVue answer')record.textContent='Start timed HireVue answer';};new MutationObserver(buttonLabel).observe(record,{childList:true});buttonLabel();
  if(guide){document.querySelector('.interview-training').after(guide);guide.querySelectorAll('details.hv-sec').forEach(d=>d.open=false)}
 
  const previousRender=render;render=function(){const result=previousRender.apply(this,arguments);update();return result};update();

@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Figtree:wght@400;500;600;700&display=swap');
+body.interview-focus{background:#f4f1ec;color:#172329;font-family:Figtree,sans-serif}
+.interview-focus [hidden]{display:none!important}
+.interview-focus .logo small,.interview-focus #hvPractise{display:none!important}
+.interview-focus .interview-format-strip{color:#52696d!important;border:0!important;font:500 12px/1.5 Figtree,sans-serif;margin:12px 0!important;padding:0!important}.interview-focus .interview-format-strip strong,.interview-focus .interview-format-strip span{color:#52696d!important}
+.interview-focus .microphone-check:has(.microphone-status) .microphone-status{display:none}
+.interview-focus .page{max-width:1200px;background:transparent;box-shadow:none}
+.interview-focus .wrap{padding:24px;max-width:1140px;margin:auto}
+.interview-focus .intro,.interview-focus .top .tag,.interview-focus .top .badge,.interview-focus .top>a:not(.focus-exit),.interview-focus .question-navigation,.interview-focus .answer-recording-status,.interview-focus .answer-recording-instructions,.interview-focus .desk-interviewer,.interview-focus .finish-answer-overlay{display:none!important}
+.interview-focus .top{min-height:64px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid #dedbd5}
+.interview-focus .focus-exit{font:600 14px Figtree,sans-serif;color:#35444b;text-decoration:none;border:1px solid #d5d9da;border-radius:6px;padding:10px 15px;margin-left:auto}
+.interview-focus .session-context{margin:0 0 20px!important;border:0!important;border-bottom:1px solid #ddd7cf!important;background:transparent!important;border-radius:0!important;padding:0 0 16px!important;box-shadow:none!important}
+.interview-focus .session-context h2{font:600 24px/1.2 'EB Garamond',serif!important}
+.interview-focus .session-identity>.kicker,.interview-focus .interview-role-mode,.interview-focus .session-mode-badge,.interview-focus .session-practitioner-person{display:none!important}
+.interview-focus .session-context-tags{margin:0;justify-content:flex-end}
+.interview-focus .session-practitioner{border:0;padding:0}
+.interview-focus .grid{display:block!important;margin:0!important}.interview-focus .grid>.side{display:none!important}
+.interview-focus .panel{background:white;border:1px solid #dedbd5;border-radius:12px;overflow:visible;box-shadow:0 8px 32px #15232906}
+.interview-focus .interview-recording-row{display:grid!important;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;gap:28px;padding:28px;border:0;border-radius:12px;background:#fff;align-items:start}
+.interview-focus .focus-question-pane,.interview-focus .interview-recording-controls{min-width:0;border:0}
+.interview-focus .focus-step{color:#55706c;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.interview-focus .qbox{padding:0!important;margin:0!important;background:transparent!important;border:0!important;color:#172329!important;min-height:0!important}
+.interview-focus #questionLabel,.interview-focus #questionType{font:500 13px/1.5 Figtree,sans-serif;color:#68757b!important;letter-spacing:0;text-transform:none}
+.interview-focus #question{font:600 clamp(21px,2.2vw,29px)/1.35 Figtree,sans-serif!important;color:#172329!important;margin:12px 0 16px!important;overflow-wrap:break-word}
+.interview-focus #questionHint{font:400 14px/1.6 Figtree,sans-serif!important;color:#657179!important}
+.interview-focus .qbox .hirevue-question-meta{font:400 12px Figtree,sans-serif}
+.interview-focus .camera{aspect-ratio:4/3!important;max-height:none!important;border-radius:10px!important;background:#172329!important;overflow:hidden;border:0!important}
+.interview-focus #preview{width:100%;height:100%;object-fit:cover}
+.interview-focus .focus-camera-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#e7edeb;padding:25px;background:#202f35}
+.interview-focus .focus-camera-placeholder span{font-size:42px;color:#a0b8b1;margin-bottom:12px}.interview-focus .focus-camera-placeholder strong{font:600 17px Figtree,sans-serif}.interview-focus .focus-camera-placeholder p{font:400 13px/1.6 Figtree,sans-serif;color:#bfcacb;max-width:240px}
+.interview-focus .cameraOverlay{z-index:7}.interview-focus #timer{font:600 23px Figtree,sans-serif!important}
+.interview-focus .camera #hvStage{padding:8px 12px;width:auto;min-width:120px;border-radius:7px;background:#172329e8}
+.interview-focus .camera #hvClock{font:600 32px/1.1 Figtree,sans-serif}.interview-focus .camera #hvStage .hv-row{display:none}
+.interview-focus .microphone-check{padding:9px 0!important;background:transparent!important;min-height:22px}.interview-focus .microphone-status{font:400 11px/1.5 Figtree,sans-serif!important}.interview-focus .microphone-check progress{max-width:64px}
+.interview-focus summary{cursor:pointer;font:600 14px/1.5 Figtree,sans-serif;padding:12px 0;color:#304c52}
+.interview-focus .focus-coaching{border-top:1px solid #e5e6e1;margin-top:22px}.interview-focus .interview-cv-help{padding:0;background:transparent}.interview-focus .interview-cv-help .dc-pr,.interview-focus .interview-cv-help .dc-cv{margin:8px 0;padding:16px;font-size:14px}
+.interview-focus .focus-settings{border-top:1px solid #e5e6e1}.interview-focus .controls{padding:4px 0!important;display:flex;gap:8px}.interview-focus .question-voice{background:#f5f6f4;color:#172329;padding:12px!important;border-radius:6px}.interview-focus .question-voice p{color:#516269!important}.interview-focus .desk-video-tools{background:transparent;padding:6px 0}.interview-focus .desk-video-tools button{color:#35494c;border-color:#ccd6d2;font-size:12px}
+.interview-focus button{font-family:Figtree,sans-serif!important;border-radius:6px!important;cursor:pointer}.interview-focus button:focus-visible,.interview-focus summary:focus-visible,.interview-focus a:focus-visible{outline:3px solid #6aa99b;outline-offset:4px}
+.interview-focus .focus-review{margin:0 28px;border-top:1px solid #dedbd5}.interview-focus .focus-review .transcript{padding:4px 0 20px!important;border:0!important;background:white!important}.interview-focus .focus-review h2,.interview-focus .focus-review h3{font:600 23px 'EB Garamond',serif!important}.interview-focus #transcript{width:100%;min-height:150px!important;font:400 15px/1.6 Figtree,sans-serif!important;border:1px solid #cfd7d3;border-radius:6px;padding:14px}
+.interview-focus .focus-actions{border-top:1px solid #dedbd5;padding:18px 28px;background:#fafbf9;border-radius:0 0 12px 12px}.interview-focus .focus-status{font:400 14px/1.5 Figtree,sans-serif;color:#526368;margin:0 0 12px}.interview-focus .focus-action-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.interview-focus .focus-action-buttons button{min-height:46px;padding:12px 22px;font:600 14px Figtree,sans-serif!important;background:#202f35!important;color:white!important;border:1px solid #202f35!important;margin:0!important}.interview-focus #stopBtn:not(:disabled){background:#ae343c!important;border-color:#ae343c!important}.interview-focus #playBtn{background:white!important;color:#243b3d!important;border-color:#b9c6c1!important}.interview-focus .focus-type{border:0;background:transparent;font-size:12px;padding:12px 0 0;color:#5e6e73;text-decoration:underline}
+.interview-focus .interview-training,.interview-focus #hirevueGuide{margin-top:20px}.interview-focus #hirevueGuide{display:none!important}.interview-focus .feedback{margin-top:20px}.interview-focus .feedback h2{font:600 28px 'EB Garamond',serif}
+.interview-focus[data-interview-phase=record] .focus-settings,.interview-focus[data-interview-phase=listen] .focus-settings,.interview-focus[data-interview-phase=prepare] .focus-settings{display:none}
+@media(max-width:700px){.interview-focus .wrap{padding:16px 12px}.interview-focus .top{min-height:54px;padding:10px 16px}.interview-focus .session-context{display:block!important;padding-bottom:12px!important;margin-bottom:14px!important}.interview-focus .session-context h2{font-size:20px!important}.interview-focus .session-practitioner{display:none!important}.interview-focus .interview-recording-row{grid-template-columns:1fr!important;gap:18px;padding:20px 16px}.interview-focus .focus-step{margin-bottom:10px;font-size:11px}.interview-focus #question{font-size:21px!important;line-height:1.35!important;margin:8px 0!important}.interview-focus .camera{aspect-ratio:4/3!important}.interview-focus .focus-coaching{margin-top:10px}.interview-focus .focus-review{margin:0 16px}.interview-focus .focus-actions{padding:16px}.interview-focus .focus-action-buttons button{flex:1;min-width:130px}.interview-focus .focus-status{font-size:13px}.interview-focus .session-identity>p{font-size:12px}.interview-focus .focus-settings summary{font-size:12px}}
