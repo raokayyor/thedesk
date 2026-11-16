@@ -40,6 +40,10 @@
     {
       "path": "/api/result-email-cron",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/markets-snapshot-cron",
+      "schedule": "0 9 * * *"
     }
   ],
   "rewrites": [

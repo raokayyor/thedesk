@@ -6,6 +6,12 @@ export default async function handler(req,res){
  if(req.method!=='GET')return res.status(405).end();
  const firm=req.query?.firm||'general',role=req.query?.role||'ibd';
  if((firm!=='general'&&!Object.hasOwn(NEWS_SOURCES,firm))||!['ibd','markets','corporate','asset','audit','deals','tax','risk'].includes(role))return res.status(400).json({error:'Choose a supported employer and role.'});
+ // The dashboard can show stored headlines without waiting for external feeds.
+ if(req.query?.snapshot==='1'){
+  const items=rankNews([...TOPICAL_READINGS,...await archivedNews()],{firm,role});
+  res.setHeader('Cache-Control','public, s-maxage=60, stale-while-revalidate=900');
+  return res.json({firm,role,items,status:items.length?'available':'unavailable'});
+ }
  const key=firm+':'+role,cached=cache.get(key);if(cached&&Date.now()-cached.at<900000){res.setHeader('Cache-Control','public, s-maxage=900');return res.json(cached.value)}
  if(!pending.has(key))pending.set(key,(async()=>{
   const [employer,publicItems,archive]=await Promise.all([firm==='general'?{items:[],sourceUrl:null}:fetchEmployerNews(firm),publicNews(),archivedNews()]);

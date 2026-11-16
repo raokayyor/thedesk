@@ -66,3 +66,20 @@
  .mobile-desk-refreshed .prep-fixes{border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
  .mobile-desk-refreshed .prep-fixes>summary{font:600 14px/1.4 Figtree,sans-serif;min-height:36px}
 }
+
+.member-dashboard .live-event-card{justify-content:flex-start;gap:12px}.member-dashboard .live-event-card>.kicker{min-height:0;margin:0}.member-dashboard .live-event-card>h3{margin:0}.member-dashboard .live-event-card>.btn{margin-top:auto}
+
+@media(max-width:599px){
+ .mobile-score-week{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:stretch}
+ .mobile-score-week>.deep-score-main{padding:16px!important;border-radius:12px;min-height:0!important;display:flex!important;flex-direction:column;gap:8px;align-items:flex-start}
+ .mobile-score-week .deep-score-main .kicker{letter-spacing:.08em;font-size:9px}
+ .mobile-score-week .deep-score-main .deep-score-value{font-size:38px!important}
+ .mobile-score-week .deep-score-main .bar{width:100%;height:3px}
+ .mobile-score-week .deep-score-main .score-report-link{margin-top:auto;font-size:12px;padding:8px 0!important;min-height:36px;background:transparent!important;border:0!important}
+ .mobile-week-card{padding:16px;border-radius:12px;display:flex;flex-direction:column;gap:8px;text-decoration:none;min-width:0;background:#ebe7df}
+ .mobile-week-card .kicker{font-size:9px;letter-spacing:.12em;color:#6a5547}
+ .mobile-week-card strong{font:600 23px/1.05 'EB Garamond',serif}
+ .mobile-week-card>span:not(.kicker){font-size:11px;line-height:1.4;color:#647174}
+ .mobile-week-card b{font-size:11px;margin-top:auto}
+}
+.markets-snapshot h3{margin:10px 0}.markets-snapshot p{font-size:13px}.markets-snapshot summary{margin-top:14px;font-size:13px;cursor:pointer}

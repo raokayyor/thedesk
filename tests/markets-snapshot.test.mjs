@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {weekOf,selectStories} from '../lib/markets-snapshot.mjs';
+const now=Date.parse('2026-11-16T12:00:00Z');
+const items=[{title:'Bank of England interest rate and inflation outlook',url:'https://www.bankofengland.co.uk/news/rates',publishedAt:'2026-11-14T00:00:00Z',publisher:'Bank of England'},{title:'J.P. Morgan advises on acquisition financing',url:'https://www.jpmorganchase.com/news/acquisition',publishedAt:'2026-11-13T00:00:00Z',publisher:'J.P. Morgan'},{title:'Old interest rate outlook for investors',url:'https://www.ecb.europa.eu/old',publishedAt:'2026-09-01T00:00:00Z'},{title:'Unknown private equity acquisition financing',url:'https://untrusted.example/news',publishedAt:'2026-11-15T00:00:00Z'}];
+test('weekly edition key stays fixed through Sunday',()=>{assert.equal(weekOf('2026-11-16T12:00:00Z'),'2026-11-16');assert.equal(weekOf('2026-11-22T23:00:00Z'),'2026-11-16');assert.equal(weekOf('2026-11-23T00:00:00Z'),'2026-11-23');});
+test('briefing prioritises followed firms, explains stories and excludes old/untrusted sources',()=>{const stories=selectStories(items,{sectors:['Banking'],organisations:['J.P. Morgan']},now);assert.ok(stories.length);assert.match(stories[0].url,/jpmorgan/);assert.ok(stories.every(s=>s.meaning&&s.question));assert.ok(stories.every(s=>!s.url.includes('untrusted')&&!s.url.includes('/old')));assert.equal(new Set(stories.map(s=>s.url)).size,stories.length);});
