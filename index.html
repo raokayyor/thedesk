@@ -153,7 +153,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .rp-read q{font-size:17.5px}.rp-step{padding:13px 15px}
   section.band{padding:48px 0}
   .lead{font-size:16.5px}
-  .cmp .row{grid-template-columns:1fr 1fr;gap:4px 14px;padding:14px 16px}.cmp .row>span:first-child{grid-column:1/-1;margin-bottom:6px}.cmp .row>span:nth-child(2){grid-column:1}.cmp .row>span:nth-child(3){grid-column:2}.cmp .head>span:first-child{display:none}
+  .cmp .row{grid-template-columns:minmax(0,.9fr) minmax(0,.85fr) minmax(0,1.25fr);gap:0;padding:0;font-size:12px}.cmp .row>span{padding:14px 9px;overflow-wrap:break-word}.cmp .row>span:first-child{grid-column:1;margin-bottom:0}.cmp .row>span:nth-child(2){grid-column:2;border-left:1px solid var(--line)}.cmp .row>span:nth-child(3){grid-column:3;border-left:1px solid var(--line)}.cmp .head{font-size:10px;letter-spacing:.06em}.cmp .head>span:first-child{display:block}
   .lead-person{grid-template-columns:84px minmax(0,1fr);gap:16px}.lead-person img{width:84px;height:84px}.lead-person .name{font-size:25px}
   .panel{grid-template-columns:1fr}
   .tier.main{order:-1}
@@ -185,8 +185,6 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="for" id="for" aria-live="polite"></div>
       <div class="small">Free · no card · <a href="/fullcycle-amelia.html">see a sample report first</a></div>
-      <p class="hero-tool-line">Free score first. Then tests, interviews and assessment centres, all in one place.</p>
-      <p class="student-proof" style="font-size:13px;color:var(--mute);margin:12px 0 0">Used by students at Bristol, Warwick and LSE</p>
     </div>
 
     <div class="right">
@@ -199,6 +197,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <div class="kicker">Membership · £89 a year</div>
     <h2 id="rounds-title">One membership. Every round. All built on your CV.</h2>
     <p class="lead">From your first application to your final assessment centre, every tool uses your CV, your route and the firms you’re applying to.</p>
+    <p class="gs-proof" style="font-size:14px;color:var(--ink-2);max-width:60ch">Around <b>365,000 applicants</b> for Goldman Sachs’ 2025 summer internship programme. Fewer than 1% were selected. <a href="https://www.goldmansachs.com/investor-relations/financials/8k/2026/8k-01-15-26.pdf" target="_blank" rel="noopener" style="font-size:12px">Source ↗</a></p>
     <div class="round-cards" id="round-cards" tabindex="0" aria-label="Tools for every recruiting round"><article class="round-card" id="round-1" aria-label="Round 1: CV & applications"><div class="round-number">01</div><h3>CV &amp; applications</h3><img src="/assets/toolkit/cv.png" alt="CV repairs and evidence questions in Amelia’s report" width="800" height="500" loading="lazy"><ul><li>CV repair</li><li>Application answers</li><li>Deadline tracker</li></ul><p class="round-personal"><b>Why it’s personal</b>Every weak line rebuilt from your own facts, and “Why this firm?” answers in each firm’s word limit.</p></article>
 <article class="round-card" id="round-2" aria-label="Round 2: Online tests"><div class="round-number">02</div><h3>Online tests</h3><img src="/assets/toolkit/tests.png" alt="A situational judgement question with most and least effective choices" width="800" height="500" loading="lazy"><ul><li>2,000+ numerical &amp; commercial questions</li><li>Situational judgement</li><li>Verbal reasoning</li></ul><p class="round-personal"><b>Why it’s personal</b>Use the topics you missed in your free score to focus your practice.</p></article>
 <article class="round-card" id="round-3" aria-label="Round 3: Video & interviews"><div class="round-number">03</div><h3>Video &amp; interviews</h3><img src="/assets/toolkit/interview.png" alt="The interview camera and microphone check" width="800" height="500" loading="lazy"><ul><li>Interview coach on camera</li><li>17 firm packs</li></ul><p class="round-personal"><b>Why it’s personal</b>Your firm’s questions, with the best points from your CV beside each one.</p></article>
