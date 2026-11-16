@@ -86,8 +86,8 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 section.band{padding:64px 0;border-top:1px solid var(--line)}
 section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch}
 .lead{font-size:17.5px;color:var(--ink-2);max-width:58ch;margin:16px 0 0}
-.evidence{display:flex;gap:16px;align-items:baseline;margin:22px 0 0;max-width:640px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.evidence .n{font:400 46px/1 "EB Garamond",Georgia,serif;color:var(--accent);flex:none}
+.evidence{display:block;margin:22px 0 0;max-width:640px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.evidence .n{font:600 24px/1 "EB Garamond",Georgia,serif;color:var(--accent);white-space:nowrap;vertical-align:baseline;margin-right:4px}
 .evidence p{margin:0;font-size:15.5px;color:var(--ink-2)}
 .cmp{margin-top:26px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);max-width:860px}
 .cmp .row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1.45fr);gap:20px;padding:16px 20px;border-top:1px solid var(--soft);font-size:15px;align-items:start}
@@ -247,7 +247,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <div class="kicker">Why not just ask ChatGPT?</div>
     <h2 id="c0" style="margin-top:12px">Don’t let a chatbot decide your future.</h2>
     <p class="lead">ChatGPT can make your CV sound good. It doesn’t know what an interviewer is listening for, which lines get a CV put down, or how an assessor scores you.</p>
-    <div class="evidence"><span class="n">48%</span><p>of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
+    <div class="evidence"><p><strong class="n">48%</strong> of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
     <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
       <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
       <div class="row" role="row"><span role="rowheader">Who decides what “good” is</span><span role="cell">The model</span><span role="cell"><b>Practitioners with over 20 years in finance</b></span></div>
