@@ -67,7 +67,13 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
 /* Keep the hero and plan headings on the same text-size letterforms. */
 .hero h1,.plan h3{font-family:"Fraunces",Georgia,serif;font-weight:500;font-optical-sizing:none;font-variation-settings:"opsz" 24,"SOFT" 0,"WONK" 0;font-feature-settings:"liga" 0,"clig" 0}
 @media(min-width:901px) and (max-width:1199px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}.compare{overflow-x:auto}.compare table{min-width:700px}.plan .price{flex-wrap:wrap}.plan .price span{min-width:0}.plan .price b{white-space:nowrap}</style>
-<link rel="stylesheet" href="/mobile-entry.css"><link rel="stylesheet" href="/mobile-plans.css"><script src="/mobile-plans.js" defer></script><link rel="stylesheet" href="/public-polish.css"><script src="/public-about-links.js" defer></script></head>
+<link rel="stylesheet" href="/mobile-entry.css"><link rel="stylesheet" href="/mobile-plans.css"><script src="/mobile-plans.js" defer></script><link rel="stylesheet" href="/public-polish.css"><script src="/public-about-links.js" defer></script><style>
+.phone-coaching-link{display:none}
+@media(max-width:699px){
+ .plans .season-plan{display:none!important}.phone-coaching-link{display:block;margin:0;color:var(--mute);font-size:14px}.phone-coaching-link a{color:inherit}
+ .compare table{min-width:0!important;table-layout:fixed;width:100%;font-size:11px}.compare th,.compare td{padding:9px 5px;overflow-wrap:anywhere}.compare thead th{font-size:10px;letter-spacing:0}.compare tr>:nth-child(5){display:none}.compare{max-width:100%;padding:14px}.compare .mute{font-size:11px}.compare th:first-child{width:27%}
+}
+</style></head>
 <body><header style="max-width:1160px;margin:auto;padding:20px 16px;display:flex;align-items:center;justify-content:space-between"><a href="/" style="font:600 30px Georgia;text-decoration:none">The Desk</a><a href="/signin.html" style="font-size:13px">Already have an account? Sign in →</a></header>
 <main>
   <section class="hero">
@@ -124,7 +130,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <button class="btn ghost go" type="button" data-plan="plus">Add a practitioner</button>
     </article>
 
-    <article class="plan">
+    <article class="plan season-plan">
       <div><h3>1:1 support</h3><div class="mute">For your most important applications</div></div>
       <div class="price"><b>£3,000</b><span class="mute">for your recruiting season</span></div>
       <ul>
@@ -136,6 +142,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
       <button class="btn ghost go" type="button" data-plan="coaching">Ask about 1:1</button>
     </article>
   </section>
+  <p class="phone-coaching-link"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
 
   <section class="panel" id="formPanel" hidden aria-live="polite">
     <div>

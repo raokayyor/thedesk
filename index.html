@@ -175,10 +175,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .hero .q{font-size:12px;margin:10px 0 6px}.chips{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;gap:8px;max-width:100%;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chips button{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap;font-size:13px;min-height:42px;padding:8px 12px}
   .hero .cta{margin-top:12px;min-height:48px}.hero .for:empty{display:none}.hero .small{font-size:12px;margin-top:7px}
 }
-.redpen-toggle{display:none}
 @media(max-width:699px){
- .redpen-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:600 14px/1.4 Figtree,Arial,sans-serif;text-align:left;cursor:pointer}
- .redpen-wrap:not(.is-open) .redpen{display:none}.redpen-wrap.is-open .redpen{margin-top:12px}
+ .hero .right,.hero .firms,.hero .for{display:none}
+ .proof-toggle{display:block;align-self:start;margin:0 12px 8px;padding:6px 0;border:0;background:none;color:var(--good);font:600 15px/1.4 Figtree,Arial,sans-serif;text-align:left;cursor:pointer}.proof-toggle:hover{text-decoration:underline}.proof-toggle:focus-visible{outline:2px solid var(--good);outline-offset:3px}#proof-steps{border-top:1px solid var(--line)}#proof-steps .rp-step{padding:14px 12px}
  section.band{padding:28px 0}.hero{padding-bottom:28px}.final{padding:28px 0}.evidence{margin-top:18px}.cmp{margin-top:18px}
 }
 /* Same content, with a fuller desktop view and compact phone presentation. */
@@ -189,6 +188,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
  .people-compact,.mobile-pricing{display:none}.people-section>.kicker,.people-section>h2,.people-section>.lead{display:block}.full-panel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:26px}.person-card{border:1px solid var(--line);border-radius:12px;padding:18px 14px;background:var(--card);min-width:0}.person-avatar{width:56px;height:56px;object-fit:cover;border-radius:50%;display:flex;align-items:center;justify-content:center}.initials{background:var(--soft);font:600 22px "EB Garamond",Georgia,serif}.person-card h3{font-size:23px;line-height:1.1;margin-top:12px}.person-card p{font-size:13px;line-height:1.4;min-height:55px;margin:8px 0}.person-card .logos{gap:8px}.person-card .lg{max-width:100%;overflow:hidden}.person-card .lg img{max-width:100%;object-fit:contain}.desktop-meet{display:inline-block}
  .tiers{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}.desktop-tier{display:flex}.season-tier{background:transparent}.season-tier .big{font-size:38px}.season-tier ul,.season-tier .mute{color:var(--mute)}
 }
+.mobile-plus-summary,.mobile-plus-button{display:none}
+@media(max-width:699px){.tiers .plus-tier{display:flex}.plus-tier ul,.plus-tier>.mute,.desktop-plus-button,.desktop-pricing-note{display:none}.mobile-plus-summary,.mobile-plus-button{display:block}.mobile-plus-button{display:flex;min-height:48px;max-width:none}.plus-tier p{margin:0}.tiers .main .cta{min-height:48px}.tiers .main>a[href="/fullcycle-amelia.html"]{display:flex;justify-content:center;align-items:center;min-height:44px}.mobile-pricing{font-size:14px;line-height:1.5}.mobile-pricing.fine{color:var(--mute)}.mobile-pricing.fine a{color:inherit}}
 </style>
 <script src="/public-about-links.js" defer></script></head>
 <body>
@@ -202,12 +203,14 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <p class="stat"><b>140 applications for every graduate job.</b><sup><a href="#src">1</a></sup> See your CV the way someone inside the industry reads it.</p>
 
 
-      <section class="mobile-proof" aria-label="A real-style example">
-        <div class="proof-kicker">A real-style example</div>
+      <section class="mobile-proof" aria-label="Example">
+        <div class="proof-kicker">Example</div>
         <div class="proof-before"><span class="proof-label">Before · what most students write</span><s>Barista, part-time</s></div>
         <div class="proof-after"><span class="proof-label">After · rebuilt from their own answers</span><p>Opened the shop single-handed and trained four new starters, alongside a full-time degree.</p></div>
         <b class="proof-points">+3–5 points on their readiness score</b>
         <p class="proof-note">We ask you two questions. You give the facts. We never make anything up.</p>
+        <button class="proof-toggle" type="button" aria-expanded="false" aria-controls="proof-steps">See how we rebuilt it · 3 steps ↓</button>
+        <div id="proof-steps" hidden></div>
       </section>
       <div class="firms">
         <div class="q" id="fq">What are you aiming for?</div>
@@ -219,7 +222,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     </div>
 
     <div class="right">
-      <div class="redpen-wrap"><button class="redpen-toggle" type="button" aria-expanded="false" aria-controls="redpen">See how we rebuilt this line <span aria-hidden="true">▾</span></button><figure class="redpen" id="redpen" aria-live="polite"></figure></div>
+      <figure class="redpen" id="redpen" aria-live="polite"></figure>
     </div>
   </section>
 
@@ -279,13 +282,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
         <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
         <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
         <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
-      <div class="tier desktop-tier"><div class="nm">Member + Practitioner</div><div class="big">£199</div><div class="mute">a year · paid once</div><ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul><a class="go" href="/signup.html?plan=plus">See how it works →</a></div>
+      <div class="tier desktop-tier plus-tier"><div class="nm">Member + Practitioner</div><div class="big">£199</div><div class="mute">a year · paid once</div><p class="mobile-plus-summary">Everything in Member, plus two 30–45 minute calls with a practitioner and written notes</p><ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul><a class="go desktop-plus-button" href="/signup.html?plan=plus">See how it works →</a><a class="cta mobile-plus-button" href="/signup.html?plan=plus">Add a practitioner →</a><p class="fine mobile-plus-summary">Already a member? Upgrade any time by paying the difference.</p></div>
       <div class="tier desktop-tier season-tier"><div class="nm">1:1 support</div><div class="big">£3,000</div><div class="mute">for your recruiting season</div><ul><li>Everything in Member</li><li>A named practitioner from application to offer</li><li>Live mock interviews with feedback</li><li>Every CV and application reviewed before you send it</li></ul><a class="go" href="/signup.html?plan=coaching">Ask about 1:1 →</a></div>
     </div>
-    <p class="mobile-pricing">Want a person too? <a href="/signup.html?plan=plus"><b>Member + Practitioner, £199</b>: two calls with written notes →</a></p>
-    <div class="mobile-pricing"><a class="ghost" href="/book-call.html">Book an interview 1/1 · £79 →</a><p class="fine">45 minutes with a practitioner, plus written feedback.</p></div>
+    <p class="mobile-pricing"><a href="/assessment-start.html"><b>Not ready to pay? Start free:</b> your readiness score, the community and the trading league. No card. →</a></p>
     <p class="fine mobile-pricing"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
-    <p class="fine">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Every score and piece of feedback follows our practitioners’ framework, applied to your own CV.</p>
+    <p class="fine desktop-pricing-note">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Every score and piece of feedback follows our practitioners’ framework, applied to your own CV.</p>
   </section>
 
   <section class="final" aria-labelledby="c6">
@@ -343,23 +345,27 @@ document.getElementById('people').innerHTML =
         <div class="rp-reads"><b>How it reads now:</b> ${esc(l.reads)}</div>
         <div class="rp-unlock"><b>It now answers ${l.unlocks.length} interview questions</b><ul>${l.unlocks.map(u => `<li>${esc(u)}</li>`).join('')}</ul></div></div>
       <div class="rp-note">Nothing is made up: every fact comes from the student’s answer. One line, ten seconds of their time. Imagine the rest of your CV.</div>`;
+    const steps=document.getElementById('proof-steps');
+    steps.innerHTML=pen.innerHTML;
+    steps.firstElementChild.remove();
     pen.classList.add('play');
   }
   const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
   redpen('start');
-  const fold=document.querySelector('.redpen-toggle');
-  fold.addEventListener('click',()=>{const open=fold.getAttribute('aria-expanded')!=='true';fold.setAttribute('aria-expanded',String(open));fold.parentElement.classList.toggle('is-open',open);fold.querySelector('span').textContent=open?'▴':'▾';});
+  const fold=document.querySelector('.proof-toggle');
+  fold.addEventListener('click',()=>{const open=fold.getAttribute('aria-expanded')!=='true';fold.setAttribute('aria-expanded',String(open));document.getElementById('proof-steps').hidden=!open;fold.textContent=open?'Hide the steps ↑':'See how we rebuilt it · 3 steps ↓';});
   const roundRow=document.getElementById('round-cards'),roundDots=[...document.querySelectorAll('.round-dots a')];
   roundDots.forEach((dot,i)=>dot.addEventListener('click',e=>{e.preventDefault();roundRow.scrollTo({left:roundRow.children[i].offsetLeft-roundRow.children[0].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}));
   roundRow.addEventListener('scroll',()=>{const step=roundRow.children[1].offsetLeft-roundRow.children[0].offsetLeft,index=Math.min(4,Math.round(roundRow.scrollLeft/step));roundDots.forEach((dot,i)=>{if(i===index)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current');});},{passive:true});
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
   const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
   chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
+  matchMedia('(max-width:699px)').addEventListener('change',e=>{if(e.matches){cta.href='/assessment-start.html';cta2.href='/assessment-start.html';document.getElementById('round-cta').href='/assessment-start.html';}});
   chips.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
-    const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
+    const href = '/assessment-start.html' + (matchMedia('(min-width:1024px)').matches && r[0] !== 'unsure' ? '?route=' + r[0] : '');
     cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
