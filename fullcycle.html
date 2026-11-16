@@ -303,7 +303,10 @@ h3{font-size:20px;line-height:1.3;margin:0}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
 .report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
-<link rel="stylesheet" href="/desk-navigation.css"><script src="/desk-nav.js" defer></script>
+<link rel="stylesheet" href="/desk-navigation.css"><script>
+var cvSampleOnly=new URLSearchParams(location.search).get('sample')==='amelia'&&new URLSearchParams(location.search).get('cvonly')==='1';
+if(cvSampleOnly){document.documentElement.classList.add('cv-sample-only');}else{var navigationScript=document.createElement('script');navigationScript.src='/desk-nav.js';navigationScript.defer=true;document.head.append(navigationScript);}
+</script><style>.cv-sample-only nav.side,.cv-sample-only .pager{display:none!important}.cv-sample-only .wrap{display:block;max-width:1100px}.cv-sample-only body{padding:0!important}.cv-sample-only .desk-hub-header{display:flex;justify-content:space-between;padding:18px 24px}</style>
 </head>
 <body class="report-page">
 <header class="desk-hub-header"><a href="/my.html">The Desk</a><span id="topMeta" hidden></span><span id="sampleTag" hidden></span></header>
@@ -686,7 +689,7 @@ function render(R){
 
   /* mount */
   var main=document.getElementById("main"),nav=document.getElementById("nav");
-  main.innerHTML=SECTIONS.map(function(s,i){
+  main.innerHTML=SECTIONS.filter(function(s){return !cvSampleOnly||s.id==="cv";}).map(function(s,i){
     var prev=SECTIONS[i-1],next=SECTIONS[i+1];
     return '<section class="pane" id="p-'+s.id+'">'+S[s.id]+'<div class="pager">'+(prev?'<a href="#'+prev.id+'"><span>Back</span>← '+esc(prev.t)+'</a>':'<span></span>')+(next?'<a href="#'+next.id+'" style="text-align:right"><span>Next</span>'+esc(next.t)+' →</a>':'')+'</div></section>';
   }).join("");
@@ -695,6 +698,7 @@ function render(R){
   var counts={cv:S._qList.length,interview:(P.interviewRiskMap||[]).length,competencies:(P.competencyRepair||[]).length,technical:(P.workedAnswers||[]).length,plan:(P.sevenDayActionPlan||[]).length,submit:(P.finalSubmissionChecklist||[]).length,application:(P.applicationRiskMap||[]).length};
   nav.innerHTML=SECTIONS.map(function(s,i){return '<li><a href="#'+s.id+'" data-nav="'+s.id+'"><span class="n">'+String(i).padStart(2,"0")+'</span><span>'+esc(s.t)+'</span><span class="c" data-c="'+s.id+'">'+(counts[s.id]||"")+'</span></a></li>';}).join("");
 
+  if(cvSampleOnly){var brand=document.querySelector('.desk-hub-header>a');brand.href='/';var back=document.createElement('a');back.href='/report-sample.html';back.textContent='Back to samples';document.querySelector('.desk-hub-header').append(back);}
   wire(R,S);
 }
 
@@ -704,7 +708,7 @@ function wire(R,S){
   var recheckButton=document.getElementById('startRecheck');if(recheckButton)recheckButton.onclick=function(){if(!R.sample&&R.recheck&&R.recheck.remaining)location.href='/assessment.html?recheck='+encodeURIComponent(R.recheck.rootId);};
   var questionForm=document.getElementById('practitionerQuestion');if(questionForm&&!R.sample)questionForm.onsubmit=async function(event){event.preventDefault();var button=questionForm.querySelector('button'),message=document.getElementById('questionStatus');button.disabled=true;message.textContent='Submitting your question…';try{var response=await fetch('/api/practitioner-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:activeAssessmentId,email:document.getElementById('practitionerEmail').value,question:document.getElementById('practitionerText').value,publish:false})});var answer=await response.json();if(!response.ok&&!(response.status===409&&answer.questionId))throw Error(answer.error||'Please retry.');var link=document.createElement('a');link.href='/practitioner-answer.html?id='+encodeURIComponent(answer.questionId);link.textContent='Open your private question and reply page →';message.replaceChildren(link);}catch(error){message.textContent=error.message;button.disabled=false;}};
   function show(){
-    var id=(location.hash||"#overview").slice(1);if(!document.getElementById("p-"+id))id="overview";
+    var id=cvSampleOnly?"cv":(location.hash||"#overview").slice(1);if(!document.getElementById("p-"+id))id="overview";
     document.querySelectorAll(".pane").forEach(function(p){p.classList.toggle("on",p.id==="p-"+id);});
     document.querySelectorAll("[data-nav]").forEach(function(a){var on=a.getAttribute("data-nav")===id;a.classList.toggle("on",on);if(on&&a.scrollIntoView&&window.innerWidth<960)a.scrollIntoView({inline:"center",block:"nearest"});});
     window.scrollTo(0,0);
