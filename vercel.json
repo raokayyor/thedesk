@@ -44,6 +44,10 @@
   ],
   "rewrites": [
     {
+      "source": "/lib/aptitude-practice-extra.mjs",
+      "destination": "/api/aptitude-practice?view=blocked"
+    },
+    {
       "source": "/lib/aptitude-practice-data.mjs",
       "destination": "/api/aptitude-practice?view=blocked"
     },

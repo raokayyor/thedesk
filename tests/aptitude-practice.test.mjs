@@ -21,3 +21,14 @@ test('unanswered items score zero and some does not establish all in verbal reas
 test('firm labels and RBS aliases map to the source-checked practice mix',()=>{
  assert.equal(firmKey('RBS'),'natwest');assert.equal(firmKey('J.P. Morgan'),'jpm');assert.equal(firmKey('UBS'),'ubs');assert.ok(FIRM_PRACTICE.ubs.types.includes('inductive'));assert.ok(FIRM_PRACTICE.pwc.types.includes('deductive'));
 });
+
+test('expanded stock exposes accurate counts while free trials stay at four',()=>{
+ const counts={sjt:24,verbal:32,inductive:24,deductive:16};
+ for(const [type,count]of Object.entries(counts)){
+  const items=practiceItems(type,true);assert.equal(items.length,count);assert.equal(practiceItems(type,false).length,4);
+  for(const q of items){assert.ok((q.scenario||q.passage?.text||q.passage||q.sequence));if(q.options)assert.ok(q.options[q.answer??q.best]);}
+ }
+ const full=publicPractice(true),free=publicPractice(false);
+ assert.equal(full.SJT.fullCount,24);assert.equal(free.VERBAL.fullCount,32);
+ assert.equal(full.REASONING.inductive.fullCount,24);assert.equal(full.REASONING.deductive.fullCount,16);
+});
