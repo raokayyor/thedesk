@@ -126,7 +126,7 @@ section.band h2{font-size:clamp(32px,4.6vw,46px);line-height:1.08;max-width:24ch
 .logos .lg img{height:18px;width:auto;filter:grayscale(1);opacity:.72}
 .logos .tx{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.02em}
 /* pricing */
-.tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
+.tiers{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:28px;max-width:720px}
 .tier{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:10px}
 .tier.main{background:var(--ink);color:#fff;border-color:var(--ink)}
 .tier .nm{font-weight:600;font-size:17px}
@@ -175,6 +175,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .hero .q{font-size:12px;margin:10px 0 6px}.chips{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;gap:8px;max-width:100%;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chips button{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap;font-size:13px;min-height:42px;padding:8px 12px}
   .hero .cta{margin-top:12px;min-height:48px}.hero .for:empty{display:none}.hero .small{font-size:12px;margin-top:7px}
 }
+.redpen-toggle{display:none}
+@media(max-width:699px){
+ .redpen-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:600 14px/1.4 Figtree,Arial,sans-serif;text-align:left;cursor:pointer}
+ .redpen-wrap:not(.is-open) .redpen{display:none}.redpen-wrap.is-open .redpen{margin-top:12px}
+ section.band{padding:28px 0}.hero{padding-bottom:28px}.final{padding:28px 0}.evidence{margin-top:18px}.cmp{margin-top:18px}
+}
 </style>
 <script src="/public-about-links.js" defer></script></head>
 <body>
@@ -205,8 +211,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     </div>
 
     <div class="right">
-      <figure class="redpen" id="redpen" aria-live="polite"></figure>
-      <aside class="sample" aria-label="Example result" id="sample"></aside>
+      <div class="redpen-wrap"><button class="redpen-toggle" type="button" aria-expanded="false" aria-controls="redpen">See how we rebuilt this line <span aria-hidden="true">▾</span></button><figure class="redpen" id="redpen" aria-live="polite"></figure></div>
     </div>
   </section>
 
@@ -214,7 +219,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     <div class="kicker">Membership · £89 a year</div>
     <h2 id="rounds-title">One membership. Every round. All built on your CV.</h2>
     <p class="lead">From your first application to your final assessment centre, every tool uses your CV, your route and the firms you’re applying to.</p>
-    <p class="gs-proof" style="font-size:14px;color:var(--ink-2);max-width:60ch">Around <b>365,000 applicants</b> for Goldman Sachs’ 2025 summer internship programme. Fewer than 1% were selected. <a href="https://www.goldmansachs.com/investor-relations/financials/8k/2026/8k-01-15-26.pdf" target="_blank" rel="noopener" style="font-size:12px">Source ↗</a></p>
+    <p class="gs-proof" style="font-size:14px;color:var(--ink-2);max-width:60ch">More than <b>360,000 applicants</b> for Goldman Sachs’ 2025 summer internship programme. Fewer than 1% were selected. <a href="https://www.goldmansachs.com/investor-relations/financials/8k/2026/8k-01-15-26.pdf" target="_blank" rel="noopener" style="font-size:12px">Source ↗</a></p>
     <div class="round-cards" id="round-cards" tabindex="0" aria-label="Tools for every recruiting round"><article class="round-card" id="round-1" aria-label="Round 1: CV & applications"><div class="round-number">01</div><h3>CV &amp; applications</h3><img src="/assets/toolkit/cv.png" alt="CV repairs and evidence questions in Amelia’s report" width="800" height="500" loading="lazy"><ul><li>CV repair</li><li>Application answers</li><li>Deadline tracker</li></ul><p class="round-personal"><b>Why it’s personal</b>Every weak line rebuilt from your own facts, and “Why this firm?” answers in each firm’s word limit.</p></article>
 <article class="round-card" id="round-2" aria-label="Round 2: Online tests"><div class="round-number">02</div><h3>Online tests</h3><img src="/assets/toolkit/tests.png" alt="A situational judgement question with most and least effective choices" width="800" height="500" loading="lazy"><ul><li>2,000+ numerical &amp; commercial questions</li><li>Situational judgement</li><li>Verbal reasoning</li></ul><p class="round-personal"><b>Why it’s personal</b>Use the topics you missed in your free score to focus your practice.</p></article>
 <article class="round-card" id="round-3" aria-label="Round 3: Video & interviews"><div class="round-number">03</div><h3>Video &amp; interviews</h3><img src="/assets/toolkit/interview.png" alt="The interview camera and microphone check" width="800" height="500" loading="lazy"><ul><li>Interview coach on camera</li><li>17 firm packs</li></ul><p class="round-personal"><b>Why it’s personal</b>Your firm’s questions, with the best points from your CV beside each one.</p></article>
@@ -227,13 +232,13 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 
   <aside aria-label="Student testimonial" style="margin:24px 0 36px;padding:24px;border-left:2px solid #c4562a;background:#fbfaf7;border-radius:8px">
     <blockquote style="margin:0;font:600 25px/1.3 'EB Garamond',Georgia,serif">“Kayyor and The Desk helped me prepare. I went on to secure a role at J.P. Morgan.”</blockquote>
-    <p style="margin:12px 0 0;font-size:14px">Cydney · Bournemouth University</p>
+    <p style="margin:12px 0 0;font-size:14px">Cydney · University of Exeter</p>
   </aside>
 
   <section class="band" aria-labelledby="c0">
     <div class="kicker">Why not just ask ChatGPT?</div>
     <h2 id="c0" style="margin-top:12px">Don’t let a chatbot decide your future.</h2>
-    <p class="lead">A polished answer is only the start. Prepare against a standard shaped by practitioners, with your CV, firm research and interview practice connected.</p>
+    <p class="lead">ChatGPT can make your CV sound good. It doesn’t know what an interviewer is listening for, which lines get a CV put down, or how an assessor scores you.</p>
     <div class="evidence"><span class="n">48%</span><p>of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
     <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
       <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
@@ -242,16 +247,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Questions and answer guidance personalised to your CV and target firm, practised on camera. Plus 60+ practice questions across 17 firm packs.</b></span></div>
       <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
     </div>
+    <p class="after">Our tools do the heavy lifting. The judgement comes from people who’ve spent their careers in finance.</p>
   </section>
 
-  <section class="band" aria-labelledby="cn">
-    <div class="netcard">
-      <div><div class="kicker">Free to join · the network</div>
-        <h2 id="cn" style="margin-top:12px;font-size:clamp(30px,4vw,40px)">Don’t prepare alone.</h2>
-        <ul class="netlist"><li><b>Trading game:</b> £100,000 of virtual money and a league for your university</li><li><b>Society Cup:</b> your finance society against theirs</li><li><b>Ask &amp; answer:</b> what others were asked, with practitioner answers</li></ul></div>
-      <div class="netbtns"><a class="ghost" href="/my.html">Join free →</a><a href="/tools.html#network" style="font-weight:600">See the network →</a></div>
-    </div>
-  </section>
 
   <section class="band" aria-labelledby="c4">
     <div class="kicker">The people behind it</div>
@@ -269,11 +267,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
         <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
         <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
         <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
-      <div class="tier"><div class="nm">Member + Practitioner</div><div class="big" data-plus-price>£199</div><div class="mute">a year · paid once</div>
-        <ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul>
-        <a class="go" href="/signup.html?plan=plus">See how it works →</a></div>
     </div>
-    <p><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
+    <p>Want a person too? <a href="/signup.html?plan=plus"><b>Member + Practitioner, £199</b>: two calls with written notes →</a></p>
+    <p class="fine"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
     <p class="fine">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Every score and piece of feedback follows our practitioners’ framework, applied to your own CV.</p>
   </section>
 
@@ -305,15 +301,6 @@ document.getElementById('people').innerHTML =
 </script>
 <script>
 (() => {
-  // Illustrative sample students, one per route. The sample card changes with the route the student picks.
-  const SAMPLES = {
-    ib: { who: 'Jamie · Bristol Economics · Investment banking', now: 54, to: '62–68', est: '+8 to 14', fix: 'Built a trading comparables table for 12 listed UK software companies, identifying an EV/EBITDA range of 9–11x that showed the target trading at a discount to peers; presented findings to an associate', gaps: [['Show your own role in the team', '+3–5'], ['Percentage-point margin questions', '+2–4']] },
-    markets: { who: 'Priya · Warwick Maths · Sales & trading', now: 51, to: '58–64', est: '+7 to 13', fix: 'Ran a paper-trading portfolio for six weeks, sizing each position to a 2% risk limit; finished up 4.1% against a FTSE 100 rise of 1.3% and logged the reason for every trade', gaps: [['Explain a market move in two sentences', '+3–5'], ['Mental maths under time pressure', '+2–4']] },
-    am: { who: 'Tom · Durham PPE · Asset management', now: 56, to: '63–68', est: '+7 to 12', fix: 'Wrote a 1,500-word buy recommendation on a UK mid-cap for the investment society, built on a three-scenario DCF; the society added it to its model portfolio', gaps: [['A stock pitch with a clear view', '+3–5'], ['Why this firm’s investment style', '+2–3']] },
-    big4: { who: 'Aisha · Leeds Accounting · Big Four audit', now: 58, to: '64–69', est: '+6 to 11', fix: 'Reconciled 400 supplier invoices against purchase orders during a summer finance placement, finding £6,200 of duplicate payments that were recovered', gaps: [['Evidence of attention to detail', '+3–4'], ['Why audit, not advisory', '+2–3']] }
-  };
-  SAMPLES.start = { who: 'Sam · Nottingham Economics · Finance, route still open', now: 49, to: '55–60', est: '+6 to 11', gaps: [['Turn part-time work into evidence', '+3–5'], ['Why finance, and why this firm', '+2–4'], ['Numerical reasoning under time', '+1–3']] };
-  SAMPLES.ib.gaps.push(['Why this bank, not its rivals', '+1–3']); SAMPLES.markets.gaps.push(['A trade idea you can defend', '+1–3']); SAMPLES.am.gaps.push(['Numerical reasoning under time', '+1–3']); SAMPLES.big4.gaps.push(['Commercial awareness of a client', '+1–3']);
   const MAP = { ib: 'ib', pe: 'ib', corporate: 'ib', markets: 'markets', am: 'am', insurance: 'big4', big4: 'big4', unsure: 'start', start: 'start' };
   // The red-pen card: one weak CV line, what a practitioner thinks reading it, the question we ask, and the line rebuilt ONLY from the student's answer.
   // Practitioner wording is a draft: Kayyor to rewrite in his own words before launch.
@@ -341,17 +328,9 @@ document.getElementById('people').innerHTML =
     pen.classList.add('play');
   }
   const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
-  const card = document.getElementById('sample');
-  function sample(k) {
-    const s = SAMPLES[MAP[k] || 'start'];
-    card.innerHTML = `<div class="kicker">What you get back · sample student</div><div class="who">${esc(s.who)}</div>
-      <div class="route" aria-label="Score ${s.now}, estimated ${s.to} after three fixes"><span class="now">${s.now}</span><i aria-hidden="true"></i><span class="to">${s.to}</span></div>
-      <div class="est">Fix ${s.gaps.length} gaps and recheck: an estimated ${s.est} points.</div>
-      <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
-      <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>
-      <div class="samples"><a href="/fullcycle-amelia.html">See a full sample report →</a></div>`;
-  }
-  sample('start'); redpen('start');
+  redpen('start');
+  const fold=document.querySelector('.redpen-toggle');
+  fold.addEventListener('click',()=>{const open=fold.getAttribute('aria-expanded')!=='true';fold.setAttribute('aria-expanded',String(open));fold.parentElement.classList.toggle('is-open',open);fold.querySelector('span').textContent=open?'▴':'▾';});
   const roundRow=document.getElementById('round-cards'),roundDots=[...document.querySelectorAll('.round-dots a')];
   roundDots.forEach((dot,i)=>dot.addEventListener('click',e=>{e.preventDefault();roundRow.scrollTo({left:roundRow.children[i].offsetLeft-roundRow.children[0].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}));
   roundRow.addEventListener('scroll',()=>{const step=roundRow.children[1].offsetLeft-roundRow.children[0].offsetLeft,index=Math.min(4,Math.round(roundRow.scrollLeft/step));roundDots.forEach((dot,i)=>{if(i===index)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current');});},{passive:true});
@@ -363,7 +342,7 @@ document.getElementById('people').innerHTML =
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
-    cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; sample(r[0]); redpen(r[0]);
+    cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();
