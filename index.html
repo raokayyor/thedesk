@@ -287,7 +287,7 @@ window.sizeLogo = img => { const r = img.naturalWidth / img.naturalHeight; if (!
 const logos = p => `<div class="logos" aria-label="Previously at ${esc(p.firms.join(', '))}">${p.firms.map(f => FIRM_LOGOS[f] ? `<span class="lg"><img src="${FIRM_LOGOS[f]}" alt="${esc(f)}" onload="sizeLogo(this)"></span>` : `<span class="tx">${esc(f)}</span>`).join('')}</div>`;
 const [lead, ...rest] = PRACTITIONERS;
 document.getElementById('people').innerHTML =
-  `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +
+  `<div class="lead-person"><img src="${lead.photo}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${lead.linkedin?`<a href="${esc(lead.linkedin)}" target="_blank" rel="noopener">${esc(lead.name)}</a>`:esc(lead.name)}</div><div class="role">Managing Director · ${esc(lead.area)}</div>${logos(lead)}</div></div>` +
   `<div class="panel">${rest.map(p => `<div><div class="name">${esc(p.name)}</div><div class="role">${esc(p.area)}</div>${logos(p)}</div>`).join('')}</div>`;
 </script>
 <script>
@@ -317,7 +317,7 @@ document.getElementById('people').innerHTML =
     const l = LINES[MAP[k] || 'start'];
     pen.classList.remove('play'); void pen.offsetWidth;
     pen.innerHTML = `<div class="rp-step"><div class="rp-k"><span>A line from a student’s CV</span><span class="rp-chip">${esc(l.chip)}</span></div><div class="rp-line"><span>${esc(l.line)}</span></div></div>
-      <div class="rp-step"><div class="rp-k">What I think when I read it</div><div class="rp-read"><img src="${PHOTO}" alt="Kayyor Rao" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><q>${esc(l.read)}</q><div class="rp-who">Kayyor Rao, MD · 20+ years in banking</div></div></div></div>
+      <div class="rp-step"><div class="rp-k">What I think when I read it</div><div class="rp-read"><img src="${PHOTO}" alt="Kayyor Rao" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><q>${esc(l.read)}</q><div class="rp-who">Kayyor Rao, MD · 20+ years in banking and markets</div></div></div></div>
       <div class="rp-step"><div class="rp-k">We ask. They answer.</div><div class="rp-chat"><div class="ask">${esc(l.ask)}</div><div class="ans">${esc(l.ans)}</div></div></div>
       <div class="rp-step rp-after"><div class="rp-k"><span>The same line, rebuilt from their answer</span><span class="rp-up">${esc(l.pts.split(' · ')[0])}</span></div>
         <div class="rp-was">${esc(l.line)}</div>

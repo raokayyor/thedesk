@@ -85,7 +85,7 @@ const findQ = (group, id) => bank()[group === 'commercial' ? 'technical' : 'nume
 
 // The practitioner panel, as presented across the site (fullcycle.html).
 export const PANEL = [
-  { init: 'KR', name: 'Kayyor Rao', role: 'Banking · MD · 20 years', firms: 'UBS · Commerzbank · BGC · Knight · Stifel', routes: ['Investment Banking / IBD', 'Sales & Trading / Markets', 'General Finance'] },
+  { init: 'KR', name: 'Kayyor Rao', role: 'Banking & Markets · MD · 20+ years', firms: 'UBS · Commerzbank · Aurel BGC', routes: ['Investment Banking / IBD', 'Sales & Trading / Markets', 'General Finance'] },
   { init: 'PC', name: 'Peter Cheley', role: 'Banking & Asset Management · MD · 30 years', firms: 'SocGen · Commerzbank · JPM IM · BGC', routes: ['Asset Management / Investing'] },
   { init: 'NR', name: 'Neil Robertson', role: 'Banking · MD · 30 years', firms: 'UBS · Knight · Stifel · BGC', routes: ['Sales & Trading / Markets'] },
   { init: 'JS', name: 'Jim Staples', role: 'Banking · MD · 30 years', firms: 'Barclays · SocGen · BGC', routes: ['Investment Banking / IBD'] },

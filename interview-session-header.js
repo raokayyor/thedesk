@@ -8,7 +8,7 @@ function draw(){
  let setup;try{setup=JSON.parse(sessionStorage.getItem(window.DeskInterviewSession?.KEY||'desk-interview-setup-v1')||'null')}catch{}
  const format=setup?.format||'hirevue',kind=format==='technical'?'Technical interview':format==='hirevue'?'HireVue interview':'Regular interview';
  const firm=firmKey&&firmKey!=='general'?bank?.firms[firmKey]?.label:null;
- const person=['audit','tax','deals'].includes(role)?{name:'Chris Sharkey',area:'Accounting, audit & insurance practitioner',initials:'CS'}:role==='asset'?{name:'Peter Cheley',area:'Asset management practitioner',initials:'PC'}:{name:'Kayyor Rao',area:'Banking practitioner',photo:'/assets/kayyor-rao.jpg',initials:'KR'};
+ const person=['audit','tax','deals'].includes(role)?{name:'Chris Sharkey',area:'Accounting, audit & insurance practitioner',initials:'CS'}:role==='asset'?{name:'Peter Cheley',area:'Asset management practitioner',initials:'PC'}:{name:'Kayyor Rao',area:'Banking & Markets practitioner',photo:'/assets/kayyor-rao.jpg',initials:'KR'};
  right.replaceChildren();const context=document.createElement('div');context.className='session-context-tags';
  for(const text of [firm||'No firm chosen',kind]){const tag=document.createElement('span');tag.textContent=text;context.append(tag)}right.append(context);
  const row=document.createElement('div');row.className='session-practitioner-person';
