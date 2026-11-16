@@ -50,3 +50,5 @@
 }
 
 @media(max-width:599px){.mobile-desk-refreshed .mobile-fixes>summary{font:600 25px/1.2 'EB Garamond',Georgia,serif;cursor:pointer;min-height:32px}.mobile-desk-refreshed .mobile-fixes>summary span{font:400 13px Figtree,sans-serif;color:var(--mute);margin-left:8px}.mobile-desk-refreshed .mobile-fixes[open] .next-actions{display:grid;gap:10px;margin:16px 0}.mobile-desk-refreshed .deadline-more>summary{cursor:pointer;font-size:14px;font-weight:600;min-height:44px;padding:14px 0}.mobile-desk-refreshed .mobile-fixes .act{padding:14px}.mobile-desk-refreshed .mobile-fixes>.btn{margin-top:8px}}
+
+.event-host{display:flex;align-items:center;gap:12px}.event-host img{border-radius:50%;object-fit:cover}.event-host p{margin:3px 0!important}.live-event-card{gap:14px}

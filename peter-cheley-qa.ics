@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Desk//Events//EN
+BEGIN:VEVENT
+UID:peter-cheley-20261129@thedesk.vercel.app
+DTSTAMP:20261116T120000Z
+DTSTART:20261129T190000Z
+SUMMARY:Asset Management Live Q&A with Peter Cheley
+DESCRIPTION:Live Q&A with Peter Cheley. Joining details will be available on The Desk events page.
+URL:https://thedesk.vercel.app/events.html#peter-asset-management
+END:VEVENT
+END:VCALENDAR
