@@ -83,3 +83,10 @@
  .mobile-week-card b{font-size:11px;margin-top:auto}
 }
 .markets-snapshot h3{margin:10px 0}.markets-snapshot p{font-size:13px}.markets-snapshot summary{margin-top:14px;font-size:13px;cursor:pointer}
+
+@media(max-width:599px){
+ .member-dashboard .hin{flex-wrap:nowrap;gap:10px}.member-dashboard .hin>.who:empty{display:none}.member-dashboard .hin>span{font-size:10px;min-width:0}.member-dashboard .hin>.desk-account-avatar{flex-shrink:0}
+ .mobile-score-week .deep-score-main,.mobile-score-week .mobile-week-card{padding:14px!important;gap:7px;min-height:156px!important}
+ .mobile-score-week .mobile-week-card strong{font-size:21px}.mobile-score-week .mobile-week-card>.mobile-week-description{display:none}
+ .mobile-score-week .deep-score-main .score-report-link{padding:5px 0!important}
+}
