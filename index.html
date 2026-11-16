@@ -158,6 +158,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
   .panel{grid-template-columns:1fr}
   .tier.main{order:-1}
 }
+
+.hero-tool-line{font-size:14px;color:var(--mute);margin:10px 0 0;max-width:47ch}.mobile-proof{display:none}
+.rounds>.kicker,.round-number{color:#c4562a}.rounds h2{margin-top:12px;max-width:28ch}.round-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:28px;min-width:0}.round-card{min-width:0;background:#fbfaf7;border:1px solid #e2ddd5;border-radius:12px;padding:18px 14px;display:flex;flex-direction:column;scroll-snap-align:start}.round-number{font-size:11px;letter-spacing:.12em;font-weight:600}.round-card h3{font-size:25px;line-height:1.08;margin:8px 0 16px;min-height:54px}.round-card img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border:1px solid #e2ddd5;border-radius:8px;display:block}.round-card ul{padding-left:16px;font-size:13px;line-height:1.5;margin:16px 0}.round-card li+li{margin-top:5px}.round-personal{font-size:13px;line-height:1.55;margin:auto 0 0;padding-top:14px;border-top:1px solid #e2ddd5}.round-personal b{display:block;font-weight:600;margin-bottom:6px}.round-actions{display:flex;flex-wrap:wrap;align-items:center;gap:24px;margin-top:26px}.round-actions>a:last-child{font-size:14px}.round-swipe{display:none}
+@media(min-width:700px) and (max-width:1099px){.round-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.round-card h3{min-height:0}}
+@media(max-width:699px){.round-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0;overscroll-behavior-x:contain;gap:12px;padding-bottom:10px;scrollbar-width:none}.round-cards::-webkit-scrollbar{display:none}.round-card{flex:0 0 88%;padding:20px;min-width:0}.round-card h3{font-size:30px;min-height:0;margin-bottom:16px}.round-card ul,.round-personal{font-size:15px}.round-swipe{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:var(--mute);margin-top:10px}.round-dots{display:flex;gap:3px;flex-shrink:0}.round-dots a{display:grid;place-items:center;width:20px;height:26px}.round-dots a:before{content:'';width:6px;height:6px;border-radius:50%;background:#c9c3ba}.round-dots a[aria-current=true]:before{background:var(--ink)}.round-actions{flex-direction:column;align-items:stretch;gap:16px}.round-actions>a:last-child{text-align:center}.mobile-proof{display:grid;gap:5px;border-left:2px solid #c4562a;padding:10px 12px;margin:18px 0;font-size:14px;line-height:1.4}.mobile-proof s{color:var(--mute)}.mobile-proof b{font-size:12px;color:var(--good)}.rounds h2{font-size:34px}}
+
 </style>
 <script src="/public-about-links.js" defer></script></head>
 <body>
@@ -171,13 +177,15 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <p class="stat"><b>140 applications for every graduate job</b>, the most ever recorded.<sup><a href="#src">1</a></sup> See your CV the way someone from inside the industry reads it, and fix it while you still can.</p>
 
 
+      <p class="mobile-proof"><s>“Barista, part-time”</s><span>→ Opened the shop single-handed and trained four new starters.</span><b>+3–5 points</b></p>
       <div class="firms">
         <div class="q" id="fq">What are you aiming for?</div>
         <div class="chips" role="group" aria-labelledby="fq" id="chips"></div>
       </div>
       <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
       <div class="for" id="for" aria-live="polite"></div>
-      <div class="small">Free · no card · <a href="/report-sample.html">see a sample report first</a></div>
+      <div class="small">Free · no card · <a href="/fullcycle-amelia.html">see a sample report first</a></div>
+      <p class="hero-tool-line">Free score first. Then tests, interviews and assessment centres, all in one place.</p>
       <p class="student-proof" style="font-size:13px;color:var(--mute);margin:12px 0 0">Used by students at Bristol, Warwick and LSE</p>
     </div>
 
@@ -187,46 +195,32 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
     </div>
   </section>
 
+  <section class="band rounds" aria-labelledby="rounds-title">
+    <div class="kicker">Membership · £89 a year</div>
+    <h2 id="rounds-title">One membership. Every round. All built on your CV.</h2>
+    <p class="lead">From your first application to your final assessment centre, every tool uses your CV, your route and the firms you’re applying to.</p>
+    <div class="round-cards" id="round-cards" tabindex="0" aria-label="Tools for every recruiting round"><article class="round-card" id="round-1" aria-label="Round 1: CV & applications"><div class="round-number">01</div><h3>CV &amp; applications</h3><img src="/assets/toolkit/cv.png" alt="CV repairs and evidence questions in Amelia’s report" width="800" height="500" loading="lazy"><ul><li>CV repair</li><li>Application answers</li><li>Deadline tracker</li></ul><p class="round-personal"><b>Why it’s personal</b>Every weak line rebuilt from your own facts, and “Why this firm?” answers in each firm’s word limit.</p></article>
+<article class="round-card" id="round-2" aria-label="Round 2: Online tests"><div class="round-number">02</div><h3>Online tests</h3><img src="/assets/toolkit/tests.png" alt="A situational judgement question with most and least effective choices" width="800" height="500" loading="lazy"><ul><li>2,000+ numerical &amp; commercial questions</li><li>Situational judgement</li><li>Verbal reasoning</li></ul><p class="round-personal"><b>Why it’s personal</b>Use the topics you missed in your free score to focus your practice.</p></article>
+<article class="round-card" id="round-3" aria-label="Round 3: Video & interviews"><div class="round-number">03</div><h3>Video &amp; interviews</h3><img src="/assets/toolkit/interview.png" alt="The interview camera and microphone check" width="800" height="500" loading="lazy"><ul><li>Interview coach on camera</li><li>17 firm packs</li></ul><p class="round-personal"><b>Why it’s personal</b>Your firm’s questions, with the best points from your CV beside each one.</p></article>
+<article class="round-card" id="round-4" aria-label="Round 4: Assessment centre"><div class="round-number">04</div><h3>Assessment centre</h3><img src="/assets/toolkit/assessment.png" alt="The assessment centre hub and its practice tools" width="800" height="500" loading="lazy"><ul><li>Group exercise</li><li>Case study</li><li>Inbox exercise</li><li>Crib sheet</li></ul><p class="round-personal"><b>Why it’s personal</b>Your one-page crib sheet is built from your CV and the firm.</p></article>
+<article class="round-card" id="round-5" aria-label="Round 5: All year"><div class="round-number">05</div><h3>All year</h3><img src="/assets/toolkit/year.png" alt="A member’s score, applications and preparation progress" width="800" height="500" loading="lazy"><ul><li>12 rechecks</li><li>Ask a practitioner</li><li>Community &amp; trading league</li></ul><p class="round-personal"><b>Why it’s personal</b>Watch your score rise, and ask the panel when you’re stuck.</p></article>
+</div>
+    <div class="round-swipe"><span>Swipe to see every round →</span><div class="round-dots" aria-label="Choose a recruiting round"><a href="#round-1" aria-label="Show round 1" aria-current="true"></a><a href="#round-2" aria-label="Show round 2"></a><a href="#round-3" aria-label="Show round 3"></a><a href="#round-4" aria-label="Show round 4"></a><a href="#round-5" aria-label="Show round 5"></a></div></div>
+    <div class="round-actions"><a class="cta" id="round-cta" href="/assessment-start.html">Start with your free score →</a><a href="/fullcycle-amelia.html">See a sample member report →</a><a href="/try.html">Try the tools →</a></div>
+  </section>
+
   <section class="band" aria-labelledby="c0">
     <div class="kicker">Why not just ask ChatGPT?</div>
     <h2 id="c0" style="margin-top:12px">Don’t let a chatbot decide your future.</h2>
-    <p class="lead">ChatGPT can make your CV sound good. It has never worked a day in finance, so it doesn’t know what an MD is listening for, which lines get a CV put down, or how an assessor scores you.</p>
+    <p class="lead">A polished answer is only the start. Prepare against a standard shaped by practitioners, with your CV, firm research and interview practice connected.</p>
     <div class="evidence"><span class="n">48%</span><p>of graduate employers think candidates’ use of AI misrepresents what they can actually do.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">2</a></sup> A polished CV that sounds like everyone else’s isn’t enough.</p></div>
     <div class="cmp" role="table" aria-label="ChatGPT compared with The Desk">
       <div class="row head" role="row"><span role="columnheader"></span><span role="columnheader">ChatGPT on its own</span><span role="columnheader">The Desk</span></div>
       <div class="row" role="row"><span role="rowheader">Who decides what “good” is</span><span role="cell">The model</span><span role="cell"><b>Practitioners with over 20 years in finance</b></span></div>
       <div class="row" role="row"><span role="rowheader">Your CV</span><span role="cell">Rewrites what you paste in</span><span role="cell"><b>Scores it, finds the weak lines, then fixes them</b></span></div>
       <div class="row" role="row"><span role="rowheader">Interviews</span><span role="cell">Lists of common questions</span><span role="cell"><b>Questions and answer guidance personalised to your CV and target firm, practised on camera. Plus 60+ practice questions across 17 firm packs.</b></span></div>
-      <div class="row" role="row"><span role="rowheader">Assessment centre practice</span><span role="cell">Can suggest exercises and discuss your answers</span><span role="cell"><b>Interactive group exercises, case studies and feedback on your contributions, plus a crib sheet built from your CV</b></span></div>
       <div class="row" role="row"><span role="rowheader">A person to ask</span><span role="cell">No</span><span role="cell"><b>A question answered by a practitioner</b></span></div>
     </div>
-  </section>
-
-  <section class="band" aria-labelledby="c1">
-    <div class="kicker">Your personal preparation coach</div>
-    <h2 id="c1" style="margin-top:12px">Your CV, applied to every question.</h2>
-    <p class="lead">Like a coach who’s read your CV, for £89 a year. Every score, fix and interview question is built from your own experience, for the role and firms you’re going for.</p>
-    <div class="three">
-      <article class="tile">
-        <h3>It knows your CV</h3>
-        <div class="ui" aria-hidden="true"><div class="q">“Tell me about a time you balanced competing priorities.”</div>
-          <div class="k" style="margin-top:9px">Your CV for this question</div>
-          <div class="pts"><div>Maintained <mark>12 hours per week</mark> of customer-facing work alongside a <mark>full university timetable</mark></div><div>Applied a recurring-revenue screen to <mark>12</mark> UK software companies</div></div></div>
-        <p>When the question plays, the best points from your own CV appear underneath, with the words the interviewer listens for highlighted.</p>
-      </article>
-      <article class="tile">
-        <h3>It knows your firms</h3>
-        <div class="ui" aria-hidden="true"><div class="k">Your Rothschild &amp; Co interview</div><b>What recent candidates reported</b>
-          <ul><li>One-to-one first round: CV, motivation, technicals</li><li>Valuation and the equity bridge</li><li>Market news at the assessment centre</li></ul></div>
-        <p>17 firm packs and growing: what each firm’s interviews test, and questions recent candidates were actually asked.</p>
-      </article>
-      <article class="tile">
-        <h3>It knows what’s next</h3>
-        <div class="ui" aria-hidden="true"><div class="k">Interview in 2 days</div><b style="font-size:15px">Rothschild &amp; Co · Global Advisory</b><div class="btns"><span>Practise Rothschild questions</span><span>My crib sheet</span><span>Group exercise</span></div></div>
-        <p>Your deadlines and interview dates turn into the next three things to do, every time you open your desk.</p>
-      </article>
-    </div>
-    <a class="more" href="/tools.html">See how we coach you, round by round →</a>
   </section>
 
   <section class="band" aria-labelledby="cn">
@@ -336,9 +330,12 @@ document.getElementById('people').innerHTML =
       <div class="est">Fix ${s.gaps.length} gaps and recheck: an estimated ${s.est} points.</div>
       <div class="gapsmini">${s.gaps.map(g => `<div><span>${esc(g[0])}</span><span>${g[1]}</span></div>`).join('')}</div>
       <div class="mine">Yours comes from <b style="color:#fff">your</b> CV: your score, your weak lines, your fixes.</div>
-      <div class="samples"><a href="/report-sample.html">See a full sample report →</a></div>`;
+      <div class="samples"><a href="/fullcycle-amelia.html">See a full sample report →</a></div>`;
   }
   sample('start'); redpen('start');
+  const roundRow=document.getElementById('round-cards'),roundDots=[...document.querySelectorAll('.round-dots a')];
+  roundDots.forEach((dot,i)=>dot.addEventListener('click',e=>{e.preventDefault();roundRow.scrollTo({left:roundRow.children[i].offsetLeft-roundRow.children[0].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}));
+  roundRow.addEventListener('scroll',()=>{const step=roundRow.children[1].offsetLeft-roundRow.children[0].offsetLeft,index=Math.min(4,Math.round(roundRow.scrollLeft/step));roundDots.forEach((dot,i)=>{if(i===index)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current');});},{passive:true});
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
   const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
   chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
@@ -347,7 +344,7 @@ document.getElementById('people').innerHTML =
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment-start.html' + (r[0] !== 'unsure' ? '?route=' + r[0] : '');
-    cta.href = href; cta2.href = href; sample(r[0]); redpen(r[0]);
+    cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; sample(r[0]); redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();

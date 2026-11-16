@@ -116,18 +116,26 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     if (!p) { $('firmInfo').textContent = 'Choose a firm for a short breakdown of its assessment format.'; return; }
     const label = bank.firms[k].label, brief=globalThis.DeskAssessmentBriefs?.[k];
     $('firmInfo').innerHTML = brief ? `<div style="color:#fff;font-weight:700;margin-bottom:8px">${esc(label)} · ${esc(brief.title)}</div><ul class="reported" style="color:#d5dce0;padding-left:18px;margin:8px 0">${brief.points.map(point=>`<li style="margin:6px 0">${esc(point)}</li>`).join('')}</ul><a href="${esc(brief.source)}" target="_blank" rel="noopener" style="font-size:12px;color:#d5dce0">${esc(brief.sourceType)} ↗</a><div style="font-size:11px;margin-top:6px">Checked 16 Nov 2026 · Your programme invitation takes precedence.</div>` : 'The format is set out in your programme invitation.';
-    $('cribLink').href = '/ac-crib.html?firm=' + encodeURIComponent(k);
+    $('cribLink').href = new URLSearchParams(location.search).get('trial')==='1'?'/ac-crib.html?trial=1':'/ac-crib.html?firm=' + encodeURIComponent(k);
   }
   $('firm').addEventListener('change', showFirm);
   fetch('/api/assessment-centre?view=info').then(r => r.ok ? r.json() : null).then(d => {
     if (!d) return;
     $('rubric').innerHTML = d.behaviours.map(b => `<tr><th scope="row">${esc(b.label)}</th><td>${esc(b.strong)}</td><td>${esc(b.below)}</td></tr>`).join('');
   }).catch(() => {});
+  if(new URLSearchParams(location.search).get('trial')==='1'){$('firm').value=bank.resolveFirm('J.P. Morgan');showFirm();return;}
   fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
     const t = new URLSearchParams(location.search).get('firm') || d?.profile?.targetFirm; if (!t || !bank) return;
     const k = bank.resolveFirm(t); if (packs[k]) { $('firm').value = k; showFirm(); }
   }).catch(() => {});
 })();
 </script>
-</body>
+<script>
+if(new URLSearchParams(location.search).get('trial')==='1'){
+ const notice=document.createElement('aside');notice.className='card';notice.innerHTML='<div class="kicker">Free access · try the member tools</div><h2>One crib sheet is yours to try.</h2><p>Use Jamie’s preloaded CV to build a J.P. Morgan sheet. Full group discussions, case studies and inbox practice open with membership.</p><a class="btn" href="/ac-crib.html?trial=1">Try the crib sheet →</a> <a href="/try.html">Back to your trial Desk</a>';document.querySelector('main').prepend(notice);
+ document.querySelectorAll('a[href="/group-exercise.html"],a[href="/case-study.html"],a[href="/inbox-exercise.html"]').forEach(a=>{a.href='/signup.html?plan=member';a.textContent='Unlock with membership →';});
+ document.querySelectorAll('a[href="/ac-crib.html"]').forEach(a=>a.href='/ac-crib.html?trial=1');
+ const crib=document.getElementById('cribLink');crib.href='/ac-crib.html?trial=1';crib.textContent='Build the free example';document.getElementById('firm').disabled=true;
+}
+</script></body>
 </html>

@@ -27,9 +27,9 @@ textarea{width:100%;font:inherit;font-size:15px;padding:12px;border:1px solid va
 .score{display:flex;align-items:baseline;gap:14px}.score b{font:500 56px/1 Fraunces,Georgia,serif;color:var(--accent-ink)}
 .lockbox{background:var(--warm);border:1px solid var(--warm-line);border-radius:16px;padding:22px}
 .lockbox ul{margin:10px 0 0;padding-left:18px;font-size:14px;line-height:1.7;color:#3b4652}
-main{max-width:1120px}.trial-workspace{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}.trial-guidance{display:grid;gap:12px}.trial-guidance h2{font-size:21px;margin-top:6px}.trial-guidance p,.trial-guidance li{font-size:14px}.trial-guidance details{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.trial-guidance summary{cursor:pointer;font-weight:700;font-size:14px}@media(max-width:750px){.trial-workspace{grid-template-columns:1fr}}</style>
+main{max-width:1120px}.trial-workspace{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}.trial-guidance{display:grid;gap:12px}.trial-guidance h2{font-size:21px;margin-top:6px}.trial-guidance p,.trial-guidance li{font-size:14px}.trial-guidance details{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.trial-guidance summary{cursor:pointer;font-weight:700;font-size:14px}@media(max-width:750px){.trial-workspace{grid-template-columns:1fr}}body{background:#f4f1ec;color:#1f2a2e;font-family:Figtree,Arial,sans-serif}h1,h2,h3,.logo{font-family:'EB Garamond',Georgia,serif;font-weight:600}.btn{font-family:Figtree,Arial,sans-serif;border-radius:8px}.btn.hot{background:#1f2a2e;border-color:#1f2a2e}.card{background:#fbfaf7;border-color:#e2ddd5;border-radius:12px}</style>
 <script src="/desk-nav.js" defer></script>
-</head>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"></head>
 <body>
 <header class="top"><div class="hin"><a class="logo" href="/">The Desk</a><a href="/my.html" style="font-weight:700;font-size:14px">My Desk</a></div></header>
 <main id="app"><p class="mute">Loading…</p></main>
@@ -68,7 +68,7 @@ function lock(){
   return `<div class="lockbox"><div class="kicker" style="color:#9a3412">Members get the full interview coach</div><h2 style="margin-top:6px">Build on your first answer.</h2>
   <p style="margin:6px 0 0;font-size:14px;color:#3b4652">Members get the detailed review, answer the follow-up and practise full two-minute answers for their chosen firm and role.</p>
   <ul><li>Full feedback on structure, evidence, relevance and delivery</li><li>The interviewer’s follow-up question, and feedback on your answer to it</li><li>Seven model answers built from your own CV</li><li>Up to 60 answers a day, HireVue-style timing</li><li>Notes from practitioners who’ve hired for banks</li></ul>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn hot" id="joinT">£89 for the whole year</button><a class="btn ghost" href="/fullcycle.html?sample=amelia">See a member’s report</a></div></div>`;
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn hot" id="joinT">£89 for the whole year</button><a class="btn ghost" href="/fullcycle-amelia.html">See a member’s report</a></div></div>`;
 }
 async function bindJoin(){
   const b=document.getElementById('joinT');if(!b)return;

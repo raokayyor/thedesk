@@ -8,7 +8,8 @@ if(d?.member&&!sampleReport&&!new URLSearchParams(location.search).has('tour')){
 else if(key==='library'||key==='trading'){location.replace(key==='library'?'/library.html':'/trading.html');}
 else if(key==='applicationHelp'){location.replace('/application-help.html?sample=jamie&trial=1');}
 else if(key==='interviews'){location.replace('/interview-teaser.html?walkthrough=1');}
-else if(key==='report'){location.replace('/fullcycle.html?sample=amelia');}
+else if(key==='assessmentCentres'){location.replace('/assessment-centre.html?trial=1');}
+else if(key==='report'){location.replace('/fullcycle-amelia.html');}
 else if(student.status!=='fulfilled'){root.innerHTML='<h1>Preview temporarily unavailable</h1><p>Please try again, or explore your Desk.</p>'+link('/my.html','Open My Desk');}
 else{
  const S=student.value,F=FEATURES[key];

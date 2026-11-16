@@ -698,7 +698,7 @@ function render(R){
   var counts={cv:S._qList.length,interview:(P.interviewRiskMap||[]).length,competencies:(P.competencyRepair||[]).length,technical:(P.workedAnswers||[]).length,plan:(P.sevenDayActionPlan||[]).length,submit:(P.finalSubmissionChecklist||[]).length,application:(P.applicationRiskMap||[]).length};
   nav.innerHTML=SECTIONS.map(function(s,i){return '<li><a href="#'+s.id+'" data-nav="'+s.id+'"><span class="n">'+String(i).padStart(2,"0")+'</span><span>'+esc(s.t)+'</span><span class="c" data-c="'+s.id+'">'+(counts[s.id]||"")+'</span></a></li>';}).join("");
 
-  if(cvSampleOnly){var brand=document.querySelector('.desk-hub-header>a');brand.href='/';var back=document.createElement('a');back.href='/report-sample.html';back.textContent='Back to samples';document.querySelector('.desk-hub-header').append(back);}
+  if(cvSampleOnly){var brand=document.querySelector('.desk-hub-header>a');brand.href='/';var back=document.createElement('a');back.href='/';back.textContent='Back to The Desk';document.querySelector('.desk-hub-header').append(back);}
   wire(R,S);
 }
 

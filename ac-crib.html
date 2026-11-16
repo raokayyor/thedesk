@@ -43,7 +43,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
 @media (max-width:760px){.stories,.cols{grid-template-columns:1fr}.sheet{padding:18px}}
 @media print{
   @page{size:A4;margin:12mm}
-  body{background:#fff}.desk-nav,.no-print{display:none!important}
+  body.desk-shell,body{background:#fff;padding:0!important}.desk-nav,.desk-group-nav,.desk-shell-header,.no-print{display:none!important}
   main{padding:0;max-width:none}.sheet{border:0;padding:0;gap:10px}
   .stories{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:repeat(2,1fr)}
   .story{font-size:11.5px;padding:7px 9px}.opening{font-size:13px}.sheet ul{font-size:12px}
@@ -122,6 +122,18 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
   });
   $('print').addEventListener('click', () => window.print());
   $('firm').addEventListener('change', () => load($('firm').value));
+  if(new URLSearchParams(location.search).get('trial')==='1'){
+    const k=bank.resolveFirm('J.P. Morgan');
+    $('firm').value=k;$('firm').disabled=true;
+    document.querySelector('h1').textContent='Try a J.P. Morgan crib sheet.';
+    document.querySelector('main > section > p').textContent='Jamie Patel’s preloaded CV, on the same sheet members use. Build it, read it and print it. Membership makes one for your own CV and firm.';
+    const example={name:'Jamie Patel’s',route:'Bristol Economics · sample CV',opening:'I’m a second-year Economics student at Bristol. Alongside my degree I work weekend shifts at Campus Café. I have also compared public annual reports for three UK retailers in a group project. Those experiences have helped me practise communicating under pressure and develop my interest in business analysis.',stories:[{competency:'Communication under pressure',title:'Busy café shifts',source:'Campus Café',situation:'Weekend shifts alongside university studies.',action:'Helped prioritise orders during busy periods and communicated delays to customers.',result:'The CV does not state the outcome. Explain what improved before using this as a complete example.',check:true},{competency:'Analytical interest & teamwork',title:'Retail revenue comparison',source:'Economics group project',number:'3 retailers',situation:'A university group project comparing UK retail businesses.',action:'Compared public annual reports for three UK retailers and helped present revenue trends.',result:'The CV does not yet explain Jamie’s individual finding or method. Add that evidence before claiming an analytical conclusion.',check:true}],watchOuts:['What did you personally find in the retailer comparison?','How did you decide which café orders came first?','Why J.P. Morgan and this business area? Research a genuine reason.'],questionsToAsk:['What work does a summer intern contribute to in the first few weeks?','How does the team give feedback to interns?']};
+    $('build').textContent='Build the example sheet';
+    $('build').replaceWith($('build').cloneNode(true));
+    $('build').onclick=()=>{render(example,k);$('build').textContent='Example sheet ready';$('sheet').querySelector('.foot').textContent='Sample CV · only Jamie’s documented facts are used. The two evidence gaps are left visible. Firm guidance is independent preparation material; check your programme invitation.';};
+    const banner=document.createElement('aside');banner.className='card no-print';banner.innerHTML='<b>Free access · one preloaded example</b><p>Build sheets for your own experience and any firm with membership.</p><a class="btn" href="/signup.html?plan=member">Unlock the tools · £89 a year →</a> <a href="/try.html">Back to your trial Desk</a>';document.querySelector('main').append(banner);
+    return;
+  }
   const wanted = new URLSearchParams(location.search).get('firm');
   fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
     assessmentId = d?.report?.assessmentId || null;
