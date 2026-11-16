@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About us | The Desk</title>
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:title" content="About The Desk">
+<meta property="og:description" content="Meet the people behind your preparation for a career in finance.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://thedesk.vercel.app/assets/kayyor-rao.jpg">
+<meta name="description" content="The Desk was built by people who spent their careers in banking, asset management and audit. Meet the panel behind every score, firm pack and piece of feedback.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* DRAFT for Rao: every [bracketed] item and every quote must be confirmed or rewritten by the person named before this goes live. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink)}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+.narrow{max-width:680px}
+.k{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font:600 28px "EB Garamond",Georgia,serif;text-decoration:none}
+.top nav{display:flex;gap:24px;font-size:15px;font-weight:500}.top nav a{text-decoration:none}
+section{padding:64px 0;border-top:1px solid var(--line)}
+.hero{border-top:0;padding:40px 0 64px}
+.hero h1{font-size:clamp(40px,6vw,64px);line-height:1.03;max-width:16ch;margin-top:14px}
+.hero p{font-size:19px;color:var(--ink-2);max-width:46ch;margin:18px 0 0}
+.stats{display:flex;flex-wrap:wrap;gap:36px;margin-top:30px}
+.stats div{min-width:120px}.stats b{display:block;font:600 40px/1 "EB Garamond",Georgia,serif}.stats span{font-size:14px;color:var(--mute)}
+h2{font-size:clamp(32px,4.4vw,44px);line-height:1.08;max-width:20ch;margin-top:12px}
+.lead{font-size:18px;color:var(--ink-2);max-width:56ch;margin:14px 0 0}
+/* founder */
+.founder{display:grid;grid-template-columns:260px minmax(0,1fr);gap:48px;align-items:start;margin-top:30px}
+.portrait{width:260px;height:320px;border-radius:12px;object-fit:cover;background:var(--soft)}
+.ph{width:260px;height:320px;border-radius:12px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 64px "EB Garamond",Georgia,serif}
+.cap{font-size:14px;color:var(--mute);margin-top:10px;line-height:1.5}.cap b{color:var(--ink);display:block;font-size:15px}
+.story p{margin:0 0 18px;font-size:18px;color:var(--ink-2)}
+.story p:first-child:first-letter{font:600 64px/.8 "EB Garamond",Georgia,serif;float:left;margin:8px 10px 0 0;color:var(--ink)}
+.pull{font:italic 400 28px/1.3 "EB Garamond",Georgia,serif;color:var(--ink);border-left:3px solid var(--accent);padding:4px 0 4px 20px;margin:26px 0}
+.sign{font:italic 400 24px "EB Garamond",Georgia,serif;margin-top:6px}
+/* panel */
+.panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.p{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px}
+.av{width:72px;height:72px;border-radius:50%;background:var(--soft);color:var(--ink);display:flex;align-items:center;justify-content:center;font:600 24px "EB Garamond",Georgia,serif;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.p h3{font-size:24px}.p .yrs{font-size:14px;color:var(--mute)}
+.firms{font-size:14px;font-weight:600;color:var(--ink-2);margin-top:6px}
+.looks{margin-top:12px;padding-top:12px;border-top:1px solid var(--soft);font-size:14.5px;color:var(--ink-2)}
+.looks b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.li{display:inline-block;margin-top:10px;font-size:14px;font-weight:600}
+.hiring{grid-column:1/-1;background:transparent;border-style:dashed;display:block}
+/* how */
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+.step .n{font:600 40px/1 "EB Garamond",Georgia,serif;color:var(--accent)}
+.step h3{font-size:24px;margin-top:10px}.step p{margin:8px 0 0;font-size:15.5px;color:var(--ink-2)}
+.honest{margin-top:22px;font-size:15px;color:var(--ink-2);max-width:70ch;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.howl{margin:22px 0 0;padding-left:22px;max-width:62ch;font-size:16.5px;color:var(--ink-2)}.howl li{margin:8px 0}.howl b{color:var(--ink)}
+/* promises */
+.promises{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}
+.promises li{padding:14px 0;border-top:1px solid var(--line);font-size:16px}
+.promises b{display:block;font:600 21px/1.2 "EB Garamond",Georgia,serif;margin-bottom:2px}
+/* find us */
+.find{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.find a{border:1px solid var(--ink);border-radius:8px;padding:10px 16px;font-weight:600;text-decoration:none;font-size:15px}
+.final{text-align:center;padding:72px 0 88px}
+.final h2{margin:0 auto;max-width:18ch}
+.cta{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:16.5px;border-radius:8px;min-height:56px;padding:0 28px;margin-top:24px}
+footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color:var(--mute)}
+@media (max-width:860px){
+  .founder{grid-template-columns:1fr;gap:24px}.portrait,.ph{width:100%;max-width:340px;height:300px}
+  .panel,.how,.promises{grid-template-columns:1fr}
+}
+@media (max-width:600px){.stats{gap:18px!important;flex-wrap:nowrap}.stats div{min-width:0}.stats b{font-size:32px}.stats span{font-size:12.5px}.founder>div:first-child{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center}.portrait,.ph{width:88px!important;height:88px!important;border-radius:50%!important;font-size:30px!important}.founder>div:first-child .li{grid-column:2;margin-top:-6px}.cap{margin-top:0}.p{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:16px 0;grid-template-columns:52px minmax(0,1fr);gap:12px}.av{width:52px;height:52px;font-size:19px}.p h3{font-size:21px}.looks{border-top:0;padding-top:0;margin-top:6px}.looks b{display:inline;margin-right:6px}.panel{gap:0}.hiring{border-top:1px dashed var(--line)!important}.stats{gap:24px}.wrap{padding:0 16px}section{padding:48px 0}.hero h1{font-size:40px}.hero p{font-size:17px}.story p{font-size:17px}.pull{font-size:23px}}
+</style>
+<script src="/public-about-links.js" defer></script></head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/signin.html">Log in</a></nav></header>
+
+  <section class="hero">
+    <div class="k">About The Desk</div>
+    <h1>We spent our careers in finance. Now we help you get in.</h1>
+    <p>The Desk was built by five people with more than 130 years between them in banking, markets, asset management and audit. We decided what good looks like. Our tools let you practise against it every day.</p>
+    <div class="stats">
+      <div><b>130+</b><span>years in the industry</span></div>
+      <div><b>10</b><span>firms between us</span></div>
+      <div><b>5</b><span>practitioners on the panel</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="f">
+    <div class="k">Why I built it</div>
+    <h2 id="f">“Good students were getting turned down, and nobody told them why.”</h2>
+    <div class="founder">
+      <div>
+        <img class="portrait" src="/assets/kayyor-rao.jpg" alt="Kayyor Rao" onerror="this.outerHTML='<div class=&quot;ph&quot;>KR</div>'">
+        <div class="cap"><b>Kayyor Rao</b>Founder · Managing Director · 20+ years in banking at UBS, Commerzbank and BGC</div>
+        <a class="li" href="#">LinkedIn →</a>
+      </div>
+      <div class="story">
+        <p>I spent more than twenty years in banking. Over that time I met a lot of bright students, and kept seeing the same thing: they had done good work, at university, in a part-time job or on an internship, but their CV didn’t show it. They described tasks, not results. Nobody had told them: careers advice is general, the firms are too busy to explain, and the students who knew the unwritten rules usually had a parent or a family friend in the industry.</p>
+        <div class="pull">The difference between a rejection and a first round is often two or three lines on a CV.</div>
+        <p>So I asked four people I trust, people who between them have spent more than a century in banks, brokers, asset managers and audit firms, to help me write down what we actually look for. That became The Desk: our standard, applied to your CV and your answers, so you can practise against it every day instead of finding out after the rejection email.</p>
+        <p>We can’t get you a job, and we won’t pretend to. What we can do is show you what someone from inside the industry sees when they read your application, and help you fix it before you apply.</p>
+        <div class="sign">Kayyor</div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="pn">
+    <div class="k">The panel</div>
+    <h2 id="pn">The people behind every score.</h2>
+    <p class="lead">They wrote the framework your score is measured against, they check the firm packs and assessment centre material, and they answer members’ questions.</p>
+    <div class="panel">
+      <article class="p"><div class="av"><img src="/assets/kayyor-rao.jpg" alt="" onerror="this.outerHTML='KR'"></div><div><h3>Kayyor Rao</h3><div class="yrs">Banking · 20+ years</div><div class="firms">UBS · Commerzbank · BGC</div><div class="looks"><b>At The Desk</b>Founder. Leads the readiness framework and the investment banking route.</div><a class="li" href="#">LinkedIn →</a></div></article>
+      <article class="p"><div class="av">PC</div><div><h3>Peter Cheley</h3><div class="yrs">Banking &amp; asset management · 30 years</div><div class="firms">Société Générale · J.P. Morgan · BGC</div><div class="looks"><b>At The Desk</b>[Asset management route and firm packs]</div><a class="li" href="#">LinkedIn →</a></div></article>
+      <article class="p"><div class="av">NR</div><div><h3>Neil Robertson</h3><div class="yrs">Banking · 30 years</div><div class="firms">UBS · Knight · Stifel</div><div class="looks"><b>At The Desk</b>[Sales &amp; trading route and the trading game]</div><a class="li" href="#">LinkedIn →</a></div></article>
+      <article class="p"><div class="av">JS</div><div><h3>Jim Staples</h3><div class="yrs">Banking · 30 years</div><div class="firms">Barclays · BGC</div><div class="looks"><b>At The Desk</b>[Interview questions and assessment centres]</div><a class="li" href="#">LinkedIn →</a></div></article>
+      <article class="p"><div class="av">CS</div><div><h3>Chris Sharkey</h3><div class="yrs">Audit &amp; insurance · 20+ years</div><div class="firms">EY · Lancashire Insurance</div><div class="looks"><b>At The Desk</b>[Big Four, audit and insurance routes]</div><a class="li" href="#">LinkedIn →</a></div></article>
+      <article class="p hiring"><h3 style="font-size:22px">Joining soon: a graduate recruitment specialist</h3><p style="margin:6px 0 0;color:var(--ink-2);font-size:15.5px">We’re adding someone who has run early-careers hiring, so the screening side of our framework comes from first-hand experience too.</p></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="hw">
+    <div class="k">How The Desk works</div>
+    <h2 id="hw">People set the standard. You practise against it.</h2>
+    <ol class="howl">
+      <li><b>We set the standard.</b> The panel wrote down what a strong application looks like for each route and each firm’s process.</li>
+      <li><b>You practise every day.</b> Your CV, answers and interviews are measured against it whenever you want.</li>
+      <li><b>A person when you need one.</b> Members can ask the panel, book calls, or work with a practitioner all season.</li>
+    </ol>
+    <div class="honest"><b>How the tools work, honestly.</b> Our software, which uses AI, applies the panel’s framework to your CV and answers so you get feedback instantly and as often as you like. A practitioner hasn’t personally read your CV unless you book a call. Everything we tell you is checked against your own CV, and we never invent experience for you. <a href="/how-we-score.html">How we score →</a></div>
+  </section>
+
+  <section aria-labelledby="pr">
+    <div class="k">What we promise</div>
+    <h2 id="pr">What you can expect from us.</h2>
+    <ul class="promises">
+      <li><b>We never invent anything on your CV.</b>Every rewrite uses only facts you give us.</li>
+      <li><b>We never promise a job.</b>Our score is preparation guidance, not a hiring decision.</li>
+      <li><b>Paid once, no auto-renewal.</b>Membership lasts 12 months and then stops. No surprise charges.</li>
+      <li><b>Your CV stays yours.</b>We don’t sell your data or share it with employers. <a href="/site-privacy.html">Privacy →</a></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="fu">
+    <div class="k">Find us</div>
+    <h2 id="fu">Look us up before you trust us with your CV.</h2>
+    <div class="find"><a href="#">LinkedIn</a><a href="#">TikTok</a><a href="#">Instagram</a><a href="#">YouTube</a><a href="mailto:[contact email]">Email us</a></div>
+    <p style="font-size:13.5px;color:var(--mute);margin:18px 0 0">The Desk is a trading name of [Company name Ltd], registered in England and Wales, company number [number]. Registered office: [address].</p>
+  </section>
+
+  <section class="final">
+    <h2>See your CV the way we would.</h2>
+    <a class="cta" href="/assessment-start.html">Get my free score →</a>
+    <div style="font-size:13.5px;color:var(--mute);margin-top:10px">Free · no card</div>
+  </section>
+</div>
+<footer><div class="wrap">The Desk is independent and not endorsed by the firms named. Scores are preparation guidance, not hiring predictions. · <a href="/site-privacy.html">Privacy</a> · <a href="/how-we-score.html">How we score</a></div></footer>
+<script src="/about-photos.js" defer></script></body>
+</html>
