@@ -173,6 +173,7 @@
     el.innerHTML = `<div class="dc-brief-k">Your ${firm.label} interview</div><div class="dc-brief-g"><div><h4>The Desk preparation themes</h4><ul>${li(pack.tests || [])}</ul></div><div><h4>Know before you go</h4><ul>${li(pack.know || [])}</ul></div></div><p class="dc-brief-n">Your practice questions now include ${firm.label}-specific ones. Independent practice material. These are not confirmed employer questions or an internal hiring scorecard.</p>`;
     return el;
   }
+  bank.createFirmBrief = brief;
   const style = document.createElement('style');
   style.textContent = `.dc-brief{background:#fff;border:1px solid #e3ddd3;border-left:4px solid #ff6a2b;border-radius:10px;padding:16px 18px;margin:12px 0}
   .dc-brief-k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#d2541b;font-weight:700;margin-bottom:8px}
@@ -180,12 +181,12 @@
   .dc-brief-n{margin:10px 0 0;font-size:11px;color:#6b6b6b}@media(max-width:700px){.dc-brief-g{grid-template-columns:1fr}}`;
   const mount = () => {
     document.head.appendChild(style);
-    const sel = document.getElementById('firmSelect') || document.getElementById('setupFirm'); if (!sel) return;
+    const sel = document.getElementById('firmSelect'); if (!sel) return;
     const place = () => {
       document.querySelectorAll('.dc-brief').forEach(x => x.remove());
       const el = brief(sel.value); if (!el) return;
       const anchor = document.querySelector('.session-context') || document.getElementById('setupFramework')?.closest('section,.card') || sel.closest('section,.card,details');
-      const panel=document.getElementById('practice-panel-practitioner'); if(panel)panel.append(el);else if(document.getElementById('setupFirm')) anchor?.insertAdjacentElement('afterend',el);
+      const setup=document.querySelector('.focus-firm-fold');const panel=document.getElementById('practice-panel-practitioner');if(setup)setup.append(el);else if(panel)panel.append(el);
     };
     let last = null; // the page sets the firm itself after loading the profile, without a change event
     setInterval(() => { if (sel.value !== last) { last = sel.value; place(); } }, 400);
