@@ -316,7 +316,7 @@ const [lead, ...rest] = PRACTITIONERS;
 const seenFirmMarks=new Set();
 const allFirms=PRACTITIONERS.flatMap(p=>p.firms).filter(f=>{const mark=FIRM_LOGOS[f]||f;if(seenFirmMarks.has(mark))return false;seenFirmMarks.add(mark);return true;});
 document.getElementById('people').innerHTML =
-  `<div class="people-compact"><div class="compact-person"><img src="${lead.photo}" alt="Kayyor Rao" width="56" height="56"><div><div class="kicker" style="margin-bottom:6px">The team</div><strong>130+ years of collective finance experience</strong><span class="collective-experience"><b>Kayyor Rao · Founder</b><br>MD · 20+ years in Banking &amp; Markets</span></div></div><p class="compact-names">${rest.map(p=>esc(p.name)).join(' · ')}</p>${logos({firms:allFirms})}</div>` +
+  `<div class="people-compact"><div class="kicker" style="margin-bottom:12px">The team</div><div class="compact-person"><img src="${lead.photo}" alt="Kayyor Rao" width="56" height="56"><div><strong>130+ years of collective finance experience</strong><span class="collective-experience"><b>Kayyor Rao · Founder</b><br>MD · 20+ years in Banking &amp; Markets</span></div></div><p class="compact-names">${rest.map(p=>esc(p.name)).join(' · ')}</p>${logos({firms:allFirms})}</div>` +
   `<div class="full-panel">${PRACTITIONERS.map(p=>`<article class="person-card">${p.photo?`<img class="person-avatar" src="${esc(p.photo)}" alt="${esc(p.name)}" width="56" height="56">`:`<span class="person-avatar initials" aria-hidden="true">${esc(p.init)}</span>`}<h3>${esc(p.name)}</h3><p>${esc(p.area)}</p>${logos(p)}</article>`).join('')}</div><a class="meet-panel" href="/about.html">Meet the team →</a>`;
 </script>
 <script>
