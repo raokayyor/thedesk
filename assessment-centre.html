@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <script src="/desk-nav.js" defer></script>
 <script src="/interview-bank.js"></script>
-<script src="/interview-firm-packs.js"></script>
+<script src="/interview-firm-packs.js"></script><script src="/assessment-firm-briefs.js"></script>
 <style>
 :root{--ink:#11191e;--mute:#5f6b76;--paper:#f8f4ed;--card:#fffdfa;--accent:#ff5a14;--accent-ink:#c2410c;--line:#ddd7cf;--soft:#eee7dd;--warm:#fff7ed;--navy:#123459;--navy-soft:#dbe5f1;--ok:#15803d}
 *{box-sizing:border-box}[hidden]{display:none!important}
@@ -56,7 +56,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     <div style="display:flex;flex-direction:column;gap:10px;border-left:1px solid rgba(255,255,255,.15);padding-left:22px">
       <div class="kicker">Your assessment centre</div>
       <div class="firmbar"><label for="firm" class="mute">Firm</label><select id="firm"></select></div>
-      <div id="firmInfo" class="mute">Choose a firm to see what recent candidates reported.</div>
+      <div id="firmInfo" class="mute">Choose a firm for a short breakdown of its assessment format.</div>
     </div>
   </section>
 
@@ -113,10 +113,9 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
   $('firm').innerHTML = '<option value="">Choose a firm</option>' + keys.map(k => `<option value="${k}">${esc(bank.firms[k].label)}</option>`).join('');
   function showFirm() {
     const k = $('firm').value, p = packs[k];
-    if (!p) { $('firmInfo').textContent = 'Choose a firm to see what recent candidates reported.'; return; }
-    const r = p.reports, label = bank.firms[k].label;
-    const fmt = (r?.format || []).map(t => `<li>${esc(t)}</li>`).join('');
-    $('firmInfo').innerHTML = `<div style="color:#fff;font-weight:700;margin-bottom:6px">${esc(label)}: what recent candidates reported</div>${fmt ? `<ul class="reported" style="color:#d5dce0">${fmt}</ul>` : '<div>No candidate reports yet.</div>'}<div style="margin-top:8px">What they tend to test: ${esc((p.tests || []).join(' · '))}</div>`;
+    if (!p) { $('firmInfo').textContent = 'Choose a firm for a short breakdown of its assessment format.'; return; }
+    const label = bank.firms[k].label, brief=globalThis.DeskAssessmentBriefs?.[k];
+    $('firmInfo').innerHTML = brief ? `<div style="color:#fff;font-weight:700;margin-bottom:8px">${esc(label)} · ${esc(brief.title)}</div><ul class="reported" style="color:#d5dce0;padding-left:18px;margin:8px 0">${brief.points.map(point=>`<li style="margin:6px 0">${esc(point)}</li>`).join('')}</ul><a href="${esc(brief.source)}" target="_blank" rel="noopener" style="font-size:12px;color:#d5dce0">${esc(brief.sourceType)} ↗</a><div style="font-size:11px;margin-top:6px">Checked 16 Nov 2026 · Your programme invitation takes precedence.</div>` : 'The format is set out in your programme invitation.';
     $('cribLink').href = '/ac-crib.html?firm=' + encodeURIComponent(k);
   }
   $('firm').addEventListener('change', showFirm);

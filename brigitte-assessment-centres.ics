@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Desk//Events//EN
+BEGIN:VEVENT
+UID:brigitte-assessment-centres-20261201@thedesk.vercel.app
+DTSTAMP:20261116T120000Z
+DTSTART:20261201T170000Z
+SUMMARY:How to succeed in assessment centres with Brigitte Nelson
+DESCRIPTION:UK London time. Joining details will be available on The Desk events page.
+URL:https://thedesk.vercel.app/events.html#assessment-centres-brigitte
+END:VEVENT
+END:VCALENDAR

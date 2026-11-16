@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Desk//Events//EN
+BEGIN:VEVENT
+UID:banking-ama-20261204@thedesk.vercel.app
+DTSTAMP:20261116T120000Z
+DTSTART:20261204T180000Z
+SUMMARY:Ask me anything about banking
+DESCRIPTION:UK London time. Joining details will be available on The Desk events page.
+URL:https://thedesk.vercel.app/events.html#banking-ama
+END:VEVENT
+END:VCALENDAR
