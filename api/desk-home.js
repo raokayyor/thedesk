@@ -210,7 +210,14 @@ export default async function handler(req, res) {
       const deep=deepRow?await deepFor(deepRow):null;
       const deepReady=deep?.status==='complete';
       const progressId=reference?.id;
-      const savedProgress=progressId?(await sql().query("SELECT data FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,progressId]))[0]?.data:null;
+      let savedProgress=progressId?(await sql().query("SELECT data FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,progressId]))[0]?.data:null;
+      if(paid&&signupSaved?.ameliaMember&&progressId&&!signupSaved.ameliaTwoFixesSeeded){
+        const initial=prepProgress(byId[progressId]?.plan||{},savedProgress||{});
+        if(initial.total>=2){
+          const claimed=await sql().query("UPDATE desk_account_profiles SET data=data || '{\"ameliaTwoFixesSeeded\":true}'::jsonb WHERE account_id=$1 AND coalesce(data->>'ameliaTwoFixesSeeded','false')<>'true' RETURNING account_id",[account.id]);
+          if(claimed.length){const done={...initial.done};for(const task of initial.remaining.slice(0,Math.max(0,2-initial.completed)))done[task.id]=true;savedProgress={id:progressId,done,updatedAt:new Date().toISOString()};const prior=(await sql().query("SELECT id FROM desk_value_items WHERE principal=$1 AND kind='prep-progress' AND data->>'id'=$2 ORDER BY created_at DESC LIMIT 1",[p,progressId]))[0];if(prior)await sql().query('UPDATE desk_value_items SET data=$1::jsonb,created_at=now() WHERE id=$2 AND principal=$3',[JSON.stringify(savedProgress),prior.id,p]);else await A.saveItem(p,'prep-progress',savedProgress);}
+        }
+      }
       const prep=prepProgress(byId[progressId]?.plan||{},savedProgress||{});
 
       const reportUrl = paid && latest ? (deepReady?'/fullcycle.html?id=':'/deep-assessment.html?id=') + reference.id : latest ? '/result-final-design.html?id=' + latest.id : null;
