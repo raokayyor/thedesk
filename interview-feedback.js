@@ -23,6 +23,16 @@
   const extra = () => { let el = $('#fbExtra'); if (!el) { el = document.createElement('div'); el.id = 'fbExtra'; el.className = 'fb-extra'; const body = $('#feedback .feedbackBody'); if (body) body.before(el); else $('#feedback').append(el); } return el; };
 
   function show(f, paid) {
+    if(f.previewLocked){
+      $('#overallScore').textContent=f.overall;$('#verdictTitle').textContent=f.verdictTitle;$('#verdictText').textContent=f.verdict;
+      $('#feedback .scoregrid').hidden=true;$('#feedback .feedbackBody').hidden=true;
+      const el=extra();el.replaceChildren();
+      for(const [title,items,key] of [['What worked',f.strengths,'point'],['Improve first',f.fixes,'fix']]){const section=document.createElement('section'),heading=document.createElement('h3');heading.textContent=title;section.append(heading);for(const item of items||[]){const p=document.createElement('p');p.textContent=item[key];section.append(p)}el.append(section)}
+      const locked=document.createElement('p');locked.className='fb-why';locked.textContent='Detailed evidence, delivery feedback and a stronger answer are included with membership.';el.append(locked);
+      if(f.followUpPreview){const card=document.createElement('section');card.className='fb-follow';const title=document.createElement('div');title.className='fb-k';title.textContent='Example follow-up';const question=document.createElement('p');question.className='fb-fq';question.textContent=f.followUpPreview.question;const why=document.createElement('p');why.className='fb-why';why.textContent=f.followUpPreview.why;const button=document.createElement('button');button.type='button';button.className='primary';button.textContent='Answer the follow-up';const message=document.createElement('p');message.className='fb-why';message.setAttribute('role','status');button.onclick=()=>{message.replaceChildren('Follow-up practice is only available with membership. ');const link=document.createElement('a');link.href='/signup.html?plan=member';link.textContent='Unlock everything · £89 →';message.append(link)};card.append(title,question,why,button,message);el.append(card)}
+      $('#feedback').classList.add('active');$('#feedback').scrollIntoView({behavior:'smooth'});return;
+    }
+    $('#feedback .scoregrid').hidden=false;$('#feedback .feedbackBody').hidden=false;
     let employer=document.getElementById('employerFeedbackLens');if(employer)employer.remove();if(f.employerPractice){employer=document.createElement('p');employer.id='employerFeedbackLens';employer.className='employer-feedback-lens';employer.style.cssText='padding:12px 18px;background:#fff3e8;border-bottom:1px solid #e3ddd3;font-size:13px';employer.textContent=f.employerPractice.label+' / '+f.employerPractice.role+' practice review · '+f.employerPractice.focus;document.getElementById('feedback').prepend(employer);}
     $('#overallScore').textContent = f.overall;
     $('#mStructure').textContent = f.scores.structure; $('#mSpecificity').textContent = f.scores.evidence; $('#mRelevance').textContent = f.scores.relevance; $('#mConfidence').textContent = f.pushback === null ? f.scores.delivery : f.pushback;
@@ -58,7 +68,7 @@
     const q = questions[current];
     if (!q || q.challenge || busy) return fallback.apply(this, arguments);
     const transcript = $('#transcript').value.trim();
-    if (transcript.split(/\s+/).length < 20) return fallback.apply(this, arguments);
+    if (transcript.split(/\s+/).length < 20) {if(window.DeskFreeMode?.tool==='interview')return notice('Add at least 20 words answering this question before requesting feedback.');return fallback.apply(this, arguments);}
     const version=++requestVersion,questionText=q.q;const controller=new AbortController();activeRequest=controller;busy = true; document.dispatchEvent(new CustomEvent('desk:feedback-busy',{detail:{busy:true}})); const btn = $('#assessBtn'), was = btn ? btn.textContent : ''; if (btn) { btn.disabled = true; btn.textContent = 'Reading your answer…'; }
     try {
       const r = await fetch('/api/interview-feedback', { method: 'POST', signal:controller.signal, credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
@@ -68,6 +78,7 @@
       const d = await r.json().catch(() => ({}));
       if(version!==requestVersion||questions[current]!==q||q.q!==questionText)return;
       if (!r.ok || !d.feedback) {
+        if(window.DeskFreeMode?.tool==='interview'){notice(d.error||'Your answer could not be assessed. Please try again.');return;}
         fallback.apply(this, arguments);
         const msg = d.error || 'Detailed feedback isn’t available right now, so this is the quick automatic check.';
         extra().innerHTML = `<p class="fb-why">${esc(msg)}${d.upgrade ? ' <a href="/assessment-start.html">See Full Cycle</a>.' : ''}</p>`;
@@ -76,7 +87,7 @@
       show(d.feedback, d.paid);
       if (!d.paid && typeof d.left === 'number') extra().insertAdjacentHTML('beforeend', `<p class="fb-why">${d.left} free detailed feedback${d.left === 1 ? '' : 's'} left this week. Members get up to 60 a day, with interviewer follow-ups.</p>`);
       if (FU) FU = { ...FU, done: true };
-    } catch (e) { if(version===requestVersion)fallback.apply(this, arguments); }
+    } catch (e) { if(version===requestVersion){if(window.DeskFreeMode?.tool==='interview')notice('Your answer could not be assessed. Please try again.');else fallback.apply(this, arguments);} }
     finally { if(version!==requestVersion)return;activeRequest=null;busy = false; document.dispatchEvent(new CustomEvent('desk:feedback-busy',{detail:{busy:false}})); if (btn) { btn.disabled = false; btn.textContent = was; } }
   };
   const ab = $('#assessBtn'); if (ab) ab.onclick = () => assess();

@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
     const ownerHash = await principal(req, res);
-    const paid = await isPaidOwner(ownerHash);
+    const paid = req.body?.publicTrial===true ? false : await isPaidOwner(ownerHash);
     const limit = paid ? PAID_PER_DAY : FREE_PER_DAY;
     const key = paid ? 'fb:' + ownerHash : 'fb:' + ownerHash + ':' + hash(clientKey(req)).slice(0, 16);
     const weekLeft=paid?null:Math.max(0,FREE_PER_WEEK-await countItems(ownerHash,'interview',7));
