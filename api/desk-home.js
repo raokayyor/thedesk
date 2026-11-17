@@ -279,7 +279,7 @@ export default async function handler(req, res) {
         actions.length = 0;
         if (!latest) actions.push({ tag: 'Start here', title: 'Take the free assessment', detail: 'Your CV read against your target route: a readiness score and your top 3 fixes. About 10 minutes.', href: '/assessment.html' });
         else actions.push({ tag: 'Your result', title: latest.priorities?.[0] ? clean(latest.priorities[0].title, 90) : 'See your result', detail: latest.priorities?.[0] ? clean(latest.priorities[0].description, 160) : 'Your score and top 3 priorities', href: reportUrl });
-        actions.push({ tag: 'Free · 30 seconds', title: target ? `Answer “Why ${target}?” in 30 seconds` : 'Try the 30-second interview check', detail: 'One question, marked on your opening. One free check a week.', href: '/interview-teaser.html' });
+        actions.push({ tag: 'Free · 30 seconds', title: target ? `Answer “Why ${target}?” in 30 seconds` : 'Try the 30-second interview check', detail: 'One question, marked on your opening. One free check a week.', href: '/interview.html?ready=1&taster=interview&trial=1' });
         actions.push({ tag: 'Membership', title: 'See what a member’s report looks like', detail: 'A full sample: CV rewrites, model answers, interview prep and a 30-day plan', href: '/fullcycle.html?sample=amelia' });
       }
       const usedNotes = new Set();

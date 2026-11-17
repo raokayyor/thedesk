@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     if(req.method==='GET')return res.json({paid,left:paid?await quotaLeft(key,limit):Math.min(weekLeft,await quotaLeft(key,limit)),limit:paid?limit:FREE_PER_WEEK,per:paid?'day':'week'});
     if (req.method !== 'POST') return res.status(405).end();
     if (!sameOrigin(req, res)) return;
-    const taster=!paid&&(req.body?.taster===true||ownerHash.startsWith('account:'))?await startTaster(req,res,'interview'):null;const v = validInput(req.body);
+    const taster=!paid&&req.body?.publicTrial!==true&&(req.body?.taster===true||ownerHash.startsWith('account:'))?await startTaster(req,res,'interview'):null;const v = validInput(req.body);
     if (v.error) return res.status(400).json({ error: v.error });
     if(!paid&&v.input.followUpOf)return res.status(402).json({error:'Answering the interviewer’s follow-up is part of membership.',upgrade:true});
     if(!paid&&!taster&&weekLeft<=0)return res.status(429).json({error:'You’ve used your three free assessments of this question this week. You can still practise and replay your recording; membership opens the full interview coach.',upgrade:true});
