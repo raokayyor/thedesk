@@ -2,7 +2,7 @@ import {evaluateDeep} from '../lib/deep-evaluation.mjs';
 import {ownedRecord,sameOrigin,sql,hash,apiFailure} from '../lib/report-store.mjs';
 import {fullCycleAccess} from '../lib/full-cycle-access.mjs';
 import {currentAccount,latestAssessment,allow} from '../lib/accounts.mjs';
-import {initDeep,deepFor,deepQuestions,validateDeepAnswers} from '../lib/deep-assessment.mjs';
+import {initDeep,deepFor,deepQuestions,validateDeepAnswers,initialDeepAnswers} from '../lib/deep-assessment.mjs';
 export const maxDuration=300;
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');res.setHeader('Vary','Cookie');
@@ -15,7 +15,7 @@ export default async function handler(req,res){
   if(!row)return res.status(404).json({error:'Complete your free assessment first.',next:'/assessment.html'});
   if(!await fullCycleAccess(row))return res.status(402).json({error:'The deep assessment is included with membership.',next:'/signin.html'});
   const questions=deepQuestions(row),saved=await deepFor(row);
-  if(req.method==='GET')return res.json({id:row.id,profile:row.input.profile,initialScore:row.result.overallScore,questions,saved:saved||{status:'draft',answers:{},testChoice:'carry'}});
+  if(req.method==='GET')return res.json({id:row.id,profile:row.input.profile,initialScore:row.result.overallScore,priorities:row.result.priorities||[],tests:{numerical:row.input.quiz?.numericalCorrect,commercial:row.input.quiz?.commercialCorrect,date:row.created_at},questions,saved:saved?.status==='complete'?saved:{...(saved||{status:'draft',testChoice:'carry'}),answers:{...initialDeepAnswers(row),...saved?.answers}}});
   if(!['save','complete'].includes(req.body.action))return res.status(400).json({error:'Unknown action.'});
   let valid;try{valid=validateDeepAnswers(questions,req.body,req.body.action==='complete')}catch(e){return res.status(400).json({error:e.message});}
   const signature=hash(JSON.stringify(valid)),data={...valid,cvHash:hash(row.input.cvText),signature,status:'draft'};

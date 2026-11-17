@@ -17,7 +17,7 @@ test('loading steps confirm receipt quickly and remain on analysis until complet
  const loading=readFileSync(new URL('../assessment-loading.js',import.meta.url),'utf8');
  const code=loading.slice(loading.indexOf('function setStep('),loading.indexOf('\nwindow.assessmentLoading='));
  const items=Array.from({length:4},()=>({className:'',symbol:{textContent:''},querySelector(){return this.symbol}}));let now=0,tick;
- const context={el:{querySelectorAll:()=>items},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},elapsed:{},showStat(){}};
+ const context={serverStage:'checking',serverAttempt:1,el:{querySelectorAll:()=>items,querySelector:()=>null},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},elapsed:{},showStat(){}};
  vm.createContext(context);vm.runInContext('let elapsedTimer,started;'+code+';this.reset=reset',context);context.reset();
  assert.equal(items[0].className,'active');now=1400;tick();assert.equal(items[1].className,'active');
  now=3000;tick();assert.equal(items[2].className,'active');now=45000;tick();assert.equal(items[2].className,'active');assert.equal(items[3].className,'pending');

@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {normalizeFreeDraft} from '../lib/free-draft-normalize.mjs';
+import {validateWeakLines} from '../lib/weak-lines.mjs';
+const cv='- Compared retailer margins and presented a clear conclusion to a seminar.',catalog=[{id:'E1',quote:cv}];
+test('literal grounded preview and duplicate weak-line IDs do not force another model pass',()=>{const d={cvPreview:{original:cv},weakLines:[{original:' E1 ',issue:'The analytical conclusion and actual margin comparison from the retailer project are not stated clearly enough',severity:2},{original:'E1',issue:'Repeated same issue',severity:2}]};normalizeFreeDraft(d,catalog,cv);assert.equal(d.cvPreview.original,cv);assert.equal(d.weakLines.length,1);assert.equal(validateWeakLines(d.weakLines,cv,catalog).length,1)});
+test('format normalization cannot validate invented evidence',()=>{const d={cvPreview:{original:'Invented company'},weakLines:[{original:'Invented company with unsupported achievements in the application',issue:'Missing evidence',severity:2}]};normalizeFreeDraft(d,catalog,cv);assert.equal(d.cvPreview.original,undefined);assert.throws(()=>validateWeakLines(d.weakLines,cv,catalog))});
