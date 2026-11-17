@@ -312,3 +312,45 @@ New files: `practice-tests.html` and `data/aptitude-practice.mjs`. Preview image
 
 ## Homepage: "One membership. Every round." tools section (16 Nov)
 Goal: the homepage currently reads like a CV checker. Keep the CV hook as the way in, and show the whole personalised toolkit straight after it. Full spec is in Rao's Codex prompt of 16 Nov (same text as below).
+
+## Free assessment v2: the journey (17 Nov)
+Design reference: `design/free-assessment-v2-mock.html` and `design/free-assessment-v2.jpg` (5 phone screens). Rebuild assessment.html (and retire assessment-start.html as a page) in the version C style. Keep the existing back end (profile → CV extract → 10 questions → generate); this is a front-end and flow rebuild.
+
+**Today:** an intro page, then 8 steps. Four of the steps are just "intro" or "confirm" screens (s3 "What happens next", s4 and s6 section intros, s8 "Ready to generate"). Step 1 has 10 fields, including three separate route dropdowns. The old Fraunces/DM Sans style. No email, so the result only lives in "My Desk Preview".
+
+**New flow: 4 steps, about 8 minutes, phone first:**
+1. **About you:**
+   - fields: university (autocomplete), course, year (chips), grade (chips: First / 2:1 / 2:2 / Other, "predicted is fine"), route (chips: one choice plus "+4 more" and "Not sure", which links to the role checker), dream firm (optional)
+   - programme type is worked out from year ("So you're applying for summer internships. Change"), not a separate dropdown
+   - drop the name field here (it's asked in step 4), and drop the 2nd and 3rd route choices (ask later in My Desk if needed)
+   - prefill the route from `?route=` on the homepage link
+2. **Your CV:**
+   - a big upload area (PDF/Word from the phone, Files, Google Drive), with "Paste your CV text instead" as a link
+   - after upload, call the existing CV extract and show **"We found: [N] roles (names), [N] projects, [N] bullet points to check"**. This proves we've read it. If extraction fails, ask them to paste instead.
+   - consent checkbox inline, with "We never share your CV with employers."
+3. **10 quick questions:**
+   - one question per screen; the commercial and numerical sections run straight through, with no intro screens
+   - each question shows a small section label (Commercial / Numerical), a soft "aim for about 45 seconds" guide bar (not a hard cutoff), the question in EB Garamond, any data as a small table, and four large tappable options
+   - progress reads "Question 7 of 10 · About 3 min left"
+   - Previous/Next; no review screen at the end
+4. **Keep your result:**
+   - first name and email (required), "No password needed: we email you a link" (use the existing account system; if magic links don't exist yet, create the account the current way and add the link later)
+   - optional, unticked checkbox for deadline reminders, stored as marketing consent
+   - button "Build my assessment →", with "Free · no card · we never share your CV" underneath
+5. **Waiting screen** (replaces "Putting your application into perspective"):
+   - heading "Reading your application the way a banker would."
+   - a live checklist: CV read ([N] lines), test answers marked ([N] of 10), checking each line against our practitioners' standard, working out your score and fixes
+   - a dark "First thing we noticed" card, as soon as the first real finding is available (e.g. the top `weakLines` issue or `skimNote`). If nothing is ready yet, show a rotating real tip instead. Never make up a finding.
+   - open the free result (result v2) automatically when ready
+
+**Throughout:**
+- a progress bar plus "Step X of 4 · about N min left"
+- "Save & exit" (autosave answers locally and offer "Pick up where you left off" on return)
+- a sticky bottom button bar
+- big tap targets (at least 44px)
+- inputs at 16px so iOS doesn't zoom
+- no sideways scroll at 375px
+
+**Homepage buttons go straight to step 1** (/assessment.html?route=…). /assessment-start.html redirects there.
+
+**Analytics:** track step_viewed and step_completed per step, cv_uploaded vs cv_pasted, extract_failed, question_answered (index), email_submitted, result_opened, and time per step, so we can see exactly where students drop out.

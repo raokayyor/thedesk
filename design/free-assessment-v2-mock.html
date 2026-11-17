@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free assessment v2 mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Free assessment v2: 4 steps, about 8 minutes, phone first. Design reference for Codex. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8}
+*{box-sizing:border-box}
+body{margin:0;background:#dcd6cc;font:15px/1.5 Figtree,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.stage{display:flex;gap:34px;padding:40px;align-items:flex-start;justify-content:center;flex-wrap:nowrap}
+.cap{font:600 12.5px Figtree;letter-spacing:.14em;text-transform:uppercase;color:#5b5348;text-align:center;margin-bottom:12px}
+.phone{width:390px;height:844px;background:var(--paper);border-radius:44px;box-shadow:0 0 0 10px #1b1f21,0 26px 50px rgba(0,0,0,.22);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{height:44px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 28px 6px;font:600 14px Figtree}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 20px 10px}
+.logo{font:600 22px "EB Garamond",Georgia,serif}
+.x{font-size:13px;color:var(--mute)}
+.prog{padding:0 20px}
+.prog .bar{height:4px;background:var(--soft);border-radius:2px;overflow:hidden}.prog .bar i{display:block;height:100%;background:var(--ink)}
+.prog .meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-top:6px}
+.body{flex:1;padding:18px 20px 0;overflow:hidden}
+h1,h2{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+h1{font-size:30px;line-height:1.08}
+.sub{color:var(--ink-2);font-size:15px;margin:8px 0 0}
+.lbl{font-weight:600;font-size:14px;margin:16px 0 7px}
+.inp{border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px 14px;font-size:16px;color:var(--ink)}
+.inp.ph{color:#9aa1a5}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:500}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hint{font-size:12.5px;color:var(--mute);margin-top:6px}
+.foot{padding:12px 20px 30px;border-top:1px solid var(--line);background:rgba(244,241,236,.97)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:10px;min-height:54px;font-weight:600;font-size:16.5px}
+.btn.off{opacity:.35}
+.back{font-size:13.5px;color:var(--mute);text-align:center;margin-top:10px}
+/* cv */
+.drop{border:1.5px dashed #c9c1b5;border-radius:12px;background:#fff;padding:22px;text-align:center;margin-top:16px}
+.drop b{display:block;font-size:16px;margin-top:6px}.drop span{font-size:13px;color:var(--mute)}
+.ic{width:40px;height:40px;border-radius:10px;background:var(--soft);display:inline-flex;align-items:center;justify-content:center}
+.ic svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.found{margin-top:14px;background:var(--good-soft);border-radius:12px;padding:14px}
+.found .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--good)}
+.found ul{margin:8px 0 0;padding-left:18px;font-size:14px}.found li{margin:3px 0}
+.file{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;font-size:14px}
+.file .ok{margin-left:auto;color:var(--good);font-weight:700}
+.alt{font-size:13.5px;margin-top:12px;text-decoration:underline}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-2);margin-top:14px}
+.box{width:20px;height:20px;border-radius:5px;background:var(--ink);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;margin-top:1px}
+/* test */
+.sect{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--mute);margin-bottom:10px}
+.sect b{color:var(--accent);letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+.timer{height:3px;background:var(--soft);border-radius:2px;margin:0 0 16px}.timer i{display:block;height:100%;width:62%;background:var(--accent);border-radius:2px}
+.q{font:600 21px/1.32 "EB Garamond",Georgia,serif}
+.data{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13.5px}
+.data div{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:8px 12px;border-top:1px solid var(--soft)}.data div:first-child{border-top:0;background:var(--soft);font-weight:600;font-size:12px}
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.opt{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15.5px}
+.opt i{width:24px;height:24px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:12.5px}
+.opt.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}.opt.on i{background:var(--ink);color:#fff}
+/* save */
+.why{margin-top:16px;display:flex;flex-direction:column;gap:9px;font-size:14px;color:var(--ink-2)}
+.why div{display:flex;gap:9px}.why div:before{content:"✓";color:var(--good);font-weight:700}
+/* waiting */
+.wait{padding-top:20px}
+.check{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.check div{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;font-size:15px}
+.check .d{width:22px;height:22px;border-radius:50%;background:var(--good);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.check .now{width:22px;height:22px;border-radius:50%;border:2.5px solid var(--soft);border-top-color:var(--ink)}
+.check .t{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line)}
+.check .m{color:var(--mute)}
+.peek{margin-top:22px;background:var(--ink);color:#fff;border-radius:12px;padding:16px}
+.peek .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#e8a283}
+.peek p{margin:8px 0 0;font:italic 400 18px/1.35 "EB Garamond",Georgia,serif}
+.peek .w{font-size:12.5px;color:#aab4b9;margin-top:8px;font-style:normal}
+.tip{margin-top:14px;font-size:13.5px;color:var(--ink-2);border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><symbol id="up" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol><symbol id="doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 16h5"/></symbol></svg>
+<div class="stage">
+
+<!-- 1. About you -->
+<div><div class="cap">1 · About you</div><div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><span class="logo">The Desk</span><span class="x">Save &amp; exit</span></div>
+  <div class="prog"><div class="bar"><i style="width:12%"></i></div><div class="meta"><span>Step 1 of 4 · About you</span><span>About 8 min</span></div></div>
+  <div class="body">
+    <h1>Let’s start with you.</h1>
+    <p class="sub">The same basics a recruiter sees first.</p>
+    <div class="lbl">University</div><div class="inp">University of Bristol</div>
+    <div class="lbl">Course</div><div class="inp">Economics</div>
+    <div class="lbl">Year</div><div class="chips"><span class="chip">1st</span><span class="chip on">2nd / penultimate</span><span class="chip">Final</span><span class="chip">Graduate</span></div>
+    <div class="hint">So you’re applying for <b>summer internships</b>. <u>Change</u></div>
+    <div class="lbl">Grade (predicted is fine)</div><div class="chips"><span class="chip">First</span><span class="chip on">2:1</span><span class="chip">2:2</span><span class="chip">Other</span></div>
+    <div class="lbl">What are you aiming for?</div><div class="chips"><span class="chip on">Investment banking</span><span class="chip">Sales &amp; trading</span><span class="chip">Asset management</span><span class="chip">Big Four</span><span class="chip">+4 more</span><span class="chip">Not sure</span></div>
+    <div class="lbl">Dream firm <span style="font-weight:400;color:var(--mute)">(optional)</span></div><div class="inp ph">e.g. Barclays</div>
+  </div>
+  <div class="foot"><div class="btn">Continue →</div></div>
+</div></div>
+
+<!-- 2. CV -->
+<div><div class="cap">2 · Your CV</div><div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><span class="logo">The Desk</span><span class="x">Save &amp; exit</span></div>
+  <div class="prog"><div class="bar"><i style="width:35%"></i></div><div class="meta"><span>Step 2 of 4 · Your CV</span><span>About 7 min left</span></div></div>
+  <div class="body">
+    <h1>Add your CV.</h1>
+    <p class="sub">We read it the way someone in finance would, line by line.</p>
+    <div class="drop"><span class="ic"><svg><use href="#up"/></svg></span><b>Upload your CV</b><span>PDF or Word · from your phone, Files or Google Drive</span></div>
+    <div class="file"><span class="ic" style="width:32px;height:32px"><svg><use href="#doc"/></svg></span>Amelia_Chen_CV.pdf<span class="ok">✓ Read</span></div>
+    <div class="found"><div class="k">We found</div><ul><li>2 roles: Redcliffe Partners, Pho House</li><li>1 project: LVMH valuation</li><li>9 bullet points to check</li></ul></div>
+    <div class="alt">No file to hand? Paste your CV text instead</div>
+    <div class="consent"><span class="box">✓</span><span>I’m happy for The Desk to read my CV and answers to build my assessment. <b>We never share your CV with employers.</b></span></div>
+  </div>
+  <div class="foot"><div class="btn">Continue to 10 quick questions →</div><div class="back">← Back</div></div>
+</div></div>
+
+<!-- 3. Questions -->
+<div><div class="cap">3 · 10 quick questions</div><div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><span class="logo">The Desk</span><span class="x">Save &amp; exit</span></div>
+  <div class="prog"><div class="bar"><i style="width:62%"></i></div><div class="meta"><span>Step 3 of 4 · Question 7 of 10</span><span>About 3 min left</span></div></div>
+  <div class="body">
+    <div class="sect"><b>Numerical</b><span>Aim for about 45 seconds</span></div>
+    <div class="timer"><i></i></div>
+    <div class="q">A company’s revenue grew from £80m to £92m. Costs stayed at £60m. By how many percentage points did its profit margin change?</div>
+    <div class="data"><div><span></span><span>Year 1</span><span>Year 2</span></div><div><span>Revenue</span><span>£80m</span><span>£92m</span></div><div><span>Costs</span><span>£60m</span><span>£60m</span></div></div>
+    <div class="opts"><div class="opt"><i>A</i>+5.2 points</div><div class="opt on"><i>B</i>+9.8 points</div><div class="opt"><i>C</i>+12.0 points</div><div class="opt"><i>D</i>+15.0 points</div></div>
+  </div>
+  <div class="foot"><div class="btn">Next question →</div><div class="back">← Previous</div></div>
+</div></div>
+
+<!-- 4. Save -->
+<div><div class="cap">4 · Keep your result</div><div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><span class="logo">The Desk</span><span class="x"></span></div>
+  <div class="prog"><div class="bar"><i style="width:90%"></i></div><div class="meta"><span>Step 4 of 4 · Last step</span><span>Under a minute</span></div></div>
+  <div class="body">
+    <h1>Where should we save your result?</h1>
+    <p class="sub">Your result is ready to build. Add your email so you can come back to it on any device.</p>
+    <div class="lbl">First name</div><div class="inp">Amelia</div>
+    <div class="lbl">Email</div><div class="inp">amelia@example.ac.uk</div>
+    <div class="why"><div>Your score, weak lines and plan, saved</div><div>Recheck later and watch your score rise</div><div>No password needed: we email you a link</div></div>
+    <div class="consent" style="margin-top:16px"><span class="box" style="background:#fff;border:1.5px solid var(--line)"></span><span>Send me reminders before my application deadlines (optional). Unsubscribe any time.</span></div>
+  </div>
+  <div class="foot"><div class="btn">Build my assessment →</div><div class="back">Free · no card · we never share your CV</div></div>
+</div></div>
+
+<!-- 5. Waiting -->
+<div><div class="cap">5 · While we read it</div><div class="phone">
+  <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="top"><span class="logo">The Desk</span><span class="x"></span></div>
+  <div class="body wait">
+    <div class="k" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--mute)">Amelia · Investment banking</div>
+    <h1 style="margin-top:6px">Reading your application the way a banker would.</h1>
+    <div class="check">
+      <div><span class="d">✓</span><span>CV read: 9 lines found</span></div>
+      <div><span class="d">✓</span><span>Test answers marked: 6 of 10</span></div>
+      <div><span class="now"></span><span>Checking each line against our practitioners’ standard</span></div>
+      <div><span class="t"></span><span class="m">Working out your score and the fixes that matter most</span></div>
+    </div>
+    <div class="peek"><div class="k">First thing we noticed</div><p>“Your Redcliffe internship line ends on what didn’t happen. That’s usually where a reader stops.”</p><div class="w">Your full result opens in about 30 seconds.</div></div>
+    <div class="tip"><b>While you wait:</b> most strong finance CVs say what each piece of work <i>showed</i>, not just what you did.</div>
+  </div>
+</div></div>
+
+</div>
+</body></html>
