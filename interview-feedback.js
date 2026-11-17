@@ -23,6 +23,7 @@
   const extra = () => { let el = $('#fbExtra'); if (!el) { el = document.createElement('div'); el.id = 'fbExtra'; el.className = 'fb-extra'; const body = $('#feedback .feedbackBody'); if (body) body.before(el); else $('#feedback').append(el); } return el; };
 
   function show(f, paid) {
+    if(f.previewLocked&&window.DeskFreeInterviewV2){window.DeskFreeInterviewV2.showFeedback(f);return;}
     if(f.previewLocked){
       $('#overallScore').textContent=f.overall;$('#verdictTitle').textContent=f.verdictTitle;$('#verdictText').textContent=f.verdict;
       $('#feedback .scoregrid').hidden=true;$('#feedback .feedbackBody').hidden=true;

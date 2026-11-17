@@ -1,9 +1,11 @@
+import {resolveInterviewTaster} from '../lib/interview-taster-context.mjs';
 import {currentAccount,latestAssessment,accountOwnsAssessment} from '../lib/accounts.mjs';
 import {owner,initStore,sql,apiFailure} from '../lib/report-store.mjs';
 import {latestCv} from '../lib/saved-cv.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');res.setHeader('Vary','Cookie');
  if(req.method!=='GET')return res.status(405).end();
+ if(req.query?.taster==='1'){try{return res.json(await resolveInterviewTaster(req,res,req.query));}catch(e){return res.status(e.status||503).json({error:e.status?e.message:'Your interview could not load. Please try again.'});}}
  const id=req.query?.id;
  if(id!==undefined&&(typeof id!=='string'||! /^[a-f0-9]{48}$/.test(id)))return res.status(400).json({success:false,error:'Invalid assessment reference.'});
  const ownerHash=owner(req,res);

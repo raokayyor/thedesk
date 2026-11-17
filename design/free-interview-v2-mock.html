@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free interview taster v2 mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Free interview taster: design reference for Codex. Same tokens as the homepage and free result. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f6e0da;--hl:#f6dccd}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font:600 25px "EB Garamond",Georgia,serif}
+.hr{display:flex;gap:18px;align-items:center;font-size:14px}
+.pill{font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--soft);border-radius:999px;padding:5px 12px}
+.exit{color:var(--mute);font-weight:500}
+.state{padding:34px 0 64px}
+.state+.state{border-top:1px dashed #cfc7bb}
+.label{font:600 12px Figtree;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.meta span{font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px;color:var(--ink-2)}
+.meta span.w{border-color:#ecc9b8;background:#fbefe8;color:var(--accent)}
+h1.q{font-size:42px;line-height:1.08;margin-top:10px;max-width:20ch}
+.sub{color:var(--ink-2);margin:10px 0 0;font-size:16.5px}
+/* stage */
+.stage{position:relative;margin-top:24px;aspect-ratio:16/9;border-radius:16px;background:radial-gradient(120% 90% at 50% 20%,#33434a,#172024);overflow:hidden}
+.stage .sil{position:absolute;left:50%;bottom:-8%;width:34%;aspect-ratio:1;transform:translateX(-50%);border-radius:50% 50% 0 0;background:#3c4b51}
+.stage .head{position:absolute;left:50%;bottom:30%;width:15%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#46565c}
+.stage .tl{position:absolute;left:16px;top:14px;display:flex;gap:8px}
+.stage .tag{font-size:12px;font-weight:600;color:#fff;background:rgba(0,0,0,.35);border-radius:999px;padding:4px 10px;display:flex;align-items:center;gap:6px}
+.stage .tag.rec:before{content:"";width:8px;height:8px;border-radius:50%;background:#e5484d}
+.stage .ok{position:absolute;right:16px;top:14px;font-size:12px;color:#cfe3d5;display:flex;gap:12px}
+.stage .ok b{font-weight:600}
+.stage .timer{position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:center;gap:12px;color:#fff;font-size:13px}
+.stage .timer .t{height:4px;flex:1;background:rgba(255,255,255,.18);border-radius:2px}
+.stage .timer .t i{display:block;height:100%;width:0;background:#e8a283;border-radius:2px}
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:10px;min-height:52px;padding:0 26px;font-weight:600;font-size:16px}
+.alt{font-size:14.5px;color:var(--ink-2)}.alt a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c1b5}
+.fine{font-size:13px;color:var(--mute);margin-top:10px}
+.set{margin-top:22px;border-top:1px solid var(--line);font-size:14.5px}
+.set div{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);color:var(--ink-2)}
+.set b{color:var(--ink);font-weight:600}
+/* side */
+.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card h3{font-size:21px;line-height:1.15;margin-top:6px}
+.ev{list-style:none;padding:0;margin:12px 0 0}
+.ev li{padding:10px 0;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.ev li:first-child{border-top:0;padding-top:2px}
+.ev b{display:block;color:var(--ink);font-size:14.5px}
+.tip{display:grid;grid-template-columns:44px 1fr;gap:12px;margin-top:12px}
+.av{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 17px "EB Garamond",Georgia,serif}
+.tip q{font:italic 400 18px/1.4 "EB Garamond",Georgia,serif;quotes:"“" "”"}
+.tip small{display:block;font-size:12.5px;color:var(--mute);margin-top:6px}
+.back li{display:grid;grid-template-columns:18px 1fr;gap:10px;font-size:14px;padding:6px 0;border:0;color:var(--ink-2)}
+.back li:before{content:"✓";color:var(--good);font-weight:700}
+/* feedback */
+.score{display:flex;gap:28px;align-items:flex-end;margin-top:18px;flex-wrap:wrap}
+.score .big b{font:600 64px/1 "EB Garamond",Georgia,serif}
+.score .big span{color:var(--mute);font-size:14px;margin-left:6px}
+.score .was{font-size:14px;color:var(--ink-2);padding-bottom:8px}
+.score .was b{color:var(--good)}
+.dims{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.dim{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.dim span{display:block;font-size:12.5px;color:var(--mute)}
+.dim b{font:600 24px "EB Garamond",Georgia,serif}
+.dim .bar{height:5px;background:var(--soft);border-radius:3px;margin-top:6px}.dim .bar i{display:block;height:100%;border-radius:3px;background:#5c7a6c}
+.dim.low .bar i{background:var(--accent)}
+.fbk{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+.fb{display:grid;grid-template-columns:28px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.fb .i{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.fb.good .i{background:var(--good-soft);color:var(--good)}.fb.fix .i{background:var(--bad-soft);color:var(--bad)}
+.fb b{display:block;font-size:15.5px}.fb p{margin:3px 0 0;font-size:14.5px;color:var(--ink-2)}
+.fb q{display:block;margin-top:8px;font-size:14px;color:var(--ink-2);border-left:3px solid var(--line);padding-left:10px;quotes:"“" "”"}
+.fb q mark{background:var(--bad-soft);color:var(--bad);padding:0 2px}
+.locked{position:relative;border:1px solid var(--line);border-radius:12px;background:#fff;padding:16px 18px;overflow:hidden}
+.locked .blur{filter:blur(4px);color:#8d949a;font-size:14.5px;user-select:none}
+.locked .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.85) 40%,rgba(255,255,255,.85) 60%,rgba(255,255,255,.2));font-weight:600;font-size:14.5px}
+.plan{background:var(--ink);color:#fff;border-radius:16px;padding:22px}
+.plan .k{color:#aab4b9}
+.plan h3{font-size:24px;line-height:1.15;margin-top:6px}
+.plan ul{list-style:none;padding:0;margin:14px 0 0}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
+.plan li:first-child{border-top:0}.plan li:before{content:"✓";color:#9fd3b1;font-weight:700}
+.plan li small{display:block;color:#e8a283;font-size:12.5px}
+.plan .btn{background:#fff;color:var(--ink);width:100%;margin-top:14px}
+.plan .p{font-size:12.5px;color:#aab4b9;text-align:center;margin-top:8px}
+.again{font-size:14px;color:var(--mute);text-align:center}
+.mbar{display:none}
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  .grid{grid-template-columns:1fr;gap:28px}
+  .side{position:static}
+  h1.q{font-size:31px}
+  .stage{aspect-ratio:4/5}
+  .stage .sil{width:62%}.stage .head{width:28%;bottom:32%}
+  .stage .ok{top:auto;bottom:40px;left:16px;right:auto}
+  .cta .btn{width:100%}
+  .cta{gap:10px}.alt{width:100%;text-align:center}
+  .dims{grid-template-columns:repeat(2,1fr)}
+  .hr .exit{display:none}
+  .mbar{display:flex;position:sticky;bottom:0;background:rgba(251,250,247,.97);border-top:1px solid var(--line);padding:10px 16px 18px;align-items:center;gap:12px;margin:0 -18px}
+  .mbar b{font:600 20px "EB Garamond",Georgia,serif}.mbar small{display:block;font-size:11.5px;color:var(--mute)}
+  .mbar .btn{margin-left:auto;min-height:46px;padding:0 16px;font-size:15px}
+}
+</style></head><body>
+<header><div class="wrap"><span class="logo">The Desk</span><div class="hr"><span class="pill">Free taster · 1 question</span><a class="exit">Exit</a></div></div></header>
+
+<!-- STATE 1: READY -->
+<div class="wrap state" id="ready">
+  <div class="label">Screen 1 · Before you answer</div>
+  <div class="grid">
+  <main>
+    <div class="k">Interview coach · Barclays · Competency</div>
+    <h1 class="q">“Tell me about a time you led a group, even informally.”</h1>
+    <div class="meta"><span class="w">Leadership · your weakest area (23)</span><span>2 minutes to answer</span><span>30 seconds to think</span></div>
+    <p class="sub">Read the question, think for 30 seconds, then answer out loud as if a Barclays interviewer is on the call.</p>
+    <div class="stage">
+      <div class="sil"></div><div class="head"></div>
+      <div class="tl"><span class="tag">Camera preview</span></div>
+      <div class="ok"><span>● Camera <b>ready</b></span><span>● Mic <b>ready</b></span></div>
+      <div class="timer"><span>0:00</span><span class="t"><i></i></span><span>2:00</span></div>
+    </div>
+    <div class="cta">
+      <span class="btn">Start my answer</span>
+      <span class="alt">No camera? <a>Answer with mic only</a> or <a>type it</a></span>
+    </div>
+    <div class="fine">Nothing records until you press start. Only you can see your recording.</div>
+    <div class="set">
+      <div><span>Mode</span><b>Practice · you can retake once</b></div>
+      <div><span>Sound and settings</span><b>Change</b></div>
+    </div>
+  </main>
+  <aside class="side">
+    <div class="card">
+      <div class="k">From your CV</div>
+      <h3>Use one of these.</h3>
+      <ul class="ev">
+        <li><b>Trained 3 new colleagues at Pho House</b>Your only leadership example. Say what changed because of it.</li>
+        <li><b>The Redcliffe software screen</b>You set the rule that cut 12 companies to 4. That’s leading the work.</li>
+        <li><b>Economics Society</b>No role, so don’t use it here.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="k">Practitioner tip</div>
+      <div class="tip"><div class="av">KR</div><div>
+        <q>Small is fine. I want to hear the moment you took charge, what you decided, and what happened because of it.</q>
+        <small>Kayyor Rao · 20+ years in banking</small></div></div>
+    </div>
+    <div class="card">
+      <div class="k">What you’ll get back</div>
+      <ul class="ev back">
+        <li>A score for this answer, against your 23 on paper</li>
+        <li>One thing that worked and one to fix, with your own words quoted</li>
+        <li>A stronger version built from your answer (members)</li>
+      </ul>
+    </div>
+  </aside>
+  </div>
+</div>
+
+<!-- STATE 2: FEEDBACK -->
+<div class="wrap state" id="feedback">
+  <div class="label">Screen 2 · Your feedback</div>
+  <div class="grid">
+  <main>
+    <div class="k">Your answer · 1:46 · Barclays · Leadership</div>
+    <h1 class="q" style="max-width:22ch">You took charge. You didn’t say what changed.</h1>
+    <div class="score">
+      <div class="big"><b>48</b><span>/ 100</span></div>
+      <div class="was">Leadership on paper was <b>23</b>. Out loud you’re already at 48.<br>Fix the ending and you’re into the 60s.</div>
+    </div>
+    <div class="dims">
+      <div class="dim"><span>Structure</span><b>61</b><div class="bar"><i style="width:61%"></i></div></div>
+      <div class="dim"><span>Your role</span><b>55</b><div class="bar"><i style="width:55%"></i></div></div>
+      <div class="dim low"><span>Result</span><b>24</b><div class="bar"><i style="width:24%"></i></div></div>
+      <div class="dim"><span>Delivery</span><b>52</b><div class="bar"><i style="width:52%"></i></div></div>
+    </div>
+    <div class="fbk">
+      <div class="fb good"><span class="i">✓</span><div><b>You picked a real example and owned it</b><p>Training three new starters on a Friday rush is a fair leadership story at your stage.</p><q>I just started showing them how we split the tables…</q></div></div>
+      <div class="fb fix"><span class="i">!</span><div><b>It ends before the result</b><p>You stop at what you did. The interviewer is waiting for what changed: fewer mistakes, faster service, the manager asking you again.</p><q>…and yeah, <mark>they got the hang of it eventually.</mark></q></div></div>
+      <div class="locked"><div class="blur">Delivery: you said “like” 9 times and your pace rose in the last 30 seconds, which made the ending sound unsure. Slow down and land the</div><div class="ov">🔒 2 more points for members</div></div>
+      <div class="locked"><div class="blur">A stronger version: “On my second month at Pho House I was asked to train three new starters before our busiest Friday. I split the floor so each of them shadowed one</div><div class="ov">🔒 Your stronger version, built from your answer</div></div>
+    </div>
+  </main>
+  <aside class="side">
+    <div class="plan">
+      <div class="k">Keep going</div>
+      <h3>Practise every Barclays question like this.</h3>
+      <ul>
+        <li><p style="margin:0">Full feedback on every answer<small>Delivery, filler words, pace</small></p></li>
+        <li><p style="margin:0">Your stronger version each time<small>Built from what you said, nothing made up</small></p></li>
+        <li><p style="margin:0">All 7 competencies, plus technicals<small>Resilience 22 is next</small></p></li>
+        <li><p style="margin:0">HireVue and Superday modes<small>Timed, no retakes</small></p></li>
+        <li><p style="margin:0">Your CV fixed, tests, assessment centre<small>Everything from your free result</small></p></li>
+      </ul>
+      <div class="btn">Unlock everything · £89</div>
+      <div class="p">Paid once · no auto-renewal · 12 months</div>
+    </div>
+    <div class="again">You’ve used your free question. <a style="color:var(--ink);font-weight:600">Back to your result →</a></div>
+  </aside>
+  </div>
+  <div class="mbar"><div><b>Every question, full feedback</b><small>Paid once · no auto-renewal</small></div><div class="btn">Unlock · £89</div></div>
+</div>
+</body></html>

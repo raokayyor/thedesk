@@ -16,7 +16,7 @@ test('Start waits for complete question playback before automatic recording',asy
  assert.equal(x.context.flow.S.phase,'question');assert.equal(x.starts(),0);assert.equal(x.timers(),0);
  x.finishVoice(true);await pending;assert.equal(x.starts(),1);assert.equal(x.context.flow.S.phase,'answer');
 });
-test('failed or cancelled question playback never starts recording',async()=>{
- const x=setup(),pending=x.context.flow.hvStart(false);x.finishVoice(false);await pending;assert.equal(x.starts(),0);assert.equal(x.el('hvStart').disabled,false);
+test('unavailable playback continues visibly while cancelled playback cannot start',async()=>{
+ const x=setup(),pending=x.context.flow.hvStart(false);x.finishVoice(false);await pending;assert.equal(x.starts(),1);assert.match(x.el('hvStatus').textContent,/unavailable|preparation|question/i);
  const y=setup(),cancelled=y.context.flow.hvStart(false);y.context.flow.S.generation++;y.finishVoice(true);await cancelled;assert.equal(y.starts(),0);
 });
