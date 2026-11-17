@@ -14,6 +14,52 @@ async function checkout(block){
  try{const response=await fetch('/api/start-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})}),body=await response.json();if(!response.ok||!body.url)throw new Error(body.error||'Checkout could not be opened.');if(body.payIn3===true)document.querySelectorAll('.pay-in-three').forEach(x=>x.hidden=false);location.assign(body.url);}catch(e){status(e.message);checkoutBusy=false;document.querySelectorAll('[data-unlock]').forEach(b=>b.disabled=false);}
 }
 document.addEventListener('click',e=>{const button=e.target.closest('[data-unlock]');if(button)checkout(button.dataset.unlock);});
+function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest,question,reason,terms,more,missed}){
+ const root=el('#resultContent'),sections=[...root.children].filter(n=>n.tagName==='SECTION');
+ const [overview,skim,verdict,gaps,fix,cv,competencies,tests,ats,community,offer,email]=sections;
+ overview.querySelector('.breakdown').remove();
+ overview.querySelector('.lead').textContent=`${r.priorities?.length||0} fixes take you from ${score} to about ${estimate}.`;
+ skim.querySelectorAll('.skim-fact').forEach(n=>n.remove());
+ const benchmark=document.createElement('p');benchmark.className='benchmark';benchmark.textContent=score<75?`${75-score} points below our competitive benchmark (75).`:'At or above our competitive benchmark (75).';skim.querySelector('.skim-card').append(benchmark);
+ // The skim is a sample of this student's text, rather than a second full CV.
+ skim.querySelectorAll('.cv-paper>p:not(.dim):not(.margin-note)').forEach((n,i)=>{if(i>0)n.remove();else{const line=facts.skimLines?.[0]||facts.primaryLine;const excerpt=completeSentence(line,25);n.innerHTML=`<mark>${esc(excerpt.split(/\s+/).slice(0,6).join(' '))}</mark> ${esc(excerpt.split(/\s+/).slice(6).join(' '))}`}});
+ verdict.querySelectorAll('.positive,.negative').forEach(n=>n.remove());
+ verdict.querySelector('.practitioner-read p').textContent=completeSentence(facts.verdict,35);
+ gaps.querySelector('h2').remove();
+ gaps.querySelectorAll('li').forEach((li,i)=>{
+  li.querySelectorAll('.unlock-group').forEach(n=>n.remove());
+  const description=li.querySelector('p');if(description)description.textContent=completeSentence(facts.priorityReasons?.[i]||'',18);
+  const points=r.priorities?.[i]?.points;if(Number.isFinite(points)&&points>0){const badge=document.createElement('span');badge.className='gap-points';badge.textContent=`+${points} pts`;li.querySelector('b').after(badge)}
+ });
+ const interview=competencies.querySelector('.taster');
+ root.querySelectorAll('.taster').forEach(n=>{if(n!==interview)n.remove()});
+ if(interview){interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();interview.querySelector('p').textContent=`Build evidence for ${weakest[0]?.name||'your interview'} with your CV beside the question.`;}
+ community.remove();
+ const rows=offer.querySelectorAll('.plan-rows>div');rows.forEach((n,i)=>{if(i>=5)n.remove()});
+ const remaining=planRows.length-5;if(remaining>0){const extra=document.createElement('p');extra.className='plan-more';extra.textContent=`+${remaining} more included`;offer.querySelector('.plan-rows').after(extra)}
+ offer.querySelector('.plan-offer>.muted')?.remove();
+ const breakdown=document.createElement('section');breakdown.id='fullBreakdown';breakdown.innerHTML='<h2>Your full breakdown</h2>';
+ function disclosure(title,summary,node){
+  const row=document.createElement('div');row.className='result-disclosure';const key='detail-'+breakdown.children.length;
+  const button=document.createElement('button');button.type='button';button.className='disclosure-toggle';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',key);button.innerHTML=`<span><b>${esc(title)}</b><small>${esc(summary)}</small></span><span class="chevron" aria-hidden="true">▾</span>`;
+  const panel=document.createElement('div');panel.id=key;panel.className='disclosure-panel';panel.hidden=true;panel.append(node);
+  button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));panel.hidden=!open});row.append(button,panel);breakdown.append(row);
+ }
+ const component=document.createElement('div');component.className='breakdown';component.innerHTML=Object.keys(labels).map(k=>`<div><div class="breakdown-row"><span>${esc(labels[k])}</span><b>${r.breakdown[k]}/${weights[k]}</b></div><div class="mini-meter"><span style="width:${Math.max(0,Math.min(100,r.breakdown[k]/weights[k]*100))}%"></span></div></div>`).join('');
+ disclosure('Score breakdown',`CV ${r.breakdown.application}/${weights.application} · Tests ${r.breakdown.numerical+r.breakdown.technical}/${weights.numerical+weights.technical} · Competencies ${r.breakdown.competency}/${weights.competency} · ATS ${r.breakdown.ats}/${weights.ats}`,component);
+ cv.querySelector('.kicker')?.remove();cv.querySelector('h2')?.remove();
+ cv.querySelectorAll('.finding').forEach((n,i)=>{n.querySelector('p')?.remove();n.querySelector('.lock-label')?.remove();const line=facts.otherLines[i];n.querySelector('b').innerHTML=esc(line.start)+(line.tail?` <span class="blurred" aria-hidden="true">${esc(line.tail)}</span>`:'');if(i===0&&line.issue){const problem=document.createElement('p');problem.textContent='The problem: '+completeSentence(line.issue);n.querySelector('b').after(problem)}});
+ if(!more)cv.innerHTML='<p>No additional weak CV lines identified.</p>';
+ disclosure('Your CV',`${more} more ${more===1?'line':'lines'} to fix`,cv);
+ competencies.querySelector('.kicker')?.remove();competencies.querySelector('h2')?.remove();competencies.querySelectorAll('.repair-placeholder,.lock-label').forEach(n=>n.remove());
+ disclosure('The 7 things interviewers score',`Weakest: ${weakest.map(c=>c.name).join(' · ')}`,competencies);
+ tests.querySelector('.kicker')?.remove();tests.querySelector('h2')?.remove();
+ disclosure('Your tests',`${missed} ${missed===1?'topic':'topics'} to work on`,tests);
+ ats.querySelector('.kicker')?.remove();ats.querySelector('h2')?.remove();
+ ats.querySelector('.term-chips').innerHTML=terms.matched.map(t=>`<span class="chip matched">${esc(t)}</span>`).join('')+terms.missing.map(t=>`<span class="chip missing">${esc(t)}</span>`).join('');
+ disclosure('ATS',`${r.breakdown.ats}/${weights.ats} · ${terms.missing.length} terms missing`,ats);
+ root.replaceChildren(overview,skim,verdict,fix,gaps,...(interview?[interview]:[]),offer,breakdown,email);
+}
 async function load(){
  if(!id&&!sample){el('#resultStatus').innerHTML='Start your free assessment to see your result. <a href="/assessment.html">Get started →</a>';document.querySelectorAll('[data-unlock]').forEach(x=>x.hidden=true);return;}
  try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id));data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');
@@ -54,9 +100,10 @@ async function load(){
  <section><div class="kicker">Free with your account</div><div class="community-card"><div class="kicker">The network</div><h2>${firm?'You’re not the only one preparing for '+esc(firm)+'.':'Prepare with other students.'}</h2><p>Ask questions, share what you’re learning and find people working towards the same next step. Student discussions are free; practitioner answers are for members.</p><div id="communityQuestions"></div><a href="/community.html">Join the network free →</a></div></section>
  <section id="membership"><div class="plan-offer"><div class="kicker">Your next step</div><h2>Go from ${score} to about ${estimate}.</h2>${deadline}<p class="plan-intro">Your plan, built from this result</p><div class="plan-rows">${planRows.map(([title,detail])=>`<div><span aria-hidden="true">✓</span><p><b>${esc(title)}</b>${detail?`<small>${esc(detail)}</small>`:''}</p></div>`).join('')}</div><p class="muted">Your preparation, one membership. Your CV, applications and interview preparation, connected.</p>${unlock('membership','Unlock everything · £89')}<small>12 months of preparation.</small></div><div class="offer-links"><a href="/fullcycle-amelia.html">See a full sample member report →</a><a href="/signup.html?plan=plus">Want a person too? Add 2 practitioner calls · £199 →</a><a class="quiet-coaching" href="/mentor.html">Explore 1:1 support · £3,000 →</a><a href="#emailResult">Not ready? Email me my result →</a></div></section>
  <section id="emailResult"><h2>Email me my result</h2><p>Keep your result and receive preparation follow-ups. Unsubscribe at any time.</p><form id="emailForm"><label for="resultEmail">Email address</label><input id="resultEmail" type="email" autocomplete="email" required value="${esc(sample?'':data.email||'')}"><label class="consent"><input type="checkbox" id="emailConsent" required><span>Send my result, a day-two fix recap, a day-five sample report and a reminder before my saved deadline. <a href="/privacy.html">Privacy</a></span></label><button class="ink">Email my result →</button><p id="emailStatus" role="status"></p></form></section><p class="footnote">1 · <a href="https://ise.org.uk/knowledge/insights/513/ise_top_10_stats_of_2025_you_need_to_know/">Institute of Student Employers, 2025 recruitment figures.</a> Scores are preparation guidance, not hiring predictions. The skim view is illustrative.</p>`;
- if(firm)fetch('/api/community?view=questions&sort=new&firm='+encodeURIComponent(firm)).then(r=>r.ok?r.json():null).then(body=>{if(body&&!body.demo&&Array.isArray(body.questions))el('#communityQuestions').innerHTML=body.questions.filter(q=>!q.firm||q.firm===firm).slice(0,2).map(q=>`<p class="community-question"><a href="/community.html?question=${encodeURIComponent(q.id)}">${esc(q.title)}</a></p>`).join('');}).catch(()=>{});
 
- if(data.email&&!sample){el('#emailResult').hidden=true;el('a[href="#emailResult"]').hidden=true;}
+ compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest,question,reason,terms,more,missed});
+
+ if(data.email||sample){el('#emailResult').hidden=true;el('a[href="#emailResult"]').hidden=true;}
  if(facts.weakLineCount===0)el('#freeLineFix').hidden=true;
  el('#resultContent').hidden=false;el('#resultStatus').hidden=true;el('#mobileUnlock').hidden=false;el('#stickyScore').textContent=`${score} → ~${estimate}`;
  if(params.get('checkout')==='cancelled')status('Checkout cancelled. Your free result is still saved.');
