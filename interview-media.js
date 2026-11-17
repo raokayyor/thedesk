@@ -8,7 +8,7 @@
    try{next=await navigator.mediaDevices.getUserMedia({video,audio:true})}
    catch(error){if(!video||!['NotFoundError','OverconstrainedError'].includes(error.name))throw error;next=await navigator.mediaDevices.getUserMedia({video:false,audio:true})}
    if(stream)stream.getTracks().forEach(t=>t.stop());stream=next;
-   const preview=document.getElementById('preview');preview.srcObject=stream;preview.muted=true;preview.controls=false;preview.play().catch(()=>{});
+   const preview=document.getElementById('preview');preview.pause();preview.removeAttribute('src');preview.srcObject=stream;preview.muted=true;preview.playsInline=true;preview.controls=false;preview.play().catch(()=>{});
    const hasVideo=stream.getVideoTracks().length>0;
    try{localStorage.setItem('desk-interview-media',hasVideo?'camera':'microphone')}catch{}
    document.getElementById('camStatus').textContent=hasVideo?'Camera + microphone ready':'Audio-only practice · microphone ready';
@@ -19,7 +19,7 @@
   }catch(error){const status=document.querySelector('.microphone-status');if(status)status.textContent=error.name==='NotAllowedError'?'Microphone access was blocked. Allow microphone access in your browser, then click Start answer again.':'No microphone is available. Check your input device, or type an answer in the transcript box.';notice(error.name==='NotAllowedError'?'Microphone permission was not granted. Allow access in your browser, or type your answer below.':'No microphone could be connected. You can still type your answer below.')}
   finally{audioButton.disabled=false;cameraButton.disabled=false}
  }
- async function connectForAnswer(){let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}await connect(choice!=='microphone')}
+ async function connectForAnswer(){if(stream?.getAudioTracks().some(t=>t.readyState==='live'))return;let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}await connect(choice!=='microphone')}
  window.DeskInterviewMedia={connect,connectForAnswer};
  async function reconnect(){
   let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}

@@ -13,6 +13,6 @@
  // Start is always discoverable; microphone permission can be requested by this click.
  const startButton=document.getElementById('recordBtn'),startAction=startButton.onclick;let connecting=false;
  function ready(){if(!stream&&!connecting){startButton.disabled=false;startButton.textContent='Start recording · enable microphone'}}
- startButton.onclick=async()=>{if(connecting||recorder?.state==='recording')return;if(!stream){connecting=true;startButton.disabled=true;startButton.textContent='Connecting microphone…';try{await window.DeskInterviewMedia.connectForAnswer()}finally{connecting=false}if(!stream){ready();return}}await startAction()};
+ startButton.onclick=async()=>{if(connecting||recorder?.state==='recording')return;if(!stream?.getAudioTracks().some(t=>t.readyState==='live')){connecting=true;startButton.disabled=true;startButton.textContent='Connecting microphone…';try{await window.DeskInterviewMedia.connectForAnswer()}finally{connecting=false}if(!stream){ready();return}}await startAction()};
  const previousRender=render;render=function(){previousRender.apply(this,arguments);ready()};ready();
 })();

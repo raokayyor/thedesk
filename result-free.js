@@ -1,4 +1,4 @@
-import {conversionFacts,freeConversionResult,completeSentence} from '/lib/result-conversion.mjs';
+import {conversionFacts,freeConversionResult,completeSentence,cvSkimParts} from '/lib/result-conversion.mjs';
 const params=new URLSearchParams(location.search),id=params.get('id'),sample=params.get('sample')==='amelia';
 const el=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let data,facts,checkoutBusy=false;
@@ -23,7 +23,7 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  const benchmark=document.createElement('p');benchmark.className='benchmark';benchmark.textContent=score<75?`${75-score} points below our competitive benchmark (75).`:'At or above our competitive benchmark (75).';skim.querySelector('.skim-card').append(benchmark);
  // Display source lines in their CV order, without manufacturing headings or endings.
  const paper=skim.querySelector('.cv-paper');paper.querySelectorAll('p:not(.dim):not(.margin-note)').forEach(n=>n.remove());
- const markLine=text=>{const tokens=text.split(/\s+/),first=tokens.slice(0,6).join(' '),tail=tokens.slice(6,16).join(' '),ending=text.match(/\b(?:No|did not)\b[^.!?]*[.!?]?/i)?.[0];return '<mark>'+esc(first)+'</mark><span class="dim"> '+esc(tail)+'</span>'+(ending&&!tokens.slice(0,16).join(' ').includes(ending)?'<br><mark>'+esc(ending)+'</mark>':'');};
+ const markLine=text=>{const {opening,middle,ending}=cvSkimParts(text);return '<mark>'+esc(opening)+'</mark>'+(middle?'<span class="dim"> '+esc(middle)+'</span>':'')+(ending?' <mark>'+esc(ending)+'</mark>':'');};
  for(const entry of facts.skimEntries||facts.skimLines.map(text=>({text,heading:false}))){const line=document.createElement('p');line.className='skim-source-line';line.innerHTML=entry.heading?'<b>'+esc(entry.text)+'</b>':markLine(entry.text);paper.insertBefore(line,paper.querySelector('.margin-note'));}
  verdict.querySelectorAll('.positive,.negative').forEach(n=>n.remove());
  verdict.querySelector('.practitioner-read p').textContent=facts.verdict;
@@ -68,10 +68,10 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
 }
 async function load(){
  if(!id&&!sample){el('#resultStatus').innerHTML='Start your free assessment to see your result. <a href="/assessment.html">Get started →</a>';document.querySelectorAll('[data-unlock]').forEach(x=>x.hidden=true);return;}
- try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id));data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');
+ try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id),{cache:'no-store'});data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');
  if(sample){data.sampleRepair=data.paid;data.paid=false;el('#sampleBanner').hidden=false;}
  const r=freeConversionResult(data.result),p=data.profile||{},q=data.quiz||{};
- facts=data.conversion||conversionFacts(data.result,q,data.cv?.sourceText||data.cv?.text||'',{repair:typeof data.sampleRepair==='object'?data.sampleRepair:data.preview?.repair});const estimate=facts.estimate.low===facts.estimate.high?String(facts.estimate.low):`${facts.estimate.low}–${facts.estimate.high}`,score=r.overallScore;
+ facts=data.conversion||conversionFacts(data.result,q,data.originalCvText||data.cv?.sourceText||data.cv?.text||'',{repair:typeof data.sampleRepair==='object'?data.sampleRepair:data.preview?.repair});const estimate=facts.estimate.low===facts.estimate.high?String(facts.estimate.low):`${facts.estimate.low}–${facts.estimate.high}`,score=r.overallScore;
  const weights=r.weights||{application:30,ats:10,competency:25,numerical:15,technical:20},labels={application:'CV & application evidence',ats:'ATS readiness',competency:'Competency evidence',numerical:'Numerical',technical:'Commercial & technical'};
  const deadline=data.deadline?`<div class="deadline"><b>${esc(data.deadline.firm)}</b> · ${esc(data.deadline.programme)} · closes ${esc(new Date(data.deadline.date+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}))}. <a href="/tracker.html">View your tracker →</a></div>`:'';
  const rest=facts.remainingFixes,more=facts.otherLines.length,competencyCount=facts.competencies.length,missed=facts.missedTopics.length;

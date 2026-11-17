@@ -192,12 +192,12 @@
       S.phase='question';window.DeskInterviewStarting=true;$('#hvPhase').textContent='Listen to the question';$('#hvClock').textContent='—';$('#hvSkip').hidden=true;
       const heard=await window.DeskInterviewVoice?.readQuestion();window.DeskInterviewStarting=false;
       if(token!==S.generation)return;
-      if(!heard){S.phase='';$('#hvStart').disabled=false;setStatus('Question audio did not finish. Try Start again, or turn off Read questions aloud to continue.');return;}
+      if(!heard){setStatus('Question audio is unavailable. Read the question on screen; your thinking time starts now.');if(typeof notice==='function')notice('Read the question on screen. Your thinking time is starting.');}
     }
     $('#hvStage').scrollIntoView({ behavior: 'smooth', block: 'center' });$('#hvSkip').hidden=false;
     S.phase = 'think'; $('#hvPhase').textContent = 'Thinking time';
     countdown(think, l => { $('#hvClock').textContent = fmt(Math.max(l, 0)); }, () => beginAnswer(answer));
-    setStatus(retake ? 'Retake started.' : '');
+    if(retake)setStatus('Retake started.');else if(!$('#hvStatus').textContent)setStatus('');
   }
   function beginAnswer(answer) {
     clearInterval(S.timer); S.phase = 'answer'; $('#hvPhase').textContent = 'Recording'; $('#hvSkip').hidden = true; $('#hvEnd').hidden = false;

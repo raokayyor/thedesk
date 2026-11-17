@@ -36,9 +36,9 @@
     document.getElementById('camStatus').textContent = 'Interviewer speaking';
     voiceStatus.textContent = 'Listen to the question. Your answer is not recording yet.';
     return new Promise(resolve => {
-      let settled=false;
+      let settled=false,startedTimer;
       const finish=success=>{
-        if(settled)return;settled=true;clearTimeout(timeout);
+        if(settled)return;settled=true;clearTimeout(timeout);clearTimeout(startedTimer);
         if(token!==speechToken){resolve(false);return}
         reading=false;lock(false);
         document.getElementById('camStatus').textContent=stream?(stream.getVideoTracks().length?'Camera ready':'Microphone ready'):'Camera off';
@@ -47,8 +47,9 @@
         resolve(success);
       };
       const timeout=setTimeout(()=>{window.DeskNaturalVoice?.cancel();if(browserVoiceAvailable)window.speechSynthesis.cancel();finish(false)},45000);
-      if(window.DeskNaturalVoice){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,new URLSearchParams(location.search).has('sample')?undefined:assessment?.id).then(finish);return}
-      finish(false); // Do not silently substitute device speech for the interviewer voice.
+      const browserRead=()=>{if(token!==speechToken)return finish(false);if(!browserVoiceAvailable)return finish(false);voiceStatus.textContent='Reading the question with your browser voice…';const utterance=new window.SpeechSynthesisUtterance(question);utterance.lang='en-GB';utterance.onstart=()=>{clearTimeout(startedTimer);dispatchEvent(new CustomEvent('desk-interviewer-voice',{detail:{state:'speaking'}}))};utterance.onend=()=>{dispatchEvent(new CustomEvent('desk-interviewer-voice',{detail:{state:'waiting'}}));finish(true)};utterance.onerror=()=>finish(false);startedTimer=setTimeout(()=>{window.speechSynthesis.cancel();finish(false)},3000);window.speechSynthesis.speak(utterance);};
+      if(window.DeskNaturalVoice?.enabled){voiceStatus.textContent='Preparing interviewer audio…';window.DeskNaturalVoice.speak(question,new URLSearchParams(location.search).has('sample')?undefined:assessment?.id).then(ok=>ok?finish(true):browserRead());return}
+      browserRead();
     });
   }
 
@@ -97,7 +98,7 @@
     if (!stream || isRecording() || startPending) return;
     startPending=true;window.DeskInterviewStarting=true;
     const question=current;
-    try{if(voiceToggle.checked){const heard=await readQuestion();if(!heard||question!==current)return;}start();updateRecordLabel();}
+    try{if(voiceToggle.checked){const heard=await readQuestion();if(question!==current)return;if(!heard)notice('Question audio is unavailable. Read the question on screen; your answer will now start.');}start();updateRecordLabel();}
     finally{startPending=false;window.DeskInterviewStarting=false;}
   };
   document.getElementById('stopBtn').onclick = stop;
