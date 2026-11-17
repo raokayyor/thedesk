@@ -21,10 +21,12 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  overview.querySelector('.lead').textContent=`${r.priorities?.length||0} fixes take you from ${score} to about ${estimate}.`;
  skim.querySelectorAll('.skim-fact').forEach(n=>n.remove());
  const benchmark=document.createElement('p');benchmark.className='benchmark';benchmark.textContent=score<75?`${75-score} points below our competitive benchmark (75).`:'At or above our competitive benchmark (75).';skim.querySelector('.skim-card').append(benchmark);
- // The skim is a sample of this student's text, rather than a second full CV.
- skim.querySelectorAll('.cv-paper>p:not(.dim):not(.margin-note)').forEach((n,i)=>{if(i>0)n.remove();else{const line=facts.skimLines?.[0]||facts.primaryLine;const excerpt=completeSentence(line,25);n.innerHTML=`<mark>${esc(excerpt.split(/\s+/).slice(0,6).join(' '))}</mark> ${esc(excerpt.split(/\s+/).slice(6).join(' '))}`}});
+ // Display source lines in their CV order, without manufacturing headings or endings.
+ const paper=skim.querySelector('.cv-paper');paper.querySelectorAll('p:not(.dim):not(.margin-note)').forEach(n=>n.remove());
+ const markLine=text=>{const tokens=text.split(/\s+/),first=tokens.slice(0,6).join(' '),tail=tokens.slice(6,16).join(' '),ending=text.match(/\b(?:No|did not)\b[^.!?]*[.!?]?/i)?.[0];return '<mark>'+esc(first)+'</mark><span class="dim"> '+esc(tail)+'</span>'+(ending&&!tokens.slice(0,16).join(' ').includes(ending)?'<br><mark>'+esc(ending)+'</mark>':'');};
+ for(const entry of facts.skimEntries||facts.skimLines.map(text=>({text,heading:false}))){const line=document.createElement('p');line.className='skim-source-line';line.innerHTML=entry.heading?'<b>'+esc(entry.text)+'</b>':markLine(entry.text);paper.insertBefore(line,paper.querySelector('.margin-note'));}
  verdict.querySelectorAll('.positive,.negative').forEach(n=>n.remove());
- verdict.querySelector('.practitioner-read p').textContent=completeSentence(facts.verdict,35);
+ verdict.querySelector('.practitioner-read p').textContent=facts.verdict;
  gaps.querySelector('h2').remove();
  gaps.querySelectorAll('li').forEach((li,i)=>{
   li.querySelectorAll('.unlock-group').forEach(n=>n.remove());
@@ -59,13 +61,17 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  ats.querySelector('.term-chips').innerHTML=terms.matched.map(t=>`<span class="chip matched">${esc(t)}</span>`).join('')+terms.missing.map(t=>`<span class="chip missing">${esc(t)}</span>`).join('');
  disclosure('ATS',`${r.breakdown.ats}/${weights.ats} · ${terms.missing.length} terms missing`,ats);
  root.replaceChildren(overview,skim,verdict,fix,gaps,...(interview?[interview]:[]),offer,breakdown,email);
+ const original=[...root.children],scoreCard=document.createElement('div');scoreCard.className='desktop-score-card';
+ const scoreParts=[...overview.children].filter(n=>n.matches('.score-top,.score-band,.band-labels,small'));
+ const columns=document.createElement('div');columns.className='result-columns';const left=document.createElement('div');left.className='result-main-column';const sidebar=document.createElement('aside');sidebar.className='result-sidebar';sidebar.setAttribute('aria-label','Your score and membership plan');columns.append(left,sidebar);
+ const wide=matchMedia('(min-width:1024px)');function arrange(){if(wide.matches){original.filter(n=>n!==offer).forEach(n=>left.append(n));scoreParts.forEach(n=>scoreCard.append(n));scoreCard.append(component.cloneNode(true));sidebar.replaceChildren(scoreCard,offer);root.replaceChildren(columns);}else{scoreParts.forEach(n=>overview.append(n));scoreCard.querySelector('.breakdown')?.remove();root.replaceChildren(...original);}breakdown.querySelectorAll('.disclosure-toggle').forEach(button=>{button.setAttribute('aria-expanded',String(wide.matches));document.getElementById(button.getAttribute('aria-controls')).hidden=!wide.matches;});}wide.addEventListener('change',arrange);arrange();
 }
 async function load(){
  if(!id&&!sample){el('#resultStatus').innerHTML='Start your free assessment to see your result. <a href="/assessment.html">Get started →</a>';document.querySelectorAll('[data-unlock]').forEach(x=>x.hidden=true);return;}
  try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id));data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');
  if(sample){data.sampleRepair=data.paid;data.paid=false;el('#sampleBanner').hidden=false;}
  const r=freeConversionResult(data.result),p=data.profile||{},q=data.quiz||{};
- facts=data.conversion||conversionFacts(data.result,q,'',{repair:typeof data.sampleRepair==='object'?data.sampleRepair:data.preview?.repair});const estimate=facts.estimate.low===facts.estimate.high?String(facts.estimate.low):`${facts.estimate.low}–${facts.estimate.high}`,score=r.overallScore;
+ facts=data.conversion||conversionFacts(data.result,q,data.cv?.sourceText||data.cv?.text||'',{repair:typeof data.sampleRepair==='object'?data.sampleRepair:data.preview?.repair});const estimate=facts.estimate.low===facts.estimate.high?String(facts.estimate.low):`${facts.estimate.low}–${facts.estimate.high}`,score=r.overallScore;
  const weights=r.weights||{application:30,ats:10,competency:25,numerical:15,technical:20},labels={application:'CV & application evidence',ats:'ATS readiness',competency:'Competency evidence',numerical:'Numerical',technical:'Commercial & technical'};
  const deadline=data.deadline?`<div class="deadline"><b>${esc(data.deadline.firm)}</b> · ${esc(data.deadline.programme)} · closes ${esc(new Date(data.deadline.date+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}))}. <a href="/tracker.html">View your tracker →</a></div>`:'';
  const rest=facts.remainingFixes,more=facts.otherLines.length,competencyCount=facts.competencies.length,missed=facts.missedTopics.length;
