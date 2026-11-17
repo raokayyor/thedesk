@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free result v3 mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Free result v3: design reference for Codex. Amelia Chen sample, original CV only. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f6e0da;--hl:#f6dccd}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font:600 25px "EB Garamond",Georgia,serif}
+.sample{font-size:12.5px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start;padding:34px 0 80px}
+/* hero */
+h1{font-size:46px;line-height:1.04;max-width:16ch;margin-top:10px}
+.lead{font-size:18px;color:var(--ink-2);margin:12px 0 0}
+section{margin-top:44px}
+section>h2{font-size:28px;line-height:1.12;margin-top:8px}
+/* skim */
+.skim{background:var(--ink);border-radius:16px;padding:26px;color:#fff;margin-top:30px}
+.skim .k{color:#e8a283}
+.skim h2{font-size:28px;margin-top:6px}
+.paper{position:relative;background:#fffdf8;color:var(--ink);border-radius:6px;padding:26px 214px 22px 26px;margin-top:20px;box-shadow:0 18px 40px rgba(0,0,0,.28);font-size:13.5px;line-height:1.55}
+.paper .nm{font:600 22px "EB Garamond",Georgia,serif}
+.paper .ct{color:var(--mute);font-size:12.5px;border-bottom:1px solid #ece6dc;padding-bottom:10px;margin-bottom:12px}
+.paper .rh{font-weight:700;font-size:13px;margin-top:12px;display:flex;justify-content:space-between;gap:12px}
+.paper .rh span{font-weight:500;color:var(--mute)}
+.paper .b{color:#a9a49c;margin-top:3px}
+.paper .b .on{color:var(--ink);background:var(--hl);padding:0 3px;border-radius:2px}
+.paper .b .neg{color:var(--bad);background:var(--bad-soft);padding:0 3px;border-radius:2px;text-decoration:underline wavy rgba(180,67,58,.5);text-underline-offset:3px}
+.note{position:absolute;right:-12px;top:70px;width:196px;background:#fff6bf;color:#3a3420;font:500 21px/1.15 Caveat,"Segoe Print",cursive;padding:12px 14px;transform:rotate(2.5deg);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+.skim .foot{display:flex;justify-content:space-between;gap:16px;margin-top:16px;font-size:13px;color:#aab4b9}
+.skim .foot b{color:#e8a283}
+/* practitioner */
+.prac{display:grid;grid-template-columns:56px 1fr;gap:18px;margin-top:16px}
+.av{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 20px "EB Garamond",Georgia,serif}
+.prac q{display:block;font:italic 400 23px/1.4 "EB Garamond",Georgia,serif;quotes:"“" "”"}
+.prac .who{font-size:13px;color:var(--mute);margin-top:10px}
+.prac .who b{color:var(--ink)}
+/* free fix */
+.fix{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:16px}
+.was{font-size:15px;color:var(--ink-2)}.was .neg{color:var(--bad);background:var(--bad-soft);padding:0 3px;border-radius:2px}
+.why{font-size:14.5px;margin-top:12px;color:var(--ink-2)}.why b{color:var(--ink)}
+.ask{margin-top:16px;font-weight:600}
+.inp{margin-top:8px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:13px 14px;color:#9aa1a5;font-size:15px;min-height:74px}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:10px;min-height:50px;padding:0 22px;font-weight:600;font-size:15.5px;margin-top:12px}
+.fine{font-size:12.5px;color:var(--mute);margin-top:8px}
+/* gaps */
+.gaps{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.gap{display:grid;grid-template-columns:36px 1fr auto;gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.gap .n{width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 16px "EB Garamond",Georgia,serif}
+.gap b{display:block;font-size:16px}.gap span{font-size:14.5px;color:var(--ink-2)}
+.pts{font-weight:700;color:var(--good);font-size:14px;white-space:nowrap;background:var(--good-soft);padding:3px 10px;border-radius:999px}
+/* taster */
+.taster{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.cam{aspect-ratio:4/3;border-radius:10px;background:linear-gradient(160deg,#2a363b,#141b1e);position:relative;overflow:hidden}
+.cam:after{content:"";position:absolute;left:50%;top:56%;width:70px;height:70px;border-radius:50%;background:#3a474c;transform:translate(-50%,-50%);box-shadow:0 60px 0 30px #3a474c}
+.cam .rec{position:absolute;left:10px;top:10px;font-size:11px;color:#fff;display:flex;gap:6px;align-items:center;z-index:2}.cam .rec:before{content:"";width:8px;height:8px;border-radius:50%;background:#e5484d}
+.taster .q{font:italic 400 20px/1.35 "EB Garamond",Georgia,serif;margin-top:6px}
+.taster .k{color:var(--accent)}
+.taster a{display:inline-block;margin-top:10px;font-weight:600;font-size:14.5px;color:var(--ink)}
+/* breakdown */
+.bd{margin-top:16px;border-top:1px solid var(--line)}
+.bd details{border-bottom:1px solid var(--line);padding:16px 0}
+.bd summary{list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.bd summary::-webkit-details-marker{display:none}
+.bd summary b{font:600 20px "EB Garamond",Georgia,serif}
+.bd summary span{font-size:14px;color:var(--mute)}
+.bd .inner{margin-top:12px}
+.row{display:grid;grid-template-columns:1fr auto;gap:10px;font-size:14.5px;padding:7px 0}
+.lockline{color:#a9a49c;filter:blur(3.5px);user-select:none}
+.unl{font-weight:600;font-size:14px;margin-top:8px;display:inline-block}
+.comp{display:grid;grid-template-columns:150px 1fr 34px;gap:12px;align-items:center;font-size:14px;margin:7px 0}
+.bar{height:6px;background:var(--soft);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:#5c7a6c;border-radius:3px}
+.comp.low .bar i{background:var(--accent)}.comp span:last-child{text-align:right;color:var(--mute)}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;border-radius:999px;padding:3px 10px;margin:4px 6px 0 0}
+.chip.ok{background:var(--good-soft);color:var(--good)}.chip.no{background:var(--bad-soft);color:var(--bad)}
+/* sidebar */
+.side{position:sticky;top:24px;display:flex;flex-direction:column;gap:16px}
+.scard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.big{display:flex;align-items:baseline;gap:10px}
+.big b{font:600 64px/1 "EB Garamond",Georgia,serif}
+.big span{color:var(--mute);font-size:14px}
+.to{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;font-size:13px;color:var(--mute)}.to b{font:600 26px "EB Garamond",Georgia,serif;color:var(--good)}
+.band{position:relative;height:8px;border-radius:4px;margin-top:14px;background:linear-gradient(90deg,#d9cfc2 0 65%,#f1d4c6 65% 75%,#cfe3d5 75%)}
+.band i{position:absolute;top:-4px;width:3px;height:16px;background:var(--ink);border-radius:2px}
+.band em{position:absolute;top:-2px;height:12px;background:rgba(47,122,79,.35);border-radius:3px}
+.bl{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:6px}
+.parts{margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.parts div{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:13.5px}.parts b{font-weight:600}
+.parts .bar{grid-column:1/-1;height:5px}
+.plan{background:var(--ink);color:#fff;border-radius:16px;padding:22px}
+.plan .k{color:#aab4b9}
+.plan h3{font-size:24px;line-height:1.15;margin-top:6px}
+.plan ul{list-style:none;padding:0;margin:14px 0 0}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
+.plan li:first-child{border-top:0}.plan li:before{content:"✓";color:#9fd3b1;font-weight:700}
+.plan li small{display:block;color:#e8a283;font-size:12.5px}
+.plan .btn{background:#fff;color:var(--ink);width:100%;margin-top:14px}
+.plan .p{font-size:12.5px;color:#aab4b9;text-align:center;margin-top:8px}
+.plan .more{font-size:13.5px;color:#d5dce0;margin-top:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.plan .more a{color:#fff;font-weight:600}
+/* phone */
+.mscore,.mbar{display:none}
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  .grid{grid-template-columns:1fr;gap:0;padding-top:22px}
+  h1{font-size:34px}
+  .lead{font-size:16px}
+  .side{position:static;margin-top:40px}
+  .side .scard{display:none}
+  .mscore{display:block;margin-top:18px}
+  .skim{padding:20px 16px;margin-top:22px}.skim h2{font-size:24px}
+  .paper{padding:18px 16px;font-size:13px}.paper .rh{flex-direction:column;gap:0}
+  .note{position:relative;right:auto;top:auto;width:auto;margin:14px 0 0 30px;font-size:20px}
+  .prac q{font-size:20px}
+  .taster{grid-template-columns:1fr}.cam{max-width:none}
+  .comp{grid-template-columns:118px 1fr 30px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:rgba(251,250,247,.97);border-top:1px solid var(--line);padding:10px 16px 18px;align-items:center;gap:12px}
+  .mbar b{font:600 22px "EB Garamond",Georgia,serif}.mbar small{display:block;font-size:11.5px;color:var(--mute)}
+  .mbar .btn{margin:0 0 0 auto;min-height:46px;padding:0 16px}
+  body{padding-bottom:90px}
+}
+</style></head><body>
+<header><div class="wrap"><span class="logo">The Desk</span><span class="sample">Sample result · Amelia Chen · fictional student</span></div></header>
+<div class="wrap"><div class="grid">
+<main>
+  <div class="k">Investment banking · Barclays</div>
+  <h1>You’d get read, but not shortlisted yet.</h1>
+  <p class="lead">Three fixes take you from <b>58</b> to about <b style="color:var(--good)">66–72</b>.</p>
+
+  <div class="scard mscore">
+    <div class="big"><b>58</b><span>/ 100 · Developing</span></div>
+    <div class="to"><span>After the three fixes</span><b>~66–72</b></div>
+    <div class="band"><em style="left:66%;width:6%"></em><i style="left:58%"></i></div>
+    <div class="bl"><span>Developing</span><span>65 Borderline</span><span>75 Competitive</span></div>
+  </div>
+
+  <div class="skim">
+    <div class="k">If you applied to Barclays today</div>
+    <h2>This is what a screener’s eye lands on.</h2>
+    <div class="paper">
+      <div class="nm">Amelia Chen</div>
+      <div class="ct">BSc Economics, University of Bristol · predicted 2:1</div>
+      <div class="rh">Redcliffe Partners · Corporate Finance Intern<span>Jul–Aug 2025</span></div>
+      <div class="b"><span class="on">Researched 12 UK software companies</span> for a prospective acquisition screen … <span class="neg">No transaction completion or client outcome was confirmed.</span></div>
+      <div class="rh">Pho House · Part-time Team Member<span>2023–present</span></div>
+      <div class="b"><span class="on">Worked 12 hours per week</span> alongside university … <span class="neg">No monetary saving or complaint-resolution rate was recorded.</span></div>
+      <div class="rh">LVMH valuation · University project<span>2025</span></div>
+      <div class="b"><span class="on">Built a DCF and trading-comparables valuation</span> … <span class="neg">did not make a live investment recommendation.</span></div>
+      <div class="rh">Economics Society · Member<span>2024–2026</span></div>
+      <div class="b"><span class="neg">Attended employer talks. No committee position.</span></div>
+      <div class="note">Real work, but every line ends on what <u>didn’t</u> happen. No result. No leadership. Next.</div>
+    </div>
+    <div class="foot"><span>Illustrative, based on your CV.</span><span><b>17 points</b> below our competitive benchmark (75)</span></div>
+  </div>
+
+  <section>
+    <div class="k">What a practitioner sees</div>
+    <div class="prac"><div class="av">KR</div><div>
+      <q>The Redcliffe screen is real, relevant work: twelve companies, four shortlisted on a clear rule. What stops me shortlisting you is that every line ends on what you did, not what it showed, and nothing here shows you leading anything.</q>
+      <div class="who"><b>Kayyor Rao</b> · 20+ years in banking · our practitioners’ framework, applied to your CV</div></div></div>
+  </section>
+
+  <section>
+    <div class="k">Fix one line now, free</div>
+    <h2>Start with your strongest experience.</h2>
+    <div class="fix">
+      <div class="was">Researched 12 UK software companies for a prospective acquisition screen … Flagged 4 companies for further review because their recurring revenue models matched the screen brief. <span class="neg">No transaction completion or client outcome was confirmed.</span></div>
+      <div class="why"><b>Why it’s holding you back:</b> it closes on a disclaimer, and the best part, picking companies on recurring revenue, is buried in the middle.</div>
+      <div class="ask">What did your screen show, and what happened next?</div>
+      <div class="inp">e.g. 4 of the 12 fitted the brief; the associate took 2 forward…</div>
+      <div class="btn">Rewrite my line →</div>
+      <div class="fine">We only use your original line and your answer. Nothing is made up.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="k">What’s holding you back</div>
+    <h2>Three gaps, biggest first.</h2>
+    <div class="gaps">
+      <div class="gap"><span class="n">1</span><div><b>Your lines stop at the method</b><span>Redcliffe and LVMH both say what you did, never what it showed.</span></div><span class="pts">+4–6</span></div>
+      <div class="gap"><span class="n">2</span><div><b>No leadership evidence</b><span>Training 3 colleagues is your only example. Leadership scores 23/100.</span></div><span class="pts">+2–4</span></div>
+      <div class="gap"><span class="n">3</span><div><b>Four technical topics to close</b><span>Equity dilution, strategic buyers, net debt and percentage falls.</span></div><span class="pts">+2–3</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="taster"><div class="cam"><span class="rec">Practice · 2:00</span></div><div>
+      <div class="k">Members · Interview coach</div>
+      <div class="q">“Tell me about a time you led a group, even informally.”</div>
+      <div style="font-size:14.5px;color:var(--ink-2);margin-top:6px">Your weakest area, Barclays-style. Answer on camera, with your best CV points beside the question.</div>
+      <a>Try one question free →</a></div></div>
+  </section>
+
+  <section>
+    <div class="k">Your full breakdown</div>
+    <div class="bd">
+      <details open><summary><b>Your CV</b><span>2 more lines to fix</span></summary><div class="inner">
+        <div class="row"><span>“Worked 12 hours per week alongside university…”</span></div>
+        <div style="font-size:14px;color:var(--ink-2)"><b>The problem:</b> you caught a duplicate payment during a busy service, then hid it under “helped process the correction”.</div>
+        <div class="row lockline"><span>Worked 12 hours a week throughout my degree; caught a duplicate payment during peak service and</span></div>
+        <div class="row"><span>“Built a DCF and trading-comparables valuation…”</span></div>
+        <div class="row lockline"><span>Valued LVMH against 3 luxury peers; showed the valuation was most sensitive to</span></div>
+        <a class="unl">Unlock both repaired lines →</a></div></details>
+      <details open><summary><b>The 7 things interviewers score</b><span>Weakest: resilience, leadership</span></summary><div class="inner">
+        <div class="comp"><span>Analytical</span><span class="bar"><i style="width:73%"></i></span><span>73</span></div>
+        <div class="comp"><span>Teamwork</span><span class="bar"><i style="width:48%"></i></span><span>48</span></div>
+        <div class="comp"><span>Communication</span><span class="bar"><i style="width:48%"></i></span><span>48</span></div>
+        <div class="comp"><span>Commercial</span><span class="bar"><i style="width:47%"></i></span><span>47</span></div>
+        <div class="comp"><span>Technical</span><span class="bar"><i style="width:47%"></i></span><span>47</span></div>
+        <div class="comp low"><span>Leadership</span><span class="bar"><i style="width:23%"></i></span><span>23</span></div>
+        <div class="comp low"><span>Resilience</span><span class="bar"><i style="width:22%"></i></span><span>22</span></div>
+        <a class="unl">Unlock model answers for all 7 →</a></div></details>
+      <details open><summary><b>Your tests</b><span>6 of 10 · 4 topics to close</span></summary><div class="inner">
+        <div class="row"><span>Net debt: the bridge from equity value to enterprise value</span></div>
+        <div class="row"><span>Equity dilution: what new shares do to existing owners</span></div>
+        <div class="row"><span>Strategic vs financial buyers, and why one pays more</span></div>
+        <a class="unl">Unlock worked answers and practice →</a></div></details>
+      <details open><summary><b>Screening software (ATS)</b><span>9/10 · 2 terms missing</span></summary><div class="inner">
+        <span class="chip ok">valuation</span><span class="chip ok">financial modelling</span><span class="chip ok">DCF</span><span class="chip ok">+6</span><span class="chip no">due diligence</span><span class="chip no">+1</span>
+        <div><a class="unl">See where to add them →</a></div></div></details>
+    </div>
+  </section>
+</main>
+
+<aside class="side">
+  <div class="scard">
+    <div class="k">Your readiness</div>
+    <div class="big" style="margin-top:6px"><b>58</b><span>/ 100 · Developing</span></div>
+    <div class="to"><span>After the three fixes</span><b>~66–72</b></div>
+    <div class="band"><em style="left:66%;width:6%"></em><i style="left:58%"></i></div>
+    <div class="bl"><span>Developing</span><span>65</span><span>75 Competitive</span></div>
+    <div class="parts">
+      <div><span>CV &amp; application evidence</span><b>17/30</b><span class="bar"><i style="width:57%"></i></span></div>
+      <div><span>Competency evidence</span><b>11/25</b><span class="bar"><i style="width:44%"></i></span></div>
+      <div><span>Commercial &amp; technical</span><b>12/20</b><span class="bar"><i style="width:60%"></i></span></div>
+      <div><span>Numerical</span><b>9/15</b><span class="bar"><i style="width:60%"></i></span></div>
+      <div><span>ATS readiness</span><b>9/10</b><span class="bar"><i style="width:90%"></i></span></div>
+    </div>
+  </div>
+  <div class="plan">
+    <div class="k">Your next step</div>
+    <h3>Go from 58 to about 66–72.</h3>
+    <ul>
+      <li><p style="margin:0">Every weak CV line repaired<small>2 more lines stop at the method</small></p></li>
+      <li><p style="margin:0">Model answers for all 7<small>Leadership 23 · resilience 22</small></p></li>
+      <li><p style="margin:0">Interview coach, Barclays questions<small>“Tell me about a time you led…”</small></p></li>
+      <li><p style="margin:0">Worked answers + 2,000 questions<small>4 topics missed</small></p></li>
+      <li><p style="margin:0">Assessment centre practice<small>Group exercise, case study, inbox</small></p></li>
+    </ul>
+    <div style="font-size:13px;color:#aab4b9;margin-top:4px">+5 more included</div>
+    <div class="btn">Unlock everything · £89</div>
+    <div class="p">Paid once · no auto-renewal · 12 months</div>
+    <div class="more">Want a person too? <a>Add 2 practitioner calls · £199 →</a></div>
+  </div>
+  <div style="font-size:13px;color:var(--mute);text-align:center"><a style="color:var(--mute)">See a full sample member report →</a></div>
+</aside>
+</div></div>
+<div class="mbar"><div><b>58 → ~66–72</b><small>Paid once · no auto-renewal</small></div><div class="btn">Unlock · £89</div></div>
+</body></html>

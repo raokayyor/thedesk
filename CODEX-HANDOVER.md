@@ -354,3 +354,49 @@ Design reference: `design/free-assessment-v2-mock.html` and `design/free-assessm
 **Homepage buttons go straight to step 1** (/assessment.html?route=…). /assessment-start.html redirects there.
 
 **Analytics:** track step_viewed and step_completed per step, cv_uploaded vs cv_pasted, extract_failed, question_answered (index), email_submitted, result_opened, and time per step, so we can see exactly where students drop out.
+
+---
+
+## Free result v3: visual polish (design/free-result-v3-mock.html, free-result-v3-*.jpg)
+
+Keep the current structure (two columns on desktop, collapsible on phone). Change:
+1. **Use one CV source.** The Amelia sample mixes the original CV with rewritten lines ("Applied a recurring-revenue model screen…"). The free result must show the ORIGINAL lines only. Rewrites appear only as blurred/locked.
+2. **Skim card = paper CV on a dark card.** Highlight each bullet's first words (`.on`, peach), mark the negative ending in red with a wavy underline (`.neg`), and grey out the rest. Add a handwritten margin note (Caveat 500, yellow, rotated 2.5deg) from a `skimNote` field. On desktop the note sits in a 200px right gutter of the paper. On phone it sits inline under it.
+3. **Practitioner view: two sentences, specific to the CV, no mention of quiz results.** Pattern: what's genuinely good (with a number from the CV) + what stops the shortlist.
+4. **Gap rows get +points chips** (green pill, right-aligned).
+5. **Interview taster card** (camera tile + the question for their weakest competency) links to the free interview: `interview.html?taster=interview&trial=1&competency=leadership&firm=<firm>`.
+6. **Sidebar:** score card (big Garamond number, "After the three fixes ~66–72", band bar, five parts) + dark "Your next step" plan card, sticky top:24px.
+7. **Phone:** a score card under the H1, the sidebar score hidden, and a fixed bottom bar "58 → ~66–72 · Unlock · £89".
+8. **Header:** align the logo and the sample label to the same 1120px container as the content.
+
+## Free interview taster v2 (design/free-interview-v2-mock.html, free-interview-v2-*.jpg)
+
+The live `interview.html?taster=interview&trial=1` currently looks like a different product. Problems found:
+- Wrong person and firm: it shows "Jamie Patel's interview · Goldman Sachs · HireVue". The taster must use the signed-in/sample candidate and the firm from their free result (Amelia → Barclays).
+- **The question isn't shown before you start.** For the taster the question IS the page.
+- Browser-default buttons ("Enable camera + mic", "Microphone only", "Hear question" are 10–11px black on grey). There's a green "Ready · Start answer" inside the video AND a "Start interview" below it, and a blue "Finish interview". So there are three CTA colours and two start buttons.
+- An empty grey skeleton bar, three nested `<details>` (sound / mode / firm), and the tip hidden in another `<details>`.
+- A green rounded "Free mode" banner with a default blue underlined link, and a green taster box at the bottom. Neither matches the site.
+- A floating round icon on the right edge overlaps the content.
+
+### Screen 1: before you answer
+- Header: logo + a "Free taster · 1 question" pill + Exit. No green banner.
+- Kicker: "Interview coach · Barclays · Competency". The H1 is the question itself, in Garamond 600, 42px desktop / 31px phone.
+- Chips: "Leadership · your weakest area (23)" in accent, then "2 minutes to answer" and "30 seconds to think".
+- One line of instruction, then the camera stage: 16:9 on desktop, 4:5 on phone. Camera and mic status sit inside the stage as small text, plus a timer track.
+- **One primary button:** "Start my answer" (ink). Fallbacks as text links: "No camera? Answer with mic only or type it". The permission prompt fires on click, so there's no separate "Enable camera" button.
+- "Nothing records until you press start. Only you can see your recording." (Check this against the real retention policy before shipping.)
+- Settings collapse to two rows: Mode · Practice, retake once; Sound and settings · Change.
+- Sidebar (stacked under the stage on phone):
+  - "From your CV · Use one of these": 2–3 evidence points from the free result, each with a one-line why. Say when NOT to use one.
+  - Practitioner tip: visible, not collapsed, with the KR avatar and Garamond italic.
+  - "What you'll get back": three ticks, the third marked (members).
+
+### Screen 2: feedback (the conversion moment)
+- Kicker "Your answer · 1:46 · Barclays · Leadership". The H1 is a one-line verdict ("You took charge. You didn't say what changed.").
+- A big score with the comparison to their paper score ("Leadership on paper was 23. Out loud you're already at 48.") and four dimension tiles (Structure / Your role / Result / Delivery). The lowest one is in accent.
+- Free: one "worked" and one "fix" card, each quoting the student's own words, with the weak phrase highlighted.
+- Locked (blurred real text + overlay): "2 more points for members" and "Your stronger version, built from your answer".
+- Sidebar: the dark plan card ("Practise every Barclays question like this", 5 rows, white £89 button, "Paid once · no auto-renewal · 12 months"), then "You've used your free question. Back to your result →".
+- Phone: a sticky bottom bar "Every question, full feedback · Unlock · £89".
+- Remove the member tab bar (My Desk / Practise / CV / Community / More) for non-members on this page, or keep it only if free My Desk is live. Right now it suggests access they don't have.
