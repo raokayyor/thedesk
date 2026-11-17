@@ -101,7 +101,8 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   }
   if(!result)throw new Error('Assessment quality checks failed. Please retry.');
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
-  const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers,fingerprint});
+  const keep=req.body.keepResult||{},resultEmail=typeof keep.email==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(keep.email)&&keep.email.length<=254?keep.email.trim().toLowerCase():undefined;
+  const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers,fingerprint,...(resultEmail?{resultEmail,deadlineReminderConsent:keep.deadlineConsent===true,consentRecordedAt:new Date().toISOString()}:{})});
   if(parent)result.recheckComparison=compareRecheck(parent,result);
   if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);

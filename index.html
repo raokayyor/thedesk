@@ -219,7 +219,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
         <div class="q" id="fq">What are you aiming for?</div>
         <div class="chips" role="group" aria-labelledby="fq" id="chips"></div>
       </div>
-      <a class="cta" id="cta" href="/assessment-start.html">Get my free score →</a>
+      <a class="cta" id="cta" href="/assessment.html">Get my free score →</a>
       <div class="for" id="for" aria-live="polite"></div>
       <div class="small">Free · no card · <a href="/fullcycle-amelia.html">see a sample report first</a></div>
       <p class="hero-privacy">Your CV stays private. We never share it with employers.</p>
@@ -245,7 +245,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 <article class="round-card" id="round-5" aria-label="Round 5: Community"><div class="round-number">05</div><h3>Community</h3><img src="/assets/toolkit/year.png" alt="A member’s score, applications and preparation progress" width="800" height="500" loading="lazy"><ul><li>Student forum: ask questions and share tips</li><li>Exchange knowledge with other applicants</li><li>University &amp; society groups</li><li>Trading league &amp; Society Cup</li></ul><p class="round-personal"><b>Why it’s personal</b>Find students preparing for the same firms, share what you’re learning, and ask the panel when you’re stuck.</p></article>
 </div>
     <div class="round-swipe"><span>Swipe to see every round →</span><div class="round-dots" aria-label="Choose a recruiting round"><a href="#round-1" aria-label="Show round 1" aria-current="true"></a><a href="#round-2" aria-label="Show round 2"></a><a href="#round-3" aria-label="Show round 3"></a><a href="#round-4" aria-label="Show round 4"></a><a href="#round-5" aria-label="Show round 5"></a></div></div>
-    <div class="round-actions"><a class="cta" id="round-cta" href="/assessment-start.html">Start with your free score →</a><a href="/fullcycle-amelia.html">See a sample member report →</a><a class="desktop-try-tools" href="/try.html">Try the tools →</a></div>
+    <div class="round-actions"><a class="cta" id="round-cta" href="/assessment.html">Start with your free score →</a><a href="/fullcycle-amelia.html">See a sample member report →</a><a class="desktop-try-tools" href="/try.html">Try the tools →</a></div>
   </section>
 
   <section class="band people-section" aria-labelledby="c4">
@@ -287,18 +287,18 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
       <div class="tier main"><div class="popular">Most popular</div><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div>
         <ul><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
         <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
-        <a class="cta go" href="/assessment-start.html" style="margin-top:auto">Start with your free score →</a></div>
+        <a class="cta go" href="/assessment.html" style="margin-top:auto">Start with your free score →</a></div>
       <div class="tier desktop-tier plus-tier"><div class="nm">Member + Practitioner</div><div class="big">£199</div><div class="mute">a year · paid once</div><p class="mobile-plus-summary">Everything in Member, plus two 30–45 minute calls with a practitioner and written notes</p><ul><li>Everything in Member</li><li><b>Two calls with a practitioner</b>, 30–45 minutes each</li><li>Call 1: your CV and applications reviewed with you</li><li>Call 2: a mock interview or assessment centre prep</li><li>Written notes after each call</li></ul><a class="go desktop-plus-button" href="/signup.html?plan=plus">See how it works →</a><a class="cta mobile-plus-button" href="/signup.html?plan=plus">Add a practitioner →</a><p class="fine mobile-plus-summary">Already a member? Upgrade any time by paying the difference.</p></div>
       <div class="tier desktop-tier season-tier"><div class="nm">1:1 support</div><div class="big">£3,000</div><div class="mute">for your recruiting season</div><ul><li>Everything in Member</li><li>A named practitioner from application to offer</li><li>Live mock interviews with feedback</li><li>Every CV and application reviewed before you send it</li></ul><a class="go" href="/signup.html?plan=coaching">Ask about 1:1 →</a></div>
     </div>
-    <p class="mobile-pricing"><a href="/assessment-start.html"><b>Not ready to pay? Start free:</b> your readiness score, the community and the trading league. No card. →</a></p>
+    <p class="mobile-pricing"><a href="/assessment.html"><b>Not ready to pay? Start free:</b> your readiness score, the community and the trading league. No card. →</a></p>
     <p class="fine mobile-pricing"><a href="/signup.html?plan=coaching">Want a practitioner with you all season? Ask about 1:1 support →</a></p>
     <p class="fine desktop-pricing-note">Already a member? Upgrade to Member + Practitioner any time by paying the difference. Every score and piece of feedback follows our practitioners’ framework, applied to your own CV.</p>
   </section>
 
   <section class="final" aria-labelledby="c6">
     <h2 id="c6">Find out what the recruiter will see. Then fix it.</h2>
-    <a class="cta" href="/assessment-start.html" id="cta2">Get my free score →</a>
+    <a class="cta" href="/assessment.html" id="cta2">Get my free score →</a>
     <div class="small">Free · no card</div>
   </section>
 </div>
@@ -367,12 +367,12 @@ document.getElementById('people').innerHTML =
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
   const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
   chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
-  matchMedia('(max-width:699px)').addEventListener('change',e=>{if(e.matches){cta.href='/assessment-start.html';cta2.href='/assessment-start.html';document.getElementById('round-cta').href='/assessment-start.html';}});
+  matchMedia('(max-width:699px)').addEventListener('change',e=>{if(e.matches){cta.href='/assessment.html';cta2.href='/assessment.html';document.getElementById('round-cta').href='/assessment.html';}});
   chips.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
-    const href = '/assessment-start.html' + (matchMedia('(min-width:1024px)').matches && r[0] !== 'unsure' ? '?route=' + r[0] : '');
+    const href = '/assessment.html' + (matchMedia('(min-width:1024px)').matches && r[0] !== 'unsure' ? '?route=' + r[0] : '');
     cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
