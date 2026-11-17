@@ -1,4 +1,4 @@
-import {upsertAccount,startSession} from '../lib/accounts.mjs';
+import {upsertAccount,startSession,linkAssessment} from '../lib/accounts.mjs';
 // Staff-only test runner: runs the free assessment and the paid Full Cycle report
 // for the fictional personas in samples/test-personas.json, so staff can compare
 // what a student gets free against what they get for £89.
@@ -70,6 +70,17 @@ export default async function handler(req, res) {
       const key=['a','b','c'].includes(req.query.persona)?req.query.persona:'a';
       const account=await upsertAccount('community-review-'+key+'@example.invalid');await startSession(res,account.id);
       res.statusCode=302;res.setHeader('Location','/community.html');return res.end();
+    }
+    if(req.method==='GET'&&req.query?.view==='free-taster-review'){
+      if(process.env.VERCEL_ENV!=='preview')return res.status(404).end();
+      const run=(await sql().query('SELECT assessment_id FROM desk_test_runs WHERE assessment_id IS NOT NULL ORDER BY created_at DESC LIMIT 1'))[0];
+      if(!run)return res.status(404).send('Run a fictional assessment first.');
+      const account=await upsertAccount('free-taster-review-20261117@example.invalid');
+      const testOwner=createHash('sha256').update(account.id+':free-taster-review').digest('hex');
+      const id=createHash('sha256').update(account.id+':taster-assessment').digest('hex').slice(0,48);
+      await sql().query(`INSERT INTO desk_assessments(id,owner_hash,input,result) SELECT $1,$2,input||'{"testFixture":true}'::jsonb,result FROM desk_assessments WHERE id=$3 ON CONFLICT(id) DO NOTHING`,[id,testOwner,run.assessment_id]);
+      await linkAssessment(account.id,id);await sql().query('UPDATE desk_accounts SET verified_at=now() WHERE id=$1',[account.id]);
+      res.setHeader('Set-Cookie',`desk_owner=${testOwner}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`);await startSession(res,account.id);res.statusCode=302;res.setHeader('Location','/my.html#freeTasters');return res.end();
     }
     if (req.method === 'GET' && req.query?.view) {
       // Open the real student pages for a test record: sets this browser's desk_owner cookie

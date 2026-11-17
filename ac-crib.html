@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><script src="/free-mode.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Assessment centre crib sheet | The Desk</title>
@@ -103,6 +103,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
   }
   async function load(k) {
     if (!assessmentId) return;
+    if(window.DeskFreeMode?.tool==='crib'){msg('Your assessment CV is loaded. Build your free introduction below.');return;}
     const d = await fetch(`/api/assessment-centre?view=crib&id=${assessmentId}&firm=${encodeURIComponent(bank.firms[k].label)}`).then(r => r.json().then(j => ({ ok: r.ok, status: r.status, j }))).catch(() => null);
     if (d?.ok && d.j.crib) { render(d.j.crib, k); msg('Your saved crib sheet for ' + bank.firms[k].label + '. Build it again after you update your CV.'); }
     else { $('sheet').hidden = true; $('print').hidden = true; if (d?.status === 402) msg('The crib sheet is part of membership. <a href="/signup.html?plan=member">See membership</a>', 'info', true); else msg(''); }
@@ -135,11 +136,11 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     return;
   }
   const wanted = new URLSearchParams(location.search).get('firm');
-  fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
-    assessmentId = d?.report?.assessmentId || null;
+  fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(async d => {
+    const taster=window.DeskFreeMode?.tool==='crib'?await window.DeskFreeMode.ready:null;assessmentId = taster?.assessmentId||d?.report?.assessmentId || null;
     const k = (wanted && packs[wanted]) ? wanted : bank.resolveFirm(d?.profile?.targetFirm || '');
     if (packs[k]) $('firm').value = k;
-    load($('firm').value);
+    if(taster)$('firm').disabled=true;load($('firm').value);
   }).catch(() => {});
 })();
 </script>

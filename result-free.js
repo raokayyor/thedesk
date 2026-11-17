@@ -33,7 +33,7 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  });
  const interview=competencies.querySelector('.taster');
  root.querySelectorAll('.taster').forEach(n=>{if(n!==interview)n.remove()});
- if(interview){interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();interview.querySelector('p').textContent=`Build evidence for ${weakest[0]?.name||'your interview'} with your CV beside the question.`;}
+ if(interview){const launch=interview.querySelector('a');launch.href='/interview.html?ready=1&taster=interview';launch.textContent='Try your free interview question →';interview.querySelector('.kicker').textContent='Free interview coach';interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();const all=document.createElement('a');all.href='/my.html#freeTasters';all.className='all-tasters-link';all.textContent='Try every tool free →';interview.append(all);interview.querySelector('p').textContent=`Build evidence for ${weakest[0]?.name||'your interview'} with your CV beside the question.`;}
  community.remove();
  const rows=offer.querySelectorAll('.plan-rows>div');rows.forEach((n,i)=>{if(i>=5)n.remove()});
  const remaining=planRows.length-5;if(remaining>0){const extra=document.createElement('p');extra.className='plan-more';extra.textContent=`+${remaining} more included`;offer.querySelector('.plan-rows').after(extra)}
