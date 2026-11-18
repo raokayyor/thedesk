@@ -136,3 +136,5 @@ a{color:inherit;text-underline-offset:3px}.slim-header,main,footer{max-width:760
 @media(min-width:1024px){.free-taster-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.free-taster-grid .taster{aspect-ratio:1/1;padding:20px}.free-taster-grid .taster-icon{display:none}.free-taster-grid .taster blockquote{font-size:19px;margin:10px 0}.free-taster-grid .taster p{font-size:14px}.free-taster-grid .taster>div>b{font:600 24px/1.15 'EB Garamond',Georgia,serif}}
 
 .free-taster-grid .taster{display:block;padding:20px;border:1px solid var(--line);border-radius:16px;background:#fff}.free-taster-grid .taster>div{height:100%}.free-taster-grid .kicker{color:var(--accent)}
+
+.priorities>li:nth-child(n+2){background:#eeece7;color:#697174;border-color:#dedbd4}.priorities>li:nth-child(n+2) b,.priorities>li:nth-child(n+2) p{color:#697174}.priorities>li:nth-child(n+2):before{background:#777e80}
