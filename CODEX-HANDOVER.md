@@ -405,7 +405,7 @@ The live `interview.html?taster=interview&trial=1` currently looks like a differ
 
 ## 1:1 page and new practitioner pricing (one-to-one.html)
 
-New page `/one-to-one.html`. Every "Need more help?" and "Explore 1:1 practitioner support" link goes here instead of `/mentor.html`:
+New page `/one-to-one.html`. Order: hero → panel ("People who did the job, not recruiters", directly under the header; 2-column compact grid on phone) → three tiers → "Pick by where you are" → how a session works → FAQ → free-score CTA. Every "Need more help?" and "Explore 1:1 practitioner support" link goes here instead of `/mentor.html`:
 - fullcycle-plan.html
 - deutsche-bank.html
 - the free result

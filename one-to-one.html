@@ -25,7 +25,7 @@ header nav{display:flex;gap:22px;font-size:14.5px}header nav a{text-decoration:n
 .ctx{display:none;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px;color:var(--ink-2)}
 .ctx b{color:var(--ink)}
 /* tiers */
-.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;align-items:stretch}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;align-items:stretch}
 .tier{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column}
 .tier.rec{background:var(--ink);color:#fff;border-color:var(--ink);position:relative}
 .tier .badge{position:absolute;top:-12px;left:26px;background:var(--accent);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
@@ -47,6 +47,7 @@ header nav{display:flex;gap:22px;font-size:14.5px}header nav a{text-decoration:n
 .small{font-size:12.5px;color:var(--mute);text-align:center;margin-top:8px}.tier.rec .small{color:#aab4b9}
 /* which */
 section{margin-top:72px}
+section.first{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
 section>h2{font-size:34px;line-height:1.1;margin-top:8px}
 .which{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
 .which div{border-top:2px solid var(--ink);padding-top:14px}
@@ -86,9 +87,13 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .hero{padding-top:26px}.hero h1{font-size:36px}.hero p{font-size:16.5px}
   .tiers{grid-template-columns:1fr;gap:22px;margin-top:28px}
   .tier.rec{order:-1}
-  .which,.how,.people,.panel{grid-template-columns:1fr}
+  .which,.how,.people{grid-template-columns:1fr}
+  .people{gap:14px}.panel{grid-template-columns:1fr 1fr;gap:4px 14px}
+  .panel>div{grid-template-columns:1fr;gap:6px;padding:12px 0}.panel .ini{width:34px;height:34px;font-size:13px}
+  .panel .name{font-size:17px}.panel .role{font-size:12.5px}.panel .firms{font-size:12px;margin-top:4px}
+  .honest{font-size:14px}
   .which{gap:20px}
-  section{margin-top:56px}section>h2{font-size:28px}
+  section{margin-top:56px}section>h2{font-size:28px}section.first{margin-top:24px;padding-top:22px}
   .lead{grid-template-columns:76px 1fr}.lead img{width:76px;height:76px}
   .end{padding:24px}.end .btn{width:100%}
 }
@@ -105,6 +110,14 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
     <div class="ctx" id="ctx"></div>
   </div>
 
+  <section class="first">
+    <div class="k">Who you’ll work with</div>
+    <h2>People who did the job, not recruiters.</h2>
+    <div class="people" id="people"></div>
+    <p class="honest">They didn’t hire for a living. They did the work you’re applying for, for 20 to 40 years, and know what a desk wants from a graduate. We match you with the practitioner closest to your route.</p>
+  </section>
+
+  <div class="k" style="margin-top:56px">Choose how much help you want</div>
   <div class="tiers">
     <div class="tier">
       <div class="for">For an interview coming up</div>
@@ -167,12 +180,6 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
     </div>
   </section>
 
-  <section>
-    <div class="k">Who you’ll work with</div>
-    <h2>People who did the job, not recruiters.</h2>
-    <div class="people" id="people"></div>
-    <p class="honest">They didn’t hire for a living. They did the work you’re applying for, for 20 to 40 years, and know what a desk wants from a graduate. We match you with the practitioner closest to your route.</p>
-  </section>
 
   <section>
     <div class="k">How a session works</div>
