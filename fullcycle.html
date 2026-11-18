@@ -445,7 +445,7 @@ var SECTIONS=[
 ];
 
 function renderDeskRead(deep,P){
- var read=reportReadTools.reportRead(deep||{},P.executiveVerdict||{}),points=function(items){return '<ul>'+items.map(function(item){return '<li>'+esc(item)+'</li>'}).join('')+'</ul>'};
+ var read=reportReadTools.reportRead(deep||{},{...P.executiveVerdict,competencies:(P.competencyRepair||[]).map(function(c){return {name:c.name,score:c.score,reason:c.evidence}})}),points=function(items){return '<ul>'+items.map(function(item){return '<li>'+esc(item)+'</li>'}).join('')+'</ul>'};
  return '<section class="desk-read mt32"><div class="eyebrow">The Desk’s read</div><h2 class="mt8">What your evidence says.</h2><p class="desk-read-verdict">'+esc(read.verdict)+'</p><div class="desk-read-grid"><div class="card"><h3>What works</h3>'+points(read.strengths)+'</div><div class="card"><h3>What needs attention</h3>'+points(read.gaps)+'</div></div><div class="desk-read-next"><b>Your next step</b><p>'+esc(read.nextStep)+'</p><a href="#cv">Work on my CV →</a></div><details class="desk-route"><summary>Your route and alternatives</summary><h3>Is this route realistic?</h3><p>'+h(P.targetRouteMeaning?.isRouteRealistic||'Check the current programme requirements against your year, route and experience.')+'</p><h3>If this cycle does not work out</h3><p>'+h(P.targetRouteMeaning?.steppingStoneRoute||'Use the remaining gaps to choose your next preparation task.')+'</p></details></section>';
 }
 
