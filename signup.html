@@ -111,8 +111,8 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     </article>
 
     <article class="plan">
-      <div><h3>Member + Practitioner</h3><div class="mute">The tools, plus two calls with a person</div></div>
-      <div class="price"><b data-plus-price>£199</b><span class="mute">a year · paid once</span></div>
+      <div><h3>Member + Practitioner</h3><div class="mute">The tools, plus three sessions with a person</div></div>
+      <div class="price"><b data-plus-price>£249</b><span class="mute">a year · paid once</span></div>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Everything in Member</b>, plus:</span></li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>Two calls with a practitioner</b>, 30–45 minutes each</span></li>
@@ -195,9 +195,9 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
         <tr><th scope="row">Applications with prep links</th><td>Tracker</td><td class="y">Yes</td><td class="y">Reviewed with you on a call</td><td class="y">Reviewed with you</td></tr>
         <tr><th scope="row">Community, trading game, Society Cup</th><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
         <tr><th scope="row">Ask the panel (private question)</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Ongoing</td></tr>
-        <tr><th scope="row">Calls with a practitioner</th><td class="n">No</td><td class="n">No</td><td class="y">2 calls</td><td class="y">Ongoing</td></tr>
+        <tr><th scope="row">Calls with a practitioner</th><td class="n">No</td><td class="n">No</td><td class="y">3 sessions</td><td class="y">Ongoing</td></tr>
         <tr><th scope="row">Group sessions with practitioners</th><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
-        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td><b data-plus-price>£199</b>, paid once</td><td><b>£3,000</b> for the season</td></tr>
+        <tr><th scope="row">Price</th><td>£0</td><td><b>£89 for 12 months</b>, paid once<span data-payin3 hidden> or in 3 with Klarna</span></td><td><b data-plus-price>£249</b>, paid once</td><td><b>£3,000</b> for the season</td></tr>
       </tbody>
     </table>
   </section>
@@ -235,7 +235,8 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
   const COPY = {
     free: { k: 'Join free', t: 'Create your free desk', i: 'Takes a minute. We email you a link to sign in: no password.', s: ['Tell us your university and year', 'Open the link we email you', 'Take your free assessment from My Desk'], b: 'Create my free desk' },
     member: { k: 'Member · £89 a year', t: 'Become a member', i: 'Membership is built on your assessment, so you take that first (free, about 10 minutes), then pay.', s: ['Tell us your university and year', 'Take your free assessment (or use the one you’ve done)', 'Pay £89 once for 12 months'], b: 'Continue' },
-    plus: { k: 'Member + Practitioner', t: 'Add a practitioner', i: 'Tell us where you are and which firms you’re applying to. We’ll email you to book your two calls and send the payment link.', s: ['Send this form', 'We email you a payment link', 'Book your two calls when you need them'], b: 'Send' },
+    plus: { k: 'Member + Practitioner', t: 'Add a practitioner', i: 'Tell us where you are and which firms you’re applying to. We’ll email you to book your three sessions and send the payment link.', s: ['Send this form', 'We email you a payment link', 'Book your two calls when you need them'], b: 'Send' },
+    single: { k: 'One practitioner session · £79', t: 'Book a session', i: 'Tell us your firm, round and interview date. We’ll email you a payment link and times with the closest practitioner.', s: ['Send this form', 'We email you a payment link and times', 'Practitioner reads your CV, then your 45-minute call'], b: 'Send' },
     coaching: { k: '1:1 support · £3,000', t: 'Ask about 1:1', i: 'Tell us where you are and what you need. A practitioner will email you to arrange a short call.', s: ['Send this form', 'Short call with a practitioner', 'Agree a plan and price'], b: 'Send' },
     society: { k: 'Finance societies', t: 'Get your society involved', i: 'Tell us your society and university. We’ll email you about the Society Cup and sessions.', s: ['Send this form', 'We email you within a few days'], b: 'Send' }
   };
@@ -244,7 +245,7 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     plan = p; const c = COPY[p];
     $('fKicker').textContent = c.k; $('fTitle').textContent = c.t; $('fIntro').textContent = c.i; submit.textContent = c.b;
     $('fSteps').innerHTML = c.s.map(x => '<li>' + x.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) + '</li>').join('');
-    $('noteWrap').hidden = !(p === 'coaching' || p === 'society' || p === 'plus');
+    $('noteWrap').hidden = !(p === 'coaching' || p === 'society' || p === 'plus' || p === 'single');
     $('memberFields').hidden = p === 'society';
     $('society').placeholder = p === 'society' ? 'Your society' : 'e.g. Investment Society';
     $('updates').closest('label').hidden = p === 'society';
@@ -277,10 +278,10 @@ summary{cursor:pointer;font-weight:700;min-height:28px}details p{margin:8px 0 0;
     if (plan === 'member' && desk?.member) { location.href = '/my.html'; return; }
     submit.disabled = true; const label = submit.textContent; submit.textContent = 'One moment…';
     try {
-      if (plan === 'coaching' || plan === 'society' || plan === 'plus') {
+      if (plan === 'coaching' || plan === 'society' || plan === 'plus' || plan === 'single') {
         const r = await post('/api/desk-home', { action: 'coaching-interest', type: plan, email, university, name: '', note: [$('society').value.trim(), $('area').value, year, $('note').value.trim()].filter(Boolean).join(' · ') });
         if (!r.ok) return show('err', r.data.error || 'That didn’t send. Try again in a minute.');
-        form.reset(); return show('ok', plan === 'society' ? 'Thanks. We’ll email you about the Society Cup and sessions.' : plan === 'plus' ? 'Thanks. We’ll email you a payment link and how to book your calls.' : 'Thanks. A practitioner will email you to arrange a short call.');
+        form.reset(); return show('ok', plan === 'society' ? 'Thanks. We’ll email you about the Society Cup and sessions.' : plan === 'plus' ? 'Thanks. We’ll email you a payment link and how to book your sessions.' : plan === 'single' ? 'Thanks. We’ll email you a payment link and times for your session.' : 'Thanks. A practitioner will email you to arrange a short call.');
       }
       const p = await post('/api/desk-home', { action: 'signup-profile', plan, university, year, society: $('society').value.trim(), area: $('area').value, updates: $('updates').checked });
       if (!p.ok) return show('err', p.data.error || 'We couldn’t save that. Try again.');

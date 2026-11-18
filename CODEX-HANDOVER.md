@@ -400,3 +400,34 @@ The live `interview.html?taster=interview&trial=1` currently looks like a differ
 - Sidebar: the dark plan card ("Practise every Barclays question like this", 5 rows, white £89 button, "Paid once · no auto-renewal · 12 months"), then "You've used your free question. Back to your result →".
 - Phone: a sticky bottom bar "Every question, full feedback · Unlock · £89".
 - Remove the member tab bar (My Desk / Practise / CV / Community / More) for non-members on this page, or keep it only if free My Desk is live. Right now it suggests access they don't have.
+
+---
+
+## 1:1 page and new practitioner pricing (one-to-one.html)
+
+New page `/one-to-one.html`. Every "Need more help?" and "Explore 1:1 practitioner support" link goes here instead of `/mentor.html`:
+- fullcycle-plan.html
+- deutsche-bank.html
+- the free result
+- the homepage pricing tile (done in home-c.html / home-preview.html)
+
+Pass context so the hero can show it: `/one-to-one.html?from=result&firm=Barclays&score=58`.
+
+**Three options** (in signup.html, home-c.html and home-preview.html):
+
+| Plan key | Name | Price | Includes |
+|---|---|---|---|
+| `single` (new) | One practitioner session | £79 | 45-min video call, mock interview for their firm and round, practitioner reads CV + Desk result first, written notes within 24h. No membership needed. |
+| `plus` | Membership + 3 sessions | **£249** (was £199 with 2 calls) | £89 membership for 12 months + 3 sessions: CV and firm choice; mock first round; AC/Superday prep. Same practitioner, written notes. "Worth £326 bought separately" (89 + 3×79). |
+| `coaching` | 1:1 support, application to offer | £3,000 / season | Named practitioner, weekly calls, every application checked, mocks before every round, messaging between calls, membership included. Starts with a free 15-min call. |
+
+**Code changes:**
+- `signup.html`: new `single` entry in COPY (shows the note field, posts `coaching-interest` with `type:'single'`). The plus copy now says three sessions. `data-plus-price` is £249.
+- `api/desk-home.js`: `coaching-interest` accepts `type:'single'`.
+- **Live:** if Stripe products exist for plus, update the price to £249. Add a £79 single-session product when you're ready to take payment directly. Until then it's a lead form, like plus.
+
+**Placeholders for Rao:**
+- the reschedule policy (FAQ)
+- "[x] places a season" on the £3,000 tile
+
+**Mismatch:** fullcycle-plan.html lists Rao as "UBS · Barclays · BGC", while firm-logos.mjs says "UBS · Commerzbank · BGC". Use one list, Rao to confirm.
