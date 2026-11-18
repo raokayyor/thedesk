@@ -10,3 +10,6 @@ export const TESTIMONIALS = [
  {...cydney, slot: 'pricing'},
  {...cydney, slot: 'one-to-one'}
 ];
+
+// Append a new approved pricing quote to replace the current pricing card.
+export function testimonialsForSlot(slot,items=TESTIMONIALS){const matches=items.filter(t=>t.slot===slot&&t.quote&&t.name);return slot==='pricing'?matches.slice(-1):matches;}

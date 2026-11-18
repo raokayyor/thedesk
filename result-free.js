@@ -115,6 +115,7 @@ async function load(){
 
  compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest,question,reason,terms,more,missed});
 
+ if(id&&!sample){try{localStorage.setItem('desk-free-result-id',id);}catch{}}
  if(data.email||sample){el('#emailResult').hidden=true;el('a[href="#emailResult"]').hidden=true;}
  if(facts.weakLineCount===0)el('#freeLineFix').hidden=true;
  el('#resultContent').hidden=false;el('#resultStatus').hidden=true;el('#mobileUnlock').hidden=false;el('#stickyScore').textContent=`${score} → ~${estimate}`;

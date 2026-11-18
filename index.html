@@ -201,10 +201,13 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 
 .hero-audience{font-size:15px;line-height:1.4;color:var(--mute);margin:12px 0 0}.monthly-equivalent{margin:0;font-size:14px;color:#cdd5d9}.deadline-count{font-weight:600;margin:28px 0 -16px}.round-mobile-copy{display:none}
 @media(max-width:900px){.round-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;gap:14px;padding:0 0 12px;scrollbar-width:none;grid-template-rows:none}.round-cards::-webkit-scrollbar{display:none}.round-card{display:flex;flex:0 0 86%;grid-row:auto;padding:16px;gap:10px;scroll-snap-align:start}.round-card .round-number,.round-card ul,.round-card .round-personal{display:none}.round-card h3{font-size:26px;min-height:0;margin:0;order:1}.round-card img{order:0;aspect-ratio:16/10}.round-card .round-mobile-copy{display:block;order:2;font-size:15px;line-height:1.4;margin:0}.round-swipe{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mute)}.round-dots{display:flex}.round-dots a{display:grid;place-items:center;width:22px;height:28px}.round-dots a:before{content:'';width:6px;height:6px;border-radius:50%;background:#c9c3ba}.round-dots a[aria-current=true]:before{background:var(--ink)}}
+
+.deadline-count{margin:28px 0 0;padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:10px;font-size:14px;line-height:1.45}.returning-result{display:block;padding:12px 20px;text-align:center;background:var(--good-soft);font-size:14px;font-weight:600;text-decoration:none}.phone-score-bar{display:none}@media(max-width:900px){body{padding-bottom:84px}.phone-score-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:12px;align-items:center;justify-content:space-between;background:#fbfaf7;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px #1f2a2e0c}.phone-score-bar span{font-size:12px;line-height:1.4}.phone-score-bar a{flex-shrink:0;display:flex;align-items:center;min-height:44px;padding:10px 14px;border-radius:8px;color:white;background:var(--ink);font-size:14px;font-weight:600;text-decoration:none}}
 </style>
 <script src="/public-about-links.js" defer></script><link rel="stylesheet" href="/next-live-session.css"><script src="/live-sessions.js" defer></script><script src="/next-live-session.js" defer></script><link rel="stylesheet" href="/testimonials.css">
 </head>
 <body>
+<a id="returningResult" class="returning-result" hidden></a>
 <div class="wrap">
   <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/signin.html">Log in</a></nav></header>
 
@@ -243,6 +246,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 
   <section class="band rounds" aria-labelledby="rounds-title">
 <p class="tools-stat"><b>More than 360,000 applications for Goldman Sachs’ 2025 internships. Fewer than 1% got a place.</b><sup><a href="#src">1</a></sup></p>
+<p id="applicationLimitNote" hidden>Many firms only consider one application from you per season. Make it the right one.</p>
     <div class="kicker">Membership · £89 a year</div>
     <h2 id="rounds-title">One membership. Every round. All built on <em>your</em> CV.</h2>
     <p class="lead">From your first application to your final assessment centre, every tool uses your CV, your route and the firms you’re applying to.</p>
@@ -281,14 +285,14 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 
 
 
-  <p id="deadlineCount" class="deadline-count" hidden></p>
-  <section class="band" aria-labelledby="c5">
+  <aside id="deadlineCount" class="deadline-count" hidden></aside>
+  <section id="homepagePricing" class="band" aria-labelledby="c5">
     <div class="kicker">Membership</div>
     <h2 id="c5" style="margin-top:12px">A whole recruiting year for less than one CV rewrite.</h2>
     <p class="lead">A professional CV rewrite alone typically costs around £99, and an hour with a paid interview coach £75–£300.<sup><a href="#src" style="text-decoration:none;color:var(--mute);font-size:11px">3</a></sup> Membership covers your CV, applications, tests, interviews and assessment centres for 12 months.</p>
     <aside id="approvedProof" class="testimonial-slot" data-testimonial-slot="pricing" hidden aria-label="Student testimonials"></aside>
     <div class="tiers homepage-pricing">
-      <div class="tier free-tier"><div class="nm">Free</div><div class="big">£0</div><ul><li>Your readiness score and 5-part breakdown</li><li>One CV line fixed</li><li>One interview question with feedback</li><li>4 free questions each: tests, situational judgement, verbal</li><li>Community and trading league</li></ul><a class="cta go" href="/assessment-start.html">Get my free score →</a></div>
+      <div class="tier free-tier"><div class="nm">Free</div><div class="big">£0</div><ul><li>Your readiness score and breakdown</li><li>One CV line fixed</li><li>One interview question with feedback</li></ul><a class="cta go" href="/assessment-start.html">Get my free score →</a></div>
       <div class="tier main"><div class="popular">Start here</div><div class="nm">Member</div><div class="big">£89</div><div class="per">a year · paid once · no auto-renewal</div><p class="monthly-equivalent">About £7.40 a month</p><p class="klarna-option" hidden>Or pay in 3 with Klarna</p>
         <ul><li>Everything in Free, unlimited</li><li>Deep assessment and your weakest CV lines rewritten</li><li>Interview coach with your firm’s questions, every day</li><li>Assessment centre practice: group exercise, case study, inbox, crib sheet</li><li>Tests, firm packs, applications and a question to a practitioner</li><li>Up to 12 rechecks to track your progress</li></ul>
         <a href="/fullcycle-amelia.html" style="color:#fff;font-weight:600;font-size:14.5px;margin-top:6px">See a sample member report →</a>
@@ -379,7 +383,8 @@ document.getElementById('people').innerHTML =
   });
 })();
 </script>
-<script src="/home-summary.js?v=20261118" defer></script>
+<script src="/home-summary.js?v=20261118-returning" defer></script>
 <script type="module" src="/testimonials.js"></script>
+<aside id="phoneScoreBar" class="phone-score-bar" hidden aria-label="Start your free assessment"><span>Get my free score · 10 mins · free</span><a href="/assessment-start.html">Get started →</a></aside>
 </body>
 </html>

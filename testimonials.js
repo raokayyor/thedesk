@@ -1,7 +1,7 @@
-import {TESTIMONIALS} from '/data/testimonials.mjs';
+import {testimonialsForSlot} from '/data/testimonials.mjs';
 for(const slot of document.querySelectorAll('[data-testimonial-slot]')){
  const seen=new Set(),cards=[];
- for(const item of TESTIMONIALS){
+ for(const item of testimonialsForSlot(slot.dataset.testimonialSlot)){
   if(item.slot!==slot.dataset.testimonialSlot||!item.quote||!item.name)continue;
   const key=item.name+'|'+item.quote;if(seen.has(key))continue;seen.add(key);
   const card=document.createElement('figure');card.className='testimonial-card';
