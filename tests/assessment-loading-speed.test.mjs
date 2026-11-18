@@ -13,14 +13,14 @@ test('identical first assessment reuses only the owner-scoped saved result witho
  assert.match(lookup.query,/owner_hash=\$1/);assert.match(lookup.query,/root_id IS NULL/);
  assert.deepEqual(Array.from(lookup.args),['browser-owner','fingerprint']);assert.deepEqual(Array.from(linked),['account','saved']);
 });
-test('six checks follow server milestones without an elapsed timer or timed completion',()=>{
+test('activity advances during a slow check without claiming checks are complete',()=>{
  const loading=readFileSync(new URL('../assessment-loading.js',import.meta.url),'utf8');
  const code=loading.slice(loading.indexOf('function setStep('),loading.indexOf('\nwindow.assessmentLoading='));
  const items=Array.from({length:6},()=>({className:'',symbol:{textContent:''},querySelector(){return this.symbol}}));let now=0,tick;
- const context={serverStage:'checking',el:{querySelectorAll:()=>items},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},showStat(){}};
- vm.createContext(context);vm.runInContext('let tipTimer,started;'+code+';this.reset=reset;this.updateStage=updateStage',context);context.reset();
+ const context={serverStage:'checking',el:{querySelectorAll:()=>items,querySelector:()=>({style:{}})},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},showStat(){}};
+ vm.createContext(context);vm.runInContext('let tipTimer,started,motionTimer,visualProgress=8;'+code+';this.reset=reset;this.updateStage=updateStage',context);context.reset();
  assert.deepEqual(items.map(x=>x.className),['done','done','active','pending','pending','pending']);
- now=90000;tick();assert.equal(items[2].className,'active');assert.equal(items[3].className,'pending');
+ now=90000;context.updateStage();assert.equal(items[5].className,'active');assert.equal(items[2].className,'pending');assert.equal(items.filter(x=>x.className==='done').length,2);now=0;
  context.serverStage='validating';context.updateStage();assert.equal(items[3].className,'active');assert.equal(items[4].className,'pending');
  context.serverStage='reviewing';context.updateStage();assert.equal(items[4].className,'active');assert.equal(items[5].className,'pending');
  context.serverStage='saving';context.updateStage();assert.equal(items[5].className,'active');
