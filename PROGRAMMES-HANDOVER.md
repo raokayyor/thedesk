@@ -34,3 +34,11 @@ The tracker displays the oldest human check date as the last full check and dist
 ## Team data work
 
 Fill missing UK spring weeks, insights, summer internships, off-cycle programmes, placements and graduate schemes for the firms in CODEX-PROGRAMMES.md. Prioritise bank/advisory spring weeks and summer internships before January. The firm-domain config includes the handover firms; add exact firm-specific ATS hosts as needed. This implementation does not claim to have researched new live programme postings.
+
+## Verification (18 November 2026)
+
+- Preview API returned all 66 rows from the isolated Neon schema. Unauthenticated staff API and cron calls return 401.
+- 14 automated tests passed for data, validation, source checks, deadline filtering and staff access.
+- Local in-memory PostgreSQL integration passed: idempotent migration, atomic save plus field audit, restoring a row, checked-today, insertion and public response shape. No production records were used.
+- Preview configuration download was rejected by automatic approval review because it would write credentials to disk; no credentials were downloaded. Authenticated writes were verified locally rather than with the preview staff key.
+- Browser visual QA is unverified. Production remains unchanged.
