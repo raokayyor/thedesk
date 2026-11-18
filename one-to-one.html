@@ -1,4 +1,227 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>1:1 practitioner support | The Desk</title><meta name="description" content="Get personal help with finance applications: two practitioner calls with membership, or support throughout your recruiting season."><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
-*{box-sizing:border-box}body{margin:0;background:#f4f1ec;color:#1f2a2e;font:16px/1.6 Figtree,Arial,sans-serif}header,main,footer{max-width:1120px;margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2ddd5}a{color:inherit}.logo,h1,h2,.price{font-family:'EB Garamond',Georgia,serif;font-weight:600}.logo{font-size:28px;text-decoration:none}main{padding-top:48px;padding-bottom:64px}h1{font-size:clamp(36px,5vw,52px);line-height:1.05;max-width:650px;margin:12px 0 20px}h2{font-size:30px;line-height:1.1;margin:12px 0}.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c4562a;font-weight:600}.intro{max-width:65ch;color:#6b747a}.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:32px}.card{background:#fbfaf7;border:1px solid #e2ddd5;border-radius:12px;padding:28px;min-width:0;display:flex;flex-direction:column}.price{font-size:46px;margin:8px 0}.card ul{padding-left:20px}.card li{margin:10px 0}.btn{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;background:#1f2a2e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:auto}.quiet .btn{background:transparent;color:#1f2a2e;border:1px solid #1f2a2e}.quiet .price{font-size:36px}small{color:#6b747a;display:block;margin-top:14px}.panel-link{margin-top:28px}footer{font-size:13px;border-top:1px solid #e2ddd5}@media(max-width:699px){.plans{grid-template-columns:1fr}main{padding-top:28px}.card{padding:22px}}
-</style></head><body><header><a class="logo" href="/">The Desk</a><a href="/signin.html">Log in →</a></header><main><div class="kicker">1:1 practitioner support</div><h1>A person to help you prepare.</h1><p class="intro">Talk through your CV, applications and interviews with someone who has worked in finance. Choose focused calls or support throughout your recruiting season.</p><div class="plans"><section class="card"><div class="kicker">Focused help</div><h2>Member + Practitioner</h2><p class="price">£199</p><p>Everything in Member, plus two 30–45 minute calls with a practitioner and written notes.</p><ul><li>12 months of Member tools for your CV, applications, tests and interviews.</li><li>Two calls to work on the questions and recruiting rounds that matter to you.</li><li>Written notes so you know what to do next.</li></ul><a class="btn" href="/signup.html?plan=plus">Add a practitioner →</a><small>Paid once · no auto-renewal. Already a member? Upgrade by paying the £110 difference.</small></section><section class="card quiet"><div class="kicker">Support all season</div><h2>1:1 support</h2><p class="price">£3,000</p><p>Work with a practitioner throughout your recruiting season.</p><ul><li>Discuss your goals, applications and preparation priorities.</li><li>Get personal help with your CV and application answers.</li><li>Prepare for interviews and assessment centres.</li></ul><a class="btn" href="/signup.html?plan=coaching">Explore season-long support →</a><small>Tell us what you need. We’ll discuss the support and scope with you before you commit.</small></section></div><p class="panel-link"><a href="/about.html">Meet the practitioners →</a></p><p class="intro">Prefer to start on your own? <a href="/assessment-start.html">Get your free readiness score →</a></p></main><footer><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Desk | Work 1:1 with a practitioner</title>
+<meta name="description" content="Practise with someone who has done the job. One session, a season pack, or 1:1 support from application to offer.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* 1:1 page. Same tokens as home-c.html (version C). Prices live in PRICES below and in the data-price attributes. */
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+header.top{max-width:1120px;margin:0 auto;padding:0 28px;height:64px;display:flex;justify-content:space-between;align-items:center}
+.logo{font:600 25px "EB Garamond",Georgia,serif;text-decoration:none}
+header nav{display:flex;gap:22px;font-size:14.5px}header nav a{text-decoration:none;color:var(--ink-2)}
+.hero{padding:44px 0 10px;max-width:860px}
+.hero h1{font-size:50px;line-height:1.04;margin-top:12px;text-wrap:balance}
+.hero p{font-size:18px;color:var(--ink-2);margin:16px 0 0;max-width:60ch}
+.ctx{display:none;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px;color:var(--ink-2)}
+.ctx b{color:var(--ink)}
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;align-items:stretch}
+.tier{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column}
+.tier.rec{background:var(--ink);color:#fff;border-color:var(--ink);position:relative}
+.tier .badge{position:absolute;top:-12px;left:26px;background:var(--accent);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
+.tier .for{font-size:13.5px;color:var(--mute)}.tier.rec .for{color:#aab4b9}
+.tier h3{font-size:25px;line-height:1.12;margin-top:6px}
+.price{display:flex;align-items:baseline;gap:8px;margin-top:16px}
+.price b{font:600 50px/1 "EB Garamond",Georgia,serif}
+.price span{font-size:14px;color:var(--mute)}.tier.rec .price span{color:#aab4b9}
+.worth{font-size:13px;color:var(--good);font-weight:600;margin-top:6px;min-height:20px}.tier.rec .worth{color:#9fd3b1}
+.worth:empty{min-height:0;margin:0}
+.tier ul{list-style:none;padding:0;margin:18px 0 0;flex:1}
+.tier li{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}
+.tier.rec li{border-color:rgba(255,255,255,.12)}
+.tier li:first-child{border-top:0}
+.tier li:before{content:"✓";color:var(--good);font-weight:700}.tier.rec li:before{color:#9fd3b1}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:10px;min-height:50px;padding:0 20px;font-weight:600;font-size:15.5px;text-decoration:none;margin-top:20px}
+.tier.rec .btn{background:#fff;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.small{font-size:12.5px;color:var(--mute);text-align:center;margin-top:8px}.tier.rec .small{color:#aab4b9}
+/* which */
+section{margin-top:72px}
+section.first{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+section>h2{font-size:34px;line-height:1.1;margin-top:8px}
+.which{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.which div{border-top:2px solid var(--ink);padding-top:14px}
+.which b{display:block;font:600 21px/1.2 "EB Garamond",Georgia,serif}
+.which span{font-size:14.5px;color:var(--ink-2)}
+.which a{display:inline-block;margin-top:8px;font-weight:600;font-size:14.5px}
+/* people */
+.people{display:grid;grid-template-columns:1.25fr 2fr;gap:28px;margin-top:22px;align-items:start}
+.lead{display:grid;grid-template-columns:96px 1fr;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.lead img{width:96px;height:96px;border-radius:12px;object-fit:cover;background:var(--soft)}
+.name{font:600 20px "EB Garamond",Georgia,serif}
+.role{font-size:13.5px;color:var(--mute)}
+.firms{font-size:13px;font-weight:600;color:var(--ink-2);margin-top:8px}
+.panel{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.panel>div{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.ini{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 16px "EB Garamond",Georgia,serif}
+.honest{margin-top:18px;font-size:14.5px;color:var(--ink-2);max-width:70ch}
+/* how */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px;counter-reset:s}
+.how div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.how div:before{counter-increment:s;content:counter(s);display:flex;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font:600 15px "EB Garamond",Georgia,serif;margin-bottom:10px}
+.how b{display:block;font-size:16px}.how span{font-size:14.5px;color:var(--ink-2)}
+/* faq */
+.faq{margin-top:18px;border-top:1px solid var(--line);max-width:780px}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{cursor:pointer;font:600 19px "EB Garamond",Georgia,serif;list-style:none;display:flex;justify-content:space-between}
+.faq summary::-webkit-details-marker{display:none}.faq summary:after{content:"+";color:var(--mute)}
+.faq details[open] summary:after{content:"–"}
+.faq p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+.end{margin-top:72px;background:var(--ink);color:#fff;border-radius:18px;padding:34px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.end h2{font-size:30px}.end p{margin:6px 0 0;color:#aab4b9}
+.end .btn{background:#fff;color:var(--ink);margin:0}
+footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font-size:12.5px;color:var(--mute)}
+@media (max-width:900px){
+  .wrap,header.top{padding:0 18px}
+  header nav a:first-child{display:none}
+  .hero{padding-top:26px}.hero h1{font-size:36px}.hero p{font-size:16.5px}
+  .tiers{grid-template-columns:1fr;gap:22px;margin-top:28px}
+  .tier.rec{order:-1}
+  .which,.how,.people{grid-template-columns:1fr}
+  .people{gap:14px}.panel{grid-template-columns:1fr 1fr;gap:4px 14px}
+  .panel>div{grid-template-columns:1fr;gap:6px;padding:12px 0}.panel .ini{width:34px;height:34px;font-size:13px}
+  .panel .name{font-size:17px}.panel .role{font-size:12.5px}.panel .firms{font-size:12px;margin-top:4px}
+  .honest{font-size:14px}
+  .which{gap:20px}
+  section{margin-top:56px}section>h2{font-size:28px}section.first{margin-top:24px;padding-top:22px}
+  .lead{grid-template-columns:76px 1fr}.lead img{width:76px;height:76px}
+  .end{padding:24px}.end .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/about.html">About</a><a href="/signin.html">Log in</a></nav></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="k">Work with a practitioner</div>
+    <h1>Practise with someone who’s done the job.</h1>
+    <p>Our practitioners spent their careers in banking, markets, asset management and audit. They’ll read your CV and your Desk result before you speak, then practise the interview you’re actually facing.</p>
+    <div class="ctx" id="ctx"></div>
+  </div>
+
+  <section class="first">
+    <div class="k">Who you’ll work with</div>
+    <h2>Decades inside the firms you’re applying to.</h2>
+    <div class="people" id="people"></div>
+    <p class="honest">Between them, more than 130 years in banking, markets, asset management and audit. They know what a desk wants from a graduate because they worked on one. We match you with the practitioner closest to your route.</p>
+  </section>
+
+  <div class="k" style="margin-top:56px">Choose how much help you want</div>
+  <div class="tiers">
+    <div class="tier">
+      <div class="for">For an interview coming up</div>
+      <h3>One practitioner session</h3>
+      <div class="price"><b data-price="single">£99</b><span>per session</span></div>
+      <div class="worth"></div>
+      <ul>
+        <li>45-minute video call</li>
+        <li>A mock interview for your firm and round</li>
+        <li>Your practitioner reads your CV and Desk result first</li>
+        <li>Written notes within 24 hours</li>
+        <li>Book again whenever you need to</li>
+      </ul>
+      <a class="btn ghost" href="/signup.html?plan=single">Book a session</a>
+      <div class="small">You don’t need to be a member</div>
+    </div>
+
+    <div class="tier rec">
+      <span class="badge">Best value</span>
+      <div class="for">For your whole application season</div>
+      <h3>Membership + 2 sessions</h3>
+      <div class="price"><b data-price="plus">£249</b><span>paid once</span></div>
+      <div class="worth">Worth £287 bought separately</div>
+      <ul>
+        <li>Everything in the £89 membership for 12 months</li>
+        <li><span><b>Session 1:</b> your CV and which firms to apply to</span></li>
+        <li><span><b>Session 2:</b> a mock interview, assessment centre or Superday prep, when you need it</span></li>
+        <li>The same practitioner each time, with written notes</li>
+      </ul>
+      <a class="btn" href="/signup.html?plan=plus">Get membership + 2 sessions</a>
+      <div class="small">Use your sessions any time in 12 months</div>
+    </div>
+
+    <div class="tier">
+      <div class="for">For someone with you all the way</div>
+      <h3>1:1 support, application to offer</h3>
+      <div class="price"><b data-price="coaching">£3,000</b><span>per season</span></div>
+      <div class="worth"></div>
+      <ul>
+        <li>One named practitioner for your whole season</li>
+        <li>Weekly calls and a plan for every firm</li>
+        <li>Every CV, cover letter and form checked before you send it</li>
+        <li>Mock interviews before every round</li>
+        <li>Message your practitioner between calls</li>
+        <li>Full membership included</li>
+      </ul>
+      <a class="btn ghost" href="/signup.html?plan=coaching">Ask about 1:1</a>
+      <div class="small">Starts with a free 15-minute call</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="k">Not sure which?</div>
+    <h2>Pick by where you are.</h2>
+    <div class="which">
+      <div><b>“I’ve got an interview next week.”</b><span>Book one session. We’ll run your firm’s format and tell you exactly what to fix.</span><br><a href="/signup.html?plan=single">One session · £99 →</a></div>
+      <div><b>“I’m applying this autumn.”</b><span>Membership + 2 sessions. The tools do the daily work; your practitioner checks it at the two moments that matter.</span><br><a href="/signup.html?plan=plus">Membership + 2 · £249 →</a></div>
+      <div><b>“I want someone in my corner.”</b><span>1:1 support. One practitioner, every application and every round, until you have an offer.</span><br><a href="/signup.html?plan=coaching">Ask about 1:1 →</a></div>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="k">How a session works</div>
+    <h2>Three steps. No small talk.</h2>
+    <div class="how">
+      <div><b>Book and tell us your interview</b><span>Firm, round and date. Upload your CV or use the one from your Desk result.</span></div>
+      <div><b>Your practitioner prepares</b><span>They read your CV and your result, and pick the questions your firm is likely to ask.</span></div>
+      <div><b>Call, then written notes</b><span>45 minutes on video. Within 24 hours you get what worked, what to fix and what to say instead.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="k">Questions</div>
+    <h2>Before you book.</h2>
+    <div class="faq">
+      <details><summary>Can I choose my practitioner?</summary><p>Tell us your route and we’ll suggest the closest match. If you’d like someone specific, say so when you book.</p></details>
+      <details><summary>I’m not going into banking. Is this still for me?</summary><p>Yes. Our panel covers markets, asset management, audit, accounting and insurance. We’ll tell you before you pay if we don’t have the right person.</p></details>
+      <details><summary>Is the call recorded?</summary><p>No. You get written notes instead, so you have the feedback without a recording of you.</p></details>
+      <details><summary>Will this get me a job?</summary><p>No one can promise that, and you should be wary of anyone who does. What we promise is honest feedback from people who know the job, and a clear list of what to fix.</p></details>
+    </div>
+  </section>
+
+  <div class="end">
+    <div><h2>Not sure yet? Start with your free score.</h2><p>Ten minutes. See where you stand before you spend anything.</p></div>
+    <a class="btn" href="/assessment-start.html">Get my free score →</a>
+  </div>
+</main>
+
+<footer><div class="wrap">The Desk is independent. Firm names show where our practitioners previously worked, not endorsements. · <a href="/privacy.html">Privacy</a> · <a href="/about.html">About</a></div></footer>
+
+<script type="module">
+let mod; try { mod = await import('/data/home-practitioners.mjs'); } catch (e) { mod = await import('/data/firm-logos.mjs'); }
+const { PRACTITIONERS } = mod;
+const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+const ini = p => p.init || p.name.split(' ').map(w => w[0]).join('');
+const [lead, ...rest] = PRACTITIONERS;
+document.getElementById('people').innerHTML =
+  `<div class="lead"><img src="/assets/kayyor-rao.jpg" alt="${esc(lead.name)}"><div><div class="name">${esc(lead.name)}</div><div class="role">Founder · Managing Director · ${esc(lead.area)}</div><div class="firms">${esc(lead.firms.map(f=>f==='Aurel BGC'?'BGC':f).join(' · '))}</div></div></div>` +
+  `<div class="panel">${rest.map(p => `<div><span class="ini">${esc(ini(p))}</span><div><div class="name">${esc(p.name)}</div><div class="role">${esc(p.area)}</div><div class="firms">${esc(p.firms.join(' · '))}</div></div></div>`).join('')}</div>`;
+// Context from the link: /one-to-one.html?from=result&firm=Barclays&score=58
+const q = new URLSearchParams(location.search), firm = (q.get('firm') || '').slice(0, 40), score = (q.get('score') || '').replace(/\D/g, '').slice(0, 3);
+if (q.get('from') && firm) { const c = document.getElementById('ctx'); c.style.display = 'block';
+  c.innerHTML = `Coming from your result: <b>${esc(firm)}</b>${score ? `, readiness <b>${esc(score)}</b>` : ''}. Include these details when you send your enquiry.`; }
+</script>
+</body>
+</html>

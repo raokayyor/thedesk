@@ -59,5 +59,12 @@
       "source": "/lib/reasoning-practice-data.mjs",
       "destination": "/api/aptitude-practice?view=blocked"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/mentor.html",
+      "destination": "/one-to-one.html",
+      "permanent": false
+    }
   ]
 }
