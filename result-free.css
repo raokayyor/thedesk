@@ -138,3 +138,5 @@ a{color:inherit;text-underline-offset:3px}.slim-header,main,footer{max-width:760
 .free-taster-grid .taster{display:block;padding:20px;border:1px solid var(--line);border-radius:16px;background:#fff}.free-taster-grid .taster>div{height:100%}.free-taster-grid .kicker{color:var(--accent)}
 
 .priorities>li:nth-child(n+2) b,.priorities>li:nth-child(n+2) p{filter:blur(4px);user-select:none}
+
+.term-chips .chip.missing{filter:blur(4px);user-select:none}
