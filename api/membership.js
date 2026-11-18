@@ -1,3 +1,4 @@
+import {randomBytes} from 'node:crypto';
 import Stripe from 'stripe';
 import {sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
 import {currentAccount,entitlement,latestAssessment,allow} from '../lib/accounts.mjs';
@@ -7,9 +8,16 @@ export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');
  try{
  const account=await currentAccount(req);if(!account)return res.status(401).json({error:'Sign in to your free account first.'});
- if(req.method==='GET'){const access=await entitlement(account.id),assessment=await latestAssessment(account.id);return res.json({member:access.active,until:access.until||null,hasAssessment:!!assessment,testerCodes:process.env.VERCEL_ENV==='preview'});}
+ if(req.method==='GET'){const access=await entitlement(account.id),assessment=await latestAssessment(account.id);return res.json({member:access.active,until:access.until||null,hasAssessment:!!assessment,assessmentId:assessment?.id||null,email:account.email,demoAccount:account.email.endsWith('@access.thedesk.invalid'),testerCodes:process.env.VERCEL_ENV==='preview'});}
  if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
  const b=req.body||{},access=await entitlement(account.id);
+ if(b.action==='redeem-student-test'){
+  if(access.active)return res.json({success:true,next:'/my.html'});
+  if(!await allow('student-test-code:'+account.id,5))return res.status(429).json({error:'Too many attempts. Try again in an hour.'});
+  const {accountByEmail}=await import('../lib/accounts.mjs');if(!(await accountByEmail(account.email))?.verified_at)return res.status(403).json({error:'Verify your email before activating tester access.'});
+  const {studentTestDigest,grantStudentTest}=await import('../lib/student-test-access.mjs');const digest=studentTestDigest(b.code);
+  if(!digest||!await grantStudentTest(account.id,digest))return res.status(403).json({error:'This tester invitation is invalid, expired or fully used.'});res.setHeader('Set-Cookie',`desk_owner=${randomBytes(32).toString('hex')}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.VERCEL?'; Secure':''}`);return res.json({success:true,next:'/my.html?testing=1'});
+ }
  if(b.action==='redeem'){
   if(access.active)return res.json({success:true,next:'/my.html'});
   if(!await allow('member-code:'+account.id,5))return res.status(429).json({error:'Too many attempts. Try again in an hour.'});

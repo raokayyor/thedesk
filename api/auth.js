@@ -1,5 +1,5 @@
 import {signupProfile} from '../lib/signup-profile.mjs';
-import { timingSafeEqual } from 'node:crypto';
+import { timingSafeEqual, randomBytes } from 'node:crypto';
 import { sameOrigin, apiFailure, owner, sql, initStore } from '../lib/report-store.mjs';
 import { normEmail, validEmail, createLoginLink, redeemLoginToken, startSession, endSession, emailConfigured, sendLoginEmail, allow, upsertAccount } from '../lib/accounts.mjs';
 
@@ -14,13 +14,14 @@ export default async function handler(req, res) {
   const origin = new URL(process.env.VERCEL_ENV==='preview'?`https://${req.headers.host}`:process.env.APP_ORIGIN || `https://${req.headers.host}`).origin;
   const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   try {
-    if (body.action === 'request'||body.action==='signup') {
+    if (body.action === 'request'||body.action==='signup'||body.action==='tester-signup') {
       const email = normEmail(body.email);
       if (!validEmail(email)) return res.status(400).json({ error: 'Enter a valid email address.' });
       if (!emailConfigured()) return res.status(503).json({ error: 'Email sign-in isn’t switched on yet. Contact us and we’ll send you a sign-in link.' });
       if (!await allow('login-ip:' + ip, 10) || !await allow('login-email:' + email, 3)) return res.status(429).json({ error: 'Too many sign-in requests. Try again in an hour.' });
-      let profile=null;if(body.action==='signup'){try{profile=signupProfile(body)}catch(e){return res.status(400).json({error:e.message})}}
-      let assessmentId=null;if(profile){const browserOwner=owner(req,res);if(browserOwner){await initStore();assessmentId=(await sql().query('SELECT id FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[browserOwner]))[0]?.id||null;}}
+      let profile=null;if(body.action==='signup'||body.action==='tester-signup'){try{profile=signupProfile(body)}catch(e){return res.status(400).json({error:e.message})}}
+      if(body.action==='tester-signup'){const {studentTestDigest}=await import('../lib/student-test-access.mjs');const digest=studentTestDigest(body.code);if(!digest)return res.status(403).json({error:'This tester invitation is invalid or has expired.'});profile={...profile,plan:'student-test',studentTester:true,studentTestDigest:digest};}
+      let assessmentId=null;if(profile&&body.action!=='tester-signup'){const browserOwner=owner(req,res);if(browserOwner){await initStore();assessmentId=(await sql().query('SELECT id FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[browserOwner]))[0]?.id||null;}}
       await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile,assessmentId}));
       return res.json({ success: true, message: 'Check your inbox for a sign-in link. It works once and expires in 30 minutes.' });
     }
@@ -28,7 +29,10 @@ export default async function handler(req, res) {
       if (!await allow('verify-ip:' + ip, 30)) return res.status(429).json({ error: 'Too many attempts. Try again in an hour.' });
       const account = await redeemLoginToken(body.token);
       if (!account) return res.status(400).json({ error: 'This sign-in link has expired or has already been used. Ask for a new one.' });
+      let testerActivated=false;if(account.signupPlan==='student-test'&&account.studentTestDigest){const {grantStudentTest}=await import('../lib/student-test-access.mjs');testerActivated=await grantStudentTest(account.id,account.studentTestDigest);}
+      if(account.signupPlan==='student-test')res.setHeader('Set-Cookie',`desk_owner=${randomBytes(32).toString('hex')}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.VERCEL?'; Secure':''}`);
       await startSession(res, account.id);
+      if(account.signupPlan==='student-test')return res.json({success:true,next:testerActivated?'/my.html?testing=1':'/tester-access.html?notice=invitation-unavailable'});
       return res.json({ success: true, next:account.signupPlan==='paid'?'/membership-start.html':'/my.html' });
     }
     if (body.action === 'signout') { await endSession(req, res); return res.json({ success: true }); }
