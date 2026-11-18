@@ -65,6 +65,11 @@
       "source": "/mentor.html",
       "destination": "/one-to-one.html",
       "permanent": false
+    },
+    {
+      "source": "/book-call.html",
+      "destination": "/one-to-one.html",
+      "permanent": false
     }
   ]
 }
