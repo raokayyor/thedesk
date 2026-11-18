@@ -1,3 +1,4 @@
+import {tasterQuestion} from '/lib/taster-question.mjs';
 import {conversionFacts,freeConversionResult,completeSentence,cvSkimParts} from '/lib/result-conversion.mjs';
 const params=new URLSearchParams(location.search),id=params.get('id'),sample=params.get('sample')==='amelia';
 const el=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -35,7 +36,7 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  });
  const interview=competencies.querySelector('.taster');
  root.querySelectorAll('.taster').forEach(n=>{if(n!==interview)n.remove()});
- if(interview){const launch=interview.querySelector('a');launch.href='/interview.html?'+new URLSearchParams({ready:'1',taster:'interview',trial:'1',...(sample?{sample:'amelia'}:{id}),competency:weakest[0]?.name||'',firm:p.targetFirm||''});launch.textContent='Try your free interview question →';interview.querySelector('.kicker').textContent='Free interview coach';interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();const all=document.createElement('a');all.href='/my.html#freeTasters';all.className='all-tasters-link';all.textContent='Try every tool free →';interview.append(all);interview.querySelector('p').textContent=`Build evidence for ${weakest[0]?.name||'your interview'} with your CV beside the question.`;}
+ if(interview){const launch=interview.querySelector('a');launch.href='/interview.html?'+new URLSearchParams({ready:'1',taster:'interview',trial:'1',...(sample?{sample:'amelia'}:{id}),competency:'Teamwork',firm:p.targetFirm||''});launch.textContent='Try your free interview question →';interview.querySelector('.kicker').textContent='Free interview coach';interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();const all=document.createElement('a');all.href='/my.html#freeTasters';all.className='all-tasters-link';all.textContent='Try every tool free →';interview.append(all);interview.querySelector('p').textContent=`Build evidence for Teamwork with your CV beside the question.`;}
  community.remove();
  const rows=offer.querySelectorAll('.plan-rows>div');rows.forEach((n,i)=>{if(i>=5)n.remove()});
  const remaining=planRows.length-5;if(remaining>0){const extra=document.createElement('p');extra.className='plan-more';extra.textContent=`+${remaining} more included`;offer.querySelector('.plan-rows').after(extra)}
@@ -82,7 +83,7 @@ async function load(){
  const rest=facts.remainingFixes,more=facts.otherLines.length,competencyCount=facts.competencies.length,missed=facts.missedTopics.length;
  const biggest=facts.largestRemainingGap==='competencies'?'Strengthen your competency evidence':'Close your missed test topics';
  const firm=p.targetFirm||'',sectorTarget=/asset|wealth|fund/i.test(p.targetSector||'')?'an asset manager':/account|big.?4|big four|audit/i.test(p.targetSector||'')?'an accounting firm':/insur/i.test(p.targetSector||'')?'an insurer':/bank|trading|ibd/i.test(p.targetSector||'')?'a bank':'a finance firm',weakest=[...facts.competencies].sort((a,b)=>a.score-b.score).slice(0,2),reason=c=>facts.competencyFindings?.find(f=>f.name===c.name)?.reason||'';
- const question=weakest[0]?.name==='Leadership'?'Tell me about a time you led a team.':weakest[0]?.name==='Resilience'?'Tell me about a time you overcame a setback.':weakest[0]?.name==='Teamwork'?'Tell me about a time you worked with others.':weakest[0]?.name==='Communication'?'Tell me about a time you explained something difficult.':'Tell me about a time you used evidence to make a decision.';
+ const question=tasterQuestion('Teamwork');
  const taster=(icon,label,title,copy,prompt='')=>`<aside class="taster"><span class="taster-icon" aria-hidden="true">${icon}</span><div><span class="added">Added to your plan</span><div class="kicker">Members · ${esc(label)}</div><b>${esc(title)}</b><p>${esc(copy)}</p>${prompt?`<blockquote>${esc(prompt)}</blockquote>`:''}<a href="#membership">See this in your plan →</a></div></aside>`;
  const blurred='<div class="blurred repair-placeholder" aria-hidden="true">Your repaired wording and the steps to make your evidence stronger.</div>';
  const finding=(title,copy)=>`<article class="finding"><b>${esc(title)}</b>${copy?`<p>${esc(copy)}</p>`:''}${blurred}<small class="lock-label">Your tailored fix, from your own experience</small></article>`;
