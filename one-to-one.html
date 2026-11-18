@@ -112,9 +112,9 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
 
   <section class="first">
     <div class="k">Who you’ll work with</div>
-    <h2>People who did the job, not recruiters.</h2>
+    <h2>Decades inside the firms you’re applying to.</h2>
     <div class="people" id="people"></div>
-    <p class="honest">They didn’t hire for a living. They did the work you’re applying for, for 20 to 40 years, and know what a desk wants from a graduate. We match you with the practitioner closest to your route.</p>
+    <p class="honest">Between them, more than 130 years in banking, markets, asset management and audit. They know what a desk wants from a graduate because they worked on one. We match you with the practitioner closest to your route.</p>
   </section>
 
   <div class="k" style="margin-top:56px">Choose how much help you want</div>
@@ -217,7 +217,7 @@ const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;',
 const ini = p => p.init || p.name.split(' ').map(w => w[0]).join('');
 const [lead, ...rest] = PRACTITIONERS;
 document.getElementById('people').innerHTML =
-  `<div class="lead"><img src="${esc(lead.photo || '/assets/people/kayyor-rao.jpg')}" alt="${esc(lead.name)}" onerror="this.onerror=null;this.src='/assets/people/kayyor-rao.jpg'"><div><div class="name">${esc(lead.name)}</div><div class="role">Founder · Managing Director · ${esc(lead.area)}</div><div class="firms">${esc(lead.firms.join(' · '))}</div></div></div>` +
+  `<div class="lead"><img src="/assets/kayyor-rao.jpg" alt="${esc(lead.name)}"><div><div class="name">${esc(lead.name)}</div><div class="role">Founder · Managing Director · ${esc(lead.area)}</div><div class="firms">${esc(lead.firms.join(' · '))}</div></div></div>` +
   `<div class="panel">${rest.map(p => `<div><span class="ini">${esc(ini(p))}</span><div><div class="name">${esc(p.name)}</div><div class="role">${esc(p.area)}</div><div class="firms">${esc(p.firms.join(' · '))}</div></div></div>`).join('')}</div>`;
 // Context from the link: /one-to-one.html?from=result&firm=Barclays&score=58
 const q = new URLSearchParams(location.search), firm = (q.get('firm') || '').slice(0, 40), score = (q.get('score') || '').replace(/\D/g, '').slice(0, 3);
