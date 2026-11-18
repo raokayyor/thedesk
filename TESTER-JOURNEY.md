@@ -42,3 +42,7 @@ Testers can sign up and sign in normally, complete the free assessment, then ent
 ## Cydney direct entry
 
 `/cydney.html` accepts her private password without email verification and opens a single Cydney account. It reuses her invitation account if already activated. This is explicitly requested password-only access, not the normal student login. It expires on 18 November 2027, has IP/global rate limits, rotates browser ownership and never seeds sample data or records a Stripe payment. Keep the password private: anyone who knows it can access this account. The ordinary email-verification and tester-code flows stay in place.
+
+## Fresh member test login
+
+`/test-login.html` uses a separate user-chosen private password (hash only in `lib/fresh-test-config.mjs`). Every login creates a new empty member account and owner cookie, with 14 days of testing membership. The entry password expires 18 February 2027. Refresh/navigation keeps the current test; another login creates the next test. Previous records are never deleted or copied into a new run. No email is sent and no Stripe payment is fabricated. Login attempts are limited per IP and globally. This is for Rao to exercise new-member CV upload, ten questions, deep questions, report and tools.
