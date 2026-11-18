@@ -98,6 +98,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .end{padding:24px}.end .btn{width:100%}
 }
 </style>
+<link rel="stylesheet" href="/testimonials.css">
 </head>
 <body>
 <header class="top"><a class="logo" href="/">The Desk</a><nav><a href="/signup.html">Membership</a><a href="/about.html">About</a><a href="/signin.html">Log in</a></nav></header>
@@ -117,6 +118,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:22px 0 40px;font
     <p class="honest">Between them, more than 130 years in banking, markets, asset management and audit. They know what a desk wants from a graduate because they worked on one. We match you with the practitioner closest to your route.</p>
   </section>
 
+  <aside class="testimonial-slot" data-testimonial-slot="one-to-one" hidden aria-label="Student testimonials"></aside>
   <div class="k" style="margin-top:56px">Choose how much help you want</div>
   <div class="tiers">
     <div class="tier">
@@ -223,5 +225,6 @@ const q = new URLSearchParams(location.search), firm = (q.get('firm') || '').sli
 if (q.get('from') && firm) { const c = document.getElementById('ctx'); c.style.display = 'block';
   c.innerHTML = `Coming from your result: <b>${esc(firm)}</b>${score ? `, readiness <b>${esc(score)}</b>` : ''}. Include these details when you send your enquiry.`; }
 </script>
+<script type="module" src="/testimonials.js"></script>
 </body>
 </html>
