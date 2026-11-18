@@ -417,17 +417,19 @@ Pass context so the hero can show it: `/one-to-one.html?from=result&firm=Barclay
 
 | Plan key | Name | Price | Includes |
 |---|---|---|---|
-| `single` (new) | One practitioner session | £79 | 45-min video call, mock interview for their firm and round, practitioner reads CV + Desk result first, written notes within 24h. No membership needed. |
-| `plus` | Membership + 3 sessions | **£249** (was £199 with 2 calls) | £89 membership for 12 months + 3 sessions: CV and firm choice; mock first round; AC/Superday prep. Same practitioner, written notes. "Worth £326 bought separately" (89 + 3×79). |
+| `single` (new) | One practitioner session | **£99** | 45-min video call, mock interview for their firm and round, practitioner reads CV + Desk result first, written notes within 24h. No membership needed. |
+| `plus` | Membership + 3 sessions | **£249** (was £199 with 2 calls) | £89 membership for 12 months + 3 sessions: CV and firm choice; mock first round; AC/Superday prep. Same practitioner, written notes. "Worth £386 bought separately" (89 + 3×99). |
 | `coaching` | 1:1 support, application to offer | £3,000 / season | Named practitioner, weekly calls, every application checked, mocks before every round, messaging between calls, membership included. Starts with a free 15-min call. |
 
 **Code changes:**
 - `signup.html`: new `single` entry in COPY (shows the note field, posts `coaching-interest` with `type:'single'`). The plus copy now says three sessions. `data-plus-price` is £249.
 - `api/desk-home.js`: `coaching-interest` accepts `type:'single'`.
-- **Live:** if Stripe products exist for plus, update the price to £249. Add a £79 single-session product when you're ready to take payment directly. Until then it's a lead form, like plus.
+- **Live:** if Stripe products exist for plus, update the price to £249. Add a £99 single-session product when you're ready to take payment directly. Until then it's a lead form, like plus.
 
 **Placeholders for Rao:**
 - the reschedule policy (FAQ)
 - "[x] places a season" on the £3,000 tile
 
 **Mismatch:** fullcycle-plan.html lists Rao as "UBS · Barclays · BGC", while firm-logos.mjs says "UBS · Commerzbank · BGC". Use one list, Rao to confirm.
+
+**Update (18 Nov):** the single session is £99 from launch, not £79. The only place showing a price is `one-to-one.html` (tile, the "Pick by where you are" link, "Worth £386") plus the signup COPY kicker.
