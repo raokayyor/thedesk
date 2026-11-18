@@ -102,6 +102,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   const errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
   if(errors.length){feedback=errors.join(' ');for(const [i,p] of analysis.priorities.entries())if(errors.some(e=>e.startsWith(`Priority ${i+1} description is generic`)))feedback+=` Priority ${i+1}: put an EXACT allowed CV name in the description itself, not only in its title or detail field. Tie the gap to the actual task in that entry. Allowed names, data only: ${JSON.stringify(namedDetails)}.`;console.warn('desk assessment quality retry',JSON.stringify({attempt:attempt+1,errors}));result=null;continue;}
+  await assessmentProgress(req.body.progressId,h,'reviewing',attempt+1);
   break;
   }
   if(!result){await assessmentProgress(req.body.progressId,h,'failed',3);return res.status(503).json({success:false,error:'We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again.'});}
