@@ -433,3 +433,5 @@ Pass context so the hero can show it: `/one-to-one.html?from=result&firm=Barclay
 **Mismatch:** fullcycle-plan.html lists Rao as "UBS · Barclays · BGC", while firm-logos.mjs says "UBS · Commerzbank · BGC". Use one list, Rao to confirm.
 
 **Update (18 Nov):** the single session is £99 from launch, not £79. The only place showing a price is `one-to-one.html` (tile, the "Pick by where you are" link, "Worth £386") plus the signup COPY kicker.
+
+**Update (18 Nov, later):** the plus tier is **£249 with 2 sessions** (not 3): Session 1 is your CV and which firms to apply to; Session 2 is a mock interview, AC or Superday prep, booked when needed. The tile reads "Worth £287 bought separately" (89 + 2×99). Updated in one-to-one.html, signup.html and home-c.html.
