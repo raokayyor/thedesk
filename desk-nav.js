@@ -1,3 +1,4 @@
+if(!document.querySelector('script[data-testing-analytics]')){const tracker=document.createElement('script');tracker.src='/testing-analytics.js?v=20261118';tracker.dataset.testingAnalytics='';document.head.append(tracker);}
 // Shared grouped navigation; access stays enforced by the existing APIs.
 (function(){
  if(window.DeskNavigation)return;
