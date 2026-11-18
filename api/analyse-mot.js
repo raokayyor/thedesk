@@ -106,6 +106,7 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   }
   if(!result){await assessmentProgress(req.body.progressId,h,'failed',3);return res.status(503).json({success:false,error:'We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again.'});}
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
+  await assessmentProgress(req.body.progressId,h,'saving');
   const keep=req.body.keepResult||{},resultEmail=typeof keep.email==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(keep.email)&&keep.email.length<=254?keep.email.trim().toLowerCase():undefined;
   const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers,fingerprint,...(resultEmail?{resultEmail,deadlineReminderConsent:keep.deadlineConsent===true,consentRecordedAt:new Date().toISOString()}:{})});
   if(parent)result.recheckComparison=compareRecheck(parent,result);
