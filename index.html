@@ -205,6 +205,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 .deadline-count{margin:28px 0 0;padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:10px;font-size:14px;line-height:1.45}.returning-result{display:block;padding:12px 20px;text-align:center;background:var(--good-soft);font-size:14px;font-weight:600;text-decoration:none}.phone-score-bar{display:none}@media(max-width:900px){body{padding-bottom:84px}.phone-score-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:12px;align-items:center;justify-content:space-between;background:#fbfaf7;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px #1f2a2e0c}.phone-score-bar span{font-size:12px;line-height:1.4}.phone-score-bar a{flex-shrink:0;display:flex;align-items:center;min-height:44px;padding:10px 14px;border-radius:8px;color:white;background:var(--ink);font-size:14px;font-weight:600;text-decoration:none}}
 
 .deadline-count{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 20px;padding:18px 20px;font-weight:400}.deadline-label{grid-column:1/-1;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}.deadline-details{min-width:0;display:grid;gap:3px}.deadline-details strong{font-size:17px;font-weight:600}.deadline-details>span{font-size:14px;line-height:1.45;overflow-wrap:anywhere;color:var(--ink-2)}.deadline-date{align-self:start;white-space:nowrap;background:var(--good-soft);color:var(--good);border-radius:6px;padding:5px 9px;font-size:13px;font-weight:600}.deadline-more{grid-column:1/-1;font-size:13px;color:var(--mute);padding-top:10px;border-top:1px solid var(--line);text-decoration:none;line-height:1.45}@media(max-width:900px){.deadline-count{grid-template-columns:minmax(0,1fr);padding:18px;gap:10px}.deadline-date{justify-self:start}.deadline-details>span{font-size:14px}.deadline-more{min-height:40px;display:flex;align-items:center}}
+
+.deadline-list{grid-column:1/-1;display:grid;gap:0}.deadline-programme{display:grid;gap:4px;padding:12px 0;text-decoration:none;border-top:1px solid var(--line)}.deadline-programme strong{font-size:14px;line-height:1.4}.deadline-programme span{font-size:12px;color:var(--mute)}
 </style>
 <script src="/public-about-links.js" defer></script><link rel="stylesheet" href="/next-live-session.css"><script src="/live-sessions.js" defer></script><script src="/next-live-session.js" defer></script><link rel="stylesheet" href="/testimonials.css">
 </head>
@@ -380,12 +382,12 @@ document.getElementById('people').innerHTML =
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment.html' + (matchMedia('(min-width:1024px)').matches && r[0] !== 'unsure' ? '?route=' + r[0] : '');
-    cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; redpen(r[0]);
+    cta.href = href; cta2.href = href; document.getElementById('round-cta').href = href; redpen(r[0]); document.dispatchEvent(new CustomEvent("desk:routechange",{detail:{route:r[0]}}));
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();
 </script>
-<script src="/home-summary.js?v=20261118-deadline-card" defer></script>
+<script src="/home-summary.js?v=programmes-db" defer></script>
 <script type="module" src="/testimonials.js"></script>
 <aside id="phoneScoreBar" class="phone-score-bar" hidden aria-label="Start your free assessment"><span>Get my free score · 10 mins · free</span><a href="/assessment-start.html">Get started →</a></aside>
 </body>

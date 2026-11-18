@@ -34,6 +34,9 @@
     "api/result-rewrite.js": {
       "maxDuration": 60,
       "includeFiles": "samples/amelia-report-v3-preview.json"
+    },
+    "api/programmes-check-cron.js": {
+      "maxDuration": 300
     }
   },
   "crons": [
@@ -44,6 +47,10 @@
     {
       "path": "/api/markets-snapshot-cron",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/programmes-check-cron",
+      "schedule": "*/10 5-9 * * 1"
     }
   ],
   "rewrites": [

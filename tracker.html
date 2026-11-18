@@ -156,7 +156,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   <section class="hero">
     <div class="kicker" id="kick">Deadline tracker · Bulge bracket · London</div>
     <h1 id="h1">2027 graduate programmes, with official application links.</h1>
-    <div class="checked">Programme data imported from the supplied tracker dated 13 October 2026. This is a dated snapshot, not a live vacancy feed. Confirm availability on the official firm page.</div>
+    <div class="checked" id="programmeTrust" role="status">Loading official-source programme dates…</div>
     <div class="stats" id="stats"></div>
     <div class="insight" id="insight"></div>
 <p class="storage-note">Your tracked programmes and stages also appear in My Desk. Sign in to keep them across devices.</p><button class="btn export" id="exportList" type="button">Export my application list</button> <button class="btn export" id="exportCsv" type="button">Download spreadsheet (CSV)</button> <a class="btn" href="/my.html#applications">Open my dashboard →</a><p id="saveNotice" role="status" aria-live="polite"></p>
@@ -182,191 +182,13 @@ footer{border-top:1px solid var(--line);padding-block:20px 32px;font-size:13px;c
   </section>
 </main>
 
-<footer><div class="wrap">Programme dates, eligibility and process notes are imported from the supplied 13 October 2026 snapshot; they have not all been independently reverified. Firms can close roles early or change dates without notice, so always confirm on the firm's page before you apply. "Not confirmed" is the source tracker’s status; it does not mean the role is not running.</div></footer>
+<footer><div class="wrap">Programme records are maintained in The Desk’s central database. Migrated records retain their original snapshot dates until staff recheck them. Firms can close roles early or change dates without notice, so always confirm on the firm's page before you apply. "Not confirmed" is the source tracker’s status; it does not mean the role is not running.</div></footer>
 
 <script>
-(function(){
+(async function(){
 "use strict";
-var CHECKED="2026-10-13";
-var P=[
- {firm:"Deutsche Bank",name:"Graduate Programme · Chief Risk Office",area:"Risk",status:"open",opens:"2026-10-05",closes:"2026-10-18",rolling:true,entry:"open",
-  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1","Graduating Jan 2026–Jul 2027"],
-  note:"Closes 18 October at 11:59pm. DB may close early with 48 hours' notice, and you get one UK application per season.",
-  url:"https://db.recsolu.com/external/requisitions/wPkxWntNQUbHi1hCr4r_KQ",src:"careers.db.com"},
- {firm:"Barclays",name:"Quantitative Analytics Associate Graduate Programme",area:"Markets",status:"open",opens:"2026-09-09",closes:"2026-10-31",rolling:true,entry:"open",
-  steps:["Application","Online assessment","Interview / assessment centre"],elig:["Master's or PhD by June 2027","Visa sponsorship available"],
-  note:"Master's level. Barclays warns it may close before 31 October if volumes are high.",
-  url:"https://search.jobs.barclays/job/london/2027-quantitative-analytics-associate-graduate-programme-london/13015/100411086288",src:"search.jobs.barclays"},
- {firm:"Barclays",name:"Banking Graduate Programme",area:"Investment Banking",status:"open",opens:"2026-08-29",closes:null,rolling:null,entry:"open",
-  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
-  note:"February or July 2027 start. No closing date published, so apply early.",
-  url:"https://search.jobs.barclays/job/london/banking-graduate-programme-2027-london/13015/99885319536",src:"search.jobs.barclays"},
- {firm:"Barclays",name:"Capital Markets Graduate Programme",area:"Investment Banking",status:"open",opens:"2026-08-29",closes:null,rolling:null,entry:"open",
-  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
-  note:"February or July 2027 start. No closing date published.",
-  url:"https://search.jobs.barclays/job/london/capital-markets-graduate-programme-2027-london/13015/99885319584",src:"search.jobs.barclays"},
- {firm:"Barclays",name:"Sales, Trading and Structuring Graduate Programme",area:"Markets",status:"open",opens:"2026-09-10",closes:null,rolling:null,entry:"open",
-  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
-  note:"Desks across Credit, Equities, FX, Rates and Securitised Products. No closing date published.",
-  url:"https://search.jobs.barclays/job/london/sales-trading-and-structuring-graduate-programme-2027-london/13015/100425237424",src:"search.jobs.barclays"},
- {firm:"Barclays",name:"UK Corporate Banking Graduate Programme",area:"Corporate & Commercial",status:"open",opens:"2026-09-01",closes:null,rolling:null,entry:"open",
-  steps:["Application","Two online assessments","Assessment centre (2–3 stages)"],elig:["Any degree subject","Visa sponsorship available"],
-  note:"August 2027 start. Also advertised for Leeds and Birmingham.",
-  url:"https://search.jobs.barclays/job/london/uk-corporate-banking-graduate-programme-2027-london/13015/100032500656",src:"search.jobs.barclays"},
- {firm:"Citi",name:"Markets · Sales and Trading Full Time Analyst",area:"Markets",status:"open",opens:"2026-09-04",closes:null,rolling:true,entry:"open",
-  steps:["Online application"],elig:["2:1 expected or achieved","Strong Excel; VBA/Python helps"],
-  note:"Rolling hiring and no published deadline. Open to anyone, not only Citi interns.",
-  url:"https://jobs.citi.com/job/london/markets-sales-and-trading-full-time-analyst-london-united-kingdom-2027/287/100186099392",src:"jobs.citi.com"},
- {firm:"Citi",name:"Banking · Commercial Banking Full Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-10-01",closes:null,rolling:true,entry:"open",
-  steps:["Online application"],elig:["Predicted or achieved 2:1","Graduating 2026 or 2027"],
-  note:"Citi asks you to apply early because of high application volumes. July 2027 start.",
-  url:"https://jobs.citi.com/job/london/banking-commercial-banking-full-time-analyst-london-united-kingdom-2027/287/100996355040",src:"jobs.citi.com"},
- {firm:"Citi",name:"Banking · Investment Banking Full Time Analyst",area:"Investment Banking",status:"open",opens:"2026-09-03",closes:null,rolling:true,entry:"interns",
-  steps:["Online application","Interviews","Background checks"],elig:["2026 Citi summer interns only","2:1 expected or achieved"],
-  note:"Conversion route for Citi's own 2026 summer interns. Not open to new applicants.",
-  url:"https://jobs.citi.com/job/london/banking-investment-banking-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-citi-su/287/100133501280",src:"jobs.citi.com"},
- {firm:"Citi",name:"Banking · Corporate Banking Full Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-09-03",closes:null,rolling:true,entry:"interns",
-  steps:["Online application","Interviews","Background checks"],elig:["2026 London summer interns only","2:1"],
-  note:"Conversion route for Citi's 2026 London summer interns.",
-  url:"https://jobs.citi.com/job/london/banking-corporate-banking-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-london-s/287/100133501264",src:"jobs.citi.com"},
- {firm:"Citi",name:"Banking · Financing Full Time Analyst",area:"Investment Banking",status:"open",opens:"2026-09-07",closes:null,rolling:true,entry:"interns",
-  steps:["Online application","Interviews","Background checks"],elig:["2026 Citi summer interns only","2:1"],
-  note:"Conversion route for Citi's 2026 summer interns.",
-  url:"https://jobs.citi.com/job/london/banking-financing-full-time-analyst-london-united-kingdom-2027-applicable-for-2026-citi-summer-inte/287/100295995232",src:"jobs.citi.com"},
- {firm:"Citi",name:"Services · Full-Time Analyst",area:"Corporate & Commercial",status:"open",opens:"2026-09-21",closes:null,rolling:null,entry:"interns",
-  steps:["Online application"],elig:["2026 summer intern converts only","2:1"],
-  note:"Conversion route for Citi's 2026 summer interns.",
-  url:"https://jobs.citi.com/job/london/services-full-time-analyst-uk-london-2027-2026-summer-intern-converts-only/287/100771374032",src:"jobs.citi.com"},
- {firm:"Deutsche Bank",name:"Graduate Programme · Investment Banking & Capital Markets",area:"Investment Banking",status:"closed",opens:"2026-09-07",closes:"2026-10-11",rolling:null,entry:"open",
-  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1"],
-  note:"Closed on 11 October. Note it for next year: DB's windows are short.",
-  url:"https://careers.db.com/students-graduates/Search-Programmes/#/graduate/",src:"careers.db.com"},
- {firm:"Deutsche Bank",name:"Graduate Programme · Fixed Income & Currencies",area:"Markets",status:"closed",opens:"2026-09-07",closes:"2026-09-13",rolling:null,entry:"open",
-  steps:["Application + CV","Online tests (96 hours)","Video interview","Assessment centre"],elig:["On track for 2:1"],
-  note:"Open for one week only, 7–13 September. Next year, be ready before it opens.",
-  url:"https://careers.db.com/students-graduates/Search-Programmes/#/graduate/",src:"careers.db.com"},
- {firm:"Barclays",name:"Risk Analyst Graduate Programme",area:"Risk",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"unknown",
-  steps:[],elig:[],note:"Listed on Barclays' site, but the page would not load when we checked. Confirm on Barclays' site.",
-  url:"https://search.jobs.barclays/job/london/2027-risk-analyst-graduate-programme-london/13015/100411085712",src:"search.jobs.barclays"},
- {firm:"Goldman Sachs",name:"New Analyst Programme (EMEA)",area:"Multiple divisions",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","HireVue video interview","Superday"],elig:["Final-year students and recent graduates","Summer 2027 start"],
-  note:"Apply by division. Maximum four applications per recruiting year. London dates could not be read from GS's portal.",
-  url:"https://www.goldmansachs.com/careers/students/programs-and-internships/emea/new-analyst-programme",src:"goldmansachs.com"},
- {firm:"J.P. Morgan",name:"Investment Banking Full-Time Analyst",area:"Investment Banking",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","Interviews (may include recorded video)"],elig:[],
-  note:"Programme page is live; London availability and dates could not be read from J.P. Morgan's portal.",
-  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/investment-banking-fulltime-analyst",src:"jpmorganchase.com"},
- {firm:"J.P. Morgan",name:"Markets Full-Time Analyst",area:"Markets",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","Interviews (may include recorded video)"],elig:[],
-  note:"A 2027 posting exists; its location and dates could not be read.",
-  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/markets-fulltime-analyst",src:"jpmorganchase.com"},
- {firm:"J.P. Morgan",name:"Markets Research Full-Time Analyst",area:"Research",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","Interviews"],elig:[],note:"A 2027 posting exists; its location and dates could not be read.",
-  url:"https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210763120",src:"jpmc.fa.oraclecloud.com"},
- {firm:"J.P. Morgan",name:"Global Private Bank Analyst Program",area:"Wealth & Asset Management",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","Interviews"],elig:[],note:"Two tracks: Advisor and Investment Solutions. London availability not confirmed.",
-  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/wealth-management-fulltime-analyst",src:"jpmorganchase.com"},
- {firm:"J.P. Morgan",name:"Risk Management Full-Time Analyst",area:"Risk",status:"unconfirmed",opens:null,closes:null,rolling:true,entry:"open",
-  steps:["Online application","Interviews"],elig:[],note:"London availability and dates not confirmed.",
-  url:"https://www.jpmorganchase.com/careers/explore-opportunities/programs/risk-fulltime-analyst",src:"jpmorganchase.com"}
-];
-
-P.forEach(function(p){p.sector="bb"});
-var D4={steps:["Apply online","Immersive Online Assessment","Job Simulation (video)","Final Stage Assessment in person"],elig:["Predicted 2:1, any degree","No A-level or GCSE requirement for most"]};
-var PW={steps:["Apply online","SHL tests: numerical, inductive, deductive","Video interview","Virtual assessment centre","Business assessment"],elig:["Any degree","No UCAS requirement stated"]};
-var EY4={steps:["Application","Realistic Job Preview","Online assessment","Behavioural skills test","EY Experience Day","Final interview"],elig:["GCSE 4/C English & Maths","3 A-levels or equivalent","No degree class requirement"]};
-var KP={steps:["Explore & Apply","Skills + 36-min Cognitive test","Video interview (6 questions)","Launch Pad + final interview"],elig:["2:1, 120 UCAS, GCSE 5/B","Contextual: apply if a few grades short"]};
-P=P.concat([
- {sector:"big4",firm:"PwC",name:"Graduate Audit, Accounting, Tax and Finance · Audit",area:"Audit & Assurance",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or ICAS CA"]),
-  note:"One application per intake year across ALL PwC graduate programmes. London and regional offices. September 2027 start, no deferrals.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/audit-accounting-tax-finance.html",src:"pwc.co.uk"},
- {sector:"big4",firm:"PwC",name:"Graduate Audit, Accounting, Tax and Finance · Tax",area:"Tax",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or ICAS CA"]),
-  note:"Same application as Audit: you choose Tax as your preference. Preference is considered, not guaranteed.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/audit-accounting-tax-finance.html",src:"pwc.co.uk"},
- {sector:"big4",firm:"PwC",name:"Graduate Advisory and Consulting · Deals",area:"Deals & Advisory",status:"open",opens:"2026-09-17",closes:null,rolling:true,entry:"open",steps:PW.steps,elig:PW.elig.concat(["ACA or CFA"]),
-  note:"Deals (M&A, restructuring) sits inside the wider Advisory scheme and uses your one PwC application.",url:"https://www.pwc.co.uk/careers/early-careers/graduate/advisory-consulting.html",src:"pwc.co.uk"},
- {sector:"big4",firm:"Deloitte",name:"Audit & Assurance Graduate Programme",area:"Audit & Assurance",status:"open",opens:"2026-09-28",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig.concat(["ACA or CA"]),
-  note:"London and about 20 other UK offices. Deloitte closes programmes early when volumes are high. One application per programme per year. September start.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-audit-assurance.html",src:"deloitte.com/uk"},
- {sector:"big4",firm:"Deloitte",name:"Tax Consulting Graduate Programme",area:"Tax",status:"open",opens:"2026-09-28",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig,
-  note:"Multiple UK offices. Closes early when full. Skip the Tax Technology adverts if you want a tax role.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-tax-consulting.html",src:"deloitte.com/uk"},
- {sector:"big4",firm:"Deloitte",name:"Advisory Graduate Programme · Mergers & Acquisitions",area:"Deals & Advisory",status:"open",opens:"2026-10-05",closes:null,rolling:true,entry:"open",steps:D4.steps,elig:D4.elig,
-  note:"Split into team adverts: Corporate Finance, Transaction Services, Valuations, Restructuring. Pick one carefully: one application per programme per year.",url:"https://www.deloitte.com/uk/en/careers/discover-deloitte/our-business-areas/early-careers-opportunities-in-advisory.html",src:"deloitte.com/uk"},
- {sector:"big4",firm:"EY",name:"Audit Graduate Programme",area:"Audit & Assurance",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
-  note:"London plus 11 UK offices for September 2027; London also has an April 2027 intake. EY closes once places are filled.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
- {sector:"big4",firm:"EY",name:"Tax Graduate Programme",area:"Tax",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
-  note:"London plus 7 UK offices. September 2027 start. Closes once places are filled.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
- {sector:"big4",firm:"EY",name:"EY-Parthenon · Valuation Graduate Programme",area:"Deals & Advisory",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig.concat(["ICAEW or ICAS"]),
-  note:"London and Manchester. September 2027 start.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
- {sector:"big4",firm:"EY",name:"EY-Parthenon · Capital & Debt Advisory Graduate Programme",area:"Deals & Advisory",status:"open",opens:null,closes:null,rolling:true,entry:"open",steps:EY4.steps,elig:EY4.elig,
-  note:"London. Two-year programme from September 2027.",url:"https://ukstudents.ey.com/",src:"ey.com/en_uk"},
- {sector:"big4",firm:"KPMG",name:"Audit Graduate Programme",area:"Audit & Assurance",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA (CA in Scotland)","Visa sponsorship: London only"]),
-  note:"Launch Pad assessment days run from 17 November, so the 2027 cycle is under way. Open status couldn't be read from KPMG's vacancy search.",url:"https://www.kpmgcareers.co.uk/graduate/audit/audit/",src:"kpmgcareers.co.uk"},
- {sector:"big4",firm:"KPMG",name:"Tax Graduate Programme",area:"Tax",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA (CA in Scotland)","Visa sponsorship: London only"]),
-  note:"Open status couldn't be read from KPMG's vacancy search. You can switch programme before you formally apply, not after.",url:"https://www.kpmgcareers.co.uk/graduate/tax-law/tax/",src:"kpmgcareers.co.uk"},
- {sector:"big4",firm:"KPMG",name:"Accounting Advisory and Assurance",area:"Audit & Assurance",status:"unconfirmed",opens:null,closes:null,rolling:null,entry:"open",steps:KP.steps,elig:KP.elig.concat(["ACA","No visa sponsorship"]),
-  note:"Open status couldn't be read from KPMG's vacancy search. KPMG can't sponsor visas for this programme.",url:"https://www.kpmgcareers.co.uk/graduate/audit/accounting-advisory-and-assurance/",src:"kpmgcareers.co.uk"}
-]);
-var IZ={steps:["Online application","Strengths, behaviour and numerical test","Job simulation + video interview (Cappfinity)","Final assessment"]};
-var IW={steps:["Apply with CV","Online test + video interview","Assessment centre"]};
-var IA={steps:["Application review","Online assessment (5 days)","Video interview","Assessment centre from mid-January"]};
-var IB={steps:["Apply","Behavioural, numerical and verbal tests","Meet the Team assessment centre"]};
-var IL={steps:["Online application","Strengths, numerical tests + video interview","Coaching call","Assessment centre"]};
-P=P.concat([
- {sector:"ins",type:"Graduate",firm:"Zurich",name:"Business Management Graduate Programme",area:"Underwriting",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:IZ.steps,elig:["2:1, 96 UCAS","No visa sponsorship","£30,600 + £3,200 London"],
-  note:"27-month rotation across underwriting and claims, studying for ACII. London, Farnborough, Croydon, Swindon or Glasgow. You can apply to only one Zurich programme.",url:"https://www.careers.zurich.com/job/London-Business-Management-Graduate-Programme-2027-%28London%29-GB-L/1371810657/",src:"careers.zurich.com"},
- {sector:"ins",type:"Graduate",firm:"Zurich",name:"Accounting Graduate Programme",area:"Finance",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:IZ.steps,elig:["2:1, 96 UCAS","No visa sponsorship","£30,600"],
-  note:"Three one-year rotations studying ACCA or CIMA. Swindon or Whiteley.",url:"https://www.careers.zurich.com/job/Swindon-Accounting-Graduate-Programme-2027-%28Swindon%29-GB-W/1371739357/",src:"careers.zurich.com"},
- {sector:"ins",type:"Summer internship",firm:"Zurich",name:"Actuarial (General Insurance) Summer Internship",area:"Actuarial",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","A in A-level Maths, 128 UCAS","No visa sponsorship"],
-  note:"10 weeks from June 2027. Zurich's actuarial graduate scheme isn't running in 2027, so this is the actuarial way in this cycle.",url:"https://www.careers.zurich.com/job/London-Actuarial-%28General-Insurance%29-Summer-Internship-2027-GB-L/1371809957/",src:"careers.zurich.com"},
- {sector:"ins",type:"Placement",firm:"Zurich",name:"Actuarial (General Insurance) Industrial Placement",area:"Actuarial",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","A in A-level Maths, 128 UCAS","£24,969"],
-  note:"One year from June 2027. London, Farnborough, Birmingham or Whiteley.",url:"https://www.careers.zurich.com/job/London-Actuarial-%28General-Insurance%29-Industrial-Placement-Programme-2027-GB-L/1371809857/",src:"careers.zurich.com"},
- {sector:"ins",type:"Placement",firm:"Zurich",name:"Accounting Industrial Placement",area:"Finance",status:"open",closes:"2026-10-18",rolling:false,entry:"open",steps:["Apply with CV","Assessment"],elig:["Penultimate year","No visa sponsorship"],
-  note:"Swindon or Whiteley. Listed on Zurich's internships page with the same 18 October close.",url:"https://www.zurich.co.uk/careers/internships",src:"zurich.co.uk"},
- {sector:"ins",type:"Summer internship",firm:"WTW",name:"Corporate Risk & Broking Internship · London",area:"Broking",status:"open",closes:"2026-10-19",rolling:false,entry:"open",steps:IW.steps,elig:["Penultimate year","On course for 2:1, any subject"],
-  note:"8 weeks. Strong interns can be offered the graduate programme. One WTW application per year.",url:"https://careers.wtwco.com/jobs/2027-corporate-risk-broking-internship-programme-london-london-england-united-kingdom",src:"careers.wtwco.com"},
- {sector:"ins",type:"Graduate",firm:"WTW",name:"Actuarial Insurance Consulting Graduate Programme · P&C",area:"Actuarial",status:"open",closes:"2026-10-19",rolling:false,entry:"open",steps:IW.steps,elig:["2:1, A in A-level Maths","136+ UCAS"],
-  note:"London, Reigate or Cambridge, studying IFoA exams. At least 4 days a week in the office.",url:"https://careers.wtwco.com/jobs/2027-actuarial-insurance-consulting-graduate-programme-property-casualty-london-reigate-cambridge-london-england-united-kingdom-reigate-cambridge",src:"careers.wtwco.com"},
- {sector:"ins",type:"Graduate",firm:"Aon",name:"Graduate Programme · Commercial Risk and Reinsurance Broking",area:"Broking",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["2:1, any subject","CII Level 4 Diploma"],
-  note:"London, starting 1 September 2027. Aon reviews on a rolling basis and may close early.",url:"https://jobs.aon.com/jobs/107780",src:"jobs.aon.com"},
- {sector:"ins",type:"Graduate",firm:"Aon",name:"Graduate Programme · Insurance Actuarial Consulting & Reinsurance Analytics",area:"Actuarial",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["2:1"],
-  note:"London. Same process and early-close warning as Aon's broking scheme.",url:"https://jobs.aon.com/jobs/107781",src:"jobs.aon.com"},
- {sector:"ins",type:"Summer internship",firm:"Aon",name:"Summer Internship · Insurance Actuarial Consulting & Reinsurance Analytics",area:"Actuarial",status:"open",opens:"2026-10-12",closes:"2026-12-07",rolling:true,entry:"open",steps:IA.steps,elig:["Penultimate year, numerate degree","A in A-level Maths"],
-  note:"9 weeks, paid, from 21 June 2027. London.",url:"https://jobs.aon.com/jobs/107790",src:"jobs.aon.com"},
- {sector:"ins",type:"Graduate",firm:"Beazley",name:"Specialty Underwriting Graduate Scheme",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
-  note:"London, September 2027. A 2:2 bar makes this one of the most accessible underwriting schemes in London.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
- {sector:"ins",type:"Graduate",firm:"Beazley",name:"Cyber Underwriting Graduate Scheme",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
-  note:"London. One application portal covers all Beazley 2027 schemes.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
- {sector:"ins",type:"Graduate",firm:"Beazley",name:"Property and Marine, Aviation & Political Risks Underwriting Schemes",area:"Underwriting",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:2, any subject","£33,000 + bonus"],
-  note:"Two separate London schemes through the same portal.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
- {sector:"ins",type:"Graduate",firm:"Beazley",name:"Actuarial Graduate Scheme",area:"Actuarial",status:"open",closes:null,rolling:false,entry:"open",steps:IB.steps,elig:["2:1, numerical subject","£33,000 + bonus"],
-  note:"Birmingham, September 2027.",url:"https://www.beazley.com/en-gb/who-we-are/work-us/early-careers-academy-uk/beazley-uk-early-careers-programmes/",src:"beazley.com"},
- {sector:"ins",type:"Graduate",firm:"Legal & General",name:"Graduate Actuarial Programme",area:"Actuarial",status:"notyet",expect:"Usually opens in October",rolling:true,entry:"open",steps:IL.steps,elig:["2:1, numerate subject","Some visa sponsorship"],
-  note:"L&G graduate roles mostly open in October with no closing date, so apply on day one. London or Hove.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
- {sector:"ins",type:"Graduate",firm:"Legal & General",name:"Graduate Scheme · Risk and Compliance",area:"Risk",status:"notyet",expect:"Usually opens in October",rolling:true,entry:"open",steps:IL.steps,elig:["2:1"],
-  note:"Investment, Accounting and Distribution graduate tracks also run.",url:"https://careers.legalandgeneral.com/graduate-scheme",src:"careers.legalandgeneral.com"},
- {sector:"ins",type:"Summer internship",firm:"Legal & General",name:"Summer Internship · Actuarial, Investment, Risk, Accounting",area:"Actuarial",status:"notyet",expect:"Opens in November",rolling:true,entry:"open",steps:IL.steps,elig:["Penultimate year, on track for 2:1","No visa sponsorship"],
-  note:"8 weeks in London. No fixed deadline.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
- {sector:"ins",type:"Placement",firm:"Legal & General",name:"Year in Industry",area:"Finance",status:"notyet",expect:"Opens in November",rolling:true,entry:"open",steps:IL.steps,elig:["Sandwich-year students","On track for 2:1"],
-  note:"12–13 months in London, Cardiff or Hove.",url:"https://careers.legalandgeneral.com/future-talent",src:"careers.legalandgeneral.com"},
- {sector:"ins",type:"Summer internship",firm:"AXA XL",name:"Summer Internship",area:"Underwriting",status:"notyet",expect:"Opens in November",rolling:false,entry:"open",steps:["Apply via AXA XL careers"],elig:["Penultimate or final year"],
-  note:"8 weeks, paid, July–August, in London or Ipswich: underwriting, claims, pricing and more.",url:"https://axaxl.com/about-us/careers-at-axa-xl/early-careers-at-axa-xl",src:"axaxl.com"},
- {sector:"ins",type:"Graduate",firm:"Chubb",name:"International Chubb Associate Program",area:"Underwriting",status:"notyet",expect:"Opens in November",rolling:false,entry:"open",steps:["Online application"],elig:["Recent graduates or up to 2 years' experience"],
-  note:"Two-year programme from September 2027. Join Chubb's Talent Network to be told when it opens.",url:"https://about.chubb.com/careers/early-careers/europe-middle-east-africa-careers/international-chubb-associate-program.html",src:"about.chubb.com"},
- {sector:"ins",type:"Graduate",firm:"Lloyd's of London",name:"Insurance Graduate Programme",area:"Underwriting",status:"notyet",expect:"Last cycle opened in January",rolling:false,entry:"open",steps:["Strengths-based online assessment","Video interview","Assessment centre at Lloyd's"],elig:["2:1, any subject","£33,790"],
-  note:"27 months across the Corporation and the Lloyd's market, studying ACII. One application per person per season.",url:"https://www.lloyds.com/about-lloyds/careers/early-careers/graduates/insurance-graduate-scheme",src:"lloyds.com"},
- {sector:"ins",type:"Graduate",firm:"Lloyd's of London",name:"Actuarial Graduate Programme",area:"Actuarial",status:"notyet",expect:"Last cycle opened in January",rolling:false,entry:"open",steps:["Strengths-based online assessment","Video interview","Assessment centre"],elig:["2:1, numerate degree","£38,000"],
-  note:"24 months, rotational, permanent contract, studying IFoA exams.",url:"https://www.lloyds.com/about-lloyds/careers/early-careers/graduates/actuarial-graduate-scheme",src:"lloyds.com"},
- {sector:"ins",type:"Graduate",firm:"Aviva",name:"Actuarial Graduate Pathway",area:"Actuarial",status:"notyet",expect:"2027 intake not posted yet",rolling:false,entry:"open",steps:["Apply online","Situational Strengths + Numerical Reasoning tests","Video interview","Assessment day"],elig:["STEM or numerical degree","B in A-level Maths","No visa sponsorship"],
-  note:"Bristol, Norwich or York, studying IFoA exams. The 2026 intake paid £34,200.",url:"https://careers.aviva.co.uk/early-careers/graduates/actuarial-graduate-pathway/",src:"careers.aviva.co.uk"},
- {sector:"ins",type:"Graduate",firm:"Aviva",name:"Pricing, Underwriting and Claims Graduate Pathways",area:"Underwriting",status:"notyet",expect:"2027 intake not posted yet",rolling:false,entry:"open",steps:["Apply online","Situational Strengths + Numerical Reasoning tests","Video interview","Assessment day"],elig:["Any degree (London Pricing needs STEM)","No visa sponsorship"],
-  note:"Two-year pathways across Norwich, London, Leeds, York, Birmingham and Bristol. The 2026 intake paid £33,200.",url:"https://careers.aviva.co.uk/early-careers/graduates/underwriting-graduate-pathway/",src:"careers.aviva.co.uk"},
- {sector:"ins",type:"Graduate",firm:"Allianz UK",name:"Underwriting, Actuarial and Finance Graduate Schemes",area:"Underwriting",status:"unconfirmed",rolling:false,entry:"open",steps:["Online application","Online tests (some roles)","Video interview","Assessment centre"],elig:["Degree, or graduated within 3 years"],
-  note:"Allianz says applications run September to December, but no 2027 adverts were live when we checked.",url:"https://careers.allianz.com/gb/en/graduate-schemes-uk",src:"careers.allianz.com"},
- {sector:"ins",type:"Graduate",firm:"Marsh",name:"Graduate Programme · UK & Ireland",area:"Broking",status:"unconfirmed",rolling:false,entry:"open",steps:[],elig:["2:1","No visa sponsorship"],
-  note:"Two-year, permanent, non-rotational programme from September. Marsh's job search couldn't be read when we checked.",url:"https://careers.marsh.com/eu/en/marsh-uki-graduate-programs",src:"careers.marsh.com"},
- {sector:"ins",type:"Graduate",firm:"Munich Re",name:"Actuarial Graduate Trainee Programme",area:"Actuarial",status:"closed",closes:null,rolling:false,entry:"open",steps:["Application + CV","Online test","Competency interview","Assessment centre","Final round with senior leaders"],elig:["2:1, numerate degree","Visa sponsorship offered"],
-  note:"Filled for this cycle. The window usually runs September to October, so set a reminder for next year.",url:"https://careers.munichre.com/munichre-actuarial-graduate-trainee-programme",src:"careers.munichre.com"}
-]);
-P.forEach(function(p){if(!p.type)p.type="Graduate"});
-P=P.concat([{"sector": "am", "firm": "BlackRock", "name": "Full-Time Analyst Programme · EMEA", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.blackrock.com/students-and-graduates-emea", "src": "careers.blackrock.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "BlackRock", "name": "Summer Internship Programme · EMEA", "type": "Summer internship", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.blackrock.com/students-and-graduates-emea", "src": "careers.blackrock.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "Schroders", "name": "Graduate Programme", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://www.schroders.com/en/about-us/careers/graduates/", "src": "schroders.com", "checked": "2026-11-13"}, {"sector": "am", "firm": "Fidelity International", "name": "Equity Research Graduate Programme · London", "type": "Graduate", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://fidelityinternational.tal.net/vx/lang-en-GB/mobile-0/brand-5/candidate/so/pm/1/pl/1/opp/1406-Equity-Research-Graduate-Programme-2027-London/en-GB", "src": "fidelityinternational.tal.net", "checked": "2026-11-13"}, {"sector": "am", "firm": "Fidelity International", "name": "Summer Internship Programme", "type": "Summer internship", "area": "Asset management", "status": "unconfirmed", "closes": null, "entry": "unknown", "steps": [], "elig": [], "note": "Check the official programme page for current locations, eligibility, availability and deadlines before applying.", "url": "https://careers.fidelityinternational.com/early-careers-overview/interns-and-insights/", "src": "careers.fidelityinternational.com", "checked": "2026-11-13"}]);
+var CHECKED=null,P=[];
+try{var programmeResponse=await fetch('/api/programmes',{cache:'no-store'});if(!programmeResponse.ok)throw Error('Unavailable');var programmeData=await programmeResponse.json();P=programmeData.programmes;CHECKED=programmeData.checked;var trust=document.getElementById('programmeTrust');trust.textContent="Every date is checked against the firm's own careers page. Last full check: "+(CHECKED||'not yet completed')+". Imported snapshot dates still need reconfirming; always open the official source before applying.";}catch(e){document.getElementById('programmeTrust').textContent='Programme dates could not load. Please refresh.';return;}
 var FIRMS_AM=[["BlackRock","Select your programme and location on the official EMEA early-careers page; check its application limits before choosing functions."],["Schroders","Check the graduate programme page for business areas and current vacancies."],["Fidelity International","Check each programme listing for eligibility and dates; graduate and internship opportunities vary by location."]];
 var FIRMS_IN=[
  ["Zurich","You can apply to only one Zurich programme. No visa sponsorship: you need indefinite UK right to work and 3 years' UK residence. Tests are run by Cappfinity, including a job simulation."],
@@ -399,7 +221,7 @@ var EXS={bb:null,big4:{name:"Emily",overall:85,
          "Deals & Advisory":["Add the client and business context to your Vale Accountancy work","Practise valuation basics: enterprise value and multiples"]}}};
 EXS.ins=EXS_INS;EXS.am=EXS.bb;
 var SECTOR="bb";
-function cur(){return P.filter(function(p){return p.sector===SECTOR})}
+function cur(){return P.filter(function(p){return p.sector===SECTOR||(SECTOR==="bb"&&["ib","uk","markets"].includes(p.sector))})}
 var FIRMS=[
  ["Goldman Sachs","Up to four applications per recruiting year, then the rest are withdrawn automatically. First round is a HireVue video interview; the final round is a Superday of 2–5 interviews."],
  ["J.P. Morgan","Applications are reviewed on a rolling basis, and only locations currently hiring appear on its application site. An optional virtual work experience on Forage doesn't affect decisions."],
@@ -457,7 +279,7 @@ function rank(p){var s=st(p),n=days(p.closes);if(s==="open"&&n!==null)return n;i
 var mine={};try{var stored=JSON.parse(localStorage.getItem("desk_mylist")||"{}");if(stored&&typeof stored==="object"&&!Array.isArray(stored))mine=stored}catch(e){}
 // The saved account list is authoritative; local storage is a browser cache.
 var trackerLoaded=false,shownRows=[],syncQueue=Promise.resolve();
-fetch('/api/desk-home?view=shortlist',{credentials:'same-origin',cache:'no-store'}).then(function(r){if(!r.ok)throw Error('Could not load your saved applications.');return r.json()}).then(function(d){mine=d.list||{};trackerLoaded=true;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.querySelector('.storage-note').textContent=d.signedIn?'Your tracked programmes and stages are saved to your account and shown in My Desk.':'Your programmes appear in My Desk on this browser. Sign in to keep them across devices.';render()}).catch(function(){document.getElementById('saveNotice').textContent='Your saved list could not load. Refresh before making changes.'});
+fetch('/api/desk-home?view=shortlist',{credentials:'same-origin',cache:'no-store'}).then(function(r){if(!r.ok)throw Error('Could not load your saved applications.');return r.json()}).then(function(d){mine=d.list||{};trackerLoaded=true;try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.querySelector('.storage-note:not(#programmeTrust)').textContent=d.signedIn?'Your tracked programmes and stages are saved to your account and shown in My Desk.':'Your programmes appear in My Desk on this browser. Sign in to keep them across devices.';render()}).catch(function(){document.getElementById('saveNotice').textContent='Your saved list could not load. Refresh before making changes.'});
 function save(){var snapshot=JSON.parse(JSON.stringify(mine));try{localStorage.setItem('desk_mylist',JSON.stringify(mine))}catch(e){}document.getElementById('saveNotice').textContent='Saving to your dashboard…';syncQueue=syncQueue.catch(function(){}).then(async function(){var r=await fetch('/api/desk-home',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tracker-sync',list:snapshot})});if(!r.ok)throw Error('Could not save');document.getElementById('saveNotice').textContent='Saved to your dashboard.';document.dispatchEvent(new Event('desk:trackerchanged'))}).catch(function(){document.getElementById('saveNotice').textContent='Saved on this browser; dashboard sync failed. Try changing the stage again to retry.'});return syncQueue;}
 function key(p){return p.firm+"|"+p.name}
 
@@ -572,7 +394,7 @@ function render(){
     return'<article class="row'+(s==="closed"?" closed":"")+'">'+whenHtml(p)+
       '<div class="main"><div class="firm">'+esc(p.firm)+'</div><h2>'+esc(p.name)+'</h2><div class="chips">'+chips+'</div>'+
       (p.steps.length?'<ol class="steps">'+p.steps.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ol>':'')+
-      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · snapshot '+fmt(p.checked||CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
+      '<p class="note">'+esc(p.note)+'</p><div class="src">Source: '+esc(p.src)+' · checked '+fmt(p.checked||CHECKED)+'</div>'+roleTabsHtml(p,i)+'</div>'+
       '<div class="side">'+(s==="closed"?'':'<a class="btn primary" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+(s==="unconfirmed"||s==="notyet"?"Check on firm site":"Apply on firm site")+' ↗</a>')+
       '<button class="btn'+(saved?" saved":"")+'" data-k="'+esc(k)+'" type="button">'+(saved?"Remove from my list":"Add to my list")+'</button>'+
       (saved?'<a class="btn" href="/interview-start.html?firm='+encodeURIComponent(p.firm)+'">Prepare</a>':'')+
