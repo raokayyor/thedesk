@@ -22,6 +22,10 @@ const HOT=`(q.votes+2*(SELECT count(*) FROM desk_comm_answers a WHERE a.question
 export default async function handler(req,res){res.setHeader('Cache-Control','private, no-store');try{
  if(!['GET','POST'].includes(req.method))return res.status(405).end();if(req.method==='POST'&&!sameOrigin(req,res))return;
  if(req.method==='GET'&&req.query?.view==='mode')return res.json({showcase:process.env.VERCEL_ENV==='preview'});
+ if(req.method==='GET'&&req.query?.view==='preview'){
+  const account=await currentAccount(req);if(!account)return res.status(401).json({error:'Sign in required.'});
+  try{const rows=await sql().query(`SELECT q.id::text,q.title,q.body,(SELECT count(*)::int FROM desk_comm_answers a WHERE a.question_id=q.id AND a.status='visible') AS answers FROM desk_comm_questions q WHERE q.status IN ('open','locked') ORDER BY q.created_at DESC LIMIT 1`);return res.json({question:rows[0]||null});}catch(error){if(error.code==='42P01')return res.json({question:null});throw error;}
+ }
  await initCommunity();const account=await currentAccount(req),accountId=account?.id||null,p=await commProfile(accountId),q=req.query||{},b=req.body||{},staff=staffOk(req);
  if(req.method==='GET'&&q.demo==='1'&&process.env.VERCEL_ENV==='preview'){
   const fixture=JSON.parse(await readFile(new URL('../data/community-preview.json',import.meta.url),'utf8'));const demoProfile={university:'University of Bristol',society_label:'Bristol Investment Society',society_key:'example investment society',year:'2nd year',identity:'Bristol, 2nd year',share:shareSettings(),display:'anon'};const now=new Date().toISOString();fixture.questions=fixture.questions.map(x=>({...x,createdAt:now}));

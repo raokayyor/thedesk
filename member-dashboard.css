@@ -114,3 +114,14 @@
 .member-dashboard .dashboard-desktop-detail .tool .event-host p{margin:0}
 .member-dashboard .dashboard-desktop-detail .tool>.btn,
 .member-dashboard .dashboard-desktop-detail .tool>div:last-child{margin-top:4px!important}
+
+.member-dashboard .dashboard-deadline-column{display:flex;flex-direction:column;gap:18px;min-width:0}
+.member-dashboard .dashboard-forum{display:flex;flex-direction:column;gap:10px}
+.member-dashboard .dashboard-forum p,.member-dashboard .dashboard-forum h3{margin:0}
+.member-dashboard #newsList>a{display:block;padding:11px 0;border-bottom:1px solid var(--line,#e4dfd7);overflow-wrap:anywhere}
+@media(min-width:901px){
+ .member-dashboard .dashboard-desktop-detail .paid-tools{align-items:stretch;grid-auto-rows:1fr}
+ .member-dashboard .dashboard-desktop-detail .paid-tools>.tool{height:100%}
+ .member-dashboard .dashboard-desktop-detail .paid-tools>.tool>.btn,
+ .member-dashboard .dashboard-desktop-detail .paid-tools>.tool>div:last-child{margin-top:auto!important}
+}
