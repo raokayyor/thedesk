@@ -1,0 +1,1 @@
+fetch('/api/home-summary').then(r=>r.ok?r.json():null).then(data=>{const count=data?.closingSoon,slot=document.getElementById('deadlineCount');if(slot&&Number.isInteger(count)&&count>0){slot.textContent=count+' '+(count===1?'programme closes':'programmes close')+' in the next 30 days.';slot.hidden=false;}}).catch(()=>{});
