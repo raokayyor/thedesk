@@ -302,7 +302,8 @@ h3{font-size:20px;line-height:1.3;margin:0}
   .card{padding:20px}
 }
 @media print{.top,nav.side,.pager,.tools,.cutnote button{display:none!important}.wrap{display:block}section.pane{display:block!important;page-break-after:always}}
-.report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}</style>
+.report-notice{max-width:1200px;margin:18px auto;padding:16px 24px;background:#fff3d9;border:1px solid #e3c583;border-radius:10px}.report-notice a{color:inherit;text-decoration:underline}.ask input{width:100%;font:inherit;padding:12px;margin:8px 0 12px;border:1px solid var(--rule);border-radius:6px}button:focus-visible,a:focus-visible{outline:3px solid #a33b10;outline-offset:3px}.desk-read{border-top:1px solid var(--rule);padding-top:28px}.desk-read-verdict{font-size:19px;line-height:1.55;max-width:68ch;margin:16px 0 22px}.desk-read-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}.desk-read-grid h3{font-size:21px}.desk-read-grid ul{padding-left:19px;margin:14px 0 0}.desk-read-grid li{font-size:15px;line-height:1.6;margin:10px 0}.desk-read-next{border-left:3px solid var(--or);padding:16px 20px;margin-top:20px;background:var(--or-soft)}.desk-read-next p{margin:7px 0 12px}.desk-read-next a{font-weight:700}.desk-route{margin-top:22px;border-top:1px solid var(--rule);padding-top:18px}.desk-route summary{font-weight:700;cursor:pointer}.desk-route h3{font-size:20px;margin-top:20px}.desk-route p{font-size:15px;max-width:70ch}@media(max-width:700px){.desk-read-grid{grid-template-columns:minmax(0,1fr)}.desk-read-verdict{font-size:17px}}
+</style>
 <link rel="stylesheet" href="/desk-navigation.css"><script>
 var cvSampleOnly=new URLSearchParams(location.search).get('sample')==='amelia'&&new URLSearchParams(location.search).get('cvonly')==='1';
 if(cvSampleOnly){document.documentElement.classList.add('cv-sample-only');}else{var navigationScript=document.createElement('script');navigationScript.src='/desk-nav.js';navigationScript.defer=true;document.head.append(navigationScript);}
@@ -320,7 +321,7 @@ if(cvSampleOnly){document.documentElement.classList.add('cv-sample-only');}else{
       <div class="mt8" style="font-size:14px"><b id="progTxt">0</b> <span class="mute" id="progOf"></span></div>
     </div>
   </nav>
-  <main id="main" aria-busy="true"><div class="eyebrow">Your deep assessment</div><h1>Your report and preparation plan.</h1><p id="loadStatus" role="status">Loading your saved assessment…</p><div class="card desk-skeleton" style="height:180px;margin-top:24px"></div><div class="card desk-skeleton" style="height:240px;margin-top:20px"></div></main>
+  <main id="main" aria-busy="true"><div class="eyebrow">Your deep assessment</div><h1>Your report and preparation plan.</h1><p id="loadStatus" role="status">Loading your saved assessment…</p><div id="reportLoadingContent"></div></main>
 </div>
 
 <div class="pop" id="pop" role="dialog" aria-modal="false">
@@ -330,6 +331,7 @@ if(cvSampleOnly){document.documentElement.classList.add('cv-sample-only');}else{
   <div class="row"><button class="btn ghost" id="popCancel">Cancel</button><button class="btn" id="popSave">Use this</button></div>
 </div>
 
+<script src="/loading-insights.js?v=20261118-bank"></script><script src="/report-loading.js?v=20261118-progress"></script>
 <script type="application/json" id="report-data"></script>
 <script>
 (function(){
@@ -355,10 +357,12 @@ var ATS_NAMES={textReadability:"Readable text",sectionStructure:"Section heading
 var LABELS={ats:"ATS",numerical:"Numerical",technical:"Commercial & technical",competency:"Competency",application:"CV & application"};
 
 /* ---------- load ---------- */
-var activeAssessmentId=null;
+var activeAssessmentId=null,reportReadTools=null,reportLoader=null;
 function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;}
-async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok)throw new Error(data.error||'This step could not complete. Please retry.');return data;}
+async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok){var failure=new Error(data.error||'This step could not complete. Please retry.');failure.status=response.status;throw failure;}return data;}
 async function load(){
+ reportLoader=window.DeskReportLoading?.mount(document.getElementById('reportLoadingContent'),document.getElementById('loadStatus'));
+ reportReadTools=await import('/lib/report-read.mjs');
  var params=new URLSearchParams(location.search),id=params.get('id');
  var reviewStudent=params.get('reviewStudent');
  if(reviewStudent&&/^(?:[1-9]|10)$/.test(reviewStudent)){var review=await api('/samples/ten-students/'+reviewStudent+'.json');review.sample=true;review.generatedReview=true;return review;}
@@ -378,14 +382,17 @@ async function load(){
  if(session){var paidBanner=document.createElement('p');paidBanner.className='card';paidBanner.style.cssText='padding:14px 20px;max-width:1100px;margin:16px auto;background:#e5efe8';paidBanner.textContent='Your '+(saved.conversion?.cvLineCount||0)+' lines are ready.';document.querySelector('.wrap').before(paidBanner);}
  if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.querySelector('.wrap').before(notice);}
  var paid={},parts=['verdict','repair','plan'];
- await Promise.all(parts.map(async function(part,i){
-  status('Preparing '+part+' ('+(i+1)+' of 3)… Saved sections are reused.');
-  var section=saved.report&&saved.report[part];
-  if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}finally{clearTimeout(timeout);}}
-  Object.assign(paid,section);
+ await Promise.all(parts.map(async function(part){
+  reportLoader?.mark(part,'active');var section=saved.report&&saved.report[part];
+  try{if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{
+   try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}
+   catch(error){if(error.status!==409)throw error;while(!section&&!controller.signal.aborted){await new Promise(function(resolve){setTimeout(resolve,3000)});var fresh=await api('/api/assessment-result?id='+encodeURIComponent(id),{signal:controller.signal});section=fresh.report&&fresh.report[part];}if(!section)throw new DOMException('Timed out','AbortError');}
+  }finally{clearTimeout(timeout);}}
+  Object.assign(paid,section);reportLoader?.mark(part,'done');}catch(error){reportLoader?.mark(part,'failed');throw error;}
  }));
- status('Preparing your CV…');
- var draft;try{draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id})});}catch(error){draft={cv:{sourceText:'',preparationError:true}};}
+ reportLoader?.mark('cv','active');
+ var draft;try{draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id}),signal:AbortSignal.timeout(30000)});reportLoader?.mark('cv','done');}catch(error){reportLoader?.mark('cv','failed');draft={cv:{sourceText:'',preparationError:true}};}
+
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,deep:saved.deep,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
 
@@ -398,6 +405,7 @@ function buildEvidenceMap(R){
 }
 /* Replace internal evidence codes (E7, E8/E13) with plain words */
 function clean(s){
+  if(reportReadTools)return reportReadTools.plainReportText(s);
   s=String(s==null?"":s);
   s=s.replace(/\bE\d{1,2}(?:\s*(?:\/|,|and|or)\s*E\d{1,2})*\b/g,function(m){
     var ids=m.match(/E\d{1,2}/g),seen={},out=[];
@@ -436,6 +444,11 @@ var SECTIONS=[
   {id:"ask",t:"Ask a practitioner"}
 ];
 
+function renderDeskRead(deep,P){
+ var read=reportReadTools.reportRead(deep||{},P.executiveVerdict||{}),points=function(items){return '<ul>'+items.map(function(item){return '<li>'+esc(item)+'</li>'}).join('')+'</ul>'};
+ return '<section class="desk-read mt32"><div class="eyebrow">The Desk’s read</div><h2 class="mt8">What your evidence says.</h2><p class="desk-read-verdict">'+esc(read.verdict)+'</p><div class="desk-read-grid"><div class="card"><h3>What works</h3>'+points(read.strengths)+'</div><div class="card"><h3>What needs attention</h3>'+points(read.gaps)+'</div></div><div class="desk-read-next"><b>Your next step</b><p>'+esc(read.nextStep)+'</p><a href="#cv">Work on my CV →</a></div><details class="desk-route"><summary>Your route and alternatives</summary><h3>Is this route realistic?</h3><p>'+h(P.targetRouteMeaning?.isRouteRealistic||'Check the current programme requirements against your year, route and experience.')+'</p><h3>If this cycle does not work out</h3><p>'+h(P.targetRouteMeaning?.steppingStoneRoute||'Use the remaining gaps to choose your next preparation task.')+'</p></details></section>';
+}
+
 function render(R){
   if(R.paid&&R.paid.weeksTwoToFour){SECTIONS.forEach(function(s){if(s.id==="plan")s.t="30-day plan";});}
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
@@ -448,6 +461,7 @@ function render(R){
   
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 
+  if(R.deep?.evaluation?.competencies){var currentMarks=new Map(R.deep.evaluation.competencies.map(function(c){return [c.name,c.score]}));(P.competencyRepair||[]).forEach(function(c){if(currentMarks.has(c.name))c.score=currentMarks.get(c.name)});}
   var S={};
 
   /* OVERVIEW */
@@ -485,10 +499,8 @@ function render(R){
     '<h2 class="mt48">Your three priorities</h2>'+
     '<ol class="prio mt16">'+pr.map(function(p,i){return '<li><div><h3>'+h(p.title)+'</h3><p>'+h(p.description)+'</p><a href="#'+(links[i]||"plan")+'">Go to '+esc((SECTIONS.filter(function(s){return s.id===links[i];})[0]||{t:"plan"}).t.toLowerCase())+' →</a></div></li>';}).join("")+'</ol>'+
     (role?'<div class="card mt32"><div class="route"><div><div class="eyebrow">Your target on the deadline tracker</div><h3 class="mt8">'+esc(prof.targetFirm)+' · '+esc(role.name)+'</h3><div class="mt8"><span class="status">'+esc(role.status)+'</span> <span class="mute" style="font-size:15px">· '+esc(role.when)+'</span></div><div class="steps">'+role.steps.map(function(s){return'<span>'+esc(s)+'</span>';}).join("")+'</div><p style="margin:12px 0 0;font-size:15px;color:var(--ink2)">'+esc(role.note)+' Your 7-day plan is timed to get you ready before you apply.</p></div><div style="display:grid;gap:8px"><a class="btn" href="/tracker.html">Open tracker</a><a class="btn ghost" href="'+esc(role.url)+'" target="_blank" rel="noopener">Barclays page ↗</a></div></div></div>':'')+
-    '<div class="grid2 mt32">'+
-      '<div><div class="label">The Desk’s read</div><p class="verdict" style="margin:0">'+h(deep?deep.summary:P.executiveVerdict.summary)+'</p></div>'+
-      '<div><div class="label">Is this route realistic?</div><p style="margin:0;color:var(--ink2)">'+h(P.targetRouteMeaning.isRouteRealistic)+'</p><div class="label mt16">If this cycle doesn’t work out</div><p style="margin:0;color:var(--ink2)">'+h(P.targetRouteMeaning.steppingStoneRoute)+'</p></div>'+
-    '</div>';
+    renderDeskRead(deep,P);
+
   })();
 
   /* CV */
@@ -534,6 +546,7 @@ function render(R){
     var removed=(R.cv&&R.cv.removed)||[];
     S.cv=
     '<div class="eyebrow">Your CV</div><h2 class="mt8">Your CV, repaired from your own facts.</h2>'+
+    (!R.sample?'<p><a class="btn or" href="/cv-builder.html?id='+encodeURIComponent(R.id)+'">Rebuild &amp; edit my CV →</a></p><p class="mute" style="font-size:14px">Choose rewrites, edit your draft and save versions to your account.</p>':'')+
     (qList.length&&!qList[0].flag?'<p class="lede">Orange lines are rewritten. Yellow marks are questions only you can answer. Click one, type your answer, and it drops into the CV. Struck-through lines are ones we’d cut.</p>'
       :'<p class="lede">Orange lines are rewritten using only facts already on your CV, for you to review. Answer the questions on the right and confirm every claim before submitting.</p>')+
     (removed.length?'<p class="removed">Removed from your CV: '+removed.map(function(r){return'<s>'+esc(r.text)+'</s>';}).join(" · ")+'</p>':'')+
@@ -816,8 +829,8 @@ function wire(R,S){
 
 
 var reportCacheKey='desk-report-cache:'+location.pathname+location.search;
-try{var cached=JSON.parse(sessionStorage.getItem(reportCacheKey)||'null');if(cached){document.getElementById('main').innerHTML='<p class="mute" role="status">Updating your saved report…</p>'+cached.main;document.getElementById('nav').innerHTML=cached.nav;document.getElementById('main').querySelectorAll('button,input,textarea,select').forEach(function(el){el.disabled=true;});}}catch(e){}
-load().then(function(R){render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+
+load().then(function(R){reportLoader?.stop();render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){reportLoader?.stop();document.getElementById("main").setAttribute("aria-busy","false");document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 <script src="/desk-me.js" defer></script><script src="/interview-natural-voice.js"></script><script src="/report-interview-practice.js"></script></body>

@@ -15,7 +15,8 @@ const stats=[
 {number:'≈365,000',text:'applicants for Goldman Sachs’ 2025 summer internship programme worldwide.',source:'Goldman Sachs · 2025 results',url:'https://www.goldmansachs.com/pressroom/press-releases/current/pdfs/2025-q4-earnings-results-presentation.pdf'},
 {number:'Less than 1%',text:'Goldman Sachs’ 2025 summer internship selection rate. Make your experience count.',source:'Goldman Sachs · Annual Report 2025',url:'https://www.goldmansachs.com/investor-relations/financials/current/annual-reports/2025/annual-report.pdf'}];
 const readingTips=['Most strong finance CVs explain what the work showed, not just what you did.','Your individual contribution matters. Make clear what you did within the team.','An interview answer is stronger when you can explain the reasoning behind your conclusion.'];
-function showStat(index){const box=el.querySelector('.loading-stat');box.querySelector('strong').textContent='While you wait';box.querySelector('p').textContent=readingTips[index%readingTips.length];box.querySelector('a').hidden=true;}
+const loadingInsights=window.DeskLoadingInsights?.mount(el.querySelector('.loading-stat'),{autoplay:false});
+function showStat(index){loadingInsights?.show(index);}
 let previousFocus,tipTimer,started,progressTimer,serverStage='checking';const foot=el.querySelector('.loading-foot');
 function setStep(index){el.querySelectorAll('.loading-checks li').forEach((li,i)=>{li.className=i<index?'done':i===index?'active':'pending';li.querySelector('.loading-symbol').textContent=i<index?'✓':i===index?'':String(i+1);});}
 function updateStage(){setStep(serverStage==='complete'?6:serverStage==='saving'?5:serverStage==='reviewing'?4:serverStage==='validating'?3:2);foot.textContent=serverStage==='saving'?'Your assessment is being saved. Your next step will open automatically.':'We’re applying the framework to your CV and answers. Your next step will open when the checks are complete.';}
