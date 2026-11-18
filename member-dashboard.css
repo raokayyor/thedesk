@@ -103,3 +103,14 @@
  .mobile-score-week .deep-score-main .bar,.mobile-score-week .mobile-week-date{grid-row:3;grid-column:1;margin:0}
  .mobile-score-week .deep-score-main .score-report-link,.mobile-score-week .mobile-week-card b{grid-row:4;grid-column:1;display:inline-flex;align-items:center;justify-content:center;justify-self:start;align-self:center;margin:0!important;min-height:36px;font:600 12px/1.2 Figtree,sans-serif!important;padding:8px 9px!important;background:#101719!important;color:white!important;border:0!important;border-radius:5px;white-space:nowrap;text-decoration:none}
 }
+
+/* Keep tool cards close to their content instead of reserving blank heading/footer space. */
+.member-dashboard .dashboard-desktop-detail .paid-tools,
+.member-dashboard .dashboard-desktop-detail .member-resources,
+.member-dashboard .dashboard-desktop-detail .dashboard-market{align-items:start}
+.member-dashboard .dashboard-desktop-detail .tool{height:auto;gap:12px}
+.member-dashboard .dashboard-desktop-detail .paid-tools .tool>div:first-child{min-height:0}
+.member-dashboard .dashboard-desktop-detail .tool>p,
+.member-dashboard .dashboard-desktop-detail .tool .event-host p{margin:0}
+.member-dashboard .dashboard-desktop-detail .tool>.btn,
+.member-dashboard .dashboard-desktop-detail .tool>div:last-child{margin-top:4px!important}
