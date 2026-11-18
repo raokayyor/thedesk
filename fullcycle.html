@@ -360,6 +360,17 @@ var LABELS={ats:"ATS",numerical:"Numerical",technical:"Commercial & technical",c
 var activeAssessmentId=null,reportReadTools=null,reportLoader=null;
 function status(text){var el=document.getElementById('loadStatus');if(el)el.textContent=text;}
 async function api(url,options){var response=await fetch(url,options);var data=await response.json();if(!response.ok){var failure=new Error(data.error||'This step could not complete. Please retry.');failure.status=response.status;throw failure;}return data;}
+function showReportAsItBuilds(saved){
+ var main=document.getElementById('main'),panel=document.createElement('section'),evaluation=saved.deep.evaluation,read=reportReadTools.reportRead(evaluation),name=(saved.profile.name||'').split(' ')[0];
+ panel.id='reportReadyNow';panel.innerHTML='<div class="eyebrow">Your saved deep assessment</div><h1>'+esc(name?name+', your assessment is ready.':'Your assessment is ready.')+'</h1><p class="lede">Start reading now. Your repairs and preparation plan appear below as they finish.</p><div class="card"><div class="score"><span class="big num">'+esc(evaluation.score)+'</span><span class="of">/ 100</span></div><p>'+esc(read.verdict)+'</p><h3>What works</h3><ul>'+read.strengths.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul><h3>What needs attention</h3><ul>'+read.gaps.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div><div id="readyVerdict"></div><div id="readyRepair"></div><div id="readyPlan"></div>';
+ Array.from(main.children).filter(function(node){return node.id!=='loadStatus'&&node.id!=='reportLoadingContent';}).forEach(function(node){node.remove();});main.prepend(panel);main.setAttribute('aria-busy','false');document.getElementById('reportLoadingContent').setAttribute('aria-busy','true');document.getElementById('topMeta').textContent=saved.profile.name||'';
+}
+function showFinishedPart(part,data){
+ var box=document.getElementById({verdict:'readyVerdict',repair:'readyRepair',plan:'readyPlan'}[part]);if(!box)return;
+ if(part==='verdict')box.innerHTML='<section class="card mt32"><div class="eyebrow">Your application read · ready</div><h2>The next change to make</h2><p>'+esc(reportReadTools.plainReportText(data.executiveVerdict?.mostImportantFix||''))+'</p></section>';
+ if(part==='repair')box.innerHTML='<section class="mt32"><div class="eyebrow">Your CV repairs · ready</div><h2>Start with these lines.</h2>'+(data.bulletRepair||[]).map(function(r){return '<article class="card mt16"><h3>'+esc(r.cvItem)+'</h3><p>'+esc(r.currentIssue)+'</p><blockquote>'+esc(r.exampleBullet)+'</blockquote><p class="mute">'+esc(r.whyThisWorks)+'</p></article>'}).join('')+'</section>';
+ if(part==='plan')box.innerHTML='<section class="mt32"><div class="eyebrow">Your preparation plan · ready</div><h2>Your next seven days.</h2>'+(data.sevenDayActionPlan||[]).map(function(d){return '<article class="card mt16"><h3>'+esc(d.day)+' · '+esc(d.focus)+'</h3><ul>'+(d.tasks||[]).map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul></article>'}).join('')+'</section>';
+}
 async function load(){
  reportLoader=window.DeskReportLoading?.mount(document.getElementById('reportLoadingContent'),document.getElementById('loadStatus'));
  reportReadTools=await import('/lib/report-read.mjs');
@@ -381,17 +392,18 @@ async function load(){
  }
  if(session){var paidBanner=document.createElement('p');paidBanner.className='card';paidBanner.style.cssText='padding:14px 20px;max-width:1100px;margin:16px auto;background:#e5efe8';paidBanner.textContent='Your '+(saved.conversion?.cvLineCount||0)+' lines are ready.';document.querySelector('.wrap').before(paidBanner);}
  if(saved.fullCycleReview){var notice=document.createElement('p');notice.className='card';notice.style.cssText='padding:14px 18px;background:#edf5ef;color:#1d5939;margin:14px auto;max-width:1100px';notice.textContent='Full Cycle review mode · No payment or sign-up required. Check every draft against your actual experience before using it.';document.querySelector('.wrap').before(notice);}
- var paid={},parts=['verdict','repair','plan'];
+ showReportAsItBuilds(saved);
+ var paid={},parts=['verdict','repair','plan'],draftPromise;
+ function prepareCv(){reportLoader?.mark('cv','active');return api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id}),signal:AbortSignal.timeout(30000)}).then(function(d){reportLoader?.mark('cv','done');return d;}).catch(function(){reportLoader?.mark('cv','failed');return {cv:{sourceText:'',preparationError:true}};});}
  await Promise.all(parts.map(async function(part){
   reportLoader?.mark(part,'active');var section=saved.report&&saved.report[part];
   try{if(!section){var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},330000);try{
    try{var response=await api('/api/full-cycle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,part:part}),signal:controller.signal});section=response.data;}
    catch(error){if(error.status!==409)throw error;while(!section&&!controller.signal.aborted){await new Promise(function(resolve){setTimeout(resolve,3000)});var fresh=await api('/api/assessment-result?id='+encodeURIComponent(id),{signal:controller.signal});section=fresh.report&&fresh.report[part];}if(!section)throw new DOMException('Timed out','AbortError');}
   }finally{clearTimeout(timeout);}}
-  Object.assign(paid,section);reportLoader?.mark(part,'done');}catch(error){reportLoader?.mark(part,'failed');throw error;}
+  Object.assign(paid,section);showFinishedPart(part,section);reportLoader?.mark(part,'done');if(part==='repair')draftPromise=prepareCv();}catch(error){reportLoader?.mark(part,'failed');throw error;}
  }));
- reportLoader?.mark('cv','active');
- var draft;try{draft=await api('/api/generate-cv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id}),signal:AbortSignal.timeout(30000)});reportLoader?.mark('cv','done');}catch(error){reportLoader?.mark('cv','failed');draft={cv:{sourceText:'',preparationError:true}};}
+ var draft=await (draftPromise||prepareCv());
 
  return {sample:false,id:id,generatedAt:id,profile:saved.profile,result:saved.result,quiz:saved.quiz,deep:saved.deep,recheck:saved.recheck,paid:paid,cv:draft.cv,repairedCvDraft:draft.cv.sourceText};
 }
@@ -830,7 +842,7 @@ function wire(R,S){
 
 var reportCacheKey='desk-report-cache:'+location.pathname+location.search;
 
-load().then(function(R){reportLoader?.stop();render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){reportLoader?.stop();document.getElementById("main").setAttribute("aria-busy","false");document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
+load().then(function(R){reportLoader?.stop();render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){reportLoader?.stop();document.getElementById("main").setAttribute("aria-busy","false");if(document.getElementById('reportReadyNow')){document.getElementById('reportLoadingContent').innerHTML='<section class="card"><h2>Your saved assessment is above.</h2><p>One report section could not finish. Retry to resume from saved sections.</p><button class="btn" onclick="location.reload()">Resume report →</button></section>';return;}document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
 <script src="/desk-me.js" defer></script><script src="/interview-natural-voice.js"></script><script src="/report-interview-practice.js"></script></body>
