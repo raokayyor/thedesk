@@ -5,8 +5,8 @@ BEGIN:VEVENT
 UID:banking-ama-20261204@thedesk.vercel.app
 DTSTAMP:20261116T120000Z
 DTSTART:20261204T180000Z
-SUMMARY:Ask me anything about banking
+SUMMARY:Ask me anything with Kayyor Rao
 DESCRIPTION:UK London time. Joining details will be available on The Desk events page.
-URL:https://thedesk.vercel.app/events.html#banking-ama
+URL:https://thedesk.vercel.app/live-session.html?id=banking-ama
 END:VEVENT
 END:VCALENDAR
