@@ -125,3 +125,5 @@
  .member-dashboard .dashboard-desktop-detail .paid-tools>.tool>.btn,
  .member-dashboard .dashboard-desktop-detail .paid-tools>.tool>div:last-child{margin-top:auto!important}
 }
+
+.dashboard-community-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}.dashboard-community-grid>.card{margin:0;min-width:0}.dashboard-question details{margin-top:4px}.dashboard-question summary{cursor:pointer;font-weight:600;text-decoration:underline;min-height:36px;padding:8px 0}.career-question-answer h4{margin:18px 0 6px}.member-dashboard .career-question-answer p{margin:10px 0}.career-question-answer{font-size:14px;line-height:1.6}.career-question-answer a{overflow-wrap:anywhere}@media(max-width:900px){.dashboard-community-grid{grid-template-columns:minmax(0,1fr)}}
