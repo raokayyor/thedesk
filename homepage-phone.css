@@ -5,3 +5,6 @@
 
 .homepage-pricing .member-phone-list{display:none}.people-section>h2{display:block}
 @media(max-width:900px){.homepage-pricing .member-phone-list{display:block}.people-section>h2{display:block;margin-bottom:14px}}
+
+.phone-copy{display:none}.tools-stat abbr{text-decoration:none}
+@media(max-width:900px){.desktop-copy,.decoder-example-note{display:none!important}.phone-copy{display:inline}}
