@@ -85,6 +85,7 @@ async function headlines() {
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
+  if(!staffOk(req)||['join','trade','stop'].includes(req.body?.action))return res.status(503).json({comingSoon:true,error:'Trading League and Society Cup are coming soon.'});
   try {
     await init();
     const q = req.query || {};
