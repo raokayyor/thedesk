@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {registerHooks} from 'node:module';
+const state=globalThis.__libraryAccess={signedIn:false,member:false};
+registerHooks({resolve(s,c,next){if(s.endsWith('/accounts.mjs'))return {url:'test:library-account',shortCircuit:true};if(s.endsWith('/report-store.mjs'))return {url:'test:library-store',shortCircuit:true};return next(s,c)},load(url,c,next){if(url==='test:library-account')return {format:'module',shortCircuit:true,source:'export const currentAccount=async()=>globalThis.__libraryAccess.signedIn?{id:"qa"}:null;export const entitlement=async()=>({active:globalThis.__libraryAccess.member});'};if(url==='test:library-store')return {format:'module',shortCircuit:true,source:'export const apiFailure=(res)=>res.status(503).end();'};return next(url,c)}});
+const {default:handler}=await import('../api/member-library.js');
+async function run(asset){const res={headers:{},statusCode:200,setHeader(k,v){this.headers[k]=v},status(n){this.statusCode=n;return this},end(){return this},send(b){this.body=b;return this},json(b){this.body=b;return this}};await handler({method:'GET',query:{asset}},res);return res;}
+test('signed-out and free accounts cannot fetch the paid library or answers',async()=>{for(const signedIn of [false,true]){state.signedIn=signedIn;state.member=false;const page=await run('library');assert.equal(page.statusCode,302);assert.equal(page.headers.Location,'/library-preview.html');assert.equal((await run('videoData')).statusCode,403);assert.equal((await run('brain')).body,'globalThis.DeskBrainTeasers=[];');}});
+test('members can load library and worked brain teasers without shared caching',async()=>{state.signedIn=true;state.member=true;for(const asset of ['library','videos','videoData','brain']){const r=await run(asset);assert.equal(r.statusCode,200);assert.ok(r.body.length>100);assert.equal(r.headers['Cache-Control'],'private, no-store');}});
+test('unknown asset names cannot read arbitrary files',async()=>{assert.equal((await run('../../.env')).statusCode,404);});
