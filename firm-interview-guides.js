@@ -1,1 +1,48 @@
-(()=>{const bank=DeskInterviewBank,$=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const selected=new URLSearchParams(location.search).get('firm');for(const[key,pack]of Object.entries(bank.firmPacks)){const o=document.createElement('option');o.value=key;o.textContent=bank.firms[key].label;$('guideFirm').append(o);}if(selected)$('guideFirm').value=bank.resolveFirm(selected);if(!$('guideFirm').value)$('guideFirm').selectedIndex=0;function roles(){const f=bank.firms[$('guideFirm').value];$('guideRole').replaceChildren(...f.roles.map(key=>{const o=document.createElement('option');o.value=key;o.textContent=bank.roles[key].label;return o;}));draw();}function draw(){const key=$('guideFirm').value,pack=bank.firmPacks[key],f=bank.firms[key],role=$('guideRole').value,review=bank.reviewPacks[key];const questions=pack.qs.filter(q=>!q.roles||q.roles.includes(role));$('firmGuide').innerHTML='<section class="comm-card"><div class="comm-card-head"><h2>'+esc(f.label)+'</h2><a class="comm-btn hot" href="/interview-start.html?firm='+key+'&amp;libraryRole='+role+'">Practise this firm and role →</a></div><h3>Prepare to demonstrate</h3><ul>'+pack.tests.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul><h3>Research before you answer</h3><p>'+esc(f.focus)+'</p><p class="comm-muted">Check the firm’s current business lines, clients, recent results and stated values. Connect your research to this role.</p><h3>Why this firm?</h3><p>'+esc(review?.why||pack.why)+'</p></section><section class="comm-card"><h2>Questions to practise aloud</h2><p class="comm-muted">These feed the same live interview question bank. Sessions rotate relevant questions, so repeated practice covers more of the pack.</p>'+questions.map(q=>'<details style="padding:16px 0;border-bottom:1px solid #ddd7cf"><summary style="font-weight:700;cursor:pointer">'+esc(q.q)+'</summary><p>'+esc(q.guide.shape)+'</p><ol>'+q.guide.points.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol></details>').join('')+'</section>'+(pack.cases?.[role]?'<section class="comm-card"><h2>Apply your judgement</h2><p>'+esc(pack.cases[role])+'</p><p class="comm-muted">Clarify the objective, identify missing information, compare options and give a reasoned recommendation.</p></section>':'');} $('guideFirm').onchange=roles;$('guideRole').onchange=draw;roles();})();
+(()=>{
+const bank=window.DeskInterviewBank,$=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const params=new URLSearchParams(location.search);
+const firmKeys=Object.keys(bank.firmPacks);
+let firm=bank.resolveFirm(params.get('firm')||'')||firmKeys[0];
+if(!bank.firmPacks[firm])firm=firmKeys[0];
+let role=params.get('role');
+const kinds={cv:'Your experience',technical:'Technical',motivation:'Motivation',commercial:'Commercial',case:'Case',competency:'Competency'};
+const techLink=q=>{const t=window.DeskTechnicalExamples?.find?.(q);return t?` <a class="dc-link" href="/library.html?topic=${esc(t.id)}#technicals">How to answer: ${esc(t.title)} →</a>`:'';};
+function chips(host,items,current,onPick){
+ host.replaceChildren(...items.map(([key,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(key===current));b.onclick=()=>onPick(key);return b;}));
+}
+function sync(){const u=new URL(location.href);u.searchParams.set('firm',firm);u.searchParams.set('role',role);history.replaceState(null,'',u);}
+function pickFirm(key){firm=key;const roles=bank.firms[firm].roles;if(!roles.includes(role))role=roles[0];draw();}
+function pickRole(key){role=key;draw();}
+function draw(){
+ const f=bank.firms[firm],pack=bank.firmPacks[firm],review=bank.reviewPacks?.[firm],roles=f.roles;
+ if(!roles.includes(role))role=roles[0];
+ const r=bank.roles[role]||{label:role};
+ chips($('firmChips'),firmKeys.map(k=>[k,bank.firms[k].label]),firm,pickFirm);
+ chips($('roleChips'),roles.map(k=>[k,bank.roles[k]?.label||k]),role,pickRole);
+ sync();document.title=f.label+' firm pack | The Desk';
+ const firmQs=(pack.qs||[]).filter(q=>!q.roles||q.roles.includes(role));
+ const roleQs=[['Technical',r.technical],['Case',r.case],['Stretch',r.stretch]].filter(([,q])=>q);
+ const qItem=(kind,q,body)=>`<details><summary><span><span class="fp-kind">${esc(kind)}</span>${esc(q)}</span></summary>${body}</details>`;
+ const practise=`/interview-start.html?firm=${encodeURIComponent(firm)}&libraryRole=${encodeURIComponent(role)}`;
+ $('firmGuide').innerHTML=`<div class="fp-layout"><div>
+ <section class="fp-card"><div class="fp-head"><div><div class="dc-k">Firm pack</div><h2>${esc(f.label)}</h2><span class="fp-role">${esc(r.label)}</span></div><a class="dc-btn" href="${practise}">Practise ${esc(f.label)} on camera →</a></div>
+ <p class="fp-focus">${esc(f.focus)}</p>
+ <div class="fp-cols"><div><h3>What they look for</h3><ul class="fp-ticks">${(pack.tests||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+ <div><h3>Know before you go</h3><ul class="fp-ticks">${(pack.know||[]).map(t=>`<li>${esc(t)}</li>`).join('')||'<li>Check the firm’s current business lines, clients and recent results.</li>'}</ul></div></div>
+ <div class="fp-why"><div class="dc-k">Be ready for</div><p><b>${esc(review?.why||pack.why)}</b></p><p>If your answer would still work with another firm’s name in it, it isn’t specific enough.</p></div>
+ </section>
+ <section class="dc-section" style="padding-top:32px"><div class="fp-qhead"><div><div class="dc-k">Practise aloud</div><h2>${esc(f.label)} questions</h2></div><span class="dc-fine">${firmQs.length+roleQs.length} questions · tap for the shape of a good answer</span></div>
+ <div class="dc-list fp-list">
+ ${firmQs.map(q=>qItem(kinds[q.kind]||'Firm question',q.q,`<p class="fp-shape">${esc(q.guide?.shape||'')}</p><ol>${(q.guide?.points||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ol>${q.kind==='technical'?`<p>${techLink(q.q)}</p>`:''}`)).join('')}
+ ${roleQs.map(([kind,q])=>qItem(r.label+' · '+kind,q,kind==='Technical'?`<p class="fp-shape">Define it → walk through the mechanics → give a quick example.</p><p>${techLink(q)||'<a class="dc-link" href="/library.html#technicals">See the technicals in the library →</a>'}</p>`:`<p class="fp-shape">Clarify the objective → what you’d need to know → options → a reasoned recommendation.</p>`)).join('')}
+ </div></section>
+ ${pack.cases?.[role]?`<section class="fp-case"><div class="dc-k">Apply your judgement · ${esc(r.label)}</div><h3>${esc(pack.cases[role])}</h3><p>Clarify the objective, identify missing information, compare options and give a reasoned recommendation.</p></section>`:''}
+ </div>
+ <aside class="fp-side">
+ <section class="fp-card fp-cta"><div class="dc-k">Practise this pack</div><h3>${esc(f.label)} · ${esc(r.label)}</h3><p>Answer these on camera. The interview coach uses this pack and your CV, then pushes back like a real interviewer.</p><a class="dc-btn" href="${practise}">Start a ${esc(f.label)} interview →</a><small>Not a member yet? <a href="/interview.html?ready=1&amp;taster=interview&amp;trial=1">Try one free question →</a></small></section>
+ <section class="fp-card"><div class="dc-k">Before the interview</div><h3>A 20-minute prep</h3><ol><li>Read the firm’s latest results headline and one recent deal or news story.</li><li>Write one sentence for “why ${esc(f.label)}” that only works for this firm.</li><li>Say two of these questions out loud, timed.</li></ol><a class="dc-btn ghost" href="/library.html">Open the library</a></section>
+ </aside></div>`;
+}
+draw();
+})();

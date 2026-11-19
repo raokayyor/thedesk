@@ -14,9 +14,9 @@ test('tools and preview routes select the corresponding group',()=>{for(const p 
 
 test('firm packs follow the nearest active tracker firm ahead of the profile',()=>{
  const d={member:true,profile:{targetFirm:'Barclays'},applications:[{firm:'J.P. Morgan',stage:'Interview',deadline:'2099-11-20'}]};
- assert.equal(C.href('firms',d),'/interview-start.html?firm=J.P.%20Morgan');
- assert.equal(C.href('firms',{...d,applications:[]}),'/interview-start.html?firm=Barclays');
- assert.equal(C.href('firms',{...d,applications:[{firm:'Expired',stage:'Unsuccessful'}]}),'/interview-start.html');
+ assert.equal(C.href('firms',d),'/firm-interview-guides.html?firm=J.P.%20Morgan');
+ assert.equal(C.href('firms',{...d,applications:[]}),'/firm-interview-guides.html?firm=Barclays');
+ assert.equal(C.href('firms',{...d,applications:[{firm:'Expired',stage:'Unsuccessful'}]}),'/firm-interview-guides.html');
 });
 
 test('CV opens the owned report at its CV fixes, or the unfinished deep assessment',()=>{assert.equal(C.href('cv',{member:true,report:{url:'/fullcycle.html?id='+'a'.repeat(48)}}),'/fullcycle.html?id='+'a'.repeat(48)+'#cv');assert.equal(C.href('cv',{member:true,report:{url:'/deep-assessment.html?id='+'a'.repeat(48)}}),'/deep-assessment.html?id='+'a'.repeat(48));});

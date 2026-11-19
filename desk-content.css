@@ -1,0 +1,83 @@
+/* The Desk content pages (Library, Firm packs).
+   Same tokens as desk-navigation.css and free-interview-v2.css so every page reads as one product. */
+:root{--paper:#f4f1ec;--card:#fbfaf7;--white:#fff;--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--line:#e2ddd5;--soft:#ebe6de;--accent:#c4562a;--accent-soft:#fbefe8;--accent-line:#efcdbd;--good:#2f7a4f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Figtree,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink)}a:hover{color:var(--accent)}
+h1,h2,h3,.serif{font-family:'EB Garamond',Georgia,serif;font-weight:600;letter-spacing:-.012em;line-height:1.1;margin:0}
+h1{font-size:clamp(34px,5vw,46px);max-width:20ch}
+h2{font-size:30px}
+h3{font-size:22px}
+p{margin:8px 0}
+.dc-top{border-bottom:1px solid var(--line)}
+.dc-top-in{max-width:1040px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.dc-logo{font:600 27px/1 'EB Garamond',Georgia,serif;text-decoration:none;color:var(--ink)}
+.dc-top-in>a:not(.dc-logo){font:600 14px Figtree,Arial,sans-serif;text-decoration:none}
+.dc-main{max-width:1040px;margin:0 auto;padding:36px 24px 96px}
+.dc-k{font:600 11px/1.5 Figtree,Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:var(--mute)}
+.dc-k.accent{color:var(--accent)}
+.dc-intro{font-size:17px;color:var(--ink-2);max-width:62ch;margin:14px 0 0}
+.dc-fine{font-size:13px;color:var(--mute);line-height:1.5}
+.dc-search{display:flex;align-items:center;gap:10px;max-width:520px;margin-top:22px;padding:0 14px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.dc-search:focus-within{border-color:var(--ink)}
+.dc-search svg{width:18px;height:18px;stroke:var(--mute);fill:none;stroke-width:2;flex:none}
+.dc-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:16px Figtree,Arial,sans-serif;padding:13px 0;color:var(--ink)}
+.dc-chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.dc-chips a,.dc-chips button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font:600 14px Figtree,Arial,sans-serif;color:var(--ink);text-decoration:none;cursor:pointer}
+.dc-chips a:hover,.dc-chips button:hover{border-color:var(--ink);color:var(--ink)}
+.dc-chips [aria-pressed=true],.dc-chips .on{background:var(--ink);border-color:var(--ink);color:#fff}
+.dc-chips .count{font-weight:500;color:var(--mute);font-size:12px}
+.dc-chips [aria-pressed=true] .count{color:#c9d0d3}
+.dc-chips .new{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
+.dc-section{padding-top:44px;scroll-margin-top:16px}
+.dc-section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.dc-section-head p{color:var(--mute);font-size:15px;margin:6px 0 0}
+.dc-list{display:grid;gap:10px}
+.dc-list details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 20px;transition:border-color .15s}
+.dc-list details:hover{border-color:#cfc8bd}
+.dc-list details[open]{border-color:var(--ink);padding-bottom:18px;background:var(--white)}
+.dc-list summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:17px 0;font-weight:600;font-size:16px}
+.dc-list summary::-webkit-details-marker{display:none}
+.dc-list summary::after{content:'';flex:none;width:9px;height:9px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg) translate(-2px,-2px);transition:transform .15s}
+.dc-list details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.dc-list summary .tag{font:600 11px Figtree,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-left:8px}
+.dc-list details p,.dc-list details li{font-size:15px;color:var(--ink-2);line-height:1.65}
+.dc-list details ul,.dc-list details ol{padding-left:20px;margin:8px 0}
+.dc-list details li{margin:6px 0}
+.dc-ans{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:12px 16px;margin-top:4px;font-size:15px;color:var(--ink-2)}
+.dc-ans b{color:var(--ink)}
+.dc-say{border-left:3px solid var(--ink);padding:2px 0 2px 16px;margin:4px 0 14px;font-size:15px;color:var(--ink-2)}
+.dc-label{font:600 11px Figtree,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
+.dc-example{background:var(--soft);border-radius:10px;padding:12px 16px;font-size:15px;color:var(--ink-2)}
+.dc-trap{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:14px;color:#8a3b1c}
+.dc-trap b{flex:none}
+.dc-link{font:600 14px Figtree,Arial,sans-serif;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.dc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:12px 20px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff!important;font:600 15px Figtree,Arial,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.dc-btn:hover{background:#2c3b40}
+.dc-btn.ghost{background:transparent;color:var(--ink)!important}
+.dc-btn.ghost:hover{background:var(--card)}
+.dc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dc-tile{display:flex;flex-direction:column;gap:6px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink)}
+.dc-tile:hover{border-color:var(--ink);color:var(--ink)}
+.dc-tile strong{font:600 21px/1.15 'EB Garamond',Georgia,serif}
+.dc-tile span{font-size:14px;color:var(--mute)}
+.dc-tile.feature{background:var(--ink);border-color:var(--ink);color:#fff}
+.dc-tile.feature span{color:#c9d0d3}
+.dc-tile.feature:hover{color:#fff;background:#2c3b40}
+.dc-dark{background:var(--ink);color:#fff;border-radius:16px;padding:24px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.dc-dark p{color:#c9d0d3;margin:4px 0 0;font-size:15px}
+.dc-dark .dc-btn{background:#fff;color:var(--ink)!important;border-color:#fff}
+.dc-dark a:not(.dc-btn){color:#fff;font-weight:600}
+.dc-none{padding:24px;text-align:center;color:var(--mute);background:var(--card);border:1px dashed var(--line);border-radius:14px;margin-top:24px}
+[hidden]{display:none!important}
+a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:760px){.dc-main{padding:26px 18px 110px}.dc-top-in{padding:14px 18px}.dc-grid{grid-template-columns:1fr}h2{font-size:27px}.dc-list details{padding:0 16px}.dc-section{padding-top:36px}.dc-chips{flex-wrap:nowrap;overflow-x:auto;margin-right:-18px;padding-right:18px;scrollbar-width:none}.dc-chips::-webkit-scrollbar{display:none}.dc-chips a,.dc-chips button{flex:none}.dc-dark{padding:20px}.dc-dark .dc-btn{width:100%}}
+/* Inside the member shell (desk-nav.js): the sidebar carries the logo on desktop. */
+.desk-shell .dc-top{background:transparent}
+.desk-shell .dc-top-in{max-width:1040px}
+.desk-shell .dc-top-in .desk-account-avatar{margin-left:auto}
+@media(min-width:1024px){.desk-shell .dc-top .dc-logo,.desk-shell .dc-top-in>a:not(.dc-logo):not(.desk-account-avatar){display:none}.desk-shell .dc-top{border-bottom:0}.desk-shell .dc-top-in{justify-content:flex-end;padding-bottom:0}}
+@media(max-width:1023px){.desk-shell .dc-top-in>a:not(.dc-logo):not(.desk-account-avatar){display:none}}
+
+.dc-chips button[aria-pressed=true],.dc-chips button[aria-pressed=true]:hover{color:#fff;background:var(--ink)}
