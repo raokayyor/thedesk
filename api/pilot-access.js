@@ -3,7 +3,7 @@ import {sameOrigin,sql,apiFailure,hash} from '../lib/report-store.mjs';
 import {seedAmeliaMember} from '../lib/amelia-member.mjs';
 import {normEmail,validEmail,initAccounts,upsertAccount,currentAccount,startSession,allow} from '../lib/accounts.mjs';
 import {initMemberships,accountMembership} from '../lib/account-memberships.mjs';
-import {validPilotCode,PILOT_EXPIRES} from '../lib/pilot-access.mjs';
+import {validPilotCode,validAmeliaCode,PILOT_EXPIRES} from '../lib/pilot-access.mjs';
 export const maxDuration=300;
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');
@@ -14,7 +14,7 @@ export default async function handler(req,res){
   if(!validEmail(email))return res.status(400).json({error:'Enter a valid email address.'});
   const ip=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0].trim();
   if(!await allow('pilot-login:'+ip,10))return res.status(429).json({error:'Too many attempts. Try again in an hour.'});
-  if(!validPilotCode(req.body?.code))return res.status(403).json({error:'That access code is incorrect or has expired.'});
+  if(!validPilotCode(req.body?.code)&&!(email==='ameliachen@gmail.com'&&validAmeliaCode(req.body?.code)))return res.status(403).json({error:'That access code is incorrect or has expired.'});
   await initAccounts();await initMemberships();
   const existing=await currentAccount(req);
   const amelia=email==='ameliachen@gmail.com';
