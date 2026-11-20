@@ -117,5 +117,5 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
   if(signedAccount)await linkAssessment(signedAccount.id,id);
   await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),...publicAssessment(result,quiz,cvText)});
- }catch(e){return apiFailure(res,e);}
+ }catch(e){if(e?.status===400)console.error('desk assessment provider schema rejected',{message:String(e.error?.error?.message||e.message||'').slice(0,900)});return apiFailure(res,e);}
 }
