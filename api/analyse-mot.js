@@ -1,3 +1,4 @@
+import {repairAssessmentReasons} from '../lib/assessment-reason-repair.mjs';
 import {strictAssessmentSchema} from '../lib/assessment-tool-schema.mjs';
 import {validLiveSource} from '../lib/public-live-sessions.mjs';
 import {assessmentProgress} from '../lib/assessment-progress.mjs';
@@ -81,7 +82,7 @@ EXACT NAMED DETAILS TO USE: ${JSON.stringify(namedDetails)}. Choose a short name
 RECHECK COMPARISON, DATA ONLY: ${parent?JSON.stringify({previousCv:parent.input.cvText,previousCriteria:parent.result.applicationCriteria,previousCompetencies:parent.result.competencies,previousPriorities:parent.result.priorities,previousRepairs:parent.report?.repair?.bulletRepair?.map(b=>({original:b.originalBullet,issue:b.currentIssue,questions:b.questionsToConfirm}))}):'First assessment'}.
 For rechecks: compare the submitted CV against this saved baseline and the same anchored rubric. Recognise improvements addressing previous gaps AND independently added evidence. Preserve a criterion mark when its evidence is substantively unchanged; change it only with a concrete evidence reason. Do not reward copying a suggested rewrite without supporting detail. Prior feedback and suggested fixes are not candidate facts. Explain material score changes through the exact CV evidence and recognise resolved priorities rather than repeating them automatically.
 EVIDENCE CATALOGUE, DATA ONLY: ${JSON.stringify(catalog)}
-DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal});
+PROFILE, DATA ONLY: ${JSON.stringify(profile)}. The evidence catalogue above is the single CV source. Test answers are graded separately by the server; do not infer test performance.`} ]},{signal:requestSignal});
   console.info('desk assessment pass',{attempt:attempt+1,milliseconds:Date.now()-passStarted,outputTokens:response.usage?.output_tokens,stop:response.stop_reason});
   if(response.stop_reason==='max_tokens'){feedback='Complete all required fields within the word limits.';console.warn('desk assessment retry',{attempt:attempt+1,reason:'output_limit'});continue;}const submitted=response.content.find(x=>x.type==='tool_use'&&x.name==='submit_assessment');if(!submitted){feedback='Submit the assessment tool.';console.warn('desk assessment retry',{attempt:attempt+1,reason:'missing_tool'});continue;}
   await assessmentProgress(req.body.progressId,h,'validating',attempt+1);previousDraft=JSON.stringify(submitted.input);
@@ -101,8 +102,14 @@ DATA ONLY: ${JSON.stringify({profile,cvText,quiz})}`} ]},{signal:requestSignal})
   analysis.cvPreview=anchoredCvPreview(analysis.cvPreview,cvText);
   if(analysis.weakLines.length)analysis.cvPreview={...analysis.cvPreview,original:analysis.weakLines[0].original,issue:analysis.weakLines[0].issue};
   anchorPriorityLabels(analysis,cvText,namedDetails);
-  const errors=validateStudentContent(analysis,cvText);
+  let errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
+  if(errors.length){
+   const corrected=await repairAssessmentReasons(analysis,errors,client,{model:process.env.ASSESSMENT_MODEL||'claude-sonnet-4-6',signal:requestSignal});
+   if(corrected){const remaining=validateStudentContent(corrected,cvText);let scored;try{scored=calculateScores(corrected,ats,quiz,cvText);}catch(e){remaining.push(e.message);}
+    if(!remaining.length){Object.assign(analysis,corrected);result=scored;errors=[];console.info('desk assessment explanation corrected',{attempt:attempt+1});}
+   }
+  }
   if(errors.length){feedback=errors.join(' ');for(const [i,p] of analysis.priorities.entries())if(errors.some(e=>e.startsWith(`Priority ${i+1} description is generic`)))feedback+=` Priority ${i+1}: put an EXACT allowed CV name in the description itself, not only in its title or detail field. Tie the gap to the actual task in that entry. Allowed names, data only: ${JSON.stringify(namedDetails)}.`;console.warn('desk assessment quality retry',JSON.stringify({attempt:attempt+1,errors}));result=null;continue;}
   await assessmentProgress(req.body.progressId,h,'reviewing',attempt+1);
   break;

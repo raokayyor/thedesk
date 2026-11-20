@@ -9,7 +9,7 @@ test('strict tool schema constrains severity without unsupported bounds',()=>{
  const schema=strictAssessmentSchema(original);
  assert.deepEqual(schema.items.properties.severity.enum,[1,2,3]);
  assert.deepEqual(schema.items.required,['original','issue','severity']);
- assert.deepEqual(schema.items.properties.original.enum,['E1','E2']);
+ assert.equal(schema.items.properties.original.enum,undefined);
  assert.equal(schema.items.additionalProperties,false);
  assert.equal(schema.items.properties.issue.pattern,undefined);
  assert.match(schema.items.properties.issue.description,/Word limits/);
