@@ -15,7 +15,7 @@ test('API retries generic model output, saves only validated result, and rejects
  const req={method:'POST',headers:{origin:'https://thedesk.vercel.app',host:'thedesk.vercel.app'},body:{consent:true,cv:{text:cv},profile:{name:'Fictional test',targetSector:'General Finance'},answers:{commercial:[0,0,0,0,0],numerical:[1,2,2,1,1]}}};
  const response=()=>({statusCode:200,setHeader(){},status(n){this.statusCode=n;return this;},json(x){this.body=x;return this;}});
  try{let res=response();await handler(req,res);assert.equal(res.statusCode,200);assert.equal(calls,2);assert.equal(writes,1);assert.equal(res.body.result.competencies[0].score,63);
- calls=0;allInvalid=true;res=response();await handler(req,res);assert.equal(res.statusCode,503);assert.equal(calls,3);assert.equal(writes,1);
+ calls=0;allInvalid=true;res=response();await handler(req,res);assert.equal(res.statusCode,503);assert.equal(calls,2);assert.equal(writes,1);
  calls=0;req.body.profile.targetSector='Consulting / Advisory';res=response();await handler(req,res);assert.equal(res.statusCode,400);assert.equal(calls,0);assert.equal(writes,1);
  }finally{proto.create=oldCreate;neonConfig.fetchFunction=oldFetch;for(const [key,value]of Object.entries({ANTHROPIC_API_KEY:oldEnv.key,DATABASE_URL:oldEnv.db,APP_ORIGIN:oldEnv.origin})){if(value===undefined)delete process.env[key];else process.env[key]=value;}}
 });
