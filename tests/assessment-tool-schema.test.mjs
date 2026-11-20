@@ -11,7 +11,8 @@ test('strict tool schema constrains severity without unsupported bounds',()=>{
  assert.deepEqual(schema.items.required,['original','issue','severity']);
  assert.deepEqual(schema.items.properties.original.enum,['E1','E2']);
  assert.equal(schema.items.additionalProperties,false);
- assert.ok(new RegExp(schema.items.properties.issue.pattern).test('Explain the missing outcome.'));
+ assert.equal(schema.items.properties.issue.pattern,undefined);
+ assert.match(schema.items.properties.issue.description,/Word limits/);
  assert.doesNotMatch(JSON.stringify(schema),/"(?:minimum|maximum|minItems|maxItems)":/);
  assert.equal(original.maxItems,8);
 });
