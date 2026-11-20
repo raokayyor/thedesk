@@ -105,7 +105,7 @@ PROFILE, DATA ONLY: ${JSON.stringify(profile)}. The evidence catalogue above is 
   let errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
   if(errors.length){
-   const corrected=await repairAssessmentReasons(analysis,errors,client,{model:process.env.ASSESSMENT_MODEL||'claude-sonnet-4-6',signal:requestSignal});
+   const corrected=await repairAssessmentReasons(analysis,errors,client,{model:process.env.ASSESSMENT_MODEL||'claude-sonnet-4-6',signal:requestSignal,cvText});
    if(corrected){const remaining=validateStudentContent(corrected,cvText);let scored;try{scored=calculateScores(corrected,ats,quiz,cvText);}catch(e){remaining.push(e.message);}
     if(!remaining.length){Object.assign(analysis,corrected);result=scored;errors=[];console.info('desk assessment explanation corrected',{attempt:attempt+1});}
    }
