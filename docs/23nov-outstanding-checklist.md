@@ -4,10 +4,10 @@ Source: user's pasted request and codex-all-23nov.zip. References extracted to C
 
 - [x] A: lean phone hero, desktop hero/card, CTA wording, always-visible live strip + existing consent/invitation pipeline; screenshots.
 - [x] B: reconcile phone/desktop interview screens to new references; automatic saved-answer preselection replaces optional saved-answer checkbox per latest brief; screenshots.
-- [ ] C: criterion-based unique beats, specific rewrite fixes, retry comparisons/history, visible saving, saved answer library, Practice loop and Real saved-answer rehearsal/end summary, free locks; screenshots.
-- [ ] D1: mentor application persistence/validation/quota/no personal-data logs; report recoverability.
+- [x] C: criterion-based unique beats, specific rewrite fixes, retry comparisons/history, visible saving, saved answer library, Practice loop and Real saved-answer rehearsal/end summary, free locks; screenshots.
+- [x] D1: mentor application persistence/validation/quota/no personal-data logs; report recoverability.
 - [ ] D2: Neon programmes migration of 61 rows, staff admin + CSV preview/import/export, weekly checks and homepage deadlines; deliver CSV/admin preview. Firms' own sources only. Seed completion belongs to Rao/team per brief.
-- [ ] D3: verify one-to-one page, £99/£249/£3,000 and all links; handle missing policy/firm details without publishing placeholders.
+- [x] D3: verify one-to-one page, £99/£249/£3,000 and all links; handle missing policy/firm details without publishing placeholders.
 
 Recent interview foundation shipped before this brief: explicit Play question (no early audio), per-marker coaching, separate grounded polished draft, inline gap editing, per-answer/deferred review with retry and skip confirmation. Live feedback contract verification remains in progress before final completion claims.
 
@@ -18,3 +18,7 @@ B validation: 390px and 1280px setup, picker, four-beat think card, full answer 
 Latest steering added during C: (1) strongest numbered/outcome first-person CV contribution or amber gap; (2) fast score/band then streamed coaching, target <10 seconds to score, verify timing; (3) My Desk target-firm two-minute Question of the Day with streak/best and free 3/week; (4) one-page saved-answer PDF for night-before revision.
 
 Live feedback foundation verification: browser-native request on synthetic test account returned paid feedback with four coaching dimensions and a source-grounded improved script in 37.1 seconds. External Playwright request transport had resets; browser fetch worked. Do not claim the new <10-second score target is met yet.
+
+C live verification: first score/band 3.9 seconds; full streamed coaching 38.5 seconds on a synthetic owned test account. Screenshot galleries 23nov-section-c/390-screens.html and 1280-screens.html include weak/retry/save/library/Real summary and daily card. PDF rendered and checked as one A4 page; oversized selections are rejected rather than truncated.
+D: current snapshot is 66 rows / 24 firms (the original 61 plus five later asset-management rows); preserve all IDs. Past mentor submissions were only logged, never stored; historic recovery depends on retained logs. A 30-day log search timed out, so no recovery claim. New applications persist without personal-data logs.
+New active request: codex-app-drafts.zip, applications list / shared gaps / editable grounded draft / student-pasted question verification at three distinct accounts / theme coverage / free one-draft vs membership. Build after completing programmes verification.

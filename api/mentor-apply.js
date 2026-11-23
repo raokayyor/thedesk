@@ -1,35 +1,3 @@
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-
-  try {
-    const body = req.body || {};
-    
-    // Log to Vercel function logs (visible in dashboard)
-    console.log("=== MENTOR APPLICATION ===");
-    console.log("Name:", body.name);
-    console.log("University:", body.university);
-    console.log("Course:", body.course);
-    console.log("Year:", body.year);
-    console.log("Grade:", body.grade);
-    console.log("Target areas:", body.areas);
-    console.log("Email:", body.email);
-    console.log("Phone:", body.phone);
-    console.log("Notes:", body.notes);
-    console.log("Submitted:", new Date().toISOString());
-    console.log("=========================");
-
-    // Forward to email via Anthropic API as a simple notification
-    // (swap this for Resend/SendGrid/Postmark when ready)
-    
-    return res.status(200).json({ 
-      success: true, 
-      message: "Application received" 
-    });
-
-  } catch(e) {
-    console.error("Mentor apply error:", e);
-    return res.status(500).json({ success: false, error: e.message });
-  }
-}
+import {sameOrigin,apiFailure} from '../lib/report-store.mjs';
+import * as A from '../lib/value-accounts.mjs';
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store');if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;try{const b=req.body||{},clean=(key,max)=>String(b[key]||'').trim().slice(0,max);const data={name:clean('name',160),email:clean('email',254).toLowerCase(),university:clean('university',200),course:clean('course',200),year:clean('year',50),grade:clean('grade',60),phone:clean('phone',60),notes:clean('notes',3000),areas:Array.isArray(b.areas)?b.areas.filter(x=>typeof x==='string').slice(0,12).map(x=>x.slice(0,100)):clean('areas',600),submittedAt:new Date().toISOString()};if(data.name.length<2||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))return res.status(400).json({error:'Add your name and a valid email address.'});if(!await A.useQuota('mentor-apply:'+A.clientKey(req),5))return res.status(429).json({error:'Please try again tomorrow.'});const id=await A.saveItem('leads:mentor','mentor-application',data);if(!id)throw Error('Application was not saved');return res.json({success:true,message:'Application received'});}catch(error){return apiFailure(res,error)}}

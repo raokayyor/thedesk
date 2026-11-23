@@ -44,6 +44,9 @@
     },
     "api/member-library.js": {
       "includeFiles": "{library.html,video-library.html,video-library.json,interview-brain-teasers.js}"
+    },
+    "api/programmes-cron.js": {
+      "maxDuration": 300
     }
   },
   "crons": [
@@ -58,6 +61,10 @@
     {
       "path": "/api/live-session-mail",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/programmes-cron",
+      "schedule": "0 5,6 * * 1"
     }
   ],
   "rewrites": [
