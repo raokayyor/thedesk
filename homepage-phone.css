@@ -10,3 +10,5 @@
 @media(max-width:900px){.desktop-copy,.decoder-example-note{display:none!important}.phone-copy{display:inline}}
 
 .hero-open-session{display:block}.live-seminar-heading{font:600 11px/1.4 Figtree,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}.hero-session-row{display:flex;align-items:center;gap:10px}.hero-session-row>a{font-size:14px;font-weight:600;white-space:nowrap}.hero-open-session>.all-live-sessions{display:inline-flex;align-items:center;min-height:32px;margin:4px 0 0 48px;font-size:12.5px;white-space:normal}
+
+@media(max-width:900px){.mobile-proof .proof-kicker{display:block!important;color:#c45121;font:600 24px/1.15 "EB Garamond",Georgia,serif;text-transform:none;letter-spacing:0;padding:14px 14px 0;margin:0}.mobile-proof .proof-intro{margin:6px 14px 12px;color:#59686b;font-size:13px;line-height:1.5}}

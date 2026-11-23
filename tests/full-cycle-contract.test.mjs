@@ -21,3 +21,4 @@ repair.bulletRepair[0]={...bullet,originalBullet:'Invented quote'};
 assert.throws(()=>parsePart(JSON.stringify(repair),'repair',cv),/quote source/);
 assert.throws(()=>parsePart('{"sevenDayActionPlan":[]}', 'plan',cv));
 console.log('Report contract tests passed: full CV, zero scores, incomplete JSON, missing fields, unsupported quotes and numbers.');
+const skipped=buildContext({overallScore:null,readinessComplete:false,cvEvidenceScore:38,band:'Tests not taken'},cv,{name:'Test'},{skipped:true});assert.equal(skipped.facts.overall,'Not assessed — tests not taken');assert.equal(skipped.facts.pointsToCompetitive,null);assert.equal(skipped.facts.quiz.numerical,'Not taken');assert.throws(()=>buildContext({overallScore:null},cv));
