@@ -25,3 +25,11 @@ New interview sessions default to a fresh guide from the saved CV and confirmed 
 Missing or student-confirmed sections have an inline text box and Save to my guide. Typing pauses think time; it never turns an unknown into an invented CV fact. The current session keeps multiple saved details together while the next new session still defaults to a fresh CV guide.
 
 After recording, members can Assess this answer, Retry question, or Next question. Next question retains that transcript in the current interview queue. At the end, Assess all answers reviews only entries without feedback, using the existing per-answer endpoint and allowances. A failed batch retains completed feedback; retry processes only the remaining entries. A new take replaces the previous take for that question. Free taster recording and feedback limits are unchanged.
+
+
+## Coaching produces a better answer
+Feedback is presented against Structure, Evidence, Relevance and Delivery, not as another four-beat checklist. Each marker has its score, a grounded transcript excerpt, a diagnosis, a specific next edit and why it helps that marker. Repeated generic model instructions are replaced with distinct marker-specific advice.
+
+The model also selects an ordered edit plan from exact transcript/CV excerpts. The server rejects unsupported excerpts and removes verbal fillers; first-person grammar is added to supported CV actions. Unknown details remain bracketed gaps. Apply these fixes creates a separate editable practice script; it never overwrites the recorded transcript or awards a new score. Retry with this script carries it into preparation for the same question. The paid script remains withheld from free-taster responses.
+
+Question audio starts only after Play question is clicked on the loaded interview screen. There is no navigation-time automatic playback. Skipping an empty or very short answer requires confirmation and is marked skipped, without a score.
