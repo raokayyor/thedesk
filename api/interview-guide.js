@@ -11,7 +11,7 @@ export default async function handler(req,res){
  const p=await principal(req,res),paid=await isPaidOwner(p);if(!await useQuota('interview-guide:'+p,200))return res.status(429).json({error:'Too many guide requests. Please try later.'});
  if(b.taster===true||!paid){const sample=await resolveInterviewTaster(req,res);return res.json({success:true,...buildInterviewGuide(evidenceSources(sample.cv.text),sample.question,{locked:true})});}
  let row;if(b.assessmentId){if(typeof b.assessmentId!=='string'||! /^[a-f0-9]{48}$/.test(b.assessmentId))return res.status(400).json({error:'Invalid assessment reference.'});row=await ownedRecord(req,res,b.assessmentId);}else{const a=await currentAccount(req);if(a)row=await latestAssessment(a.id);else{await initStore();row=(await sql().query('SELECT id,input,result,owner_hash FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[owner(req,res)]))[0];}}
- if(!row)return res.status(404).json({error:'Save your CV or assessment first.'});
+ if(!row){if(b.assessmentId)return res.status(404).json({error:'Save your CV or assessment first.'});return res.json({success:true,...buildInterviewGuide([],b.question)});}
  const cv=await latestCv(row.owner_hash),text=cv.text||row.input.cvText;const deep=text===row.input.cvText?await deepFor(row):null;
  const previous=await sql().query("SELECT data->>'transcript' AS transcript FROM desk_value_items WHERE principal=$1 AND kind='interview' ORDER BY created_at DESC LIMIT 8",[p]);
  const guide=buildInterviewGuide(evidenceSources(text,deep,previous.map(x=>x.transcript)),b.question),cvHash=hash(text),questionHash=hash(b.question);
