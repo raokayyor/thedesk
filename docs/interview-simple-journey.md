@@ -11,3 +11,9 @@ The 30-second thinking timer pauses while a sheet is open or the tab is hidden. 
 Answers with sparse source evidence stay short and show gaps; students must supply those details to build a 60–90 second response. Do not pad them with invented settings or outcomes.
 
 Verification covers source-span rejection, account isolation, free answer locking, confirmation scoping, question counts, recorder/transcription continuity, missing-result feedback and practice/real mode visibility. Browser screenshots use a synthetic camera feed; provider transcription and model feedback are stubbed in the layout capture, with the deployed API checked separately.
+
+
+## Every question has an answer structure
+The preparation guide must use `answerStructure` from `lib/interview-frameworks.mjs`. Apply it to the actual question, not the interview format: HireVue is a delivery format and does not mean every answer uses STAR. Introductions, motivation, behavioural questions, technical questions, commercial awareness, judgement, cases, reasoning and follow-ups have distinct four-part plans.
+
+Fill sections only with the student's saved CV, completed deep answers, saved earlier interview answers or explicitly confirmed gap details. Missing facts remain amber gaps. Never import an example speaker's achievements. Even without matching CV evidence, display the worked structure and prompts. Recording shows the same plan in the collapsed answer-guide strip; Real interview mode hides it. Feedback applies the same question-specific framework. Follow-ups retain the original CV example and read the prior answer from the signed-in student's saved answers.

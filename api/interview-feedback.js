@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     const employer=employerPracticeContext(v.input.firm,v.input.role);if(employer)feedback.employerPractice={label:employer.label,role:employer.role,focus:employer.roleFocus};
     if(!paid)feedback={...feedback,lockedFixCount:Math.max(0,feedback.fixes.length-1),strengths:feedback.strengths.slice(0,1),fixes:feedback.fixes.slice(0,1),strongerOpening:'',followUp:null,teaser:true};
     if(taster){feedback=teaserFeedbackPreview(feedback);await completeTaster(taster);}if(!paid&&(v.input.kind==='teaser'||publicContext))feedback=teaserFeedbackPreview(feedback);if(publicContext)feedback.paper={competency:publicContext.weakest,score:publicContext.paperScore};
-    feedback.beatReview=assessAnswerBeats(v.input.transcript);if(req.body?.evidenceGuide===true)feedback=groundedFeedbackView(feedback,v.input.transcript);
+    feedback.beatReview=assessAnswerBeats(v.input.transcript,v.input);if(req.body?.evidenceGuide===true)feedback=groundedFeedbackView(feedback,v.input.transcript,v.input);
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);
     if(savedId)await sharedEvent(ownerHash,'practice',{count:1});
