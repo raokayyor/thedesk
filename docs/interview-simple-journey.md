@@ -19,3 +19,9 @@ The preparation guide must use `answerStructure` from `lib/interview-frameworks.
 Fill sections only with the student's saved CV, completed deep answers, saved earlier interview answers or explicitly confirmed gap details. Missing facts remain amber gaps. Never import an example speaker's achievements. Even without matching CV evidence, display the worked structure and prompts. Recording shows the same plan in the collapsed answer-guide strip; Real interview mode hides it. Feedback applies the same question-specific framework. Follow-ups retain the original CV example and read the prior answer from the signed-in student's saved answers.
 
 New interview sessions default to a fresh guide from the saved CV and confirmed CV assessment details. Earlier interview transcripts and saved interview gap details are excluded unless the student explicitly selects **Use saved answers**. The checkbox starts off for every new session and is not persisted between logins. A deliberate follow-up still uses its own preceding answer as context. New details typed into the current guide appear immediately; they do not silently become the next session's default.
+
+
+## Fill missing guidance and choose when to assess
+Missing or student-confirmed sections have an inline text box and Save to my guide. Typing pauses think time; it never turns an unknown into an invented CV fact. The current session keeps multiple saved details together while the next new session still defaults to a fresh CV guide.
+
+After recording, members can Assess this answer, Retry question, or Next question. Next question retains that transcript in the current interview queue. At the end, Assess all answers reviews only entries without feedback, using the existing per-answer endpoint and allowances. A failed batch retains completed feedback; retry processes only the remaining entries. A new take replaces the previous take for that question. Free taster recording and feedback limits are unchanged.
