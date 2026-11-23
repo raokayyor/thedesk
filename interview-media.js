@@ -22,6 +22,7 @@
  async function connectForAnswer(){if(stream?.getAudioTracks().some(t=>t.readyState==='live'))return;let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}await connect(choice!=='microphone')}
  window.DeskInterviewMedia={connect,connectForAnswer};
  async function reconnect(){
+  if(window.DeskInterviewSimpleEnabled)return;
   let choice;try{choice=localStorage.getItem('desk-interview-media')}catch{}
   if(!choice||!navigator.permissions?.query)return;
   try{const mic=await navigator.permissions.query({name:'microphone'});const camera=choice==='camera'?await navigator.permissions.query({name:'camera'}):null;if(mic.state==='granted'&&(!camera||camera.state==='granted'))await connect(choice==='camera')}catch{}

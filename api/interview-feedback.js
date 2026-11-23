@@ -1,3 +1,8 @@
+import {ownedRecord} from '../lib/report-store.mjs';
+import {currentAccount,latestAssessment} from '../lib/accounts.mjs';
+import {deepFor,evidenceText} from '../lib/deep-assessment.mjs';
+import {latestCv} from '../lib/saved-cv.mjs';
+import {assessAnswerBeats,groundedFeedbackView} from '../lib/interview-evidence-guide.mjs';
 import {resolveInterviewTaster} from '../lib/interview-taster-context.mjs';
 import {readFile} from 'node:fs/promises';
 import {startTaster,tasterRun,completeTaster,logTasterUsage,tasterError} from '../lib/free-tasters.mjs';
@@ -37,6 +42,7 @@ export default async function handler(req, res) {
     if(!paid&&v.input.followUpOf)return res.status(402).json({error:'Answering the interviewer’s follow-up is part of membership.',upgrade:true});
     if(!paid&&!taster&&weekLeft<=0)return res.status(429).json({error:'You’ve used your three free assessments of this question this week. You can still practise and replay your recording; membership opens the full interview coach.',upgrade:true});
     if(taster){v.input.question=taster.question;v.input.firm=taster.profile.targetFirm||'';v.input.role=taster.profile.targetSector||'';v.input.cv=taster.cv;v.input.kind='competency';v.input.seconds=Math.min(v.input.seconds||90,120);}else if(publicContext){v.input.question=publicContext.question;v.input.firm=publicContext.profile.targetFirm||'';v.input.role=publicContext.profile.targetSector||'';v.input.cv=publicContext.cv.text;v.input.kind='competency';v.input.seconds=Math.min(v.input.seconds||120,120);}else if(!paid){v.input.question=FREE_INTERVIEW_QUESTION;v.input.firm=FREE_INTERVIEW_FIRM;v.input.role=FREE_INTERVIEW_ROLE;v.input.kind='teaser';v.input.transcript=(v.input.transcript.match(/\S+/g)||[]).slice(0,TEASER_WORDS).join(' ');v.input.seconds=Math.min(v.input.seconds||120,120);}
+    if(paid&&req.body?.evidenceGuide===true){const account=await currentAccount(req);const row=req.body.assessmentId?await ownedRecord(req,res,req.body.assessmentId):account?await latestAssessment(account.id):null;if(!row)return res.status(404).json({error:'Open your saved assessment first.'});const saved=await latestCv(row.owner_hash);const deep=saved.text===row.input.cvText?await deepFor(row):null;v.input.cv=deep?.status==='complete'?evidenceText(row,deep):saved.text||row.input.cvText;}
     if (!taster&&!await useQuota(key, limit)) return res.status(429).json({ error: paid ? 'That’s a lot of practice for one day. Come back tomorrow.' : `You’ve used today’s ${FREE_PER_DAY} free feedbacks. Full Cycle includes 60 detailed feedbacks a day.`, upgrade: !paid });
     const example=!paid&&!taster&&!publicContext?await publicExample:null;
     const framework=chooseFramework(v.input);
@@ -53,6 +59,7 @@ export default async function handler(req, res) {
     const employer=employerPracticeContext(v.input.firm,v.input.role);if(employer)feedback.employerPractice={label:employer.label,role:employer.role,focus:employer.roleFocus};
     if(!paid)feedback={...feedback,lockedFixCount:Math.max(0,feedback.fixes.length-1),strengths:feedback.strengths.slice(0,1),fixes:feedback.fixes.slice(0,1),strongerOpening:'',followUp:null,teaser:true};
     if(taster){feedback=teaserFeedbackPreview(feedback);await completeTaster(taster);}if(!paid&&(v.input.kind==='teaser'||publicContext))feedback=teaserFeedbackPreview(feedback);if(publicContext)feedback.paper={competency:publicContext.weakest,score:publicContext.paperScore};
+    feedback.beatReview=assessAnswerBeats(v.input.transcript);if(req.body?.evidenceGuide===true)feedback=groundedFeedbackView(feedback,v.input.transcript);
     const savedId=await saveItem(ownerHash, 'interview', { question: v.input.question, kind: v.input.kind, firm: v.input.firm, role: v.input.role, followUp: !!v.input.followUpOf, transcript: v.input.transcript, seconds: v.input.seconds, feedback }).catch(() => null);
     await saveResearchAudit(savedId,framework,research.passages);
     if(savedId)await sharedEvent(ownerHash,'practice',{count:1});

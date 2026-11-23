@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--warn:#9a6a14;--warn-soft:#fbf0d9}
+*{box-sizing:border-box}body{margin:0;background:#d8d2c8;font:16px/1.5 Figtree,Arial,sans-serif;color:var(--ink);padding:34px 30px 30px;display:flex;flex-direction:column;gap:56px}
+.wrap{position:relative}.cap{position:absolute;top:-26px;left:0;font:600 13px Figtree;color:#5a5048}
+.scr{width:1280px;height:760px;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.18);position:relative}
+h1,h2{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
+.cam-dot{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#000;box-shadow:0 0 0 3px rgba(255,255,255,.15);z-index:5}
+/* think */
+.think{background:var(--ink);color:#fff;height:100%;padding:28px 48px;display:grid;grid-template-rows:auto auto 1fr;}
+.tt{display:flex;justify-content:space-between;font-size:14px;color:#aab4b9;font-weight:600}.tt b{color:#e8a283;font-size:16px}
+.qc{text-align:center;max-width:860px;margin:26px auto 0}
+.qc small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#cfe3d5;font-weight:700}
+.qc h1{font-size:40px;line-height:1.15;margin-top:8px}
+.cols{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:30px;align-items:start}
+.crib{background:#fbfaf7;color:var(--ink);border-radius:16px;padding:18px 20px 12px}
+.crib .h{display:flex;justify-content:space-between}.crib .h b{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--good)}.crib .h span{font-size:13px;color:var(--mute)}
+.beat{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.beat:first-of-type{border-top:0}
+.beat i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font:600 14px "EB Garamond",Georgia,serif;display:flex;align-items:center;justify-content:center}
+.beat small{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--mute)}.beat p{margin:1px 0 0;font-size:15.5px;line-height:1.35;font-weight:500}
+.beat.gap{background:var(--warn-soft);margin:0 -10px;padding:10px;border-radius:8px;border-top:0}.beat.gap i{background:var(--warn)}.beat.gap p{color:var(--warn)}
+.full{display:inline-block;margin-top:8px;font-size:14px;font-weight:600;text-decoration:underline}
+.side{display:flex;flex-direction:column;gap:16px}
+.pv{aspect-ratio:16/10;border-radius:14px;background:radial-gradient(120% 90% at 50% 40%,#55625f,#1b2326);position:relative;overflow:hidden}
+.pv .hd{position:absolute;left:50%;top:44%;width:90px;height:105px;border-radius:50%;background:#7c6a5c;transform:translate(-50%,-50%)}
+.pv .bd{position:absolute;left:50%;bottom:-30px;width:220px;height:150px;border-radius:50% 50% 0 0;background:#2b3236;transform:translateX(-50%)}
+.pv small{position:absolute;left:12px;top:10px;font-size:12px;color:#cfe3d5;font-weight:600}
+.tip{display:grid;grid-template-columns:40px 1fr;gap:12px;font:italic 400 17px/1.35 "EB Garamond",Georgia,serif;color:#e6ecef}.tip img{width:40px;height:40px;border-radius:50%}.tip small{display:block;font:500 12.5px Figtree;color:#aab4b9;margin-top:4px}
+.go{display:flex;align-items:center;justify-content:center;background:#fff;color:var(--ink);border-radius:12px;min-height:54px;font-weight:700;font-size:16.5px}
+.go+small{display:block;text-align:center;font-size:12.5px;color:#aab4b9;margin-top:6px}
+/* recording */
+.rec{height:100%;background:radial-gradient(90% 90% at 50% 55%,#55625f,#1b2326);position:relative;overflow:hidden}
+.rec .hd{position:absolute;left:50%;top:60%;width:190px;height:220px;border-radius:50%;background:#7c6a5c;transform:translate(-50%,-50%)}
+.rec .bd{position:absolute;left:50%;bottom:-80px;width:480px;height:320px;border-radius:50% 50% 0 0;background:#2b3236;transform:translateX(-50%)}
+.topbar{position:absolute;left:0;right:0;top:0;padding:30px 48px 40px;background:linear-gradient(rgba(10,15,17,.88),rgba(10,15,17,.6) 70%,transparent);color:#fff;text-align:center}
+.topbar small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#cfe3d5;font-weight:700}
+.topbar h2{font-size:32px;line-height:1.2;margin:6px auto 0;max-width:860px}
+.tb{display:flex;align-items:center;gap:12px;margin:14px auto 0;max-width:620px;font-size:13px}.tb .t{flex:1;height:4px;background:rgba(255,255,255,.25);border-radius:2px}.tb .t i{display:block;height:100%;width:38%;background:#e8a283;border-radius:2px}
+.beats{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.beats span{background:rgba(251,250,247,.92);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+.beats span em{font-style:normal;color:var(--mute);margin-right:5px}
+.beats span.gap{background:var(--warn-soft);color:var(--warn)}
+.rl{position:absolute;left:24px;top:16px;font-size:13px;color:#fff;font-weight:600;display:flex;gap:7px;align-items:center;z-index:4}.rl:before{content:"";width:10px;height:10px;border-radius:50%;background:#e5484d}
+.doneb{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:10px;align-items:center;background:#fff;border-radius:12px;padding:0 38px;min-height:54px;font-weight:700;font-size:17px}.doneb:before{content:"";width:14px;height:14px;border-radius:3px;background:#e5484d}
+.hint{position:absolute;right:24px;bottom:34px;font-size:13px;color:#cfd6da}
+</style></head><body>
+<div class="wrap"><div class="cap">Desktop · think time: question and crib sheet at the top, near the webcam</div><div class="scr"><span class="cam-dot"></span><div class="think">
+  <div class="tt"><span>Q2 of 7 · Barclays · Competency · Practice mode</span><b>0:22 to think</b></div>
+  <div class="qc"><small>The question</small><h1>“Tell me about a time you led a group, even informally.”</h1></div>
+  <div class="cols">
+    <div class="crib"><div class="h"><b>Your answer in 4 beats</b><span>from Pho House · <u>Change example</u></span></div>
+      <div class="beat"><i>1</i><div><small>Set the scene</small><p>Part-time at Pho House, alongside your degree. Three new colleagues to train.</p></div></div>
+      <div class="beat"><i>2</i><div><small>What <u>you</u> did</small><p>You trained them, including how to check payments, after you caught a duplicate one at peak service.</p></div></div>
+      <div class="beat gap"><i>3</i><div><small>What changed</small><p>Add your result: fewer mistakes? Faster service? Asked to train again?</p></div></div>
+      <div class="beat"><i>4</i><div><small>What it shows</small><p>You take charge when it’s busy, which is what a desk needs.</p></div></div>
+      <a class="full">Read the full answer →</a></div>
+    <div class="side"><div class="pv"><div class="bd"></div><div class="hd"></div><small>Your camera · look here, not at the notes</small></div>
+      <div class="tip"><img src="img/rao-72.jpg"><div>“Small is fine. Tell me the moment you took charge.”<small>Kayyor Rao · tip</small></div></div>
+      <div class="go">I’m ready · start recording</div><small>Space bar also starts · The 4 beats stay under the question</small></div>
+  </div>
+</div></div></div>
+
+<div class="wrap"><div class="cap">Desktop · recording: question and beats sit right under the webcam, so your eyes stay up</div><div class="scr"><span class="cam-dot"></span><div class="rec"><div class="bd"></div><div class="hd"></div>
+  <div class="rl">Recording · Q2 of 7</div>
+  <div class="topbar"><small>Barclays · Competency</small><h2>“Tell me about a time you led a group, even informally.”</h2>
+    <div class="tb"><span>0:46</span><span class="t"><i></i></span><span>2:00</span></div>
+    <div class="beats"><span><em>1</em>Pho House, 3 new colleagues</span><span><em>2</em>You trained them, payment check</span><span class="gap"><em>3</em>Your result</span><span><em>4</em>You take charge</span></div></div>
+  <div class="doneb">Done</div><div class="hint">Space bar to finish</div>
+</div></div></div>
+</body></html>
