@@ -22,6 +22,6 @@ export default async function handler(req,res){
   if(!row)return res.status(404).json({success:false,error:'No saved assessment was found. Open My Desk to check your saved CV.'});
   const competencies=(Array.isArray(row.result?.competencies)?row.result.competencies:[]).map(c=>({name:c.name,score:c.score}));
   const missed=(Array.isArray(row.input?.quiz?.missed)?row.input.quiz.missed:[]).map(q=>({topic:q.topic,section:q.section}));
-  return res.json({success:true,id:row.id,profile:row.input?.profile||{},cv:await latestCv(row.owner_hash||ownerHash),result:{competencies},quiz:{missed}});
+  return res.json({success:true,id:row.id,profile:row.input?.profile||{},cv:await latestCv(row.owner_hash||ownerHash,row.id),result:{competencies},quiz:{missed}});
  }catch(e){return apiFailure(res,e);}
 }
