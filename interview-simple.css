@@ -38,3 +38,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 
 .pi-beat .pi-instruction{display:block;font:400 12px/1.4 Figtree;color:#68716e;text-transform:none;letter-spacing:0;margin:3px 0 6px}.pi-framework{font:600 12px/1.5 Figtree;color:#b95a2c;margin:10px 0}.pi-highlights .pi-instruction{display:none}
 #simpleInterview .pi-highlights>summary{color:#fff}
+
+.pi-saved-choice{display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--line);padding:0 0 13px;margin:0 0 14px;font:400 13px/1.4 Figtree}.pi-saved-choice input{width:18px;height:18px;min-width:18px;accent-color:var(--ink);margin:2px 0}.pi-saved-choice b{font-weight:600}.pi-saved-choice small{display:block;font-size:11px;color:#68716e;margin-top:3px}
