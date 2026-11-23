@@ -39,6 +39,25 @@ h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
 .sheet:before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:#c9c1b5;margin:0 auto 8px}
 .done{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:var(--ink);border-radius:12px;min-height:56px;font-weight:700;font-size:17px}
 .done:before{content:"";width:14px;height:14px;border-radius:3px;background:#e5484d}
+.think{position:absolute;inset:0;background:var(--ink);color:#fff;padding:20px}
+.think .tt{display:flex;justify-content:space-between;font-size:12.5px;color:#aab4b9;font-weight:600}
+.think .tt b{color:#e8a283}
+.think small.l{display:block;margin-top:22px;font-size:12px;color:#cfe3d5;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.think h2{font-size:25px;line-height:1.2;margin-top:6px}
+.cvb{margin-top:18px;background:#fbfaf7;color:var(--ink);border-radius:14px;padding:14px 14px 6px}
+.cvb .h{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--good)}
+.pt{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.pt:first-of-type{border-top:0}
+.pt i{width:20px;height:20px;border-radius:50%;border:2px solid #c9c1b5;margin-top:2px}.pt.on i{border:6px solid var(--good)}
+.pt b{display:block;font-size:15px}.pt span{font-size:13px;color:var(--mute)}
+.tipc{margin-top:12px;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;font:italic 400 16px/1.35 "EB Garamond",Georgia,serif;color:#e6ecef}
+.tipc img{width:34px;height:34px;border-radius:50%}
+.tipc small{display:block;font:500 12px Figtree;color:#aab4b9;margin-top:4px;font-style:normal}
+.think .btm{position:absolute;left:20px;right:20px;bottom:26px}
+.think .btn2{display:flex;align-items:center;justify-content:center;background:#fff;color:var(--ink);border-radius:12px;min-height:56px;font-weight:700;font-size:17px}
+.think .fine2{text-align:center;font-size:12.5px;color:#aab4b9;margin-top:8px}
+.chip{margin-top:12px;display:inline-flex;gap:8px;align-items:center;background:rgba(229,240,232,.95);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600}
+.chip em{font-style:normal;color:var(--good);font-weight:700}
 </style></head><body>
 <div class="wrap"><div class="cap">1 · Set up (one screen)</div><div class="ph">
   <div class="top"><b>The Desk</b><span>Exit</span></div>
@@ -57,11 +76,24 @@ h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
   <div class="bottom"><div class="btn">Start · 7 questions →</div><div class="fine">Your camera turns on only when you press start</div></div>
 </div></div>
 
-<div class="wrap"><div class="cap">2 · Answering (camera full screen)</div><div class="ph">
+<div class="wrap"><div class="cap">2 · Think time (30 sec)</div><div class="ph"><div class="think">
+  <div class="tt"><span>Q2 of 7 · Barclays · Competency</span><b>0:22 to think</b></div>
+  <small class="l">The question</small>
+  <h2>“Tell me about a time you led a group, even informally.”</h2>
+  <div class="cvb"><div class="h">Use one from your CV</div>
+    <div class="pt on"><i></i><div><b>Trained 3 new starters at Pho House</b><span>Say what changed because of you</span></div></div>
+    <div class="pt"><i></i><div><b>Set the rule that cut 12 companies to 4 at Redcliffe</b><span>You led the work, not the team</span></div></div>
+  </div>
+  <div class="tipc"><img src="img/rao-72.jpg"><div>“Small is fine. Tell me the moment you took charge.”<small>Kayyor Rao · tip</small></div></div>
+  <div class="btm"><div class="btn2">I’m ready · start recording</div><div class="fine2">Real interview mode hides these prompts</div></div>
+</div></div></div>
+
+<div class="wrap"><div class="cap">3 · Answering (camera full screen)</div><div class="ph">
   <div class="cam"><div class="body"></div><div class="head"></div></div>
   <div class="rec">Recording · Q2 of 7</div>
   <div class="ov"><small>Barclays · Competency</small><h2>“Tell me about a time you led a group, even informally.”</h2>
-    <div class="tb"><span>0:46</span><span class="t"><i></i></span><span>2:00</span></div></div>
-  <div class="bar2"><div class="sheet">↑ Your CV points · Tip</div><div class="done">Done</div></div>
+    <div class="tb"><span>0:46</span><span class="t"><i></i></span><span>2:00</span></div>
+    <div class="chip"><em>Your example:</em> Trained 3 new starters at Pho House</div></div>
+  <div class="bar2"><div class="sheet">↑ Swap example · Tip</div><div class="done">Done</div></div>
 </div></div>
 </body></html>
