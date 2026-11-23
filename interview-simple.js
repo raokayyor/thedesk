@@ -19,7 +19,7 @@ async function initialise(){
  const video=$('preview'),transcript=$('transcript');root.querySelector('.pi-transcript-host').append(transcript);root.querySelector('.pi-transcript-host').append($('speechSupport'));
  const q=()=>follow?{...list[index],q:follow.question,kind:'follow-up'}:list[index];
  const type=()=>({cv:'CV & experience',intro:'Introduction',motivation:'Motivation',technical:'Technical',news:'Commercial awareness',commercial:'Commercial awareness',maths:'Numerical','follow-up':'Follow-up'})[q().kind]||'Competency';
- const example=()=>guide?.examples?.[selected];const sourceLabel=s=>String(s||'').split(/\s+[—–-]\s+/)[0];
+ const example=()=>guide?.examples?.[selected];const sourceLabel=s=>/^(Your confirmed follow-up answer|Your earlier interview answer)$/.test(String(s))?'saved':String(s||'').split(/\s+[—–-]\s+/)[0];
  function setPhase(next){phase=next;root.dataset.phase=next;document.body.dataset.simpleInterviewPhase=next;for(const name of ['think','record','review','loading','feedback'])root.querySelector('.pi-'+name).hidden=name!==next;const host=root.querySelector(next==='record'?'.pi-record-camera':'.pi-camera-host');host.append(video);video.play().catch(()=>{});root.classList.toggle('pi-real',mode==='test');window.scrollTo(0,0);}
  function beatHtml(beat,i,compact=false){return `<div class="pi-beat ${beat.gap?'pi-gap':''}"><i>${i+1}</i><div><small>${esc(beat.label)}</small><p title="${esc(beat.text)}">${esc(beat.text)}</p></div></div>`;}
  function answerLink(){return guide?.locked?'<div class="pi-full-locked"><small>Read the full answer · locked</small><a class="pi-full" href="/signup.html">Members see the full answer →</a></div>':'<button class="pi-full" type="button" data-action="answer">Read the full answer →</button>';}

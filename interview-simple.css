@@ -26,3 +26,6 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 #simpleInterview .pi-gap-fill{background:var(--warn-soft);color:var(--warn);font:600 13px/1.5 Figtree;padding:4px 7px;border:0;border-radius:4px;margin:4px 3px 8px 0}.pi-gap-sheet textarea{font:400 16px/1.6 Figtree!important;width:100%;min-height:180px;padding:12px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fff}.pi-gap-sheet form>p{font-size:14px;color:#6b747a}
 
 .pi-full-locked>small{font:500 12px Figtree;color:#6b747a;display:block;margin-top:9px}@media(min-width:901px){.pi-record .pi-swap{display:none}}@media(max-width:900px){.pi-desktop-space{display:none}}
+
+#simpleInterview .pi-answer-sheet[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;height:100dvh;overflow:hidden}.pi-answer-sheet .pi-answer-content{overflow:auto;min-height:0;padding:0 2px}.pi-answer-sheet .pi-back{margin-top:12px;flex-shrink:0}.pi-answer-sheet>.pi-fine{margin:8px 0 0}
+@media(max-width:900px){#simpleInterview .pi-answer-sheet[open]{height:94dvh;max-height:94dvh}}

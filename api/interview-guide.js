@@ -1,7 +1,7 @@
 import {sameOrigin,ownedRecord,owner,hash,sql,initStore,apiFailure} from '../lib/report-store.mjs';
 import {currentAccount,latestAssessment} from '../lib/accounts.mjs';
 import {principal,isPaidOwner,useQuota,saveItem} from '../lib/value-accounts.mjs';
-import {deepFor} from '../lib/deep-assessment.mjs';
+import {deepFor,deepQuestions} from '../lib/deep-assessment.mjs';
 import {latestCv} from '../lib/saved-cv.mjs';
 import {resolveInterviewTaster} from '../lib/interview-taster-context.mjs';
 import {evidenceSources,buildInterviewGuide,applyConfirmedGuideGaps} from '../lib/interview-evidence-guide.mjs';
@@ -14,7 +14,7 @@ export default async function handler(req,res){
  if(!row){if(b.assessmentId)return res.status(404).json({error:'Save your CV or assessment first.'});return res.json({success:true,...buildInterviewGuide([],b.question)});}
  const cv=await latestCv(row.owner_hash),text=cv.text||row.input.cvText;const deep=text===row.input.cvText?await deepFor(row):null;
  const previous=await sql().query("SELECT data->>'transcript' AS transcript FROM desk_value_items WHERE principal=$1 AND kind='interview' ORDER BY created_at DESC LIMIT 8",[p]);
- const guide=buildInterviewGuide(evidenceSources(text,deep,previous.map(x=>x.transcript)),b.question),cvHash=hash(text),questionHash=hash(b.question);
+ const guide=buildInterviewGuide(evidenceSources(text,deep,previous.map(x=>x.transcript),deep?.status==='complete'?Object.fromEntries(deepQuestions(row).map(q=>[q.id,q.source])):{}),b.question),cvHash=hash(JSON.stringify({cv:text,deep:deep?.status==='complete'?deep.answers:null})),questionHash=hash(b.question);
  if(b.confirmGap){const c=b.confirmGap;if(!guide.examples.some(e=>e.id===c.sourceId)||![0,1,2,3].includes(c.index)||typeof c.text!=='string'||c.text.trim().length<10||c.text.length>800)return res.status(400).json({error:'Add a supported detail in 10–800 characters.'});await saveItem(p,'interview-guide-gap',{assessmentId:row.id,cvHash,questionHash,sourceId:c.sourceId,index:c.index,text:c.text.trim()});}
  const saved=await sql().query("SELECT data FROM desk_value_items WHERE principal=$1 AND kind='interview-guide-gap' AND data->>'assessmentId'=$2 AND data->>'cvHash'=$3 AND data->>'questionHash'=$4 ORDER BY created_at DESC LIMIT 30",[p,row.id,cvHash,questionHash]);
  return res.json({success:true,...applyConfirmedGuideGaps(guide,saved.map(x=>x.data))});
