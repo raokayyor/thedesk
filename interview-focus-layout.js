@@ -43,7 +43,7 @@ function initialise(){
  const timerBadge=document.getElementById('timer'),readyButton=make('button','focus-ready-button','Ready · Start answer');readyButton.type='button';readyButton.setAttribute('aria-label','Start answer');timerBadge.after(readyButton);
  readyButton.onclick=()=>{if(document.body.classList.contains('interview-preflight'))enter.click();else document.getElementById('recordBtn')?.click();};
  const assessmentLoading=make('section','focus-assessment-loading');assessmentLoading.hidden=true;assessmentLoading.setAttribute('role','status');assessmentLoading.innerHTML='<div class="focus-assessment-spinner" aria-hidden="true"></div><h1>Assessing your answer</h1><p>Checking your evidence against The Desk framework and your selected firm’s preparation framework.</p><p>Reviewing structure, relevance and delivery.</p>';row.before(assessmentLoading);
- const resultScreen=make('section','focus-result-screen');resultScreen.hidden=true;const feedbackPanel=document.getElementById('feedback');if(feedbackPanel)resultScreen.append(feedbackPanel);const resultActions=make('div','focus-result-actions'),resultNext=make('button','primary','Next question →');resultNext.type='button';resultActions.append(resultNext);resultScreen.append(resultActions);row.after(resultScreen);
+ const resultScreen=make('section','focus-result-screen');resultScreen.hidden=true;const resultHeading=make('header','focus-result-heading');resultHeading.append(make('div','kicker','Interview feedback'),make('h1','','Your answer, reviewed.'),make('p','',''));resultScreen.append(resultHeading);const feedbackPanel=document.getElementById('feedback');if(feedbackPanel)resultScreen.append(feedbackPanel);const resultActions=make('div','focus-result-actions'),resultNext=make('button','primary','Next question →');resultNext.type='button';resultActions.append(resultNext);resultScreen.append(resultActions);row.after(resultScreen);
  resultNext.onclick=()=>document.getElementById('transcriptNextBtn')?.click();
  let assessmentBusy=false;
  const leaveResults=()=>{assessmentBusy=false;document.body.classList.remove('interview-assessing','interview-results');assessmentLoading.hidden=true;resultScreen.hidden=true;};
@@ -71,7 +71,7 @@ function initialise(){
   if(state==='ready')set(document.getElementById('timer'),'Ready');
   set(reviewTitle,active?'Live transcript':'Your transcript');
   if(state!==previous){if(state==='record'){coaching.open=false;review.open=false}if(state==='review')review.open=true;previous=state}
-  const q=document.getElementById('question')?.textContent;if(q!==lastQuestion){lastQuestion=q;review.open=false;coaching.open=false}
+  const q=document.getElementById('question')?.textContent;set(resultHeading.querySelector('p'),q||'');if(q!==lastQuestion){lastQuestion=q;review.open=false;coaching.open=false}
   type.hidden=document.body.dataset.deskMode==='test'||active||starting||thinking||recorded||feedback;
   const skip=document.getElementById('hvSkip');if(skip&&!skip.hidden&&thinking&&skip.parentElement!==buttons)buttons.prepend(skip);
   if(skip)skip.hidden=!thinking;
