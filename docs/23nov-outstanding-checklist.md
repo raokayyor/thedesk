@@ -14,3 +14,7 @@ Recent interview foundation shipped before this brief: explicit Play question (n
 A validation: screenshots output/23nov-section-a/390-homepage.png and 1280-homepage.png; no horizontal overflow; phone labels/pill/footer hidden, desktop fuller card retained; 14 live-notify/public-session tests pass.
 
 B validation: 390px and 1280px setup, picker, four-beat think card, full answer sheet/drawer, recording, and Real recording in output/23nov-section-b/. Synthetic camera; no trainee recordings used. Optional saved-answer checkbox removed; owned explicitly saved scored answers preselect, with library persistence completed in C. Camera prompts remain top-centre on desktop; no rotate prompts or blue buttons.
+
+Latest steering added during C: (1) strongest numbered/outcome first-person CV contribution or amber gap; (2) fast score/band then streamed coaching, target <10 seconds to score, verify timing; (3) My Desk target-firm two-minute Question of the Day with streak/best and free 3/week; (4) one-page saved-answer PDF for night-before revision.
+
+Live feedback foundation verification: browser-native request on synthetic test account returned paid feedback with four coaching dimensions and a source-grounded improved script in 37.1 seconds. External Playwright request transport had resets; browser fetch worked. Do not claim the new <10-second score target is met yet.
