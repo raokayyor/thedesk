@@ -88,3 +88,7 @@ body.interview-focus .desk-group-nav{display:none!important}body.interview-focus
 .interview-focus .focus-result-heading{margin:8px 0 24px}.interview-focus .focus-result-heading>.kicker{color:#c45122;font:700 10px/1.5 Figtree,sans-serif;letter-spacing:.12em}.interview-focus .focus-result-heading h1{font:600 36px/1.2 "EB Garamond",Georgia,serif;margin:8px 0 12px}.interview-focus .focus-result-heading p{font:400 16px/1.6 Figtree,sans-serif;color:#526368;max-width:720px}
 
 .interview-focus .interview-format-strip,.interview-focus #questionHint{display:none!important}
+
+body.interview-results .focus-rotate,body.interview-assessing .focus-rotate,body.interview-results .page .wrap .session-context,body.interview-assessing .page .wrap .session-context{display:none!important}
+
+.interview-focus .feedback>.fb-follow{margin:0 26px 26px}.interview-focus .focus-result-actions .secondary{background:#fff;color:#203735;border:1px solid #c3cdc6}@media(max-width:600px){.interview-focus .feedback>.fb-follow{margin:0 20px 20px}}

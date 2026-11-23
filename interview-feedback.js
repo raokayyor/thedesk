@@ -33,7 +33,7 @@
       if(f.followUpPreview){const card=document.createElement('section');card.className='fb-follow';const title=document.createElement('div');title.className='fb-k';title.textContent='Example follow-up';const question=document.createElement('p');question.className='fb-fq';question.textContent=f.followUpPreview.question;const why=document.createElement('p');why.className='fb-why';why.textContent=f.followUpPreview.why;const button=document.createElement('button');button.type='button';button.className='primary';button.textContent='Answer the follow-up';const message=document.createElement('p');message.className='fb-why';message.setAttribute('role','status');button.onclick=()=>{message.replaceChildren('Follow-up practice is only available with membership. ');const link=document.createElement('a');link.href='/signup.html?plan=member';link.textContent='Unlock everything · £89 →';message.append(link)};card.append(title,question,why,button,message);el.append(card)}
       $('#feedback').classList.add('active');$('#feedback').scrollIntoView({behavior:'smooth'});return;
     }
-    $('#feedback .scoregrid').hidden=false;$('#feedback .feedbackBody').hidden=false;
+    $('#feedback>.fb-follow')?.remove();$('#feedback .scoregrid').hidden=false;$('#feedback .feedbackBody').hidden=false;
     let employer=document.getElementById('employerFeedbackLens');if(employer)employer.remove();if(f.employerPractice){employer=document.createElement('p');employer.id='employerFeedbackLens';employer.className='employer-feedback-lens';employer.style.cssText='padding:12px 18px;background:#fff3e8;border-bottom:1px solid #e3ddd3;font-size:13px';employer.textContent=f.employerPractice.label+' / '+f.employerPractice.role+' practice review · '+f.employerPractice.focus;document.getElementById('feedback').prepend(employer);}
     $('#overallScore').textContent = f.overall;
     $('#mStructure').textContent = f.scores.structure; $('#mSpecificity').textContent = f.scores.evidence; $('#mRelevance').textContent = f.scores.relevance; $('#mConfidence').textContent = f.pushback === null ? f.scores.delivery : f.pushback;
@@ -49,7 +49,7 @@
       ${f.followUp && !FU ? `<div class="fb-follow"><div class="fb-k">The interviewer pushes back</div><p class="fb-fq">“${esc(f.followUp.question)}”</p><p class="fb-why">${esc(f.followUp.why)}</p><button class="primary" type="button" id="fbAnswerFollow">Answer the follow-up</button></div>` : ''}
       ${FU ? '<p class="fb-why">That was your answer to the follow-up. Holding your ground with a reason and a specific detail is what interviewers are testing.</p>' : ''}
       ${paid && ME && ME.call ? `<p class="fb-why">Want a practitioner’s view on your answers? <a href="${esc(ME.call.url)}" target="_blank" rel="noopener">${esc(ME.call.label)}</a>.</p>` : ''}`;
-    const fb = $('#fbAnswerFollow'); if (fb) fb.onclick = () => askFollowUp(f.followUp.question);
+    const fb = $('#fbAnswerFollow'); if (fb) {fb.textContent='Practise the follow-up';fb.onclick = () => askFollowUp(f.followUp.question);const card=fb.closest('.fb-follow');$('#feedback .feedbackBody').after(card);}
     $('#feedback').classList.add('active'); $('#feedback').scrollIntoView({ behavior: 'smooth' });
   }
   function askFollowUp(question) {

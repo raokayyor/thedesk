@@ -49,7 +49,7 @@ export function readinessTimeline(assessments, tests) {
   const out = []; let base = null, recent = { numerical: [], commercial: [] };
   for (const e of ev) {
     if (e.type === 'assessment') {
-      if (!Number.isFinite(+e.a.overall)) continue;
+      if (e.a.overall==null || !Number.isFinite(+e.a.overall)) continue;
       base = e.a;
       // The assessment's own questions count as its first test in each section.
       recent = { numerical: [], commercial: [] };
