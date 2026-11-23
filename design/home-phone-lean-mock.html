@@ -1,0 +1,154 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Homepage phone, simplified</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f6e0da}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Figtree,Arial,sans-serif}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.012em}
+.w{padding:0 20px}
+.k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+header{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 20px}
+.logo{font:600 24px "EB Garamond",Georgia,serif;line-height:1}.logo .tag{display:block;font:600 10.5px Figtree;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-top:3px}.pill{display:inline-block;background:var(--ink);color:#fff;font-weight:600;font-size:13.5px;border-radius:999px;padding:5px 12px}header nav{font-size:14.5px;display:flex;gap:16px;color:var(--ink-2)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:10px;min-height:54px;font-weight:600;font-size:16.5px}
+section{padding:40px 20px}
+/* hero */
+.hero{padding-top:14px}
+.hero h1{font-size:38px;line-height:1.04;margin-top:8px}
+.hero p{margin:12px 0 0;color:var(--ink-2);font-size:16.5px}
+.ex{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ex .b{padding:12px 14px}.ex small{display:block;font-size:11.5px;color:var(--mute)}
+.ex .b s{color:var(--mute);font-size:14.5px}
+.ex .a{padding:12px 14px;background:var(--good-soft)}
+.ex .a b{display:block;font:600 19px/1.25 "EB Garamond",Georgia,serif}
+.ex .f{padding:10px 14px;font-size:13.5px;color:var(--good);font-weight:600}
+.hero .btn{margin-top:16px}.fine{text-align:center;font-size:13px;color:var(--mute);margin-top:8px;line-height:1.45}
+.ex2{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px}
+.ex2 .t{font:600 19px/1.2 "EB Garamond",Georgia,serif}
+.ex2 .row{display:grid;grid-template-columns:24px 1fr;gap:10px;margin-top:0;align-items:start}
+.ex2 .ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:2px}
+.ex2 .was .ic{background:var(--bad-soft);color:var(--bad)}.ex2 .now .ic{background:var(--good-soft);color:var(--good)}
+.ex2 small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.ex2 .was p{margin:2px 0 0;font-size:16px;color:var(--ink-2)}
+.ex2 .now{background:var(--good-soft);border-radius:10px;padding:10px;margin-left:-4px;margin-right:-4px}
+.ex2 .now small{color:var(--good)}
+.ex2 .now p{margin:3px 0 0;font:600 18.5px/1.28 "EB Garamond",Georgia,serif}
+.ex2 .arrow{margin:10px 0 10px 34px}.ex2 .arrow span{display:inline-block;font-size:12.5px;font-weight:700;color:#fff;background:var(--ink);border-radius:999px;padding:3px 10px}
+.ex2 .f{margin-top:10px;font-size:13px;color:var(--good);font-weight:600}
+/* fear */
+.fear{padding-top:8px;padding-bottom:8px}
+.fear p{margin:0;font-size:19px;line-height:1.4;font-weight:600;border-top:1px solid var(--line);padding-top:26px}
+.fear sup{font-size:11px;color:var(--mute)}
+/* decoder */
+.dec h2{font-size:31px;line-height:1.08;margin-top:10px}
+.card{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(31,42,46,.06)}
+.lab{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.card .q{padding:16px 16px 14px}.card .q b{display:block;font:600 23px/1.18 "EB Garamond",Georgia,serif;margin-top:5px}
+.most{padding:13px 16px 15px;border-top:1px solid var(--line)}.most .lab{color:var(--bad)}
+.most p{margin:5px 0 0;font-size:15px;color:var(--ink-2)}.most s{text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.most em{display:block;font-style:normal;font-size:13.5px;font-weight:600;color:var(--bad);margin-top:6px}
+.real{padding:15px 16px 17px;background:var(--ink);color:#fff}.real .lab{color:#9fd3b1}
+.real p{margin:5px 0 0;font:600 22px/1.2 "EB Garamond",Georgia,serif}
+.real small{display:block;margin-top:7px;font-size:14px;color:#c9d2d6;line-height:1.45}
+.vs{margin:16px 0 0;font-size:15.5px;color:var(--ink-2)}.vs b{color:var(--ink)}
+/* rounds */
+.rounds h2{font-size:31px;line-height:1.08;margin-top:10px}
+.strip{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px;overflow:hidden}
+.tool{flex:0 0 86%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.shot{height:150px;border-radius:10px;background:#fff;border:1px solid var(--line);padding:12px;font-size:9px;color:#8b9297;line-height:1.5}
+.shot b{display:block;color:var(--ink);font:600 13px "EB Garamond",Georgia,serif;text-align:center}
+.shot .hl{background:var(--bad-soft);color:var(--bad)}.shot .ok{background:var(--good-soft);color:var(--good)}
+.tool h3{font-size:23px;margin-top:12px}.tool p{margin:4px 0 4px;font-size:14.5px;color:var(--ink-2)}
+.dots{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px;color:var(--mute)}
+.dots i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#cfc7bb;margin-left:8px}.dots i:first-child{background:var(--ink)}
+/* people */
+.firms{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font:600 15px "EB Garamond",Georgia,serif;color:#55606a}
+.people h2{font-size:28px;line-height:1.1;margin-top:26px}
+.team{display:flex;align-items:center;gap:12px;margin-top:14px}
+.av{width:52px;height:52px;border-radius:50%;background:linear-gradient(160deg,#6b5a4c,#2e2620);flex:0 0 auto}
+.stack{display:flex}.stack span{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font:600 12px "EB Garamond",Georgia,serif;display:flex;align-items:center;justify-content:center;border:2px solid var(--paper);margin-left:-8px}
+.team small{display:block;font-size:13.5px;color:var(--mute)}.team b{font-size:15.5px}
+.live{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.live small{font-size:12.5px;color:var(--mute)}.live small:before{content:"● ";color:#e5484d}
+.live b{font:600 18px "EB Garamond",Georgia,serif;grid-column:1}.live a{grid-row:1/3;grid-column:2;font-weight:600;font-size:14px}
+/* price */
+.price h2{font-size:31px;line-height:1.08;margin-top:10px}
+.quote{margin-top:18px;border-left:3px solid var(--accent);padding:2px 0 2px 14px}
+.quote q{display:block;font:italic 400 19px/1.35 "EB Garamond",Georgia,serif}
+.quote small{display:block;margin-top:6px;font-size:12.5px;color:var(--mute)}
+.tile{margin-top:18px;background:var(--ink);color:#fff;border-radius:18px;padding:22px}
+.tile .tag{font-size:11px;letter-spacing:.14em;font-weight:700;color:#e8a283}
+.tile .p{display:flex;align-items:baseline;gap:8px;margin-top:6px}.tile .p b{font:600 52px/1 "EB Garamond",Georgia,serif}.tile .p span{font-size:13.5px;color:#aab4b9}
+.tile ul{list-style:none;padding:0;margin:14px 0 0}.tile li{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:6px 0;font-size:15px}.tile li:before{content:"✓";color:#9fd3b1;font-weight:700}
+.tile .see{display:block;margin-top:6px;font-size:13.5px;color:#d5dce0;text-decoration:underline}
+.tile .btn{background:#fff;color:var(--ink);margin-top:16px}
+.links{margin-top:16px;display:flex;flex-direction:column;gap:10px;font-weight:600;font-size:15.5px}
+.links a{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0}
+.tick{margin-top:16px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:14px;font-size:14px;color:var(--ink-2)}.tick .ph{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:0 0 auto}.tick b{color:var(--ink)}.tick small{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}.tick em{font-style:normal;color:#e5484d;font-weight:700}.tick a{margin-left:auto;font-weight:600;white-space:nowrap;color:var(--ink)}
+.final{text-align:center;padding-bottom:56px}.final h2{font-size:30px;line-height:1.1}.final .btn{margin-top:16px}
+</style></head><body>
+<header><span class="logo">The Desk</span><nav><span>Membership</span><span>Log in</span></nav></header>
+
+<section class="hero">
+  <h1 style="margin-top:4px">Find out why you’d be rejected. Then fix it.</h1>
+  <p>Your coach for getting into finance.</p>
+  <div class="ex2">
+        <div class="row was"><span class="ic">✕</span><div><p>Barista, Caffè Nero (part-time)</p></div></div>
+    <div class="arrow"><span>↓ Fixed with The Desk</span></div>
+    <div class="row now"><span class="ic">✓</span><div><p>Opened the shop single-handed and trained four new starters, alongside a full-time degree.</p></div></div>
+  </div>
+  <div class="btn">Start my free review →</div>
+  <div class="fine">Free · 10 mins · no card</div>
+  <div class="tick"><img class="ph" src="img/rao-72.jpg" alt=""><span><b>Ask me anything</b> · live Thu 7pm, free</span><a>Join →</a></div>
+</section>
+
+<section class="fear"><p>360k applications to Goldman Sachs. Under 1% got in.<sup>1</sup> Make it count.</p></section>
+
+<section class="dec">
+  <div class="k">The part nobody tells you</div>
+  <h2>Ten offers or none? It’s knowing what’s being scored.</h2>
+  <div class="card">
+    <div class="q"><span class="lab">The question</span><b>“Tell me about a time you worked in a team.”</b></div>
+    <div class="most"><span class="lab">What ChatGPT writes</span><p><s>“I thrive in collaborative environments. In a group project, we divided tasks, communicated effectively and delivered on time.”</s></p><em>Polished. Obvious. And you’d never know why it failed.</em></div>
+    <div class="real"><span class="lab">What’s really being scored</span><p>What <i>you</i> did. Every “we” hides you from the marker.</p><small>They’re listening for the moment you stepped in, what you decided, and what changed because of you.</small></div>
+  </div>
+  <p class="vs">ChatGPT gives you the obvious answer, the same one it gives everyone. <b>We show you what’s being scored.</b></p>
+</section>
+
+<section class="rounds">
+  <div class="k">Membership · £89 a year</div>
+  <h2>One membership. Every round. All built on <i>your</i> CV.</h2>
+  <div class="strip">
+    <div class="tool"><div class="shot"><b>Amelia Chen</b>Redcliffe Partners · Corporate Finance Intern<br>Researched 12 UK software companies … <span class="hl">No transaction completion was confirmed.</span><br><span class="ok">→ Cut 12 companies to 4 on recurring revenue; 2 taken forward.</span><br>Pho House · Team Member …</div><h3>CV &amp; applications</h3><p>Turn your own experience into stronger CV lines.</p></div>
+    <div class="tool"><div class="shot"></div><h3>Interviews</h3><p>Your firm’s questions, on camera.</p></div>
+  </div>
+  <div class="dots"><span>Swipe to see every round →</span><span><i></i><i></i><i></i><i></i><i></i></span></div>
+</section>
+
+<section class="people">
+  <div class="k">Our practitioners have worked at</div>
+  <div class="firms"><span>UBS</span><span>J.P. Morgan</span><span>Barclays</span><span>Société Générale</span><span>EY</span><span>BGC</span><span>Stifel</span></div>
+  <h2>Built and checked by people who’ve done the job.</h2>
+  <div class="team"><span class="av"></span><div class="stack"><span>PC</span><span>NR</span><span>JS</span><span>CS</span></div><div><b>130+ years in finance</b><small>Meet the team →</small></div></div>
+  <a style="display:block;margin-top:14px;font-weight:600;font-size:14.5px">See all live sessions →</a>
+</section>
+
+<section class="price">
+  <div class="k">Membership</div>
+  <h2>A whole recruiting year for less than one CV rewrite.</h2>
+  <div class="quote"><q>Kayyor showed me what my CV and applications looked like from the inside. Then The Desk helped me improve them. I’m now at J.P. Morgan.</q><small>Cydney · University of Exeter · Offer: J.P. Morgan</small></div>
+  <div class="tile">
+    <div class="tag">START HERE</div>
+    <div class="p"><b>£89</b><span>a year · paid once · about £7.40 a month</span></div>
+    <ul><li>Every weak CV line fixed</li><li>Interview coach for your firm</li><li>Tests and assessment centre practice</li></ul>
+    <span class="see">See everything included</span>
+    <div class="btn">Start with your free score →</div>
+  </div>
+  <div class="links"><a>Or start free <span>→</span></a><a>Want a person? Sessions from £99 <span>→</span></a></div>
+</section>
+
+<section class="final">
+  <h2>Find out what the recruiter will see. Then fix it.</h2>
+  <div class="btn">Get my free score →</div>
+  <div class="fine">Free · 10 mins · no card</div>
+</section>
+</body></html>
