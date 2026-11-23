@@ -1,5 +1,5 @@
 const query=new URLSearchParams(location.search);
-if(query.get('taster')==='interview'){
+if(query.get('taster')==='interview'&&!window.DeskInterviewSimpleEnabled){
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const css=document.createElement('link');css.rel='stylesheet';css.href='/free-interview-v2.css';document.head.append(css);
  const font=document.createElement('link');font.rel='stylesheet';font.href='https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap';document.head.append(font);
