@@ -57,3 +57,17 @@ Tested live on 23 Nov as Amelia, typed answers to Q1 ("Give me a brief introduct
 - Saving and the 70+ version are locked: "Members can save answers and see the 70+ version →".
 
 Send Rao screenshots at 390px and 1280px of: a weak first attempt, the retry scoring higher (with "up from"), the save confirmation, and the answer library.
+
+## Two modes, two jobs
+**Practice mode is the improvement tool.** The loop is: answer → score → 3 specific fixes → "Try again with these fixes" (fixes pinned) → higher score → save. Everything in "The design" above belongs to Practice mode. Allow unlimited retries per question. Show attempt history on the question ("Attempt 3 · 44 → 63 → 81").
+
+**Real interview mode rehearses what you've built.** Rules:
+- **Questions come from the student's saved answers first** ("Run my saved answers"), then fresh questions for the same firm and type. A setup option: "Saved answers only / Mix in new questions".
+- **Real conditions:** no CV card, beats, tips, fixes, full answer or pause. Think time and the answer clock match the chosen format (HireVue default: 30 seconds and 2 minutes). One take per question.
+- **Feedback only at the end of the run**, not after each question, like a real video interview:
+  - an overall score and a list of questions, each showing "Today {score} · Your saved best {best}"
+  - for saved answers, a beat check against the saved beats ("You hit 3 of your 4 beats · you missed your result line")
+  - a flag if they drifted far from the saved answer and scored lower
+- **Next step from each row:** "Back to Practice on this question →" (opens Practice with the miss pinned as fix 1).
+- **If today's take beats the saved best:** offer "Replace your saved answer with today's (88)".
+- **On the run summary:** "Run again" and "Practise the weak ones" (Practice mode with only the questions under 70).
