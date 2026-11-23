@@ -4,7 +4,7 @@
  document.querySelector('header').insertAdjacentHTML('beforeend','<a class="is-exit" href="/my.html">Exit</a>');
  document.querySelector('main>.eyebrow').textContent='Interview coach';document.querySelector('main>h1').textContent='Practise your next interview.';
  const first=form.querySelector('.card'),fields=first.querySelector('.fields'),format=first.querySelector('.setup-format-choices');
- const summary=document.createElement('section');summary.className='is-summary';summary.innerHTML='<div><strong></strong><small></small></div><button type="button">Settings</button>';form.prepend(summary);
+ const summary=document.createElement('section');summary.className='is-summary';summary.innerHTML='<div><strong></strong><small></small></div><button type="button">Change</button>';form.prepend(summary);
  const sheet=document.createElement('dialog');sheet.className='is-setup-sheet';sheet.setAttribute('aria-label','Change your interview setup');sheet.innerHTML='<div class="is-sheet-top"><h2>Your interview details</h2><button type="button">Close ✕</button></div><div class="is-sheet-body"></div><button class="is-sheet-done" type="button">Save changes</button>';document.body.append(sheet);
  const sheetBody=sheet.querySelector('.is-sheet-body');sheetBody.append(fields);for(const n of [...first.querySelectorAll(':scope>details,:scope>.focus')])sheetBody.append(n);
  first.replaceChildren(format);format.querySelector('legend').textContent='What kind of interview?';
@@ -22,7 +22,7 @@
  }
  form.addEventListener('change',event=>{if(event.target.id==='setupLogic'&&event.target.checked&&!Number($('setupNumericalCount').value))$('setupNumericalCount').value='1';draw();try{sessionStorage.setItem('deskPracticeMode',mode.querySelector('input:checked').value)}catch{}});
  const originalSubmit=form.onsubmit;form.onsubmit=async e=>{e.preventDefault();start.disabled=true;status.textContent='Opening your interview…';try{sessionStorage.setItem('deskPracticeMode',mode.querySelector('input:checked').value);sessionStorage.setItem('deskInterviewStartClicked','1');}catch{}originalSubmit(e);};
- function ready(){const phone=matchMedia('(max-width:900px)').matches;if(phone){$('setupFirm').value='general';$('setupFirm').dispatchEvent(new Event('change',{bubbles:true}));}summary.hidden=false;draw();}
+ function ready(){const profile=window.DeskInterviewSetup?.context()?.profile,hasProfile=!!profile&&['targetFirm','targetSector','programme'].some(k=>profile[k]);summary.hidden=!hasProfile;if(!hasProfile){const inline=document.createElement('div');inline.className='is-inline-pickers';for(const id of ['setupFirm','setupRole','setupProgramme'])inline.append($(id).closest('label'));summary.after(inline);}draw();}
 
  window.DeskInterviewSetupReady.then(ready,ready);draw();
 })();
