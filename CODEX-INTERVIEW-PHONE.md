@@ -73,3 +73,22 @@ Skip the CV card, beats, tip, full answer and pinned beats. Show only the questi
 Same screens, one question. The think screen shows the 4 beats. "Read the full answer" is visible but locked, with "Members see the full answer →" (to `/signup.html`).
 
 Send Rao 390px screenshots of: setup, think (picker), think (4 beats), full answer sheet, recording, feedback, and real-interview-mode recording.
+
+## 8. Desktop (>900px)
+References: `design/interview-desktop-mock.html` and `design/interview-desktop.jpg`.
+
+**Principle:** the laptop webcam is at the top centre, so the question and prompts sit at the top centre. That keeps the student's eyes near the camera. Never put prompts in a side column during recording.
+
+- **Setup:** the same content as phone, in one centred card (max-width 560px).
+- **Think time** (dark full screen):
+  - top line with "Q{n} of {total} · {firm} · {type} · {mode}" and the countdown on the right
+  - the question centred at the top, Garamond 40px
+  - below it, two columns: left is the "Your answer in 4 beats" card (with "Change example" and "Read the full answer →"); right is a live camera preview labelled "Your camera · look here, not at the notes", the practitioner tip, and a white "I'm ready · start recording" button
+  - space bar also starts recording
+- **Recording:**
+  - camera fills the screen
+  - top-centre overlay: firm and type, question in Garamond 32px, timer bar (max 620px), then the 4 beats as one row of short pills (amber for the gap)
+  - "Recording · Q{n} of {total}" top-left
+  - white "Done" button bottom-centre, "Space bar to finish" bottom-right
+- **Full answer:** a right-hand drawer (max 520px) over the think screen. Same content as the phone sheet.
+- **Real interview mode:** the question, the timers and "Done" only.
