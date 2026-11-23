@@ -1,0 +1,99 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f6e0da;--warn:#9a6a14;--warn-soft:#fbf0d9}
+*{box-sizing:border-box}body{margin:0;background:#d8d2c8;font:16px/1.5 Figtree,Arial,sans-serif;color:var(--ink);display:flex;gap:34px;padding:34px 30px 30px;align-items:flex-start}
+.wrap{position:relative}.cap{position:absolute;top:-26px;left:0;font:600 13px Figtree;color:#5a5048}
+.ph{width:390px;height:844px;background:var(--paper);border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;position:relative}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;height:52px;padding:0 18px;font-size:13.5px;color:var(--mute)}.top b{font:600 21px "EB Garamond",Georgia,serif;color:var(--ink)}
+.p{padding:0 18px}
+.k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+h1{font-size:30px;line-height:1.08;margin-top:6px}
+.lead{font-size:14.5px;color:var(--ink-2);margin:8px 0 0}
+.stat{display:flex;gap:8px;margin-top:14px}
+.stat div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font:600 24px "EB Garamond",Georgia,serif}.stat span{font-size:12px;color:var(--mute)}
+.firm{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.fr{display:flex;justify-content:space-between;align-items:baseline}.fr b{font-size:16px}.fr small{font-size:12.5px;font-weight:700;color:var(--accent)}
+.fq{font-size:13.5px;color:var(--mute);margin-top:2px}
+.prog{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px}
+.chip.ok{background:var(--good-soft);color:var(--good)}.chip.gap{background:var(--warn-soft);color:var(--warn)}.chip.no{background:#ece7df;color:var(--mute)}
+.add{margin-top:12px;border:1.5px dashed #c9c1b5;border-radius:14px;padding:12px;text-align:center;font-weight:600;font-size:14.5px;color:var(--ink-2)}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:12px 18px 24px;background:linear-gradient(transparent,var(--paper) 25%)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:12px;min-height:54px;font-weight:700;font-size:16.5px}
+.fine{text-align:center;font-size:12.5px;color:var(--mute);margin-top:7px}
+/* draft */
+.qh{margin-top:4px;font-size:13px;color:var(--mute)}.qh b{color:var(--ink)}
+.qt{font:600 22px/1.2 "EB Garamond",Georgia,serif;margin-top:6px}
+.meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.meta span{font-size:12.5px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.meta span.sc{background:var(--good-soft);border-color:#cfe3d5;color:var(--good)}
+.draft{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:15px;line-height:1.6}
+.draft u{text-decoration:none;border-bottom:2px solid #9fd3b1}
+.draft .g{background:var(--warn-soft);color:var(--warn);border-radius:4px;padding:1px 5px;font-weight:600;font-size:13.5px}
+.leg{font-size:12px;color:var(--mute);margin-top:6px}.leg i{font-style:normal;border-bottom:2px solid #9fd3b1}
+.tools{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.tools span{font-size:13px;font-weight:600;border:1px solid var(--ink);border-radius:999px;padding:5px 11px}
+.policy{margin-top:12px;font-size:12.5px;color:var(--mute);border-left:3px solid var(--line);padding-left:10px}
+/* fill */
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.12);padding:10px 18px 24px}
+.sheet:before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:#d6cfc4;margin:0 auto 12px}
+.sheet h3{font-size:22px}.sheet .s{font-size:13.5px;color:var(--mute);margin-top:2px}
+.qf{margin-top:14px}.qf b{display:block;font-size:15px}.qf small{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
+.inp{margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14.5px;color:var(--ink);background:var(--card)}
+.inp.ph2{color:#9aa1a5}
+.opts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.opts span{font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+.opts span.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dim{position:absolute;inset:0;background:rgba(31,42,46,.35)}
+</style></head><body>
+
+<div class="wrap"><div class="cap">1 · Your applications</div><div class="ph">
+  <div class="top"><b>The Desk</b><span>My Desk</span></div>
+  <div class="p">
+    <div class="k">Applications</div>
+    <h1>Your applications, drafted.</h1>
+    <p class="lead">Every written question for the firms you track, drafted from your CV. You fill the gaps and make it sound like you.</p>
+    <div class="stat"><div><b>11</b><span>questions drafted</span></div><div><b>3</b><span>gaps to fill</span></div><div><b>7 Dec</b><span>next deadline</span></div></div>
+    <div class="firm"><div class="fr"><b>Barclays · IB Analyst</b><small>Closes 7 Dec</small></div><div class="fq">3 questions</div>
+      <div class="prog"><span class="chip ok">2 ready</span><span class="chip gap">1 gap to fill</span></div></div>
+    <div class="firm"><div class="fr"><b>Deutsche Bank · Graduate</b><small>Closes 14 Dec</small></div><div class="fq">4 questions</div>
+      <div class="prog"><span class="chip ok">3 ready</span><span class="chip gap">1 gap</span></div></div>
+    <div class="firm"><div class="fr"><b>Rothschild & Co · Spring</b><small>Closes 9 Jan</small></div><div class="fq">4 questions</div>
+      <div class="prog"><span class="chip ok">3 ready</span><span class="chip gap">1 gap</span></div></div>
+    <div class="add">+ Add a firm or paste a question from a form</div>
+  </div>
+  <div class="bottom"><div class="btn">Fill 3 gaps · about 2 mins</div><div class="fine">Then every draft above is ready to edit</div></div>
+</div></div>
+
+<div class="wrap"><div class="cap">2 · Fill the gaps (one sheet, 2 mins)</div><div class="ph">
+  <div class="top"><b>The Desk</b><span>My Desk</span></div>
+  <div class="p"><div class="k">Applications</div><h1>Your applications, drafted.</h1></div>
+  <div class="dim"></div>
+  <div class="sheet">
+    <h3>3 quick questions</h3><div class="s">Only you know these. Short answers are fine.</div>
+    <div class="qf"><b>1 · Why Barclays, not any bank?</b><small>Used in: Barclays “Why us?”</small>
+      <div class="opts"><span class="on">Its UK mid-market deals</span><span>A person I spoke to</span><span>A specific team</span><span>Something else</span></div>
+      <div class="inp">I read about its role advising on UK software deals, like the ones I screened at Redcliffe</div></div>
+    <div class="qf"><b>2 · What happened after your Redcliffe screen?</b><small>Used in: 3 questions</small>
+      <div class="inp ph2">e.g. the associate took 2 of the 4 forward…</div></div>
+    <div class="qf"><b>3 · What changed after you trained the new starters?</b><small>Used in: 2 questions</small>
+      <div class="inp ph2">e.g. fewer payment mistakes at weekends…</div></div>
+    <div class="btn" style="margin-top:16px">Update my drafts</div>
+    <div class="fine">We only use your words. Nothing is made up.</div>
+  </div>
+</div></div>
+
+<div class="wrap"><div class="cap">3 · A draft, ready to edit</div><div class="ph">
+  <div class="top"><b>‹ Barclays</b><span>1 of 3</span></div>
+  <div class="p">
+    <div class="qh"><b>Barclays · Investment Banking Analyst</b> · closes 7 Dec</div>
+    <div class="qt">“Why do you want to join Barclays, and why this role?”</div>
+    <div class="meta"><span>212 / 250 words</span><span class="sc">Strength 78 · strong</span><span>In your voice</span></div>
+    <div class="draft">I want to join Barclays because <u>it advises on UK software deals like the ones I screened at Redcliffe Partners</u>. There, <u>I screened 12 UK software companies for an acquisition brief and cut them to 4 on recurring revenue</u>, and <u>the associate took 2 forward</u>. That showed me how analysis turns into a deal decision, which is the core of the analyst role. <span class="g">+ Add one Barclays detail you’ve looked into</span> I also <u>trained three new colleagues at Pho House</u> alongside my degree…</div>
+    <div class="leg"><i>Underlined</i> = from your CV or your answers · amber = still needs you</div>
+    <div class="tools"><span>Shorter</span><span>More like me</span><span>Check it</span><span>Copy</span></div>
+    <div class="policy">Rewrite it in your own words before you submit. Some firms ask you not to submit AI-written answers; this is your draft, not your final.</div>
+  </div>
+  <div class="bottom"><div class="btn">Mark as submitted</div><div class="fine">We’ll remind you if this firm replies or a test arrives</div></div>
+</div></div>
+</body></html>
