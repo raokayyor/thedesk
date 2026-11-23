@@ -22,6 +22,18 @@ section{padding:40px 20px}
 .ex .a b{display:block;font:600 19px/1.25 "EB Garamond",Georgia,serif}
 .ex .f{padding:10px 14px;font-size:13.5px;color:var(--good);font-weight:600}
 .hero .btn{margin-top:16px}.fine{text-align:center;font-size:13px;color:var(--mute);margin-top:8px}
+.ex2{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px}
+.ex2 .t{font:600 19px/1.2 "EB Garamond",Georgia,serif}
+.ex2 .row{display:grid;grid-template-columns:24px 1fr;gap:10px;margin-top:12px;align-items:start}
+.ex2 .ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:2px}
+.ex2 .was .ic{background:var(--bad-soft);color:var(--bad)}.ex2 .now .ic{background:var(--good-soft);color:var(--good)}
+.ex2 small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.ex2 .was p{margin:2px 0 0;font-size:16px;color:var(--ink-2)}
+.ex2 .now{background:var(--good-soft);border-radius:10px;padding:10px;margin-left:-4px;margin-right:-4px}
+.ex2 .now small{color:var(--good)}
+.ex2 .now p{margin:3px 0 0;font:600 18.5px/1.28 "EB Garamond",Georgia,serif}
+.ex2 .arrow{margin:8px 0 0 34px}.ex2 .arrow span{display:inline-block;font-size:12.5px;font-weight:700;color:#fff;background:var(--ink);border-radius:999px;padding:3px 10px}
+.ex2 .f{margin-top:10px;font-size:13px;color:var(--good);font-weight:600}
 /* fear */
 .fear{padding-top:8px;padding-bottom:8px}
 .fear p{margin:0;font-size:19px;line-height:1.4;font-weight:600;border-top:1px solid var(--line);padding-top:26px}
@@ -80,10 +92,12 @@ section{padding:40px 20px}
   <div class="k">Finance application coaching</div>
   <h1>Find out why you’d be rejected, and let’s fix it before you apply.</h1>
   <p>For students applying to banks, asset managers and the Big Four.</p>
-  <div class="ex">
-    <div class="b"><small>Before</small><s>Barista, local coffee shop (part-time)</s></div>
-    <div class="a"><small>After</small><b>Opened the shop single-handed and trained four new starters, alongside a full-time degree.</b></div>
-    <div class="f">+3–5 points · See how we rebuilt it ↓</div>
+  <div class="ex2">
+    <div class="t">One line from a student’s CV, fixed.</div>
+    <div class="row was"><span class="ic">✕</span><div><small>Their CV said</small><p>Barista, Caffè Nero (part-time)</p></div></div>
+    <div class="arrow"><span>↓ Fixed with The Desk</span></div>
+    <div class="row now"><span class="ic">✓</span><div><small>Now it says</small><p>Opened the shop single-handed and trained four new starters, alongside a full-time degree.</p></div></div>
+    <div class="f">+3–5 points on their score · See how ↓</div>
   </div>
   <div class="btn">Get my free score →</div>
   <div class="fine">Free · 10 mins · no card</div>
