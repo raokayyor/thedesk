@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8}
+*{box-sizing:border-box}body{margin:0;background:#d8d2c8;font:16px/1.5 Figtree,Arial,sans-serif;color:var(--ink);display:flex;gap:40px;padding:30px;align-items:flex-start}
+.ph{width:390px;height:844px;background:var(--paper);position:relative;overflow:hidden;border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.cap{position:absolute;top:-26px;left:0;font:600 13px Figtree;color:#5a5048}
+.wrap{position:relative}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 20px}
+.top b{font:600 22px "EB Garamond",Georgia,serif}.top span{font-size:14px;color:var(--mute)}
+.p{padding:6px 20px}
+.k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.p h1{font-size:32px;line-height:1.08;margin-top:6px}
+.sum{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.sum b{display:block;font-size:16px}.sum small{font-size:13.5px;color:var(--mute)}.sum a{font-weight:600;font-size:14px;text-decoration:underline}
+.q{margin-top:22px;font-weight:600;font-size:15px}
+.opt{margin-top:10px;display:grid;gap:10px}
+.o{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px 14px;display:grid;grid-template-columns:22px 1fr;gap:10px}
+.o i{width:20px;height:20px;border-radius:50%;border:2px solid #c9c1b5;margin-top:2px}
+.o.on{border:2px solid var(--ink)}.o.on i{border:6px solid var(--ink)}
+.o b{font-size:16px}.o span{display:block;font-size:13.5px;color:var(--mute)}
+.add{margin-top:16px;font-size:14.5px;color:var(--ink-2)}.add u{font-weight:600;color:var(--ink)}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:14px 20px 26px;background:linear-gradient(transparent,var(--paper) 30%)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:12px;min-height:56px;font-weight:600;font-size:17px}
+.fine{text-align:center;font-size:12.5px;color:var(--mute);margin-top:8px}
+/* recording */
+.cam{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 45%,#55625f,#1b2326)}
+.cam .head{position:absolute;left:50%;top:40%;width:150px;height:170px;border-radius:50%;background:#7c6a5c;transform:translate(-50%,-50%)}
+.cam .body{position:absolute;left:50%;bottom:-40px;width:320px;height:300px;border-radius:50% 50% 0 0;background:#2b3236;transform:translateX(-50%)}
+.ov{position:absolute;left:0;right:0;top:0;padding:54px 20px 26px;background:linear-gradient(rgba(10,15,17,.85),rgba(10,15,17,.55) 70%,transparent);color:#fff}
+.ov small{font-size:12px;color:#cfe3d5;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.ov h2{font-size:25px;line-height:1.2;margin-top:6px}
+.tb{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:13px}
+.tb .t{flex:1;height:4px;background:rgba(255,255,255,.25);border-radius:2px}.tb .t i{display:block;height:100%;width:38%;background:#e8a283;border-radius:2px}
+.rec{position:absolute;z-index:3;top:16px;left:20px;font-size:12px;color:#fff;font-weight:600;display:flex;gap:6px;align-items:center}.rec:before{content:"";width:9px;height:9px;border-radius:50%;background:#e5484d}
+.bar2{position:absolute;left:0;right:0;bottom:0;padding:0 20px 26px}
+.sheet{background:rgba(251,250,247,.96);border-radius:16px 16px 0 0;margin:0 -20px 14px;padding:8px 20px 12px;text-align:center;font-size:13.5px;font-weight:600}
+.sheet:before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:#c9c1b5;margin:0 auto 8px}
+.done{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:var(--ink);border-radius:12px;min-height:56px;font-weight:700;font-size:17px}
+.done:before{content:"";width:14px;height:14px;border-radius:3px;background:#e5484d}
+</style></head><body>
+<div class="wrap"><div class="cap">1 · Set up (one screen)</div><div class="ph">
+  <div class="top"><b>The Desk</b><span>Exit</span></div>
+  <div class="p">
+    <div class="k">Interview coach</div>
+    <h1>Practise your next interview.</h1>
+    <div class="sum"><div><b>Barclays · Investment Banking</b><small>Graduate programme · First round</small></div><a>Change</a></div>
+    <div class="q">What kind of interview?</div>
+    <div class="opt">
+      <div class="o on"><i></i><div><b>Video (HireVue)</b><span>Think time, then record against the clock</span></div></div>
+      <div class="o"><i></i><div><b>Competency</b><span>Your experience and motivation</span></div></div>
+      <div class="o"><i></i><div><b>Technical</b><span>Valuation, DCF, markets</span></div></div>
+    </div>
+    <div class="add">+ <u>Add</u> a commercial awareness or numerical question</div>
+  </div>
+  <div class="bottom"><div class="btn">Start · 7 questions →</div><div class="fine">Your camera turns on only when you press start</div></div>
+</div></div>
+
+<div class="wrap"><div class="cap">2 · Answering (camera full screen)</div><div class="ph">
+  <div class="cam"><div class="body"></div><div class="head"></div></div>
+  <div class="rec">Recording · Q2 of 7</div>
+  <div class="ov"><small>Barclays · Competency</small><h2>“Tell me about a time you led a group, even informally.”</h2>
+    <div class="tb"><span>0:46</span><span class="t"><i></i></span><span>2:00</span></div></div>
+  <div class="bar2"><div class="sheet">↑ Your CV points · Tip</div><div class="done">Done</div></div>
+</div></div>
+</body></html>
