@@ -1,0 +1,105 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--bad:#b4433a;--bad-soft:#f6e0da;--warn:#9a6a14;--warn-soft:#fbf0d9}
+*{box-sizing:border-box}body{margin:0;background:#d8d2c8;font:16px/1.5 Figtree,Arial,sans-serif;color:var(--ink);display:flex;gap:36px;padding:34px 30px 30px;align-items:flex-start}
+.wrap{position:relative}.cap{position:absolute;top:-26px;left:0;font:600 13px Figtree;color:#5a5048}
+.ph{width:390px;background:var(--paper);border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;padding-bottom:20px}
+h1,h2,h3{font-family:"EB Garamond",Georgia,serif;font-weight:600;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;height:52px;padding:0 18px;font-size:13px;color:var(--mute)}.top b{font:600 21px "EB Garamond",Georgia,serif;color:var(--ink)}
+.p{padding:0 18px}
+.q{font-size:13.5px;color:var(--mute);margin-top:2px}.q b{color:var(--ink);font-weight:600}
+.score{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.sr{display:flex;align-items:baseline;gap:10px}.sr b{font:600 56px/1 "EB Garamond",Georgia,serif}.sr span{font-size:14px;color:var(--mute)}
+.band{display:inline-block;margin-left:auto;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px}
+.band.mid{background:var(--warn-soft);color:var(--warn)}.band.hi{background:var(--good-soft);color:var(--good)}
+.meter{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,#e4d9cc 0 50%,#f1dfc0 50% 70%,#cfe3d5 70%);margin-top:14px}
+.meter i{position:absolute;top:-4px;width:3px;height:16px;background:var(--ink);border-radius:2px}
+.meter em{position:absolute;top:-4px;width:3px;height:16px;background:#b8afa3;border-radius:2px}
+.ml{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:6px}
+.up{margin-top:10px;font-size:14.5px;font-weight:600;color:var(--good)}
+h2.s{font-size:22px;line-height:1.15;margin:22px 0 4px}
+.sub{font-size:13.5px;color:var(--mute);margin:0 0 10px}
+.fix{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.fh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.fh b{font-size:15.5px}
+.pts{font-size:12.5px;font-weight:700;color:var(--good);background:var(--good-soft);border-radius:999px;padding:2px 9px;white-space:nowrap}
+.said{margin-top:8px;font-size:14px;color:var(--ink-2)}.said s{color:var(--bad);text-decoration-thickness:2px}
+.try{margin-top:6px;font-size:14px;background:var(--good-soft);border-radius:8px;padding:8px 10px}.try small{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--good)}
+.beats{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 14px}
+.bt{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}.bt:first-child{border-top:0}
+.bt i{font-style:normal;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:2px}
+.bt.ok i{background:var(--good-soft);color:var(--good)}.bt.no i{background:var(--bad-soft);color:var(--bad)}
+.bt span{display:block;font-size:13px;color:var(--mute)}
+.tr{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.tr .g{background:var(--good-soft);color:var(--ink);border-radius:3px;padding:0 2px}.tr .r{background:var(--bad-soft);color:var(--bad);border-radius:3px;padding:0 2px;text-decoration:underline dotted}
+.legend{font-size:12px;color:var(--mute);margin-top:6px}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:12px;min-height:54px;font-weight:700;font-size:16.5px;margin-top:18px}
+.btn.lt{background:#fff;color:var(--ink);border:1px solid var(--ink);margin-top:10px;min-height:48px;font-size:15.5px}
+.fine{text-align:center;font-size:12.5px;color:var(--mute);margin-top:8px}
+.chg{background:var(--good-soft);border-radius:14px;padding:12px 14px}
+.chg div{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:14.5px;padding:4px 0}.chg div:before{content:"✓";color:var(--good);font-weight:700}
+.polish{margin-top:10px;font-size:14px;color:var(--ink-2)}.polish b{color:var(--ink)}
+.check{margin-top:10px;background:var(--warn-soft);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--warn)}.check b{color:#6d4a0c}
+.saved{margin-top:14px;background:var(--ink);color:#fff;border-radius:16px;padding:16px}
+.saved small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fd3b1;font-weight:700}
+.saved h3{font-size:20px;margin-top:4px}.saved p{margin:6px 0 0;font-size:13.5px;color:#c9d2d6}
+.saved .btn{background:#fff;color:var(--ink);margin-top:12px}
+</style></head><body>
+
+<div class="wrap"><div class="cap">Attempt 1 · 44/100</div><div class="ph">
+  <div class="top"><b>The Desk</b><span>Q1 of 7 · Exit</span></div>
+  <div class="p">
+    <div class="q"><b>“Give me a brief introduction and explain which parts of your experience are most relevant to IBD at Barclays.”</b></div>
+    <div class="score"><div class="sr"><b>44</b><span>/100</span><span class="band mid">Not there yet</span></div>
+      <div class="meter"><i style="left:44%"></i></div><div class="ml"><span>0</span><span>50</span><span>70 Strong</span><span>100</span></div></div>
+
+    <h2 class="s">3 fixes to get to about 70</h2>
+    <p class="sub">Biggest first. Each one uses your own words or your CV.</p>
+    <div class="fix"><div class="fh"><b>1 · Say what <u>you</u> did</b><span class="pts">+12</span></div>
+      <div class="said">You said: <s>“supported the team with research and analysis”</s></div>
+      <div class="try"><small>From your CV, try</small>“I screened 12 UK software companies and cut them to 4 on recurring revenue.”</div></div>
+    <div class="fix"><div class="fh"><b>2 · Make “why Barclays” specific</b><span class="pts">+8</span></div>
+      <div class="said">You said: <s>“a great bank with a strong reputation”</s>, which fits any bank.</div>
+      <div class="try"><small>Try</small>Name one thing about Barclays you’ve looked into, and link it to your Redcliffe work.</div></div>
+    <div class="fix"><div class="fh"><b>3 · Cut the filler opener</b><span class="pts">+5</span></div>
+      <div class="said">You said: <s>“I’ve always been really interested in finance”</s>. Every candidate says it.</div>
+      <div class="try"><small>Try</small>Start with your degree, then go straight to Redcliffe.</div></div>
+
+    <h2 class="s">Your 4 beats</h2>
+    <div class="beats">
+      <div class="bt ok"><i>✓</i><div>Where you are now</div></div>
+      <div class="bt ok"><i>✓</i><div>Relevant experience</div></div>
+      <div class="bt no"><i>✕</i><div>Your contribution<span>“Supported the team” says what the team did, not you.</span></div></div>
+      <div class="bt no"><i>✕</i><div>Why this role and firm<span>Generic. Nothing only Barclays.</span></div></div>
+    </div>
+
+    <h2 class="s">What you said</h2>
+    <div class="tr">Hi, I’m Amelia, <span class="g">a final year economics student at Bristol</span>. <span class="r">I’ve always been really interested in finance and investment banking.</span> Last summer I did an internship at <span class="g">Redcliffe Partners</span> where I <span class="r">supported the team with research and analysis on potential transactions</span>, which was really interesting. I also work part time at Pho House… <span class="r">Barclays is a great bank with a strong reputation</span>…</div>
+    <div class="legend">Green: keep · Red: tap to see why</div>
+
+    <div class="btn">Try again with these fixes</div>
+    <div class="fine">Your 3 fixes stay pinned while you answer</div>
+    <div class="btn lt">See a 70+ version of your answer</div>
+    <div class="fine">Built from your CV and what you said · nothing made up</div>
+  </div>
+</div></div>
+
+<div class="wrap"><div class="cap">Attempt 2 · 81/100</div><div class="ph">
+  <div class="top"><b>The Desk</b><span>Q1 of 7 · Exit</span></div>
+  <div class="p">
+    <div class="q"><b>“Give me a brief introduction and explain which parts of your experience are most relevant to IBD at Barclays.”</b></div>
+    <div class="score"><div class="sr"><b>81</b><span>/100</span><span class="band hi">Strong answer</span></div>
+      <div class="meter"><em style="left:44%"></em><i style="left:81%"></i></div><div class="ml"><span>0</span><span>50</span><span>70 Strong</span><span>100</span></div>
+      <div class="up">↑ 37 points from your first try (44)</div></div>
+
+    <h2 class="s">What you fixed</h2>
+    <div class="chg"><div>You said what you did: 12 companies cut to 4 on recurring revenue</div><div>“Why Barclays” is now specific</div><div>You opened with your degree, not filler</div></div>
+    <div class="polish"><b>To push past 85:</b> end on one line about what you’d bring to the team in your first year.</div>
+    <div class="check"><b>Check before you use it:</b> you said Barclays works on UK mid-market tech deals. Make sure you can back that up if they ask.</div>
+
+    <div class="saved"><small>This is a keeper</small><h3>Save as your Barclays introduction</h3><p>It goes into your answer library, and its beats become your crib sheet next time this question comes up.</p><div class="btn">Save this answer</div></div>
+    <div class="btn lt">Next question →</div>
+    <div class="fine">Or try once more to push past 85</div>
+  </div>
+</div></div>
+</body></html>
