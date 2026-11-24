@@ -8,16 +8,16 @@ Most of a "why us" answer is generic structure (firm angle → your link → you
 2. **Hooks:** 2–3 firm facts (from the packs, sourced from the firm's own site), each with how a student might link to it.
 3. **Avoid:** phrases that fit any firm, so they score nothing there. Barclays: "a great British bank", "global reach". Rothschild: "prestige", "boutique", "famous family".
 
-Plus one practitioner tip per firm (with Kayyor's photo).
+**"What they're really asking" is Kayyor's tip.** The dark card shows his photo, "What {firm} is really asking", "Kayyor Rao · 20+ years in banking", and the `tip` text in his voice. There is no separate tip line anywhere else in the sheet.
 
 ## Where it appears
 1. **The "Why {firm}" gap sheet** in the interview feedback, and the "Why {firm}" beat on the think screen. This replaces the generic quick picks.
    - Header: firm logo tile (use the existing firm logo assets) + "Why {firm}?" + "{firm} · {division}".
-   - Dark card "What {firm} is really asking": `angle` + `listen`.
+   - Dark card with Kayyor's photo: "What {firm} is really asking" + "Kayyor Rao · 20+ years in banking" + the `tip` quote (Garamond). Keep `angle` for the think-screen line and the scorer.
    - "Pick your angle": the `hooks` as radio cards (fact in bold, link line muted).
    - A live green draft linking the chosen hook to **the student's own evidence** (CV, transcript, gap answers), with an amber gap for the personal reason.
    - "Fits any {bank|adviser|firm}, so it scores nothing here": the `avoid` chips, struck through in red.
-   - Tip with photo. Button: "Use this in my answer".
+   - Button: "Use this in my answer".
 2. **The feedback scorer:** if the student's answer contains any `avoid` phrase or `GENERIC_AVOID` phrase, the "Why {firm}" fix quotes it ("You said 'a great bank'. That fits any bank.") and suggests the firm's angle.
 3. **Application drafts:** the "Why {firm}" question uses the same angle and hooks.
 4. **Think screen:** the "Why {firm}" beat line shows the angle in small text: "{firm} wants: {angle}".
@@ -29,3 +29,19 @@ Plus one practitioner tip per firm (with Kayyor's photo).
 - **Keep "Check it's true before you say it in an interview"** under every draft.
 
 Send Rao 390px screenshots of the sheet for Barclays and Rothschild with the same student.
+
+## Rule for every Kayyor tip, everywhere
+Kayyor's tip is **always "what they're really asking"**, never generic advice. This applies to:
+- the interview think screen (every question)
+- the crib sheet
+- feedback
+- application drafts
+- the free result
+
+Format: photo + "What {firm | the interviewer} is really asking" + "Kayyor Rao · 20+ years in banking" + one or two sentences in his voice, starting "They want to know…".
+
+Examples:
+- Team question: "They want to know what *you* did. Every 'we' hides you."
+- Intro question: "They want to know which one experience makes you relevant. Lead with it, not your degree."
+
+Store as `reallyAsking` on each question in the question banks. Replace the current tip text (e.g. "Lead with relevant experience, then explain why this role.") with this format. Rao approves the wording.

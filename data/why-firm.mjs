@@ -9,7 +9,8 @@
 //   listen – one line: what a good answer proves
 //   hooks  – firm facts (sourced) + how a student might connect to it
 //   avoid  – phrases that fit any firm, so they score nothing here
-//   tip    – one practitioner-style line
+//   tip    – Kayyor's "what they're really asking" line, in his voice. This IS the angle, said
+//            by a person; it is shown in the dark card with his photo. There is no separate tip.
 
 export const WHY_FIRM_STRUCTURE = [
   'The firm’s angle: one thing true of this firm, not of every bank',
@@ -30,7 +31,7 @@ export const WHY_FIRM = {
       { fact: 'Know a recent result or strategic change.', link: 'Name it and say what it means for the team you’re applying to. (Check it’s current.)' }
     ],
     avoid: ['a great British bank', 'global reach', 'strong reputation'],
-    tip: 'Answer “why not a US bank?” before they ask it.'
+    tip: 'They want to know why a UK bank with international reach, not a US bank. Answer that before they ask it.'
   },
   rothschild: {
     angle: 'Why independent advice, rather than a big bank with a balance sheet?',
@@ -41,7 +42,7 @@ export const WHY_FIRM = {
       { fact: 'Five Arrows is its private markets arm; it also runs Wealth & Asset Management.', link: 'Only mention it if you’re applying there. Otherwise one line shows breadth.' }
     ],
     avoid: ['historic name', 'famous family', 'prestige', 'it’s a boutique'],
-    tip: 'Never say “prestige”. Say “independence”, and say why it matters to a client.'
+    tip: 'They want to know why independent advice, not a big bank with a balance sheet. Never say prestige. Say independence, and why it matters to a client.'
   },
   gs: {
     angle: 'Why Goldman Sachs, and why this division specifically?',
@@ -51,7 +52,7 @@ export const WHY_FIRM = {
       { fact: 'First rounds are often recorded video interviews.', link: 'Keep it under 90 seconds: division, reason, proof.' }
     ],
     avoid: ['the best bank', 'prestige', 'top of the league tables'],
-    tip: 'The division matters more than the logo. Spend most of the answer there.'
+    tip: 'They want to know why this division, not why Goldman. The division matters more than the logo, so spend most of the answer there.'
   },
   jpm: {
     angle: 'Why J.P. Morgan, and why this team, not just any big bank?',
@@ -61,7 +62,7 @@ export const WHY_FIRM = {
       { fact: 'Jamie Dimon’s annual letter to shareholders is widely read.', link: 'Quote one point from the latest letter and give your view. (Check it’s the latest.)' }
     ],
     avoid: ['biggest bank', 'great reputation', 'Jamie Dimon is inspiring'],
-    tip: 'If you mention the letter, have one view of your own on it.'
+    tip: 'They want to know why J.P. Morgan, not just any big bank. Scale is the answer: it can lend as well as advise. Say why that matters for your team.'
   },
   ms: {
     angle: 'Why Morgan Stanley? Use how the firm is built, not its reputation.',
@@ -71,7 +72,7 @@ export const WHY_FIRM = {
       { fact: 'Stated core values include putting clients first and doing the right thing.', link: 'Prove one with your own example, not a quote.' }
     ],
     avoid: ['white-shoe', 'prestige', 'strong brand'],
-    tip: 'Show you know the firm’s shape, not just its name.'
+    tip: 'They want to know you understand how Morgan Stanley is built, not its reputation. Wealth management is a big part of it. Show you know the firm’s shape.'
   },
   lazard: {
     angle: 'What would you get at a smaller independent adviser that you wouldn’t at a larger bank?',
@@ -82,7 +83,7 @@ export const WHY_FIRM = {
       { fact: 'Small teams: juniors get early responsibility.', link: 'Prove you can handle it: a time you were given real responsibility early.' }
     ],
     avoid: ['boutique', 'prestige', 'smaller is better'],
-    tip: 'Sovereign advisory is Lazard’s most distinctive line. Use it if it fits you.'
+    tip: 'They want to know what you’d get at a smaller adviser that you wouldn’t at a big bank. Early responsibility, and sovereign advisory if it fits you.'
   },
   evercore: {
     angle: 'Why Evercore and independent advisory, rather than a bulge-bracket bank?',
@@ -92,7 +93,7 @@ export const WHY_FIRM = {
       { fact: 'Lean deal teams.', link: 'A time you did a lot with a small team.' }
     ],
     avoid: ['elite boutique', 'prestige', 'league tables'],
-    tip: 'Don’t compare it to Rothschild or Lazard by name. Say what you want from independence.'
+    tip: 'They want to know why advice-only, not a bulge bracket. Don’t compare it to other advisers by name. Say what you want from independence.'
   },
   hsbc: {
     angle: 'Why HSBC? Link it to its international network.',
@@ -102,7 +103,7 @@ export const WHY_FIRM = {
       { fact: 'Its values include “we value difference” and “we succeed together”.', link: 'A time you worked with people from very different backgrounds.' }
     ],
     avoid: ['the world’s local bank', 'global reach', 'big in Asia'],
-    tip: 'Make it about a client crossing borders, not about the bank being big.'
+    tip: 'They want to know you understand the international network. Make it about a client crossing borders, not about the bank being big.'
   },
   citi: {
     angle: 'Why Citi? Use its global network or services business.',
@@ -112,7 +113,7 @@ export const WHY_FIRM = {
       { fact: 'Banking and markets serve the same multinational clients.', link: 'Why one client relationship across many countries appeals to you.' }
     ],
     avoid: ['global bank', 'big network', 'strong brand'],
-    tip: 'Few candidates mention services. That alone makes you stand out.'
+    tip: 'They want to know you understand what Citi does for multinationals. Few candidates mention services, so that alone makes you stand out.'
   },
   blackrock: {
     angle: 'Why BlackRock, and why asset management rather than investment banking?',
@@ -123,7 +124,7 @@ export const WHY_FIRM = {
       { fact: 'It has been growing in private markets and infrastructure.', link: 'Only if you’re applying there. Give one reason.' }
     ],
     avoid: ['biggest asset manager', 'Larry Fink', 'trillions under management'],
-    tip: 'Name the part of BlackRock. “BlackRock” alone isn’t an answer.'
+    tip: 'They want to know which part of BlackRock, and why managing money rather than deals. “BlackRock” alone isn’t an answer.'
   },
   ey: {
     angle: 'Why EY, and why this service line? Expect strengths questions.',
@@ -133,7 +134,7 @@ export const WHY_FIRM = {
       { fact: 'Its purpose is “building a better working world”.', link: 'Don’t quote it back. Show something you did that fits it.' }
     ],
     avoid: ['Big Four', 'great training', 'purpose-driven'],
-    tip: 'EY asks what energises you. Answer with a real moment, not a trait.'
+    tip: 'They want to know what energises you, not only what you’ve done. Answer with a real moment, not a trait.'
   }
 };
 
