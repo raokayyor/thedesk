@@ -1,7 +1,7 @@
 import {firmReason} from '../lib/why-firm.mjs';
 import {whyFirmFor} from '../data/why-firm.mjs';
 import {sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
-import {principal,useQuota} from '../lib/value-accounts.mjs';
+import {principal,isPaidOwner,useQuota} from '../lib/value-accounts.mjs';
 import {currentAccount,latestAssessment} from '../lib/accounts.mjs';
 import {storyEvidenceId,storyFacts,saveStoryFact,refreshFactUses} from '../lib/story-bank.mjs';
 import {applicationContext} from '../lib/application-draft-store.mjs';
@@ -16,7 +16,7 @@ async function promptsFor(req,res,p){
 }
 export default async function handler(req,res){res.setHeader('Cache-Control','private,no-store');res.setHeader('Vary','Cookie');try{
  if(!['GET','POST'].includes(req.method))return res.status(405).end();if(req.method==='POST'&&!sameOrigin(req,res))return;
- const account=await currentAccount(req);if(!account)return res.status(401).json({error:'Sign in to keep your story across devices.'});const p=await principal(req,res),facts=await storyFacts(p);
+ const account=await currentAccount(req);if(!account)return res.status(401).json({error:'Sign in to keep your story across devices.'});const p=await principal(req,res);if((req.method==='GET'||req.body?.action!=='firm')&&!await isPaidOwner(p))return res.status(402).json({error:'The full story bank is included with membership. You can explore its preview from My Desk.',upgrade:true});const facts=await storyFacts(p);
  if(req.method==='GET'){const uses=await sql().query('SELECT fact_id,surface,ref,label FROM story_uses WHERE owner=$1',[p]);const prompts=await promptsFor(req,res,p),row=await latestAssessment(account.id),cv=row?await latestCv(row.owner_hash,row.id):{text:''},sources=evidenceSources(cv.text||row?.input?.cvText||''),stories=[...new Map(sources.filter(s=>s.kind==='cv').map(s=>[s.source,{id:storyEvidenceId(cv.text||row?.input?.cvText||'',s.source),name:s.source.split(/\s+[—–]\s+/)[0],source:s.source,text:s.text}])).values()];return res.json({stories,progress:{done:Math.min(10,facts.length),total:10},facts:facts.map(f=>({...f,uses:uses.filter(u=>u.fact_id===f.id&&u.surface!=='application-gap')})),prompts,emailReady:!!(process.env.RESEND_API_KEY&&process.env.EMAIL_FROM)});}
  if(!await useQuota('story-bank:'+p,200))return res.status(429).json({error:'Please try again tomorrow.'});const b=req.body||{};
  if(b.action==='firm'){const firm=whyFirmFor(b.firm);if(!firm)return res.status(400).json({error:'Choose a supported firm.'});const answer=firmReason(b.firm,b.selection),fact=await saveStoryFact(p,{prompt:'Why '+firm.label+'?',answer,firm:firm.label,evidenceIds:[],key:'firm:'+firm.label.toLowerCase()});return res.json({success:true,fact});}
