@@ -1,0 +1,4 @@
+import {BANK_LOGOS} from './data/bank-logos.mjs';
+import {whyFirmFor,whyFirmKey} from './data/why-firm.mjs';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function firmMark(firm){const pack=whyFirmFor(firm);if(!pack)return '';const key=whyFirmKey(firm),aliases={jpm:'JP Morgan',bofa:'Bank of America'},image=BANK_LOGOS[aliases[key]||pack.label],colors={barclays:'#00afe9',rothschild:'#193c2e',gs:'#70a0c4',db:'#0018a8',ubs:'#d62027',hsbc:'#db0011',citi:'#056dae',ey:'#c8a700'};return image?`<span class="desk-firm-mark"><img src="${esc(image)}" alt="${esc(pack.label)} logo"></span>`:`<span class="desk-firm-mark desk-firm-monogram" style="--firm-color:${colors[key]||'#1f2a2e'}" aria-label="${esc(pack.label)}">${esc(key==='rothschild'?'R':pack.label.charAt(0))}</span>`;}
