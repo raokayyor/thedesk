@@ -1,3 +1,5 @@
+import {reallyAskingCard} from './why-firm-sheet.js';
+import {reallyAskingFor} from './data/question-coaching.mjs';
 import {tasterQuestion} from '/lib/taster-question.mjs';
 import {conversionFacts,freeConversionResult,completeSentence,cvSkimParts} from '/lib/result-conversion.mjs';
 const params=new URLSearchParams(location.search),id=params.get('id'),sample=params.get('sample')==='amelia';
@@ -39,7 +41,7 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
  });
  const interview=competencies.querySelector('.taster');
  root.querySelectorAll('.taster').forEach(n=>{if(n!==interview)n.remove()});
- if(interview){const launch=interview.querySelector('a');launch.href='/interview.html?'+new URLSearchParams({ready:'1',taster:'interview',trial:'1',...(sample?{sample:'amelia'}:{id}),competency:'Teamwork',firm:p.targetFirm||''});launch.textContent='Try your free interview question →';interview.querySelector('.kicker').textContent='Free interview coach';interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();const all=document.createElement('a');all.href='/my.html#freeTasters';all.className='all-tasters-link';all.textContent='Try every tool free →';interview.append(all);interview.querySelector('p').textContent=`Build evidence for Teamwork with your CV beside the question.`;}
+ if(interview){if(!interview.querySelector('.wf-asking'))interview.insertAdjacentHTML('beforeend',reallyAskingCard(reallyAskingFor('Tell me about a time you worked in a team.'),'the interviewer'));const launch=interview.querySelector('a');launch.href='/interview.html?'+new URLSearchParams({ready:'1',taster:'interview',trial:'1',...(sample?{sample:'amelia'}:{id}),competency:'Teamwork',firm:p.targetFirm||''});launch.textContent='Try your free interview question →';interview.querySelector('.kicker').textContent='Free interview coach';interview.classList.add('interview-taster');interview.querySelector('.added')?.remove();const all=document.createElement('a');all.href='/my.html#freeTasters';all.className='all-tasters-link';all.textContent='Try every tool free →';interview.append(all);interview.querySelector('p').textContent=`Build evidence for Teamwork with your CV beside the question.`;}
  community.remove();
  const rows=offer.querySelectorAll('.plan-rows>div');rows.forEach((n,i)=>{if(i>=5)n.remove()});
  const remaining=planRows.length-5;if(remaining>0){const extra=document.createElement('p');extra.className='plan-more';extra.textContent=`+${remaining} more included`;offer.querySelector('.plan-rows').after(extra)}

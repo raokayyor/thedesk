@@ -1,0 +1,21 @@
+import {buildInterviewGuide} from '../lib/interview-evidence-guide.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {WHY_FIRM,whyFirmFor} from '../data/why-firm.mjs';
+import {FIRM_PACK_REFERENCE} from '../data/firm-pack-reference.mjs';
+import {whyFirmDraft,firmReason,whyFirmAvoidFix,WHY_FIRM_COPY_APPROVED} from '../lib/why-firm.mjs';
+import {REALLY_ASKING_REVIEW} from '../data/really-asking-review.mjs';
+import {reallyAskingFor,REALLY_ASKING_APPROVED} from '../data/question-coaching.mjs';
+import '../interview-bank.js';
+import {APPLICATION_QUESTIONS} from '../data/application-questions.mjs';
+import {questionsForRoute} from '../lib/question-banks.mjs';
+const sources=[{id:'cv-1',source:'Redcliffe Partners — Intern',text:'Researched 12 UK software companies for an acquisition screen. No transaction completion was confirmed.'},{id:'cv-2',source:'Cafe — Team member',text:'Trained 3 colleagues.'}];
+test('17 firms include the six requested pack additions and preserve practice provenance',()=>{assert.equal(Object.keys(WHY_FIRM).length,17);for(const key of ['db','bofa','ubs','pwc','deloitte','kpmg']){const p=whyFirmFor(key);assert.equal(p.question,FIRM_PACK_REFERENCE[key].why);assert.match(p.questionStatus,/not confirmed/);for(const h of p.hooks)assert.ok(FIRM_PACK_REFERENCE[key].know.includes(h.fact));}assert.equal(whyFirmFor('Rothschild & Co'),WHY_FIRM.rothschild);assert.equal(whyFirmFor('Unknown firm'),null);});
+test('same student keeps the same sourced proof across firms, with no CV disclaimer in speech',()=>{const a=whyFirmDraft({firm:'Barclays',sources}),b=whyFirmDraft({firm:'Rothschild & Co',sources});assert.equal(a.proof.id,b.proof.id);assert.match(a.text,/12 UK software/);assert.doesNotMatch(a.text,/No transaction|confirmed/);assert.notEqual(a.parts[0].text,b.parts[0].text);assert.ok(a.parts.some(p=>p.gap));});
+test('server canonicalises hook facts and cannot accept a client-supplied invented hook',()=>{const value=firmReason('Barclays',{hookIndex:0,reason:'I want to work with UK businesses.',fact:'Barclays advised my invented deal.'});assert.ok(value.startsWith(WHY_FIRM.barclays.hooks[0].fact));assert.doesNotMatch(value,/invented/);assert.throws(()=>firmReason('Barclays',{hookIndex:99,reason:'My reason is genuine.'}));assert.throws(()=>firmReason('Unknown',{hookIndex:0,reason:'My reason is genuine.'}));});
+test('research prompts remain gaps, and missing personal evidence is never fabricated',()=>{const d=whyFirmDraft({firm:'Barclays',hookIndex:2});assert.equal(d.parts[0].gap,true);assert.equal(d.proof,null);assert.equal(d.parts.at(-1).gap,true);});
+test('avoid-phrase feedback quotes the phrase and supplies the correct firm angle',()=>{const fix=whyFirmAvoidFix('It is a great bank with a strong reputation.','Barclays');assert.ok(fix.quote);assert.match(fix.action,/UK bank/);assert.equal(whyFirmAvoidFix('I researched a specific team.','Barclays'),null);});
+test('all 50 approval entries are the wording returned by every consumer, with publication approved',()=>{assert.equal(REALLY_ASKING_REVIEW.length,50);for(const q of REALLY_ASKING_REVIEW){assert.equal(reallyAskingFor(q.question),q.reallyAsking);assert.match(q.reallyAsking,/^They want to know/);assert.equal(q.status,'approved');}assert.equal(REALLY_ASKING_APPROVED,true);assert.equal(WHY_FIRM_COPY_APPROVED,true);});
+test('interview, application and assessment question banks store reallyAsking',()=>{for(const q of globalThis.DeskInterviewBank.buildSession({firmKey:'barclays',roleKey:'ibd'}))assert.match(q.reallyAsking,/^They want to know/);for(const q of APPLICATION_QUESTIONS)assert.match(q.reallyAsking,/^They want to know/);const bank=questionsForRoute('General Finance');for(const q of [...bank.numerical,...bank.commercial])assert.match(q.reallyAsking,/^They want to know/);});
+
+test('intro gap explicitly asks for the chosen division and firm without inventing motivation',()=>{for(const role of ['Investment Banking / IBD','Sales & Trading / Markets']){const g=buildInterviewGuide(sources,'Give me a brief introduction and explain which experience is relevant.',{kind:'intro',firm:'Barclays',role});const beat=g.examples[0].beats[3];assert.match(beat.label,/role and firm/);assert.ok(beat.text.includes(role));assert.match(beat.text,/Barclays/);assert.equal(beat.gap,true);}});

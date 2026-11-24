@@ -1,3 +1,4 @@
+import {coachQuestion} from './question-coaching.mjs';
 // Application question library: seed, researched 23 Nov 2026.
 // Most banks' written questions sit behind the application login, so this seed is mostly
 // "reported" (third-party guides and candidate reports), not "official".
@@ -81,4 +82,4 @@ export const APPLICATION_QUESTIONS = [
   { firm: 'Deloitte', programme: 'UK Early Careers 2026-27', stage: 'interview', theme: 'whyFirm',
     text: 'Why Deloitte, and not another firm?', wordLimit: null, confidence: 'reported',
     source: 'https://ep-advisory.com/blog/deloitte-mergers-acquisitions-graduate-application-process/', note: 'Deloitte: strict one application per year; the form will not save progress (quoted from ads in the guide).' }
-];
+].map(coachQuestion);

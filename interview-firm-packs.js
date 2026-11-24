@@ -142,6 +142,7 @@
     deloitte: { tests: ['Strengths and behaviours', 'Why Deloitte and the service line', 'Commercial awareness'], know: ['Big Four firm: audit & assurance, consulting, tax and financial advisory.', 'Early rounds often use video and strengths-style questions.'], why: 'Why Deloitte, and why this service line?', qs: [{ kind: 'cv', q: 'What do you think you are better at than most people? Give an example that proves it.', guide: STAR }, { kind: 'technical', q: 'How do you think AI will change audit or advisory work over the next five years?', guide: KNOW }] },
     kpmg: { tests: ['Values: integrity and courage', 'Judgement and scepticism', 'Why KPMG'], know: ['Big Four firm: audit, tax and advisory (including deal advisory).', 'Its values include integrity and courage: expect questions about speaking up.'], why: 'Why KPMG, and why this service line?', qs: [{ kind: 'cv', q: 'Tell me about a time you spoke up about something you thought was wrong.', guide: STAR }, { kind: 'case', q: 'You notice a colleague has made a mistake in a client file just before a deadline. What do you do?', guide: CASE }] }
   };
+  for(const p of Object.values(P)){p.reallyAsking=bank.coachQuestion({q:p.why}).reallyAsking;p.qs=(p.qs||[]).map(bank.coachQuestion);}
   bank.firmPacks = P;
 
   const roleKeyOf = role => Object.keys(bank.roles).find(k => bank.roles[k] === role);
@@ -160,8 +161,8 @@
     const extra = [];
     while (pool.length && extra.length < 2) extra.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]);
     const add = extra.map((x, i) => ({ id: key + '-pack-' + i, kind: x.kind, q: x.q, hint: tag + (x.hint || 'Answer for this firm, not any firm.'), guide: { shape: x.guide.shape, points: [...x.guide.points] }, firmSpecific: true }));
-    bank.pendingFirmQuestions = add;
-    return items;
+    bank.pendingFirmQuestions = add.map(bank.coachQuestion);
+    return items.map(bank.coachQuestion);
   };
 
   // Brief card: "Your <firm> interview" (interview page and setup page).
