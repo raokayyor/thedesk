@@ -1,7 +1,7 @@
 import {randomBytes} from 'node:crypto';
 import {sameOrigin,sql,apiFailure,hash} from '../lib/report-store.mjs';
 import {seedAmeliaMember} from '../lib/amelia-member.mjs';
-import {normEmail,validEmail,initAccounts,upsertAccount,currentAccount,startSession,allow} from '../lib/accounts.mjs';
+import {normEmail,validEmail,initAccounts,upsertAccount,currentAccount,startSession,allow,latestAssessment} from '../lib/accounts.mjs';
 import {initMemberships,accountMembership} from '../lib/account-memberships.mjs';
 import {validPilotCode,validAmeliaCode,PILOT_EXPIRES} from '../lib/pilot-access.mjs';
 export const maxDuration=300;
@@ -20,7 +20,7 @@ export default async function handler(req,res){
   const amelia=email==='ameliachen@gmail.com';
   if(existing&&(await accountMembership(existing.id)).source==='pilot'){
    const saved=(await sql().query('SELECT data FROM desk_account_profiles WHERE account_id=$1',[existing.id]))[0]?.data;
-   if(!!saved?.ameliaMember===amelia&&(!amelia||saved.ameliaVersion===2))return res.json({next:'/my.html',resumed:true});
+   if(!!saved?.ameliaMember===amelia&&(!amelia||saved.ameliaVersion===2&&await latestAssessment(existing.id)))return res.json({next:'/my.html',resumed:true});
   }
   // Random internal identity: a shared code must never open a real account by email.
   const account=await upsertAccount('pilot-'+randomBytes(16).toString('hex')+'@access.thedesk.invalid');
