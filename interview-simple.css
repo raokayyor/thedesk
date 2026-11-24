@@ -146,3 +146,9 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 @media(min-width:901px){#simpleInterview.pi-script-mode .pi-ready{background:#fffdf9;color:#1f2a2e;border:1px solid #fffdf9;border-radius:8px;padding:16px}}
 
 .pi-long-edit{display:none!important}@media(max-width:900px){.pi-long-edit{display:flex!important;flex-wrap:wrap;margin-top:12px;font:400 11px Figtree,sans-serif;align-items:center;gap:8px}}
+
+.pi-segment-text summary{font:600 11px Figtree,sans-serif;cursor:pointer}.pi-segment-text summary span{font-weight:400}@media(min-width:901px){.pi-segment-text summary span{display:none}}
+
+.pi-small-links summary{cursor:pointer;font:500 11px Figtree,sans-serif;padding:5px}.pi-small-links>button{font-size:11px}@media(max-width:900px){#simpleInterview.pi-script-mode .pi-think-actions .pi-small-links{display:block;margin:5px 0 0}}
+
+.pi-firm-panel{margin-top:14px;padding:14px;border:1px solid #b0b9b6;border-radius:10px;text-align:left;font:400 13px/1.45 Figtree,sans-serif}.pi-firm-panel summary{font:600 18px 'EB Garamond',serif;cursor:pointer}.pi-firm-panel h3{font-size:13px}.pi-think .pi-firm-panel a{color:#d2e4d6}.pi-feedback .pi-firm-panel a{color:#26443c}.pi-firm-news p{border-bottom:1px solid #b0b9b6;padding-bottom:8px}.pi-firm-panel button{white-space:normal;text-align:left}
