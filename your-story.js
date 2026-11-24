@@ -1,3 +1,4 @@
+import './practice-events.js';
 import {rewriteGapConfig} from './lib/interview-rewrite-beats.mjs';
 import {dictateBeat} from './interview-beat-dictation.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
