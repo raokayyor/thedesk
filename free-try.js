@@ -1,12 +1,13 @@
+import {FREE_TRY_QUESTION} from './lib/free-try-question.mjs';
 const root=document.getElementById('freeTry'),status=document.getElementById('tryStatus'),tool=new URLSearchParams(location.search).get('tool')||'interview';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let ctx,win,answers=[],index=0,phase='most',firm,recorder,stream,chunks=[],started,audioUrl;
+let contextReady,answering=false,dirty=false,ctx,win,answers=[],index=0,phase='most',firm,recorder,stream,chunks=[],started,audioUrl;
 const here=location.pathname+location.search,upgrade='/membership-start.html?return='+encodeURIComponent(here);
-async function api(body){const r=await fetch('/api/free-try'+(body?'':'?tool='+encodeURIComponent(tool)),{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify({tool,...body})}:{})});const d=await r.json();if(!r.ok)throw Error(d.error||'Please try again.');return d;}
+async function api(body){const r=await fetch('/api/free-tasters'+(body?'':'?tool='+encodeURIComponent(tool)),{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify({tool,...body,action:'win'})}:{})});const d=await r.json();if(!r.ok)throw Error(d.error||'Please try again.');return d;}
 function head(title){return '<div class="kicker">'+esc(ctx.title)+' · Your free try</div><h1>'+esc(title)+'</h1>';}
 const gapText=text=>String(text||'').replace(/\[([^\]]+)\]/g,'<span class="gap">[$1]</span>');
 function sourceLine(){return ctx.sample?'<p class="muted">Using a sample CV. <a href="/assessment-start.html">Add yours →</a></p>':'';}
-function beats(){return '<div class="script card">'+(ctx.guide?.beats||[]).map(b=>'<small>'+esc(b.label)+'</small><p>'+(b.gap?'<span class="gap">'+esc(b.text)+'</span>':gapText(esc(b.text)))+'</p>').join('')+'</div>';}
+function beats(){if(!ctx.guide)return '<div class="card"><p class="muted">Your saved CV guide is loading. You can start with your own answer.</p></div>';return '<div class="script card">'+(ctx.guide?.beats||[]).map(b=>'<small>'+esc(b.label)+'</small><p>'+(b.gap?'<span class="gap">'+esc(b.text)+'</span>':gapText(esc(b.text)))+'</p>').join('')+'</div>';}
 function inputScreen(){
  document.body.dataset.stage='input';status.textContent='';
  if(ctx.saved)return showWin(ctx.saved,true);
@@ -29,7 +30,7 @@ function inputScreen(){
  }
 }
 function answerScreen(){
- root.innerHTML=head('Your turn.')+'<p class="quiz-question">'+esc(ctx.question)+'</p><details><summary>Show my built answer ▾</summary>'+beats()+'</details><video id="camera" muted playsinline hidden></video><button class="secondary primary" id="record">Record my answer</button><div id="playback"></div><label for="answer">Type your answer, or record above</label><textarea id="answer" maxlength="6000" placeholder="Use your own words. Your actions, result and what you learned."></textarea><button class="primary" id="assess">Fix my answer →</button>';
+ answering=true;root.innerHTML=head('Your turn.')+'<p class="quiz-question">'+esc(ctx.question)+'</p><details><summary>Show my built answer ▾</summary>'+beats()+'</details><video id="camera" muted playsinline hidden></video><button class="secondary primary" id="record">Record my answer</button><div id="playback"></div><label for="answer">Type your answer, or record above</label><textarea id="answer" maxlength="6000" placeholder="Use your own words. Your actions, result and what you learned."></textarea><button class="primary" id="assess">Fix my answer →</button>';
  document.getElementById('record').onclick=record;document.getElementById('assess').onclick=()=>submit({text:document.getElementById('answer').value,inputMode:audioUrl?'spoken':'typed',seconds:started?Math.min(120,Math.round((Date.now()-started)/1000)):0});
 }
 async function record(){
@@ -61,10 +62,10 @@ function quizScreen(){
 }
 async function submit(body){
  const previous=root.innerHTML;root.querySelectorAll('button').forEach(b=>b.disabled=true);status.textContent='Saving your result…';
- try{const d=await api(body);showWin(d.win,!!d.saved);}catch(e){status.textContent=e.message;root.querySelectorAll('button').forEach(b=>b.disabled=false);}
+ try{await contextReady;const d=await api(body);showWin(d.win,!!d.saved);}catch(e){status.textContent=e.message;root.querySelectorAll('button').forEach(b=>b.disabled=false);}
 }
 function showWin(value,used=false){
- win=value;status.textContent='';document.body.dataset.stage='win';window.scrollTo(0,0);
+ win=value;markUsable();status.textContent='';document.body.dataset.stage='win';window.scrollTo(0,0);
  const parts=win.parts?.map(p=>'<p>'+(p.label?'<span class="beat-label">'+esc(p.label)+'</span>':'')+(p.gap?'<span class="gap">'+esc(p.text)+'</span>':gapText(esc(p.text)))+'</p>').join('');
  let after=parts||'<p>'+esc(win.after)+'</p>';if(win.hook)after=after.replace(esc(win.hook),'<mark>'+esc(win.hook)+'</mark>');
  const before=String(win.before||'');root.innerHTML=head(win.title)+(used?'<p class="used-note">✓ Used · your saved result</p>':'')+'<div class="score-row">'+(Number.isFinite(win.score)?'<span class="score">'+win.score+(win.total?'/'+win.total:'<small>/100</small>')+'</span>':'')+'<span class="tag">'+esc(typeof win.tag==='string'?win.tag:'Your answer score')+'</span></div><article class="card win"><div class="before '+(before.length>160?'long':'')+'"><span class="row-label">Yours</span><p>'+esc(before)+'</p></div><div class="after '+(tool==='interview'?'compact':'')+'"><span class="row-label">'+(tool==='firm'?'Your preparation':'Fixed')+'</span>'+after+'</div>'+(tool==='interview'&&before.length>160?'<details><summary>Your full original answer ↓</summary><p>'+esc(before)+'</p></details>':'')+'</article><p class="note">'+esc(win.note||'')+'</p>'+(win.source?'<a class="source" href="'+esc(win.source)+'" target="_blank" rel="noopener">Firm source →</a>':'')+(['group','firm','crib'].includes(tool)?'<button class="secondary primary" id="download">Save to my phone ↓</button>':'');
@@ -78,4 +79,9 @@ function saveImage(){
  canvas.toBlob(blob=>{const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download='the-desk-'+tool+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);});
 }
 window.addEventListener('pagehide',()=>stream?.getTracks().forEach(t=>t.stop()));
-api().then(d=>{ctx=d;document.title=ctx.title+' · The Desk';inputScreen();document.documentElement.dataset.usable='true';document.documentElement.dataset.usableMs=Math.round(performance.now());}).catch(e=>{root.innerHTML='<h1>Your free try</h1><p>'+esc(e.message)+'</p><a class="btn" href="/signin.html?next='+encodeURIComponent(here)+'">Log in →</a><p><a href="/my.html">Back to My Desk</a></p>';status.textContent='';});
+contextReady=api().then(d=>{ctx=d;document.title=ctx.title+' · The Desk';document.documentElement.dataset.contextMs=Math.round(performance.now());if(ctx.saved)return showWin(ctx.saved,true);if(answering){const guide=root.querySelector('details');if(guide)guide.innerHTML='<summary>Show my built answer ▾</summary>'+beats();return;}const line=document.getElementById('cvLine')?.value,reason=document.getElementById('ownReason')?.value,selected=firm;if(!dirty||!['sjt','verbal','group'].includes(tool)){inputScreen();if(dirty){if(line!==undefined&&document.getElementById('cvLine'))document.getElementById('cvLine').value=line;if(reason!==undefined&&document.getElementById('ownReason'))document.getElementById('ownReason').value=reason;if(selected){firm=selected;root.querySelectorAll('[data-firm]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.firm===firm)));}}}markUsable();return d;}).catch(e=>{root.innerHTML='<h1>Your free try</h1><p>'+esc(e.message)+'</p><a class="btn" href="/signin.html?next='+encodeURIComponent(here)+'">Log in →</a><p><a href="/my.html">Back to My Desk</a></p>';status.textContent='';});
+
+function markUsable(){if(!document.documentElement.dataset.usableMs){document.documentElement.dataset.usable='true';document.documentElement.dataset.usableMs=Math.round(performance.now());}}
+root.addEventListener('input',()=>dirty=true);root.addEventListener('click',e=>{if(e.target.closest('[data-firm],.options button'))dirty=true;});
+if(['interview','cv','crib'].includes(tool)){ctx={title:{interview:'Interview',cv:'CV line',crib:'Crib sheet'}[tool],question:FREE_TRY_QUESTION,firm:'General',sample:false,cvLine:'',guide:null};inputScreen();markUsable();}
+if(['sjt','verbal','group','application','firm'].includes(tool))fetch('/data/free-try-public.json').then(r=>r.json()).then(publicData=>{if(document.documentElement.dataset.usableMs)return;ctx={title:publicData.titles[tool],firm:'General',sample:false,question:FREE_TRY_QUESTION,quiz:publicData[tool],firms:publicData.firms,content:publicData[tool]};inputScreen();markUsable();}).catch(()=>{});

@@ -39,6 +39,7 @@ if(!document.querySelector('script[data-testing-analytics]')){const tracker=docu
    if(header&&!label){label=document.createElement('span');label.id='desk-university';label.style.cssText='font:500 13px/1.3 Figtree,Arial,sans-serif;color:#5f6b76;margin-left:12px;margin-right:auto;max-width:40%;';header.querySelector('.logo')?.after(label);}
    if(label){label.textContent=university;label.hidden=!university;}
   }
+  let upgradePill=document.querySelector('.desk-free-upgrade');if(data.signedIn&&!data.member){if(!upgradePill){upgradePill=document.createElement('a');upgradePill.className='desk-free-upgrade';upgradePill.textContent='Upgrade';upgradePill.href='/membership-start.html?return='+encodeURIComponent(location.pathname+location.search);account.before(upgradePill);}}else upgradePill?.remove();
   account.textContent=(data.profile?.name||data.profile?.firstName||'').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()||'•';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in or create an account');window.DeskNavigation.icon=icon;
  }
 })();

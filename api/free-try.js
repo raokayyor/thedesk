@@ -36,7 +36,7 @@ export default async function handler(req,res){
    if(['sjt','verbal'].includes(tool))return quizWin(tool,b.answers);
    if(tool==='interview'){
     if(text.length<20||text.length>6000)throw Object.assign(Error('Add your answer (20–6,000 characters).'),{status:400});
-    const input={question:ctx.question,kind:'competency',transcript:text,inputMode:b.inputMode==='spoken'?'spoken':'typed',seconds:b.inputMode==='spoken'?Math.max(1,Math.min(120,Number(b.seconds)||90)):0,firm:view.firm,role:ctx.profile.targetSector||'',cv:ctx.cv};
+    const input={question:view.question,kind:'competency',transcript:text,inputMode:b.inputMode==='spoken'?'spoken':'typed',seconds:b.inputMode==='spoken'?Math.max(1,Math.min(120,Number(b.seconds)||90)):0,firm:view.firm,role:ctx.profile.targetSector||'',cv:ctx.cv};
     const score=await quickInterviewScore(input,'account:'+ctx.account.id);
     const feedback=immediateFeedback(score,input,rewriteEvidence(ctx.cv));
     return {title:'Your answer, fixed',before:text,parts:feedback.rewrite.parts,after:feedback.rewrite.text,score:feedback.overall,tag:feedback.band||'Your answer score',note:'Built from your answer and CV · fill amber gaps with your own facts. The score is for your submitted answer.'};

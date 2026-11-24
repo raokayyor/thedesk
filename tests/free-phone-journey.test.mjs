@@ -28,3 +28,5 @@ test('the API returns the original saved result even if a repeat submits differe
  const source=readFileSync(new URL('../api/free-try.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'').replace('export const maxDuration','const maxDuration').replace('export default async function handler','async function handler');vm.runInContext(source+';globalThis.handler=handler;',scope);
  let data;const response={setHeader(){},status(){return this;},json(d){data=d;}};await scope.handler({method:'POST',body:{tool:'cv',text:'A different attempted second answer'}},response);assert.equal(data.win.after,'Kept forever');assert.equal(generations,0);
 });
+
+test('early quiz data has the same five public questions and no answer keys',()=>{const early=JSON.parse(readFileSync(new URL('../data/free-try-public.json',import.meta.url),'utf8'));for(const tool of ['sjt','verbal']){assert.deepEqual(early[tool].map(q=>q.id),freeTryContext(ctx,tool).quiz.map(q=>q.id));for(const q of early[tool])for(const key of ['answer','best','worst','why'])assert.equal(q[key],undefined);}});
