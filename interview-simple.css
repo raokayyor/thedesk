@@ -163,3 +163,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 
 .pi-type-question{position:sticky;top:0;z-index:3;background:#fbfaf7;padding:14px 0;border-bottom:1px solid #ded7cb}.pi-type-question h2{font:600 23px/1.15 'EB Garamond',Georgia,serif;margin:8px 0}.pi-type-question details{font-size:13px}.pi-type-question details p{font:500 16px/1.4 'EB Garamond',Georgia,serif}.pi-practice-ways-sheet button{margin:12px 0}.pi-tip-more{display:none}
 @media(max-width:900px){#simpleInterview .pi-practice-ways-sheet{inset:auto 12px 116px;width:calc(100% - 24px);max-height:65dvh;border-radius:15px}.pi-coaching-intro:not(.tip-expanded) blockquote{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.pi-tip-more{display:block;font-size:12px;margin-left:45px}.pi-script-mode .pi-coaching-intro .wf-asking{margin-bottom:2px}}
+
+@media(max-width:900px){#simpleInterview .pi-coaching-intro .pi-tip-more{color:#b9dac9;padding:6px 0;text-decoration:underline}}
