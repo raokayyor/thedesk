@@ -3,17 +3,27 @@
 Applies to the interview coach first, then the same pattern for applications and the assessment centre.
 
 ## Principle
-- **Phone (≤900px):** fewer things, each one visually impressive and finished in minutes. Show the headline result and one action. Don't cram in the detail.
-- **Laptop (>900px):** everything. The deep review, full sessions, editing and comparison.
-- **Be clear and positive that the deep version is on the laptop.** Never say "disabled", "not available on mobile", "unsupported" or "limited version".
+- **Every feature works on both.** Nothing is removed from the phone.
+- **Phone (≤900px):** each feature in a lighter, faster, visually impressive form. The headline result plus one clear action, with details one tap away.
+- **Laptop (>900px):** the same features in full depth, plus the deep layer (section 7).
+- **Say clearly and positively that the deepest version is on the laptop.** Never say "disabled", "not available on mobile", "unsupported" or "limited version".
 
-## 1. Phone: what's in
-1. **Question of the day.** One question → think → record → result. Target under 3 minutes.
-2. **Practise a saved answer.**
-3. **A single question with feedback.**
-4. **The free taster** (the full taster flow must work on phone).
-
-Interactions: chip swaps (experience ▾), gap sheets with quick picks, "Say it instead" (voice into a beat). No long typing.
+## 1. Phone versions of every feature
+| Feature | On phone | On laptop |
+|---|---|---|
+| Question of the day | Full: think, record, score in under 3 minutes | Same |
+| Single question + feedback | Score reveal, 4 beat cards, the biggest fix up front; the other fixes, transcript and breakdown in collapsed "More detail" sections | Everything open, side by side |
+| Full sessions | **Short sessions (3 questions)** by default, with an option for all | 5–7 questions by default |
+| Real interview mode | Available, up to 3 questions, then the run summary as cards | Full run and summary table |
+| Building / editing answers | Chip swaps, gap sheets, "Say it instead", edit one beat at a time in a sheet | Inline editing of the whole script |
+| Answer library | List, practise, rename, delete, and edit via the beat sheet | Plus side-by-side attempt comparison |
+| Follow-up questions | 1 follow-up after an answer | A chain of 2–3 |
+| Interviewer's notes | 3 bullet points | The full notes view |
+| Sentence-by-sentence coaching | Tap a red phrase for its note | All notes beside the transcript |
+| Delivery feedback | One line (the most useful point) | All four measures |
+| Firm panel (why-firm, process, news) | The why-firm sheet | A side panel open beside the answer |
+| Application drafts | Read, fill gaps, copy | Full editing beside the question |
+| Export PDF | Download | Same |
 
 ## 2. Phone: make it visually impressive
 - **Score reveal:** the number counts up from 0 to the score (600ms), the band chip fades in, and the meter fills. On a retry that beats the best, a short confetti or glow on the score card and "↑ {n} from your best".
@@ -24,25 +34,19 @@ Interactions: chip swaps (experience ▾), gap sheets with quick picks, "Say it 
 - **Haptics:** a light tap on start and stop recording and on reveal, where supported (`navigator.vibrate(10)`).
 - Generous spacing, and **one primary button per screen.**
 
-## 3. Phone: what moves to the laptop
-- multi-question sessions and Real interview mode with the run summary
-- the full score breakdown (dimension tiles, attempt history detail)
-- all 3 fixes in detail, and the highlighted transcript
-- long-text editing of beats
-- side-by-side attempt comparison
-- answer library management (phone shows the list and "Practise", no editing)
-- application drafts
+## 3. Phone: lighter, never missing
+Nothing moves off the phone. Long lists collapse into "More detail", multi-step editing becomes one-beat sheets, and sessions default to 3 questions. Each phone result screen ends with the quiet "Your full review is ready on your laptop" card (section 4), as an extra, not a wall.
 
 ## 4. Make it clear the deep version is on the laptop (positive, in context)
-- **Interview home on phone:** one muted line, "**Quick practice** · Full interview sessions are on your laptop →".
+- **Interview home on phone:** one muted line, "Everything works here · **The deepest review is on your laptop →**".
 - **After phone feedback,** under the one fix, a quiet card:
   > **Your full review is ready on your laptop**
   > All 3 fixes, your highlighted transcript, score breakdown and attempt history.
   > [ Email me the link ]
 
   The link deep-links to the same attempt.
-- **Tapping a laptop-only feature** opens the card "This one's built for your laptop." with "Full sessions need a bigger screen to see your answer and camera together.", buttons "Email me a link" and "Show QR code", and the text link "Or do a quick question now →".
-- **Membership (the £89 tile and membership page):** "Works on phone and laptop. Full interview sessions on laptop."
+- **Before a phone session of 4+ questions or the full Real mode**, show the card "Best on your laptop" with "Long sessions are easier with your answer and camera side by side.", the buttons "Continue on phone" (primary) and "Email me a link", and "Show QR code". The student can always continue on phone.
+- **Membership (the £89 tile and membership page):** "Everything works on phone and laptop. The deepest interview review is on laptop."
 
 ## 5. Laptop: make it a lot better
 - **One screen:** script left, camera centre, "really asking" card and beats right. No page changes on the main path.
