@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('home-session-pending');window.DeskSession=fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);</script>
+<style>.home-session-pending header.top nav,.home-session-pending .hero a[href*="assessment-start"],.home-session-pending .hero-review-note,.home-session-pending .hero-privacy,.home-session-pending #phoneScoreBar{visibility:hidden}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Desk · Your coach for getting into finance</title>
 <meta name="description" content="Finance application coaching: CV, online tests, interviews and assessment centres, built by people who’ve spent their careers in finance. Start with a free readiness score.">
