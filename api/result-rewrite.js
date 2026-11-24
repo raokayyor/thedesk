@@ -1,3 +1,6 @@
+import freeTryHandler from './free-try.js';
+import {principal,isPaidOwner} from '../lib/value-accounts.mjs';
+import {currentAccount} from '../lib/accounts.mjs';
 import {startTaster,completeTaster,logTasterUsage} from '../lib/free-tasters.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import {readFile} from 'node:fs/promises';
@@ -12,6 +15,7 @@ export default async function handler(req,res){if(req.method!=='POST')return res
  const sample=row?null:JSON.parse(await readFile(new URL('../samples/amelia-report-v3-preview.json',import.meta.url),'utf8'));
  const result=row?.result||sample.result,original=result.weakLines?.[0]?.original||result.cvPreview?.original,answer=typeof b.answer==='string'?b.answer.trim():'';
  if(!original||answer.length<12||answer.length>1500)return res.status(400).json({error:'Add one factual sentence, up to 1,500 characters.'});
+ const account=await currentAccount(req);if(account&&!await isPaidOwner(await principal(req,res))){const bridge={setHeader:(...a)=>res.setHeader(...a),status(code){res.status(code);return this;},json(d){return res.json(d.win?{success:true,line:d.win.after}:d);}};return freeTryHandler({...req,body:{tool:'cv',text:original,detail:answer}},bridge);}
  const who=row?.owner_hash||owner(req,res,true),fingerprint=hash(original+'\n'+answer),saved=row?.input?.freeLineFix;
  if(saved?.fingerprint===fingerprint)return res.json({success:true,line:saved.line});
  if(!await allow('result-fix:'+who,8))return res.status(429).json({error:'You’ve used today’s free line rewrites. Your result is still saved.'});
