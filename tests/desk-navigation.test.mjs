@@ -8,7 +8,7 @@ test('five groups retain free previews and route members to owned tools',()=>{
  assert.equal(C.href('report',d),d.report.url);assert.equal(C.href('interview',d),d.interviewUrl);
  assert.equal(C.href('group',{}),'/assessment-centre.html?trial=1');assert.equal(C.href('group',d),'/group-exercise.html');
  assert.equal(C.href('library',{}),'/library.html');assert.equal(C.href('tracker',{}),'/tracker.html');
- assert.equal(C.href('report',{report:{url:'https://evil.example'}}),'/fullcycle-amelia.html');
+ assert.equal(C.href('report',{report:{url:'https://evil.example'}}),'/assessment-start.html');
 });
 test('tools and preview routes select the corresponding group',()=>{for(const p of ['/interview.html','/interview-preview.html'])assert.equal(C.groupFor(p),'practise');assert.equal(C.groupFor('/group-exercise.html'),'practise');assert.equal(C.href('assessment',{member:true}),'/assessment-centre.html');assert.equal(C.groupFor('/application-help.html'),'more');assert.equal(C.groupFor('/fullcycle.html'),'cv');assert.equal(C.groupFor('/my.html'),'desk');});
 
@@ -20,3 +20,4 @@ test('firm packs follow the nearest active tracker firm ahead of the profile',()
 });
 
 test('CV opens the owned report at its CV fixes, or the unfinished deep assessment',()=>{assert.equal(C.href('cv',{member:true,report:{url:'/fullcycle.html?id='+'a'.repeat(48)}}),'/fullcycle.html?id='+'a'.repeat(48)+'#cv');assert.equal(C.href('cv',{member:true,report:{url:'/deep-assessment.html?id='+'a'.repeat(48)}}),'/deep-assessment.html?id='+'a'.repeat(48));});
+
