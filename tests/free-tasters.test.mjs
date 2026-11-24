@@ -8,3 +8,5 @@ test('concurrent requests cannot generate twice and failures release the lease',
 test('weakest competency selects a relevant fixed question',()=>{const h=harness();assert.match(h.question('Resilience'),/commitments/);assert.match(h.question('Leadership'),/led others/);});
 
 test('failed generation can be retried without consuming the one successful result',async()=>{const h=harness();await assert.rejects(h.run(ctx,'script',1,async()=>{throw Error('Invalid model evidence')}));assert.equal(h.state.script,undefined);const result=await h.run(ctx,'script',1,async()=>({script:'Validated evidence'}));assert.equal(result.script,'Validated evidence');assert.equal(h.state.script.count,1);});
+
+test('finishing a tool prevents a second go through a different action endpoint',async()=>{const h=harness({win:{count:1,result:{after:'My saved win'}}}),used={...ctx,saved:{completed_at:'2026-11-24',state:h.state}};assert.equal((await h.run(used,'win',1,async()=>({after:'Different'}))).after,'My saved win');await assert.rejects(h.run(used,'feedback',1,async()=>({overall:99})),e=>e.status===402);});
