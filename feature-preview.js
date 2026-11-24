@@ -4,7 +4,8 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const link=(url,label,kind='hot')=>`<a class="btn ${kind}" href="${url}">${label}</a>`;
 const [access,student]=await Promise.allSettled([fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>{if(!r.ok)throw Error();return r.json()}),fetch('/data/preview-student.json').then(r=>{if(!r.ok)throw Error();return r.json()})]);
 const d=access.status==='fulfilled'?access.value:null;
-if(d?.member&&!sampleReport&&!new URLSearchParams(location.search).has('tour')){location.replace(memberDestination(key,d));}
+if(d?.signedIn&&!d.member&&!sampleReport&&!new URLSearchParams(location.search).has('tour')){const freeRoutes={applicationHelp:'/application-help.html?taster=application',interviews:'/interview.html?ready=1&taster=interview',assessmentCentres:'/assessment-centre.html?taster=hub',report:d.report?.url||'/assessment-start.html'};location.replace(freeRoutes[key]||'/my.html');}
+else if(d?.member&&!sampleReport&&!new URLSearchParams(location.search).has('tour')){location.replace(memberDestination(key,d));}
 else if(key==='trading'){location.replace('/trading.html');}
 else if(key==='applicationHelp'){location.replace('/application-help.html?sample=amelia&trial=1');}
 else if(key==='interviews'){location.replace('/interview.html?ready=1&taster=interview&trial=1');}

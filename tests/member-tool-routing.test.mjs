@@ -3,3 +3,5 @@ async function route(data,href){const location=new URL(href);let destination;loc
 test('paid or tester member leaves Amelia interview taster for their own assessment',async()=>{const id='a'.repeat(48);const next=await route({member:true,assessmentId:id},'https://example.test/interview.html?taster=interview&trial=1&sample=amelia');assert.equal(next,'/interview-start.html?id='+id)});
 test('member without a CV goes back to onboarding rather than a sample',async()=>assert.equal(await route({member:true,assessmentId:null},'https://example.test/application-help.html?sample=jamie&trial=1'),'/my.html'));
 test('free accounts keep the preloaded taster',async()=>assert.equal(await route({member:false},'https://example.test/interview.html?taster=interview'),undefined));
+
+test('a signed-in free account leaves an old Amelia demo link for its owned taster',async()=>assert.equal(await route({member:false},'https://example.test/ac-crib.html?trial=1&sample=amelia'),'/ac-crib.html?taster=crib'));
