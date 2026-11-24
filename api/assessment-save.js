@@ -24,7 +24,7 @@ export default async function handler(req,res){
  else if(!session){
   // Atomic insert prevents a race from signing into a pre-existing account.
   const created=(await sql().query('INSERT INTO desk_accounts(id,email) VALUES($1,$2) ON CONFLICT(email) DO NOTHING RETURNING id',[randomBytes(12).toString('hex'),email]))[0];
-  if(created){await linkAssessment(created.id,row.id);await startSession(res,created.id);next='/my.html';}
+  if(created){await linkAssessment(created.id,row.id);await startSession(res,created.id,{days:7});next='/my.html';}
  }
  await funnelEvent(row.owner_hash,'email_submitted',row.id).catch(()=>{});
  return res.json({success:true,unlocked:true,emailSent:true,next,message:next?'Your result is saved.':'Your fixes are ready. Open your emailed login link to continue to My Desk.'});
