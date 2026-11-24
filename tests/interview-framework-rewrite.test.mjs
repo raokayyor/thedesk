@@ -5,3 +5,5 @@ test('technical questions receive a technical framework and no invented CV anecd
 
 import {unsupportedFrameworkClaims} from '../lib/interview-framework-rewrite.mjs';
 test('a new correction or invented shift decision cannot be smuggled into a fluent personal rewrite',()=>{const input={transcript:'I escalated a duplicate payment to the shift lead.'};const evidence=[{text:'Trained three colleagues at Pho House.'}];assert.ok(unsupportedFrameworkClaims([{text:'The duplicate payment was corrected during the same service.'}],input,evidence).some(d=>d.token==='correct'));assert.equal(unsupportedFrameworkClaims([{text:'I escalated a duplicate payment to the shift lead.'}],input,evidence).length,0);});
+
+test('a full student sentence is not prefixed with a second subject',()=>{const r=frameworkRewriteFallback({question:'Tell me about a time you managed responsibilities.',kind:'competency',transcript:'My role includes ordering and till procedures, and I trained three new colleagues at Pho House.'},evidence);assert.ok(!r.parts.some(p=>/I my role/i.test(p.text)));assert.match(r.parts[1].text,/My role includes|I trained/);});
