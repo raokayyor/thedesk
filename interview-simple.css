@@ -144,3 +144,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 @media(max-width:900px){#simpleInterview.pi-script-mode .pi-script-wrap{background:#f4f1eb;padding:20px;margin:0 -20px -20px;color:#1f2a2e}#simpleInterview.pi-script-mode .pi-script-head h2{color:#1f2a2e!important}.pi-script-mode .pi-coaching-intro .wf-asking blockquote{font-size:18px;line-height:1.35}.pi-script-mode .pi-question h1{font-size:23px!important}}
 
 @media(min-width:901px){#simpleInterview.pi-script-mode .pi-ready{background:#fffdf9;color:#1f2a2e;border:1px solid #fffdf9;border-radius:8px;padding:16px}}
+
+.pi-long-edit{display:none!important}@media(max-width:900px){.pi-long-edit{display:flex!important;flex-wrap:wrap;margin-top:12px;font:400 11px Figtree,sans-serif;align-items:center;gap:8px}}
