@@ -33,48 +33,59 @@
 1. **No flash of the visitor version.** Render the signed-in header and CTA before first paint (cookie hint, or hide them until `/api/desk-home` resolves).
 2. **Header:** visitor = Membership · Log in. Free = avatar "My Desk" + "Upgrade" pill. Member = avatar "My Desk". Avatar initials in uppercase.
 3. **Main CTA:**
-   - visitor: "Start my free review"
-   - free with no assessment or report: "Start my free review" (**not** "See my result")
-   - free with a report: "See my result"
+   - visitor: "Get my free assessment"
+   - free: "See my result"
    - member: "Go to My Desk"
    - hide "Free · 10 mins · no card" when signed in
 4. **Members:** no pricing pitch or "Start my free review" lower on the page; use the one line "You're a member. Today's question is ready →". (Already live; keep it.)
 5. **`try.html`** redirects signed-in users to `/my.html` (live; keep it). Login always lands on `/my.html`.
 
-## C. Free account (phone is where they decide to pay)
+## C. Free: the assessment is the sign-up
 
-1. **Free My Desk on phone: about 2 screens, in this order**
-   - **No assessment:** hero "Get your score: 10 mins, free". One line: "Add your CV + 2 short tests → your score and 3 fixes". Button [Start my free review]. It fills the first screen.
-   - **With an assessment:** the hero is her score + "Your 3 fixes" as three tappable one-liners.
-   - Then: question of the day (compact) → "Your free tries" → tracker / community / AMA as one-line rows → one "Members get" card.
-   - Remove the separate "Explore membership" button. The upgrade lives in the header pill and after each free try.
-2. **"Your free tries" as a 2-column chip grid:**
+**Model:** there is no separate "free account" sign-up. A student does the free assessment → her result is saved → that becomes her login (email + magic link or password set at the end of the assessment). From then on she has her saved result **plus one go of each free tool, run on her own CV**. Two account states only: `assessment` (free) and `member`.
+
+1. **Sign-up = finishing the assessment.**
+   - Remove every other free sign-up route ("Create free account", `free-test-login` for real users).
+   - At the end of the assessment: "Save my result" asks for email → creates the account → lands on My Desk with her result.
+   - Signed-out users who try any tool go to "Get your free assessment first: 10 mins" (`try.html` Amelia demo stays for browsing only).
+2. **Free My Desk on phone: about 2 screens, in this order**
+   - **Hero = her result:** score, plus "Your 3 fixes" as three tappable one-liners.
+   - **"Your free tools":** one go each, on your CV.
+   - Next deadline (if tracked) · live AMA · community (read).
+   - One "Members get" card.
+   - No "Explore membership" button above the fold; the upgrade lives in the header pill and after each free tool.
+3. **"Your free tools" as a 2-column chip grid:**
    - 8 chips, each an icon + short name (Interview, Why this firm, CV line, SJT, Verbal, Group, Firm pack, Crib sheet) + ○ available / ✓ used
-   - tap → straight into the tool
-   - without her own CV, add one line: "Using a sample CV. **Add yours** to see your own fixed →"
-3. **Every free try uses the same 3 steps:**
-   - **one input on one screen** (no setup forms; default to her target firm or "General")
+   - tap → straight into the tool, **always on her own CV and target firm** (never Amelia)
+4. **Every free tool uses the same 3 steps:**
+   - **one input on one screen** (no setup forms; default to her target firm from the assessment, or "General")
    - **the win:** a **before → after card** that fits one phone screen ("Yours" above "Fixed" in green, plus a change like "48 → 74", big type)
-   - **then the upgrade:** "That's 1 of your free goes. Members fix every answer, every firm, unlimited." with [Unlock · £89] [Back to My Desk]
+   - **then the upgrade:** "That's your free go. Members get this on every answer, every firm, unlimited." with [Become a member · £89] [Back to My Desk]
    - the win always shows before any upgrade prompt; never lock the result
-4. **Per-tool phone checks** (no sideways scroll, main button in thumb reach, 48px+ tap targets):
+5. **Per-tool phone checks** (no sideways scroll, main button in thumb reach, 48px+ tap targets):
    - **Interview:** the fixed answer and score are visible together without scrolling.
    - **Why this firm:** firm chips (not a dropdown) → a 3-sentence opening with the firm hook highlighted.
-   - **CV line fix:** opens a single-line CV fix, **not** the assessment page.
+   - **CV line fix:** picks her weakest line from the assessment → before/after. Not the assessment page.
    - **SJT / Verbal:** 5 questions, one per screen → "3/5 · here's the one that trips most people".
    - **Group / Firm pack / Crib sheet:** one screen of content + "Save to my phone".
-5. **Free try load:** the first usable screen in **under 3 seconds** on phone. Load only that tool's scripts.
-6. **Used-up state:** the chip shows ✓ "Used". Tapping it shows her saved result plus "Members get this unlimited · Unlock · £89". Never a blank or blocked screen.
-7. **One allowance model:**
-   - one go per tool; question of the day 3 a week ("3 daily questions left this week")
+6. **Free tool load:** the first usable screen in **under 3 seconds** on phone. Load only that tool's scripts.
+7. **Used-up state:** the chip shows ✓ "Used". Tapping it shows what she made (she keeps it) plus "Members get this unlimited · Become a member · £89". Never a blank or blocked screen.
+8. **One simple allowance, said once:** "One free go of each tool, on your CV."
+   - question of the day: 1 a week for free users (email + My Desk), daily for members
    - remove the "Practise HireVue & interviews · Member" card for free users
    - the tag is "Member" everywhere, never "Members"
-8. **"Members get" as one compact card:**
-   - 6 one-liners with a lock icon: unlimited interview practice + fixes · application drafts for every firm · 2,000+ test questions · answer library and story bank · practitioner panel · live sessions
-   - one button: [See membership · £89]
-9. **Upgrade return:**
-   - Unlock on a locked sheet returns to that feature, unlocked (`return=/members-only.html?feature=tests`).
-   - Unlocking from a free try returns to that tool with her result kept.
+9. **"Members get" as one compact card:**
+   - 6 one-liners with a lock icon: unlimited interview practice + fixes · application drafts for every firm · 2,000+ test questions · answer library and story bank · practitioner panel · rechecks of your score
+   - one button: [Become a member · £89]
+10. **Header and CTAs for free users:**
+    - header: avatar "My Desk" + "Become a member" pill
+    - homepage main CTA: "See my result"
+    - visitors: "Get my free assessment"
+    - pricing shows two cards: **Free assessment** (your score, 3 fixes, one go of each tool) | **Member £89**, with "Need 1:1? From £99 →" underneath
+11. **Upgrade return:**
+    - Unlock on a locked sheet returns to that feature, unlocked (`return=`).
+    - Unlocking from a free tool returns to that tool with her result kept.
+12. **Emails (free):** "Your result is saved" (with the login link) · a deadline reminder if she tracked a firm · the weekly question. No made-up stats.
 
 ## D. Member experience
 
@@ -117,7 +128,7 @@
    - **left:** question of the day → next fix [Do it] → progress
    - **right:** next deadlines (closed ones greyed) → saved answers count → story bank "{m} of 10 · each fact improves {n} answers" → live AMA
    - no full-width thin strips
-   - free accounts: left = hero (assessment or score) + free tries grid; right = members-get card + AMA
+   - free accounts: left = her result + free tools grid; right = members-get card + AMA
 3. **`applications.html`, 3 panes:**
    - **left:** firms and their questions (ready / gaps / closed)
    - **centre:** full-height draft editor, inline gap editing, underline = from your CV
@@ -129,10 +140,10 @@
 
 ## F. Proof (send screenshots, both sizes)
 
-Test as three users: **signed out**, **free** (`free-test-login`, both no assessment and with assessment) and **member** (Amelia). At **390×844 and 1280×800**, send:
+Test as three users: **signed out**, **free** (a fresh assessment completed on a new email, with its own CV) and **member** (Amelia). At **390×844 and 1280×800**, send:
 
 1. **Homepage header + CTA:** signed out, free and member.
-2. **My Desk:** free with no assessment, free with assessment, and member.
+2. **My Desk:** free (straight after finishing the assessment) and member.
 3. **Free tries:** each one's before/after card and used-up state (phone).
 4. **Interview:** the weak answer fixed, then the stronger answer at 70+ showing "Ready to save".
 5. **Applications:** the J.P. Morgan "Why J.P. Morgan" draft, on phone and in the 3-pane laptop layout.
