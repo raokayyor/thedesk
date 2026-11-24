@@ -8,3 +8,5 @@ test('confirmed is not misclassified as a firm reason',()=>assert.equal(factKind
 test('an edited draft refreshes only its versioned fact spans, and loses its stale score',()=>{const d={editedText:'My wording. Old supported fact. My closing.',score:80,scoredHash:'old',storyRefs:[{id:'1',quote:'Old supported fact.',prompt:'What changed?'}]};const next=refreshDraftFacts(d,facts);assert.equal(next.editedText,'My wording. '+facts[0].answer+' My closing.');assert.equal(next.score,undefined);assert.equal(d.score,80);assert.match(refreshDraftFacts(d,[]).editedText,/\[What changed\?\]/);});
 
 test('known results fill only the gap next to their own cited experience',()=>{const rewrite={parts:[{text:'I researched companies.',sources:['E1']},{text:'What happened next?',gap:true}]};assert.equal(reuseStoryGaps(rewrite,facts,{E1:'cvhash:redcliffe'}).parts[1].storyFactId,'1');assert.equal(reuseStoryGaps(rewrite,facts,{E1:'cvhash:pho'}).parts[1].gap,true);});
+
+test('an employer name in an outcome prompt is not a firm motivation',()=>assert.equal(factKind('What happened after your Barclays internship?'),'outcome'));
