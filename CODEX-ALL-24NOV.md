@@ -44,10 +44,15 @@
 
 **Model:** there is no separate "free account" sign-up. A student does the free assessment → her result is saved → that becomes her login (email + magic link or password set at the end of the assessment). From then on she has her saved result **plus one go of each free tool, run on her own CV**. Two account states only: `assessment` (free) and `member`.
 
-1. **Sign-up = finishing the assessment.**
-   - Remove every other free sign-up route ("Create free account", `free-test-login` for real users).
-   - At the end of the assessment: "Save my result" asks for email → creates the account → lands on My Desk with her result.
-   - Signed-out users who try any tool go to "Get your free assessment first: 10 mins" (`try.html` Amelia demo stays for browsing only).
+1. **Sign-up = finishing the assessment (score free, fixes need an email).**
+   - When the assessment finishes, show the **score immediately** plus **one fix in full** (her weakest CV line, as a before → after card). Phone: both visible in the first screen.
+   - Directly below: "Your other 2 fixes and your free tools are ready. Where should we send them?" with an email field and [Show my fixes]. Small print: "No spam. One email with your result, then the weekly question. Unsubscribe anytime."
+   - Submitting creates the free account (`assessment`) by magic link, no password. It reveals fixes 2–3, unlocks the free tools on her CV, sends "Your result is saved" with the login link, and lands on My Desk.
+   - Left without an email: keep the result in local storage for 7 days. On return: "Welcome back. Your result is still here. Add your email to keep it."
+   - Login is by magic link only for free users; members can set a password in Account.
+   - Remove every other free sign-up route ("Create free account", free sign-up on `signup.html`). `signup.html` is for membership (£89) only. Signed-out users who tap a tool go to "Get your free assessment first: 10 mins". The `try.html` Amelia demo stays for browsing.
+   - Existing free accounts with no assessment: My Desk shows only the hero "Get your free assessment: 10 mins" until it's done.
+   - **Funnel tracking:** assessment started → completed → score viewed → email submitted → first free tool used → member. Report the drop-off at each step.
 2. **Free My Desk on phone: about 2 screens, in this order**
    - **Hero = her result:** score, plus "Your 3 fixes" as three tappable one-liners.
    - **"Your free tools":** one go each, on your CV.
