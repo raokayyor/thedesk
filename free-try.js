@@ -78,4 +78,4 @@ function saveImage(){
  canvas.toBlob(blob=>{const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download='the-desk-'+tool+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);});
 }
 window.addEventListener('pagehide',()=>stream?.getTracks().forEach(t=>t.stop()));
-api().then(d=>{ctx=d;document.title=ctx.title+' · The Desk';inputScreen();document.documentElement.dataset.usable='true';}).catch(e=>{root.innerHTML='<h1>Your free try</h1><p>'+esc(e.message)+'</p><a class="btn" href="/signin.html?next='+encodeURIComponent(here)+'">Log in →</a><p><a href="/my.html">Back to My Desk</a></p>';status.textContent='';});
+api().then(d=>{ctx=d;document.title=ctx.title+' · The Desk';inputScreen();document.documentElement.dataset.usable='true';document.documentElement.dataset.usableMs=Math.round(performance.now());}).catch(e=>{root.innerHTML='<h1>Your free try</h1><p>'+esc(e.message)+'</p><a class="btn" href="/signin.html?next='+encodeURIComponent(here)+'">Log in →</a><p><a href="/my.html">Back to My Desk</a></p>';status.textContent='';});
