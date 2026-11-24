@@ -154,3 +154,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 .pi-firm-panel{margin-top:14px;padding:14px;border:1px solid #b0b9b6;border-radius:10px;text-align:left;font:400 13px/1.45 Figtree,sans-serif}.pi-firm-panel summary{font:600 18px 'EB Garamond',serif;cursor:pointer}.pi-firm-panel h3{font-size:13px}.pi-think .pi-firm-panel a{color:#d2e4d6}.pi-feedback .pi-firm-panel a{color:#26443c}.pi-firm-news p{border-bottom:1px solid #b0b9b6;padding-bottom:8px}.pi-firm-panel button{white-space:normal;text-align:left}
 
 @media(max-width:900px){#simpleInterview.pi-script-mode .pi-small-links button{color:#344246!important;padding:7px}.pi-small-links{max-height:23dvh;overflow:auto}}
+
+.pi-score-row{position:relative;overflow:hidden}.pi-score-row::after{content:"";position:absolute;bottom:0;left:0;height:3px;background:#527b62;width:var(--pi-score-progress,0%);transition:width .6s ease}@media(prefers-reduced-motion:reduce){.pi-score-row::after{transition:none}}
