@@ -19,7 +19,7 @@
 
   // Header link.
   me.then(d => {
-    if (!d || document.querySelector('.dm-link') || /\/my(\.html)?$/.test(location.pathname)) return;
+    if (document.querySelector('script[src="/public-session.js"]') || !d || document.querySelector('.dm-link') || /\/my(\.html)?$/.test(location.pathname)) return;
     const top = document.querySelector('header.top .top-right, header.top .top-in, .top');
     if (!top) return;
     const a = document.createElement('a'); a.className = 'dm-link'; a.href = '/my.html';

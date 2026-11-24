@@ -1,3 +1,4 @@
+import {firmLimit} from '../lib/tier-journey.mjs';
 import {prepProgress} from '../lib/prep-progress.mjs';
 import {deepFor,initDeep} from '../lib/deep-assessment.mjs';
 import {sharedEvent} from '../lib/community-store.mjs';
@@ -350,7 +351,7 @@ export default async function handler(req, res) {
     }
 
     if (b.action === 'tracker-sync') {
-      const list = cleanShortlist(b.list), cur = await getShortlist(p);
+      const list = cleanShortlist(b.list), cur = await getShortlist(p);const manual=await items(p,['application'],100);if(!firmLimit(list,paid,manual.map(a=>a.data.firm)))return res.status(402).json({error:'Free accounts can track up to 3 firms. Membership opens the full tracker.',upgrade:true});
       if (cur.id) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list })]);
       else await A.saveItem(p, 'shortlist', { list });
       return res.json({ success: true, count: Object.keys(list).length });
@@ -361,7 +362,7 @@ export default async function handler(req, res) {
       const cur = await getShortlist(p), list = { ...cur.list };
       let added = 0;
       for (const k of keys) if (!list[k] && Object.keys(list).length < 200) { list[k] = { stage: 'Shortlisted' }; added++; }
-      if (cur.id) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list })]);
+      if(!firmLimit(list,paid,(await items(p,['application'],100)).map(a=>a.data.firm)))return res.status(402).json({error:'Free accounts can track up to 3 firms.',upgrade:true});if (cur.id) await sql().query(`UPDATE desk_value_items SET data=$3::jsonb WHERE id=$1 AND principal=$2`, [cur.id, p, JSON.stringify({ list })]);
       else await A.saveItem(p, 'shortlist', { list });
       return res.json({ success: true, added, list });
     }
@@ -375,7 +376,7 @@ export default async function handler(req, res) {
     }
     if (b.action === 'app-save') {
       const firm = clean(b.firm, 80);
-      if (!firm) return res.status(400).json({ error: 'Enter the firm.' });
+      if (!firm) return res.status(400).json({ error: 'Enter the firm.' });const cur=await getShortlist(p),manual=await items(p,['application'],100);if(!firmLimit(cur.list,paid,[...manual.filter(a=>a.id!==String(b.id||'')).map(a=>a.data.firm),firm]))return res.status(402).json({error:'Free accounts can track up to 3 firms.',upgrade:true});
       const data = { firm, programme: clean(b.programme, 80), stage: STAGES.includes(b.stage) ? b.stage : 'Shortlisted', deadline: /^\d{4}-\d{2}-\d{2}$/.test(b.deadline || '') ? b.deadline : '', url: /^https:\/\/[^\s]{3,300}$/.test(b.url || '') ? b.url : '', notes: clean(b.notes, 500) };
       if (b.id) {
         if (!/^\d{1,18}$/.test(String(b.id))) return res.status(400).json({ error: 'Unknown application.' });

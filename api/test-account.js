@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises';
 // Synthetic review accounts only. Never available on production; never sends email or charges a card.
 import {randomBytes} from 'node:crypto';
 import {sql,hash,apiFailure} from '../lib/report-store.mjs';
@@ -9,7 +10,7 @@ export default async function handler(req,res){
  const token=randomBytes(32).toString('hex');res.setHeader('Set-Cookie',`desk_owner=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`);
  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({name:'Student Preview',university:'University of Bristol',course:'Economics',year:'Second year',sectors:['Banking'],testFixture:true})]);
  if(member){await initMemberships();await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'tester',now()+interval '30 days')",['fixture:'+account.id,account.id]);}
- if(assessed){const rows=await sql().query("SELECT d.* FROM desk_test_runs t JOIN desk_assessments d ON d.id=t.assessment_id WHERE t.batch='mydesk-nov9-review' AND t.persona_key='p01-strong-ib' LIMIT 1");if(rows[0]){const id=randomBytes(24).toString('hex'),row=rows[0];await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result,report) VALUES($1,$2,$3::jsonb,$4::jsonb,$5::jsonb)',[id,hash(token),JSON.stringify(row.input),JSON.stringify(row.result),JSON.stringify(row.report)]);await linkAssessment(account.id,id);}}
+ if(assessed){const rows=await sql().query("SELECT d.* FROM desk_test_runs t JOIN desk_assessments d ON d.id=t.assessment_id WHERE t.batch='mydesk-nov9-review' AND t.persona_key='p01-strong-ib' LIMIT 1");const fixture=rows[0]||await (async()=>{const f=JSON.parse(await readFile(new URL('../samples/amelia-report-v3-preview.json',import.meta.url),'utf8'));return {input:{profile:{...f.profile,name:'Alex Morgan',university:'University of Nottingham'},cvText:f.originalCvText.replaceAll('Amelia Chen','Alex Morgan').replaceAll('University of Bristol','University of Nottingham')},result:f.result,report:f.report||null};})();if(fixture){const id=randomBytes(24).toString('hex'),row=fixture;await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result,report) VALUES($1,$2,$3::jsonb,$4::jsonb,$5::jsonb)',[id,hash(token),JSON.stringify(row.input),JSON.stringify(row.result),JSON.stringify(row.report)]);await linkAssessment(account.id,id);}}
  await startSession(res,account.id);res.setHeader('Location','/my.html');return res.status(303).end();
  }catch(e){return apiFailure(res,e);}
 }
