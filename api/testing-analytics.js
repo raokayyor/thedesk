@@ -1,3 +1,4 @@
+import {readFunnel} from '../lib/assessment-funnel.mjs';
 import {timingSafeEqual} from 'node:crypto';
 import {sql,sameOrigin,owner,hash,apiFailure} from '../lib/report-store.mjs';
 import {allow} from '../lib/accounts.mjs';
@@ -14,7 +15,7 @@ export default async function handler(req,res){res.setHeader('Cache-Control','pr
   const events=await sql().query(`SELECT e.event,count(*)::int AS count,count(DISTINCT e.session_id)::int AS sessions FROM desk_testing_events e JOIN desk_testing_sessions s ON s.id=e.session_id WHERE s.last_seen>now()-interval '30 days' GROUP BY e.event ORDER BY count(*) DESC`);
   const requests=await sql().query(`SELECT detail->>'endpoint' AS endpoint,coalesce(detail->>'part','') AS part,count(*)::int AS requests,round(avg((detail->>'milliseconds')::numeric)) AS avg_ms,percentile_cont(.95) WITHIN GROUP(ORDER BY (detail->>'milliseconds')::numeric) AS p95_ms FROM desk_testing_events e JOIN desk_testing_sessions s ON s.id=e.session_id WHERE s.last_seen>now()-interval '30 days' AND event IN ('request_finished','request_failed') AND detail ? 'milliseconds' GROUP BY detail->>'endpoint',coalesce(detail->>'part','') ORDER BY avg_ms DESC LIMIT 30`);
   const clicks=await sql().query(`SELECT v.path,e.detail->>'control' AS control,count(*)::int AS count,count(DISTINCT e.session_id)::int AS sessions FROM desk_testing_events e JOIN desk_testing_sessions s ON s.id=e.session_id JOIN desk_testing_visits v ON v.id=e.visit_id WHERE s.last_seen>now()-interval '30 days' AND e.event IN ('click','hero_cta_clicked') GROUP BY v.path,e.detail->>'control' ORDER BY count(*) DESC LIMIT 60`);
-  return res.json({sessions,pages,events,requests,clicks,retentionDays:30});
+  return res.json({sessions,pages,events,requests,clicks,funnel:await readFunnel(),retentionDays:30});
  }
  if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;let body=req.body;try{if(typeof body==='string')body=JSON.parse(body);if(JSON.stringify(body).length>24000)throw Error();body=cleanTestBatch(body);}catch{return res.status(400).json({error:'Invalid testing activity.'});}
  const who=owner(req,res,true),address=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0];if(!await allow('testing-events:'+hash(address),2000))return res.status(429).end();await init();

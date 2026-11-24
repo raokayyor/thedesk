@@ -28,5 +28,5 @@ const rules=[
 ];
 function reallyAskingFor(question){const q=typeof question==='string'?question:question?.q||question?.text||question?.question||'';const norm=q.toLowerCase().replace(/[^a-z0-9]/g,'');const firm=/^why\b/i.test(q)&&firmCopy.find(f=>norm.includes(f.label.toLowerCase().replace(/[^a-z0-9]/g,''))||f.key==='bofa'&&norm.includes('bankofamerica')||f.key==='rothschild'&&norm.includes('rothschild'));return exact[q]||firm?.tip||rules.find(([re])=>re.test(q))?.[1]||'They want to know how you reached your answer. Make your own reasoning clear and distinguish evidence from assumptions.';}
 function coachQuestion(q){return {...q,reallyAsking:reallyAskingFor(q),reallyAskingStatus:'approved'};}
-globalThis.DeskQuestionCoaching={approved:true,reallyAskingFor,coachQuestion};
+globalThis.DeskQuestionCoaching={approved:true,questions:Object.keys(exact),reallyAskingFor,coachQuestion};
 })();

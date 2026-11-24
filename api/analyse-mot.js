@@ -1,3 +1,5 @@
+import {assessmentEntry} from '../lib/assessment-entry.mjs';
+import {funnelEvent} from '../lib/assessment-funnel.mjs';
 import {repairAssessmentReasons} from '../lib/assessment-reason-repair.mjs';
 import {strictAssessmentSchema} from '../lib/assessment-tool-schema.mjs';
 import {validLiveSource} from '../lib/public-live-sessions.mjs';
@@ -37,16 +39,16 @@ export default async function handler(req,res){
   fingerprint=assessmentFingerprint(cvText,profile,req.body.answers);
   const nextFor=async id=>(parentMembership||(signedAccount&&await recordMembershipAccess({id}))?'/deep-assessment.html?id=':'/result-final-design.html?id=')+encodeURIComponent(id);
   if(parent){
-   if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',...publicAssessment(parent.result,parent.input.quiz,parent.input.cvText)});
+   if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',entry:assessmentEntry(parent)});
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND (id=$3 OR root_id=$3 OR id=$4 OR root_id=$4) ORDER BY created_at DESC LIMIT 1",[h,fingerprint,parent.id,parent.root_id||parent.id]))[0];
-   if(cached)return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),...publicAssessment(cached.result,cached.input.quiz,cached.input.cvText)});
+   if(cached)return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});
   }
 
   // Reopening identical first-assessment inputs needs no new model pass.
   // Restrict reuse to this browser owner and first assessments, never other accounts or rechecks.
   if(!parent){
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,fingerprint]))[0];
-   if(cached&&Array.isArray(cached.result.weakLines)){if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),...publicAssessment(cached.result,cached.input.quiz,cached.input.cvText)});}
+   if(cached&&Array.isArray(cached.result.weakLines)){if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
   }
 
   if(parent?.rechecks_used>=12)return res.status(400).json({error:'Your 12 rechecks have been used. Unchanged versions keep their saved result.'});
@@ -124,6 +126,7 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
   if(signedAccount)await linkAssessment(signedAccount.id,id);
-  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),...publicAssessment(result,quiz,cvText)});
+  await funnelEvent(h,'assessment_completed',id).catch(()=>{});
+  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),entry:assessmentEntry({result,input:{cvText}})});
  }catch(e){if(e?.status===400)console.error('desk assessment provider schema rejected',{message:String(e.error?.error?.message||e.message||'').slice(0,900)});return apiFailure(res,e);}
 }

@@ -2,11 +2,11 @@ import {readFile} from 'node:fs/promises';
 // Synthetic review accounts only. Never available on production; never sends email or charges a card.
 import {randomBytes} from 'node:crypto';
 import {sql,hash,apiFailure} from '../lib/report-store.mjs';
-import {initAccounts,upsertAccount,markVerified,startSession,linkAssessment} from '../lib/accounts.mjs';
+import {initAccounts,upsertAccount,markVerified,startSession,linkAssessment,endSession} from '../lib/accounts.mjs';
 import {initMemberships} from '../lib/account-memberships.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');if(process.env.VERCEL_ENV!=='preview')return res.status(404).end();if(req.method!=='GET')return res.status(405).end();
- try{await initAccounts();const member=req.query.tier==='member',assessed=req.query.state==='assessed';const account=await upsertAccount('review-'+randomBytes(10).toString('hex')+'@sample.thedesk.invalid');await markVerified(account.id);
+ try{await initAccounts();if(req.query.state==='result'){const f=JSON.parse(await readFile(new URL('../samples/amelia-report-v3-preview.json',import.meta.url),'utf8')),token=randomBytes(32).toString('hex'),id=randomBytes(24).toString('hex');await endSession(req,res);const cookies=[].concat(res.getHeader('Set-Cookie')||[]);res.setHeader('Set-Cookie',[...cookies,`desk_owner=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`]);await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,hash(token),JSON.stringify({profile:{...f.profile,name:'Alex Morgan'},cvText:f.originalCvText,quiz:f.quiz||{commercialCorrect:3,numericalCorrect:3,missed:[]}}),JSON.stringify(f.result)]);res.setHeader('Location','/result-final-design.html?id='+id);return res.status(303).end();}const member=req.query.tier==='member',assessed=req.query.state==='assessed';const account=await upsertAccount('review-'+randomBytes(10).toString('hex')+'@sample.thedesk.invalid');await markVerified(account.id);
  const token=randomBytes(32).toString('hex');res.setHeader('Set-Cookie',`desk_owner=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`);
  await sql().query('INSERT INTO desk_account_profiles(account_id,data) VALUES($1,$2::jsonb)',[account.id,JSON.stringify({name:'Student Preview',university:'University of Bristol',course:'Economics',year:'Second year',sectors:['Banking'],testFixture:true})]);
  if(member){await initMemberships();await sql().query("INSERT INTO desk_account_memberships(source,account_id,kind,until) VALUES($1,$2,'tester',now()+interval '30 days')",['fixture:'+account.id,account.id]);}

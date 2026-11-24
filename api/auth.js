@@ -1,7 +1,7 @@
 import {signupProfile} from '../lib/signup-profile.mjs';
 import { timingSafeEqual, randomBytes } from 'node:crypto';
 import { sameOrigin, apiFailure, owner, sql, initStore } from '../lib/report-store.mjs';
-import { normEmail, validEmail, createLoginLink, redeemLoginToken, startSession, endSession, emailConfigured, sendLoginEmail, allow, upsertAccount } from '../lib/accounts.mjs';
+import { normEmail, validEmail, createLoginLink, redeemLoginToken, startSession, endSession, emailConfigured, sendLoginEmail, allow, upsertAccount, accountByEmail } from '../lib/accounts.mjs';
 
 // POST { action: 'request', email }   → emails a one-time sign-in link (same answer whether or not the email has an account)
 // POST { action: 'verify', token }    → signs this device in
@@ -21,6 +21,8 @@ export default async function handler(req, res) {
       if (!await allow('login-ip:' + ip, 10) || !await allow('login-email:' + email, 3)) return res.status(429).json({ error: 'Too many sign-in requests. Try again in an hour.' });
       let profile=null;if(body.action==='signup'||body.action==='tester-signup'){try{profile=signupProfile(body)}catch(e){return res.status(400).json({error:e.message})}}
       if(body.action==='tester-signup'){const {studentTestDigest}=await import('../lib/student-test-access.mjs');const digest=studentTestDigest(body.code);if(!digest)return res.status(403).json({error:'This tester invitation is invalid or has expired.'});profile={...profile,plan:'student-test',studentTester:true,studentTestDigest:digest};}
+      if(body.action==='signup'&&profile?.plan!=='paid')return res.status(400).json({error:'Get your free assessment first: 10 mins.',next:'/assessment-start.html'});
+      if(body.action==='request'&&!await accountByEmail(email))return res.json({success:true,message:'If you have an account, your login link is on its way. New here? Take your free assessment first.'});
       let assessmentId=null;if(profile&&body.action!=='tester-signup'){const browserOwner=owner(req,res);if(browserOwner){await initStore();assessmentId=(await sql().query('SELECT id FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[browserOwner]))[0]?.id||null;}}
       await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile,assessmentId}));
       return res.json({ success: true, message: 'Check your inbox for a sign-in link. It works once and expires in 30 minutes.' });
@@ -33,7 +35,7 @@ export default async function handler(req, res) {
       if(account.signupPlan==='student-test')res.setHeader('Set-Cookie',`desk_owner=${randomBytes(32).toString('hex')}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.VERCEL?'; Secure':''}`);
       await startSession(res, account.id);
       if(account.signupPlan==='student-test')return res.json({success:true,next:testerActivated?'/my.html?testing=1':'/tester-access.html?notice=invitation-unavailable'});
-      return res.json({ success: true, next:'/my.html' });
+      return res.json({ success: true, next:account.signupPlan==='paid'?'/membership-start.html':'/my.html' });
     }
     if (body.action === 'signout') { await endSession(req, res); return res.json({ success: true }); }
     if (body.action === 'staff-link') {

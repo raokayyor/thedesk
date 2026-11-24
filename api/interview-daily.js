@@ -1,9 +1,10 @@
+import {latestAssessment} from '../lib/accounts.mjs';
 import {sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
 import {principal,isPaidOwner,useQuota} from '../lib/value-accounts.mjs';
 import {dailyIdentity,initDaily,londonDay,weekOf,dailyQuestion,dailyStats,dailyProfile} from '../lib/interview-daily.mjs';
 export default async function handler(req,res){res.setHeader('Cache-Control','private, no-store');res.setHeader('Vary','Cookie');try{
  if(!['GET','POST'].includes(req.method))return res.status(405).end();if(req.method==='POST'&&!sameOrigin(req,res))return;
- const account=await dailyIdentity(req),p=await principal(req,res),paid=await isPaidOwner(p);await initDaily();const day=londonDay(),week=weekOf(day);
+ const account=await dailyIdentity(req),p=await principal(req,res),paid=await isPaidOwner(p);if(!paid&&!await latestAssessment(account.id))return res.status(403).json({error:'Get your free assessment first: 10 mins.'});await initDaily();const day=londonDay(),week=weekOf(day);
  const rows=await sql().query('SELECT id::text,day::text,week::text,data,best FROM desk_interview_daily WHERE account_id=$1 ORDER BY day DESC LIMIT 400',[account.id]);let today=rows.find(x=>x.day===day);
  if(req.method==='POST'&&!today){if(!await useQuota('daily-start:'+p,15))return res.status(429).json({error:'Please try again later.'});const profile=await dailyProfile(account),data={...profile,question:dailyQuestion(day,profile.firm,profile.role),kind:'competency'};
  // Unique weekly slots make the three free starts atomic, including concurrent requests.

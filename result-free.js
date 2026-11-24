@@ -1,3 +1,4 @@
+import {renderAssessmentEntry} from './result-entry.js';
 import {reallyAskingCard} from './why-firm-sheet.js';
 import {reallyAskingFor} from './data/question-coaching.mjs';
 import {tasterQuestion} from '/lib/taster-question.mjs';
@@ -80,7 +81,7 @@ function compactResult({r,p,facts,weights,labels,score,estimate,planRows,weakest
 }
 async function load(){
  if(!id&&!sample){el('#resultStatus').innerHTML='Start your free assessment to see your result. <a href="/assessment.html">Get started →</a>';document.querySelectorAll('[data-unlock]').forEach(x=>x.hidden=true);return;}
- try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id),{cache:'no-store'});data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');
+ try{const response=await fetch(sample?'/samples/amelia-report-v3-preview.json':'/api/assessment-result?id='+encodeURIComponent(id),{cache:'no-store'});data=await response.json();if(!response.ok)throw new Error(data.error||'Your result could not be loaded.');if(!sample&&data.entry&&!data.paid){renderAssessmentEntry(data,id);return;}
  if(sample){data.sampleRepair=data.paid;data.paid=false;el('#sampleBanner').hidden=false;}
  const r=freeConversionResult(data.result),p=data.profile||{},q=data.quiz||{};
  facts=data.conversion||conversionFacts(data.result,q,data.originalCvText||data.cv?.sourceText||data.cv?.text||'',{repair:typeof data.sampleRepair==='object'?data.sampleRepair:data.preview?.repair});const estimate=facts.estimate.low===facts.estimate.high?String(facts.estimate.low):`${facts.estimate.low}–${facts.estimate.high}`,score=r.overallScore??r.cvEvidenceScore;
