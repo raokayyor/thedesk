@@ -158,3 +158,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 .pi-score-row{position:relative;overflow:hidden}.pi-score-row::after{content:"";position:absolute;bottom:0;left:0;height:3px;background:#527b62;width:var(--pi-score-progress,0%);transition:width .6s ease}@media(prefers-reduced-motion:reduce){.pi-score-row::after{transition:none}}
 
 @media(min-width:901px){#simpleInterview .pi-think .pi-small-links summary,#simpleInterview .pi-think .pi-firm-panel summary{color:#d5ded9}}
+
+.pi-profile-notice{margin:0;padding:8px 16px;text-align:center;background:#f6efe5;color:#705024;font:500 12px/1.4 Figtree,Arial,sans-serif}.pi-profile-notice a{color:inherit;font-weight:600}
