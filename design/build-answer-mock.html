@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--ink-2:#3d4a50;--mute:#6b747a;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--good-soft:#e5f0e8;--warn:#9a6a14;--warn-soft:#fbf0d9}
+*{box-sizing:border-box}body{margin:0;background:#d8d2c8;font:16px/1.5 Figtree,Arial,sans-serif;color:var(--ink);display:flex;gap:34px;padding:34px 30px 30px;align-items:flex-start}
+.wrap{position:relative}.cap{position:absolute;top:-26px;left:0;font:600 13px Figtree;color:#5a5048}
+.ph{width:390px;height:844px;background:var(--paper);border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;position:relative}
+.top{background:var(--ink);color:#fff;padding:14px 18px 16px}
+.tl{display:flex;justify-content:space-between;font-size:12px;color:#aab4b9}
+.q{font:600 19px/1.22 "EB Garamond",Georgia,serif;margin-top:8px}
+.ask{display:grid;grid-template-columns:30px 1fr;gap:9px;margin-top:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:10px}
+.ask img{width:30px;height:30px;border-radius:50%}
+.ask small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9fd3b1;font-weight:700}
+.ask p{margin:2px 0 0;font:400 15px/1.35 "EB Garamond",Georgia,serif;color:#eef2f3}
+.ask b{color:#fff;font-weight:600}
+.p{padding:12px 18px}
+.h{display:flex;justify-content:space-between;align-items:baseline}.h b{font:600 19px "EB Garamond",Georgia,serif}.h span{font-size:12.5px;font-weight:700;color:var(--warn)}
+.script{margin-top:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 14px}
+.bt{padding:9px 0;border-top:1px solid var(--line)}.bt:first-child{border-top:0}
+.bt small{display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.bt small u{letter-spacing:0;text-transform:none;font-weight:600;color:var(--ink-2);text-decoration-color:#c9c1b5}
+.bt p{margin:2px 0 0;font:400 16.5px/1.4 "EB Garamond",Georgia,serif}
+.chip{display:inline-block;font:600 12.5px Figtree;background:var(--warn-soft);color:var(--warn);border:1.5px dashed #e0c48b;border-radius:6px;padding:1px 7px}
+.swap{display:inline-flex;gap:4px;align-items:center;font:600 12px Figtree;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-left:4px}
+.bar{position:absolute;left:0;right:0;bottom:0;padding:10px 18px 22px;background:linear-gradient(transparent,var(--paper) 26%)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;border-radius:12px;min-height:52px;font-weight:700;font-size:16px}
+.fine{text-align:center;font-size:12.5px;color:var(--mute);margin-top:6px}
+.dim{position:absolute;inset:0;background:rgba(31,42,46,.35)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:10px 18px 22px;box-shadow:0 -10px 30px rgba(0,0,0,.14)}
+.sheet:before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:#d6cfc4;margin:0 auto 10px}
+.sheet h3{margin:0;font:600 21px "EB Garamond",Georgia,serif}.sheet .s{font-size:13px;color:var(--mute);margin-top:2px}
+.opt{display:grid;grid-template-columns:20px 1fr auto;gap:9px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}
+.opt i{width:18px;height:18px;border-radius:50%;border:2px solid #c9c1b5;margin-top:2px}.opt.on{border:2px solid var(--ink)}.opt.on i{border:5px solid var(--ink)}
+.opt b{display:block;font-weight:600}.opt span{font-size:12.5px;color:var(--mute)}
+.opt em{font-style:normal;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.opt em.best{background:var(--good-soft);color:var(--good)}.opt em.weak{background:#ece7df;color:var(--mute)}
+.or{display:flex;gap:8px;margin-top:12px}
+.or div{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center;font-weight:600;font-size:14px}
+.or .mic:before{content:"● ";color:#e5484d}
+</style></head><body>
+
+<div class="wrap"><div class="cap">1 · Your answer as a script, not a form</div><div class="ph">
+  <div class="top"><div class="tl"><span>Q1 of 6 · Barclays · Practice</span><span>Exit</span></div>
+    <div class="q">“Give me a brief introduction and explain which parts of your experience are most relevant to IBD at Barclays.”</div>
+    <div class="ask"><img src="img/rao-72.jpg"><div><small>What they’re really asking · Kayyor</small><p>They want the one experience that makes you relevant. <b>For you, that’s Redcliffe: the 12-company screen.</b> Lead with it, not your degree.</p></div></div></div>
+  <div class="p">
+    <div class="h"><b>Your answer</b><span>1 gap · about 1 min</span></div>
+    <div class="script">
+      <div class="bt"><small>Who you are <u>Edit</u></small><p>I’m Amelia, a final-year Economics student at Bristol.</p></div>
+      <div class="bt"><small>Your best experience <span class="swap">Redcliffe ▾</span></small><p>The most relevant thing I’ve done is my corporate finance internship at Redcliffe Partners.</p></div>
+      <div class="bt"><small>What you did <u>Edit</u></small><p>I screened 12 UK software companies and flagged 4 whose recurring revenue matched the brief.</p></div>
+      <div class="bt"><small>Why Barclays <u>Edit</u></small><p>I want a UK bank that works with companies across their whole life… <span class="chip">+ why that appeals to you</span></p></div>
+    </div>
+  </div>
+  <div class="bar"><div class="btn">Looks good · start practising</div><div class="fine">Tap any line to change it · gaps can wait</div></div>
+</div></div>
+
+<div class="wrap"><div class="cap">2 · Tap “Redcliffe ▾”: pick, don’t type</div><div class="ph">
+  <div class="top"><div class="tl"><span>Q1 of 6 · Barclays · Practice</span><span>Exit</span></div>
+    <div class="q">“Give me a brief introduction and explain which parts of your experience are most relevant to IBD at Barclays.”</div></div>
+  <div class="dim"></div>
+  <div class="sheet">
+    <h3>Your best experience for this</h3><div class="s">From your CV, ranked for an IBD question.</div>
+    <div class="opt on"><i></i><div><b>Redcliffe Partners · Corporate Finance Intern</b><span>12 companies screened, 4 flagged, presented to an associate</span></div><em class="best">Strongest</em></div>
+    <div class="opt"><i></i><div><b>LVMH valuation · university project</b><span>DCF and comparables vs 3 peers</span></div><em class="weak">Good backup</em></div>
+    <div class="opt"><i></i><div><b>Pho House · Team Member</b><span>Trained 3 new colleagues</span></div><em class="weak">Better for teamwork</em></div>
+    <div class="or"><div>Type it</div><div class="mic">Say it instead</div></div>
+    <div class="btn" style="margin-top:12px">Use Redcliffe</div>
+  </div>
+</div></div>
+</body></html>
