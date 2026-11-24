@@ -1,4 +1,4 @@
-import {localReturn} from './lib/tier-journey.mjs';
+import {localReturn,sameHandoffOwner} from './lib/tier-journey.mjs';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let sessionIdentity=null;
 const here=()=>location.pathname+location.search+location.hash;
@@ -21,8 +21,8 @@ window.DeskSession.then(d=>{if(location.pathname==='/try.html'){if(d?.signedIn){
 });
 // Carry unsent work through checkout without placing personal text in a URL.
 const restoreKey='desk-upgrade-state:'+location.pathname;
-if(new URLSearchParams(location.search).get('upgraded')==='1'){try{const saved=JSON.parse(sessionStorage.getItem(restoreKey)||'null');if(saved)for(const [id,value]of Object.entries(saved)){const el=document.getElementById(id);if(el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName)&&!['password','file'].includes(el.type)){if(typeof value==='boolean')el.checked=value;else el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));}}sessionStorage.removeItem(restoreKey);}catch{}}
-document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||!a.href.includes('/membership-start.html'))return;const saved={};document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{if(!['password','file','hidden'].includes(el.type))saved[el.id]=['radio','checkbox'].includes(el.type)?el.checked:el.value;});try{sessionStorage.setItem(restoreKey,JSON.stringify(saved));}catch{}});
+if(new URLSearchParams(location.search).get('upgraded')==='1')window.DeskSession.then(session=>{try{const saved=JSON.parse(sessionStorage.getItem(restoreKey)||'null');if(sameHandoffOwner(saved,session))for(const [id,value]of Object.entries(saved.fields||{})){const el=document.getElementById(id);if(el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName)&&!['password','file'].includes(el.type)){if(typeof value==='boolean')el.checked=value;else el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));}}sessionStorage.removeItem(restoreKey);}catch{}});
+document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||!a.href.includes('/membership-start.html'))return;const saved={};document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{if(!['password','file','hidden'].includes(el.type))saved[el.id]=['radio','checkbox'].includes(el.type)?el.checked:el.value;});try{sessionStorage.setItem(restoreKey,JSON.stringify({owner:sessionIdentity?.signedIn?sessionIdentity.sessionKey:'visitor',fields:saved}));}catch{}});
 
 // Late-rendered tool upsells must preserve the same return as static pricing links.
 document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||!sessionIdentity?.signedIn)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname==='/signup.html'&&!['free','plus','coaching','single','society'].includes(u.searchParams.get('plan')))a.href=upgrade();},true);
