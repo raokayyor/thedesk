@@ -165,3 +165,5 @@ body.interview-simple,body.interview-simple-setup{margin:0!important;padding:0!i
 @media(max-width:900px){#simpleInterview .pi-practice-ways-sheet{inset:auto 12px 116px;width:calc(100% - 24px);max-height:65dvh;border-radius:15px}.pi-coaching-intro:not(.tip-expanded) blockquote{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.pi-tip-more{display:block;font-size:12px;margin-left:45px}.pi-script-mode .pi-coaching-intro .wf-asking{margin-bottom:2px}}
 
 @media(max-width:900px){#simpleInterview .pi-coaching-intro .pi-tip-more{color:#b9dac9;padding:6px 0;text-decoration:underline}}
+
+.pi-background-save{position:fixed;z-index:120;top:8px;left:50%;transform:translateX(-50%);max-width:90vw;background:#fbfaf7;color:#1f2a2e;border:1px solid #ded7cb;border-radius:9px;padding:7px 12px;font:12px Figtree,Arial;box-shadow:0 3px 12px #0001}.pi-background-save button{border:0;background:none;text-decoration:underline;color:inherit}
