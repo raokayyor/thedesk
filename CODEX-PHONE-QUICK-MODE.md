@@ -58,3 +58,15 @@ Interactions: chip swaps (experience ▾), gap sheets with quick picks, "Say it 
 - device split for the homepage, free assessment, interview coach and applications over 14 days
 
 Send Rao 390px screen recordings of: question of the day end to end, the score reveal, and the "full review on your laptop" card. Plus 1280px screenshots of the one-screen workspace.
+
+## 7. Laptop deep layer (because the phone no longer has to carry it)
+1. **Sentence-by-sentence coaching:** the transcript on the left, a note beside each sentence on the right (keep / cut / say what *you* did / add the result), each tied to the rubric.
+2. **The interviewer's notes view:** what an interviewer would jot down while listening ("Strong: 12 → 4 screen. Missing: result. Why Barclays: generic."). Same data, shown from the interviewer's side.
+3. **Follow-up chains:** after an answer, 2–3 probing follow-ups built from what they said ("You said you flagged 4. What made the other 8 fail?"), each scored.
+4. **Delivery, from the recording:** pace (words a minute), filler words, long pauses, how it ended. One line of advice each. No judgement of voice, accent or appearance.
+5. **Firm side panel:** the why-firm sheet, the firm's process notes and recent news, open beside the answer.
+6. **Attempt comparison:** two attempts side by side, the differences highlighted, and the score change per dimension.
+7. **"Practise the weak ones":** a session built automatically from questions under 70, ordered by most improvable.
+8. **Export:** a one-page PDF of saved answers (beats + best version) for the night before.
+
+Order of build: 1, 3, 6, then the rest.
