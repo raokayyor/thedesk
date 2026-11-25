@@ -86,6 +86,19 @@
 7. **Payment flips the links.** After paying, return to the tool they came from (`return=`), now in full mode, with whatever they made in trial kept and carried over.
 8. **Test:** with a free account, click every menu item and every dashboard button. Each must open a working trial version personalised to that user, never a "members only" page, a 404 or Amelia's data (unless no CV, in which case the sample is labelled). Then upgrade and confirm the same clicks open the full tools.
 
+9. **Explore mode: browse the dashboard without the assessment (phone first).**
+   - Any "Explore", "Explore membership", "Skip for now" or "Look around first" link (homepage, assessment start, signup) opens **the same My Desk dashboard** in explore mode. **No sign-up needed to look.**
+   - Explore mode uses the sample student's data (labelled), and every tool link opens that tool's trial on the sample CV.
+   - **One persistent prompt, phone-first:** a slim bar pinned under the header on every explore screen, "**Start your free assessment** to make every tool personal to you · 10 mins →". It's the only nudge: no pop-ups, no blocking.
+   - Inside each trial, the sample label reads: "This is a sample CV. Start your assessment to see this on yours →".
+   - Finishing the assessment from explore mode keeps them where they were and switches the dashboard and trials to their own data (score card filled, trials re-run on their CV).
+   - **Phone checks at 390×844:**
+     - explore dashboard loads in under 3 seconds
+     - the prompt bar is visible without scrolling and never covers content
+     - bottom nav works on every screen
+     - every tile opens a trial within one tap
+   - Saving anything they make in explore mode asks for an email ("Save this to your Desk"), which creates the free account.
+
 ## D. Member experience
 
 1. **My Desk, phone: one screen**
