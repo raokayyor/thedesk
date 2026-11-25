@@ -43,3 +43,10 @@
 #app .interview-help-priority .dashboard-buttons {display:flex;gap:10px;margin-top:16px}
 #app .interview-help-priority .dashboard-buttons a {font-size:12px;flex:1;text-align:center;white-space:normal}
 @media(max-width:900px){#app .dashboard-quick-tools,#app .dashboard-updates-grid {grid-template-columns:minmax(0,1fr)}}
+
+#app .explore-sample-label {margin:0;font-size:12px;line-height:1.5;color:var(--mute)}
+#app .entry-intro h1 {margin:6px 0 0}
+#app .dashboard-upgrade {display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;background:var(--ink);color:#fff;padding:16px 18px}
+#app .dashboard-upgrade strong {font-size:14px;line-height:1.4}
+#app .dashboard-upgrade small {display:block;font-size:12px;line-height:1.5;margin-top:3px;color:#d9dfdf}
+#app #memberDailySlot:empty {display:none}
