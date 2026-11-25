@@ -7,3 +7,5 @@ test('account tier selects the free or full interview without granting access in
 test('every locked preview has an explicit full member destination',()=>{for(const key of ['tests','story','answers','library','news','case','inbox']){assert.ok(FEATURES[key].page);assert.equal(memberDestination(key,{member:true}),FEATURES[key].paid);}assert.equal(memberDestination('story',{member:true}),'/your-story.html');});
 
 test('free account without an assessment sees only the assessment hero',()=>{const s=dashboard(false,false).output;assert.match(s,/Get your free assessment: 10 mins/);assert.doesNotMatch(s,/memberDailySlot|workspace-tool-grid|Live AMA/);});
+
+test('assessed free and paid dashboards have identical element structure apart from access badges',()=>{const structure=html=>html.replace(/<span class="tier-tag">.*?<\/span>/g,'').match(/<\/?[a-z][a-z0-9-]*(?=[\s>])/g);assert.deepEqual(structure(dashboard(false).output),structure(dashboard(true).output));});
