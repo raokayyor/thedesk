@@ -204,5 +204,11 @@
       "destination": "/one-to-one.html",
       "permanent": false
     }
-  ]
+  ],
+  "proxy": {
+    "entrypoint": "entry-proxy.js",
+    "matcher": [
+      "/((?!api/).*\\.html)"
+    ]
+  }
 }
