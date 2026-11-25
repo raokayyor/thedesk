@@ -303,10 +303,11 @@ function memberDesk(){
 }
 function render(){
   headerBits();dashboardSidebar();document.body.classList.toggle('free-dashboard',D.signedIn&&!D.member);
-  const name=D.profile.firstName;
+  const name=D.explore?'':D.profile.firstName;
+  const greeting=D.explore?'Welcome to My Desk':greet()+(name?', '+name:'')+'.';
   const target=[D.profile.targetFirm,D.profile.targetDivision||D.profile.targetSector,D.profile.programme].filter(Boolean).join(' · ');
   app.innerHTML=`${D.explore?'<p class="explore-sample-label">Sample · Amelia Chen, Economics, Bristol → Barclays</p>':''}${D.testFixture?'<div class="notice">Synthetic test account · no payment or email was sent. Use sign-up for a real student account.</div>':''}${qp.get('signed_in')?'<div class="notice">You’re signed in. Your desk is now saved to your account.</div>':''}${qp.get('link')==='expired'?'<div class="notice">That sign-in link has expired or was already used. Ask for a new one below.</div>':''}
-    <div class="entry-intro" style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><div><div class="kicker">${D.member?'Member dashboard':D.signedIn?'Free account':'Explore My Desk'}</div><h1>${esc(greet())}${name?', '+esc(name):''}.</h1>${D.member?'<p class="member-progress-greeting">You’re '+(D.prep?.completed||0)+' of '+(D.prep?.total||0)+' fixes in.</p>':'<p class="mute" style="max-width:610px;margin:8px 0 0;line-height:1.6"></p>'}</div></div>
+    <div class="entry-intro" style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><div><div class="kicker">${D.member?'Member dashboard':D.signedIn?'Free account':'Explore My Desk'}</div><h1>${esc(greeting)}</h1>${D.member?'<p class="member-progress-greeting">You’re '+(D.prep?.completed||0)+' of '+(D.prep?.total||0)+' fixes in.</p>':'<p class="mute" style="max-width:610px;margin:8px 0 0;line-height:1.6"></p>'}</div></div>
     ${!D.member&&!D.explore&&(!D.signedIn||D.report)?`<div class="entry-account-actions" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0 20px">${!D.signedIn?'<a class="btn hot" href="/assessment-start.html">Get my free assessment</a><a class="btn ghost" href="/signin.html">Log in</a>':''}<a class="btn ghost" href="/signup.html?plan=member">Explore membership →</a></div>`:''}
     <div class="dashboard-desktop-detail tier-dashboard-main">${!D.member&&qp.has('assessment')?'<div class="notice" role="status">Your free assessment is ready. Your score and result are saved below.</div>':''}${memberDesk()}</div>`;
 

@@ -9,3 +9,14 @@ test('every locked preview has an explicit full member destination',()=>{for(con
 test('free account without an assessment retains the full shared dashboard',()=>{const s=dashboard(false,false).output;assert.match(s,/Get your score: 10 mins/);assert.match(s,/memberDailySlot/);assert.match(s,/Quick tools/);});
 
 test('dashboard has exactly the requested three quick tools and restores interview help',()=>{for(const member of [false,true]){const output=dashboard(member).output;assert.match(output,/Got an interview coming up/);assert.match(output,/aria-label="Quick tools"/);for(const title of ['Interview coach','Assessment centre','Application help'])assert.ok(output.includes('<h3>'+title+'</h3>'));assert.doesNotMatch(output,/Open tool/);}});
+
+
+test('explore has no student identity while sample tool context stays available',async()=>{
+ const {exploreDesk}=await import('../lib/explore-desk.mjs');const d=await exploreDesk();
+ assert.equal(d.explore,true);assert.equal(d.profile.name,'');assert.equal(d.profile.firstName,'');assert.equal(d.profile.university,'');assert.ok(d.profile.targetFirm);
+ const render=html.slice(html.indexOf('function render(){'),html.indexOf('let PROGS=null;'));
+ function greeting(data){const app={};const scope=vm.createContext({D:data,app,qp:new URLSearchParams(),headerBits(){},dashboardSidebar(){},document:{body:{classList:{toggle(){}}},dispatchEvent(){}},Event:class{},greet:()=> 'Morning',esc:s=>String(s??''),memberDesk:()=>'',bind(){},matchMedia:()=>({matches:false}),location:{hash:''}});vm.runInContext(render+';render();',scope);return app.innerHTML;}
+ assert.match(greeting(d),/<h1>Welcome to My Desk<\/h1>/);
+ assert.doesNotMatch(greeting(d),/Morning, Amelia/);
+ for(const member of [false,true])assert.match(greeting({...d,explore:false,signedIn:true,member,profile:{firstName:'James'}}),/<h1>Morning, James\.<\/h1>/);
+});
