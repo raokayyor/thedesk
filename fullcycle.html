@@ -466,7 +466,7 @@ function render(R){
   var P=R.paid,res=R.result,prof=R.profile||{},first=(prof.name||res.candidateName||"").split(" ")[0];
   KEY="desk-fc-"+(R.id||R.generatedAt||"sample-v3");restore();lastSampleReport=!!R.sample;if(R.prepState)ST.done=R.prepState.done||{};buildEvidenceMap(R);
   document.getElementById("sampleTag").hidden=!R.sample;
-  document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':'Sample report';
+  document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':'Sample · Amelia Chen, Economics, Bristol → Barclays';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample student.</strong> Explore the CV fixes, interview preparation and plan. Rechecks and practitioner submissions are available with your own membership. <a href="/assessment-start.html">Start your own assessment →</a>';
   if(R.sample&&R.scoreStory)notice.innerHTML+='<p>Current score: 58. Example recheck milestones: 67, then 71. Illustrative targets, not completed reassessments or guaranteed gains.</p>';
   if(R.generatedReview)notice.innerHTML='<strong>Generated fictional student · Full Cycle £89 output.</strong> Created through the current report generator and validators. Test answers were simulated ('+R.reviewAssumptions.correctPerSection+'/5 in each section), not inferred from the CV. No human review or purchase took place. Drafts still need factual checks.';
@@ -845,7 +845,7 @@ var reportCacheKey='desk-report-cache:'+location.pathname+location.search;
 load().then(function(R){reportLoader?.stop();render(R);document.getElementById('main').setAttribute('aria-busy','false');try{sessionStorage.setItem(reportCacheKey,JSON.stringify({main:document.getElementById('main').innerHTML,nav:document.getElementById('nav').innerHTML}));}catch(e){}if(R.id&&!R.sample)api('/api/desk-home?view=progress&id='+encodeURIComponent(R.id)).then(function(state){if(state.updatedAt){ST.done=state.done||{};document.querySelectorAll('[data-done]').forEach(function(el){el.checked=!!ST.done[el.dataset.done];el.closest('.day,.chk')?.classList.toggle('done',el.checked);});document.dispatchEvent(new Event('desk:progressloaded'));}}).catch(function(){});}).catch(function(e){reportLoader?.stop();document.getElementById("main").setAttribute("aria-busy","false");if(document.getElementById('reportReadyNow')){document.getElementById('reportLoadingContent').innerHTML='<section class="card"><h2>Your saved assessment is above.</h2><p>One report section could not finish. Retry to resume from saved sections.</p><button class="btn" onclick="location.reload()">Resume report →</button></section>';return;}document.getElementById("main").innerHTML='<div class="card"><h2>We couldn’t load this report.</h2><p class="mute">'+esc(e.name==='AbortError'?'This section took too long. Retry to resume from saved sections.':e.message)+'</p><button class="btn" onclick="location.reload()">Retry</button><p><a href="/assessment-start.html">Start your assessment →</a> · <a href="/fullcycle-amelia.html">View the fictional sample →</a></p></div>';});
 })();
 </script>
-<script src="/desk-me.js" defer></script><script src="/interview-natural-voice.js"></script><script src="/report-interview-practice.js"></script></body>
+<script src="/desk-me.js" defer></script><script src="/interview-natural-voice.js"></script><script src="/report-interview-practice.js"></script><script type="module" src="/sample-report-action.js"></script></body>
 </html>
 
 

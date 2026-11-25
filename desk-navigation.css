@@ -40,3 +40,6 @@ body.member-dashboard .desk-group-nav{display:block!important}body.desk-nav-away
 
 
 .desk-free-upgrade{display:inline-flex;align-items:center;padding:5px 9px;border:1px solid #ded7cb;border-radius:999px;text-decoration:none;font:600 11px Figtree,sans-serif;color:#705024;background:#f6efe5;margin-left:auto;margin-right:10px}
+.desk-account-avatar.desk-login-link{width:auto;height:auto;min-width:0;border:0;border-radius:0;background:none;color:var(--ink,#1f2a2e)!important;padding:6px 0;font:600 13px Figtree,Arial,sans-serif;text-decoration:underline}
+
+.desk-tool-tiles{grid-auto-rows:1fr}.desk-tool-tiles .desk-tool-tile{height:100%;min-height:112px;box-sizing:border-box}

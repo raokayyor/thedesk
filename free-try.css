@@ -2,3 +2,5 @@
 
 #ownReason{min-height:86px}
 .test-intro-choices{display:grid;gap:12px;margin:22px 0}.test-intro-choices label{display:block;cursor:pointer;padding:18px;min-height:100px}.test-intro-choices label:has(:checked){border:2px solid var(--ink,#1f2a2e);padding:17px}.test-intro-choices input{accent-color:#1f2a2e;width:20px;height:20px;margin:0 10px 0 0;vertical-align:middle}.test-intro-choices strong{font:600 23px "EB Garamond",Georgia,serif}.test-intro-choices p{font-size:14px;margin:8px 0 0}
+
+.document-section p,.document-section li{font-size:15px;line-height:1.6}.document-section h3{font:600 21px "EB Garamond",Georgia,serif;margin:20px 0 6px}.document-personalise{padding:10px;background:#fff0cf;border-radius:7px;color:#765516}.document-source{font-size:11px;color:#687780}.document-firm-chips{display:grid;gap:12px}.firm-chip{width:auto;min-height:44px;padding:10px 16px;border:1px solid #ddd7cf;border-radius:999px;background:#fff;color:#1f2a2e}.firm-chip.selected{background:#1f2a2e;color:#fff}.document-firm-chips summary{cursor:pointer;font-size:13px;margin:6px 0}.document-firm-chips .chips{display:flex;flex-wrap:wrap;gap:8px}

@@ -3,3 +3,5 @@
 .entry-after mark{background:#fff0cf;color:#805b15;border-radius:5px;padding:2px 4px}.entry-email .ink{display:block;text-align:center;padding:14px;text-decoration:none;background:#1f2a2e;color:white;border-radius:8px}
 
 #resultContent.assessment-entry>section{padding:14px}#resultContent.assessment-entry .entry-note{margin-top:10px}#resultContent.assessment-entry .entry-score{padding:12px 14px}
+
+.entry-locked-placeholder{filter:blur(5px);user-select:none;pointer-events:none}

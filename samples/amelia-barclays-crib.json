@@ -1,0 +1,64 @@
+{
+  "title": "Your assessment-centre crib sheet",
+  "firm": "Barclays",
+  "label": "Sample · Amelia Chen, Economics, Bristol → Barclays",
+  "sections": [
+    {
+      "title": "Your 30-second introduction",
+      "text": "I’m Amelia, a penultimate-year BSc Economics student at the University of Bristol, predicted a 2:1. During my corporate finance internship at Redcliffe Partners, I screened 12 UK software companies and flagged 4 whose recurring-revenue models matched an acquisition brief, presenting my reasons to an associate.",
+      "prompts": [
+        "Barclays combines UK corporate banking and an investment bank. Add why that mix matters to you and the IBD work you want to do."
+      ]
+    },
+    {
+      "title": "Your CV stories",
+      "stories": [
+        {
+          "title": "Analysis · Redcliffe Partners",
+          "text": "I researched 12 UK software companies, recorded business descriptions, revenue and EBITDA where publicly available, and compared them in Excel. I flagged 4 companies because their recurring-revenue models matched the acquisition-screen brief. I presented the table and my selection reasons to an associate.",
+          "prompt": "Add what happened after the handover only if you know."
+        },
+        {
+          "title": "Responsibility and teamwork · Pho House",
+          "text": "I worked 12 hours a week alongside university and trained 3 new colleagues on ordering and till procedures. During one busy service, I spotted a duplicate payment, informed the shift lead and helped process the correction.",
+          "prompt": "Explain how you trained the colleagues or spotted the error; no financial saving is recorded."
+        },
+        {
+          "title": "Technical analysis · LVMH valuation project",
+          "text": "I built a DCF and trading-comparables valuation in Excel using public annual-report data, compared LVMH with 3 luxury-sector peers and tested revenue growth of 3%, 5% and 7%. I presented sensitivity findings to a 4-person seminar team.",
+          "prompt": "Be ready to explain how growth and margin assumptions affected your valuation. This was a university project, not a live investment recommendation."
+        }
+      ]
+    },
+    {
+      "title": "What they’re really asking",
+      "text": "They want a recommendation you can defend with evidence. For Redcliffe, explain the recurring-revenue criterion, why the four companies met it, and what would make you change your view. Separate what you did from what the wider team did."
+    },
+    {
+      "title": "Why Barclays · personalise this",
+      "text": "UK-headquartered, with UK corporate banking, a private bank and an investment bank under one roof. That you understand Barclays is UK-headquartered, serves UK companies as well as global ones, and that this matters to you.",
+      "prompts": [
+        "Why does working with UK companies in an international bank appeal to you?",
+        "Connect that reason to the investment banking work you want to do."
+      ]
+    },
+    {
+      "title": "Questions to ask",
+      "items": [
+        "How do interns contribute to an acquisition screen or company analysis in this team?",
+        "What makes an analyst’s recommendation useful to the people reviewing it?",
+        "What feedback helps interns improve fastest?"
+      ]
+    },
+    {
+      "title": "Gaps to prepare",
+      "items": [
+        "What happened after the associate received the screen? The CV does not confirm an outcome.",
+        "Which evidence would you use to defend the four selections?",
+        "Why Barclays IBD specifically? The CV does not record a personal firm reason.",
+        "Which assumptions drove your LVMH valuation most, and why?"
+      ]
+    }
+  ],
+  "source": "Built from Amelia’s sample CV and The Desk’s Barclays research."
+}

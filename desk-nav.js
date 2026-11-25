@@ -38,7 +38,7 @@ if(!document.querySelector('script[data-testing-analytics]')){const tracker=docu
    if(label){label.textContent=university;label.hidden=!university;}
   }
   let upgradePill=document.querySelector('.desk-free-upgrade');if(data.signedIn&&!data.member){if(!upgradePill){upgradePill=document.createElement('a');upgradePill.className='desk-free-upgrade';upgradePill.textContent='Upgrade';upgradePill.href='/membership-start.html?return='+encodeURIComponent(location.pathname+location.search);account.before(upgradePill);}}else upgradePill?.remove();
-  account.textContent=(data.profile?.name||data.profile?.firstName||'').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()||'•';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in or create an account');window.DeskNavigation.icon=icon;
+  account.classList.toggle('desk-login-link',!data.signedIn);account.href=data.signedIn?'/desk-section.html?view=account':'/signin.html?next='+encodeURIComponent(location.pathname+location.search);account.textContent=data.signedIn?((data.profile?.name||data.profile?.firstName||'You').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()):'Log in';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in');window.DeskNavigation.icon=icon;
  }
 })();
 
