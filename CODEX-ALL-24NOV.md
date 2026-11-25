@@ -109,6 +109,13 @@
     - **Security:** the blurred text must **not** be the real content in the page. The server sends the real text only for the unblurred parts. Blurred blocks hold placeholder text of a similar length, so nobody can unblur it in dev tools. After payment, fetch the real content.
     - **Look:** blur about 6px, with text-shaped placeholder lines (not a grey box), so it reads as "your content is here". Headers stay crisp. No lock icons on every section; one small "Trial" label at the top.
     - **Phone first (390×844):** the intro is fully readable in the first screen. Headers and blurred sections scroll naturally below. Sticky [Unlock · £89] bar at the bottom on phone only.
+    - **No assessment yet (free user or explore mode):** don't try to build it. Show a card at the top:
+      - "**Your crib sheet is built from your assessment.** We can't build yours until you've done it: 10 mins, free."
+      - buttons: [Start my free assessment] and [See a sample crib sheet]
+      - **sample:** Amelia Chen's crib sheet, clearly labelled "Sample · Amelia Chen, Economics, Bristol → Barclays", in the **same trial pattern** (30-second intro open, all headers visible, body text blurred), so the sample doesn't give away a full template
+      - keep the "Start my free assessment →" bar pinned above the sample
+      - after the assessment, return to the crib sheet and build theirs automatically
+    - The same "built from your assessment → start it / see a sample" pattern applies to every personalised tool (interview answer builder, application drafts, firm pack "your angle", CV line fix), always with Amelia Chen as the labelled sample.
     - **Reuse the same component for the other document-style tools:**
       - firm pack: the overview unblurred, other headers visible, text blurred
       - application drafts: the first draft unblurred, other question titles visible, drafts blurred
