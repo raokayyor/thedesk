@@ -6,3 +6,5 @@ body.trial-hirevue-active{background:#1f2a2e!important;color:#fff!important}body
 .trial-record.trial-hirevue[hidden]{display:none!important}
 
 .trial-hv-grading{color:#d1d9d5;font-size:12px;line-height:1.45;margin:10px 0 0}.trial-hv-grading b{color:#fff;white-space:nowrap}
+
+.trial-hv-tip{margin:10px 0 0;padding:10px 12px;border:1px solid #ffffff25;background:#ffffff0b;border-radius:10px;text-align:left}.trial-hv-tip summary{display:flex;align-items:center;gap:10px;min-height:32px;padding:0}.trial-hv-tip summary img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none}.trial-hv-tip summary b{display:block;font-size:11px;color:#b0d9be}.trial-hv-tip summary small{display:block;font-size:10px;color:#c5cecb;margin-top:2px}.trial-hv-tip p{font-size:12px;line-height:1.4;margin:8px 0 0;color:#eef3ef}@media(max-width:900px){.trial-hirevue-active .trial-question-pin h1{font-size:23px!important}.trial-hv-camera{min-height:150px;aspect-ratio:2/1}.trial-hv-source{font-size:10px}.trial-hv-grading{font-size:11px}}
