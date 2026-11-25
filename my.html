@@ -283,23 +283,6 @@ function mobileMemberDesk(){
  return `<div class="mobile-member-four mobile-desk-refreshed">${D.deep?.status==='complete'?'<div class="mobile-score-week">'+readinessCard()+mobileWeekCard()+'</div>':memberOnboardingCard()}${upcomingCard(true)}${interviewHelpCard()}${sideCard().replace(/<\/div>$/,fixesCard+'</div>')}${liveEventCard()}${forumPreviewCard('mobileDashboardForum')}</div>`;
 }
 function freeDesk(){return memberDesk();}
-function workspaceTools(){
- const previews={tests:'/tests-preview.html?tour=1',answers:'/feature-preview.html?feature=answers&tour=1',story:'/feature-preview.html?feature=story&tour=1',library:'/library-preview.html?tour=1',practitioners:'/practitioners-preview.html?tour=1'};
- const cards=[
- ['Interview coach','Build, record and improve answers from your own experience.','/interview-start.html','/free-try.html?tool=interview','Try one question','interviews'],
- ['Numerical & commercial tests','Fresh questions, worked answers and progress for your target route.','/tests.html',null,'Explore tests','tests'],
- ['Application drafts','Prepare firm-specific answers from your CV and fill the gaps only you know.','/applications.html','/applications.html','Open my applications','applicationHelp'],
- ['Group exercise','Practise making a clear contribution to a realistic group discussion.','/group-exercise.html','/free-try.html?tool=group','Try a group exercise','assessmentCentres'],
- ['Assessment centre','Explore the case study, inbox exercise and preparation for the day.','/assessment-centre.html','/assessment-centre-preview.html?tour=1','Explore the hub','assessmentCentres'],
- ['Crib sheet','Keep your strongest CV examples and firm preparation together.','/ac-crib.html','/free-try.html?tool=crib','Build my crib sheet','assessmentCentres'],
- ['Your answer library','Keep your best answers and practise them before your next interview.','/saved-answers.html',null,'Explore saved answers','answers'],
- ['Story bank','Add a true detail once, then use it across relevant answers and drafts.','/your-story.html',null,'Explore story bank','story'],
- ['Firm packs','Understand the firm, its questions and the work you are applying for.','/firm-interview-guides.html','/free-try.html?tool=firm','Try a firm pack','assessmentCentres'],
- ['Preparation library','Learn the technical concepts and work through preparation guides.','/library.html',null,'Explore the library','library'],
- ['Practitioner panel','Understand what experienced practitioners look for in an application.','/my.html#practitionerPanel',null,'Meet the panel','practitioners'],
- ['Live sessions','Hear from practitioners and ask about the work behind your application.','/events.html','/events.html','See live sessions','webinars']];
- return '<section class="grid3 workspace-tool-grid" aria-label="Your tools">'+cards.map(([title,copy,paidUrl,freeUrl,label,key])=>{const locked=!D.member&&!freeUrl,url=D.member?paidUrl:freeUrl||previews[key]||'/members-only.html?feature='+key;return `<article class="card tool"><div class="workspace-tool-heading"><h3>${title}</h3>${!D.member?'<span class="tier-tag">'+(locked?'Member':title==='Application drafts'?'1 free draft':title==='Live sessions'?'Free AMA':'Free try')+'</span>':''}</div><p class="mute">${copy}</p><a class="btn" ${locked?'data-member-preview="'+esc(title)+'"':''} href="${esc(url)}">Open tool →</a></article>`;}).join('')+'</section>';
-}
 function memberDesk(){
  const free=!D.member;
  if(free&&!D.report)return `<section class="card member-next-fix assessment-only"><div class="kicker">Your first step</div><h2>Get your free assessment: 10 mins</h2><p>Add your CV + two short tests → your score and 3 fixes.</p><a class="btn" href="/assessment-start.html">Start my free review →</a></section>`;
@@ -310,7 +293,7 @@ function memberDesk(){
 
  const library=D.library||{};
  const libraryCard=`<section class="card member-library-summary"><a href="${free?'/feature-preview.html?feature=answers&tour=1':'/saved-answers.html'}">${library.answers||0} answers saved ${free?'<span class="tier-tag">Member</span>':''} →</a><a href="${free?'/feature-preview.html?feature=story&tour=1':'/your-story.html'}">${library.storyFacts||0} of 10 story facts · each fact improves your answers ${free?'<span class="tier-tag">Member</span>':''} →</a></section>`;
- return `<div class="member-home-grid"><div class="member-home-left"><div id="memberDailySlot"></div>${scoreCard}</div><div class="member-home-right">${upcomingCard()}${libraryCard}${laptop?liveEventCard():''}</div></div><div class="dashboard-workspace">${!laptop?liveEventCard():''}${D.needsAssessment?memberOnboardingCard():D.deep?.status==='complete'?'':deepStatusCard()}${newsCard()}${workspaceTools()}${'<div id="practitionerPanel">'+panelBand()+'</div>'}<section class="card"><div class="kicker">Community</div><h3>Prepare together.</h3><a href="/community.html">Open the forum →</a></section></div>`;
+ return `<div class="member-home-grid"><div class="member-home-left"><div id="memberDailySlot"></div>${scoreCard}</div><div class="member-home-right">${upcomingCard()}${libraryCard}${laptop?liveEventCard():''}</div></div><div class="dashboard-workspace">${!laptop?liveEventCard():''}${D.needsAssessment?memberOnboardingCard():D.deep?.status==='complete'?'':deepStatusCard()}${newsCard()}${'<div id="practitionerPanel">'+panelBand()+'</div>'}<section class="card"><div class="kicker">Community</div><h3>Prepare together.</h3><a href="/community.html">Open the forum →</a></section></div>`;
 }
 function render(){
   headerBits();dashboardSidebar();document.body.classList.toggle('free-dashboard',D.signedIn&&!D.member);
