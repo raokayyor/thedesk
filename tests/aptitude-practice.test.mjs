@@ -32,3 +32,7 @@ test('expanded stock exposes accurate counts while free trials keep their format
  assert.equal(full.SJT.fullCount,24);assert.equal(free.VERBAL.fullCount,32);
  assert.equal(full.REASONING.inductive.fullCount,24);assert.equal(full.REASONING.deductive.fullCount,16);
 });
+
+import {quizWin} from '../lib/free-try-content.mjs';
+import {trialContext} from '../lib/trial-content.mjs';
+test('reasoning trial exposes and marks exactly one question without shortening member tests',()=>{const ctx={profile:{targetFirm:'Barclays',targetSector:'General Finance'},row:{id:'sample:amelia',result:{}},cv:'Education: Economics at Bristol. Work experience: researched companies in Excel.',sample:true,isGuest:true};for(const type of ['sjt','verbal']){const view=trialContext(ctx,type);assert.equal(view.quiz.length,1);const q=practiceItems(type,false)[0],answers=[type==='sjt'?{most:q.best,least:q.worst}:q.answer],result=quizWin(type,answers,1);assert.equal(result.score,1);assert.equal(result.total,1);assert.match(result.tag,/1\/1/);assert.ok(result.note);assert.throws(()=>quizWin(type,[...answers,...answers],1));assert.ok(practiceItems(type,true).length>1);}});
