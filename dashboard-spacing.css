@@ -50,3 +50,9 @@
 #app .dashboard-upgrade strong {font-size:14px;line-height:1.4}
 #app .dashboard-upgrade small {display:block;font-size:12px;line-height:1.5;margin-top:3px;color:#d9dfdf}
 #app #memberDailySlot:empty {display:none}
+
+#app .explore-personalisation {display:none}
+@media(max-width:900px){
+ body.dashboard-explore #explorePrompt,body.dashboard-explore #app .explore-sample-label,body.dashboard-explore #app .member-library-summary {display:none!important}
+ body.dashboard-explore #app .explore-personalisation {display:block;margin:10px 0 0;font-size:14px;line-height:1.5;color:var(--mute)}
+}
