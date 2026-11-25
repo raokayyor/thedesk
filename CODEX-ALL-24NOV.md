@@ -116,7 +116,7 @@
         - **no:** open a bottom sheet on phone (a small modal on desktop):
           - "**Available after your free assessment.** Your crib sheet is built from it: 10 mins, free."
           - buttons: [Start my free assessment] (primary) and [See a sample] (secondary)
-      - **See a sample:** Amelia Chen's crib sheet, labelled "Sample · Amelia Chen, Economics, Bristol → Barclays", in the **same trial pattern** (30-second intro open, all headers visible, body text blurred), with a "Start my free assessment →" bar pinned above it
+      - **See a sample:** Amelia Chen's crib sheet, labelled "Sample · Amelia Chen, Economics, Bristol → Barclays", shown **in full, nothing blurred**, with a "Start my free assessment →" bar pinned above it
       - **Start my free assessment:** passes `return=` to the crib sheet. After the assessment, take them back and build theirs automatically (no second tap).
     - **Same pattern on every personalised tool:** the check fires on the build/generate button ("Build my answer", "Draft my application", "Fix my CV line", "Build my firm angle"), never on page load. Then the same sheet: "Available after your free assessment" → [Start my free assessment] / [See a sample] (Amelia Chen, labelled), with `return=` to that tool.
     - **Reuse the same component for the other document-style tools:**
@@ -178,6 +178,13 @@
     - skeleton straight away
 
     **Test:** at 390×844 and 1280×800, as (a) a free user with no assessment → Skip → Amelia, (b) a free user with no assessment → Do assessment → returns with their CV, and (c) a free user with an assessment. Send screenshots of each screen.
+
+12. **Blur rule for document tools (final):**
+    - **Sample (Amelia Chen) = shown in full, nothing blurred.** Labelled sample, always Barclays.
+    - **The student's own (trial) = 30-second intro / first section open, all headers visible, the rest blurred** (placeholder text, never the real content).
+    - **Member = everything open.**
+    - Applies to the crib sheet, firm pack, application drafts and assessment report.
+    - Under the sample: "That's a finished sheet. **Build yours** →" (uses their CV if assessed, otherwise opens the "Available after your free assessment" sheet).
 
 ## D. Member experience
 
