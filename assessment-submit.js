@@ -22,7 +22,7 @@ async function submitAssessment(){
  if(!document.getElementById('processingConsent').checked){status.textContent='Confirm processing consent on the CV step.';return;}
  const value=id=>document.getElementById(id)?.value.trim()||'';
  if(!value('name')){status.textContent='Enter your first name.';document.getElementById('name').focus();return;}
- const profile={name:value('name'),university:value('uni'),course:value('course'),year:value('year'),grade:value('grade'),targetSector:value('sector1'),targetDivision:value('sector1'),programme:value('programme'),targetFirm:value('targetFirm'),financeKnowledge:document.getElementById('limitedFinanceKnowledge').checked?'limited_or_none':'not_stated'};
+ const profile={name:value('name'),university:value('uni'),course:value('course'),year:value('year'),grade:value('grade'),targetSector:value('sector1'),targetDivision:value('sector1'),programme:value('programme'),targetFirm:value('targetFirm'),targetFirms:(window.deskAssessmentTargets?.firms||[value('targetFirm')]).filter(Boolean).slice(0,3),financeKnowledge:document.getElementById('limitedFinanceKnowledge').checked?'limited_or_none':'not_stated'};
  if(!window.routeQuizReady||!selectedBankId){status.textContent="Complete the test for your chosen route first.";return;}
  const skipped=window.deskTestsSkipped===true;const answers=skipped?{skipped:true,commercial:null,numerical:null}:{commercial:Array.from({length:5},(_,i)=>Number(document.querySelector(`input[name="c${i}"]:checked`)?.value??-1)),numerical:Array.from({length:5},(_,i)=>Number(document.querySelector(`input[name="n${i}"]:checked`)?.value??-1))};
  if(!skipped&&answers.commercial.concat(answers.numerical).some(a=>a<0||a>3)){status.textContent='Answer all ten test questions before continuing.';return;}

@@ -1,5 +1,5 @@
 @media(max-width:900px){
- html.phone-cv-first:not(.phone-cv-ready) #s1{display:none}html.phone-cv-first:not(.phone-cv-ready) #s2{display:block}
+ html.phone-cv-first:not(.phone-cv-ready) #s2{display:none}
  html.phone-cv-first #s2 h2{font-size:36px;margin:8px 0 12px}
  html.phone-cv-first #s2 .sub{font-size:16px;line-height:1.45;margin:0 0 24px;max-width:30ch}
  html.phone-cv-first #s2 .privacy-note{display:none}

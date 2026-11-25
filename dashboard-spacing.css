@@ -88,3 +88,6 @@ body.dashboard-explore #explorePrompt{display:none!important}#app .explore-asses
 .explore-phone-tagline{display:none}@media(max-width:900px){#app .explore-phone-tagline{display:block;font-size:14px;line-height:1.4;color:#687780;margin:7px 0 0}}
 
 .phone-live-photo{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:0 0 34px}.phone-live-event>div{flex:1 1 auto}
+
+/* Phone polish: one clear assessment action and legible proof details. */
+@media(max-width:900px){#app .explore-lean .explore-assessment-call a.btn{display:flex!important;width:100%!important;min-height:44px;font-size:13px}#app .explore-lean .explore-report-link{display:block;margin:10px 0 0;text-align:center}#app .explore-phone-showcase .showcase-strength i{height:5px!important;width:24px}.showcase-changes>div span{font-size:12px;padding:3px 9px}.showcase-changes>span:first-child{display:inline-block!important;font-size:24px;line-height:1;color:#32654b;flex-shrink:0}#app .phone-deadline-row{grid-template-columns:70px minmax(0,1fr) 45px}}

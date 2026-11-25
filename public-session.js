@@ -17,10 +17,10 @@ window.DeskSession.then(d=>{if(location.pathname==='/try.html'){if(d?.signedIn){
   header.querySelectorAll('.desk-account-avatar').forEach(a=>a.remove());const nav=header.querySelector('nav')||header,box=document.createElement('div');box.className='public-account-nav';const initials=(d.profile?.name||d.profile?.firstName||'You').split(/\s+/).map(s=>s[0]).slice(0,2).join('').toUpperCase();box.innerHTML='<a href="/my.html"><span class="account-circle" aria-hidden="true">'+esc(initials)+'</span>My Desk</a>'+(!d.member?'<a class="tier-upgrade" href="'+esc(upgrade())+'">Upgrade</a>':'');nav.append(box);
  }
  if(['/','/index.html'].includes(location.pathname)){
- const target=d.member?'/my.html':d.report?.url||'/assessment-start.html',label=d.member?'Go to My Desk':d.report?.url?'See my result':'Start my free review';document.body.dataset.homeTarget=target;
+ const target=d.member?'/my.html':d.report?.url||'/assessment-start.html',label=d.member?'Go to My Desk':d.report?.url?'See my result':'Start my free assessment';document.body.dataset.homeTarget=target;
  document.querySelectorAll('.hero-review-note,.hero-privacy').forEach(el=>{el.hidden=true;el.style.display='none';});
  if(d.member){document.body.classList.add('homepage-member');const pricing=document.getElementById('homepagePricing');if(pricing){pricing.removeAttribute('aria-labelledby');pricing.setAttribute('aria-label','Member daily question');pricing.innerHTML='<p class="signed-in-member-line"><a href="/interview.html?ready=1&daily=1">You’re a member. Today’s question is ready →</a></p>';}document.querySelectorAll('.final,.mobile-sticky-cta,.phone-pricing-links').forEach(el=>{el.hidden=true;el.style.display='none';});}
- document.querySelectorAll('a[href*="assessment-start"]').forEach(a=>{a.textContent=a.closest('#phoneScoreBar')?'Start →':label;a.href=target;});const bar=document.querySelector('#phoneScoreBar>span');if(bar)bar.textContent=d.member?'Your Desk':d.report?.url?'Your saved result':'Free review · 10 mins';
+ document.querySelectorAll('a[href*="assessment-start"]').forEach(a=>{if(!d.member&&!d.report?.url)return;a.textContent=a.closest('#phoneScoreBar')?'Start →':label;a.href=target;});const bar=document.querySelector('#phoneScoreBar>span');if(bar)bar.textContent=d.member?'Your Desk':d.report?.url?'Your saved result':'Free assessment · 10 mins';
  }
 
  document.querySelectorAll('a[href*="signup.html?plan=member"]').forEach(a=>{a.href=upgrade();});

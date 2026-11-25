@@ -1,3 +1,5 @@
+import {nextExploreDeadlines} from '../lib/explore-deadline.mjs';
+import {loadTargets,withTargets} from '../lib/assessment-target-store.mjs';
 import {exploreDesk} from '../lib/explore-desk.mjs';
 import {currentAccount} from '../lib/accounts.mjs';
 import {firmLimit} from '../lib/tier-journey.mjs';
@@ -209,8 +211,8 @@ export default async function handler(req, res) {
       const fromTracker = Object.entries(short.list).map(([k, v]) => { const x = byKey[k]; const [firm, ...rest] = k.split('|'); return { id: 't:' + k, source: 'tracker', firm: x?.firm || firm, programme: x?.name || rest.join('|'), stage: v.stage, deadline: x?.closes || '', rolling: !!x?.rolling, url: x?.url || '' }; });
       const applications = [...fromTracker, ...apps.map(a => {const live=byKey[a.data.firm+'|'+a.data.programme];return {id:a.id,source:'manual',...a.data,...(live?{deadline:live.closes||'',rolling:!!live.rolling,url:live.url||a.data.url}:{}),createdAt:a.createdAt};})].sort((x, y) => String(x.deadline || '9999').localeCompare(String(y.deadline || '9999')));
 
-      const profile = {...(signupSaved||{}),...(latest?.profile||{})};
-      const firms = [...new Set([profile.targetFirm, ...applications.map(a => a.firm)].filter(Boolean))];
+      const profile = withTargets({... (signupSaved||{}),...(latest?.profile||{})},await loadTargets(req,res));
+      const firms = [...new Set([profile.targetFirm, ...(profile.targetFirms||[]), ...applications.map(a => a.firm)].filter(Boolean))];
       const news = [...new Set(firms.map(newsKeyFor).filter(Boolean))].slice(0, 3).map(key => ({ key, firm: firms.find(f => newsKeyFor(f) === key) }));
       let reference=paidRow||latest;
       if(paid&&ids.length){await initDeep();const completed=await sql().query("SELECT a.id,a.input FROM desk_assessments a JOIN desk_deep_assessments d ON d.assessment_id=a.id WHERE a.id=ANY($1) AND d.data->>'status'='complete' ORDER BY a.created_at DESC",[ids]);for(const row of completed){const valid=await deepFor(row);if(valid?.status==='complete'){reference=assessments.find(a=>a.id===row.id)||reference;break;}}}
@@ -298,7 +300,7 @@ export default async function handler(req, res) {
       }
       return res.json({
         sessionKey:account?hash('desk-ui:'+account.id).slice(0,24):null,testFixture:signupSaved?.testFixture===true,signedIn: !!account, email: signupSaved?.pilotAccess?'':account?.email || '', emailReady: !!(process.env.RESEND_API_KEY && process.env.EMAIL_FROM),
-        deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { university: clean(profile.university || signupSaved?.university, 120), name: clean(profile.name||signupSaved?.name, 80), firstName: clean(profile.name||signupSaved?.name, 80).split(' ')[0], course:clean(profile.course||signupSaved?.course,120), year:clean(profile.year||signupSaved?.year,40), targetFirm: clean(profile.targetFirm, 80), targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
+        routeDeadlines:latest?nextExploreDeadlines(progs,new Date(),{route:profile.targetSector}):[],deep:paid&&latest?{status:deepReady?'complete':'draft',score:deepReady?deep.evaluation.score:null,scope:deepReady?deep.evaluation.scope:null,testChoice:deep?.testChoice}:null,member: paid, accountType:paid?'member':account?'free':'guest',needsAssessment:paid&&!latest,until, profile: { university: clean(profile.university || signupSaved?.university, 120), name: clean(profile.name||signupSaved?.name, 80), firstName: clean(profile.name||signupSaved?.name, 80).split(' ')[0], course:clean(profile.course||signupSaved?.course,120), year:clean(profile.year||signupSaved?.year,40), targetFirm: clean(profile.targetFirm, 80), targetFirms:profile.targetFirms||[], targetSector: clean(profile.targetSector, 80), targetDivision: clean(profile.targetDivision, 80), programme: clean(profile.programme, 80) },
         prep:paid?{...prep,remaining:undefined}:null,
         readiness: deepReady ? {score:deep.evaluation.score,band:band(deep.evaluation.score),source:'deep',change:0,timeline:[]} : now ? { score: now.score, band: band(now.score), source:'free',change: first ? now.score - first.score : 0, timeline: timeline.slice(-6).reverse() } : null,
         library:{answers:savedAnswers.length,storyFacts:Math.min(10,storyCounts[0]?.count||0),storyUses:storyCounts[0]?.uses||0},interviewUrl, report: latest ? { fixes:(latest.priorities||[]).slice(0,3).map((f,i)=>({title:clean(f.title,120),href:reportUrl+'#priority-'+(i+1)})),url: reportUrl, paid: paid, assessmentId: reference.id, breakdown: paid ? latest.breakdown || null : null, rechecks: s.assessments.filter(a => a.rootId).length } : null,
