@@ -1,0 +1,32 @@
+/* Shared spacing for the free and paid My Desk dashboard. */
+#app {--desk-card-gap:16px;gap:20px}
+#app .entry-intro {margin:0}
+#app .member-progress-greeting {margin:8px 0 0}
+#app .member-home-grid {gap:var(--desk-card-gap)}
+#app .member-home-left,#app .member-home-right {gap:var(--desk-card-gap);min-width:0}
+#app .member-home-grid .card,#app .dashboard-workspace .card {margin:0;padding:20px;min-width:0;border-radius:14px}
+#app .member-next-fix {min-height:0}
+#app .dashboard-workspace {display:grid;gap:var(--desk-card-gap);margin-top:var(--desk-card-gap)}
+#app .dashboard-workspace>[hidden] {display:none}
+#app #practitionerPanel:empty {display:none}
+#app #news {padding:20px}
+#app .member-library-summary a {padding:5px 0;line-height:1.5}
+#app .member-next-fix h2 {line-height:1.2;margin:12px 0}
+#app .member-next-fix .member-score-number {margin:10px 0}
+#app .live-event-card {display:flex;flex-direction:column;gap:12px}
+#app .live-event-card>h3,#app .live-event-card>p {margin:0}
+#app .live-event-card>.btn {margin-top:0!important}
+#app .dashboard-workspace .compact-panel h2 {margin:0 0 6px}
+#app .dashboard-workspace .compact-panel .panel-prompts {padding-top:12px}
+#app .dashboard-workspace>section:last-child h3 {margin:6px 0 12px}
+#app #newsList {margin-top:16px;gap:12px 20px}
+@media(max-width:767px){
+ #app {--desk-card-gap:14px;gap:18px!important;padding-bottom:28px}
+ #app .member-home-grid .card,#app .dashboard-workspace .card,#app #news {padding:18px}
+ #app .member-home-left #dailyQuestion {padding:18px!important}
+ #app .member-home-left #dailyQuestion h2 {font-size:22px!important;line-height:1.2!important;margin:10px 0 12px!important}
+ #app .member-home-left #dailyQuestion .mute {font-size:12px;line-height:1.5;margin:0 0 14px}
+ #app .member-score-number {float:none;font-size:44px}
+ #app .member-home-right .card {padding:18px}
+ #app #newsList {display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+}
