@@ -283,6 +283,10 @@ function mobileMemberDesk(){
  return `<div class="mobile-member-four mobile-desk-refreshed">${D.deep?.status==='complete'?'<div class="mobile-score-week">'+readinessCard()+mobileWeekCard()+'</div>':memberOnboardingCard()}${upcomingCard(true)}${interviewHelpCard()}${sideCard().replace(/<\/div>$/,fixesCard+'</div>')}${liveEventCard()}${forumPreviewCard('mobileDashboardForum')}</div>`;
 }
 function freeDesk(){return memberDesk();}
+function dashboardQuickTools(){
+ const C=window.DeskNavigationCore;
+ return '<section class="dashboard-quick-tools" aria-label="Quick tools">'+[['interview','Interview coach','Build and practise an answer from your own experience.','Practise an answer'],['assessment','Assessment centre','Prepare for the group exercise, case study and inbox.','Prepare for the day'],['application','Application help','Build firm-specific answers from your CV.','Work on an application']].map(([key,title,copy,cta])=>`<article class="card"><h3>${title}</h3><p class="mute">${copy}</p><a class="btn" href="${esc(C.href(key,D))}">${cta} →</a></article>`).join('')+'</section>';
+}
 function memberDesk(){
  const free=!D.member;
  if(free&&!D.report)return `<section class="card member-next-fix assessment-only"><div class="kicker">Your first step</div><h2>Get your free assessment: 10 mins</h2><p>Add your CV + two short tests → your score and 3 fixes.</p><a class="btn" href="/assessment-start.html">Start my free review →</a></section>`;
@@ -293,7 +297,7 @@ function memberDesk(){
 
  const library=D.library||{};
  const libraryCard=`<section class="card member-library-summary"><a href="${free?'/feature-preview.html?feature=answers&tour=1':'/saved-answers.html'}">${library.answers||0} answers saved ${free?'<span class="tier-tag">Member</span>':''} →</a><a href="${free?'/feature-preview.html?feature=story&tour=1':'/your-story.html'}">${library.storyFacts||0} of 10 story facts · each fact improves your answers ${free?'<span class="tier-tag">Member</span>':''} →</a></section>`;
- return `<div class="member-home-grid"><div class="member-home-left"><div id="memberDailySlot"></div>${scoreCard}</div><div class="member-home-right">${upcomingCard()}${libraryCard}${laptop?liveEventCard():''}</div></div><div class="dashboard-workspace">${!laptop?liveEventCard():''}${D.needsAssessment?memberOnboardingCard():D.deep?.status==='complete'?'':deepStatusCard()}${newsCard()}${'<div id="practitionerPanel">'+panelBand()+'</div>'}<section class="card"><div class="kicker">Community</div><h3>Prepare together.</h3><a href="/community.html">Open the forum →</a></section></div>`;
+ return `<div class="member-home-grid"><div class="member-home-left"><div id="memberDailySlot"></div>${scoreCard}</div><div class="member-home-right">${upcomingCard()}${interviewHelpCard()}${libraryCard}</div></div><div class="dashboard-workspace">${dashboardQuickTools()}${D.needsAssessment?memberOnboardingCard():D.deep?.status==='complete'?'':deepStatusCard()}<div class="dashboard-updates-grid">${newsCard()}${liveEventCard()}</div>${'<div id="practitionerPanel">'+panelBand()+'</div>'}<section class="card"><div class="kicker">Community</div><h3>Prepare together.</h3><a href="/community.html">Open the forum →</a></section></div>`;
 }
 function render(){
   headerBits();dashboardSidebar();document.body.classList.toggle('free-dashboard',D.signedIn&&!D.member);

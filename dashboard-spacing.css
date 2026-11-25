@@ -30,3 +30,16 @@
  #app .member-home-right .card {padding:18px}
  #app #newsList {display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
 }
+
+#app .dashboard-quick-tools {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--desk-card-gap)}
+#app .dashboard-quick-tools>.card {display:flex;flex-direction:column;gap:12px}
+#app .dashboard-quick-tools h3,#app .dashboard-quick-tools p {margin:0}
+#app .dashboard-quick-tools p {font-size:13px;line-height:1.5}
+#app .dashboard-quick-tools .btn {margin-top:auto;align-self:start;font-size:13px}
+#app .dashboard-updates-grid {display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:var(--desk-card-gap);align-items:start}
+#app .dashboard-updates-grid:has(>#news[hidden]) {grid-template-columns:minmax(0,1fr)}
+#app .interview-help-priority h2 {font-size:25px;margin:8px 0 12px}
+#app .interview-help-priority p {margin:0;font-size:14px;line-height:1.5}
+#app .interview-help-priority .dashboard-buttons {display:flex;gap:10px;margin-top:16px}
+#app .interview-help-priority .dashboard-buttons a {font-size:12px;flex:1;text-align:center;white-space:normal}
+@media(max-width:900px){#app .dashboard-quick-tools,#app .dashboard-updates-grid {grid-template-columns:minmax(0,1fr)}}
