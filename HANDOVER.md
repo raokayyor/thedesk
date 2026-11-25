@@ -1,3 +1,55 @@
+# START HERE — laptop handover, end of 25 November 2026
+
+This section supersedes the historical notes below. Read this before changing anything.
+
+## Next session: Thursday 26 November, on the laptop
+The user's final verdict: **the flow is starting to work, but the free assessment result is rubbish and does not make them want to pay.** Tomorrow's priority is improving the actual free assessment/report, its usefulness and its paid-value explanation. Preserve the working journey and existing layouts while doing that. Do not restart a dashboard redesign, simplify desktop, invent scores, or add generic upsell copy as a substitute for useful feedback. No report redesign was implemented tonight; this remains the next task.
+
+Start by reviewing what a fresh phone user actually receives after uploading their own CV and completing the assessment. Compare the promises in the entry flow (score, three weak lines, tools prepared for chosen firms) with what is actually delivered. Inspect the generation/output and free-versus-member gating before proposing concrete improvements. Use CV-backed facts only. Check whether missing education/profile fields in the new taps-first entry affect report quality; never fabricate these fields. The user has not yet specified tomorrow's final report design.
+
+## Laptop checkout and continuity
+- Repository: https://github.com/raokayyor/thedesk.git
+- Branch: `codex/sidebar-consistency`.
+- Laptop checkout previously confirmed: `C:/Users/raoka/Documents/Codex/thedesk`.
+- Fetch and inspect status first. If clean, switch to this branch and pull with `--ff-only`. If the laptop has edits, preserve them and reconcile; never reset/overwrite them.
+- Read this file, then repository guidance including `CODEX-ALL-24NOV.md`. Old notes below are a history, not a request to undo newer work.
+- GitHub carries code and this handover; the chats themselves do not automatically share full conversation context.
+- The current handover commit comes after the latest deployed code; a documentation-only commit does not require deployment.
+
+## Current production and final fix
+- Production: https://thedesk.vercel.app
+- Latest deployed implementation: `853c35c501f5c1aad322a29b198cfaa9127ad1b9`.
+- Deployment `dpl_CJDSXAA6on2W8QTK6JbQ4kgSc5c9` is READY with the production alias, verified in this chat.
+- Final user bug: uploading a CV on phone did not show Next. Fixed: CV step keeps **Next: short tests →** above the bottom toolbar; disabled until readable CV plus consent, shows Reading your CV while busy. Upload completion emits `desk:cv-state` after clearing the busy flag. Phone layout verified live at390×844; upload lifecycle regression test passes. Physical iPhone upload was not separately tested.
+
+## Preserve the now-working assessment journey
+- `/assessment-start.html` redirects to `/assessment.html`, retaining query parameters.
+- Step1: What are you aiming for? Six route chips; optional up to3 filtered firm choices; More; Next enabled after route choice.
+- Step2: Add your CV, firm-specific copy, native upload/paste/email option, sample report link. Phone bottom toolbar stays visible. Back to Your aims available.
+- Step3 numerical, Step4 commercial. First name remains on final review; no education details are invented. Legacy input IDs retained hidden for scoring compatibility.
+- Route/firm choices persist locally and via scoped `/api/assessment-targets`; verified server read returned chosen IB/Barclays. They feed own tool contexts and dashboard defaults. Amelia sample stays Barclays.
+- Consulting explicitly uses commercial fundamentals, not a consulting case test.
+- Analytics map views/completions to the four actual phases; starting a test does not count as finishing it; pagehide records step_left.
+
+## Latest homepage / Explore state
+- Homepage bottom: See inside before you start. / Try the tools on a sample CV. No sign-up. / Explore The Desk: it's free → / or start my free assessment →.
+- Live public wording uses free assessment, not free review. Pricing secondary link mentions the three lines that would get you rejected.
+- Phone Explore hero uses full-width Start my free assessment →. Signed-out header Log in.
+- Proof stays collapsed on reload. Actual saved scores40→73; no automatic desktop rescoring. Five segments,5px high; change chips12px with3px9px padding; visible arrow.
+- Phone swipe labels: Interview, Crib sheet, Application help, CV fix, Tests, Assessment centre, More. More goes to Practise. Desktop retains its existing layout; user will revisit its visual design later.
+- Closing soon filters big-name front-office roles; excludes tech/data/operations. Only verified eligible rows, even fewer than3. Current saved seed is Deutsche Bank RISE Investment Banking & Capital Markets, closes29Nov2026, sourced from official application table. Older Barclays technology/Lloyds data/HSBC relationship-management seeds were removed.
+- Logo provenance from stored practitioner biographies, sent to user for confirmation: UBS—Kayyor Rao and Neil Robertson; Commerzbank—Kayyor Rao; Barclays—Jim Staples; J.P. Morgan—Peter Cheley; EY—Chris Sharkey. Do not treat these as newly independently verified biographies.
+
+## Checks and files
+- Broader focused suite45passed; final upload/navigation/entry suite19passed. Showcase fingerprint matches current scorer.
+- New areas: `assessment-targets.js`, `assessment-targets.css`, `lib/assessment-targets.mjs`, `lib/assessment-target-store.mjs`, `api/assessment-targets.js`; phone button in `assessment-phone-entry.js/.css` and `assessment-submit.js`.
+- Tests: `tests/assessment-targets.test.mjs`, `tests/assessment-quiz-intro.test.mjs`, `tests/phone-cv-upload.test.mjs`, `tests/explore-deadline.test.mjs`.
+- Original PC proof: `C:/Users/Home/Documents/Codex/output/free-flow-polish-25nov/cv-next-live-phone.png`. Screenshots are local, not guaranteed present on laptop; live site and repository are the shared sources.
+- Still outstanding: real phone microphone/transcription verification, news-source rebuild/Marketaux pilot. Do not claim those completed.
+
+---
+# Historical notes (superseded where they conflict with START HERE)
+
 # Handover — 25 November 2026
 
 Branch: codex/sidebar-consistency. Always fetch before work on either PC; do not overwrite newer remote changes.
