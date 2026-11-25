@@ -186,6 +186,15 @@
     - Applies to the crib sheet, firm pack, application drafts and assessment report.
     - Under the sample: "That's a finished sheet. **Build yours** →" (uses their CV if assessed, otherwise opens the "Available after your free assessment" sheet).
 
+13. **Explore dashboard (phone): "Amelia's answer, improved" card replaces question of the day.**
+    - Card label: "AMELIA'S ANSWER, IMPROVED · SAMPLE". Shows the showcase question.
+    - **Score jump** from her first try to after the fix (e.g. "55 → 72"), shown as a bar that animates once when it scrolls into view, captioned "First try" → "After the fix".
+    - **One before line (red ✗) and one after line (green ✓)**, taken from the same run.
+    - Button: [Try it yourself →] opens the interview trial on the same question.
+    - **The numbers and lines must be real tool output.** Run Amelia's weak first answer and her fixed answer through the actual scorer once, store the result as the sample, and display that. Never hard-code 55 → 72. Re-run if the scorer changes.
+    - About a third of a screen at 390×844. Order: hero → this card → Closing soon → AMA.
+    - Question of the day is removed from explore; it returns on the dashboard once the assessment is done.
+
 ## D. Member experience
 
 1. **My Desk, phone: one screen**
