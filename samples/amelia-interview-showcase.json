@@ -3,7 +3,7 @@
   "firm": "Barclays",
   "sample": "Amelia Chen",
   "scoredAt": "2026-11-25T14:43:38.644Z",
-  "scorerHash": "d57e23cafd63b8398c65d5a183372a0fb4a64671fb5abd08f4e31ae90491f461",
+  "scorerHash": "8b098e2ef9583ba53153513fbc276904fecf6c44497dedefb2f924582e2c1b89",
   "source": "Production /api/free-tasters: weak submission and its returned rewrite, both scored by quickInterviewScore / applyScorePolicy; typed answers",
   "rewrite": {
     "title": "Your answer, fixed",

@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import {TRIAL_QUESTION} from '../lib/trial-analysis-guide.mjs';
 const root=new URL('../',import.meta.url);
 const files=['lib/interview-quick-score.mjs','lib/interview-score-policy.mjs','lib/interview-frameworks.mjs','lib/interview-story-context.mjs'];
-const scorerHash=createHash('sha256').update((await Promise.all(files.map(f=>readFile(new URL(f,root),'utf8')))).join('\n')).digest('hex');
+const scorerHash=createHash('sha256').update((await Promise.all(files.map(f=>readFile(new URL(f,root),'utf8')))).join('\n').replace(/\r\n/g,'\n')).digest('hex');
 const target=new URL('samples/amelia-interview-showcase.json',root);
 if(process.argv.includes('--check')){const saved=JSON.parse(await readFile(target,'utf8'));if(saved.scorerHash!==scorerHash)throw Error('Amelia showcase scores are stale. Run node scripts/build-amelia-showcase.mjs against the deployed scorer.');console.log('Showcase matches current scorer');process.exit(0);}
 const before='At Redcliffe Partners I supported the team with research on software companies. I looked at the information and helped put it in a spreadsheet. We discussed which companies looked good. I just tried to help the team make a recommendation and got through it.';
