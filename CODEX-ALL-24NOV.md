@@ -40,57 +40,51 @@
 4. **Members:** no pricing pitch or "Start my free review" lower on the page; use the one line "You're a member. Today's question is ready →". (Already live; keep it.)
 5. **`try.html`** redirects signed-in users to `/my.html` (live; keep it). Login always lands on `/my.html`.
 
-## C. Free: the assessment is the sign-up
+## C. Free users: the same app, with trial versions of each tool (supersedes all earlier free-tier notes)
 
-**Model:** there is no separate "free account" sign-up. A student does the free assessment → her result is saved → that becomes her login (email + magic link or password set at the end of the assessment). From then on she has her saved result **plus one go of each free tool, run on her own CV**. Two account states only: `assessment` (free) and `member`.
+**Model (Rao's decision, final):** every signed-in user gets **the same My Desk dashboard and the same menu** as a paid member, whether or not they've done the assessment. Only **where the links go** differs:
+- **Free (not paid £89):** each tool link opens the **free trial mode** of that tool. The free user should feel they are inside the paid app, seeing real snippets of what each tool does, **personalised to them** (their CV, their target firm, their name).
+- **Member (paid):** the same links open the **full** tool.
+- Paying flips every link from trial to full. Nothing else about the layout changes.
 
-1. **Sign-up = finishing the assessment (score free, fixes need an email).**
-   - When the assessment finishes, show the **score immediately** plus **one fix in full** (her weakest CV line, as a before → after card). Phone: both visible in the first screen.
-   - Directly below: "Your other 2 fixes and your free tools are ready. Where should we send them?" with an email field and [Show my fixes]. Small print: "No spam. One email with your result, then the weekly question. Unsubscribe anytime."
-   - Submitting creates the free account (`assessment`) by magic link, no password. It reveals fixes 2–3, unlocks the free tools on her CV, sends "Your result is saved" with the login link, and lands on My Desk.
-   - Left without an email: keep the result in local storage for 7 days. On return: "Welcome back. Your result is still here. Add your email to keep it."
-   - Login is by magic link only for free users; members can set a password in Account.
-   - Remove every other free sign-up route ("Create free account", free sign-up on `signup.html`). `signup.html` is for membership (£89) only. Signed-out users who tap a tool go to "Get your free assessment first: 10 mins". The `try.html` Amelia demo stays for browsing.
-   - Existing free accounts with no assessment: My Desk shows only the hero "Get your free assessment: 10 mins" until it's done.
-   - **Funnel tracking:** assessment started → completed → score viewed → email submitted → first free tool used → member. Report the drop-off at each step.
-2. **Free My Desk on phone: about 2 screens, in this order**
-   - **Hero = her result:** score, plus "Your 3 fixes" as three tappable one-liners.
-   - **"Your free tools":** one go each, on your CV.
-   - Next deadline (if tracked) · live AMA · community (read).
-   - One "Members get" card.
-   - No "Explore membership" button above the fold; the upgrade lives in the header pill and after each free tool.
-3. **"Your free tools" as a 2-column chip grid:**
-   - 8 chips, each an icon + short name (Interview, Why this firm, CV line, SJT, Verbal, Group, Firm pack, Crib sheet) + ○ available / ✓ used
-   - tap → straight into the tool, **always on her own CV and target firm** (never Amelia)
-4. **Every free tool uses the same 3 steps:**
-   - **one input on one screen** (no setup forms; default to her target firm from the assessment, or "General")
-   - **the win:** a **before → after card** that fits one phone screen ("Yours" above "Fixed" in green, plus a change like "48 → 74", big type)
-   - **then the upgrade:** "That's your free go. Members get this on every answer, every firm, unlimited." with [Become a member · £89] [Back to My Desk]
-   - the win always shows before any upgrade prompt; never lock the result
-5. **Per-tool phone checks** (no sideways scroll, main button in thumb reach, 48px+ tap targets):
-   - **Interview:** the fixed answer and score are visible together without scrolling.
-   - **Why this firm:** firm chips (not a dropdown) → a 3-sentence opening with the firm hook highlighted.
-   - **CV line fix:** picks her weakest line from the assessment → before/after. Not the assessment page.
-   - **SJT / Verbal:** 5 questions, one per screen → "3/5 · here's the one that trips most people".
-   - **Group / Firm pack / Crib sheet:** one screen of content + "Save to my phone".
-6. **Free tool load:** the first usable screen in **under 3 seconds** on phone. Load only that tool's scripts.
-7. **Used-up state:** the chip shows ✓ "Used". Tapping it shows what she made (she keeps it) plus "Members get this unlimited · Become a member · £89". Never a blank or blocked screen.
-8. **One simple allowance, said once:** "One free go of each tool, on your CV."
-   - question of the day: 1 a week for free users (email + My Desk), daily for members
-   - remove the "Practise HireVue & interviews · Member" card for free users
-   - the tag is "Member" everywhere, never "Members"
-9. **"Members get" as one compact card:**
-   - 6 one-liners with a lock icon: unlimited interview practice + fixes · application drafts for every firm · 2,000+ test questions · answer library and story bank · practitioner panel · rechecks of your score
-   - one button: [Become a member · £89]
-10. **Header and CTAs for free users:**
-    - header: avatar "My Desk" + "Become a member" pill
-    - homepage main CTA: "See my result"
-    - visitors: "Get my free assessment"
-    - pricing shows two cards: **Free assessment** (your score, 3 fixes, one go of each tool) | **Member £89**, with "Need 1:1? From £99 →" underneath
-11. **Upgrade return:**
-    - Unlock on a locked sheet returns to that feature, unlocked (`return=`).
-    - Unlocking from a free tool returns to that tool with her result kept.
-12. **Emails (free):** "Your result is saved" (with the login link) · a deadline reminder if she tracked a firm · the weekly question. No made-up stats.
+1. **One dashboard component, `my.html`, for both.** Same cards, same order, same left menu (laptop) and bottom nav (phone). No separate "free dashboard", no "Free account" label, no "What members get" wall of cards, no long free-tries grid.
+2. **A link map by tier, in one place** (e.g. `lib/tool-links.mjs`):
+
+   | Tool | Member link | Free link (trial mode) |
+   |---|---|---|
+   | Interview coach | `/interview.html` | `/interview.html?trial=1` |
+   | Assessment centre | `/assessment-centre.html` | `/assessment-centre.html?trial=1` |
+   | Group exercise / Case study / Inbox | full | `?trial=1` |
+   | Numerical & commercial / Reasoning tests | `/tests.html` | `/tests.html?trial=1` |
+   | Applications (drafts) | `/applications.html` | `/applications.html?trial=1` |
+   | CV | `/cv.html` | `/cv.html?trial=1` |
+   | Crib sheet / Firm packs | full | `?trial=1` |
+   | Saved answers / Story bank | full | `?trial=1` (shows what they'd keep) |
+   | Tracker, Community, Live sessions, News | same for both | same for both |
+
+   Every menu item, dashboard card and button reads from this map. **The server decides the tier**: a free user hitting a full URL is served the trial version. Never trust the URL alone.
+3. **What a trial version is:** the real tool, same design, cut down, never an upsell page.
+   - It runs on **their data**: their CV (if they've done the assessment), their target firm, their name. With no CV yet, it uses the sample CV with one line, "Using a sample CV. Do your free assessment to see this on yours →".
+   - It does one meaningful piece of work and shows the personalised result in full:
+     - interview: one question, the answer built from their CV, the fixed answer + score
+     - applications: their "Why {firm}" opening drafted
+     - tests: 5 questions + result
+     - assessment centre: one group-exercise round
+     - CV: one line fixed, before → after
+     - firm pack: their firm's overview
+     - crib sheet: their firm introduction
+   - It shows what the full version would carry on with, visibly, as a soft fade below the result. For example: "Members practise all 6 questions for Barclays", "Members get drafts for all 11 J.P. Morgan questions", "Members get unlimited tests from 2,000+". Then one button, [Unlock · £89], with `return=` to the same tool.
+   - Small label at the top: "Trial" (not "locked", not "free mode").
+   - Each tool's trial can be used again on a different input up to a light limit (e.g. 3 runs), then: "You've seen what it does. Unlock the full tool · £89". Never a blank screen; always show what they made.
+4. **Dashboard cards are the same for both tiers, filled with their data:**
+   - question of the day: free users get it too (links to the interview trial)
+   - score card: with an assessment, their score; without one, the same card says "Get your score: 10 mins" [Start my free assessment]
+   - applications due, next interview, progress, library: same cards; for free users the buttons open trial modes
+   - only one small difference: a slim "Unlock everything · £89" bar at the top of My Desk for free users, plus the "Upgrade" pill in the header
+5. **The assessment** stays free for everyone and is the main thing a new free user is nudged to do (via the score card), because it's what personalises every trial.
+6. **Sign-up:** a free account can be created either by finishing the assessment (email at the end) or by signing up directly. Both land on the same My Desk.
+7. **Payment flips the links.** After paying, return to the tool they came from (`return=`), now in full mode, with whatever they made in trial kept and carried over.
+8. **Test:** with a free account, click every menu item and every dashboard button. Each must open a working trial version personalised to that user, never a "members only" page, a 404 or Amelia's data (unless no CV, in which case the sample is labelled). Then upgrade and confirm the same clicks open the full tools.
 
 ## D. Member experience
 
@@ -133,7 +127,7 @@
    - **left:** question of the day → next fix [Do it] → progress
    - **right:** next deadlines (closed ones greyed) → saved answers count → story bank "{m} of 10 · each fact improves {n} answers" → live AMA
    - no full-width thin strips
-   - free accounts: left = her result + free tools grid; right = members-get card + AMA
+   - free accounts: identical layout; buttons open trial modes; slim "Unlock everything · £89" bar at the top
 3. **`applications.html`, 3 panes:**
    - **left:** firms and their questions (ready / gaps / closed)
    - **centre:** full-height draft editor, inline gap editing, underline = from your CV
