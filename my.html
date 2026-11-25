@@ -286,7 +286,7 @@ function mobileMemberDesk(){
 function freeDesk(){return memberDesk();}
 function dashboardQuickTools(){
  const C=window.DeskToolLinks;
- return '<section class="dashboard-quick-tools" aria-label="Quick tools">'+[['interview','Interview coach','Build and practise an answer from your own experience.','Practise an answer'],['assessment','Assessment centre','Prepare for the group exercise, case study and inbox.','Prepare for the day'],['application','Application help','Build firm-specific answers from your CV.','Work on an application']].map(([key,title,copy,cta])=>`<article class="card"><h3>${title}</h3><p class="mute">${copy}</p><a class="btn" href="${esc(C.toolHref(key,D))}">${cta} →</a></article>`).join('')+'</section>';
+ return '<section class="dashboard-quick-tools" aria-label="Quick tools">'+[['interview','Interview coach','Build and practise an answer from your own experience.','Practise an answer'],['assessment','Assessment centre','Prepare for the group exercise, case study and inbox.','Prepare for the day'],['application','Application help','Build firm-specific answers from your CV.','Work on an application']].map(([key,title,copy,cta])=>`<article class="card">${!D.member?'<span class="dashboard-trial-label">Try for free</span>':''}<h3>${title}</h3><p class="mute">${copy}</p><a class="btn" href="${esc(C.toolHref(key,D))}">${cta} →</a></article>`).join('')+'</section>';
 }
 function memberDesk(){
  const free=!D.member;
