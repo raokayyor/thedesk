@@ -125,6 +125,52 @@
       - full assessment report: score + first fix unblurred, other fix headers visible, text blurred
       - one component, e.g. `TrialDoc({ open: [sectionIds], ... })`
 
+11. **Free interview trial (`/interview.html?trial=1`): phone first, simple, looks great.**
+    This is the tool people tap out of curiosity ("oh, what's this?"), so it must be impressive within 10 seconds. **Three screens max**, with no setup forms, no firm/role pickers, and none of the legacy blocks.
+
+    **Screen 0, only if they haven't done the assessment:** a clean card.
+    - "**Practise on your own CV.** Your answers are built from your free assessment: 10 mins."
+    - buttons: [Do my free assessment] (primary, `return=` here) and [Skip: just explore the tool] (secondary)
+    - **Skip** preloads **Amelia Chen's CV** (sample), with a slim label pinned at the top on every following screen: "Sample CV · Amelia Chen · Do your assessment to use yours →"
+    - **assessment done:** no Screen 0; go straight to Screen 1 with **their** CV, name and target firm (or "General" if none)
+
+    **Screen 1, the question + your answer, built:**
+    - **one preloaded question** (today's question of the day; fallback "Tell me about a time you managed competing responsibilities"), firm logo + "Barclays · Competency"
+    - Kayyor's "What they're really asking" tip, personalised, clamped to 3 lines ("more" to expand)
+    - the built answer as 4 short beats from the CV (Situation / Actions / Result / Reflection), each gap as an amber "＋" chip with question-specific options
+    - one primary button: [Practise it · 1 min]; secondary link "Type instead"
+    - phone: the question, tip and first beat are visible without scrolling
+
+    **Screen 2, answer:**
+    - big record button (mic only; camera optional and off by default on phone), "Type instead" always visible
+    - the question stays pinned at the top; "Show my answer ▾" collapsed
+    - a 60-second ring timer, nothing else
+
+    **Screen 3, result (the wow):**
+    - score big at the top with a one-word label ("Needs work" / "Getting there" / "Strong")
+    - **"Your answer, fixed":** their own words improved, the 4 beats with "changed" tags; it must use the CV + what they said; never invented
+    - **one** top fix in a sentence ("Say what *you* decided, not what the team did")
+    - primary [Try it again]: re-answering gets a fresh score, so they feel the jump
+    - then the soft fade: "Members practise all 6 {firm} questions, save their best answers and build a story bank" [Unlock · £89] (`return=` keeps this attempt)
+    - on Amelia's sample: "That was Amelia's CV. **Do your assessment** to get this on yours →" sits above the Unlock button
+
+    **Limits and states:**
+    - 3 trial runs per day (any question)
+    - after that: "You've seen what it does. Unlock the full coach · £89", showing their last fixed answer, never a blank screen
+    - mic blocked or unsupported: go straight to Type instead with no error wall
+
+    **Look:**
+    - same design tokens as the site (paper background, EB Garamond question at 26px+ on phone, Figtree body)
+    - dark question card on top, light answer area below
+    - 48px+ tap targets, no sideways scroll
+
+    **Speed:**
+    - first usable screen in under 3 seconds on phone
+    - load only the trial's scripts (not the 40-file member bundle)
+    - skeleton straight away
+
+    **Test:** at 390×844 and 1280×800, as (a) a free user with no assessment → Skip → Amelia, (b) a free user with no assessment → Do assessment → returns with their CV, and (c) a free user with an assessment. Send screenshots of each screen.
+
 ## D. Member experience
 
 1. **My Desk, phone: one screen**
