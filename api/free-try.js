@@ -1,3 +1,4 @@
+import {analysisFeedback} from '../lib/trial-analysis-feedback.mjs';
 import {trialFixedAnswer} from '../lib/trial-fixed-answer.mjs';
 import {analysisGuide} from '../lib/trial-analysis-guide.mjs';
 import {sameOrigin,sql,hash} from '../lib/report-store.mjs';
@@ -36,7 +37,7 @@ export default async function handler(req,res){
   if(req.method==='GET'){const items=['answers','story'].includes(tool)?await sql().query("SELECT tool,state FROM desk_free_tasters WHERE account_id=$1 AND completed_at IS NOT NULL ORDER BY completed_at DESC LIMIT 20",[ctx.account.id]):[];return res.json({...view,saved:saved||null,best:best||null,gaps:Object.fromEntries(Object.entries(state.gaps||{}).filter(([,f])=>f.sourceAssessment===ctx.row.id)),remaining,runs,items:items.map(x=>({tool:x.tool,result:x.state?.win?.result})).filter(x=>x.result)});}
   if(!remaining&&saved)return res.json({saved:true,win:saved,member:view.member,remaining:0,exhausted:true,sample:ctx.sample});
   const b=req.body||{},text=String(b.text||'').trim();
-  ctx.runKey=hash(JSON.stringify({tool,text,firm:b.firm,detail:b.detail,answers:b.answers,choice:b.choice,section:b.section,daily:b.daily,gaps:Object.fromEntries(Object.entries(state.gaps||{}).filter(([,f])=>f.sourceAssessment===ctx.row.id))}));
+  ctx.runKey=hash(JSON.stringify({tool,text,attemptId:typeof b.attemptId==='string'?b.attemptId.slice(0,80):undefined,firm:b.firm,detail:b.detail,answers:b.answers,choice:b.choice,section:b.section,daily:b.daily,gaps:Object.fromEntries(Object.entries(state.gaps||{}).filter(([,f])=>f.sourceAssessment===ctx.row.id))}));
   const win=await tasterRun(ctx,'win',TRIAL_RUNS,async()=>{
    if(!await useQuota('trial-run-ip:'+clientKey(req),80))throw Object.assign(Error('Please come back later. Your previous results are still here.'),{status:429});
    if(['sjt','verbal','tests'].includes(tool))return trialWin(ctx,tool,b);
@@ -47,7 +48,7 @@ export default async function handler(req,res){
     const initialEvidence=rewriteEvidence(ctx.cv),preferredOrg=initialEvidence.map(e=>e.org).find(org=>org&&org.length>4&&text.toLowerCase().includes(org.toLowerCase())),guide=analysisGuide(ctx.cv,{preferredOrg}),org=guide.source.split(/\s+[—–]\s+/)[0],facts=Object.values(state.gaps||{}).filter(f=>f.sourceAssessment===ctx.row.id&&!f.unknown&&(!preferredOrg||f.org?.toLowerCase().includes(preferredOrg.toLowerCase()))).map(f=>({text:f.answer,source:f.prompt,org,priority:3,questionScoped:true})),allEvidence=rewriteEvidence(ctx.cv,facts),selected=allEvidence.filter(e=>e.priority||e.org&&org.toLowerCase().includes(e.org.toLowerCase()));
     const feedback=immediateFeedback(score,input,selected.length?selected:allEvidence);
     const fixed=trialFixedAnswer(feedback.rewrite,guide);
-    return {title:'Your answer, fixed',before:text,parts:fixed.parts,after:fixed.text,score:feedback.overall,tag:feedback.band||'Your answer score',topFix:score.overall>=70?'Keep your specific recommendation and explain the evidence behind it.':'State the recommendation you made, why the facts supported it, and what happened next.',note:'Built from your answer and CV · fill amber gaps with your own facts. The score is for your submitted answer.'};
+    return {title:'Your answer, fixed',before:text,parts:fixed.parts,after:fixed.text,score:feedback.overall,scores:feedback.scores,fixes:analysisFeedback(text,guide),tag:feedback.band||(feedback.overall>=75?'Strong':feedback.overall>=50?'Getting there':'Needs work'),topFix:score.overall>=70?'Keep your specific recommendation and explain the evidence behind it.':'State the recommendation you made, why the facts supported it, and what happened next.',note:'Built from your answer and CV · fill amber gaps with your own facts. The score is for your submitted answer.'};
    }
    let result=trialWin(ctx,tool,b);
    if(tool==='cv'&&process.env.ANTHROPIC_API_KEY){

@@ -4,3 +4,5 @@ body.trial-hirevue-active{padding-left:0!important}body.trial-hirevue-active #fr
 
 body.trial-hirevue-active{background:#1f2a2e!important;color:#fff!important}body.trial-hirevue-active #freeTry{color:#fff!important;background:#1f2a2e!important}body.trial-hirevue-active>header{background:#1f2a2e!important;color:#fff!important}body.trial-hirevue-active>header a{color:#fff!important}
 .trial-record.trial-hirevue[hidden]{display:none!important}
+
+.trial-hv-grading{color:#d1d9d5;font-size:12px;line-height:1.45;margin:10px 0 0}.trial-hv-grading b{color:#fff;white-space:nowrap}
