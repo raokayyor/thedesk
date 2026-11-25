@@ -99,6 +99,22 @@
      - every tile opens a trial within one tap
    - Saving anything they make in explore mode asks for an email ("Save this to your Desk"), which creates the free account.
 
+10. **Trial pattern for "document" tools: full page, headers visible, text blurred. Crib sheet first.**
+    - **Crib sheet (Assessment centre → Crib sheet), trial mode:**
+      - Build **their** crib sheet as normal (their CV, their target firm).
+      - Show **the whole page**, laid out exactly like the member version.
+      - **Unblurred:** the **30-second intro** ("Tell me about yourself", 30 secs) in full, plus **every section header** on the page (e.g. "Why {firm}", "Your 3 best stories", "Numbers to quote", "Questions to ask them", "Weak spots to prepare"), so they see exactly what they'd get.
+      - **Blurred:** all body text under every other header.
+      - One button under the intro and one at the bottom: [Unlock my full crib sheet · £89] with `return=` back to this crib sheet, which then shows unblurred.
+    - **Security:** the blurred text must **not** be the real content in the page. The server sends the real text only for the unblurred parts. Blurred blocks hold placeholder text of a similar length, so nobody can unblur it in dev tools. After payment, fetch the real content.
+    - **Look:** blur about 6px, with text-shaped placeholder lines (not a grey box), so it reads as "your content is here". Headers stay crisp. No lock icons on every section; one small "Trial" label at the top.
+    - **Phone first (390×844):** the intro is fully readable in the first screen. Headers and blurred sections scroll naturally below. Sticky [Unlock · £89] bar at the bottom on phone only.
+    - **Reuse the same component for the other document-style tools:**
+      - firm pack: the overview unblurred, other headers visible, text blurred
+      - application drafts: the first draft unblurred, other question titles visible, drafts blurred
+      - full assessment report: score + first fix unblurred, other fix headers visible, text blurred
+      - one component, e.g. `TrialDoc({ open: [sectionIds], ... })`
+
 ## D. Member experience
 
 1. **My Desk, phone: one screen**
