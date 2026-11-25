@@ -211,5 +211,6 @@
       "/((?!api/).*\\.html)"
     ]
   },
-  "buildCommand": "node scripts/build-amelia-showcase.mjs --check"
+  "buildCommand": "node scripts/build-amelia-showcase.mjs --check",
+  "outputDirectory": "."
 }
