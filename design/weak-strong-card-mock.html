@@ -29,6 +29,15 @@ body{background:var(--paper);font-family:Figtree,sans-serif;color:var(--ink);pad
 mark{background:#cfe6d7;color:inherit;border-radius:3px;padding:0 2px}
 .btn{display:block;text-align:center;background:var(--ink);color:#fff;font-weight:600;font-size:15px;border-radius:10px;padding:13px;margin-top:14px;text-decoration:none}
 .note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
+.row-h{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 10px}
+.row-h b{font-family:'EB Garamond',serif;font-size:20px;font-weight:600}
+.row-h span{font-size:12px;color:var(--muted)}
+.swipe{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px}
+.tile{flex:0 0 132px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.ic{width:34px;height:34px;border-radius:9px;background:#ece6dd;display:flex;align-items:center;justify-content:center;font-size:17px}
+.tile h4{font-family:'EB Garamond',serif;font-size:17px;font-weight:600;margin:10px 0 3px;line-height:1.1}
+.tile p{font-size:12px;color:var(--muted);line-height:1.35;min-height:32px}
+.tr{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--accent);margin-top:8px}
 </style></head><body>
 <div class="k">Amelia's answer, weak → strong · Sample</div>
 <div class="card">
@@ -53,4 +62,4 @@ mark{background:#cfe6d7;color:inherit;border-radius:3px;padding:0 2px}
   <a class="btn" href="#">Make mine strong →</a>
   <div class="note">Built from Amelia's CV. Yours uses your own.</div>
 </div>
-</body></html>
+<div class="row-h"><b>Try the tools</b><span>on Amelia's CV · swipe →</span></div><div class="swipe"><div class="tile"><div class="ic">🎙</div><h4>Interview</h4><p>One question, fixed answer + score</p><span class="tr">TRIAL →</span></div><div class="tile"><div class="ic">📄</div><h4>Crib sheet</h4><p>Her one-page brief for Barclays</p><span class="tr">TRIAL →</span></div><div class="tile"><div class="ic">🏦</div><h4>Why this firm</h4><p>A Barclays opening, drafted</p><span class="tr">TRIAL →</span></div><div class="tile"><div class="ic">✏️</div><h4>CV line fix</h4><p>One weak line, rewritten</p><span class="tr">TRIAL →</span></div><div class="tile"><div class="ic">🧮</div><h4>Tests</h4><p>5 questions, your result</p><span class="tr">TRIAL →</span></div><div class="tile"><div class="ic">👥</div><h4>Group exercise</h4><p>A 3-minute round</p><span class="tr">TRIAL →</span></div></div></body></html>

@@ -194,7 +194,14 @@
     - Button [Make mine strong →] opens the interview trial on the same question. Small note: "Built from Amelia's CV. Yours uses your own."
     - **Real output only:** run Amelia's weak answer and the fixed answer through the actual scorer and rewrite, and store both lines, both scores and the change chips. Never hard-code 55/72 or the wording. Strong-line facts must be from her CV. Re-run if the scorer changes.
     - Meters animate weak → strong once when the card scrolls into view.
-    - Explore order: hero → this card → Closing soon → AMA. Question of the day is removed from explore and returns after the assessment.
+    - **"Try the tools" swipe row directly under it** (mock in the same file): heading "Try the tools", hint "on Amelia's CV · swipe →".
+      - one horizontal row of 6 compact tiles, about 130px wide: Interview · Crib sheet · Why this firm · CV line fix · Tests · Group exercise
+      - each tile: icon + name + one line + "TRIAL →"
+      - scroll-snap, the 3rd tile partly visible so it's obviously swipeable, 16px inset on the first tile (not touching the screen edge)
+      - each tile opens that tool's trial
+      - one row only (about 150px tall), never a vertical stack
+      - laptop: the same 6 tiles as a 3×2 grid
+    - Explore order: hero → weak → strong card → Try the tools (swipe) → Closing soon → AMA. Question of the day is removed from explore and returns after the assessment.
 
 ## D. Member experience
 
