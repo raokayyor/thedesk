@@ -298,8 +298,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 44px;font-size:13px;color
 
   <section class="final" aria-labelledby="c6">
     <h2 id="c6">Find out what the recruiter will see. Then fix it.</h2>
-    <a class="cta" href="/assessment-start.html" id="cta2">Start my free review →</a>
-    <div class="small">Free · no card</div>
+    <a class="cta" href="/my.html?explore=1" id="cta2">Explore more →</a>
   </section>
 </div>
 <footer><div class="wrap">
@@ -361,15 +360,15 @@ document.getElementById('people').innerHTML = `<div class="people-proof-row"><di
   roundDots.forEach((dot,i)=>dot.addEventListener('click',e=>{e.preventDefault();roundRow.scrollTo({left:roundRow.children[i].offsetLeft-roundRow.children[0].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}));
   roundRow.addEventListener('scroll',()=>{const step=roundRow.children[1].offsetLeft-roundRow.children[0].offsetLeft,index=Math.min(4,Math.round(roundRow.scrollLeft/step));roundDots.forEach((dot,i)=>{if(i===index)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current');});},{passive:true});
   const ROUTES = [['ib', 'Investment banking', 'investment banking'], ['markets', 'Sales & trading', 'markets'], ['am', 'Asset management', 'asset management'], ['pe', 'Private equity', 'private equity'], ['corporate', 'Corporate banking', 'corporate banking'], ['big4', 'Big Four & accounting', 'Big Four'], ['insurance', 'Insurance', 'insurance'], ['unsure', 'Not sure yet', '']];
-  const chips = document.getElementById('chips'), cta = document.getElementById('cta'), cta2 = document.getElementById('cta2');
+  const chips = document.getElementById('chips'), cta = document.getElementById('cta');
   chips.innerHTML = ROUTES.map(([k, l]) => `<button type="button" aria-pressed="false" data-k="${k}">${l.replace('&', '&amp;')}</button>`).join('');
-  matchMedia('(max-width:699px)').addEventListener('change',e=>{if(e.matches){cta.href=document.body.dataset.homeTarget||'/assessment-start.html';cta2.href=document.body.dataset.homeTarget||'/assessment-start.html';document.getElementById('round-cta').href=document.body.dataset.homeTarget||'/assessment-start.html';}});
+  matchMedia('(max-width:699px)').addEventListener('change',e=>{if(e.matches){cta.href=document.body.dataset.homeTarget||'/assessment-start.html';document.getElementById('round-cta').href=document.body.dataset.homeTarget||'/assessment-start.html';}});
   chips.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     const r = ROUTES.find(x => x[0] === b.dataset.k);
     const href = '/assessment-start.html' + (matchMedia('(min-width:1024px)').matches && r[0] !== 'unsure' ? '?route=' + r[0] : '');
-    cta.href = document.body.dataset.homeTarget||href; cta2.href = document.body.dataset.homeTarget||href; document.getElementById('round-cta').href = document.body.dataset.homeTarget||href; redpen(r[0]);
+    cta.href = document.body.dataset.homeTarget||href; document.getElementById('round-cta').href = document.body.dataset.homeTarget||href; redpen(r[0]);
     document.getElementById('for').textContent = r[2] ? 'We’ll tailor your feedback to ' + r[2] + '.' : 'We’ll help you find your route as you go.';
   });
 })();
