@@ -317,7 +317,7 @@ function render(){
     ${!D.member&&!D.explore&&(!D.signedIn||D.report)?`<div class="entry-account-actions" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0 20px">${!D.signedIn?'<a class="btn hot" href="/assessment-start.html">Get my free assessment</a><a class="btn ghost" href="/signin.html">Log in</a>':''}<a class="btn ghost" href="/signup.html?plan=member">Explore membership →</a></div>`:''}
     <div class="dashboard-desktop-detail tier-dashboard-main">${!D.member&&qp.has('assessment')?'<div class="notice" role="status">Your free assessment is ready. Your score and result are saved below.</div>':''}${memberDesk()}</div>`;
 
-  bind();if(D.explore)loadExploreDeadline();document.dispatchEvent(new Event('desk:render'));if(!D.explore&&(D.member||D.report)&&matchMedia('(min-width:600px)').matches){loadNews();loadCommunityActivity();bindSnapshot();}
+  bind();if(D.explore){loadExploreDeadline();loadNews();}document.dispatchEvent(new Event('desk:render'));if(!D.explore&&(D.member||D.report)&&matchMedia('(min-width:600px)').matches){loadNews();loadCommunityActivity();bindSnapshot();}
   if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}
 }
 let PROGS=null;
