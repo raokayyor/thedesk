@@ -119,5 +119,22 @@
       "structure": 72
     },
     "line": "I researched 12 UK software companies for a prospective acquisition screen. I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
-  }
+  },
+  "changes": [
+    {
+      "label": "+ the numbers",
+      "fixTitle": "Show what you personally did",
+      "evidence": "I researched 12 UK software companies for a prospective acquisition screen."
+    },
+    {
+      "label": "+ what you decided",
+      "fixTitle": "Defend your recommendation",
+      "evidence": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
+    },
+    {
+      "label": "+ why",
+      "fixTitle": "Defend your recommendation",
+      "evidence": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
+    }
+  ]
 }

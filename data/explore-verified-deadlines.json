@@ -1,0 +1,8 @@
+{
+  "checked": "2026-11-25",
+  "programmes": [
+    {"firm":"Barclays","name":"Technology Developer Graduate · Northampton","sector":"bb","status":"open","closes":"2026-11-27","url":"https://search.jobs.barclays/en/job/northampton/2027-technology-developer-graduate-programme-northampton/13015/100411086896","source":"Employer listing explicitly states 27 November 2026; may close early."},
+    {"firm":"Lloyds Banking Group","name":"Data Science & AI Graduate · Manchester","sector":"uk","status":"open","closes":"2026-11-29","url":"https://lbg.wd3.myworkdayjobs.com/Graduate_careers/job/Manchester/Data-Science---AI-Graduate-Scheme--Manchester-_163346-1","source":"Employer listing description states Sunday 29 November 2026; used ahead of the Workday next-day expiry field."},
+    {"firm":"HSBC","name":"Relationship Management Internship · Reading","sector":"bb","status":"open","closes":"2026-11-29","url":"https://www.hsbc.com/careers/students-and-graduates/find-a-programme","source":"Employer programme finder states 29 November 2026 for the UK Reading internship."}
+  ]
+}
