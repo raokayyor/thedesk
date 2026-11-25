@@ -3,3 +3,4 @@ body.trial-hirevue-active{background:#1f2a2e;color:#fff;padding-bottom:0!importa
 body.trial-hirevue-active{padding-left:0!important}body.trial-hirevue-active #freeTry{margin:0 auto!important;width:100%;min-width:0}
 
 body.trial-hirevue-active{background:#1f2a2e!important;color:#fff!important}body.trial-hirevue-active #freeTry{color:#fff!important;background:#1f2a2e!important}body.trial-hirevue-active>header{background:#1f2a2e!important;color:#fff!important}body.trial-hirevue-active>header a{color:#fff!important}
+.trial-record.trial-hirevue[hidden]{display:none!important}
