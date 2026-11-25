@@ -8,11 +8,11 @@ Phone Explore: hero, weak/strong sample showcase, Closing soon, AMA. Desktop ret
 Scorer fingerprint is verified by scripts/build-amelia-showcase.mjs --check (Vercel build command). To refresh after scorer changes, deploy changed scorer first using a temporary approved deployment workflow, run generator against that scorer with SHOWCASE_BASE_URL, commit refreshed scores, then publish. Never invent scores.
 
 ## Validation
-4 showcase tests and 7 shared-dashboard tests passed. Live scorer run completed. Deployment and phone screenshot verification pending at time of this commit; check Vercel latest deployment before claiming live.
+4 showcase tests and 7 shared-dashboard tests passed. Live scorer run completed. Published and verified: implementation commit ac1b67f; deployment dpl_APMkhv1xnVdDqBy8mie9nfydJTYs READY and aliased to thedesk.vercel.app. At 390x844 showcase height494px, no horizontal overflow, animation revealed, no QOTD. CTA tested through CV choice to fixed analysis question. At1280x800 all three desktop tool cards remain. Proof screenshots are on original PC under Documents/Codex/output/free-flow-polish-25nov/amelia-weak-strong-phone.jpg and explore-showcase-full-phone.jpg. User approved public GitHub/site publication of illustrative transcripts and scores.
 
 ## Preserved work
 Full member-style Explore dashboard restored after unwanted simplification. Three cards: Interview coach, Assessment centre, Application help. Interview help, news/AMA row, Community retained on desktop. Hero sample-report link spacing fixed.
 Crib: Use own CV or sample; dropdown Barclays available, other firms grey Member. Amelia saved Barclays sample full and PDF; own free document introduction only, remaining placeholder blur.
 
 ## Outstanding
-Check latest showcase at 390x844 and desktop; ensure CTA opens fixed analysis-question trial. Real iPhone microphone not physically verified. Newsflow source rebuild and seven-day Marketaux pilot are not complete. Do not claim those done.
+Real iPhone microphone not physically verified. Newsflow source rebuild and seven-day Marketaux pilot are not complete. Do not claim those done.
