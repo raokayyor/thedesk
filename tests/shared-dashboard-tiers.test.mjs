@@ -21,6 +21,6 @@ test('explore has no student identity while sample tool context stays available'
  for(const member of [false,true])assert.match(greeting({...d,explore:false,signedIn:true,member,profile:{firstName:'James'}}),/<h1>Morning, James\.<\/h1>/);
 });
 
-test('score leads the shared dashboard and free upgrade sits before the daily question',()=>{
- for(const member of [false,true]){const output=dashboard(member,false).output;assert.ok(output.indexOf('Get your score: 10 mins')<output.indexOf('id="memberDailySlot"'));if(!member){assert.ok(output.indexOf('Get your score: 10 mins')<output.indexOf('Unlock full membership'));assert.ok(output.indexOf('Unlock full membership')<output.indexOf('id="memberDailySlot"'));}else assert.doesNotMatch(output,/Unlock full membership/);}
+test('score leads the shared dashboard and free upgrade follows Community',()=>{
+ for(const member of [false,true]){const output=dashboard(member,false).output;assert.ok(output.indexOf('Get your score: 10 mins')<output.indexOf('id="memberDailySlot"'));if(!member){assert.ok(output.indexOf('Open the forum')<output.indexOf('Unlock full membership'));}else assert.doesNotMatch(output,/Unlock full membership/);}
 });
