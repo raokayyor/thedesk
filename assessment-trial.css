@@ -1,0 +1,5 @@
+/* The member hub layout stays shared; these previews apply only to server-selected trials. */
+body[data-trial-hub="1"] [aria-labelledby="exH"] .ex:nth-child(n+2) dd:last-child,
+body[data-trial-hub="1"] #rubric tr:nth-child(n+3) td,
+body[data-trial-hub="1"] .check li:nth-child(n+3){filter:blur(5px);user-select:none;pointer-events:none}
+body[data-trial-hub="1"] section.grid3>.tool:nth-child(-n+2)::before{content:"Try for free";display:block;color:#d44b20;font:700 11px/1.4 "DM Sans",Arial,sans-serif}
