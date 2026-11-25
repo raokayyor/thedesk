@@ -41,3 +41,5 @@ Latest release bd07bd9 (dpl_CsWtcaGwiTFeGXJQdjh2XDjW8cAp READY, production alias
 - 31 focused tests pass; scorer fingerprint unchanged. Local phone UI verified at390×844 (aims fits screen, Barclays personalised CV and bottom nav visible). Deployment and final production evidence recorded in chat.
 
 Deadline follow-up: official Deutsche Bank UK application table confirms 2027 RISE Investment Banking & Capital Markets closes29Nov2026; saved as the eligible front-office seed. Removed the three tech/data/relationship-management seeds. Source https://careers.db.com/students-graduates/your-application/ . Show only verified eligible rows, even fewer than three. Final focused suite45pass.
+
+Production verification: e981ed49241603e2f0fe3163e7c60ce055844afb READY, deployment dpl_5i1T2ZELPiYugWRKL1R5Zz7Fwszp, alias thedesk.vercel.app. Browser verified persisted target API ib/Barclays, personalised CV Step2 + bottom toolbar, full-width Explore CTA, collapsed proof on reload,5segments/5px,12px chips/3px9px, no viewport overflow. Live closing row Deutsche Bank RISE Investment Banking & Capital Markets4days. Homepage bottom CTA and pricing copy verified.
