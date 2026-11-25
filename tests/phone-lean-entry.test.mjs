@@ -9,3 +9,6 @@ test('email handoff validates consent and never logs in the person typing an exi
 
 
 test('routing middleware intercepts existing files before their legacy scripts run',async()=>{const {default:proxy}=await import('../entry-proxy.js');for(const file of ['interview.html','application-help.html','ac-crib.html','crib-sheet.html']){const response=proxy(new Request('https://desk.test/'+file+'?trial=1'));const target=new URL(response.headers.get('x-middleware-rewrite'));assert.equal(target.pathname,'/api/tool-entry');assert.equal(target.searchParams.get('file'),file);}assert.match(proxy(new Request('https://desk.test/try.html?taster=interview')).headers.get('x-middleware-rewrite'),/api\/legacy-entry/);assert.equal(proxy(new Request('https://desk.test/index.html')).headers.get('x-middleware-next'),'1');});
+
+
+test('the preloaded application sample is repeatable and keeps unknown personal motivation as a gap',async()=>{const {AMELIA_APPLICATION_SAMPLE:sample}=await import('../data/amelia-application-answer.mjs');const text=sample.parts.filter(p=>!p.gap).map(p=>p.text).join(' ');assert.match(text,/Redcliffe Partners/);assert.match(text,/12 UK software companies/);assert.match(text,/4 companies/);assert.equal(sample.parts.filter(p=>p.gap).length,1);assert.doesNotMatch(text,/Mandarin|associate took 2|live investment/);});
