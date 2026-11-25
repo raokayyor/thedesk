@@ -133,7 +133,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     $('build').textContent='Build the example sheet';
     $('build').replaceWith($('build').cloneNode(true));
     $('build').onclick=()=>{render(example,k);$('build').textContent='Example sheet ready';$('sheet').querySelector('.foot').textContent='Sample CV · only Amelia’s documented facts are used. The two evidence gaps are left visible. Firm guidance is independent preparation material; check your programme invitation.';};
-    const banner=document.createElement('aside');banner.className='card no-print';banner.innerHTML='<b>Free access · one preloaded example</b><p>Build sheets for your own experience and any firm with membership.</p><a class="btn" href="/signup.html?plan=member">Unlock the tools · £89 a year →</a> <a href="/try.html">Back to your trial Desk</a>';document.querySelector('main').append(banner);
+    const banner=document.createElement('aside');banner.className='card no-print';banner.innerHTML='<b>Free access · one preloaded example</b><p>Build sheets for your own experience and any firm with membership.</p><a class="btn" href="/signup.html?plan=member">Unlock the tools · £89 a year →</a> <a href="/my.html?explore=1">Back to your trial Desk</a>';document.querySelector('main').append(banner);
     return;
   }
   const wanted = new URLSearchParams(location.search).get('firm');

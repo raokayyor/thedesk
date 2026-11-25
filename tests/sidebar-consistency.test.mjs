@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import '../member-dashboard-core.js';
+import '../lib/tool-links.mjs';import '../member-dashboard-core.js';
 import '../desk-navigation-core.js';
 test('the grouped member sidebar is the only desktop sidebar for either tier',()=>{
  const nav=readFileSync(new URL('../desk-nav.js',import.meta.url),'utf8');
@@ -14,8 +14,8 @@ test('the grouped member sidebar is the only desktop sidebar for either tier',()
 });
 test('the same sidebar sends free accounts to a trial and members to the full interview',()=>{
  const core=globalThis.DeskNavigationCore;
- assert.equal(core.href('interview',{signedIn:true,member:false}),'/free-try.html?tool=interview');
+ assert.equal(core.href('interview',{signedIn:true,member:false}),'/interview.html?trial=1');
  assert.equal(core.href('interview',{signedIn:true,member:true}),'/interview-start.html');
- assert.equal(core.href('crib',{signedIn:true,member:false}),'/free-try.html?tool=crib');
+ assert.equal(core.href('crib',{signedIn:true,member:false}),'/ac-crib.html?trial=1');
  assert.equal(core.href('crib',{signedIn:true,member:true}),'/ac-crib.html');
 });

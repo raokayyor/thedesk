@@ -1,3 +1,5 @@
+import {exploreDesk} from '../lib/explore-desk.mjs';
+import {currentAccount} from '../lib/accounts.mjs';
 import {firmLimit} from '../lib/tier-journey.mjs';
 import {prepProgress} from '../lib/prep-progress.mjs';
 import {deepFor,initDeep} from '../lib/deep-assessment.mjs';
@@ -136,6 +138,11 @@ async function items(p, kinds, limit = 200) {
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
+    if(req.method==='GET'&&!req.query?.view&&!await currentAccount(req)){
+     const browser=owner(req,res);if(!browser)return res.json(await exploreDesk());
+     await initStore();const own=(await sql().query('SELECT 1 FROM desk_assessments d WHERE d.owner_hash=$1 AND NOT EXISTS(SELECT 1 FROM desk_account_assessments a WHERE a.assessment_id=d.id) LIMIT 1',[browser]))[0];
+     if(!own)return res.json(await exploreDesk());
+    }
     await initStore();
     const p = await A.principal(req, res);
     const paid = await A.isPaidOwner(p);

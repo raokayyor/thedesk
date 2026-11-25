@@ -47,6 +47,12 @@
     },
     "api/programmes-cron.js": {
       "maxDuration": 300
+    },
+    "api/tool-entry.js": {
+      "includeFiles": "*.html"
+    },
+    "api/desk-home.js": {
+      "includeFiles": "samples/amelia-report-v3-preview.json"
     }
   },
   "crons": [
@@ -69,6 +75,100 @@
   ],
   "rewrites": [
     {
+      "source": "/try.html",
+      "destination": "/api/legacy-entry"
+    },
+    {
+      "source": "/:page([^/]+\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "taster"
+        }
+      ],
+      "destination": "/api/legacy-entry?path=:page"
+    },
+    {
+      "source": "/crib-sheet.html",
+      "destination": "/api/tool-entry?file=crib-sheet.html"
+    },
+    {
+      "source": "/members-only.html",
+      "destination": "/api/tool-entry?file=members-only.html"
+    },
+    {
+      "source": "/interview.html",
+      "destination": "/api/tool-entry?file=interview.html"
+    },
+    {
+      "source": "/interview-start.html",
+      "destination": "/api/tool-entry?file=interview-start.html"
+    },
+    {
+      "source": "/tests.html",
+      "destination": "/api/tool-entry?file=tests.html"
+    },
+    {
+      "source": "/practice-tests.html",
+      "destination": "/api/tool-entry?file=practice-tests.html"
+    },
+    {
+      "source": "/applications.html",
+      "destination": "/api/tool-entry?file=applications.html"
+    },
+    {
+      "source": "/application-help.html",
+      "destination": "/api/tool-entry?file=application-help.html"
+    },
+    {
+      "source": "/cv.html",
+      "destination": "/api/tool-entry?file=cv.html"
+    },
+    {
+      "source": "/cv-editor.html",
+      "destination": "/api/tool-entry?file=cv-editor.html"
+    },
+    {
+      "source": "/assessment-centre.html",
+      "destination": "/api/tool-entry?file=assessment-centre.html"
+    },
+    {
+      "source": "/group-exercise.html",
+      "destination": "/api/tool-entry?file=group-exercise.html"
+    },
+    {
+      "source": "/case-study.html",
+      "destination": "/api/tool-entry?file=case-study.html"
+    },
+    {
+      "source": "/inbox-exercise.html",
+      "destination": "/api/tool-entry?file=inbox-exercise.html"
+    },
+    {
+      "source": "/ac-crib.html",
+      "destination": "/api/tool-entry?file=ac-crib.html"
+    },
+    {
+      "source": "/firm-interview-guides.html",
+      "destination": "/api/tool-entry?file=firm-interview-guides.html"
+    },
+    {
+      "source": "/saved-answers.html",
+      "destination": "/api/tool-entry?file=saved-answers.html"
+    },
+    {
+      "source": "/your-story.html",
+      "destination": "/api/tool-entry?file=your-story.html"
+    },
+    {
+      "source": "/library.html",
+      "destination": "/api/tool-entry?file=library.html"
+    },
+    {
+      "source": "/practitioners.html",
+      "destination": "/api/tool-entry?file=practitioners.html"
+    },
+    {
       "source": "/lib/aptitude-practice-extra.mjs",
       "destination": "/api/aptitude-practice?view=blocked"
     },
@@ -79,10 +179,6 @@
     {
       "source": "/lib/reasoning-practice-data.mjs",
       "destination": "/api/aptitude-practice?view=blocked"
-    },
-    {
-      "source": "/library.html",
-      "destination": "/api/member-library?asset=library"
     },
     {
       "source": "/video-library.html",

@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       if(account.signupPlan==='student-test')res.setHeader('Set-Cookie',`desk_owner=${randomBytes(32).toString('hex')}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.VERCEL?'; Secure':''}`);
       await startSession(res, account.id);
       if(account.signupPlan==='student-test')return res.json({success:true,next:testerActivated?'/my.html?testing=1':'/tester-access.html?notice=invitation-unavailable'});
-      return res.json({ success: true, next:account.signupPlan==='paid'?'/membership-start.html':'/my.html' });
+      return res.json({ success: true, next:account.loginNext||(account.signupPlan==='paid'?'/membership-start.html':'/my.html') });
     }
     if (body.action === 'signout') { await endSession(req, res); return res.json({ success: true }); }
     if (body.action === 'staff-link') {

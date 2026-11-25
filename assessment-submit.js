@@ -5,7 +5,7 @@ async function uploadCv(){
  const status=document.getElementById('uploadStatus'),file=document.getElementById('cvFile').files[0];if(!file)return;
  document.getElementById('cvFileReceipt').hidden=true;const generation=++cvReadGeneration;status.classList.remove('cv-upload-ready');cvReadController?.abort();window.deskCvUploadBusy=false;document.getElementById('cvContinue').disabled=false;
  if(file!==loadedCvFile)document.getElementById('cvText').value='';
- if(!document.getElementById('processingConsent').checked){pendingCv=true;status.textContent='File selected: '+file.name+'. Tick the consent box above and we will read it automatically.';return}
+ if(!document.getElementById('processingConsent').checked){pendingCv=true;status.textContent='File selected: '+file.name+'. Tick the consent box and we will read it automatically.';return}
  pendingCv=false;if(file.size>2*1024*1024){status.textContent='Choose a CV smaller than 2 MB.';return}if(!/\.(pdf|docx|txt)$/i.test(file.name)){status.textContent='Choose PDF, Word (.docx) or text (.txt).';return}
  const controller=new AbortController();cvReadController=controller;const form=new FormData();form.append('cvFile',file);form.append('consent','true');window.deskCvUploadBusy=true;document.getElementById('cvContinue').disabled=true;status.classList.remove('cv-upload-ready');status.textContent='Reading '+file.name+'…';
  const timeout=setTimeout(()=>controller.abort(),45000);

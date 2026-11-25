@@ -133,7 +133,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
 </script>
 <script>
 if(new URLSearchParams(location.search).get('trial')==='1'){
- const notice=document.createElement('aside');notice.className='card';notice.innerHTML='<div class="kicker">Free access · try the member tools</div><h2>One crib sheet is yours to try.</h2><p>Use Jamie’s preloaded CV to build a J.P. Morgan sheet. Full group discussions, case studies and inbox practice open with membership.</p><a class="btn" href="/ac-crib.html?trial=1">Try the crib sheet →</a> <a href="/try.html">Back to your trial Desk</a>';document.querySelector('main').prepend(notice);
+ const notice=document.createElement('aside');notice.className='card';notice.innerHTML='<div class="kicker">Free access · try the member tools</div><h2>One crib sheet is yours to try.</h2><p>Use Jamie’s preloaded CV to build a J.P. Morgan sheet. Full group discussions, case studies and inbox practice open with membership.</p><a class="btn" href="/ac-crib.html?trial=1">Try the crib sheet →</a> <a href="/my.html?explore=1">Back to your trial Desk</a>';document.querySelector('main').prepend(notice);
  document.querySelectorAll('a[href="/group-exercise.html"],a[href="/case-study.html"],a[href="/inbox-exercise.html"]').forEach(a=>{a.href='/signup.html?plan=member';a.textContent='Unlock with membership →';});
  document.querySelectorAll('a[href="/ac-crib.html"]').forEach(a=>a.href='/ac-crib.html?trial=1');
  const crib=document.getElementById('cribLink');crib.href='/ac-crib.html?trial=1';crib.textContent='Build the free example';document.getElementById('firm').disabled=true;

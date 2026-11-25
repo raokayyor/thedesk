@@ -1,0 +1,15 @@
+@media(max-width:900px){
+ html.phone-cv-first:not(.phone-cv-ready) #s1{display:none}html.phone-cv-first:not(.phone-cv-ready) #s2{display:block}
+ html.phone-cv-first #s2 h2{font-size:36px;margin:8px 0 12px}
+ html.phone-cv-first #s2 .sub{font-size:16px;line-height:1.45;margin:0 0 24px;max-width:30ch}
+ html.phone-cv-first #s2 .privacy-note{display:none}
+ html.phone-cv-first #s2 .cv-dropzone{background:#1f2a2e;color:#fff;border:0;padding:17px 20px;border-radius:8px;min-height:56px;display:flex;justify-content:center}
+ html.phone-cv-first #s2 .cv-dropzone strong{font:700 16px Figtree,Arial,sans-serif}
+ html.phone-cv-first #s2 .cv-methods{margin:14px 0 0}
+ html.phone-cv-first #s2 #chooseCvPaste,html.phone-cv-first .cv-email-link{display:block;background:none;color:#1f2a2e;border:0;padding:10px 0;font:400 14px Figtree,Arial,sans-serif;text-decoration:underline;text-underline-offset:3px;text-align:left}
+ html.phone-cv-first #s2:not(.cv-selected) .cv-consent,html.phone-cv-first #s2:not(.cv-ready) .actions{display:none}html.phone-cv-first #s2:not(.cv-ready)>.card>.quiet{display:none}
+ html.phone-cv-first #s2 #uploadStatus:empty{display:none}
+ html.phone-cv-first #s2 .cv-consent>.quiet{display:none}
+ #resumeEmailSheet{border:1px solid #ddd7cf;border-radius:18px 18px 0 0;padding:24px;max-width:520px;width:100%;max-height:90dvh;margin:auto auto 0;color:#1f2a2e;background:#fbfaf7}
+ #resumeEmailSheet::backdrop{background:#1f2a2e77}#resumeEmailSheet h2{font-size:28px;margin:18px 0 12px}#resumeEmailSheet input[type=email]{width:100%;margin:8px 0 16px;min-height:48px}#resumeEmailSheet .resume-email-consent{display:flex;gap:10px;font-size:13px;margin:0 0 18px}#resumeEmailSheet input[type=checkbox]{width:20px;min-height:20px;flex-shrink:0}
+}

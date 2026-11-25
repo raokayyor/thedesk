@@ -2,7 +2,7 @@ if(!document.querySelector('script[data-testing-analytics]')){const tracker=docu
 // Shared grouped navigation; access stays enforced by the existing APIs.
 (function(){
  if(window.DeskNavigation)return;
- const dates=document.createElement('script');dates.src='/member-dashboard-core.js';dates.onload=()=>{const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=boot;document.head.append(core);};document.head.append(dates);
+ const dates=document.createElement('script');dates.src='/member-dashboard-core.js';dates.onload=()=>{const core=document.createElement('script');core.src='/desk-navigation-core.js';core.onload=()=>import("/lib/tool-links.mjs").then(boot);document.head.append(core);};document.head.append(dates);
  const css=document.createElement('link');css.rel='stylesheet';css.href='/desk-navigation.css';document.head.append(css);
  let data={},root,account,fetchVersion=0;
  window.DeskNavigation={refresh(){const version=++fetchVersion;return fetch('/api/desk-home',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)}).then(r=>r.ok?r.json():null).then(d=>{if(d&&version===fetchVersion){data=d;try{sessionStorage.setItem('desk-navigation-cache',JSON.stringify(d))}catch{}if(root)draw();document.dispatchEvent(new CustomEvent('desk:navigationready',{detail:d}));}return d;}).catch(()=>null);},update(d){data=d||{};if(root)draw();},get data(){return data}};
@@ -30,7 +30,7 @@ if(!document.querySelector('script[data-testing-analytics]')){const tracker=docu
  }
  function draw(){
   const C=window.DeskNavigationCore,p=new URLSearchParams(location.search),active=location.pathname==='/desk-section.html'?p.get('view'):C.groupFor(location.pathname);
-  root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?(!data.signedIn&&sessionStorage.getItem('desk-public-trial')==='1'?'/try.html':'/my.html'):g.id==='cv'?C.href('cv',data):g.id==='assessment'?'/assessment-centre.html':'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+(g.id==='desk'?'My Desk':g.label)+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a '+''+'href="'+esc(C.href(key,data))+'">'+esc(title)+''+'</a>').join('')+'</div></section>';}).join('')+'</div>';
+  root.innerHTML='<a class="desk-side-logo" href="/my.html">The Desk</a><div class="desk-groups">'+C.groups.map(g=>{const url=g.id==='desk'?(!data.signedIn&&sessionStorage.getItem('desk-public-trial')==='1'?'/my.html?explore=1':'/my.html'):g.id==='cv'?C.href('report',data):g.id==='assessment'?'/assessment-centre.html':'/desk-section.html?view='+g.id;return '<section class="desk-nav-group"><a class="desk-group-link" href="'+url+'"'+(active===g.id?' aria-current="page"':'')+'>'+icon(g.icon)+'<span>'+(g.id==='desk'?'My Desk':g.label)+'</span>'+(g.id==='community'&&data.community?.unread>0?'<i class="desk-reply-dot" aria-label="New replies"></i>':'')+'</a><div class="desk-group-items">'+g.items.map(([key,title])=>'<a '+''+'href="'+esc(C.href(key,data))+'">'+esc(title)+''+'</a>').join('')+'</div></section>';}).join('')+'</div>';
   if(location.pathname==='/my.html'){
    const header=document.querySelector('header .hin'),university=data.profile?.university||'';
    let label=document.getElementById('desk-university');
@@ -41,3 +41,5 @@ if(!document.querySelector('script[data-testing-analytics]')){const tracker=docu
   account.textContent=(data.profile?.name||data.profile?.firstName||'').split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join('').toUpperCase()||'•';account.setAttribute('aria-label',data.signedIn?'Account for '+(data.profile?.name||'you'):'Log in or create an account');window.DeskNavigation.icon=icon;
  }
 })();
+
+document.addEventListener('desk:linksready',()=>{if(window.DeskNavigation?.data)window.DeskNavigation.update(window.DeskNavigation.data);});
