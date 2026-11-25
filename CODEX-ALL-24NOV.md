@@ -191,6 +191,7 @@
     - **Weak box** (soft red): "✗ Weak · first try", score, her weak answer line, a 5-segment strength meter (2 filled, red).
     - **Connector:** a red→green arrow with 3 chips naming what changed ("+ the numbers", "+ what *you* decided", "+ why"), taken from the fix's change list.
     - **Strong box** (soft green): "✓ Strong · after the fix", score, the fixed line with the added facts highlighted, meter (4 filled, green).
+    - **Tap to reveal (keeps it short):** by default show only the question + the weak box (score, line, red meter) + a dashed button "See it fixed ↓". Tapping it slides in the change chips and the strong box (score animates up, green meter fills), then the link line. Collapsed it's about 40% of a phone screen. Remember the open state for the session.
     - **No button on the card.** One small text line under it: "Sample built from Amelia's CV. **Find the weak lines in yours →**", linking to the free assessment (step 1). The card is proof; the hero and the tools row are the actions.
     - **Real output only:** run Amelia's weak answer and the fixed answer through the actual scorer and rewrite, and store both lines, both scores and the change chips. Never hard-code 55/72 or the wording. Strong-line facts must be from her CV. Re-run if the scorer changes.
     - Meters animate weak → strong once when the card scrolls into view.
