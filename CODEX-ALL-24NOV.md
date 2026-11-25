@@ -266,3 +266,40 @@ Test as three users: **signed out**, **free** (a fresh assessment completed on a
 5. **Applications:** the J.P. Morgan "Why J.P. Morgan" draft, on phone and in the 3-pane laptop layout.
 6. **Library:** the story bank first screen and saved answers.
 7. **Load times:** each free try and the interview, on throttled "Fast 4G".
+
+## H. Free assessment result: rebuild to the v3 standard (top priority)
+
+**Live test, 25 Nov:** fresh phone run, test CV "James Patel" (Leeds, Next sales assistant, family-friend accountancy internship), IB → Barclays, both tests done. The result page (`result-final-design.html`) showed **only**:
+- "37/100 Developing"
+- one "fix" where the "after" is **identical** to the "before": *"Did data entry in Excel for client accounts"* → *"Did data entry in Excel for client accounts"*
+- "Why this fix?" = "No method, finding or output from Excel data entry"
+- an email box
+
+There's no verdict, no 3 rejection lines (promised in step 1), no test results, no breakdown and no next step. It's nowhere near Amelia's full report or `design/free-result-v3-mock.html`, which is the standard.
+
+**The free result page, phone first, in this order** (match `design/free-result-v3-mock.html`):
+1. **Verdict headline in plain English** + the score.
+   - e.g. "You'd get read, but not shortlisted yet." / "Right now you'd likely be screened out."
+   - "37/100 · Developing", with the band bar (Developing · 65 Borderline · 75 Competitive) and "Three fixes take you to about {x}" (only from the scorer's real projection; otherwise omit the number).
+2. **"This is what a screener's eye lands on"**: their CV, annotated.
+   - every line tagged red (would hurt), amber (needs a number/outcome) or green (works)
+   - one-line reason on each red/amber line
+   - phone: the first 4 lines visible, "Show my whole CV ↓"
+3. **"The 3 lines that would get you rejected", biggest first** (this is what step 1 promised). Each item has: the line, why it hurts (one sentence, specific), and points at stake.
+   - **Fix 1 shown in full** before the email box.
+   - Fixes 2–3: headers + "why" visible, the rewrite blurred until the email is given.
+4. **Your first fix, done properly:**
+   - "Your CV said" → "Stronger version" → "Why it works" (action + method + outcome)
+   - **Never invent facts.** Where a number or outcome is missing, put an amber gap inline: e.g. *"Entered and checked [＋ how many?] client accounts in Excel for a small accounting practice, [＋ what it was used for?]"*, with tap-to-fill chips
+   - **Validator:** reject any rewrite that's essentially the original (same words after removing bullets and punctuation, or a similarity of 0.85 or more). Regenerate; if it fails again, use the gap-template fallback. **Never show before = after.**
+5. **Your tests:** numerical x/5, commercial x/5, the topics missed (e.g. "Enterprise value", "EV/EBITDA vs P/E"), and one worked answer free.
+6. **A practitioner's read** (Kayyor tip style): one paragraph on what a banker sees in *this* CV, grounded in its actual lines. Approved template wording only.
+7. **Email box** ("Your other 2 fixes and your free tools are ready. Where should we send them?") **comes after points 1–6**, not before them.
+8. **What happens next:** "Go from 37 to about {x}" with what the free tools do vs what the £89 unlocks (all lines fixed, interview, applications, plan). One [Unlock everything · £89] and one "See a full sample report →".
+
+**Quality bar for the free result (test before shipping):**
+- Run 5 test CVs: strong (Amelia), average, weak (James Patel), career-changer, no experience.
+- For each: the verdict reads true; the 3 lines are the right ones; every rewrite is materially different and invents nothing; the gaps ask for the missing facts; the test topics are listed.
+- Send me phone screenshots of all 5 results. **Don't ship until none of them shows before = after.**
+
+**Also check:** the loading screen says "Kayyor Rao · 20+ years in finance · UBS · Commerzbank · BGC · Knight · Stifel". Confirm this list with Rao before keeping it.
