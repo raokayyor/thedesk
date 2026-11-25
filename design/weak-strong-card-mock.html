@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Figtree&family=EB+Garamond" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--bad:#b4473a;--muted:#6f7673}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);font-family:Figtree,sans-serif;color:var(--ink);padding:18px 16px 40px;max-width:430px;margin:0 auto}
+.k{font-size:11px;letter-spacing:.12em;font-weight:600;color:var(--accent);text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px 16px;margin-top:10px}
+.q{font-family:'EB Garamond',serif;font-weight:600;font-size:20px;line-height:1.2;margin:8px 0 14px}
+.ans{border-radius:12px;padding:12px 12px 12px 14px;position:relative}
+.weak{background:#f6e9e6;border:1px solid #ecd2cc}
+.strong{background:#e6f0ea;border:1px solid #cfe2d6}
+.tag{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.weak .lbl{color:var(--bad)} .strong .lbl{color:var(--good)}
+.score{font-family:'EB Garamond',serif;font-weight:600;font-size:22px;line-height:1}
+.weak .score{color:var(--bad)} .strong .score{color:var(--good)}
+.score small{font-family:Figtree;font-size:11px;color:var(--muted);font-weight:500}
+.txt{font-size:14px;line-height:1.45}
+.weak .txt{color:#5b4a46}
+.meter{display:flex;gap:3px;margin-top:9px}
+.meter i{height:5px;flex:1;border-radius:3px;background:#e3dcd6}
+.weak .meter i.on{background:var(--bad)} .strong .meter i.on{background:var(--good)}
+.fix{display:flex;align-items:center;gap:10px;margin:8px 0 8px 14px}
+.arrow{width:2px;height:34px;background:linear-gradient(var(--bad),var(--good));position:relative;flex:none}
+.arrow:after{content:"";position:absolute;bottom:-4px;left:-4px;border:5px solid transparent;border-top:6px solid var(--good)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11.5px;font-weight:600;background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 9px;color:var(--ink)}
+mark{background:#cfe6d7;color:inherit;border-radius:3px;padding:0 2px}
+.btn{display:block;text-align:center;background:var(--ink);color:#fff;font-weight:600;font-size:15px;border-radius:10px;padding:13px;margin-top:14px;text-decoration:none}
+.note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="k">Amelia's answer, weak → strong · Sample</div>
+<div class="card">
+  <div class="q">"Tell me about a time you used analysis to make a recommendation."</div>
+
+  <div class="ans weak">
+    <div class="tag"><span class="lbl">✗ Weak · first try</span><span class="score">55<small>/100</small></span></div>
+    <div class="txt">"On my internship I did research on some companies for the team and put it in a spreadsheet."</div>
+    <div class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="fix"><div class="arrow"></div>
+    <div class="chips"><span class="chip">+ the numbers</span><span class="chip">+ what <em>you</em> decided</span><span class="chip">+ why</span></div>
+  </div>
+
+  <div class="ans strong">
+    <div class="tag"><span class="lbl">✓ Strong · after the fix</span><span class="score">72<small>/100</small></span></div>
+    <div class="txt">"At Redcliffe Partners I researched <mark>12 UK software companies</mark> and <mark>flagged 4</mark> whose <mark>recurring revenue matched the brief</mark>, then presented my reasons to an associate."</div>
+    <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+  </div>
+
+  <a class="btn" href="#">Make mine strong →</a>
+  <div class="note">Built from Amelia's CV. Yours uses your own.</div>
+</div>
+</body></html>

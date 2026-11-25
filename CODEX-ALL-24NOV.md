@@ -186,14 +186,15 @@
     - Applies to the crib sheet, firm pack, application drafts and assessment report.
     - Under the sample: "That's a finished sheet. **Build yours** →" (uses their CV if assessed, otherwise opens the "Available after your free assessment" sheet).
 
-13. **Explore dashboard (phone): "Amelia's answer, improved" card replaces question of the day.**
-    - Card label: "AMELIA'S ANSWER, IMPROVED · SAMPLE". Shows the showcase question.
-    - **Score jump** from her first try to after the fix (e.g. "55 → 72"), shown as a bar that animates once when it scrolls into view, captioned "First try" → "After the fix".
-    - **One before line (red ✗) and one after line (green ✓)**, taken from the same run.
-    - Button: [Try it yourself →] opens the interview trial on the same question.
-    - **The numbers and lines must be real tool output.** Run Amelia's weak first answer and her fixed answer through the actual scorer once, store the result as the sample, and display that. Never hard-code 55 → 72. Re-run if the scorer changes.
-    - About a third of a screen at 390×844. Order: hero → this card → Closing soon → AMA.
-    - Question of the day is removed from explore; it returns on the dashboard once the assessment is done.
+13. **Explore dashboard (phone): a "weak → strong" answer graphic replaces question of the day.** Mock: `design/weak-strong-card-mock.html` / `design/weak-strong-card-phone.jpg`.
+    - Label "AMELIA'S ANSWER, WEAK → STRONG · SAMPLE" + the showcase question.
+    - **Weak box** (soft red): "✗ Weak · first try", score, her weak answer line, a 5-segment strength meter (2 filled, red).
+    - **Connector:** a red→green arrow with 3 chips naming what changed ("+ the numbers", "+ what *you* decided", "+ why"), taken from the fix's change list.
+    - **Strong box** (soft green): "✓ Strong · after the fix", score, the fixed line with the added facts highlighted, meter (4 filled, green).
+    - Button [Make mine strong →] opens the interview trial on the same question. Small note: "Built from Amelia's CV. Yours uses your own."
+    - **Real output only:** run Amelia's weak answer and the fixed answer through the actual scorer and rewrite, and store both lines, both scores and the change chips. Never hard-code 55/72 or the wording. Strong-line facts must be from her CV. Re-run if the scorer changes.
+    - Meters animate weak → strong once when the card scrolls into view.
+    - Explore order: hero → this card → Closing soon → AMA. Question of the day is removed from explore and returns after the assessment.
 
 ## D. Member experience
 
