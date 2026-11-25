@@ -109,13 +109,16 @@
     - **Security:** the blurred text must **not** be the real content in the page. The server sends the real text only for the unblurred parts. Blurred blocks hold placeholder text of a similar length, so nobody can unblur it in dev tools. After payment, fetch the real content.
     - **Look:** blur about 6px, with text-shaped placeholder lines (not a grey box), so it reads as "your content is here". Headers stay crisp. No lock icons on every section; one small "Trial" label at the top.
     - **Phone first (390×844):** the intro is fully readable in the first screen. Headers and blurred sections scroll naturally below. Sticky [Unlock · £89] bar at the bottom on phone only.
-    - **No assessment yet (free user or explore mode):** don't try to build it. Show a card at the top:
-      - "**Your crib sheet is built from your assessment.** We can't build yours until you've done it: 10 mins, free."
-      - buttons: [Start my free assessment] and [See a sample crib sheet]
-      - **sample:** Amelia Chen's crib sheet, clearly labelled "Sample · Amelia Chen, Economics, Bristol → Barclays", in the **same trial pattern** (30-second intro open, all headers visible, body text blurred), so the sample doesn't give away a full template
-      - keep the "Start my free assessment →" bar pinned above the sample
-      - after the assessment, return to the crib sheet and build theirs automatically
-    - The same "built from your assessment → start it / see a sample" pattern applies to every personalised tool (interview answer builder, application drafts, firm pack "your angle", CV line fix), always with Amelia Chen as the labelled sample.
+    - **No assessment yet (free user or explore mode): check on the button, not on page load.**
+      - The crib sheet page loads normally for everyone, with the same intro and the [Build my crib sheet] button as members.
+      - **On tap**, check whether the user has a completed assessment (server-side):
+        - **yes:** build theirs (trial pattern above)
+        - **no:** open a bottom sheet on phone (a small modal on desktop):
+          - "**Available after your free assessment.** Your crib sheet is built from it: 10 mins, free."
+          - buttons: [Start my free assessment] (primary) and [See a sample] (secondary)
+      - **See a sample:** Amelia Chen's crib sheet, labelled "Sample · Amelia Chen, Economics, Bristol → Barclays", in the **same trial pattern** (30-second intro open, all headers visible, body text blurred), with a "Start my free assessment →" bar pinned above it
+      - **Start my free assessment:** passes `return=` to the crib sheet. After the assessment, take them back and build theirs automatically (no second tap).
+    - **Same pattern on every personalised tool:** the check fires on the build/generate button ("Build my answer", "Draft my application", "Fix my CV line", "Build my firm angle"), never on page load. Then the same sheet: "Available after your free assessment" → [Start my free assessment] / [See a sample] (Amelia Chen, labelled), with `return=` to that tool.
     - **Reuse the same component for the other document-style tools:**
       - firm pack: the overview unblurred, other headers visible, text blurred
       - application drafts: the first draft unblurred, other question titles visible, drafts blurred
