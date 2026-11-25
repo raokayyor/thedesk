@@ -15,7 +15,7 @@ test('explore has no student identity while sample tool context stays available'
  const {exploreDesk}=await import('../lib/explore-desk.mjs');const d=await exploreDesk();
  assert.equal(d.explore,true);assert.equal(d.profile.name,'');assert.equal(d.profile.firstName,'');assert.equal(d.profile.university,'');assert.ok(d.profile.targetFirm);
  const render=html.slice(html.indexOf('function render(){'),html.indexOf('let PROGS=null;'));
- function greeting(data){const app={};const scope=vm.createContext({D:data,app,qp:new URLSearchParams(),headerBits(){},dashboardSidebar(){},document:{body:{classList:{toggle(){}}},dispatchEvent(){}},Event:class{},greet:()=> 'Morning',esc:s=>String(s??''),memberDesk:()=>'',bind(){},matchMedia:()=>({matches:false}),location:{hash:''}});vm.runInContext(render+';render();',scope);return app.innerHTML;}
+ function greeting(data){const app={};const scope=vm.createContext({D:data,app,qp:new URLSearchParams(),headerBits(){},dashboardSidebar(){},document:{body:{classList:{toggle(){}}},dispatchEvent(){}},Event:class{},greet:()=> 'Morning',esc:s=>String(s??''),memberDesk:()=>'',bind(){},loadExploreDeadline(){},matchMedia:()=>({matches:false}),location:{hash:''}});vm.runInContext(render+';render();',scope);return app.innerHTML;}
  assert.match(greeting(d),/<h1>Explore The Desk<\/h1>/);
  assert.doesNotMatch(greeting(d),/Morning, Amelia/);
  for(const member of [false,true])assert.match(greeting({...d,explore:false,signedIn:true,member,profile:{firstName:'James'}}),/<h1>Morning, James\.<\/h1>/);
@@ -25,4 +25,4 @@ test('score leads the shared dashboard and free upgrade follows Community',()=>{
  for(const member of [false,true]){const output=dashboard(member,false).output;assert.ok(output.indexOf('Get your free assessment')<output.indexOf('id="memberDailySlot"'));if(!member){assert.ok(output.indexOf('Open the forum')<output.indexOf('Unlock full membership'));}else assert.doesNotMatch(output,/Unlock full membership/);}
 });
 
-test('explore removes sample identity and empty library summaries from both layouts',()=>{const output=dashboard(false,false,true).output;assert.doesNotMatch(output,/member-library-summary|answers saved|of 10 story facts/);assert.match(output,/Get your free assessment/);assert.match(output,/Find out why you could be rejected/);assert.doesNotMatch(html,/explore-sample-label/);assert.match(dashboard(true).output,/member-library-summary/);});
+test('explore removes sample identity and empty library summaries from both layouts',()=>{const output=dashboard(false,false,true).output;assert.doesNotMatch(output,/member-library-summary|answers saved|of 10 story facts/);assert.match(output,/Let’s find out why you could be rejected/);assert.match(output,/explore-assessment-call/);assert.doesNotMatch(html,/explore-sample-label/);assert.match(dashboard(true).output,/member-library-summary/);});

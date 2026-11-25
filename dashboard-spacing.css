@@ -58,3 +58,5 @@
 }
 
 #app .dashboard-trial-label {color:var(--orange,#d44b20);font-size:11px;font-weight:700;line-height:1.4}
+
+body.dashboard-explore #explorePrompt{display:none!important}#app .explore-assessment-call{background:var(--ink,#1f2a2e);color:#fff;border-color:var(--ink,#1f2a2e)}#app .explore-assessment-call .kicker{color:#f0a579}#app .explore-assessment-call h2{font-size:32px;line-height:1.1;margin:14px 0}#app .explore-assessment-call p{font-size:14px;line-height:1.5;color:#d0dad5;margin:0 0 18px}#app .explore-assessment-call .btn{background:#fff;color:#1f2a2e;border-color:#fff}#app .explore-deadline-date{font-size:13px;font-weight:600;color:#c4562a}#app .explore-deadline-skeleton{height:80px;background:#eee9e1;border-radius:8px;margin-top:14px}@media(max-width:900px){#app .explore-assessment-call h2{font-size:29px}}
