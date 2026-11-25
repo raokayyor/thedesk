@@ -135,7 +135,14 @@
     - **assessment done:** no Screen 0; go straight to Screen 1 with **their** CV, name and target firm (or "General" if none)
 
     **Screen 1, the question + your answer, built:**
-    - **one preloaded question** (today's question of the day; fallback "Tell me about a time you managed competing responsibilities"), firm logo + "Barclays · Competency"
+    - **one fixed preview question, always the same:** "**Tell me about a time you used analysis to make a recommendation.**" Label it "Competency · asked at every bank" (no firm logo unless they have a target firm). Never rotate it; this is the showcase.
+    - **Kayyor tip (fixed, Rao to approve the wording):** "They want to know you can turn a pile of information into a call someone can act on. Don't just say what you researched. Say what you decided, why, and what happened next."
+    - **Amelia sample answer (fixed, CV facts only):**
+      - *Situation:* "Last summer, on my corporate finance internship at Redcliffe Partners, the team was building an acquisition screen of UK software companies."
+      - *Actions:* "I researched 12 companies and put their business descriptions, revenue and EBITDA into one Excel comparison table. I then flagged 4 whose recurring-revenue models matched the brief, and set out why each one fitted."
+      - *Result:* "I presented the table and my reasons to an associate." + gap "＋ What happened next?" (chips: They used it in the shortlist · Feedback I got · Not known yet)
+      - *Reflection:* gap "＋ What did you learn?" (chips: What I'd do again · What I'd change)
+    - **With their own CV:** pick their strongest analysis line (numbers + analysis verbs: researched, modelled, compared, valued, tested). If there's none, use their strongest action line, and add a gap "What did you recommend?".
     - Kayyor's "What they're really asking" tip, personalised, clamped to 3 lines ("more" to expand)
     - the built answer as 4 short beats from the CV (Situation / Actions / Result / Reflection), each gap as an amber "＋" chip with question-specific options
     - one primary button: [Practise it · 1 min]; secondary link "Type instead"
@@ -155,8 +162,9 @@
     - on Amelia's sample: "That was Amelia's CV. **Do your assessment** to get this on yours →" sits above the Unlock button
 
     **Limits and states:**
-    - 3 trial runs per day (any question)
-    - after that: "You've seen what it does. Unlock the full coach · £89", showing their last fixed answer, never a blank screen
+    - **3 tries in total** on the preview question (per account; explore mode per device)
+    - try counter on Screen 3: "Try 2 of 3"
+    - after the 3rd: "You've seen what it does. Members practise every question, every firm · Unlock · £89", showing their best fixed answer and best score, never a blank screen
     - mic blocked or unsupported: go straight to Type instead with no error wall
 
     **Look:**
