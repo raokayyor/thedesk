@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/member-tool-routing.js"></script><script src="/free-mode.js?v=member-routing"></script>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Assessment centres | The Desk</title>
@@ -44,7 +44,7 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
 @media(max-width:700px){#hero{grid-template-columns:1fr!important}#hero>div:last-child{border-left:0!important;padding-left:0!important;border-top:1px solid rgba(255,255,255,.15);padding-top:16px}}
 @media(max-width:700px){#hero .hub-hero-actions{display:none!important}}
 </style>
-<script src="/tool-preview-access.js"></script><script type="module" src="/public-session.js"></script></head>
+<script type="module" src="/public-session.js"></script></head>
 <body>
 <main>
   <section class="card dark" style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px" id="hero">
@@ -124,19 +124,11 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
     if (!d) return;
     $('rubric').innerHTML = d.behaviours.map(b => `<tr><th scope="row">${esc(b.label)}</th><td>${esc(b.strong)}</td><td>${esc(b.below)}</td></tr>`).join('');
   }).catch(() => {});
-  if(new URLSearchParams(location.search).get('trial')==='1'){$('firm').value=bank.resolveFirm('J.P. Morgan');showFirm();return;}
   fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
     const t = new URLSearchParams(location.search).get('firm') || d?.profile?.targetFirm; if (!t || !bank) return;
     const k = bank.resolveFirm(t); if (packs[k]) { $('firm').value = k; showFirm(); }
   }).catch(() => {});
 })();
 </script>
-<script>
-if(new URLSearchParams(location.search).get('trial')==='1'){
- const notice=document.createElement('aside');notice.className='card';notice.innerHTML='<div class="kicker">Free access · try the member tools</div><h2>One crib sheet is yours to try.</h2><p>Use Jamie’s preloaded CV to build a J.P. Morgan sheet. Full group discussions, case studies and inbox practice open with membership.</p><a class="btn" href="/ac-crib.html?trial=1">Try the crib sheet →</a> <a href="/my.html?explore=1">Back to your trial Desk</a>';document.querySelector('main').prepend(notice);
- document.querySelectorAll('a[href="/group-exercise.html"],a[href="/case-study.html"],a[href="/inbox-exercise.html"]').forEach(a=>{a.href='/signup.html?plan=member';a.textContent='Unlock with membership →';});
- document.querySelectorAll('a[href="/ac-crib.html"]').forEach(a=>a.href='/ac-crib.html?trial=1');
- const crib=document.getElementById('cribLink');crib.href='/ac-crib.html?trial=1';crib.textContent='Build the free example';document.getElementById('firm').disabled=true;
-}
-</script></body>
+<script src="/explore-prompt.js" defer></script></body>
 </html>
