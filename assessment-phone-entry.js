@@ -1,6 +1,7 @@
 // Phone starts with a CV; the existing profile and tests remain the same journey.
 (()=>{if(!matchMedia('(max-width:900px)').matches)return;
  document.documentElement.classList.add('phone-cv-first');
+ if(matchMedia('(max-width:767px)').matches&&!document.querySelector('script[src="/desk-nav.js"]')){const navigation=document.createElement('script');navigation.src='/desk-nav.js';document.head.append(navigation);}
  const cv=document.getElementById('cvText'),step=document.getElementById('s2'),originalGo=window.go;
  let profileComplete=false;
  function stage(){const onCv=!step.classList.contains('hidden'),onProfile=!document.getElementById('s1').classList.contains('hidden');if(onCv||onProfile){document.getElementById('stage').textContent=onCv?'Step 1 of 4 · Your CV':'Step 2 of 4 · About you';document.getElementById('timeLeft').textContent=onCv?'About 10 mins':'About 8 mins left';document.getElementById('journeyFill').style.width=onCv?'12%':'36%';}}

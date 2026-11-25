@@ -13,3 +13,5 @@
  #resumeEmailSheet{border:1px solid #ddd7cf;border-radius:18px 18px 0 0;padding:24px;max-width:520px;width:100%;max-height:90dvh;margin:auto auto 0;color:#1f2a2e;background:#fbfaf7}
  #resumeEmailSheet::backdrop{background:#1f2a2e77}#resumeEmailSheet h2{font-size:28px;margin:18px 0 12px}#resumeEmailSheet input[type=email]{width:100%;margin:8px 0 16px;min-height:48px}#resumeEmailSheet .resume-email-consent{display:flex;gap:10px;font-size:13px;margin:0 0 18px}#resumeEmailSheet input[type=checkbox]{width:20px;min-height:20px;flex-shrink:0}
 }
+
+@media(max-width:767px){body.desk-shell .wrap{padding-bottom:32px}body.desk-shell:has(#s2) .desk-group-link{min-height:56px}}

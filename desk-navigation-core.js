@@ -9,6 +9,6 @@
  ];
  function href(key,d={}){return root.DeskToolLinks?.toolHref(key,d)||'/my.html';}
 
- function groupFor(path){if(/firm-interview-guides|library/.test(path))return 'more';if(/group-exercise|case-study|inbox-exercise|ac-crib|assessment-centre/.test(path))return 'practise';if(/interview|tests/.test(path))return 'practise';if(/application|tracker/.test(path))return 'more';if(/report|fullcycle|result-|deep-assessment/.test(path))return 'cv';if(/community|trading|events|challenge/.test(path))return 'community';if(/report|fullcycle|result-|news|saved-answers|deep-assessment/.test(path))return 'more';return 'desk';}
+ function groupFor(path){if(/firm-interview-guides|library/.test(path))return 'more';if(/group-exercise|case-study|inbox-exercise|ac-crib|assessment-centre/.test(path))return 'practise';if(/interview|tests/.test(path))return 'practise';if(/application|tracker/.test(path))return 'more';if(/report|fullcycle|result-|deep-assessment|assessment(?:-start)?\.html/.test(path))return 'cv';if(/community|trading|events|challenge/.test(path))return 'community';if(/report|fullcycle|result-|news|saved-answers|deep-assessment/.test(path))return 'more';return 'desk';}
  root.DeskNavigationCore={groups,href,groupFor,memberOnly:key=>['case','inbox','library','answers','story','tests','news'].includes(key)};
 })(globalThis);
