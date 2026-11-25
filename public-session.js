@@ -36,4 +36,4 @@ document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||!sess
 document.addEventListener('click',e=>{const a=e.target.closest('a');if(!a||!sessionIdentity?.signedIn||!['/','/index.html'].includes(location.pathname))return;if(new URL(a.href,location.href).pathname==='/assessment-start.html'){e.preventDefault();location.assign(sessionIdentity.member?'/my.html':sessionIdentity.report?.url||'/assessment-start.html');}},true);
 
 
-if(!document.querySelector('script[src="/explore-prompt.js"]')){const script=document.createElement('script');script.src='/explore-prompt.js';document.head.append(script);}
+if(!['/','/index.html','/assessment.html','/assessment-start.html'].includes(location.pathname)&&!document.querySelector('script[src="/explore-prompt.js"]')){const script=document.createElement('script');script.src='/explore-prompt.js';document.head.append(script);}
