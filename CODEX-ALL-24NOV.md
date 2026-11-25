@@ -187,7 +187,7 @@
     - Under the sample: "That's a finished sheet. **Build yours** →" (uses their CV if assessed, otherwise opens the "Available after your free assessment" sheet).
 
 13. **Explore dashboard (phone): a "weak → strong" answer graphic replaces question of the day.** Mock: `design/weak-strong-card-mock.html` / `design/weak-strong-card-phone.jpg`.
-    - Label "AMELIA'S ANSWER, WEAK → STRONG · SAMPLE" + the showcase question.
+    - **Section heading** (EB Garamond, about 25px): "**What a strong answer looks like**", with a sub-line (13px, muted): "Amelia's first try, then fixed with The Desk · sample". Then the card with the showcase question.
     - **Weak box** (soft red): "✗ Weak · first try", score, her weak answer line, a 5-segment strength meter (2 filled, red).
     - **Connector:** a red→green arrow with 3 chips naming what changed ("+ the numbers", "+ what *you* decided", "+ why"), taken from the fix's change list.
     - **Strong box** (soft green): "✓ Strong · after the fix", score, the fixed line with the added facts highlighted, meter (4 filled, green).
