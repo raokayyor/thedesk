@@ -1,3 +1,34 @@
+# START HERE — 26 November 2026: assessment entry and test buttons
+
+This section updates the older handover below. Branch: `codex/sidebar-consistency`. Latest implementation commit: `9cae873a281f9a37a5a00ea332bdc885549c29c5`.
+
+## Completed in this batch
+- Expanded firm suggestions (including 19 investment banking firms); six suggested chips appear initially, with More firms for the rest. Added Add a firm text input, usable with Add or Enter. Keeps up to three firms, normalises known names, deduplicates case-insensitively, persists custom names across browser/server storage and tool return links. Changing route retains the user's selected firms. Custom firm selection does not create or invent firm research.
+- Replaced the long numerical introduction with: Five questions to understand your numerical ability. You can use a calculator. There’s no pass or fail. Commercial introduction is similarly short.
+- Removed the 8-minute label, remaining-time estimates and per-question 45-second guidance. Removed the Skipping is fine explanation; the skip link remains available and scoring for skipped tests is unchanged.
+- Fixed the missing Start action: all phone assessment step action bars now sit above the existing bottom navigation, instead of behind it. This also fixes Next/Back on question screens. Sidebar/navigation files are unchanged.
+
+## Evidence and checks
+- Live baseline reproduction at 390 x 844: numerical-start action was fixed at bottom 0 under the phone navigation; hit testing at its centre returned Community. Local fix: button bottom 758px; navigation top 758.2px; hit test returns Start numerical test, and clicking opens Question 1.
+- Local browser uses the actual repository HTML/JS/CSS with fixture-only API endpoints (no real account or assessment generation). Tested route/firm selection, typed Example Partners, reload persistence, More firms, pasted synthetic CV, processing consent, numerical intro and Start to question one. No horizontal overflow at 390 x 844.
+- Focused tests: `node --test tests/assessment-targets.test.mjs tests/assessment-quiz-intro.test.mjs tests/phone-cv-upload.test.mjs tests/free-result-journey.test.mjs tests/signup-auth.test.mjs tests/signup-profile.test.mjs tests/document-preview.test.mjs`: **26 passed, 0 failed**.
+- `node scripts/build-amelia-showcase.mjs --check`: matches current scorer. JavaScript syntax checks passed. Reviewed diff; whitespace check with existing CRLF handling passed (`git -c core.whitespace=cr-at-eol diff --check`).
+- Phone screenshots in `docs/verification/assessment-26nov/`. Full live generation/signup testing and a physical phone keyboard test are not claimed by this batch.
+
+## User decisions this morning
+- Add more firms and allow a typed firm name.
+- Make the numerical introduction simple; remove the Skipping is fine explanation.
+- Remove the 8-minute label and question time guidance because it may discourage people.
+- Calculator allowed: recommended in chat and used in this change; replaces the earlier no-calculator wording.
+- Make Start visible. User wants to continue on the updated live assessment; publish and verify READY before saying it is live.
+
+## Publication and remaining work
+- This implementation and handover are being pushed to `origin/codex/sidebar-consistency`; confirm remote SHA after pushing.
+- Production deployment of the implementation is pending at this handover revision. Previous verified production was `853c35c501f5c1aad322a29b198cfaa9127ad1b9`. Update this section with the deployment ID and URL once READY; a Git push alone is not a release.
+- Immediate next step: finish production verification of this batch so the user can continue. Then resume yesterday's priorities: upload failure/retry, back/resume, complete tests → result → free signup → returning to result; improve the usefulness and paid-value explanation of the free report using only CV-backed facts. Preserve sidebar and layouts. Do not claim the whole journey is bug-free.
+
+---
+
 # Cross-PC continuity sync
 
 The laptop fetched and preserved remote head `9301da6540a56b6d6b9a46bf51d4a293b7d14427` while merging its documentation/evidence batch. The original PC's latest priorities and handover below are retained intact; the older crib verification appended at the end does not supersede them.
