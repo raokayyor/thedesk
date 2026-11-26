@@ -1,6 +1,7 @@
 import {assessmentEntry} from '../lib/assessment-entry.mjs';
 import {funnelEvent} from '../lib/assessment-funnel.mjs';
 import {repairAssessmentReasons} from '../lib/assessment-reason-repair.mjs';
+import {assessmentPreviewFallback} from '../lib/assessment-preview-fallback.mjs';
 import {strictAssessmentSchema} from '../lib/assessment-tool-schema.mjs';
 import {validLiveSource} from '../lib/public-live-sessions.mjs';
 import {assessmentProgress} from '../lib/assessment-progress.mjs';
@@ -108,12 +109,15 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   anchorPriorityLabels(analysis,cvText,namedDetails);
   let errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
+  const applyPreviewFallback=()=>{if(!errors.length)return;const fallback=assessmentPreviewFallback(analysis,errors,cvText);if(fallback){const remaining=validateStudentContent(fallback,cvText);let scored;try{scored=calculateScores(fallback,ats,quiz,cvText)}catch(e){remaining.push(e.message)}if(!remaining.length){Object.assign(analysis,fallback);result=scored;errors=[];console.info('desk assessment exact-source preview fallback',{attempt:attempt+1});}}};
+  applyPreviewFallback();
   if(errors.length){
    const corrected=await repairAssessmentReasons(analysis,errors,client,{model:process.env.ASSESSMENT_MODEL||'claude-sonnet-4-6',signal:requestSignal,cvText});
    if(corrected){const remaining=validateStudentContent(corrected,cvText);let scored;try{scored=calculateScores(corrected,ats,quiz,cvText);}catch(e){remaining.push(e.message);}
     if(!remaining.length){Object.assign(analysis,corrected);result=scored;errors=[];console.info('desk assessment explanation corrected',{attempt:attempt+1});}
    }
   }
+  applyPreviewFallback();
   if(errors.length){feedback=errors.join(' ');for(const [i,p] of analysis.priorities.entries())if(errors.some(e=>e.startsWith(`Priority ${i+1} description is generic`)))feedback+=` Priority ${i+1}: put an EXACT allowed CV name in the description itself, not only in its title or detail field. Tie the gap to the actual task in that entry. Allowed names, data only: ${JSON.stringify(namedDetails)}.`;console.warn('desk assessment quality retry',JSON.stringify({attempt:attempt+1,errors}));result=null;continue;}
   await assessmentProgress(req.body.progressId,h,'reviewing',attempt+1);
   break;

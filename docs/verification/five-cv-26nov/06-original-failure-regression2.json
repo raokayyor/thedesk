@@ -1,0 +1,24 @@
+{
+  "key": "06-original-failure",
+  "label": "Original failing CV",
+  "run": "regression2",
+  "elapsedSeconds": 53,
+  "httpStatus": 503,
+  "uploadSuccess": true,
+  "result": {
+    "success": false,
+    "error": "We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again."
+  },
+  "diagnostics": {
+    "stage": "failed",
+    "attempt": 2,
+    "diagnostics": {
+      "issues": [
+        "CV placeholder drops confirmed number 2026. Preserve the selected bullet’s supported scale and findings. CV placeholder drops confirmed number 4. Preserve the selected bullet’s supported scale and findings. Analytical ability cannot be strong while priority 1 identifies missing methods or findings. Analytical ability score contradicts its reason. CV placeholder exceeds 48 words; shorten it while retaining its named CV detail.",
+        "CV placeholder drops confirmed number 2026. Preserve the selected bullet’s supported scale and findings. CV placeholder drops confirmed number 4. Preserve the selected bullet’s supported scale and findings."
+      ],
+      "failure": "validation"
+    }
+  },
+  "opened": null
+}

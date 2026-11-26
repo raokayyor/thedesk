@@ -11,6 +11,8 @@ test('scoring and evidence failures cannot be repaired by changing explanations'
  let called=false;const client={messages:{create:async()=>{called=true;}}};
  assert.equal(await repairAssessmentReasons(draft,['Invalid competency evidence'],client),null);assert.equal(called,false);
 });
+
+test('missing numeric facts are routed to the targeted CV rewrite repair',async()=>{let called=false;const input={...draft,cvPreview:{original:'Built a model in 2026 and presented findings to 4 classmates.',structure:'Built a model.'}};const client={messages:{create:async()=>{called=true;return{stop_reason:'tool_use',content:[{type:'tool_use',name:'correct_reasons',input:{corrections:[{name:'CV placeholder',reason:'Built a model in 2026 and presented findings to 4 classmates. [Confirm: the conclusion.]'}]}}]}}}};const r=await repairAssessmentReasons(input,['CV placeholder drops confirmed number 2026.','CV placeholder drops confirmed number 4.'],client,{model:'test'});assert.equal(called,true);assert.match(r.cvPreview.structure,/2026/);assert.deepEqual(r.competencies,input.competencies)});
 test('unexpected competency patches are rejected',async()=>{
  const client={messages:{create:async()=>({stop_reason:'tool_use',content:[{type:'tool_use',name:'correct_reasons',input:{corrections:[{name:'Resilience',reason:'Not the requested field.'}]}}]})}};
  assert.equal(await repairAssessmentReasons(draft,['Teamwork reason: invalid'],client,{model:'test'}),null);

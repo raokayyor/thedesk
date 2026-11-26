@@ -1,3 +1,27 @@
+# START HERE — 26 November: validation repair and five-CV verification
+
+Branch codex/sidebar-consistency. Previous deployed diagnostic implementation d348f13d80d380ebd85bbce4386bad21aa46b7b0 (dpl_2s4Z4jqkccoEGsysCkNtsgjfzn2i READY, production alias verified). Final repaired implementation SHA/deployment will be recorded after release.
+
+## Exact failure and repair
+- Original Alex Test paragraph CV reproduced the validation error. Owner-scoped diagnostics showed CV placeholder dropping confirmed numbers2026 and4 (a date and another sentence on the same line), plus an initial contradictory analytical reason. Second scoring pass resolved the contradictory reason but still dropped the numbers.
+- Targeted repair only recognised CV placeholder errors beginning with a colon or exceeds; numeric-fact errors began drops, so repair returned null and forced another full scoring pass. Extended matching to all CV placeholder/issue field errors; scores, source quotes and mappings remain immutable.
+- Added exact-source preview fallback only when remaining failures concern CV preview presentation. It selects one actual action sentence from the same source line (4–36 words), copies every fact/number in that sentence, and appends an explicitly optional confirmation placeholder. It cannot accept invented sources, alter marks, bypass scoring/evidence errors or fabricate an assessment for unsupported input. Entire assessment is validated and scored again before save. It runs before an extra model repair when safe, and can run afterwards for remaining preview-only errors.
+- Free first fix now uses the validated selected preview source, matching its issue, rather than blindly choosing a different weak line.
+
+## Five CVs genuinely run through production
+- Fictional text CVs, fresh test owner for each: upload /api/extract-cv → /api/analyse-mot → persisted /api/assessment-result, each HTTP200. Same IB route/Barclays and3/5 numerical +3/5 commercial answers for comparison.
+- Starting point40 (39s); transferable experience54 (40s); vague finance46 (37s); specific finance62 (64s); strong evidence74 (39s). These were run on the diagnostic deployment before the repair. Repaired-version results and original-failure regression still need verification; do not claim those passed yet.
+- JSON evidence and fictional inputs in local outputs/five-cv-review; no emails sent, no accounts signed up, no paid access used. Test-owner cookies are scratch-only, not committed or included in report.
+
+## Further user decisions and capture changes
+- Remove the entire You’ll get: your score / 3 lines paragraph.
+- What are you preparing for next is multi-select: Optional · select all that apply. Selection persisted in draft and pending-result array, separate from scoring inputs so it never restarts generation.
+- Valid file selection immediately green: ✓ CV selected. Consent checkbox required before processing. While reading: ✓ CV received · reading…; success ✓ CV loaded; failures remove green and stay retryable. Filename/extra continuation wording removed. Next stays disabled until text and consent are ready.
+- Short-phone aims layout tightened; Add a firm remains visible. Browser measured390×667: field bottom496.7px, actions top514.4px, no scrolling;320×568: field bottom407.5px, actions top415.2px, no scrolling. More expands optional choices and may scroll. Sidebar untouched.
+- Checks52focused tests passed plus showcase fingerprint check; syntax and whitespace checks pass. New tests cover numeric-repair routing, exact-source fallback/immutability/decimals/invented sources, and multi-select toggle/restore. Original failing live CV must pass after deploy before calling the underlying bug fixed.
+
+---
+
 # Latest follow-up — 26 November: inline firms and green CV confirmation
 
 - User clarified: retain green CV loaded box; remove file-selected/filename wording and additional continuation explanation. Existing green success styling is preserved; pending consent and reading status also omit filenames.

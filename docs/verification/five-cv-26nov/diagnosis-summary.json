@@ -1,0 +1,227 @@
+[
+  {
+    "key": "01-starting-point",
+    "label": "Starting point",
+    "run": "diagnosis",
+    "elapsedSeconds": 39,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "8f693f620ddc3e69d49306459453d9456beac00582e64230",
+      "next": "/result-final-design.html?id=8f693f620ddc3e69d49306459453d9456beac00582e64230",
+      "entry": {
+        "score": 40,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Worked with classmates on a presentation about inflation.",
+          "after": "Worked with classmates on a presentation about inflation.",
+          "note": "No method, finding or individual role stated",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "8f693f620ddc3e69d49306459453d9456beac00582e64230",
+      "entry": {
+        "score": 40,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Worked with classmates on a presentation about inflation.",
+          "after": "Worked with classmates on a presentation about inflation.",
+          "note": "No method, finding or individual role stated",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "02-transferable",
+    "label": "Transferable experience",
+    "run": "diagnosis",
+    "elapsedSeconds": 40,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "30d4924930bb9622f572a19c948922b7517a9ea1a0ea48f7",
+      "next": "/result-final-design.html?id=30d4924930bb9622f572a19c948922b7517a9ea1a0ea48f7",
+      "entry": {
+        "score": 54,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Compared three local businesses and presented the group's findings to a seminar class.",
+          "after": "Compared three local businesses and presented the group's findings to a seminar class.",
+          "note": "No method, finding or personal contribution stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "30d4924930bb9622f572a19c948922b7517a9ea1a0ea48f7",
+      "entry": {
+        "score": 54,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Compared three local businesses and presented the group's findings to a seminar class.",
+          "after": "Compared three local businesses and presented the group's findings to a seminar class.",
+          "note": "No method, finding or personal contribution stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "03-vague-finance",
+    "label": "Finance experience, vague bullets",
+    "run": "diagnosis",
+    "elapsedSeconds": 37,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "3d42ca01e3eae26cefec48610af5bbfefe1df0914b035362",
+      "next": "/result-final-design.html?id=3d42ca01e3eae26cefec48610af5bbfefe1df0914b035362",
+      "entry": {
+        "score": 46,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Supported the corporate finance team on company research and valuation work.",
+          "after": "Supported the corporate finance team on company research and valuation work.",
+          "note": "No company, method or personal output named",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "3d42ca01e3eae26cefec48610af5bbfefe1df0914b035362",
+      "entry": {
+        "score": 46,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Supported the corporate finance team on company research and valuation work.",
+          "after": "Supported the corporate finance team on company research and valuation work.",
+          "note": "No company, method or personal output named",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "04-evidenced-finance",
+    "label": "Specific analytical work",
+    "run": "diagnosis",
+    "elapsedSeconds": 64,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "ebc699f4bebef33ffef3eee5bc06d3c953d2f41830238f2e",
+      "next": "/result-final-design.html?id=ebc699f4bebef33ffef3eee5bc06d3c953d2f41830238f2e",
+      "entry": {
+        "score": 62,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "after": "Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "note": "DCF and sensitivity shown; no valuation conclusion stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "ebc699f4bebef33ffef3eee5bc06d3c953d2f41830238f2e",
+      "entry": {
+        "score": 62,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "after": "Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "note": "DCF and sensitivity shown; no valuation conclusion stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "05-strong-evidence",
+    "label": "Strong evidence and decisions",
+    "run": "diagnosis",
+    "elapsedSeconds": 39,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "5a59059aa2e91bfffee849aef3782e6183251c43a2df1191",
+      "next": "/result-final-design.html?id=5a59059aa2e91bfffee849aef3782e6183251c43a2df1191",
+      "entry": {
+        "score": 74,
+        "max": 100,
+        "band": "Borderline",
+        "firstFix": {
+          "before": "- Produced a ten-slide industry update summarising customer concentration and cash-conversion risks, presented the findings to two associates and revised the analysis after their questions.",
+          "after": "Produced a ten-slide industry update summarising customer concentration and cash-conversion risks, presented the findings to two associates and revised the analysis after their questions.",
+          "note": "No data source, conclusion or outcome from associate feedback",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "5a59059aa2e91bfffee849aef3782e6183251c43a2df1191",
+      "entry": {
+        "score": 74,
+        "max": 100,
+        "band": "Borderline",
+        "firstFix": {
+          "before": "- Produced a ten-slide industry update summarising customer concentration and cash-conversion risks, presented the findings to two associates and revised the analysis after their questions.",
+          "after": "Produced a ten-slide industry update summarising customer concentration and cash-conversion risks, presented the findings to two associates and revised the analysis after their questions.",
+          "note": "No data source, conclusion or outcome from associate feedback",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  }
+]
