@@ -1,3 +1,13 @@
+# Latest follow-up — 26 November: inline firms and green CV confirmation
+
+- User clarified: retain green CV loaded box; remove file-selected/filename wording and additional continuation explanation. Existing green success styling is preserved; pending consent and reading status also omit filenames.
+- More firms now sits inline with up to five initial firm chips (selected firms retained), pulling Add a firm upwards. More expands the full list; tested expand/collapse in local phone browser. At 390×844 with two saved firms including a custom firm, collapsed aims screen has no scrolling, input begins around482px and Next remains above navigation.
+- Main phone implementation b72b41c61b1a3bb34c7af892fb596000a86a3cd0 is deployed READY: dpl_9EPeU6ezgkTFuetQiiVQyt6Z4YWK, https://thedesk.vercel.app/assessment.html ; this follow-up still awaits its own deployment record.
+- IMPORTANT LIVE BLOCKER REPRODUCED: completed ten live questions with fictional Alex Test CV, entered new review screen without name, selected optional interviews goal, and tapped Build. It returned: We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again. The background request runs and the service reports a validation failure after its quality attempts; do NOT claim full report generation is fixed or demonstrated successful. Runtime-log connector returned no records even scoped to deployment/time. Exact underlying validation reason is still unknown. Next: obtain quality-retry diagnostics / reproduce with provider output locally under secure credentials; preserve evidence safeguards rather than weakening them to force success.
+- Verification: 32 focused tests passed for main batch; follow-up upload/targets/preparation suite11passed, syntax and whitespace checks passed. Desktop entry checked at1280×800. Screenshots in docs/verification/assessment-26nov. Final commit/deployment status will be prepended after publication.
+
+---
+
 # START HERE — 26 November 2026: phone capture and early preparation
 
 Branch: codex/sidebar-consistency. This implementation follows 7a7dbedde1024445925125470fbaaa330c51117f (restored both question-count cards). Main implementation: 8eb16a6fa6c12d95b0893d5b2df900bc164e5bb0; short-phone optional-firm follow-up: 4646c3f41e53d25838a5656774a5c7499f70f177. This follow-up also keeps desktop aims actions inline and avoids hiding Add a firm on routes without More firms. Final release record will identify the deployed revision.
