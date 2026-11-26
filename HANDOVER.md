@@ -1,3 +1,12 @@
+# START HERE — ranked-result framework update, 26 November 2026
+
+Branch codex/sidebar-consistency. Supplied framework/test update applied, retaining deployed academic/role/date parsing, written numbers and allFlaggedLines integration. Number + outcome exempts duty/weak-verb/no-result/no-number/too-short flags; ranked/placed/adjusted outcomes recognised. Sophie ranked-first pitch and corrected audit are absent from ALL flagged lines. James weak findings unchanged. User now explicitly requires fixed declarative fallback sentences, replacing earlier preparation-question decision/labels on summary/full free/member. Framework version bumped; frontend imports refreshed. Sidebar untouched.
+
+Checks: supplied five-CV framework test and seven integration/regression checks passed (8 test entries total); 43 free-result/score-cache/deep-assessment checks passed; showcase matches; diff reviewed. Previous five real production uploads, scoring, owned reopen and repeat-score checks all passed; phone captures still to follow. New James/Sophie live reruns and screenshots follow deployment. Email remains unverified/unconfigured; user returned browser after Resend login, no key or delivery test claimed.
+
+This implementation commit is to be pushed; deployment not yet verified. Previous live implementation08a920728aeaaa21f8223232ec3d39a57ebd6dfd. Next: deploy exact pushed revision, verify READY/alias, rerun James/Sophie and capture390x844 results; record final implementation/deployment SHA and evidence. No secrets/private supplied CV committed.
+
+---
 # START HERE — final touches LIVE, 26 November 2026
 
 Application implementation 08a920728aeaaa21f8223232ec3d39a57ebd6dfd, production dpl_EgJt2hgtexwYAEk8DDuFgcrPLkL1 READY with thedesk.vercel.app alias, immutable https://thedesk-ld7gsc8x8-raokayyor.vercel.app . This documentation/evidence commit follows the deployed code; report its final pushed SHA separately.

@@ -12,4 +12,4 @@ After each completed batch:
 
 The handover's latest implementation commit may precede its documentation commit. Do not try to put a commit's own SHA inside itself; report the final batch SHA after pushing and use Git history to identify the handover revision.
 
-CV fault findings must come from lib/cv-fault-framework.mjs (CODEX-CV-FRAMEWORK.md), across free summary, full free assessment and member report. AI writes fixes, not independent fault lists. Keep the approved preparation-question fallbacks and run test/cv-fault-framework.test.mjs plus integration checks after changes.
+CV fault findings must come from lib/cv-fault-framework.mjs (CODEX-CV-FRAMEWORK.md), across free summary, full free assessment and member report. AI writes fixes, not independent fault lists. Use the fixed framework reason sentences, including strong-CV fallbacks; never add preparation-question labels and run test/cv-fault-framework.test.mjs plus integration checks after changes.

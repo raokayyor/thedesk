@@ -79,3 +79,7 @@ Each experience, internship, position and skills line is checked against these f
 Rao approved keeping three slots but changing unsupported fallbacks into preparation questions. They are marked preparation, not asserted CV faults. The runtime also exposes allFlaggedLines for member repair coverage while preserving the top-three free selection. Role headings separated by an em dash and standalone dates are parsed as metadata; first-year study is not mistaken for a predicted First.
 
 Live regression correction: written-out numbers (e.g. two, ten) count as scale. Accepted corrections, revisions and narrowed/shortlisted outputs count as explicit outcomes; the strong finance fixture must not be labelled tasks-only or assigned false no-result/no-number flags. These are deterministic checks, never model-inferred exceptions.
+
+
+## 26 November: superseding fallback decision
+Rao now requires the supplied fixed declarative fallback sentences on every page, replacing the earlier preparation questions. Number plus result exempts a line from duty/weak-verb/no-result/no-number/too-short flags; ranked/placed outcomes count and Worked in is not a duty phrase. Preserve academic parsing and allFlaggedLines integration.
