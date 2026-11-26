@@ -22,6 +22,7 @@ export function renderAssessmentEntry(data,id){
  root.classList.add('assessment-entry');root.innerHTML=assessmentEntryMarkup(e,returning,id);root.hidden=false;document.getElementById('resultStatus').hidden=true;document.getElementById('mobileUnlock').hidden=true;
  fetch('/api/result-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assessmentId:id,event:'result_viewed'}),keepalive:true}).catch(()=>{});
  if(e.unlocked)return;
+ if(data.emailReady===false){const form=document.getElementById('saveAssessmentResult');form.querySelector('button').disabled=true;document.getElementById('keepEmail').disabled=true;document.getElementById('saveResultStatus').textContent='Email saving is currently unavailable. Your score and summary remain available in this browser.';form.onsubmit=event=>event.preventDefault();return;}
  document.getElementById('saveAssessmentResult').onsubmit=async ev=>{
   ev.preventDefault();const button=ev.target.querySelector('button'),status=document.getElementById('saveResultStatus');button.disabled=true;status.textContent='Saving your assessment…';
   try{

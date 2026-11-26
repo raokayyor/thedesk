@@ -1,0 +1,162 @@
+[
+  {
+    "key": "01-starting-point",
+    "label": "Starting point",
+    "elapsedSeconds": 28,
+    "status": 200,
+    "id": "b55595fd886b44561e44304bcb9fac3ea6e0fc7b3d8e488a",
+    "entry": {
+      "score": 40,
+      "max": 100,
+      "band": "Developing",
+      "summary": "Your sustained Oakfield Cafe weekend work alongside first-year study demonstrates a genuine ability to balance competing commitments over time. What stops me shortlisting you is that no CV entry shows an analytical method, a quantified output or any individual contribution beyond attending and participating.",
+      "tests": {
+        "skipped": false,
+        "numerical": 3,
+        "numericalTotal": 5,
+        "commercial": 3,
+        "commercialTotal": 5
+      },
+      "scoreBreakdown": {
+        "cv": 19,
+        "tests": 21
+      },
+      "firstFix": {
+        "before": "- Worked with classmates on a presentation about inflation.",
+        "after": "Worked with classmates on a presentation about inflation.",
+        "note": "No method, finding or individual role stated",
+        "needsResult": true
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  },
+  {
+    "key": "02-transferable",
+    "label": "Transferable experience",
+    "elapsedSeconds": 27,
+    "status": 200,
+    "id": "253d1d8bff486a201e130f03345e1f8b724aed9a6e936c0e",
+    "entry": {
+      "score": 54,
+      "max": 100,
+      "band": "Developing",
+      "summary": "Your Willow Retail role shows sustained weekly commitment alongside your degree, with a concrete data task — flagging eight stock mismatches in Excel — that demonstrates real attention to detail. What stops me shortlisting you is that no experience on this CV shows financial analysis, valuation thinking or commercial reasoning relevant to an Investment Banking Summer Internship at Barclays.",
+      "tests": {
+        "skipped": false,
+        "numerical": 3,
+        "numericalTotal": 5,
+        "commercial": 3,
+        "commercialTotal": 5
+      },
+      "scoreBreakdown": {
+        "cv": 33,
+        "tests": 21
+      },
+      "firstFix": {
+        "before": "- Compared three local businesses and presented the group's findings to a seminar class.",
+        "after": "Compared three local businesses and presented the group's findings to a seminar class.",
+        "note": "No method, finding or personal contribution stated.",
+        "needsResult": false
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  },
+  {
+    "key": "03-vague-finance",
+    "label": "Finance experience, vague bullets",
+    "elapsedSeconds": 28,
+    "status": 200,
+    "id": "9e4d990737df810074891c0a2253b07af67ceabf8068460b",
+    "entry": {
+      "score": 46,
+      "max": 100,
+      "band": "Developing",
+      "summary": "Your Eastbridge Advisory internship is the clearest signal of finance exposure on this CV, spanning corporate finance research, valuation work and financial modelling across a full summer. What stops me shortlisting you is that every Eastbridge Advisory bullet describes tasks you were near rather than findings, outputs or decisions you personally owned.",
+      "tests": {
+        "skipped": false,
+        "numerical": 3,
+        "numericalTotal": 5,
+        "commercial": 3,
+        "commercialTotal": 5
+      },
+      "scoreBreakdown": {
+        "cv": 25,
+        "tests": 21
+      },
+      "firstFix": {
+        "before": "- Supported the corporate finance team on company research and valuation work.",
+        "after": "Supported the corporate finance team on company research and valuation work.",
+        "note": "No company, method or personal output named",
+        "needsResult": true
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  },
+  {
+    "key": "04-evidenced-finance",
+    "label": "Specific analytical work",
+    "elapsedSeconds": 55,
+    "status": 200,
+    "id": "ffb5fac97f9eec61d673abcfd14a410d32bba92c063e2222",
+    "entry": {
+      "score": 62,
+      "max": 100,
+      "band": "Developing",
+      "summary": "Your Larch Research internship demonstrates hands-on financial screening across 12 UK software companies using annual reports, Excel and a structured shortlist delivered directly to an associate. What stops me shortlisting you is that neither the University Valuation Project nor Larch Research states what your analysis actually concluded, leaving the quality of your judgement invisible.",
+      "tests": {
+        "skipped": false,
+        "numerical": 3,
+        "numericalTotal": 5,
+        "commercial": 3,
+        "commercialTotal": 5
+      },
+      "scoreBreakdown": {
+        "cv": 41,
+        "tests": 21
+      },
+      "firstFix": {
+        "before": "- Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+        "after": "Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+        "note": "DCF and sensitivity shown; no valuation conclusion stated.",
+        "needsResult": false
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  },
+  {
+    "key": "05-strong-evidence",
+    "label": "Strong evidence and decisions",
+    "elapsedSeconds": 28,
+    "status": 200,
+    "id": "2c6ce845ad2b5c8a6dbeed443c6bdb955740766e023fc962",
+    "entry": {
+      "score": 74,
+      "max": 100,
+      "band": "Borderline",
+      "summary": "Your Juniper Advisory internship shows genuine analytical rigour — you caught a £2.4m EBITDA misstatement, produced the corrected schedule and had it accepted by your supervisor. What stops me shortlisting you is that your Juniper Advisory and University Investment Fund bullets, while strong on tasks, leave the commercial context and broader market judgement you formed largely unstated.",
+      "tests": {
+        "skipped": false,
+        "numerical": 3,
+        "numericalTotal": 5,
+        "commercial": 3,
+        "commercialTotal": 5
+      },
+      "scoreBreakdown": {
+        "cv": 53,
+        "tests": 21
+      },
+      "firstFix": {
+        "before": "- Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+        "after": "Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+        "note": "Keep your stated work factual; add only details you can substantiate.",
+        "needsResult": false
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  }
+]

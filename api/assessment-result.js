@@ -3,7 +3,7 @@ import {assessmentEntry} from '../lib/assessment-entry.mjs';
 import {conversionFacts,freeConversionResult} from '../lib/result-conversion.mjs';
 import {resultDeadline} from '../lib/result-deadline.mjs';
 import {deepFor,evidenceText} from '../lib/deep-assessment.mjs';
-import {currentAccount,entitlement,resultUnlocked} from '../lib/accounts.mjs';
+import {currentAccount,entitlement,resultUnlocked,emailConfigured} from '../lib/accounts.mjs';
 import {FULL_CYCLE_REVIEW_MODE,fullCycleAccess} from '../lib/full-cycle-access.mjs';
 import {ownedRecord,hasAccess,apiFailure,sql} from '../lib/report-store.mjs';
 import {parsePart} from '../lib/full-cycle-contract.mjs';
@@ -18,7 +18,7 @@ export default async function handler(req,res){
  if(deepReady && row.report?.repair) row.report.repair=parsePart(JSON.stringify(row.report.repair),'repair',evidenceText(row,deep));
  await funnelEvent(row.owner_hash,'assessment_completed',row.id).catch(()=>{});
  const claimed=unlocked||await resultUnlocked(row);
- if(!claimed)return res.json({success:true,id:row.id,entry:assessmentEntry(row,false)});
+ if(!claimed)return res.json({success:true,id:row.id,emailReady:emailConfigured(),entry:assessmentEntry(row,false)});
  const publicData=publicAssessment(row.result,row.input.quiz,row.input.cvText);const conversion=conversionFacts(row.result,row.input.quiz,row.input.cvText,row.report);if(!unlocked)publicData.result=freeConversionResult(publicData.result);
  const deadline=await resultDeadline(row,account).catch(()=>null);
  return res.json({success:true,id:row.id,entry:assessmentEntry(row,true),profile:row.input.profile,...publicData,conversion,deadline,email:account?.email||row.input.resultEmail||null,freeLineFix:row.input.freeLineFix?{line:row.input.freeLineFix.line}:null,paid,fullCycleReview:FULL_CYCLE_REVIEW_MODE,recheck,deep:unlocked?{status:deepReady?'complete':'draft',evaluation:deep?.evaluation,testChoice:deep?.testChoice,testsDate:row.created_at}:undefined,report:deepReady?row.report:undefined});}catch(e){return apiFailure(res,e);}

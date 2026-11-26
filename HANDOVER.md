@@ -1,3 +1,27 @@
+# START HERE — verified summary release; EMAIL CONNECTION STILL BLOCKED
+
+Branch codex/sidebar-consistency. Live implementation before this availability-state follow-up:44625e02aa7ee39b14153bb3a0e44c6006ae1712, deploymentdpl_ACdcEDEqY9wakgbzpzPbxQ27cNrZ READY with thedesk.vercel.app alias. Final availability-state implementation/deployment follows and will be recorded after READY verification.
+
+## What is actually verified
+- Supplied Bristol PDF: real live upload/extraction, generation and saved-result retrieval passed52/100 in56s on the final accuracy pass, using3/5 numerical and3/5 commercial test answers. Browser phone flow separately uploaded that PDF, showed immediate green selection, required consent, read it, completed ten questions, selected multiple goals and opened its52/100 summary. This is a test score under those answers, not the user's actual quiz performance.
+- Five fictional CVs passed upload→generation→saved-result reopening:40/54/46/62/74. Before/after repair scores matched. All five were retrieved again on the latest summary API; each had an actual personal summary and3/5+3/5 test marks. Evidence in docs/verification/five-cv-26nov and local outputs/five-cv-review.
+- Live DOCX upload/extraction additionally returned200 and exactly the same non-empty evidence lines as its fictional TXT counterpart. Supplied PDF and five TXT fixtures exercised real extraction; do not imply image-only/scanned PDFs or every possible document format were universally tested.
+- Phone390×844 and desktop1280×800 summary checked, no horizontal overflow. Live phone shows personal CV strength, literal test marks, Kayyor photo, stable band-based comment, saved CV/test contribution reasoning, band explanation and detailed-free-assessment email invitation. No First CV fix card.50comments across ten score ranges, with CV-only wording when tests were skipped. No claims of an individual human review or guaranteed interview.
+-57focused checks passed, plus two additional client email-transition/configuration tests. Real email delivery was NOT tested or sent; the configured-success transition to detailed report is mocked in tests.
+
+## IMPORTANT: email is NOT working yet
+- Production GET /api/assessment-save returned emailReady:false. Environment metadata has EMAIL_FROM but no RESEND_API_KEY; project integration lookup returned no installed Resend configuration. Do not claim the detailed-free-report email flow is complete.
+- UI now receives emailReady from the owned result endpoint. If false, it keeps score/summary visible, disables email submission and clearly says saving by email is currently unavailable. It does not discard results, silently remove the email gate, pretend to send mail or grant account access. Existing successful email save opens the detailed free assessment in place when configuration is present.
+- User was asked whether to use an existing Resend account/integration; answer pending. Next required action: connect the existing Resend service or add its key securely in Vercel production, confirm sender, redeploy, verify emailReady:true and test delivery to an explicitly authorised address. Never ask the user to paste credentials into chat.
+
+## Continuity and privacy
+- User-supplied PDF, extracted text, response JSON and screenshots containing its assessment stay local in outputs/work; not committed. Fictional test fixtures/evidence may be in Git. Never commit scratch owner-cookie session files.
+- A broad production-diagnostics query was blocked by automatic review because it could expose other users' CV-derived data and a credential in a shell command. It was not executed; use only the supplied CV and isolated test-owned requests. No bypass. The rejected credential was not written to disk or printed in results.
+- Local user-facing screenshot: outputs/assessment-summary-practitioner-phone.jpg. Five-CV review and50-comment library in outputs/five-cv-review/review.html and score-comment-library.html. Private screenshot is intentionally not copied into the public repository.
+- Code and handover are pushed without force. Final release-record commit will follow this implementation; distinguish that documentation SHA from deployed application SHA.
+
+---
+
 # Final accuracy pass before release
 
 During the supplied-PDF phone browser check, the page reached52/100 with3/5 numerical and3/5 commercial and displayed the new summary/photo/score-based note. One saved summary wrongly said neither named experience showed a method even though reconciliation was supplied. Fixed shared evidence extraction to include date-only lines between role headings and bullet points, stopping at the next genuine heading. Added a scoped summary guard for neither-X-nor-Y-shows-a-method claims when a named cited entry supplies one; legitimate requests for more explanation remain valid.
