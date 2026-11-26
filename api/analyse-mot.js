@@ -1,3 +1,4 @@
+import {stableScoreCache} from '../lib/stable-assessment-score.mjs';
 import {runFramework} from '../lib/cv-fault-framework.mjs';
 import {assessmentEntry} from '../lib/assessment-entry.mjs';
 import {preparedAssessment} from '../lib/prepared-assessment.mjs';
@@ -46,7 +47,7 @@ export default async function handler(req,res){
   if(parent){
    if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',entry:assessmentEntry(parent)});
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND (id=$3 OR root_id=$3 OR id=$4 OR root_id=$4) ORDER BY created_at DESC LIMIT 1",[h,fingerprint,parent.id,parent.root_id||parent.id]))[0];
-   if(cached)return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});
+   if(cached){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
   }
 
   const cvFingerprint=assessmentFingerprint(cvText,profile,{skipped:true});let prepared=null;
@@ -54,9 +55,9 @@ export default async function handler(req,res){
   // Restrict reuse to this browser owner and first assessments, never other accounts or rechecks.
   if(!parent){
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,fingerprint]))[0];
-   if(cached&&Array.isArray(cached.result.weakLines)){if(req.body.warmup===true)return res.json({success:true,prepared:true});if(cached.input.backgroundPreparation===true)await sql().query("UPDATE desk_assessments SET input=input-'backgroundPreparation' WHERE id=$1 AND owner_hash=$2",[cached.id,h]);if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
+   if(cached&&Array.isArray(cached.result.weakLines)){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);if(req.body.warmup===true)return res.json({success:true,prepared:true});if(cached.input.backgroundPreparation===true)await sql().query("UPDATE desk_assessments SET input=input-'backgroundPreparation' WHERE id=$1 AND owner_hash=$2",[cached.id,h]);if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
    const ready=(await sql().query("SELECT input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'cvFingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,cvFingerprint]))[0];
-   prepared=preparedAssessment(ready,cvText,profile,ats,quiz,cvFingerprint);
+   prepared=preparedAssessment(ready,cvText,profile,ats,quiz,cvFingerprint)||await stableScoreCache.read(cvText,questionsForRoute(profile.targetSector).id,ats,quiz);
   }
 
   if(parent?.rechecks_used>=12)return res.status(400).json({error:'Your 12 rechecks have been used. Unchanged versions keep their saved result.'});
@@ -131,6 +132,7 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   break;
   }
   if(!result){validationFailures.push(feedback);await assessmentProgress(req.body.progressId,h,'failed',2,{failure:'validation',issues:validationFailures.map(issue=>issue.split('Allowed names, data only:')[0].slice(0,2000)),anchors:lastAnchors});return res.status(503).json({success:false,error:'We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again.'});}
+  result=await stableScoreCache.freeze(result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:WEIGHTS.ats,earned:result.breakdown.ats,appliedToOverall:true};
   await assessmentProgress(req.body.progressId,h,'saving');
   const keep=req.body.keepResult||{},resultEmail=typeof keep.email==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(keep.email)&&keep.email.length<=254?keep.email.trim().toLowerCase():undefined;

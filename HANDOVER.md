@@ -1,3 +1,23 @@
+# START HERE — compact summary and stable scores, 26 November 2026
+
+Branch codex/sidebar-consistency. Previously deployed framework implementation f0469fa09ba7d90e1e2224189bc9caba4a5940e7, deployment dpl_8CRphweurGMM6DjFAgpfd88cvybi READY with thedesk.vercel.app alias. Numeric-word/outcome correction 4d85efca54e60fb9312aa6509a6f4e6e66d8ab9a is pushed and included in this batch. Final batch implementation/deployment is to be recorded after READY verification.
+
+## Latest user decisions (override older layout notes below)
+Exact free-summary order: verdict + score + band bar; two fixed reasons + blurred third placeholder labelled The one most students miss; university/course question + one-line teaser; actual test marks + five route topics; one actual flagged line + reason + blurred placeholder + real remaining count; See what you're missing email box with unlock list. Practitioner is AFTER email. No top banner, praise paragraph, developing-advice box, standalone university name or member-reasoning teaser in the summary. Praise moves into the full free report under What's working. Preserve the sidebar and 80/20 weighting, with incomplete CV-only /80 when skipped.
+
+## Score stability repair
+Added lib/stable-assessment-score.mjs. A permanent server-side cache freezes the first validated CV marks and then the CV+answer result, atomically across independent sessions/concurrent requests. Key includes normalized CV text, canonical answers, question-bank ID and scoring version; names/firm/profile/browser are excluded. Shared cache stores numeric marks and numeric spans back into the submitted CV only: no CV text, email, profile, report or owner cookie. Current owner's result records/access remain separate. A known CV can reuse marks without another model pass; actual answers are graded by the server. Read/submit endpoints apply the same frozen marks; stored owned results are updated to the stable projection when opened. Missing/invalid old legacy evidence is not allowed to poison the shared cache. Do not scan unrelated private records to seed it.
+
+## Email remains an external configuration blocker (user now wants this fixed)
+Rechecked Vercel environment metadata: EMAIL_FROM exists, no RESEND_API_KEY or SMTP alternative. Resend integration lookup returns no installation. User was asked for an authorised inbox and to connect the existing Resend account securely in Vercel; no reply/key yet. Email copy now says full free assessment and magic-link return points there, preserving existing-account verification protections. No real mail sent and no live account/magic-link completion claimed. Do not disguise this blocker or remove the gate. Connect the existing sender/key, redeploy, then test actual delivery and opening on the user's chosen inbox.
+
+## Verification
+98 focused checks passed, including four shared-score cache checks (independent sessions, concurrent first-write winner, changed tests, cached CV reuse and no PII in shared rows), fixed-framework tests, account gates, report/legacy rewrite guards and skipped tests. Final narrow cache/handler checks also passed after review. Showcase scorer fingerprint matches. Diff reviewed. Phone 390x844: summary content including practitioner is 1075px (~1.27 viewport heights), core through email 940px, no horizontal overflow; site header/footer add their normal height. Whole local fixture screenshot: chat outputs/free-result-phone-proof/compact-summary-whole-phone.jpg. This is a local UI fixture; live screenshot and fresh-session cache verification follow deployment.
+
+Next: verify push/deployment, reopen the live phone result, verify identical scores in fresh owner sessions and save the final SHA/deployment/evidence. Email still requires secure provider connection + test inbox. Full paid report generation has not been newly exercised live; contracts and source/rewriting checks pass locally.
+
+---
+
 ## Live rule regression correction
 
 The first deployed framework matched the rules exactly on all three saved CVs and hid fixes correctly (403 before email). Weak/average private first-fix preparation passed in 17.27s/13.01s; strong preparation rejected an unsupported draft. This exposed rule false positives: written-out ten/two were not numeric scale, and accepted/revised/corrected/narrowed outputs were not recognised. Added deterministic handling plus a strong-finance zero-flags regression. Strong CV now receives preparation questions and no manufactured line fix. Final live retest follows deployment.

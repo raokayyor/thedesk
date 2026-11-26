@@ -1,3 +1,5 @@
+import {stableScoreCache} from '../lib/stable-assessment-score.mjs';
+import {questionsForRoute} from '../lib/question-banks.mjs';
 import {frameworkResult,frameworkReport,frameworkEvaluation} from '../lib/cv-framework-result.mjs';
 import {funnelEvent} from '../lib/assessment-funnel.mjs';
 import {assessmentEntry} from '../lib/assessment-entry.mjs';
@@ -12,6 +14,7 @@ import {publicAssessment} from '../lib/assessment-scoring.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','no-store');if(req.method!=='GET')return res.status(405).end();
  try{const row=await ownedRecord(req,res,req.query.id);if(!row)return res.status(404).json({success:false,error:'Result unavailable in this browser. Start your assessment again.'});
+ const beforeStable=row.result;row.result=await stableScoreCache.freeze(row.result,row.input.cvText,questionsForRoute(row.input.profile?.targetSector||'General Finance').id,row.input.answers,row.input.quiz);if(row.result!==beforeStable)await sql().query('UPDATE desk_assessments SET result=$1::jsonb WHERE id=$2 AND owner_hash=$3',[JSON.stringify(row.result),row.id,row.owner_hash]);
  row.result=frameworkResult(row.result,row.input.cvText,row.input.profile,row.input.quiz);
  const paid=await hasAccess(row),unlocked=await fullCycleAccess(row);const root=row.root_id?(await sql().query('SELECT id,paid_at,rechecks_used FROM desk_assessments WHERE id=$1 AND owner_hash=$2',[row.root_id,row.owner_hash]))[0]:row;
  const account=await currentAccount(req);const access=account?await entitlement(account.id):null;const expiresAt=access?.active?access.until:root?.paid_at?new Date(new Date(root.paid_at).getTime()+365*86400000).toISOString():null;
