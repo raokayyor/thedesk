@@ -7,7 +7,7 @@ assert(buildPartPrompt('repair',ctx).includes(cv.replaceAll('\n','\\n')));
 assert.throws(()=>buildContext({overallScore:66},''));
 assert.throws(()=>buildPartPrompt('bogus',ctx));
 assert.throws(()=>parsePart('{"bulletRepair":', 'repair',cv));
-const bullet={originalBullet:'Researched 12 software companies.',exampleBullet:'Researched 12 software companies and presented a comparison table.',factsUsed:['Researched 12 software companies.','Presented comparison table.']};
+const bullet={originalBullet:'Researched 12 software companies.',exampleBullet:'Presented a comparison table from research into 12 software companies.',factsUsed:['Researched 12 software companies.','Presented comparison table.']};
 const repair={bulletRepair:[bullet,bullet,bullet],competencyRepair:Array(7).fill({}),interviewRiskMap:Array(3).fill({})};
 assert(parsePart(JSON.stringify(repair),'repair',cv));
 const sourceRepair={...repair,bulletRepair:[{...bullet,originalBullet:'E4',factsUsed:['E4','E6']},bullet,bullet],competencyRepair:Array.from({length:7},()=>({evidenceSourceIds:['E4']}))};

@@ -1,3 +1,26 @@
+# START HERE — deterministic CV framework, 26 November 2026
+
+Branch: codex/sidebar-consistency. Prior verified live implementation: 68481de83fbf7e0d78899d280f31914721f7dc5f (production deployment dpl_HPkiJpw7Cx43EDF57oQY6xmspg7a READY, alias thedesk.vercel.app verified). This framework batch is being committed/pushed next; deployment SHA/readiness will be recorded in a follow-up.
+
+## What changed and why
+- Imported the three user-supplied Downloads files into CODEX-CV-FRAMEWORK.md, lib/cv-fault-framework.mjs and test/cv-fault-framework.test.mjs. Fixed rules are now the fault authority across free summary, full free report and member report. AI fault arrays/priorities no longer control the published reasons, source lines or order; AI still scores evidence under the existing rubric and writes checked fixes.
+- Two rule reasons shown before email; the third is a placeholder only and revealed after email. Top actual full CV line shown, other real flags counted. Full free report shows three flagged lines/why and ONLY fix one; other fixes stay Member. The member report uses all framework-ranked lines and the same three reasons. Cached member faults are projected to this list; generation is versioned so old independent model lists regenerate.
+- Rao explicitly approved preparation QUESTIONS for fallback slots instead of unsupported negative claims on strong CVs. Three slots remain, with kind=preparation clearly labelled. Four supplied verdict headlines and course/grade wording used. No university prestige marks or public target list; show the student's actual institution name.
+- Mechanical parsing corrections: em-dash role headings, standalone dates and dated project headings are metadata; first-year study is not a predicted First; course classification uses the degree name instead of unrelated module names. All ranked lines remain exact contiguous source substrings. All flags exposed for member coverage, with top-three selection preserved.
+- Existing rewrite guard now also covers member report parsing: similarity <0.85, no unsupported numbers/tools/ownership, preserve confirmed numbers/methods, exact evidence quotes. A rejected rewrite is NEVER replaced with its original. Unknown facts remain bracketed amber questions. Old invalid saved repair is omitted for regeneration while the rest of the report remains readable. Private pre-email preparation returns metadata only; free callers receive only the first rewrite after unlock.
+- Retained 80% CV / 20% tests (10 + 10), incomplete CV-only /80 when skipped, preparation during questions/goals and server-only fix preparation while reading summary. Removed duplicate reason section from full free output for phone readability. Retained top jump, practitioner above email, grey member-reasoning teaser without a price and unchanged sidebar.
+
+## Checks and evidence
+- 93 focused tests passed across framework integration, scores, free gate, account ownership, rewrite rejection, full-cycle contracts, legacy repair safety and deep assessment. The supplied four-CV test passes with explicit assertions added for expected weak reasons and zero Priya flags. Additional framework checks verify same CV/model-independent reason and line order, shared free/member findings and metadata exclusion.
+- Six refreshed 390x844 fictional UI screenshots: chat outputs/free-result-phone-proof, before/after simulated email. 360x740 and 1280x800 no horizontal overflow. These are UI fixtures with simulated save/email, not live mail delivery or three newly created real accounts. Showcase fingerprint matches; diff checked.
+- Prior live speed check: CV review 24.38–30.87s overlapped with the questions; completed-test final requests 0.44/0.54/0.60s and skipped final requests 1.19/0.44/0.52s. Scores 35/45/77 using actual 3/5+3/5 test inputs, 12/20 test contribution. Weak case rewrite passed, while multi-line average/strong rewrite batches hit the similarity guard. Framework release narrows free preparation to the single highest-impact rule line; live retest is required after deployment and will be recorded next.
+
+## Outstanding / next
+- EMAIL DELIVERY IS DEFERRED BY RAO: production still has no Resend key. No mail sent or real magic-link journey claimed. Missing-key message remains honest and controls disabled. Reconnect the existing service and test an authorised inbox when requested.
+- Finish deployment verification and owner-scoped live first-fix tests on the stored fictional sessions. Do not call full paid generation or live email tested unless actually exercised. Existing private PDF and supplied-CV screenshots remain local; never commit them, extracted text, sessions or secrets.
+
+---
+
 ## Dashboard score consistency
 
 Dashboard projections now include the stored overall score and raw criterion/competency values. Reweighting old results uses those raw marks, matching the full report without a second model judgement or rounding drift. Four regression cases cover 80/20 totals, skipped marks, warm evidence reuse and legacy/dashboard score equivalence.

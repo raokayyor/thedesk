@@ -46,16 +46,16 @@ assert.match(validateDraftAnswer(good.replace('three new colleagues','five new c
 assert.match(validateDraftAnswer(good.replace('I was asked to train them','I led the team and trained them'),src,cv).reason,/claim/);
 
 // Uppercase CONFIRM placeholders leave the finished bullet and become questions
-const bullet={originalBullet:'E7',factsUsed:['E7','E3'],exampleBullet:'Maintained 12 hours per week alongside university [CONFIRM: across how many terms?]; trained 3 new colleagues.',questionsToConfirm:[]};
+const bullet={originalBullet:'E7',factsUsed:['E7','E3'],exampleBullet:'Combined university study with 12 weekly working hours, coaching 3 new colleagues in till and ordering procedures. Identified a duplicate payment during a busy service, notified the shift lead and assisted with its correction. [CONFIRM: across how many terms?]',questionsToConfirm:[]};
 const parsed=parsePart(JSON.stringify({bulletRepair:[bullet,{...bullet},{...bullet}],competencyRepair:Array.from({length:7},()=>({name:'Leadership',evidenceSourceIds:['E7'],draftAnswer:good})),interviewRiskMap:Array(3).fill({})}),'repair',cv);
-assert(!/CONFIRM/i.test(parsed.bulletRepair[0].exampleBullet));
-assert.equal(parsed.bulletRepair[0].exampleBullet,cv.split('\n').filter(x=>x.trim())[6]);
+assert(/CONFIRM/i.test(parsed.bulletRepair[0].exampleBullet));
+assert.notEqual(parsed.bulletRepair[0].exampleBullet,cv.split('\n').filter(x=>x.trim())[6]);
 assert.equal(parsed.bulletRepair[0].questionsToConfirm[0],'Across how many terms?');
 // Same draft reused across competencies is kept only once
 assert.equal(parsed.competencyRepair.filter(c=>c.draftAnswer).length,1);
 
 // Repaired CV drops number-free sentences the report says to cut, never role headings
-const paid={bulletRepair:[{originalBullet:'Worked 12 hours per week alongside university.',exampleBullet:'Worked 12 hours per week alongside university.',factsUsed:['Worked 12 hours per week alongside university.','Excel, valuation.'],questionsToConfirm:['How many terms?']},{originalBullet:'Attended employer talks.',exampleBullet:'Attended employer talks.',factsUsed:['Attended employer talks.','Excel, valuation.']}],
+const paid={bulletRepair:[{originalBullet:'Worked 12 hours per week alongside university.',exampleBullet:'Combined university with 12 working hours each week.',factsUsed:['Worked 12 hours per week alongside university.','Excel, valuation.'],questionsToConfirm:['How many terms?']},{originalBullet:'Attended employer talks.',exampleBullet:'Joined talks delivered by employers.',factsUsed:['Attended employer talks.','Excel, valuation.']}],
   competencyRepair:Array(7).fill({}),interviewRiskMap:Array(3).fill({}),
   evidenceHierarchy:{reduceOrCut:[{evidence:'No committee position. / No monetary saving or complaint-resolution rate was recorded.',whyReduce:'Disclaimer'}]}};
 const rcv=buildRepairedCv({cvText:cv,paid,profile:{name:'Amelia Chen'}});
@@ -64,7 +64,7 @@ assert(!rcv.sourceText.includes('No monetary saving'));
 assert.equal(rcv.removed.length,2);
 const pho=rcv.sections.flatMap(s=>s.items).find(i=>i.heading.startsWith('Pho House'));
 assert(pho && pho.bullets.length>=1, 'rewritten bullet stays a bullet under its role');
-assert.equal(pho.bullets.find(b=>b.text.startsWith('Worked 12')).confidence,'needs_confirmation');
+assert.equal(pho.bullets.find(b=>b.text.startsWith('Combined university')).confidence,'needs_confirmation');
 
 // Firm process and 30-day plan
 assert.match(firmProcess('Barclays').process,/motivational interview/);

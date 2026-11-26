@@ -1,3 +1,5 @@
+import {frameworkResult,frameworkReport} from '../lib/cv-framework-result.mjs';
+import {validateFreeLineRewrite} from '../lib/free-line-rewrite.mjs';
 import {missingWeakRepairs} from '../lib/weak-lines.mjs';
 import {deepFor,evidenceText} from '../lib/deep-assessment.mjs';
 import {fullCycleAccess} from '../lib/full-cycle-access.mjs';
@@ -15,7 +17,7 @@ const MODEL = process.env.FULL_CYCLE_MODEL || 'claude-sonnet-4-6';
 export default async function handler(req, res) {
   if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
   const part=req.body?.part||'verdict';if(!['verdict','repair','plan'].includes(part))return res.status(400).json({error:'Unknown report section.'});
-  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await fullCycleAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});const deep=await deepFor(row);if(deep?.status!=='complete')return res.status(428).json({error:'Complete your CV follow-up questions before generating your deep assessment.',next:'/deep-assessment.html?id='+row.id});row.originalCvText=row.input.cvText;row.input={...row.input,cvText:evidenceText(row,deep)};if(row.report[part]&&(part!=='repair'||!missingWeakRepairs(row.result.weakLines,row.report.repair?.bulletRepair).length))return res.json({success:true,part,data:part==='repair'?parsePart(JSON.stringify(row.report[part]),part,row.input.cvText):row.report[part],cached:true});
+  let row;try{row=await ownedRecord(req,res,req.body?.assessmentId);if(!row||!await fullCycleAccess(row))return res.status(402).json({error:'Purchase Full Cycle to open your report.'});row.result=frameworkResult(row.result,row.input.cvText,row.input.profile,row.input.quiz);const deep=await deepFor(row);if(deep?.status!=='complete')return res.status(428).json({error:'Complete your CV follow-up questions before generating your deep assessment.',next:'/deep-assessment.html?id='+row.id});row.originalCvText=row.input.cvText;row.input={...row.input,cvText:evidenceText(row,deep)};if(row.report[part]?.cvFrameworkVersion===row.result.cvFramework.version&&(part!=='repair'||!missingWeakRepairs(row.result.weakLines,row.report.repair?.bulletRepair).length))return res.json({success:true,part,data:part==='repair'?parsePart(JSON.stringify(row.report[part]),part,row.input.cvText):row.report[part],cached:true});
   const lease=await sql().query("UPDATE desk_assessments SET generation_lease=jsonb_set(generation_lease,ARRAY[$1],to_jsonb($2::bigint)) WHERE id=$3 AND COALESCE((generation_lease->>$1)::bigint,0)<$2::bigint-360000 RETURNING id",[part,Date.now(),row.id]);if(!lease.length)return res.status(409).json({error:'This section is being prepared. Please wait and retry.'});}catch(e){return apiFailure(res,e);}
   const {result,input:{cvText,profile,quiz}}=row;
   let ctx, prompt;
@@ -35,10 +37,11 @@ export default async function handler(req, res) {
     const submitted = response.content.find(c => c.type === 'tool_use' && c.name === 'submit_report');
     if (!submitted) throw new Error('Missing structured report');
     const text = JSON.stringify(submitted.input);
-    const data = parsePart(text, part, ctx.cvText);
+    let data = parsePart(text, part, ctx.cvText);
     if(part==='repair'&&data.bulletRepair.some(b=>!row.originalCvText.includes(b.originalBullet)))throw Error('Rewrite must quote source CV');
     const lint = lintReport(data, ctx);
     if (lint.notes.length) console.warn('full-cycle lint', JSON.stringify({part, notes: lint.notes}));
+    data=frameworkReport(data,part,result.cvFramework);
     if (part === 'verdict') data.profileWarnings = ctx.facts?.profile?.warnings || [];
     if (part === 'repair') {
       const missing=missingWeakRepairs(result.weakLines,data.bulletRepair);

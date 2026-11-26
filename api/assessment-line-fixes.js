@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import {sameOrigin,ownedRecord,sql,apiFailure} from '../lib/report-store.mjs';
+import {sameOrigin,ownedRecord,sql,apiFailure,hasAccess} from '../lib/report-store.mjs';
 import {resultUnlocked,allow} from '../lib/accounts.mjs';
 import {rankedWeakLines,weakLineContext} from '../lib/free-result-teaser.mjs';
 import {evidenceForDetail} from '../lib/evidence-fairness.mjs';
@@ -9,8 +9,8 @@ export default async function handler(req,res){
  res.setHeader('Cache-Control','no-store');if(req.method!=='POST')return res.status(405).end();if(!sameOrigin(req,res))return;
  try{
   const row=await ownedRecord(req,res,req.body?.assessmentId);if(!row)return res.status(404).json({error:'Open your own saved assessment.'});const preparing=req.body?.prepare===true;if(!preparing&&!await resultUnlocked(row))return res.status(403).json({error:'Save your assessment by email to reveal the fixes.'});
-  const cv=row.input.cvText,weak=rankedWeakLines(row.result,cv),sources=weak.map(line=>{const context=weakLineContext(cv,line.original),evidence=evidenceForDetail(cv,context);return{...line,context,evidence:evidence.includes(line.original)?evidence:line.original}});
-  const cached=row.report?.freeLineFixes;if(cached?.version===2&&cached.lines?.length===sources.length){try{cached.lines.forEach((line,i)=>validateFreeLineRewrite(line,sources[i].original,sources[i].evidence));return res.json(preparing?{success:true,prepared:true}:{success:true,lines:cached.lines});}catch{}}
+  const cv=row.input.cvText,member=await hasAccess(row),all=rankedWeakLines(row.result,cv,row.input.profile),weak=member?all:all.slice(0,1),sources=weak.map(line=>{const context=line.role||weakLineContext(cv,line.original),evidence=evidenceForDetail(cv,context);return{...line,context,evidence:evidence.includes(line.original)?evidence:line.original}});
+  const cached=row.report?.freeLineFixes;if(cached?.version===2&&cached.lines?.length===sources.length&&cached.lines.every((line,i)=>line.original===sources[i].original)){try{cached.lines.forEach((line,i)=>validateFreeLineRewrite(line,sources[i].original,sources[i].evidence));return res.json(preparing?{success:true,prepared:true}:{success:true,lines:cached.lines});}catch{}}
   if(!sources.length)return res.json(preparing?{success:true,prepared:true}:{success:true,lines:[]});
   if(!await allow('assessment-lines:'+row.owner_hash,10))return res.status(429).json({error:'Please retry later; your full assessment is still saved.'});
   const client=new Anthropic({apiKey:process.env.ANTHROPIC_API_KEY,maxRetries:0,timeout:55000});let feedback='',validated,lastDrafts;

@@ -11,3 +11,5 @@ After each completed batch:
 4. Verify the push and report the final commit SHA. If deployment is requested, verify the intended deployment is READY and serves the intended revision before calling it live. A successful push is not deployment confirmation.
 
 The handover's latest implementation commit may precede its documentation commit. Do not try to put a commit's own SHA inside itself; report the final batch SHA after pushing and use Git history to identify the handover revision.
+
+CV fault findings must come from lib/cv-fault-framework.mjs (CODEX-CV-FRAMEWORK.md), across free summary, full free assessment and member report. AI writes fixes, not independent fault lists. Keep the approved preparation-question fallbacks and run test/cv-fault-framework.test.mjs plus integration checks after changes.
