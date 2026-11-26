@@ -13,7 +13,7 @@ This section updates the older handover below. Branch: `codex/sidebar-consistenc
 - Local browser uses the actual repository HTML/JS/CSS with fixture-only API endpoints (no real account or assessment generation). Tested route/firm selection, typed Example Partners, reload persistence, More firms, pasted synthetic CV, processing consent, numerical intro and Start to question one. No horizontal overflow at 390 x 844.
 - Focused tests: `node --test tests/assessment-targets.test.mjs tests/assessment-quiz-intro.test.mjs tests/phone-cv-upload.test.mjs tests/free-result-journey.test.mjs tests/signup-auth.test.mjs tests/signup-profile.test.mjs tests/document-preview.test.mjs`: **26 passed, 0 failed**.
 - `node scripts/build-amelia-showcase.mjs --check`: matches current scorer. JavaScript syntax checks passed. Reviewed diff; whitespace check with existing CRLF handling passed (`git -c core.whitespace=cr-at-eol diff --check`).
-- Phone screenshots in `docs/verification/assessment-26nov/`. Full live generation/signup testing and a physical phone keyboard test are not claimed by this batch.
+- Phone screenshots in `docs/verification/assessment-26nov/`. Also verified the desktop assessment resumes to Question 1 at 1280 x 800 without overflow. Full live generation/signup testing and a physical phone keyboard test are not claimed by this batch.
 
 ## User decisions this morning
 - Add more firms and allow a typed firm name.
@@ -23,9 +23,10 @@ This section updates the older handover below. Branch: `codex/sidebar-consistenc
 - Make Start visible. User wants to continue on the updated live assessment; publish and verify READY before saying it is live.
 
 ## Publication and remaining work
-- This implementation and handover are being pushed to `origin/codex/sidebar-consistency`; confirm remote SHA after pushing.
-- Production deployment of the implementation is pending at this handover revision. Previous verified production was `853c35c501f5c1aad322a29b198cfaa9127ad1b9`. Update this section with the deployment ID and URL once READY; a Git push alone is not a release.
-- Immediate next step: finish production verification of this batch so the user can continue. Then resume yesterday's priorities: upload failure/retry, back/resume, complete tests → result → free signup → returning to result; improve the usefulness and paid-value explanation of the free report using only CV-backed facts. Preserve sidebar and layouts. Do not claim the whole journey is bug-free.
+- Implementation `9cae873a281f9a37a5a00ea332bdc885549c29c5` and initial handover `98ebc14987a519a537ecfa962a43801160541df2` pushed successfully to `origin/codex/sidebar-consistency`; remote fetched and confirmed. This final release-record commit follows them; report its SHA after pushing.
+- **Production READY**, deployment `dpl_3M7mhrn3CLcR9SmQdpoG3R75kCbo`, serving implementation `9cae873a281f9a37a5a00ea332bdc885549c29c5`. Confirmed `thedesk.vercel.app` in its aliases. URL: https://thedesk.vercel.app/assessment.html ; immutable deployment: https://thedesk-ol6jlwrux-raokayyor.vercel.app . Handovers committed after the implementation are pushed documentation, not a different deployed code revision.
+- Live browser at 390 x 844 reloaded the updated firm entry, resumed the saved synthetic-CV assessment, displayed the short numerical introduction with calculator permission, and clicked Start numerical test into Question 1. Hit test confirms Start receives the tap; document width 390px; time label hidden. Screenshot `assessment-numerical-live-390x844.jpg`. User told the page is ready to continue only after these checks.
+- Next: follow the user's review as they continue, then resume yesterday's priorities: upload failure/retry, back/resume, complete tests → result → free signup → returning to result; improve the usefulness and paid-value explanation of the free report using only CV-backed facts. Preserve sidebar and layouts. Do not claim the whole journey is bug-free.
 
 ---
 
