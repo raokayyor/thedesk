@@ -1,3 +1,12 @@
+# START HERE — light membership cues,26 November2026
+
+Branch codex/sidebar-consistency. This implementation batch is locally tested, not deployment-verified yet. Email remains the only primary button. Added a secondary membership text link below it: real flagged-line count + target firm (or your firms), £89 a year, return parameter to this exact result; zero flags use CV refined instead of a false all0 promise. Added requested comparison small print. Cydney's existing approved testimonial from data/testimonials.mjs appears verbatim with first name and University of Exeter above email. Full wording wraps naturally on phone, never truncated or paraphrased.
+
+Deadline line below score band is populated only from programmes DB rows marked open with an actual checked source (excluding legacy/unreverified snapshots), valid upcoming date, no review flag, exact selected firm, matching programme type and route. Unknown/closed/uncertain/unmatched dates show nothing. London calendar-day arithmetic. Public programmes exposes only a confirmation boolean, no checker identity. No guessed dates and no external deadline edits.
+
+57 focused tests passed (deadline matching/source exclusions, exact quote, one primary button, safe result return, empty-firm/zero-flags, framework/gates/rewrite/price/checkout checks); showcase matches; diff checked and reviewed. Local390x844 whole page1682px, about2screens, no horizontal overflow. Quote intact; membership visually secondary. Next: push exact implementation, deploy/verify READY/alias, live owned Amelia API/return-link check and screenshot; record exact SHA and evidence. No real payment or email delivery tested. Existing email/sparse-CV blockers remain; sidebar and80/20 scores untouched.
+
+---
 # START HERE — missing-chip summary LIVE VERIFIED,26 November2026
 
 Branch codex/sidebar-consistency. Application414e9a26b8e138d06b149f6eca8d920972c54bb2 pushed and deployed on production dpl_4vQhsdSLzzjtT6CPPVKUA8LxsXUP READY, exact Git SHA and thedesk.vercel.app alias verified. Live https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-c95v9n155-raokayyor.vercel.app . This evidence/handover commit follows deployed application.
