@@ -1,0 +1,81 @@
+[
+  {
+    "key": "raj",
+    "fixtureNote": "Fictional reconstruction from user description; exact Raj source absent from attachments.",
+    "route": "Accounting / Audit",
+    "success": true,
+    "score": 33,
+    "repeatScore": 33,
+    "wrongQuestions": 6,
+    "distinctMissedTopics": 6,
+    "teaser": {
+      "section": "internship",
+      "original": "Helped with engineering reports",
+      "why": "Says what you were there for, not what you did.",
+      "remainingCount": 5,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ a number",
+        "+ what you did",
+        "+ what it achieved"
+      ]
+    },
+    "reasons": [
+      {
+        "id": "internship_tasks_only",
+        "points": 12,
+        "text": "Your internship says what you did, not what it achieved.",
+        "shown": true
+      },
+      {
+        "id": "no_quantified_lines",
+        "points": 10,
+        "text": "Not one line has a number in it, so nothing shows scale.",
+        "shown": true
+      }
+    ],
+    "courseTeaser": "MEng Mechanical Engineering at University of Nottingham · Predicted 2:1 · there's one thing Big Four firms will check →",
+    "emailReady": false,
+    "privateFixStatus": 200,
+    "seconds": 15.2
+  },
+  {
+    "key": "amelia",
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "success": true,
+    "score": 54,
+    "repeatScore": 54,
+    "wrongQuestions": 8,
+    "distinctMissedTopics": 8,
+    "teaser": {
+      "section": "internship",
+      "original": "Recorded business descriptions, revenue and EBITDA in an Excel comparison table",
+      "why": "No result: a screener can't tell if it mattered.",
+      "remainingCount": 6,
+      "placeholder": "Your stronger wording appears here with confirmed facts Your stronger wording",
+      "chips": [
+        "+ what it achieved",
+        "+ a number"
+      ]
+    },
+    "reasons": [
+      {
+        "id": "so_what_layer",
+        "points": 5,
+        "text": "Your Redcliffe Partners company research never says what it told you.",
+        "shown": true
+      },
+      {
+        "id": "second_line_gap",
+        "points": 4,
+        "text": "Your Redcliffe Partners analysis doesn’t say what happened next.",
+        "shown": true
+      }
+    ],
+    "courseTeaser": "BSc Economics at University of Bristol · Predicted 2:1 · there's one thing banks will check →",
+    "emailReady": false,
+    "privateFixStatus": 200,
+    "seconds": 21
+  }
+]
