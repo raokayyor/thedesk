@@ -51,6 +51,21 @@ POSITIONS
 President, LSE Investment Society: led 25 analysts, grew membership 40%
 SKILLS
 Excel (LBO, DCF, VBA), Python`,
+sophie: `Sophie Grant
+EDUCATION
+University of Warwick, BSc Economics, 2023-2026. Predicted First.
+EXPERIENCE
+Spring Insight Programme, a UK investment bank, April 2025
+- Worked in a team of 5 to build a pitch for a mid-cap acquisition and presented it to 2 Vice Presidents; our team's pitch was ranked first of 8
+Audit Intern, regional accountancy firm, July-August 2025
+- Tested 40 revenue transactions for a manufacturing client and flagged 3 that were booked in the wrong period, which the senior adjusted before sign-off
+POSITIONS
+Treasurer, Warwick Investment Society, 2024-2025
+- Managed a £6,000 budget and organised 4 speaker events with 120+ attendees in total
+Member, university netball team
+SKILLS
+Excel (DCF, comps, pivot tables), Python (pandas)
+Interests: half-marathon running (1:52), writing a weekly markets newsletter for 300 subscribers`,
 none: `Tom Lee
 EDUCATION
 University of Kent, BA History, 2024-2027.
@@ -67,4 +82,5 @@ for (const [k, cv] of Object.entries(CVS)) {
   r1.flaggedLines.forEach(l => console.log(`  ⚑ [${l.section}] "${l.text}" — ${l.why} (${l.faults.join(',')})`));
   console.log('  +' + r1.moreFlagged + ' more · course:', r1.course.type, '·', r1.course.grade);
 }
+const so=runFramework(CVS.sophie,{firm:'Barclays'}); assert.ok(!so.flaggedLines.some(l=>/ranked first of 8|adjusted before sign-off/.test(l.text)), 'strong lines must not be flagged');
 console.log('\n', verdictFor(34).headline, '|', verdictFor(58).headline);
