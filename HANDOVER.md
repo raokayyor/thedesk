@@ -1,3 +1,15 @@
+# START HERE — light membership cues LIVE VERIFIED,26 November2026
+
+Branch codex/sidebar-consistency. Application2b0415a1c89cfa4bacba070b94211c7712078f0f pushed and deployed: production dpl_8Nt7jPEauzFfhUTxmDHXDd42KBXs READY, exact SHA and thedesk.vercel.app alias verified. Live https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-dx3l2w0sa-raokayyor.vercel.app . This documentation/evidence commit follows deployed code; report final pushed SHA separately.
+
+User's new light89cues implemented: verified matching programme deadline below band only; approved Cydney quote verbatim with Exeter above email; secondary membership TEXT link below primary email button with actual count/firm,89/year and exact result return; requested comparison small print. Unknown firm uses your firms; zero flags avoids an all0-fixes promise. Sources marked legacy/unreverified or needing review cannot generate urgency. No invented deadline and no checker identity exposed. London day arithmetic. Full approved quote wraps naturally to preserve wording/readability.
+
+57 focused checks passed; showcase matches; diff reviewed. Fresh owned live Amelia scoring/reopen/repeat54/54,7 flagged lines/Barclays. Independently checked deadline against public programmes DB: no matching confirmed date, correctly hidden. Browser production membership destination loaded and retained exact result return query; no payment/sign-in completed. Whole-phone1682px at390x844 (~2screens), no horizontal overflow; desktop1280 checked. Screenshot and sanitized proof in docs/verification/light-membership-cues-26nov. Image renders actual saved production response through production renderer in read-only local viewer.
+
+Email remains emailReady:false; no magic-link/account/full-report delivery verification. Earlier Tom sparse-validation and James rewrite reliability issues remain outstanding; post-email before/after and paid-next-step layout deferred. Do not describe membership checkout authentication/payment return as fully exercised. Next: user's visual review, then repair existing reliability/email blockers and test full post-email win/paid journey. Preserve sidebar and80/20 scoring.
+
+---
+
 # START HERE — light membership cues,26 November2026
 
 Branch codex/sidebar-consistency. This implementation batch is locally tested, not deployment-verified yet. Email remains the only primary button. Added a secondary membership text link below it: real flagged-line count + target firm (or your firms), £89 a year, return parameter to this exact result; zero flags use CV refined instead of a false all0 promise. Added requested comparison small print. Cydney's existing approved testimonial from data/testimonials.mjs appears verbatim with first name and University of Exeter above email. Full wording wraps naturally on phone, never truncated or paraphrased.

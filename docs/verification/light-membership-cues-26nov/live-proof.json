@@ -1,0 +1,31 @@
+{
+  "implementation": "2b0415a1c89cfa4bacba070b94211c7712078f0f",
+  "deployment": "dpl_8Nt7jPEauzFfhUTxmDHXDd42KBXs",
+  "deploymentState": "READY",
+  "productionAlias": "thedesk.vercel.app",
+  "score": 54,
+  "repeatScore": 54,
+  "membership": {
+    "flaggedCount": 7,
+    "firm": "Barclays"
+  },
+  "deadline": null,
+  "deadlineMatchesPublicDatabase": true,
+  "emailReady": false,
+  "layout": {
+    "viewport": [
+      390,
+      844
+    ],
+    "documentHeight": 1682,
+    "documentWidth": 390,
+    "desktopViewport": [
+      1280,
+      800
+    ],
+    "desktopDocumentWidth": 1265
+  },
+  "membershipDestinationLoaded": true,
+  "resultReturnQueryVerified": true,
+  "paymentSubmitted": false
+}
