@@ -259,3 +259,5 @@ Production verification: e981ed49241603e2f0fe3163e7c60ce055844afb READY, deploym
 - Test at 390 x 844 and send screenshots.
 - Confirm actual deployment readiness before saying changes are live.
 - Keep work easy to continue from the other PC through the mandatory fetch/read/check/handover/commit/push routine above.
+
+Validation investigation underway: owner-scoped opt-in progress diagnostics added to identify the generated report rejection; three ownership/diagnostic tests and preparation tests pass. Not a validation fix yet. Next deploy and run five fictional CV fixtures; no successful five-CV result claimed.
