@@ -1,0 +1,45 @@
+{
+  "key": "06-original-failure",
+  "label": "Original failing CV",
+  "run": "repaired-regression",
+  "elapsedSeconds": 30,
+  "httpStatus": 200,
+  "uploadSuccess": true,
+  "result": {
+    "success": true,
+    "id": "d5b524ecf326dd4fc47d1b96ed4a63cf0c0bc36ef0ee0ceb",
+    "next": "/result-final-design.html?id=d5b524ecf326dd4fc47d1b96ed4a63cf0c0bc36ef0ee0ceb",
+    "entry": {
+      "score": 62,
+      "max": 100,
+      "band": "Developing",
+      "firstFix": {
+        "before": "Built a DCF in Excel from public annual reports, compared a company with 3 listed peers and tested revenue growth assumptions of 3%, 5% and 7%.",
+        "after": "Built a DCF in Excel from public annual reports, compared a company with 3 listed peers and tested revenue growth assumptions of 3%, 5% and 7%. [Add your contribution and result.]",
+        "note": "Keep your stated work factual; add only details you can substantiate.",
+        "needsResult": true
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  },
+  "diagnostics": null,
+  "opened": {
+    "status": 200,
+    "success": true,
+    "id": "d5b524ecf326dd4fc47d1b96ed4a63cf0c0bc36ef0ee0ceb",
+    "entry": {
+      "score": 62,
+      "max": 100,
+      "band": "Developing",
+      "firstFix": {
+        "before": "Built a DCF in Excel from public annual reports, compared a company with 3 listed peers and tested revenue growth assumptions of 3%, 5% and 7%.",
+        "after": "Built a DCF in Excel from public annual reports, compared a company with 3 listed peers and tested revenue growth assumptions of 3%, 5% and 7%. [Add your contribution and result.]",
+        "note": "Keep your stated work factual; add only details you can substantiate.",
+        "needsResult": true
+      },
+      "unlocked": false,
+      "fixes": []
+    }
+  }
+}

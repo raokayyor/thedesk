@@ -1,3 +1,17 @@
+# START HERE — 26 November: score + personal summary, then email for full FREE assessment
+
+Branch codex/sidebar-consistency. Name/anchor repair4ac809e685d102d05a49d78caf4adc6a6494a240 deployed READY asdpl_6Csxu3XxpZBdVi7GpNkuNEKKEv6G on https://thedesk.vercel.app. The user-supplied Bristol PDF now passes actual PDF upload/extract → generation → saved-result retrieval:52/100 in60s with fixed3/5 numerical +3/5 commercial answers. This is a test result, not the user's actual test performance. Do not commit the supplied PDF, extracted text, private response JSON or owner-cookie files.
+
+User explicitly rejected the First CV fix initial screen and the nearly identical before/after copy. Replace it with score + the saved personal CV assessment summary + literal numerical/commercial marks + explanation that the detailed FREE assessment opens after email. CV summary remains CV-only internally; test commentary is composed deterministically from saved quiz marks, so tests are never invented or inferred from the CV.
+
+Initial summary entry returns no detailed competencies/priorities before email. Once the existing email save succeeds, retrieve the owned saved result and render the detailed free assessment in place: summary/tests, seven competency scores/reasons and three priorities. No second email gate, misleading blurred free report or automatic diversion to My Desk; My Desk/validated tool return remains a button. Membership-only tools and full-cycle paid report are unchanged. No actual email sent during agent verification; existing save/auth regression tests cover send failure and ownership.
+
+Checks: summary-entry tests cover personal CV anchor, actual test marks/skipped tests, absence of CV-fix panel, detailed report gate and escaping; existing entry/auth/free-result tests pass (17focused checks). Showcase fingerprint still matches. Final deployment and screenshots to be recorded after release.
+
+Full verification completed earlier on9a1f850: five fictional CVs40/54/46/62/74, all5/5 saved results, same scores before and after that repair; original failing paragraph CV62/100 passed; real browser upload→green selection→consent→ten questions→multi-select→result succeeded (different answers yielded46). User's supplied PDF uncovered the separate short-employer/date-anchor issue, which was fixed and retested above. Continue to preserve phone layout/sidebar, green file-selection feedback and multi-select goals.
+
+---
+
 # Current priority — supplied PDF failure and summary gate
 
 User supplied bristol_finance_student_cv.pdf from their Desktop for testing. Do not commit that PDF, its extracted text, private test sessions or its response JSON. Actual PDF upload/extraction succeeded; live assessment failed after59s. Diagnostics: first pass wrongly described a supplied reconciliation method as absent and rejected priority1's CV name; second pass still rejected priority1's named detail.

@@ -5,3 +5,5 @@
 #resultContent.assessment-entry>section{padding:14px}#resultContent.assessment-entry .entry-note{margin-top:10px}#resultContent.assessment-entry .entry-score{padding:12px 14px}
 
 .entry-locked-placeholder{filter:blur(5px);user-select:none;pointer-events:none}
+
+.entry-summary h1{font-size:28px;margin:0 0 12px}.entry-summary p,.entry-email>p{font-size:16px;line-height:1.5}.entry-test-summary{padding-top:12px;border-top:1px solid #e2ddd5}.entry-detail article{padding:12px 0;border-bottom:1px solid #e2ddd5}.entry-detail article:last-child{border-bottom:0}.entry-detail h2{margin:0 0 8px}.entry-detail h3{font-size:16px;margin:0 0 6px}.entry-detail h3 span{float:right;font-size:14px;font-weight:500}.entry-detail p{margin:0;font-size:15px;line-height:1.5}.entry-saved .ink{display:block;padding:14px;background:#1f2a2e;color:white;border-radius:8px;text-align:center;text-decoration:none}@media(max-width:767px){.entry-summary h1{font-size:25px}.entry-summary p,.entry-email>p{font-size:15px;margin:10px 0}.entry-detail h3 span{float:none;margin-left:8px}}

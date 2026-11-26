@@ -1,0 +1,227 @@
+[
+  {
+    "key": "01-starting-point",
+    "label": "Starting point",
+    "run": "repaired",
+    "elapsedSeconds": 28,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "b55595fd886b44561e44304bcb9fac3ea6e0fc7b3d8e488a",
+      "next": "/result-final-design.html?id=b55595fd886b44561e44304bcb9fac3ea6e0fc7b3d8e488a",
+      "entry": {
+        "score": 40,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Worked with classmates on a presentation about inflation.",
+          "after": "Worked with classmates on a presentation about inflation.",
+          "note": "No method, finding or individual role stated",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "b55595fd886b44561e44304bcb9fac3ea6e0fc7b3d8e488a",
+      "entry": {
+        "score": 40,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Worked with classmates on a presentation about inflation.",
+          "after": "Worked with classmates on a presentation about inflation.",
+          "note": "No method, finding or individual role stated",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "02-transferable",
+    "label": "Transferable experience",
+    "run": "repaired",
+    "elapsedSeconds": 27,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "253d1d8bff486a201e130f03345e1f8b724aed9a6e936c0e",
+      "next": "/result-final-design.html?id=253d1d8bff486a201e130f03345e1f8b724aed9a6e936c0e",
+      "entry": {
+        "score": 54,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Compared three local businesses and presented the group's findings to a seminar class.",
+          "after": "Compared three local businesses and presented the group's findings to a seminar class.",
+          "note": "No method, finding or personal contribution stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "253d1d8bff486a201e130f03345e1f8b724aed9a6e936c0e",
+      "entry": {
+        "score": 54,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Compared three local businesses and presented the group's findings to a seminar class.",
+          "after": "Compared three local businesses and presented the group's findings to a seminar class.",
+          "note": "No method, finding or personal contribution stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "03-vague-finance",
+    "label": "Finance experience, vague bullets",
+    "run": "repaired",
+    "elapsedSeconds": 28,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "9e4d990737df810074891c0a2253b07af67ceabf8068460b",
+      "next": "/result-final-design.html?id=9e4d990737df810074891c0a2253b07af67ceabf8068460b",
+      "entry": {
+        "score": 46,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Supported the corporate finance team on company research and valuation work.",
+          "after": "Supported the corporate finance team on company research and valuation work.",
+          "note": "No company, method or personal output named",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "9e4d990737df810074891c0a2253b07af67ceabf8068460b",
+      "entry": {
+        "score": 46,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Supported the corporate finance team on company research and valuation work.",
+          "after": "Supported the corporate finance team on company research and valuation work.",
+          "note": "No company, method or personal output named",
+          "needsResult": true
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "04-evidenced-finance",
+    "label": "Specific analytical work",
+    "run": "repaired",
+    "elapsedSeconds": 55,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "ffb5fac97f9eec61d673abcfd14a410d32bba92c063e2222",
+      "next": "/result-final-design.html?id=ffb5fac97f9eec61d673abcfd14a410d32bba92c063e2222",
+      "entry": {
+        "score": 62,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "after": "Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "note": "DCF and sensitivity shown; no valuation conclusion stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "ffb5fac97f9eec61d673abcfd14a410d32bba92c063e2222",
+      "entry": {
+        "score": 62,
+        "max": 100,
+        "band": "Developing",
+        "firstFix": {
+          "before": "- Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "after": "Built a DCF using public annual reports, compared three listed peers and tested revenue-growth assumptions of 3%, 5% and 7%; presented the valuation range to a four-person seminar group.",
+          "note": "DCF and sensitivity shown; no valuation conclusion stated.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  },
+  {
+    "key": "05-strong-evidence",
+    "label": "Strong evidence and decisions",
+    "run": "repaired",
+    "elapsedSeconds": 28,
+    "httpStatus": 200,
+    "uploadSuccess": true,
+    "result": {
+      "success": true,
+      "id": "2c6ce845ad2b5c8a6dbeed443c6bdb955740766e023fc962",
+      "next": "/result-final-design.html?id=2c6ce845ad2b5c8a6dbeed443c6bdb955740766e023fc962",
+      "entry": {
+        "score": 74,
+        "max": 100,
+        "band": "Borderline",
+        "firstFix": {
+          "before": "- Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+          "after": "Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+          "note": "Keep your stated work factual; add only details you can substantiate.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    },
+    "diagnostics": null,
+    "opened": {
+      "status": 200,
+      "success": true,
+      "id": "2c6ce845ad2b5c8a6dbeed443c6bdb955740766e023fc962",
+      "entry": {
+        "score": 74,
+        "max": 100,
+        "band": "Borderline",
+        "firstFix": {
+          "before": "- Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+          "after": "Worked two weekly shifts alongside university, arranged shift swaps before exams and trained two colleagues so the rota remained covered.",
+          "note": "Keep your stated work factual; add only details you can substantiate.",
+          "needsResult": false
+        },
+        "unlocked": false,
+        "fixes": []
+      }
+    }
+  }
+]
