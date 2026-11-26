@@ -11,3 +11,33 @@
 .assessment-entry .entry-practitioner{background:#eef2ed;border-color:#d5dfd4;padding:14px}.entry-practitioner>div{display:flex;align-items:center;gap:10px}.entry-practitioner img{border-radius:50%;object-fit:cover;flex:none}.entry-practitioner>div p{margin:0}.entry-practitioner strong{display:block;font-size:14px}.entry-practitioner span,.entry-practitioner small{display:block;font-size:11px;color:#5d6962}.entry-practitioner>p{font-size:14px;line-height:1.45;margin:10px 0}.entry-practitioner small{line-height:1.35}
 
 .entry-email button:disabled{opacity:.55;cursor:default}.entry-email input:disabled{background:#eeeae3}.entry-email [role=status]{font-size:13px;line-height:1.4}
+/* Free assessment: phone-first, inline actions and complete source quotes. */
+.assessment-entry,.assessment-entry *{box-sizing:border-box;min-width:0}
+.assessment-entry{width:100%;overflow-wrap:anywhere}
+.assessment-entry h2{font-size:25px;line-height:1.15;margin:0 0 14px}
+.assessment-entry h3{font-size:14px;margin:16px 0 8px}
+.entry-score>span{font-size:14px;margin-left:12px}
+.entry-university{font-weight:650;color:#354e42}
+.entry-advice{border-left:3px solid #a06b29;background:#fff6e8;padding:10px 12px;font-weight:600}
+.entry-line-card>p,.entry-line-card blockquote{font-size:15px;line-height:1.5}
+.entry-line-card blockquote{margin:0;padding:12px;background:#fff4d8;border-left:3px solid #b88731;border-radius:4px;white-space:pre-line}
+.entry-line-card blockquote mark{color:inherit;background:transparent}
+.entry-line-card .entry-more{font-size:13px;font-weight:600;margin:12px 0 16px}
+.entry-blur-wrap{position:relative;overflow:hidden;border-radius:8px;background:#f0f2ee;padding:12px}
+.entry-blur-wrap p{margin:0;font-size:15px;line-height:1.5}
+.entry-blur-wrap>span{position:absolute;inset:0;display:grid;place-items:center;background:#f0f2ee80;font-size:13px;font-weight:650}
+.entry-line-card .entry-email{border-top:1px solid #ded9cf;padding-top:14px}
+.entry-email h3{font-family:'EB Garamond',Garamond,serif;font-size:23px;line-height:1.2;margin:0 0 8px}
+.entry-email>p{font-size:14px;line-height:1.45;margin:8px 0 14px}
+.entry-email label{display:block;font-size:14px;font-weight:600}
+.entry-email input{border:1px solid #b8c0b9;border-radius:8px;padding:12px;font:16px Figtree,sans-serif}
+.entry-email button,.entry-retry{font:600 15px Figtree,sans-serif;min-height:48px;cursor:pointer}
+.entry-email [role=status]:empty{display:none}
+.entry-university-context{font-size:13px;line-height:1.5;border-top:1px solid #e2ddd5;padding-top:10px}
+.assessment-entry summary{min-height:44px;display:list-item;align-content:center;cursor:pointer;font-size:14px}
+.entry-university-context p{font-size:13px}
+.entry-line-fix+.entry-line-fix{border-top:1px solid #ddd;margin-top:20px;padding-top:6px}
+.entry-line-fix p{font-size:15px;line-height:1.5}
+.entry-after .entry-gap{background:#fff0cf;color:#754b0d;border-radius:4px;padding:2px 3px}
+@media(max-width:767px){#resultContent.assessment-entry>section{padding:16px}.assessment-entry h2{font-size:24px}.entry-summary h1{font-size:26px}.assessment-entry .entry-score strong{font-size:48px}.entry-practitioner>p{font-size:15px;line-height:1.5}.entry-email .ink{padding:14px 10px}}
+.entry-jump{padding:14px 16px;background:#e8efe8;border-radius:12px;margin:0 0 12px;font-size:15px;line-height:1.4}.entry-jump strong{display:block}.entry-jump a{display:flex;align-items:center;min-height:48px;color:#244c39;font-weight:650;text-underline-offset:4px}.entry-email{scroll-margin-top:20px}

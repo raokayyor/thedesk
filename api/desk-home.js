@@ -1,3 +1,4 @@
+import {WEIGHTS,currentAssessmentScore} from '../lib/assessment-scoring.mjs';
 import {nextExploreDeadlines} from '../lib/explore-deadline.mjs';
 import {loadTargets,withTargets} from '../lib/assessment-target-store.mjs';
 import {exploreDesk} from '../lib/explore-desk.mjs';
@@ -58,7 +59,7 @@ export function readinessTimeline(assessments, tests) {
       base = e.a;
       // The assessment's own questions count as its first test in each section.
       recent = { numerical: [], commercial: [] };
-      if (e.a.breakdown) { recent.numerical.push((+e.a.breakdown.numerical || 0) / 15); recent.commercial.push((+e.a.breakdown.technical || 0) / 20); }
+      if (e.a.breakdown) { recent.numerical.push((+e.a.breakdown.numerical || 0) / WEIGHTS.numerical); recent.commercial.push((+e.a.breakdown.technical || 0) / WEIGHTS.technical); }
       out.push({ at: e.at.toISOString(), kind: e.a.rootId ? 'Recheck' : 'Assessment', score: +e.a.overall, note: e.a.rootId ? 'Recheck of your updated CV' : 'Assessment' });
     } else if (base?.breakdown) {
       // Each section counts your best of the last 3 results: rewards improvement, limits one lucky or unlucky test.
@@ -66,7 +67,7 @@ export function readinessTimeline(assessments, tests) {
       for (const g of ['numerical', 'commercial']) if (Number.isFinite(r[g])) { recent[g].push(r[g]); if (recent[g].length > 3) recent[g].shift(); }
       const best = g => Math.max(...recent[g]);
       const b = base.breakdown;
-      const score = Object.values(b).reduce((s, x) => s + (+x || 0), 0) - (+b.numerical || 0) - (+b.technical || 0) + Math.round(best('numerical') * 15) + Math.round(best('commercial') * 20);
+      const score = Object.values(b).reduce((s, x) => s + (+x || 0), 0) - (+b.numerical || 0) - (+b.technical || 0) + Math.round(best('numerical') * WEIGHTS.numerical) + Math.round(best('commercial') * WEIGHTS.technical);
       out.push({ at: e.at.toISOString(), kind: 'Test', score, note: 'Test: ' + testNote(e.t.data) });
     }
   }
@@ -185,9 +186,9 @@ export default async function handler(req, res) {
       const s = await A.ownerSummary(p);
       const account = await A.currentAccount(req);
       const ids = s.assessments.map(a => a.id);
-      const full = ids.length ? await sql().query(`SELECT id, result->'breakdown' AS breakdown, result->'priorities' AS priorities, result->>'band' AS band, input->'profile' AS profile, report->'plan' AS plan FROM desk_assessments WHERE id = ANY($1)`, [ids]) : [];
-      const byId = Object.fromEntries(full.map(r => [r.id, r]));
-      const assessments = s.assessments.filter(a => !a.refundedAt).map(a => ({ ...a, breakdown: byId[a.id]?.breakdown, priorities: byId[a.id]?.priorities, profile: byId[a.id]?.profile }));
+      const full = ids.length ? await sql().query(`SELECT id, result->'breakdown' AS breakdown, result->'weights' AS weights, result->>'scoringVersion' AS "scoringVersion", result->'readinessComplete' AS "readinessComplete", input->'quiz' AS quiz, result->'priorities' AS priorities, result->>'band' AS band, input->'profile' AS profile, report->'plan' AS plan FROM desk_assessments WHERE id = ANY($1)`, [ids]) : [];
+      const byId = Object.fromEntries(full.map(r => {const scored=currentAssessmentScore(r,r.quiz);return [r.id,{...r,breakdown:scored.breakdown,overall:scored.overallScore,band:scored.band}]}));
+      const assessments = s.assessments.filter(a => !a.refundedAt).map(a => ({ ...a, overall:byId[a.id]?.overall??null, breakdown: byId[a.id]?.breakdown, priorities: byId[a.id]?.priorities, profile: byId[a.id]?.profile }));
       const [tests, apps, practice, savedAnswers, storyCounts] = await Promise.all([items(p, ['test'], 50), items(p, ['application'], 100), items(p, ['interview'], 30),paid?items(p,['answer'],150):[],paid?sql().query('SELECT count(*)::int AS count,coalesce(sum(used_in),0)::int AS uses FROM story_facts WHERE owner=$1',[p]).catch(e=>{if(e.code==='42P01')return [{count:0,uses:0}];throw e;}):[]]);
       const timeline = readinessTimeline(assessments, tests);
       const latest = assessments[0] || null;
@@ -352,9 +353,9 @@ export default async function handler(req, res) {
       await sql().query(`UPDATE desk_value_items SET kind='test', data=$3::jsonb, created_at=now() WHERE id=$1 AND principal=$2`, [pend.id, p, JSON.stringify(stored)]);
       const s = await A.ownerSummary(p);
       const assessments = s.assessments.filter(a => !a.refundedAt);
-      const bd = assessments.length ? (await sql().query(`SELECT id, result->'breakdown' AS breakdown FROM desk_assessments WHERE id = ANY($1)`, [assessments.map(a => a.id)])) : [];
-      const map = Object.fromEntries(bd.map(r => [r.id, r.breakdown]));
-      const timeline = readinessTimeline(assessments.map(a => ({ ...a, breakdown: map[a.id] })), await items(p, ['test'], 50));
+      const bd = assessments.length ? (await sql().query(`SELECT id, result->'breakdown' AS breakdown, result->'weights' AS weights, result->>'scoringVersion' AS "scoringVersion", result->'readinessComplete' AS "readinessComplete", input->'quiz' AS quiz FROM desk_assessments WHERE id = ANY($1)`, [assessments.map(a => a.id)])) : [];
+      const map = Object.fromEntries(bd.map(r => [r.id,currentAssessmentScore(r,r.quiz)]));
+      const timeline = readinessTimeline(assessments.map(a => ({ ...a, overall:map[a.id]?.overallScore??null, breakdown:map[a.id]?.breakdown })), await items(p, ['test'], 50));
       const now = timeline[timeline.length - 1], before = timeline[timeline.length - 2];
       return res.json({ success: true, section: out.section, commercial: out.commercial || null, numerical: out.numerical || null, review: out.review, readiness: now ? { score: now.score, band: band(now.score), previous: before?.score ?? null } : null });
     }

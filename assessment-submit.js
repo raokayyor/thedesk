@@ -19,17 +19,25 @@ document.getElementById('processingConsent').addEventListener('change',()=>{docu
 document.getElementById('cvText').addEventListener('input',()=>{if(cvMethod==='paste'){const status=document.getElementById('uploadStatus'),ready=document.getElementById('cvText').value.trim().length>=100;status.textContent=ready?'✓ CV loaded':'Paste your full CV text below.';status.classList.toggle('cv-upload-ready',ready)}});
 fetch('/api/assessment-save').then(r=>r.json()).then(j=>{if(j.emailReady)document.getElementById('emailDeliveryNote').textContent='No password needed: we email you a link so you can open your result on any device.'}).catch(()=>{});
 // Share background preparation with the Build action; never send two identical requests.
-let assessmentPreparation=null;
-function assessmentInput(){
+let assessmentPreparation=null,cvPreparation=null;
+function assessmentInput(cvOnly=false){
  const value=id=>document.getElementById(id)?.value.trim()||'';
  if(!document.getElementById('processingConsent').checked)throw Error('Confirm processing consent on the CV step.');
  if(!window.routeQuizReady||!selectedBankId)throw Error('Complete the test for your chosen route first.');
  const profile={name:value('name'),university:value('uni'),course:value('course'),year:value('year'),grade:value('grade'),targetSector:value('sector1'),targetDivision:value('sector1'),programme:value('programme'),targetFirm:value('targetFirm'),targetFirms:(window.deskAssessmentTargets?.firms||[value('targetFirm')]).filter(Boolean).slice(0,3),financeKnowledge:document.getElementById('limitedFinanceKnowledge').checked?'limited_or_none':'not_stated'};
  const skipped=window.deskTestsSkipped===true;
  const answers=skipped?{skipped:true,commercial:null,numerical:null}:{commercial:Array.from({length:5},(_,i)=>Number(document.querySelector('input[name="c'+i+'"]:checked')?.value??-1)),numerical:Array.from({length:5},(_,i)=>Number(document.querySelector('input[name="n'+i+'"]:checked')?.value??-1))};
- if(!skipped&&answers.commercial.concat(answers.numerical).some(a=>a<0||a>3))throw Error('Answer all ten test questions before continuing.');
+ if(!cvOnly&&!skipped&&answers.commercial.concat(answers.numerical).some(a=>a<0||a>3))throw Error('Answer all ten test questions before continuing.');
  if(!value('cvText'))throw Error('Add your CV before continuing.');
- return {profile,source:window.DeskLiveSource,answers,questionBankId:selectedBankId,consent:true,cv:{text:value('cvText')},recheckOf:new URLSearchParams(location.search).get('recheck')||undefined};
+ return {profile,source:window.DeskLiveSource,answers:cvOnly?{skipped:true}:answers,questionBankId:selectedBankId,consent:true,cv:{text:value('cvText')},recheckOf:new URLSearchParams(location.search).get('recheck')||undefined};
+}
+// Start the evidence review while the student completes the ten questions.
+function prepareCvAssessment(){
+ let input;try{input=assessmentInput(true)}catch{return null}
+ if(input.recheckOf)return null;
+ const key=JSON.stringify(input);if(cvPreparation?.key===key&&cvPreparation.state!=='failed')return cvPreparation;
+ cvPreparation?.controller.abort();const controller=new AbortController(),task={key,controller,state:'pending',promise:null};cvPreparation=task;
+ task.promise=(async()=>{const timeout=setTimeout(()=>controller.abort(),120000);try{await window.deskAssessmentJourney?.ready;if(controller.signal.aborted)throw new DOMException('Cancelled','AbortError');const response=await fetch('/api/analyse-mot',{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({...input,warmup:true})}),data=await response.json();if(!response.ok||!data.success)throw Error('Background review unavailable');task.state='ready';return {ready:true};}catch{task.state='failed';return {ready:false};}finally{clearTimeout(timeout)}})();return task;
 }
 function cancelAssessmentPreparation(){assessmentPreparation?.controller.abort();assessmentPreparation=null;}
 function prepareAssessment(){
@@ -43,6 +51,7 @@ function prepareAssessment(){
   const timeout=setTimeout(()=>controller.abort(),120000);
   try{
    await window.deskAssessmentJourney?.ready;
+   const cvKey=JSON.stringify(assessmentInput(true));if(cvPreparation?.key===cvKey)await cvPreparation.promise;
    if(controller.signal.aborted)throw new DOMException('Request cancelled','AbortError');
    const r=await fetch('/api/analyse-mot',{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({...input,progressId})});
    const result=await r.json().catch(()=>null);

@@ -1,3 +1,22 @@
+# START HERE — phone free-result batch, 26 November 2026
+
+Current branch: codex/sidebar-consistency. Implementation in this batch is not yet deployed at the time of this entry; final implementation SHA and verified deployment will be recorded after release. Previous live implementation: 3fcff3cae2b6a641190f226bd982ea50f828262c.
+
+New decisions in this chat:
+- Phone first. Show a personal, consistent assessment, name the actual university, use evidence-based firmer submission advice. Never lower evidence marks merely to frighten users or award prestige points. Bristol has a sourced broad-employer recruitment context; no invented banking-university league table.
+- User explicitly chose 80% CV evidence / 20% tests (10 numerical + 10 commercial). Skipped tests produce an incomplete readiness assessment: CV evidence only /80, no test marks invented. Reopened legacy results reweight existing evidence, without a new model judgement.
+- Start CV preparation during the ten questions; final optional goals screen continues the work. Skipping waits for pending CV checks. Reuse only same-owner, same-CV/profile, current-version validated evidence. Ignore hidden preparation rows in My Desk; promote a skipped-test preparation when opened as the real result. Remove artificial 500ms completion pause.
+- Summary shows actual full highest-impact weak line and specific issue, blurred placeholder only, additional flagged-line count. Real rewrites are never in the pre-email payload/DOM. Generate them privately while reading the summary, and cache validated fixes on the server. Reveal only after the existing email/account gate. Similarity <0.85, exact source facts, preserved numbers/supporting role, amber gaps; validation failure stays retryable rather than showing before=after.
+- Move Kayyor's photo/personal perspective above Read your full free assessment and the single email field, inside the teaser card. CV/test component maths belongs in What this band means.
+- Add Your summary report is here at the top, with a clear jump to the email section.
+- EMAIL DELIVERY DEFERRED BY USER: production still has no RESEND_API_KEY. Do not claim email/account/magic-link delivery tested live. Existing-account protections retained; magic link return defaults to the full free assessment. No real emails sent.
+
+Verification so far: 79 focused checks passed; showcase fingerprint matches; diff whitespace check passed. 390x844, 360x740 and 1280x800 UI checked without horizontal overflow. Six local fictional UI fixture screenshots (strong/average/weak, before/after simulated email) are in the chat outputs/free-result-phone-proof directory. These exercise the production renderer and rewrite validator, but simulate mail/save; they are NOT live delivery proof. Latest top jump/placement requires final screenshot refresh. Live generation/preparation timing check and deployment readiness remain to be recorded below.
+
+Next: verify final jump, rerun relevant tests, push and deploy; record exact SHA/deployment plus real owner-scoped preparation timing. Keep email connection/delivery as explicitly deferred work. Preserve supplied private PDF/text/session data outside Git.
+
+---
+
 # VERIFIED RELEASE — 26 November 2026
 
 - Branch:codex/sidebar-consistency. Deployed application implementation:3fcff3cae2b6a641190f226bd982ea50f828262c. Production deploymentdpl_CUksz5L8VD7JuZ8iHp7orpgTzHAx is READY; thedesk.vercel.app alias verified. URL:https://thedesk.vercel.app/assessment.html ; immutable:https://thedesk-o0ugzkr3u-raokayyor.vercel.app . This documentation/test commit follows the deployed implementation; report its own final pushed SHA separately.

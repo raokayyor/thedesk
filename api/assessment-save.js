@@ -17,7 +17,7 @@ export default async function handler(req,res){
  await initAccounts();const session=await currentAccount(req),origin=new URL(process.env.VERCEL_ENV==='preview'?`https://${req.headers.host}`:process.env.APP_ORIGIN||`https://${req.headers.host}`).origin;
  // Send before revealing anything; a failed send leaves a retryable result.
  const subscription=await subscribeResult({row,email,origin,deadline:null,assessmentEntry:true});
- const returnTo=localReturn(b.returnTo),guestOwner=owner(req,res),link=await createLoginLink(email,origin,{assessmentId:row.id,purpose:'assessment',signupProfile:{guestOwner,returnTo}});
+ const returnTo=localReturn(b.returnTo,'/result-final-design.html?id='+row.id),guestOwner=owner(req,res),link=await createLoginLink(email,origin,{assessmentId:row.id,purpose:'assessment',signupProfile:{guestOwner,returnTo}});
  await sendLoginEmail(email,link,'assessment',origin+'/api/result-email?unsubscribe='+subscription.token);
  await sql().query('INSERT INTO desk_result_unlocks(assessment_id,email) VALUES($1,$2) ON CONFLICT(assessment_id) DO NOTHING',[row.id,email]);
  await sql().query('UPDATE desk_assessments SET input=input || $1::jsonb WHERE id=$2',[JSON.stringify({resultEmail:email,consentRecordedAt:new Date().toISOString(),resultEmailConsent:'assessment-weekly-question-v1'}),row.id]);
