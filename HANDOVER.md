@@ -1,3 +1,13 @@
+# Current priority — supplied PDF failure and summary gate
+
+User supplied bristol_finance_student_cv.pdf from their Desktop for testing. Do not commit that PDF, its extracted text, private test sessions or its response JSON. Actual PDF upload/extraction succeeded; live assessment failed after59s. Diagnostics: first pass wrongly described a supplied reconciliation method as absent and rejected priority1's CV name; second pass still rejected priority1's named detail.
+
+Shared name handling excluded two/three-letter employers (EY, UBS, PwC), and accepted standalone date headings such as August as candidate experience labels. Repair adds boundary-aware short-brand grounding and excludes date/grade metadata. Uses the same helper for name selection, normalization, priority labels, resolving details and final validation. Short labels must be whole tokens, not a substring such as EY inside they. Four regression tests and existing normalization/label tests pass. Full supplied-PDF rerun is required after this deployment before declaring success.
+
+New user direction: NO first CV fix on the initial result page. Show score plus a personal CV summary, numerical/commercial test results and invitation to read the detailed FREE assessment after providing email. Implement the summary gate next, keeping membership-only tools/reports separate. Five fictional CVs passed on9a1f850 and original failing paragraph case passed62/100 in30s; full browser upload→consent→ten questions→multi-select→result succeeded. User's supplied PDF remains the active blocker until retested.
+
+---
+
 # START HERE — 26 November: validation repair and five-CV verification
 
 Branch codex/sidebar-consistency. Previous deployed diagnostic implementation d348f13d80d380ebd85bbce4386bad21aa46b7b0 (dpl_2s4Z4jqkccoEGsysCkNtsgjfzn2i READY, production alias verified). Final repaired implementation SHA/deployment will be recorded after release.

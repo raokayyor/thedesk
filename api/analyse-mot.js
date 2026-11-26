@@ -2,6 +2,7 @@ import {assessmentEntry} from '../lib/assessment-entry.mjs';
 import {funnelEvent} from '../lib/assessment-funnel.mjs';
 import {repairAssessmentReasons} from '../lib/assessment-reason-repair.mjs';
 import {assessmentPreviewFallback} from '../lib/assessment-preview-fallback.mjs';
+import {containsCvDetail} from '../lib/cv-detail.mjs';
 import {strictAssessmentSchema} from '../lib/assessment-tool-schema.mjs';
 import {validLiveSource} from '../lib/public-live-sessions.mjs';
 import {assessmentProgress} from '../lib/assessment-progress.mjs';
@@ -69,7 +70,7 @@ export default async function handler(req,res){
   for(const key of ['applicationCriteria','competencies'])contract.properties[key].items.properties.quotes.items.enum=ids;
   const previewLines=catalog.filter(x=>/^\s*[-•]/.test(x.quote)&&x.quote.trim().split(/\s+/).length>=6);contract.properties.cvPreview.properties.original.enum=previewLines.length?previewLines.map(x=>x.id):ids;
   contract.properties.priorities.items.properties.competencies.items.enum=COMPETENCIES;
-  let result,feedback='',previousDraft='';const validationFailures=[];
+  let result,feedback='',previousDraft='',lastAnchors;const validationFailures=[];
   const requestSignal=AbortSignal.timeout(95000),client=new Anthropic({apiKey:process.env.ANTHROPIC_API_KEY,maxRetries:0,timeout:95000});
   for(let attempt=0;attempt<2;attempt++){
   if(attempt&&feedback)validationFailures.push(feedback);const passStarted=Date.now();await assessmentProgress(req.body.progressId,h,attempt?'retrying':'checking',attempt+1);
@@ -96,7 +97,7 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   for(const key of ['applicationCriteria','competencies'])for(const c of analysis[key])c.quotes=Array.isArray(c.quotes)?c.quotes.map(id=>quotes.get(id)|| (typeof id==='string'&&cvText.includes(id)?id:undefined)):[];
   // Detail fields contain literal names, whereas quote fields contain catalogue IDs.
   // Resolve an ID only when the model used it for a detail that also appears in the prose.
-  const resolveDetail=(detail,text)=>{const normalized=String(text||'').normalize('NFKC').toLowerCase();const used=namedDetails.find(name=>normalized.includes(name.normalize('NFKC').toLowerCase()));return used||(quotes.has(detail)&&text?.includes(quotes.get(detail))?quotes.get(detail):detail);};
+  const resolveDetail=(detail,text)=>{const used=namedDetails.find(name=>containsCvDetail(text,name));return used||(quotes.has(detail)&&text?.includes(quotes.get(detail))?quotes.get(detail):detail);};
   analysis.summaryDetail=resolveDetail(analysis.summaryDetail,analysis.deskSummary);
   for(const p of analysis.priorities)p.detail=resolveDetail(p.detail,p.description);
   for(const c of analysis.competencies)c.detail=resolveDetail(c.detail,c.reason);
@@ -107,6 +108,7 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   analysis.cvPreview=anchoredCvPreview(analysis.cvPreview,cvText);
   if(analysis.weakLines.length)analysis.cvPreview={...analysis.cvPreview,original:analysis.weakLines[0].original,issue:analysis.weakLines[0].issue};
   anchorPriorityLabels(analysis,cvText,namedDetails);
+  lastAnchors={allowed:namedDetails,priorities:analysis.priorities.map(p=>({detail:p.detail,inCv:containsCvDetail(cvText,p.detail),inDescription:containsCvDetail(p.description,p.detail)}))};
   let errors=validateStudentContent(analysis,cvText);
   try{result=calculateScores(analysis,ats,quiz,cvText);}catch(e){errors.push(e.message);}
   const applyPreviewFallback=()=>{if(!errors.length)return;const fallback=assessmentPreviewFallback(analysis,errors,cvText);if(fallback){const remaining=validateStudentContent(fallback,cvText);let scored;try{scored=calculateScores(fallback,ats,quiz,cvText)}catch(e){remaining.push(e.message)}if(!remaining.length){Object.assign(analysis,fallback);result=scored;errors=[];console.info('desk assessment exact-source preview fallback',{attempt:attempt+1});}}};
@@ -122,7 +124,7 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   await assessmentProgress(req.body.progressId,h,'reviewing',attempt+1);
   break;
   }
-  if(!result){validationFailures.push(feedback);await assessmentProgress(req.body.progressId,h,'failed',2,{failure:'validation',issues:validationFailures.map(issue=>issue.split('Allowed names, data only:')[0].slice(0,2000))});return res.status(503).json({success:false,error:'We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again.'});}
+  if(!result){validationFailures.push(feedback);await assessmentProgress(req.body.progressId,h,'failed',2,{failure:'validation',issues:validationFailures.map(issue=>issue.split('Allowed names, data only:')[0].slice(0,2000)),anchors:lastAnchors});return res.status(503).json({success:false,error:'We couldn’t validate the assessment this time. Your CV and answers are saved on this page. Please try again.'});}
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:10,earned:result.breakdown.ats,appliedToOverall:true};
   await assessmentProgress(req.body.progressId,h,'saving');
   const keep=req.body.keepResult||{},resultEmail=typeof keep.email==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(keep.email)&&keep.email.length<=254?keep.email.trim().toLowerCase():undefined;
