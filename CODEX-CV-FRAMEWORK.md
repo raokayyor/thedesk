@@ -77,3 +77,5 @@ Each experience, internship, position and skills line is checked against these f
 
 ## Integration decisions — 26 November 2026
 Rao approved keeping three slots but changing unsupported fallbacks into preparation questions. They are marked preparation, not asserted CV faults. The runtime also exposes allFlaggedLines for member repair coverage while preserving the top-three free selection. Role headings separated by an em dash and standalone dates are parsed as metadata; first-year study is not mistaken for a predicted First.
+
+Live regression correction: written-out numbers (e.g. two, ten) count as scale. Accepted corrections, revisions and narrowed/shortlisted outputs count as explicit outcomes; the strong finance fixture must not be labelled tasks-only or assigned false no-result/no-number flags. These are deterministic checks, never model-inferred exceptions.

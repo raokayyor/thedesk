@@ -1,3 +1,7 @@
+## Live rule regression correction
+
+The first deployed framework matched the rules exactly on all three saved CVs and hid fixes correctly (403 before email). Weak/average private first-fix preparation passed in 17.27s/13.01s; strong preparation rejected an unsupported draft. This exposed rule false positives: written-out ten/two were not numeric scale, and accepted/revised/corrected/narrowed outputs were not recognised. Added deterministic handling plus a strong-finance zero-flags regression. Strong CV now receives preparation questions and no manufactured line fix. Final live retest follows deployment.
+
 # START HERE — deterministic CV framework, 26 November 2026
 
 Branch: codex/sidebar-consistency. Prior verified live implementation: 68481de83fbf7e0d78899d280f31914721f7dc5f (production deployment dpl_HPkiJpw7Cx43EDF57oQY6xmspg7a READY, alias thedesk.vercel.app verified). This framework batch is being committed/pushed next; deployment SHA/readiness will be recorded in a follow-up.
