@@ -1,0 +1,25 @@
+{
+  "seedScore": 35,
+  "records": [
+    {
+      "freshSession": 1,
+      "score": 35,
+      "seconds": 0.91
+    },
+    {
+      "freshSession": 2,
+      "score": 35,
+      "seconds": 0.7
+    },
+    {
+      "freshSession": 3,
+      "score": 35,
+      "seconds": 0.81
+    }
+  ],
+  "changedAnswers": {
+    "score": 33,
+    "seconds": 0.68
+  },
+  "emailDeliveryTested": false
+}
