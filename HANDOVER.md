@@ -1,3 +1,13 @@
+# Latest addition — practitioner photo and score-based guidance
+
+User asked for Kayyor's photo and a stock of roughly50 comments selected by score/band, explaining the reasoning and the aim of an application an employer wants to discuss. Added50 editorial comments across10 non-overlapping ranges spanning0–100. Uses existing Developing<65 / Borderline65–74 / Competitive75+ framework boundaries. Comment selection is deterministic per saved assessment, never a claim that Kayyor personally reviewed that CV.
+
+Practitioner card uses the existing Kayyor photo/experience and says Guidance from our practitioner-developed framework. The displayed reasoning uses the saved weighted CV contribution out65 and short-test contribution out35, identifies the proportionally weaker component and explains the band. No inferred test scores, invented student facts or interview guarantee. CV-only/skipped-test assessments get separate wording. The aim is a clear, convincing CV/application that makes an employer want to meet the candidate.
+
+31focused tests pass including all101 integer scores, exactly50 variants, consistent band boundaries, stable reopen, actual-component reasoning, CV-only case, summary/detail gating and escaping. Summary implementation19d38907fa6ad005b6ada6d6374fb6e16b03db73 precedes this addition; final READY deployment and phone screenshot follow after release.
+
+---
+
 # START HERE — 26 November: score + personal summary, then email for full FREE assessment
 
 Branch codex/sidebar-consistency. Name/anchor repair4ac809e685d102d05a49d78caf4adc6a6494a240 deployed READY asdpl_6Csxu3XxpZBdVi7GpNkuNEKKEv6G on https://thedesk.vercel.app. The user-supplied Bristol PDF now passes actual PDF upload/extract → generation → saved-result retrieval:52/100 in60s with fixed3/5 numerical +3/5 commercial answers. This is a test result, not the user's actual test performance. Do not commit the supplied PDF, extracted text, private response JSON or owner-cookie files.
