@@ -212,5 +212,52 @@
     ]
   },
   "buildCommand": "node scripts/build-amelia-showcase.mjs --check",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/:page(.*\\.html)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/:asset(.*\\.js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/:asset(.*\\.mjs)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/:asset(.*\\.css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
 }

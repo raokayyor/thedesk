@@ -1,3 +1,7 @@
+## Final touches requested at15:22
+
+Teaser now contains the actual CV degree label, university and grade only, followed by the withheld bank-check invitation; no course/grade assessment before email. Added Your tests heading. Reasons are an ordered list 1/2/3, with the third marker outside its blurred placeholder. Added no-cache, max-age=0, must-revalidate response headers for root/HTML and JS/MJS/CSS assets, and bumped result HTML/script import versions. Verify actual live HTTP headers after deployment, including API no-store retention. Email remains blocked on missing Resend connection/key and authorised recipient.
+
 # START HERE — LIVE VERIFIED compact summary, 26 November 2026
 
 - Branch: codex/sidebar-consistency. Live application implementation: 073b87e1e9f39378827292553e3a2871f5976cd5. Production deployment dpl_8VkMV1N42U1LpcDFxhTQoVSq7Cf3 is READY, correct SHA and thedesk.vercel.app alias verified. URL https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-8ncrbp0ox-raokayyor.vercel.app . This handover/evidence commit follows the application deployment; report its final pushed SHA separately.
