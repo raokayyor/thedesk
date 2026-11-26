@@ -1,3 +1,19 @@
+# START HERE — 26 November 2026: phone capture and early preparation
+
+Branch: codex/sidebar-consistency. This implementation follows 7a7dbedde1024445925125470fbaaa330c51117f (restored both question-count cards). The next release-record commit will identify the implementation SHA and verified deployment.
+
+- Phone first: compact aims header/spacing, with Next: add my CV fixed above existing phone navigation. At 390×844 the standard aims content and Next fit without scrolling. Very short phones initially show fewer firm suggestions; More firms expands the optional list/custom input and can require scrolling. Keep all routes and typed firms available.
+- Question screens use the visible viewport height with compact typography and table styling. Restored bank table metadata discarded by the old mapping; questions referring to a table now render the real bank table. No question/scoring changes. All 60 route/section/question combinations checked in local browser at 390×844 and 320×568: no document overflow or answer behind action bar. This is browser emulation, not a physical phone/browser-toolbar test.
+- CV success now says only ✓ CV loaded. Filename receipt hidden; removed We found summary and shared-device/save-and-exit explanatory paragraph. Draft/resume and Save & exit button retained.
+- Removed visible first-name input/requirement; backend accepts absent name without fabricating one. On Ready to see your score, optional next-goal choices: Sending applications, Online tests, Interviews or assessment centres. Choice saved in draft and pending-result context; it does not change scoring or restart generation. Further use to tailor next-step recommendations remains future work.
+- Preparation starts on entering final review after valid CV, consent and completed/skipped tests. Build reuses that exact pending/completed request. No redirect or loading overlay until Build. Failed background request can retry; edits/back cancel client request; altered inputs generate a new request. Server's existing owner/fingerprint cache is unchanged. No artificial waiting added; actual time saved depends on time spent on review.
+- Checks: 32 focused tests passed (preparation, table, route targets, intro, upload lifecycle, free-result routing, signup, document preview); syntax checks passed; showcase fingerprint matches; reviewed diff and CRLF-aware whitespace check passed. Local full ten-question path reaches new optional choice with Build visible. Tests verify background start before click, one request on click, completed-result reuse, retry, changed CV, and consent/cancel behaviour.
+- User reported a live “Your assessment couldn’t finish” error BEFORE this implementation was deployed. Exact smaller error message was requested; no matching production error/warning or analyse-mot logs were returned for the preceding hour. Root cause remains unconfirmed; do not claim this UI/speed batch fixed that failure. Next: reproduce live generation with fictional CV, inspect exact response/reason and verify retry. Preserve user's real draft.
+- Publication: implementation not deployed at time of writing. Prior production: dpl_3M7mhrn3CLcR9SmQdpoG3R75kCbo serving 9cae873a281f9a37a5a00ea332bdc885549c29c5 at https://thedesk.vercel.app/assessment.html. Release verification will be prepended after deployment.
+- New decisions: capture is mainly on phones; keep primary content/action within screen wherever possible; no scrolling questions. Calculator remains allowed, no timer, 5 numerical + 5 commercial cards retained, only 8-minute bubble removed. Preserve sidebar.
+
+---
+
 # START HERE — 26 November 2026: assessment entry and test buttons
 
 ## Latest user correction: preserve the question-count bubbles

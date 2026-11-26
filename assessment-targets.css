@@ -4,3 +4,21 @@
 .aims-back{display:block;background:none;border:0;padding:0 0 12px;color:#657078;font:13px Figtree,Arial,sans-serif;cursor:pointer}
 
 .aims-custom{margin:10px 0 12px}.aims-custom>label{font-size:13px}.aims-custom>div{display:flex;gap:8px}.aims-custom input{flex:1;min-width:0;font-size:16px}.aims-add{flex:none;min-height:48px;padding:10px 18px;border:1px solid #1f2a2e;border-radius:7px;background:#1f2a2e;color:#fff;font:600 14px Figtree,Arial,sans-serif;cursor:pointer}
+
+@media(max-width:767px){
+ body:has(#s1:not(.hidden)){padding-bottom:0!important}
+ body:has(#s1:not(.hidden)) .wrap{min-height:100dvh;padding:0 16px 164px!important}
+ body:has(#s1:not(.hidden)) .top{padding:10px 0}
+ body:has(#s1:not(.hidden)) .journey-progress{padding:2px 0 12px}
+ #s1>.card{padding:0}.assessment-aims h1{font-size:28px;margin:4px 0 8px}
+ .aims-hint{margin-bottom:12px}.aims-routes,.aims-firms{gap:6px}
+ .aims-routes button{padding:8px 6px}.aims-firm-head{margin:12px 0 8px}
+ .aims-firms button{padding:8px}.aims-more{padding:8px 0}.aims-custom{margin:4px 0 8px}
+ .aims-custom>label{margin-bottom:4px}.aims-benefits{font-size:11px;line-height:1.3;margin:8px 0}
+ .aims-actions .aims-next{min-height:48px}
+}
+@media(max-width:767px) and (max-height:650px){body:has(#s1:not(.hidden)) .top{padding:2px 0}body:has(#s1:not(.hidden)) .journey-track{display:none}body:has(#s1:not(.hidden)) .journey-progress{padding-bottom:6px}.assessment-aims h1{font-size:25px}.aims-routes button,.aims-firms button{min-height:38px;padding:6px}.aims-firm-head{margin-top:8px}.aims-custom input,.aims-add{min-height:40px;padding:7px}.aims-benefits{display:none}}
+
+@media(max-width:767px) and (max-height:650px){.assessment-aims:has(.aims-more[aria-expanded=false]) .aims-firms button:nth-child(n+4):not([aria-pressed=true]),.assessment-aims:has(.aims-more[aria-expanded=false]) .aims-custom{display:none}.aims-firms button{min-height:38px}}
+
+.aims-status:empty{display:none}@media(max-width:767px) and (max-height:650px){body:has(#s1:not(.hidden)) .top{margin-bottom:0}body:has(#s1:not(.hidden)) .journey-meta{margin-top:4px}body:has(#s1:not(.hidden)) .wrap{padding-bottom:156px!important}}

@@ -31,7 +31,7 @@ export default async function handler(req,res){
   profile={};for(const k of ['name','university','course','year','grade','targetSector','targetDivision','programme','targetFirm','financeKnowledge']){const v=req.body.profile?.[k];if(v!=null&&(typeof v!=='string'||v.length>200))throw new Error('Invalid profile field.');profile[k]=String(v||'').trim();}
   const firms=req.body.profile?.targetFirms;if(firms!=null&&(!Array.isArray(firms)||firms.length>3||firms.some(f=>typeof f!=='string'||f.length>100)))throw new Error('Invalid target firms.');profile.targetFirms=[...new Set((firms||[profile.targetFirm]).map(f=>String(f).trim()).filter(Boolean))];
   if(!['','not_stated','limited_or_none'].includes(profile.financeKnowledge))throw Error('Invalid finance knowledge preference.');
-  if(!profile.name||!profile.targetSector)throw new Error('Enter your name and chosen route.');
+  if(!profile.targetSector)throw new Error('Choose your target route.');
   const bank=questionsForRoute(profile.targetSector);if(req.body.questionBankId&&req.body.questionBankId!==bank.id)throw new Error('The route question bank changed. Please retake the test.');quiz=gradeAnswers(req.body.answers,profile.targetSector);ats=assessAtsReadiness({cvText,profile});if(ats.score===null)throw new Error('Choose a supported target route.');
   if(req.body.recheckOf){parent=await ownedRecord(req,res,req.body.recheckOf);if(parent)parentMembership=await recordMembershipAccess(parent);if(!parent||(!parentMembership&&(!parent.paid_at||Date.now()-new Date(parent.paid_at).getTime()>365*86400000)))throw new Error('Your 12 rechecks are available for 12 months after purchase.');}
  }catch(e){return res.status(400).json({success:false,error:e.message});}
