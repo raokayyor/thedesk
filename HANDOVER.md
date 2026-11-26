@@ -1,3 +1,7 @@
+## Latest layout steering
+
+User changed title to The lines costing you the most: highlight ONE full actual source line, count the other real flagged lines; never fabricate extras. Add greyed placeholder for What stops me shortlisting you is… in the practitioner panel, matching the blurred fix treatment, no price displayed. This denotes deeper member-report reasoning; free findings/fixes remain available after email. Latest top shortcut jumps to the single email box; practitioner appears before that box.
+
 # START HERE — phone free-result batch, 26 November 2026
 
 Current branch: codex/sidebar-consistency. Implementation in this batch is not yet deployed at the time of this entry; final implementation SHA and verified deployment will be recorded after release. Previous live implementation: 3fcff3cae2b6a641190f226bd982ea50f828262c.
