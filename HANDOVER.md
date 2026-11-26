@@ -1,3 +1,13 @@
+# START HERE — framework LIVE + seven CV phone proofs, 26 November 2026
+
+Implementation f09c142cdaf7158b9010e30e494933dbe4bef535 pushed and deployed: production dpl_4TTMx3S24TXVvwMF2u8d1EfJt1w4 READY, exact Git SHA and thedesk.vercel.app alias verified. Live https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-c7uyrgf9h-raokayyor.vercel.app . This evidence commit follows the deployed implementation.
+
+Five fresh live fictional-CV runs plus James/Sophie all passed real upload/extraction, scoring, owner-scoped reopening, deterministic framework projection, withheld third reason, actual3/5+3/5 test marks and same-input repeat scores. Totals35/52/47/61/77; James37, Sophie65. Sophie pitch and audit outcomes not flagged; two other lines remain per supplied rules. Seven390x844 screenshots + sanitized live evidence in docs/verification/ranked-results-26nov. Images render actual saved production responses through production markup/CSS in a read-only local viewer, not seven browser upload journeys or mail unlocks. No phone/desktop horizontal overflow.51 focused test entries passed and showcase matches; diff reviewed.
+
+User requested fixed declarative fallback reasons instead of previously approved questions. Applied attached framework/test semantics, preserving existing parser/academic/allFlaggedLines fixes. Email remains emailReady:false across all seven; no delivered-mail claim. User completed Resend sign-in but onboarding/key/sender configuration and authorised recipient delivery verification remain outstanding. Next step is secure email connection + account/magic-link end-to-end proof, then user's presentation review of screenshots.
+
+---
+
 # START HERE — ranked-result framework update, 26 November 2026
 
 Branch codex/sidebar-consistency. Supplied framework/test update applied, retaining deployed academic/role/date parsing, written numbers and allFlaggedLines integration. Number + outcome exempts duty/weak-verb/no-result/no-number/too-short flags; ranked/placed/adjusted outcomes recognised. Sophie ranked-first pitch and corrected audit are absent from ALL flagged lines. James weak findings unchanged. User now explicitly requires fixed declarative fallback sentences, replacing earlier preparation-question decision/labels on summary/full free/member. Framework version bumped; frontend imports refreshed. Sidebar untouched.

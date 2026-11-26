@@ -1,0 +1,198 @@
+[
+  {
+    "key": "01-starting-point",
+    "label": "Starting point",
+    "score": 35,
+    "band": "Developing",
+    "flags": 4,
+    "repeatScore": 35,
+    "seconds": 4.95,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Not one line has a number in it, so nothing shows scale.",
+      "Nothing shows you can lead or take responsibility."
+    ],
+    "flaggedLine": "Served customers and helped with cleaning and stock checks.",
+    "remainingFlags": 3,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "01-starting-point-phone.jpg"
+  },
+  {
+    "key": "02-transferable",
+    "label": "Transferable experience",
+    "score": 52,
+    "band": "Developing",
+    "flags": 5,
+    "repeatScore": 52,
+    "seconds": 5.35,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Nothing shows you follow markets or deals.",
+      "There's no sign of why you want finance, beyond saying so."
+    ],
+    "flaggedLine": "Worked 12 hours each week alongside my degree, covering tills and stock checks.",
+    "remainingFlags": 4,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "02-transferable-phone.jpg"
+  },
+  {
+    "key": "03-vague-finance",
+    "label": "Finance experience, vague bullets",
+    "score": 47,
+    "band": "Developing",
+    "flags": 7,
+    "repeatScore": 47,
+    "seconds": 2.3,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Your internship says what you did, not what it achieved.",
+      "Not one line has a number in it, so nothing shows scale."
+    ],
+    "flaggedLine": "Supported the corporate finance team on company research and valuation work.",
+    "remainingFlags": 6,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "03-vague-finance-phone.jpg"
+  },
+  {
+    "key": "04-evidenced-finance",
+    "label": "Specific analytical work",
+    "score": 61,
+    "band": "Developing",
+    "flags": 3,
+    "repeatScore": 61,
+    "seconds": 2.23,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Your best work stops at the method, not what it meant for a decision.",
+      "Nothing on your CV connects you to Barclays in particular."
+    ],
+    "flaggedLine": "Worked 12 hours weekly alongside university and trained three colleagues on till procedures.",
+    "remainingFlags": 2,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "04-evidenced-finance-phone.jpg"
+  },
+  {
+    "key": "05-strong-evidence",
+    "label": "Strong evidence and decisions",
+    "score": 77,
+    "band": "Competitive",
+    "flags": 0,
+    "repeatScore": 77,
+    "seconds": 2.17,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Your best work stops at the method, not what it meant for a decision.",
+      "Nothing on your CV connects you to Barclays in particular."
+    ],
+    "flaggedLine": null,
+    "remainingFlags": 0,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "05-strong-evidence-phone.jpg"
+  },
+  {
+    "key": "james",
+    "label": "James (weak)",
+    "score": 37,
+    "band": "Developing",
+    "flags": 9,
+    "repeatScore": 37,
+    "seconds": 30.21,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Your internship says what you did, not what it achieved.",
+      "Not one line has a number in it, so nothing shows scale."
+    ],
+    "flaggedLine": "Helped with bookkeeping",
+    "remainingFlags": 8,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "james-phone.jpg"
+  },
+  {
+    "key": "sophie",
+    "label": "Sophie (strong)",
+    "score": 65,
+    "band": "Borderline",
+    "flags": 2,
+    "repeatScore": 65,
+    "seconds": 38.06,
+    "uploadStatus": 200,
+    "resultStatus": 200,
+    "emailReady": false,
+    "reasons": [
+      "Your best work stops at the method, not what it meant for a decision.",
+      "Nothing on your CV connects you to Barclays in particular."
+    ],
+    "flaggedLine": "Member, university netball team",
+    "remainingFlags": 1,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 5
+    },
+    "screenshot": "sophie-phone.jpg"
+  }
+]
