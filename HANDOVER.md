@@ -1,3 +1,15 @@
+# START HERE — final touches LIVE, 26 November 2026
+
+Application implementation 08a920728aeaaa21f8223232ec3d39a57ebd6dfd, production dpl_EgJt2hgtexwYAEk8DDuFgcrPLkL1 READY with thedesk.vercel.app alias, immutable https://thedesk-ld7gsc8x8-raokayyor.vercel.app . This documentation/evidence commit follows the deployed code; report its final pushed SHA separately.
+
+Live 390x844 browser confirms numbered reasons 1/2/3 (third placeholder only), the actual CV course/university/Predicted2:1 teaser with no assessment answer, Your tests heading, original compact order, one email box and practitioner after email. Summary content1135px (~1.34screens); document375px within390 viewport. Whole phone screenshot is local chat outputs/free-result-phone-proof/final-touches-live-whole-phone.jpg, not committed because it contains the supplied CV's assessment.
+
+Live HTTP checked: /, assessment.html, result-final-design.html, old/new result-free.js query URLs, result-entry.js and lib/cv-fault-framework.mjs all return200 with Cache-Control:no-cache, max-age=0, must-revalidate. Even the old framework script URL serves the newest final-touches import. API retains no-store (HEAD405 is expected; GET200). Four extra final-touch/integration groups passed27focused checks; prior98-check batch and showcase also passed. Stable-score live proof remains three fresh sessions35/35/35, changed answer33 with same CV marks.
+
+EMAIL NOT FIXED: GET /api/assessment-save still emailReady:false. No production/local Resend key or installed integration; no real mail sent, recipient still not supplied. Resend browser route /api-keys redirects to its login page. Next required action is user sign-in to the existing Resend account and secure key/sender connection in Vercel, then redeploy and test account→delivered magic link→full free report on the user-authorised inbox. User was alerted only after READY/header/browser verification. Do not claim this email path works yet or bypass its gate.
+
+---
+
 ## Final touches requested at15:22
 
 Teaser now contains the actual CV degree label, university and grade only, followed by the withheld bank-check invitation; no course/grade assessment before email. Added Your tests heading. Reasons are an ordered list 1/2/3, with the third marker outside its blurred placeholder. Added no-cache, max-age=0, must-revalidate response headers for root/HTML and JS/MJS/CSS assets, and bumped result HTML/script import versions. Verify actual live HTTP headers after deployment, including API no-store retention. Email remains blocked on missing Resend connection/key and authorised recipient.

@@ -1,0 +1,19 @@
+{
+  "implementation": "08a920728aeaaa21f8223232ec3d39a57ebd6dfd",
+  "deployment": "dpl_EgJt2hgtexwYAEk8DDuFgcrPLkL1",
+  "ready": true,
+  "htmlAndScriptCacheControl": "no-cache, max-age=0, must-revalidate",
+  "oldScriptUrlServesLatest": true,
+  "api": {
+    "getStatus": 200,
+    "cache": "no-store",
+    "emailReady": false
+  },
+  "phone": {
+    "width": 390,
+    "documentWidth": 375,
+    "reasonSlots": 3,
+    "summaryHeight": 1135,
+    "testHeading": true
+  }
+}
