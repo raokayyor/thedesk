@@ -143,6 +143,6 @@ Finance knowledge is self-reported context only: if limited_or_none, explain gap
   if(req.body.warmup===true)return res.json({success:true,prepared:true});
   if(signedAccount)await linkAssessment(signedAccount.id,id);
   await funnelEvent(h,'assessment_completed',id).catch(()=>{});
-  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),entry:assessmentEntry({result,input:{cvText,quiz}})});
+  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),entry:assessmentEntry({result,input:{cvText,quiz,profile}})});
  }catch(e){if(e?.status===400)console.error('desk assessment provider schema rejected',{message:String(e.error?.error?.message||e.message||'').slice(0,900)});return apiFailure(res,e);}
 }

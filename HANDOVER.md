@@ -1,3 +1,12 @@
+# START HERE — summary desire + route/topic fixes, 26 November 2026
+
+Branch codex/sidebar-consistency. This implementation is tested locally, not yet deployment-verified. Summary uses section-first framework teaser; rewrite source/full-free ordering starts with that same line. Distinct wrong-answer topics only, no padding/five-topic cap; legacy missing topics falls back to actual wrong-question count with correct label. Framework screener/courseTeaser follow route, including Big Four and unsure/employers; first analyse response now receives its profile too.
+
+Latest user brief CODEX-FREE-SUMMARY-DESIRE.md supersedes prior no-prefix rule: reveal only five/six words from a server-validated rewrite, placeholder blur for the remainder, never full rewrite pre-email. Cached drafts revalidated before prefix projection; preparation endpoint exposes prefix only, keeps complete drafts server-side. Added evidence-specific fallback subjects; omit firm-fit if source names firm or relevant business area; exactly three deterministic reason slots remain. Added stakes text (one of the lines, avoiding falsely calling a later source bullet the first). Email heading/button/unlock list now sell the full fix. No estimated point gains. Point6 post-email before/after/paid-next-step layout is explicitly deferred until email works, per supplied scope.
+
+57 focused tests passed, supplied updated framework tests passed, showcase matches; diff checked/reviewed. Existing sidebar and80/20 scoring/cache preserved. Next: push exact implementation, deploy/verify READY + alias, then actual live Tom/James/Raj/Amelia/Sophie run with validated prefix and390x844 screenshots. Raj full text is absent from attachments; use and label a fictional fixture matching supplied Nottingham/Rolls-Royce description. Email configuration/delivery remains unresolved, no actual mail tested. Record final implementation SHA and proof after completion.
+
+---
 # START HERE — framework LIVE + seven CV phone proofs, 26 November 2026
 
 Implementation f09c142cdaf7158b9010e30e494933dbe4bef535 pushed and deployed: production dpl_4TTMx3S24TXVvwMF2u8d1EfJt1w4 READY, exact Git SHA and thedesk.vercel.app alias verified. Live https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-c7uyrgf9h-raokayyor.vercel.app . This evidence commit follows the deployed implementation.
