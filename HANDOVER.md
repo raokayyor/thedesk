@@ -1,5 +1,9 @@
 # START HERE — 26 November 2026: assessment entry and test buttons
 
+## Latest user correction: preserve the question-count bubbles
+- Restore the original **5 numerical questions / 5 commercial questions** bubbles on the numerical introduction. The user intended only the **8 min** bubble to be removed, not the two question-count bubbles. Keep the concise paragraph, calculator permission and visible Start button.
+- Implemented two equal-width count cards using the existing card styling. No scoring, navigation or firm-picker changes in this correction. Production verification and final implementation SHA will be recorded after release.
+
 This section updates the older handover below. Branch: `codex/sidebar-consistency`. Latest implementation commit: `9cae873a281f9a37a5a00ea332bdc885549c29c5`.
 
 ## Completed in this batch
