@@ -1,3 +1,7 @@
+## Dashboard score consistency
+
+Dashboard projections now include the stored overall score and raw criterion/competency values. Reweighting old results uses those raw marks, matching the full report without a second model judgement or rounding drift. Four regression cases cover 80/20 totals, skipped marks, warm evidence reuse and legacy/dashboard score equivalence.
+
 ## Rewrite validation follow-up
 
 Live three-CV preparation check: first two warmups completed in about 27 seconds while questions could be answered; skipped finalisation 0.99–1.11s and completed-test finalisation 0.56–0.70s, with 12/20 actual test points for 3/5 + 3/5. The original vocabulary-only rewrite gate rejected ordinary paraphrasing. Replaced that lexical restriction with an independent source-entailment review, retaining similarity <0.85, source quotes, number preservation, supporting-role and unsupported tool/achievement guards. Cache version 2 only contains drafts that pass both mechanical and source review. Failed review never persists or reveals a rewrite. Live retest still required after this revision.
