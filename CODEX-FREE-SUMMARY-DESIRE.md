@@ -48,3 +48,7 @@ Re-run these 5 test CVs (text in `test/cv-fault-framework.test.mjs`): **Tom** (n
 - strong CVs get reasons that name their own lines
 - the topic count matches wrong answers
 - the wording matches the route
+
+
+## Latest override: missing-information chips
+The user removed the 5–7-word preview. Never publish real rewrite words before email. Show Your line is missing plus two or three labels from validated amber gaps, with deterministic framework-fault fallback even if generation fails. Keep only a blurred placeholder for Stronger version. Prefer a second source-specific reason before generic ordering. Latest requested proof is Amelia and Raj phone blocks.
