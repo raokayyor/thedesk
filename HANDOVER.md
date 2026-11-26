@@ -1,3 +1,11 @@
+# Final accuracy pass before release
+
+During the supplied-PDF phone browser check, the page reached52/100 with3/5 numerical and3/5 commercial and displayed the new summary/photo/score-based note. One saved summary wrongly said neither named experience showed a method even though reconciliation was supplied. Fixed shared evidence extraction to include date-only lines between role headings and bullet points, stopping at the next genuine heading. Added a scoped summary guard for neither-X-nor-Y-shows-a-method claims when a named cited entry supplies one; legitimate requests for more explanation remain valid.
+
+New assessments route this error to targeted summary repair with scores/evidence unchanged. Existing saved results keep their score and supported strength sentence rather than display the contradictory negative sentence. Also removed the obsolete first-CV-fix promise on the final review step.57focused tests passed, including shared full-cycle contracts/output safety, ownership, practitioner bands, summary/email gate, source truth and recheck stability. Final deployed SHA/READY record and user-facing screenshots follow after publishing this pass.
+
+---
+
 # Latest addition — practitioner photo and score-based guidance
 
 User asked for Kayyor's photo and a stock of roughly50 comments selected by score/band, explaining the reasoning and the aim of an application an employer wants to discuss. Added50 editorial comments across10 non-overlapping ranges spanning0–100. Uses existing Developing<65 / Borderline65–74 / Competitive75+ framework boundaries. Comment selection is deterministic per saved assessment, never a claim that Kayyor personally reviewed that CV.
