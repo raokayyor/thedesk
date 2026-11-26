@@ -1,0 +1,140 @@
+{
+  "question": "Tell me about a time you used analysis to make a recommendation.",
+  "firm": "Barclays",
+  "sample": "Amelia Chen",
+  "scoredAt": "2026-11-25T14:43:38.644Z",
+  "scorerHash": "8b098e2ef9583ba53153513fbc276904fecf6c44497dedefb2f924582e2c1b89",
+  "source": "Production /api/free-tasters: weak submission and its returned rewrite, both scored by quickInterviewScore / applyScorePolicy; typed answers",
+  "rewrite": {
+    "title": "Your answer, fixed",
+    "before": "At Redcliffe Partners I supported the team with research on software companies. I looked at the information and helped put it in a spreadsheet. We discussed which companies looked good. I just tried to help the team make a recommendation and got through it.",
+    "parts": [
+      {
+        "beat": "section-0",
+        "text": "My example is from my corporate finance intern role at Redcliffe Partners.",
+        "gap": false,
+        "sources": [
+          "E7.1",
+          "E7.2",
+          "E7.3",
+          "E7.4",
+          "T"
+        ],
+        "change": 1,
+        "changed": true,
+        "marker": 1
+      },
+      {
+        "beat": "section-1",
+        "text": "I researched 12 UK software companies for a prospective acquisition screen. I recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. I flagged 4 companies for further review because their recurring revenue models matched the screen brief.",
+        "gap": false,
+        "sources": [
+          "E7.1",
+          "E7.2",
+          "E7.3",
+          "E7.4",
+          "T"
+        ],
+        "change": 2,
+        "changed": true,
+        "marker": 2
+      },
+      {
+        "beat": "section-2",
+        "text": "I presented the comparison table and selection reasons to an associate.",
+        "gap": false
+      },
+      {
+        "beat": "section-2",
+        "text": "What happened next?",
+        "gap": true,
+        "sources": [],
+        "change": null,
+        "changed": false,
+        "marker": null,
+        "id": "gap-2"
+      },
+      {
+        "beat": "section-3",
+        "text": "What did you learn?",
+        "gap": true,
+        "sources": [],
+        "change": null,
+        "changed": false,
+        "marker": null,
+        "id": "gap-3"
+      }
+    ],
+    "after": "My example is from my corporate finance intern role at Redcliffe Partners. I researched 12 UK software companies for a prospective acquisition screen. I recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. I flagged 4 companies for further review because their recurring revenue models matched the screen brief. I presented the comparison table and selection reasons to an associate. [What happened next?] [What did you learn?]",
+    "score": 40,
+    "scores": {
+      "evidence": 28,
+      "relevance": 49,
+      "structure": 42
+    },
+    "fixes": [
+      {
+        "title": "Show what you personally did",
+        "why": "Name your action so the interviewer can separate your contribution from the team’s.",
+        "tryText": "I researched 12 UK software companies for a prospective acquisition screen.",
+        "gap": null,
+        "said": "At Redcliffe Partners I supported the team with research on software companies."
+      },
+      {
+        "title": "Defend your recommendation",
+        "why": "Explain which facts made this the better choice.",
+        "tryText": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief.",
+        "gap": null,
+        "said": "I just tried to help the team make a recommendation and got through it."
+      },
+      {
+        "title": "Say what happened next",
+        "why": "Presenting the work is an action. Add how it was used or the feedback you actually received.",
+        "gap": "What happened after your recommendation?",
+        "said": "I looked at the information and helped put it in a spreadsheet."
+      }
+    ],
+    "tag": "Needs work",
+    "topFix": "State the recommendation you made, why the facts supported it, and what happened next.",
+    "note": "Built from your answer and CV · fill amber gaps with your own facts. The score is for your submitted answer.",
+    "sample": true,
+    "sourceAssessment": "sample:amelia"
+  },
+  "before": {
+    "text": "At Redcliffe Partners I supported the team with research on software companies. I looked at the information and helped put it in a spreadsheet. We discussed which companies looked good. I just tried to help the team make a recommendation and got through it.",
+    "score": 40,
+    "scores": {
+      "evidence": 28,
+      "relevance": 49,
+      "structure": 42
+    },
+    "line": "At Redcliffe Partners I supported the team with research on software companies."
+  },
+  "after": {
+    "text": "My example is from my corporate finance intern role at Redcliffe Partners. I researched 12 UK software companies for a prospective acquisition screen. I recorded business descriptions, revenue and EBITDA where publicly available in an Excel comparison table. I flagged 4 companies for further review because their recurring revenue models matched the screen brief. I presented the comparison table and selection reasons to an associate. [What happened next?] [What did you learn?]",
+    "score": 73,
+    "scores": {
+      "evidence": 68,
+      "relevance": 78,
+      "structure": 72
+    },
+    "line": "I researched 12 UK software companies for a prospective acquisition screen. I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
+  },
+  "changes": [
+    {
+      "label": "+ the numbers",
+      "fixTitle": "Show what you personally did",
+      "evidence": "I researched 12 UK software companies for a prospective acquisition screen."
+    },
+    {
+      "label": "+ what you decided",
+      "fixTitle": "Defend your recommendation",
+      "evidence": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
+    },
+    {
+      "label": "+ why",
+      "fixTitle": "Defend your recommendation",
+      "evidence": "I flagged 4 companies for further review because their recurring revenue models matched the screen brief."
+    }
+  ]
+}

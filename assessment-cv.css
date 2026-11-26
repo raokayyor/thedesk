@@ -6,3 +6,5 @@
 #cvUploadPanel[hidden],#cvPastePanel[hidden]{display:none!important}#cvUploadPanel>label,#cvPastePanel>label{display:block;font-size:13px;margin-bottom:8px}#cvFile{font-size:14px;padding:12px;background:#fafbfc}#cvText{margin-top:8px;min-height:220px;font-size:14px;line-height:1.6}
 #uploadStatus{font-size:14px;line-height:1.6;margin:14px 0;overflow-wrap:anywhere}#uploadStatus.cv-upload-ready{padding:14px 16px;background:#eaf6ee;border:1px solid #9ac8aa;border-radius:8px;color:#1c5a36;font-weight:600}#cvMethodHint{font-size:13px;margin:12px 0 0}#cvContinue:disabled{opacity:.55;cursor:wait}
 @media(max-width:520px){.cv-consent{padding:14px;gap:12px}.cv-methods{gap:8px}.cv-method{flex:1;padding:12px}.cv-consent strong{font-size:15px}}
+
+.assessment-sample-report{display:inline-block;font:500 13px/1.4 Figtree,Arial,sans-serif;color:#52635b;text-underline-offset:3px;margin:0 0 18px}@media(max-width:900px){.assessment-sample-report{font-size:13px;margin:0 0 16px}}

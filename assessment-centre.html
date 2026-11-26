@@ -127,6 +127,8 @@ select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #c9c1b5;bo
   fetch('/api/assessment-centre?view=info').then(r => r.ok ? r.json() : null).then(d => {
     if (!d) return;
     $('rubric').innerHTML = d.behaviours.map(b => `<tr><th scope="row">${esc(b.label)}</th><td>${esc(b.strong)}</td><td>${esc(b.below)}</td></tr>`).join('');
+    if(trialHub){const section=document.querySelector('[aria-labelledby="sheetH"]'),overlay=section.querySelector('.trial-rubric-overlay');if(overlay){const position=()=>{const first=$('rubric').querySelector('tr:nth-child(3)');if(first)overlay.style.top=Math.max(0,first.getBoundingClientRect().top-section.getBoundingClientRect().top+8)+'px';};position();if('ResizeObserver' in window)new ResizeObserver(position).observe(section.querySelector('.scroll'));else window.addEventListener('resize',position);}}
+
   }).catch(() => {});
   fetch('/api/desk-home').then(r => r.ok ? r.json() : null).then(d => {
     if(trialHub)return;

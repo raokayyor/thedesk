@@ -15,7 +15,7 @@ test('explore has no student identity while sample tool context stays available'
  const {exploreDesk}=await import('../lib/explore-desk.mjs');const d=await exploreDesk();
  assert.equal(d.explore,true);assert.equal(d.profile.name,'');assert.equal(d.profile.firstName,'');assert.equal(d.profile.university,'');assert.ok(d.profile.targetFirm);
  const render=html.slice(html.indexOf('function render(){'),html.indexOf('let PROGS=null;'));
- function greeting(data){const app={};const scope=vm.createContext({D:data,app,qp:new URLSearchParams(),headerBits(){},dashboardSidebar(){},document:{body:{classList:{toggle(){}}},dispatchEvent(){}},Event:class{},greet:()=> 'Morning',esc:s=>String(s??''),memberDesk:()=>'',bind(){},loadExploreDeadline(){},matchMedia:()=>({matches:false}),location:{hash:''}});vm.runInContext(render+';render();',scope);return app.innerHTML;}
+ function greeting(data){const app={};const scope=vm.createContext({D:data,app,qp:new URLSearchParams(),headerBits(){},dashboardSidebar(){},document:{getElementById(){return null;},body:{classList:{toggle(){}}},dispatchEvent(){}},Event:class{},greet:()=> 'Morning',esc:s=>String(s??''),memberDesk:()=>'',bind(){},loadExploreDeadline(){},loadNews(){},matchMedia:()=>({matches:false}),location:{hash:''}});vm.runInContext(render+';render();',scope);return app.innerHTML;}
  assert.match(greeting(d),/<h1>Explore The Desk<\/h1>/);
  assert.doesNotMatch(greeting(d),/Morning, Amelia/);
  for(const member of [false,true])assert.match(greeting({...d,explore:false,signedIn:true,member,profile:{firstName:'James'}}),/<h1>Morning, James\.<\/h1>/);
