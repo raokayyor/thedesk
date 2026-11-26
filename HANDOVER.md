@@ -1,3 +1,12 @@
+# VERIFIED RELEASE — 26 November 2026
+
+- Branch:codex/sidebar-consistency. Deployed application implementation:3fcff3cae2b6a641190f226bd982ea50f828262c. Production deploymentdpl_CUksz5L8VD7JuZ8iHp7orpgTzHAx is READY; thedesk.vercel.app alias verified. URL:https://thedesk.vercel.app/assessment.html ; immutable:https://thedesk-o0ugzkr3u-raokayyor.vercel.app . This documentation/test commit follows the deployed implementation; report its own final pushed SHA separately.
+- Live owned-result browser confirmed: supplied-PDF52/100, actual3/5 numerical and3/5 commercial test marks, personal EY strength summary, Kayyor photo loaded, score-based practitioner note,31/65 CV and21/35 test reasoning, band explanation, employer-interest aim and email call to action. No CV-fix panel. Phone390×844 and desktop1280×800 checked without horizontal overflow. Kept the supplied-CV result open in the in-app browser.
+- Production email remains genuinely blocked: emailReady:false, no Resend key/installed integration. Live browser verifies email field/button disabled with a clear unavailable message, while score/summary remain accessible. Required next step is the existing Resend connection/key, verified sender, redeploy and authorised-address delivery test. Do not describe the whole email journey as working. Configured-success and missing-configuration client transitions both pass mocked tests.59targeted checks passed cumulatively; showcase fingerprint matches.
+- All user decisions and failure repairs below retained. Five fictional CV cases passed and were reopened on the final API; supplied PDF passed a fresh final generation in56s and a full browser journey. DOCX extraction returned200 and the same evidence lines as TXT. No real emails sent. No private supplied PDF/text/screenshot or cookie files committed. Screenshot and the50-comment review are local outputs.
+
+---
+
 # START HERE — verified summary release; EMAIL CONNECTION STILL BLOCKED
 
 Branch codex/sidebar-consistency. Live implementation before this availability-state follow-up:44625e02aa7ee39b14153bb3a0e44c6006ae1712, deploymentdpl_ACdcEDEqY9wakgbzpzPbxQ27cNrZ READY with thedesk.vercel.app alias. Final availability-state implementation/deployment follows and will be recorded after READY verification.
