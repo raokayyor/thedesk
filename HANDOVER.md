@@ -1,3 +1,7 @@
+## Rewrite validation follow-up
+
+Live three-CV preparation check: first two warmups completed in about 27 seconds while questions could be answered; skipped finalisation 0.99–1.11s and completed-test finalisation 0.56–0.70s, with 12/20 actual test points for 3/5 + 3/5. The original vocabulary-only rewrite gate rejected ordinary paraphrasing. Replaced that lexical restriction with an independent source-entailment review, retaining similarity <0.85, source quotes, number preservation, supporting-role and unsupported tool/achievement guards. Cache version 2 only contains drafts that pass both mechanical and source review. Failed review never persists or reveals a rewrite. Live retest still required after this revision.
+
 ## Latest layout steering
 
 User changed title to The lines costing you the most: highlight ONE full actual source line, count the other real flagged lines; never fabricate extras. Add greyed placeholder for What stops me shortlisting you is… in the practitioner panel, matching the blurred fix treatment, no price displayed. This denotes deeper member-report reasoning; free findings/fixes remain available after email. Latest top shortcut jumps to the single email box; practitioner appears before that box.
