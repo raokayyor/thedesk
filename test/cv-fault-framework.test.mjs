@@ -83,4 +83,6 @@ for (const [k, cv] of Object.entries(CVS)) {
   console.log('  +' + r1.moreFlagged + ' more · course:', r1.course.type, '·', r1.course.grade);
 }
 const so=runFramework(CVS.sophie,{firm:'Barclays'}); assert.ok(!so.flaggedLines.some(l=>/ranked first of 8|adjusted before sign-off/.test(l.text)), 'strong lines must not be flagged');
+const am=runFramework(CVS.amelia,{firm:'Barclays',route:'Investment banking'}); assert.equal(am.teaserLine.section,'internship','Amelia teaser comes from her internship, not a membership'); console.log('\nAmelia teaser:', am.teaserLine.text, '|', am.courseTeaser);
+const b4=runFramework(CVS.james,{route:'Big Four'}); assert.equal(b4.screener,'Big Four firms'); console.log('Big Four wording:', b4.courseTeaser);
 console.log('\n', verdictFor(34).headline, '|', verdictFor(58).headline);
