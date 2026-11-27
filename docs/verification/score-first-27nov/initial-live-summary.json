@@ -1,0 +1,87 @@
+[
+  {
+    "key": "tom",
+    "label": "Tom — no experience",
+    "success": false,
+    "error": "{\"error\":\"We could not produce a sufficiently different, fact-grounded rewrite. Your assessment is saved; please retry.\",\"code\":\"rewrite_fact_review\"}\n\n503 !== 200\n"
+  },
+  {
+    "key": "james",
+    "label": "James — weak",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 37,
+    "repeatScore": 37,
+    "topicCount": 5,
+    "wrongQuestions": 5,
+    "flags": 9,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what you did",
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 14.2
+  },
+  {
+    "key": "raj",
+    "label": "Raj — engineering / Big Four",
+    "success": true,
+    "fixtureNote": "Fictional reconstruction from user description; exact Raj source absent from attachments.",
+    "route": "Accounting / Audit",
+    "score": 32,
+    "repeatScore": 32,
+    "topicCount": 6,
+    "wrongQuestions": 6,
+    "flags": 6,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what you did",
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 9.4
+  },
+  {
+    "key": "amelia",
+    "label": "Amelia — corporate finance",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 60,
+    "repeatScore": 60,
+    "topicCount": 8,
+    "wrongQuestions": 8,
+    "flags": 7,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 17.8
+  },
+  {
+    "key": "sophie",
+    "label": "Sophie — strong",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 71,
+    "repeatScore": 71,
+    "topicCount": 4,
+    "wrongQuestions": 4,
+    "flags": 2,
+    "teaserSection": "positions",
+    "chips": [
+      "+ your contribution",
+      "+ what it achieved",
+      "+ the task and context"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 18
+  }
+]

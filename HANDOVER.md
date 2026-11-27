@@ -1,3 +1,11 @@
+# RELEASE FOLLOW-UP — 27 November 2026
+
+Score-first implementation d03031360ab4a8a702c4662185b9214105394104 deployed READY as dpl_BeQHbkt3mM4FbnrqX2bV7ZAoP1KU, thedesk.vercel.app alias.80 focused checks passed, public HTML/JS/CSS byte-matched local tested files. Five cold fictional CVs all scored; James/Raj/Amelia/Sophie private fixes passed but Tom skills-only rewrite failed independent fact review. Honest initial evidence is in docs/verification/score-first-27nov/initial-live-summary.json. These cold fixtures add Languages English and are not claimed unchanged original-CV scores.
+
+Follow-up fix: a narrowly recognised Microsoft Office + soft-claims list now gets an evidence-required scaffold keeping only the listed software confirmed; action/scope/outcome remain in at most two amber gaps. No invention and similarity remains under0.85. This does not weaken factual checks on other generated rewrites. Targeted19 checks pass; redeploy and rerun all five cold cases, fresh-owner and skipped-test checks next. Email remains deferred/unavailable.
+
+---
+
 # START HERE — score-first result + test messages, 27 November 2026
 
 User approved publishing the large full-phone score/verdict opening. One button reveals the existing CV feedback, test results, ATS readiness and free-account form. Do not ship just the standalone prototype. User rejected the compact overloaded first screen. Local standalone design previews in outputs are not production routes.
