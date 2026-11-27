@@ -1,4 +1,4 @@
-import { runFramework, verdictFor, sectionsCheck } from '../lib/cv-fault-framework.mjs';
+import { runFramework, verdictFor, sectionsCheck, testGap } from '../lib/cv-fault-framework.mjs';
 import assert from 'node:assert/strict';
 const CVS = {
 james: `James Patel
@@ -87,8 +87,19 @@ const am=runFramework(CVS.amelia,{firm:'Barclays',route:'Investment banking'}); 
 const b4=runFramework(CVS.james,{route:'Big Four'}); assert.equal(b4.screener,'Big Four firms'); console.log('Big Four wording:', b4.courseTeaser);
 console.log('\n', verdictFor(34).headline, '|', verdictFor(58).headline);
 
-assert.deepEqual(sectionsCheck(CVS.amelia).map(row=>row.id),['education']);
-assert.match(sectionsCheck(CVS.james).find(row=>row.id==='skills').change,/Did data entry in Excel for client accounts/);
-assert.match(sectionsCheck(CVS.james)[0].wrong,/Pitch me a stock/);
-assert.match(sectionsCheck(CVS.sophie)[0].wrong,/What was your last piece about/);
-assert.match(sectionsCheck(CVS.none)[0].wrong,/What are you reading now/);
+// sections check
+const js = sectionsCheck(CVS.james);
+assert.ok(js.find(r=>r.kind==='skills').change.includes('Did data entry in Excel for client accounts'), 'James Excel proof uses the line that names Excel');
+assert.ok(js.find(r=>r.kind==='interests').wrong.includes('Pitch me a stock'), 'investing -> pitch me a stock');
+assert.ok(!sectionsCheck(CVS.amelia).some(r=>r.kind==='skills'), 'backed skills (DCF, comps) are not flagged');
+assert.ok(sectionsCheck(CVS.sophie).find(r=>r.kind==='interests').wrong.includes('last piece'), 'newsletter beats markets');
+const banned=/leverage|showcase|passionate about|dynamic|robust|impactful/i;
+for (const cv of Object.values(CVS)) for (const r of sectionsCheck(cv)) assert.ok(!banned.test(r.wrong+r.change), 'no AI-speak');
+assert.equal(testGap({numerical:1,commercial:1}).id,'tests_weak'); assert.equal(testGap({numerical:3,commercial:3}),null);
+// Reason 1 is always a headline (never skills/interests/ordering)
+const { CV_GAPS, FALLBACK_GAPS } = await import('../lib/cv-fault-framework.mjs');
+const headlineIds = new Set([...CV_GAPS, ...FALLBACK_GAPS].filter(g=>g.headline).map(g=>g.id));
+for (const [k,cv] of Object.entries(CVS)) assert.ok(headlineIds.has(runFramework(cv,{firm:'Barclays'}).reasons[0].id), k+' reason 1 is a headline gap');
+const interestsOnly = `Sam Ray\nEDUCATION\nUniversity of Leeds, BSc Economics, 2023-2026. Predicted 2:1.\nEXPERIENCE\nAnalyst Intern, Northern Capital, Summer 2025\n- Built a DCF for 2 retail companies and recommended 1, which the team took to the client meeting\n- Led a team of 3 to update 40 comps\nPOSITIONS\nPresident, Leeds Investment Society, 2024-2025\n- Grew membership 30% and ran a stock pitch competition for 60 students\nSKILLS\nExcel (DCF, comps), Python\nInterests: reading, travelling`;
+const ir = runFramework(interestsOnly,{firm:'Barclays'}); assert.ok(ir.reasons[0].id!=='interests_generic', 'interests never lead'); console.log('Strong CV with generic interests -> reason 1:', ir.reasons[0].text);
+console.log('sections + test gap tests pass');

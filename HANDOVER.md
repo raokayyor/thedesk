@@ -1,3 +1,11 @@
+# START HERE — attached headline reason framework27November
+
+Latestuserattachments Downloads/cv-fault-framework_1.mjs and test_1.mjs were read. Incorporated exactapprovedharsherCV_GAPS/FALLBACK_GAPS,headlinelead rule,sectionsCheck advice+trapwording andtestGap. Replacedattachedtestfile andpreservedproductionadapters/allFlaggedLines/coursemetadata/routewording/fairness fixes;blindwholereplacementwouldremove required APIfields andregresspriorfixes. Publicquotes remainexact,untruncated. Attachedtests pass. StrongCVfallback includes qualifyingCVsubject (AmeliaLVMHvaluation). Actualquizmarks feedtestGap,invalid/skippedmarks donot;testsweakmayleadat<=4/10. headlinepropertynow explicittrueonreason1. Skills/interests/orderingneverlead. Sectionsfullmemberrewritesremainfact-only/gaps.35 latestframework/reportchecks pass;broader112 priorchecks pass;finalbroad rerun next. Proof docs/verification/headline-reasons-27nov includes4CV-onlyphoneviews+testsection;sections8proof refreshed toattachedwording.
+
+Live d8a7adce7cdb5d8ea552ddeeef4dd43e523f7236 READY dpl_CCL44ur1bdd6VJrPn1YSehjreqMM on thedesk.vercel.app includesvaluecards,sectioncard,reasonbadges,flagcounts,testbands/practiceupsell,loading,restart. Correctserverredirect andlatestattachedheadlineframework notdeployeduntilnextrelease. APIbacktoback realtest alreadyprovedreset+emptyfirm+preservedfirstreport+publicgating;redirect307previouslyfailedbecause duplicateconfigkey,nowmerged+regressionpass. Need verifyfinal307andlatestassetmatches afternewREADY. Emailstilldeferred/unconfigured, noliveunlockedclaim.
+
+---
+
 # Live verification follow-up27November
 
 Bothsameowner realAPIassessments succeeded:IBBarclays then Accountingnofirm,stale revision rejected,completed firstreport preserved,section publicpayload omitslockedguidance,actualwrongquestion present. Live redirecttest caughtduplicate redirects key:existing laterblockoverrode new307rule. Merged into originalarray,addedregressiontest. Fallbacknoscriptonly already removesblueflash. Finaldeploymentmustinclude thisfix plus testbands.
