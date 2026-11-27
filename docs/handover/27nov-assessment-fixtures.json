@@ -1,0 +1,47 @@
+[
+  [
+    "tom",
+    "Tom — no experience",
+    "Tom Lee\nEDUCATION\nUniversity of Kent, BA History, 2024-2027.\nSKILLS\nMicrosoft Office, hard working, team player\nInterests: reading, gym",
+    "General Finance",
+    "",
+    1,
+    1
+  ],
+  [
+    "james",
+    "James — weak",
+    "James Patel\nEDUCATION\nLeeds University Business School, BSc Accounting and Finance, 2023-2026. Predicted 2:1.\nA-levels: Maths A, Economics A, History B.\nEXPERIENCE\nSales Assistant, Next (part-time), Sep 2023 - present\n- Helped customers and worked on the till\n- Responsible for stock\n- Worked weekends\nSummer Intern, Patel & Co Accountants (family friend's firm), July 2024\n- Helped with bookkeeping\n- Did data entry in Excel for client accounts\n- Shadowed the partner in client meetings\nPOSITIONS\nMember, Leeds Finance Society\nFootball team member\nSKILLS\nExcel, PowerPoint, good communication, team player, hard working\nInterests: investing, football, travelling",
+    "Investment Banking / IBD",
+    "Barclays",
+    3,
+    2
+  ],
+  [
+    "raj",
+    "Raj — engineering / Big Four",
+    "Raj Mehta\nEDUCATION\nUniversity of Nottingham, MEng Mechanical Engineering, 2023-2027. Predicted 2:1.\nEXPERIENCE\nEngineering Intern, Rolls-Royce, July-August 2025\n- Helped with engineering reports\n- Shadowed engineers in team meetings\n- Assisted with project documentation\nMaths Tutor, self-employed, 2024-present\n- Tutored GCSE maths students\nPOSITIONS\nVice President, Engineering Society, 2025-2026\n- Organised society events\nSKILLS\nExcel, PowerPoint, MATLAB, good communication\nInterests: cars, football, travelling",
+    "Accounting / Audit",
+    "Deloitte",
+    2,
+    2
+  ],
+  [
+    "amelia",
+    "Amelia — corporate finance",
+    "Amelia Chen\nEDUCATION\nUniversity of Bristol, BSc Economics, 2023-2026. Predicted 2:1.\nEXPERIENCE\nCorporate Finance Intern, Redcliffe Partners, Jul-Aug 2025\n- Researched 12 UK software companies for a prospective acquisition screen\n- Recorded business descriptions, revenue and EBITDA in an Excel comparison table\n- Flagged 4 companies for further review because their recurring revenue models matched the screen brief\n- Presented the comparison table and selection reasons to an associate\nTeam Member, Pho House (part-time), 2024-2025\n- Trained 3 new colleagues on ordering and till procedures\n- Worked 12 hours per week alongside university\nPOSITIONS\nMember, Economics Society\nLVMH valuation, University Corporate Finance project, 2025\n- Built a DCF and trading-comparables valuation\n- Tested revenue growth assumptions of 3%, 5% and 7% and presented valuation sensitivity to a 4-person seminar team\nSKILLS\nExcel (DCF, comps, pivot tables), PowerPoint",
+    "Investment Banking / IBD",
+    "Barclays",
+    1,
+    1
+  ],
+  [
+    "sophie",
+    "Sophie — strong",
+    "Sophie Grant\nEDUCATION\nUniversity of Warwick, BSc Economics, 2023-2026. Predicted First.\nEXPERIENCE\nSpring Insight Programme, a UK investment bank, April 2025\n- Worked in a team of 5 to build a pitch for a mid-cap acquisition and presented it to 2 Vice Presidents; our team's pitch was ranked first of 8\nAudit Intern, regional accountancy firm, July-August 2025\n- Tested 40 revenue transactions for a manufacturing client and flagged 3 that were booked in the wrong period, which the senior adjusted before sign-off\nPOSITIONS\nTreasurer, Warwick Investment Society, 2024-2025\n- Managed a £6,000 budget and organised 4 speaker events with 120+ attendees in total\nMember, university netball team\nSKILLS\nExcel (DCF, comps, pivot tables), Python (pandas)\nInterests: half-marathon running (1:52), writing a weekly markets newsletter for 300 subscribers",
+    "Investment Banking / IBD",
+    "Barclays",
+    3,
+    3
+  ]
+]

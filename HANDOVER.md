@@ -1,3 +1,13 @@
+# START HERE — OTHER-PC HANDOVER,27 November2026
+
+User is moving from the laptop to the other PC. Fetch origin/codex/sidebar-consistency, preserve work, then read docs/handover/RESUME-27NOV.md. It contains the exact state, patch instructions and next tests. Latest LIVE implementation95a8516258e590d1a5c211c63e5c6d9aa4b03361; deployment dpl_6wUHEwpe7CngKvSpa7BNwx7sqGV3 READY with matching SHA and thedesk.vercel.app alias. https://thedesk.vercel.app/ . Homepage: larger Explore first, Live seminar heading, new quoted application question.4 tests + phone/desktop checks passed.
+
+Unfinished reliability/compact-summary code is packaged in docs/handover/27nov-assessment-in-progress.patch, with new modules/tests included. It is NOT applied to committed application source and NOT deployed. Laptop deliberately retains the same uncommitted working files. On a clean other-PC checkout use git apply --check then git apply as documented; don't apply twice or discard existing edits. Portable five-CV fixtures + verification runner are beside the patch. No secrets/cookies/private real CVs.
+
+Next: finish API integration tests + updated compact-layout tests, check ~150 words/email within1.5phone screens, then commit/push/deploy exact SHA and run five live/cold fictional CV checks.23 earlier targeted reliability checks passed, but no final full verification or new-code deployment yet. James rewrite failure and intermittent sparse scoring are not declared fixed. EMAIL IS DEFERRED BY USER—do not chase setup or promise delivery. Preserve sidebar/80-20 weights/existing cache. Detailed resume file records all latest decisions.
+
+---
+
 # START HERE — homepage phone edits,27 November2026
 
 Branch codex/sidebar-consistency. This homepage batch enlarges Explore first to16px with44px tap height on phone; adds Live seminar heading above AMA in static and dynamic event rendering; replaces360k Goldman statistic with quoted How do I submit an application that gets through? and removes its unused source footnote. Home asset versions bumped. Phone390x844 and desktop1280 checked without horizontal overflow;4 relevant tests passed; diff reviewed. This batch is to be pushed/deployed; previous live application2b0415a1c89cfa4bacba070b94211c7712078f0f. Final release proof follows.
