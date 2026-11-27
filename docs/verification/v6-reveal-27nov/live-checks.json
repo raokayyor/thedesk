@@ -1,0 +1,20 @@
+{
+  "james": {
+    "status": 200,
+    "score": 29,
+    "ats": "Low",
+    "reasons": 1,
+    "role": "Summer Intern · Patel & Co Accountants"
+  },
+  "pdf": {
+    "status": 200,
+    "ats": "Strong"
+  },
+  "paste": {
+    "ats": "Medium",
+    "cached": true,
+    "sameScore": true,
+    "persisted": true
+  },
+  "receiptRestored": "Strong"
+}

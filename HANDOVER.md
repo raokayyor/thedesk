@@ -1,3 +1,13 @@
+# LIVE VERIFIED — v6 reveal, 27 November 2026
+
+Application429eeec0a9e7f9ba01ce2f710d66ee19521f68e7 deployed READY as dpl_32DwDQgnSz86dLqAqgcj4bGmgqLB, immutable https://thedesk-gpfsq9vq6-raokayyor.vercel.app and production alias https://thedesk.vercel.app verified with exact SHA. User entry https://thedesk.vercel.app/assessment-start.html . This documentation/evidence commit follows deployed application; report final pushed SHA separately.
+
+Production HTML/JS/CSS and assessment-submit source matched tested files. Live fictional James with actual1/5 numerical+1/5 commercial gives29/100, ATS LOW, exactly1 public reason, clean Summer Intern · Patel & Co Accountants, and stable owned reopen. Do not compare29 to earlier37 (earlier actual test marks were3/5+2/5). Synthetic PDF fixture passes all5 ATS checks STRONG; identical text submitted as paste (even client-claimed PDF) is MEDIUM; cached overall score/id unchanged and MEDIUM persisted on reopen. Original owner-bound receipt restores STRONG without changing overall marks. No email/payment test. Sanitized production evidence in docs/verification/v6-reveal-27nov/live-checks.json and published-assets.json.
+
+87 focused tests pass. Phone screenshots use the earlier saved real James37 response with current strict ATS computed from its exact CV; not the new1/5+1/5 submission, and not browser API end-to-end captures. Phone390×844 dock stays bottom844 while scrolling; desktop1280×800 static form, no horizontal overflow. Screenshot capture375×812 reflects browser scaling. EMAIL REMAINS DEFERRED/UNCONFIGURED: disabled honest join form. Strict ATS is a separate5-check display rating; legacy overall80/20 numeric scoring/cache is preserved. No sidebar change. Next: user visual review; amber-gap editing/full v6 after-join redesign and email setup remain separate outstanding work.
+
+---
+
 # START HERE — v6 revealed free check, 27 November 2026
 
 Latest batch keeps the full-phone score opening, then shows reason 1 only (API also returns only reason 1), placeholder-only reasons 2/3, label The one most students miss, one inline numerical/commercial/topics sentence, and cleaner Job title · Employer without dates/bracketed notes. The single join form pins after reveal on phone under768px; desktop stays inline. No duplicate end-of-page email form. Email remains explicitly deferred/unconfigured and honestly disabled when emailReady:false. No email/account/payment flow claimed.
