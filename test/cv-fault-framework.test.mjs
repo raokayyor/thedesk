@@ -69,6 +69,10 @@ Interests: half-marathon running (1:52), writing a weekly markets newsletter for
 none: `Tom Lee
 EDUCATION
 University of Kent, BA History, 2024-2027.
+EXPERIENCE
+Barista, Costa Coffee (part-time), Oct 2024 - present
+- Made drinks and served customers
+- Opened and closed the shop
 SKILLS
 Microsoft Office, hard working, team player
 Interests: reading, gym`,
