@@ -1,3 +1,7 @@
+# Reason badges follow-up27November
+
+User requested explicit visible2/3 beside blurred shortlist reasons. All three rows now have matching unblurred numbered badges;placeholder content stays gated. Included in current release before deployment.
+
 # START HERE — sections card, value blocks and start flash,27November2026
 
 Implemented deterministic sectionsCheck(cvText), max3 exact-quote rows, interests/skills/education priority. Framework produces all wording. Public preview exposes first wrong only and no change or rewrite;joined free reveals all wrong + first change only;paid permission from hasAccess reveals all changes and source-only rewritten lines with amber factual gaps. New card after weakest lines replaces skills/interests mini. James Excel instruction quotes his exact client-account line and cleaned employer;Jamesstock/Sophienewsletter/Tomreading/Ameliaeducation-only checks pass. Membership tick updated.8 local390x844 screenshots docs/verification/sections-27nov, explicitly layout-only because email remains deferred/unconfigured. Updated user attachment/mock was not available locally; did not claim to read it.
