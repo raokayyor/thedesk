@@ -1,3 +1,17 @@
+# START HERE — one-payment pricing + renewal reminders, 27 November 2026
+
+User confirmed £89 is one payment for12months, no auto-renewal. Public price CTAs/links now £89 for the year, including pinned join link, hidden mobile unlock, explore/signup/tool links and rebuilt interview bundle. Main purchase button note: One payment · no auto-renewal · less than one CV rewrite. Large price typography keeps89 + adjacent for the year. Both Stripe checkout paths remain mode payment and show £89 ·12months’ access ·no auto-renewal in product and pre-submit text; old open result checkouts without new copy marker are expired/replaced. No subscription and no cancel-anytime copy.
+
+Account ledger stores exact until. Account and result payments record calendar-year membership expiry; opt-in early renewal extends from latest unrevoked paid expiry, preserving remaining time, source-idempotent on webhook replay. Renewal opens14days before expiry. Daily existing protected result-email cron now also sends one service expiry reminder per account/expiry, with atomic lease/provider idempotency, paid-only/refund filters, latest expiry and manual renewal link. It is production-only and remains DISABLED while email is unconfigured. No mail actually sent and no payment actually taken in testing. Renewal flag survives email/password sign-in using a fixed server destination, not arbitrary return URLs.
+
+ATS LOW/MEDIUM wording updated exactly. No scoring change. Fixed source framework/overall80-20 scoring/cache/sidebar preserved.130 checks pass:91 result/framework/source/renewal regressions plus39 separate payment/account/auth tests (separate processes avoid registerHooks cross-file contamination). Bundle rebuilt; showcase fingerprint matches; diff check passed. Five local unlocked formatter checks ran on saved real scores and exact cold fictional CVs, with all3deterministic reasons and actual test marks. Phone images in docs/verification/pricing-unlocked-27nov are LOCAL LAYOUT QA, not new live email unlocks; private first fixes were explicitly not loaded and no private competency scores invented. Portable script docs/handover/verify-unlocked-layout.mjs. Source entries are earlier public API payloads without IDs/cookies/contact data.
+
+OUTSTANDING: real five-CV email-unlock/private-first-fix journey blocked by explicitly deferred/unconfigured email. Do not call those layout captures end-to-end success. Current unlocked report still has the earlier full-free layout; this batch does not claim complete v6 unlocked redesign. No credentials provisioned and no production unlock bypass added. Need user email setup before full live verification; preserve prior deferral unless user explicitly requests setup.
+
+Deployment pending at this commit. Next push/deploy exact SHA and verify production assets/READY; follow-up records final application/deployment SHA and pushed handover revision.
+
+---
+
 # LIVE VERIFIED — v6 reveal, 27 November 2026
 
 Application429eeec0a9e7f9ba01ce2f710d66ee19521f68e7 deployed READY as dpl_32DwDQgnSz86dLqAqgcj4bGmgqLB, immutable https://thedesk-gpfsq9vq6-raokayyor.vercel.app and production alias https://thedesk.vercel.app verified with exact SHA. User entry https://thedesk.vercel.app/assessment-start.html . This documentation/evidence commit follows deployed application; report final pushed SHA separately.

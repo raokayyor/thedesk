@@ -469,7 +469,7 @@ function render(R){
   document.getElementById("sampleTag").textContent=R.generatedReview?'Generated fictional student':'Sample · Amelia Chen, Economics, Bristol → Barclays';
   var notice=document.getElementById('reportNotice');notice.hidden=!R.sample;if(R.sample)notice.innerHTML='<strong>Fictional sample student.</strong> Explore the CV fixes, interview preparation and plan. Rechecks and practitioner submissions are available with your own membership. <a href="/assessment-start.html">Start your own assessment →</a>';
   if(R.sample&&R.scoreStory)notice.innerHTML+='<p>Current score: 58. Example recheck milestones: 67, then 71. Illustrative targets, not completed reassessments or guaranteed gains.</p>';
-  if(R.generatedReview)notice.innerHTML='<strong>Generated fictional student · Full Cycle £89 output.</strong> Created through the current report generator and validators. Test answers were simulated ('+R.reviewAssumptions.correctPerSection+'/5 in each section), not inferred from the CV. No human review or purchase took place. Drafts still need factual checks.';
+  if(R.generatedReview)notice.innerHTML='<strong>Generated fictional student · Full Cycle £89 for the year output.</strong> Created through the current report generator and validators. Test answers were simulated ('+R.reviewAssumptions.correctPerSection+'/5 in each section), not inferred from the CV. No human review or purchase took place. Drafts still need factual checks.';
   
   document.getElementById("topMeta").textContent=(prof.name||"")+" · "+(prof.targetFirm||"")+" · "+(prof.targetDivision||"")+" · "+(prof.programme||"");
 

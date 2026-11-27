@@ -308,7 +308,7 @@ export default async function handler(req, res) {
         tests: { last: lastTest ? { at: lastTest.createdAt, ...(() => { const r = testRates(lastTest.data); return { commercial: Number.isFinite(r.commercial) ? Math.round(r.commercial * 100) : null, numerical: Number.isFinite(r.numerical) ? Math.round(r.numerical * 100) : null }; })() } : null, count: tests.length, freeEveryDays: paid ? null : TEST_FREE_DAYS },
         interview: { recent: scores.slice(0, 6).reverse(), count: practice.length, left, per: paid ? 'today' : 'this week' },
         applications, stages: STAGES, news, actions: actions.slice(0, 8), practitioners, challenge, game,
-        prices: { membership: '£89 a year' }
+        prices: { membership: '£89 for the year' }
       });
     }
 

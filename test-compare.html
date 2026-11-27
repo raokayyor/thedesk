@@ -223,8 +223,8 @@ function overview(){
   const rows=state.personas.map((p,i)=>{const r=state.runs[p.key],res=r?.free?.shown?.result||{},rep=r?.report||{};const err=Object.entries(r?.errors||{}).map(([s,e])=>`${s}: ${e}`).join('; ');
     return `<tr><td>${i+1}</td><td><b>${esc(p.profile.name)}</b><div class="note">${esc(p.label)}</div></td><td>${esc(p.profile.targetSector)}</td><td>${esc(res.overallScore??'—')} <span class="note">${esc(res.band||'')}</span></td><td>${dots(p)}</td><td>${rep.repair?.bulletRepair?.length??'—'} / ${rep.repair?.competencyRepair?.length??'—'}</td><td>${r?.rating?'★'.repeat(r.rating):'—'}</td><td class="note">${esc(r?.notes||'')}${err?`<div class="err-t">${esc(err)}</div>`:''}</td></tr>`}).join('');
   const rated=Object.values(state.runs).filter(r=>r.rating);const avg=rated.length?(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):'—';
-  return `<div class="metrics"><div class="metric"><b>${Object.values(state.runs).filter(r=>r.report?.plan).length}/10</b><span>Fully run</span></div><div class="metric"><b>${avg}</b><span>Avg “worth £89?”</span></div><div class="metric"><b>${rated.length}</b><span>Rated</span></div></div>
-  <table><thead><tr><th>#</th><th>Student</th><th>Route</th><th>Free score</th><th>Steps</th><th>Rewrites / answers</th><th>Worth £89?</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>
+  return `<div class="metrics"><div class="metric"><b>${Object.values(state.runs).filter(r=>r.report?.plan).length}/10</b><span>Fully run</span></div><div class="metric"><b>${avg}</b><span>Avg “worth £89 for the year?”</span></div><div class="metric"><b>${rated.length}</b><span>Rated</span></div></div>
+  <table><thead><tr><th>#</th><th>Student</th><th>Route</th><th>Free score</th><th>Steps</th><th>Rewrites / answers</th><th>Worth £89 for the year?</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>
   <p class="note">Dots: free assessment, paid verdict, paid CV &amp; answers, paid plan. All ten students are fictional; their CVs are in samples/test-personas.json.</p>`;
 }
 function personaView(p){
@@ -237,8 +237,8 @@ function personaView(p){
     <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">${r?.free?`<a class="btn-link" target="_blank" href="/api/test-run?view=free&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open free results page ↗</a>`:''}${r?.report?.plan?`<a class="btn-link" target="_blank" href="/api/test-run?view=paid&batch=${encodeURIComponent(state.batch)}&persona=${encodeURIComponent(p.key)}">Open paid report page ↗</a>`:''}<button class="primary" data-run="${esc(p.key)}" ${state.running[p.key]?'disabled':''}>${state.running[p.key]?'Running: '+STEP_LABEL[state.running[p.key]]:'Run this student'}</button></div></div>
   ${metrics(r)}
   <div class="cols"><div class="card"><div class="col-h"><h3>Free</h3><span class="note">what the student sees before paying</span></div>${freeCol(r)}</div>
-  <div class="card"><div class="col-h"><h3>Full Cycle · £89</h3><span class="note">${esc(r?.report?.verdict?.paidTitle||'')}</span></div>${paidCol(r)}</div></div>
-  <div class="card rate"><b>Worth £89 for this student?</b><span class="stars">${[1,2,3,4,5].map(n=>`<button data-star="${n}" class="${r?.rating===n?'on':''}">${n}</button>`).join('')}</span>
+  <div class="card"><div class="col-h"><h3>Full Cycle · £89 for the year</h3><span class="note">${esc(r?.report?.verdict?.paidTitle||'')}</span></div>${paidCol(r)}</div></div>
+  <div class="card rate"><b>Worth £89 for the year for this student?</b><span class="stars">${[1,2,3,4,5].map(n=>`<button data-star="${n}" class="${r?.rating===n?'on':''}">${n}</button>`).join('')}</span>
     <textarea id="notes" rows="2" style="flex:1;min-width:240px" placeholder="What's missing, wrong or great?">${esc(r?.notes||'')}</textarea><button id="saveRate">Save</button><span id="saved" class="note"></span></div>`;
 }
 function bindPersona(){

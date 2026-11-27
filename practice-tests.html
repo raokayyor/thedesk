@@ -131,7 +131,7 @@ function hub() {
 function lockCard(kind) {
   return `<div class="lock"><div class="k" style="color:#e8a283">Members</div><h2>Finish the full test, and practise every format.</h2>
     <p>You’ve tried the first ${FREE[kind]} questions. Members get the full ${kind === 'sjt' ? 'situational judgement' : REASONING[kind]?.title.toLowerCase()||'verbal reasoning'} test with explanations, plus numerical and commercial tests, interview practice with your firm’s questions, and assessment centre practice.</p>
-    <a class="btn" href="/signup.html?from=tests-${kind}">Unlock with membership · £89</a>
+    <a class="btn" href="/signup.html?from=tests-${kind}">Unlock with membership · £89 for the year</a>
     <div style="font-size:12.5px;color:#aab4b9;margin-top:8px">Paid once · no auto-renewal · 12 months</div></div>`;
 }
 function timer(minutes,onEnd){

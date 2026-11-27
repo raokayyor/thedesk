@@ -1,0 +1,82 @@
+[
+  {
+    "key": "tom",
+    "label": "Tom — no experience",
+    "score": 10,
+    "ats": "Low",
+    "reasons": [
+      "Nothing on your CV yet is close to the job you want.",
+      "Not one line has a number in it.",
+      "Nothing shows you can lead or take responsibility."
+    ],
+    "testMarks": [
+      1,
+      1
+    ],
+    "source": "Saved real API score with exact cold fictional CV; unlocked formatter tested locally. Email/private fix not exercised."
+  },
+  {
+    "key": "james",
+    "label": "James — weak",
+    "score": 37,
+    "ats": "Low",
+    "reasons": [
+      "Your internship says what you did, not what it achieved.",
+      "Not one line has a number in it.",
+      "Nothing shows you can lead or take responsibility."
+    ],
+    "testMarks": [
+      3,
+      2
+    ],
+    "source": "Saved real API score with exact cold fictional CV; unlocked formatter tested locally. Email/private fix not exercised."
+  },
+  {
+    "key": "raj",
+    "label": "Raj — engineering / Big Four",
+    "score": 32,
+    "ats": "Low",
+    "reasons": [
+      "Your internship says what you did, not what it achieved.",
+      "Not one line has a number in it.",
+      "Nothing shows you follow markets or deals."
+    ],
+    "testMarks": [
+      2,
+      2
+    ],
+    "source": "Saved real API score with exact cold fictional CV; unlocked formatter tested locally. Email/private fix not exercised."
+  },
+  {
+    "key": "amelia",
+    "label": "Amelia — corporate finance",
+    "score": 60,
+    "ats": "Low",
+    "reasons": [
+      "Your Redcliffe Partners company research never says what it told you.",
+      "Your Redcliffe Partners analysis doesn’t say what happened next.",
+      "Your strongest evidence isn't where a screener looks first."
+    ],
+    "testMarks": [
+      1,
+      1
+    ],
+    "source": "Saved real API score with exact cold fictional CV; unlocked formatter tested locally. Email/private fix not exercised."
+  },
+  {
+    "key": "sophie",
+    "label": "Sophie — strong",
+    "score": 71,
+    "ats": "Low",
+    "reasons": [
+      "Your Warwick Investment Society budget and events work never says what it told you.",
+      "Your university netball team membership doesn’t say what you contributed.",
+      "Nothing on your CV connects you to Barclays in particular."
+    ],
+    "testMarks": [
+      3,
+      3
+    ],
+    "source": "Saved real API score with exact cold fictional CV; unlocked formatter tested locally. Email/private fix not exercised."
+  }
+]

@@ -1,7 +1,7 @@
 import {upsertAccount,startSession,linkAssessment} from '../lib/accounts.mjs';
 // Staff-only test runner: runs the free assessment and the paid Full Cycle report
 // for the fictional personas in samples/test-personas.json, so staff can compare
-// what a student gets free against what they get for £89.
+// what a student gets free against what they get for £89 for the year.
 //
 // Auth: Authorization: Bearer PRACTITIONER_SUPPORT_KEY (typed by staff in test-compare.html)
 // GET  /api/test-run                    -> personas + saved runs for the latest batch (or ?batch=)

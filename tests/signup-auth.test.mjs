@@ -13,3 +13,5 @@ test('signup verification link keeps the assessment owned by this browser',async
 
 test('ordinary free signup is assessment-only',async()=>{state.calls=[];const r=await run({...profile,plan:'free'});assert.equal(r.statusCode,400);assert.equal(state.calls.length,0);assert.equal(r.body.next,'/assessment-start.html');});
 test('request cannot create a resultless account for an unknown email',async()=>{state.calls=[];state.existing=null;const r=await run({action:'request',email:'new@example.test'});assert.equal(r.statusCode,200);assert.equal(state.calls.length,0);});
+
+test('renewal login retains only an explicit server-side renewal marker',async()=>{state.emailReady=true;state.allowed=true;state.existing={id:'existing'};state.calls=[];const r=await run({action:'request',email:'qa@example.invalid',renewMembership:true});assert.equal(r.statusCode,200);assert.equal(state.calls[0].opts.purpose,'signin');assert.deepEqual(state.calls[0].opts.signupProfile,{renewMembership:true});state.calls=[];await run({action:'request',email:'qa@example.invalid',renewMembership:'true',next:'https://evil.test'});assert.equal(state.calls[0].opts.signupProfile,null);});

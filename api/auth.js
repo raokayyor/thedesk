@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       if(body.action==='signup'&&profile?.plan!=='paid')return res.status(400).json({error:'Get your free assessment first: 10 mins.',next:'/assessment-start.html'});
       if(body.action==='request'&&!await accountByEmail(email))return res.json({success:true,message:'If you have an account, your login link is on its way. New here? Take your free assessment first.'});
       let assessmentId=null;if(profile&&body.action!=='tester-signup'){const browserOwner=owner(req,res);if(browserOwner){await initStore();assessmentId=(await sql().query('SELECT id FROM desk_assessments WHERE owner_hash=$1 ORDER BY created_at DESC LIMIT 1',[browserOwner]))[0]?.id||null;}}
-      await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile,assessmentId}));
+      await sendLoginEmail(email, await createLoginLink(email, origin,{purpose:profile?'signup':'signin',signupProfile:profile||(body.action==='request'&&body.renewMembership===true?{renewMembership:true}:null),assessmentId}));
       return res.json({ success: true, message: 'Check your inbox for a sign-in link. It works once and expires in 30 minutes.' });
     }
     if (body.action === 'verify') {

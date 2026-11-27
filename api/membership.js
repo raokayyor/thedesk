@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import {sameOrigin,sql,apiFailure} from '../lib/report-store.mjs';
 import {currentAccount,entitlement,latestAssessment,allow} from '../lib/accounts.mjs';
 import {initMemberships,redeemTesterCode,grantAccountPayment} from '../lib/account-memberships.mjs';
-import {MEMBERSHIP_AMOUNT,MEMBERSHIP_VERSION} from '../lib/membership-pricing.mjs';
+import {MEMBERSHIP_AMOUNT,MEMBERSHIP_VERSION,MEMBERSHIP_CHECKOUT_DESCRIPTION} from '../lib/membership-pricing.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','private, no-store');
  try{
@@ -32,11 +32,12 @@ export default async function handler(req,res){
   if(!await grantAccountPayment(session))return res.status(402).json({error:'Payment is not complete. No membership has been activated.'});return res.json({success:true,next:upgradedReturn(session.metadata?.returnTo)});
  }
  if(b.action==='checkout'){
-  if(access.active)return res.json({url:upgradedReturn(b.return)});
+  if(access.active&&b.renew!==true)return res.json({url:upgradedReturn(b.return)});
+  if(access.active&&Date.parse(access.until)>Date.now()+14*86400000)return res.status(400).json({error:'Renewal opens two weeks before your access ends.'});
   if(!await allow('membership-checkout:'+account.id,5))return res.status(429).json({error:'Please try again later.'});
   if(!process.env.STRIPE_SECRET_KEY)return res.status(503).json({error:'Checkout is temporarily unavailable.'});
   const origin=new URL(process.env.VERCEL_ENV==='preview'?`https://${req.headers.host}`:process.env.APP_ORIGIN||`https://${req.headers.host}`).origin;
-  const returnTo=localReturn(b.return);const session=await new Stripe(process.env.STRIPE_SECRET_KEY).checkout.sessions.create({mode:'payment',customer_email:account.email,client_reference_id:account.id,metadata:{accountId:account.id,membershipKind:'account',productVersion:MEMBERSHIP_VERSION,returnTo},line_items:[{price_data:{currency:'gbp',unit_amount:MEMBERSHIP_AMOUNT,product_data:{name:'The Desk Membership',description:'12 months of preparation tools, deep CV assessment, interview and application practice, and up to 12 rechecks. Paid once; no automatic renewal.'}},quantity:1}],success_url:origin+'/upgrade-return.html?session_id={CHECKOUT_SESSION_ID}',cancel_url:origin+'/membership-start.html?checkout=cancelled&return='+encodeURIComponent(returnTo),payment_intent_data:{metadata:{accountId:account.id,membershipKind:'account',productVersion:MEMBERSHIP_VERSION,returnTo}}});
+  const returnTo=localReturn(b.return);const session=await new Stripe(process.env.STRIPE_SECRET_KEY).checkout.sessions.create({mode:'payment',custom_text:{submit:{message:MEMBERSHIP_CHECKOUT_DESCRIPTION}},customer_email:account.email,client_reference_id:account.id,metadata:{accountId:account.id,membershipKind:'account',productVersion:MEMBERSHIP_VERSION,returnTo},line_items:[{price_data:{currency:'gbp',unit_amount:MEMBERSHIP_AMOUNT,product_data:{name:'The Desk Membership',description:MEMBERSHIP_CHECKOUT_DESCRIPTION+' · Preparation tools, deep CV assessment, interview and application practice, and up to 12 rechecks.'}},quantity:1}],success_url:origin+'/upgrade-return.html?session_id={CHECKOUT_SESSION_ID}',cancel_url:origin+'/membership-start.html?checkout=cancelled'+(b.renew===true?'&renew=1':'')+'&return='+encodeURIComponent(returnTo),payment_intent_data:{metadata:{accountId:account.id,membershipKind:'account',productVersion:MEMBERSHIP_VERSION,returnTo}}});
   await initMemberships();await sql().query('INSERT INTO desk_membership_checkouts(session_id,account_id) VALUES($1,$2)',[session.id,account.id]);return res.json({url:session.url});
  }
  return res.status(400).json({error:'Unknown action.'});

@@ -1,0 +1,376 @@
+{
+  "tom": {
+    "target": {
+      "route": "General Finance",
+      "firm": ""
+    },
+    "ats": {
+      "level": "Low",
+      "method": "Text-based readiness check",
+      "note": "Original file layout and reading order have not been verified."
+    },
+    "membership": {
+      "flaggedCount": 1,
+      "firm": ""
+    },
+    "score": 10,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: Microsoft Office, hard working, team player",
+    "tests": {
+      "skipped": false,
+      "numerical": 1,
+      "numericalTotal": 5,
+      "commercial": 1,
+      "commercialTotal": 5,
+      "missedCount": 8,
+      "topicCount": 8,
+      "topicCountKind": "topics"
+    },
+    "verdict": "Right now, you'd likely be screened out.",
+    "reasons": [
+      {
+        "id": "no_relevant_experience",
+        "points": 12,
+        "text": "Nothing on your CV yet is close to the job you want.",
+        "shown": true
+      },
+      {
+        "id": "no_quantified_lines",
+        "points": 10,
+        "text": "Not one line has a number in it.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear "
+    },
+    "courseTeaser": "BA History at University of Kent · Grade not stated · there's one thing employers will check →",
+    "course": null,
+    "university": "University of Kent",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For the example “Microsoft Office, hard working, team player…”, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "skills",
+      "original": "Microsoft Office, hard working, team player",
+      "why": "A claim anyone can write. Employers want the evidence, not the adjective.",
+      "remainingCount": 0,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ what you did",
+        "+ what it achieved",
+        "+ a real example"
+      ],
+      "role": ""
+    },
+    "scoreBreakdown": {
+      "cv": 6,
+      "tests": 4,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "james": {
+    "target": {
+      "route": "Investment Banking / IBD",
+      "firm": "Barclays"
+    },
+    "ats": {
+      "level": "Medium",
+      "method": "Text-based readiness check",
+      "note": "Original file layout and reading order have not been verified."
+    },
+    "membership": {
+      "flaggedCount": 9,
+      "firm": "Barclays"
+    },
+    "score": 37,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: - Helped customers and worked on the till",
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 2,
+      "commercialTotal": 5,
+      "missedCount": 5,
+      "topicCount": 5,
+      "topicCountKind": "topics"
+    },
+    "verdict": "Right now, you'd likely be screened out.",
+    "reasons": [
+      {
+        "id": "internship_tasks_only",
+        "points": 12,
+        "text": "Your internship says what you did, not what it achieved.",
+        "shown": true
+      },
+      {
+        "id": "no_quantified_lines",
+        "points": 10,
+        "text": "Not one line has a number in it.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear "
+    },
+    "courseTeaser": "BSc Accounting and Finance at Leeds University Business School · Predicted 2:1 · there's one thing banks will check →",
+    "course": null,
+    "university": "Leeds University Business School",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For your Summer Intern, Patel & Co Accountants (family friend's firm), July 2024 experience, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "internship",
+      "original": "Helped with bookkeeping",
+      "why": "Says what you were there for, not what you did.",
+      "remainingCount": 8,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ what you did",
+        "+ what it achieved",
+        "+ a number"
+      ],
+      "role": "Summer Intern, Patel & Co Accountants (family friend's firm), July 2024"
+    },
+    "scoreBreakdown": {
+      "cv": 27,
+      "tests": 10,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "raj": {
+    "target": {
+      "route": "Accounting / Audit",
+      "firm": "Deloitte"
+    },
+    "ats": {
+      "level": "Medium",
+      "method": "Text-based readiness check",
+      "note": "Original file layout and reading order have not been verified."
+    },
+    "membership": {
+      "flaggedCount": 6,
+      "firm": "Deloitte"
+    },
+    "score": 32,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: Maths Tutor, self-employed, 2024-present",
+    "tests": {
+      "skipped": false,
+      "numerical": 2,
+      "numericalTotal": 5,
+      "commercial": 2,
+      "commercialTotal": 5,
+      "missedCount": 6,
+      "topicCount": 6,
+      "topicCountKind": "topics"
+    },
+    "verdict": "Right now, you'd likely be screened out.",
+    "reasons": [
+      {
+        "id": "internship_tasks_only",
+        "points": 12,
+        "text": "Your internship says what you did, not what it achieved.",
+        "shown": true
+      },
+      {
+        "id": "no_quantified_lines",
+        "points": 10,
+        "text": "Not one line has a number in it.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step"
+    },
+    "courseTeaser": "MEng Mechanical Engineering at University of Nottingham · Predicted 2:1 · there's one thing Big Four firms will check →",
+    "course": null,
+    "university": "University of Nottingham",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For your Engineering Intern, Rolls-Royce, July-August 2025 experience, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "internship",
+      "original": "Helped with engineering reports",
+      "why": "Says what you were there for, not what you did.",
+      "remainingCount": 5,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ what you did",
+        "+ what it achieved",
+        "+ a number"
+      ],
+      "role": "Engineering Intern, Rolls-Royce, July-August 2025"
+    },
+    "scoreBreakdown": {
+      "cv": 24,
+      "tests": 8,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "amelia": {
+    "target": {
+      "route": "Investment Banking / IBD",
+      "firm": "Barclays"
+    },
+    "ats": {
+      "level": "Medium",
+      "method": "Text-based readiness check",
+      "note": "Original file layout and reading order have not been verified."
+    },
+    "membership": {
+      "flaggedCount": 7,
+      "firm": "Barclays"
+    },
+    "score": 60,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: - Researched 12 UK software companies for a prospective acquisition screen",
+    "tests": {
+      "skipped": false,
+      "numerical": 1,
+      "numericalTotal": 5,
+      "commercial": 1,
+      "commercialTotal": 5,
+      "missedCount": 8,
+      "topicCount": 8,
+      "topicCountKind": "topics"
+    },
+    "verdict": "You'd get read, but not shortlisted.",
+    "reasons": [
+      {
+        "id": "so_what_layer",
+        "points": 5,
+        "text": "Your Redcliffe Partners company research never says what it told you.",
+        "shown": true
+      },
+      {
+        "id": "second_line_gap",
+        "points": 4,
+        "text": "Your Redcliffe Partners analysis doesn’t say what happened next.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear here. You"
+    },
+    "courseTeaser": "BSc Economics at University of Bristol · Predicted 2:1 · there's one thing banks will check →",
+    "course": null,
+    "university": "University of Bristol",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For your Corporate Finance Intern, Redcliffe Partners, Jul-Aug 2025 experience, be ready for this question: What did your analysis show, and how was that finding used? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "internship",
+      "original": "Recorded business descriptions, revenue and EBITDA in an Excel comparison table",
+      "why": "No result: a screener can't tell if it mattered.",
+      "remainingCount": 6,
+      "placeholder": "Your stronger wording appears here with confirmed facts Your stronger wording",
+      "chips": [
+        "+ what it achieved",
+        "+ a number"
+      ],
+      "role": "Corporate Finance Intern, Redcliffe Partners, Jul-Aug 2025"
+    },
+    "scoreBreakdown": {
+      "cv": 56,
+      "tests": 4,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "sophie": {
+    "target": {
+      "route": "Investment Banking / IBD",
+      "firm": "Barclays"
+    },
+    "ats": {
+      "level": "Medium",
+      "method": "Text-based readiness check",
+      "note": "Original file layout and reading order have not been verified."
+    },
+    "membership": {
+      "flaggedCount": 2,
+      "firm": "Barclays"
+    },
+    "score": 71,
+    "max": 100,
+    "band": "Borderline",
+    "summary": "Your CV already describes: - Tested 40 revenue transactions for a manufacturing client and flagged 3 that were booked in the wrong period, which the senior adjusted before sign-off",
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 3,
+      "commercialTotal": 5,
+      "missedCount": 4,
+      "topicCount": 4,
+      "topicCountKind": "topics"
+    },
+    "verdict": "You're close, but something would stop you.",
+    "reasons": [
+      {
+        "id": "so_what_layer",
+        "points": 5,
+        "text": "Your Warwick Investment Society budget and events work never says what it told you.",
+        "shown": true
+      },
+      {
+        "id": "second_line_gap",
+        "points": 4,
+        "text": "Your university netball team membership doesn’t say what you contributed.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear here. Yo"
+    },
+    "courseTeaser": "BSc Economics at University of Warwick · Predicted First · there's one thing banks will check →",
+    "course": null,
+    "university": "University of Warwick",
+    "universityContext": null,
+    "advice": "Borderline — address the remaining gaps before submitting.",
+    "practitioner": "For your Treasurer, Warwick Investment Society, 2024-2025 experience, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "positions",
+      "original": "Member, university netball team",
+      "why": "Membership alone shows interest, not action.",
+      "remainingCount": 1,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ your contribution",
+        "+ what it achieved",
+        "+ the task and context"
+      ],
+      "role": "Treasurer, Warwick Investment Society, 2024-2025"
+    },
+    "scoreBreakdown": {
+      "cv": 59,
+      "tests": 12,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  }
+}
