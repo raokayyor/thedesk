@@ -1,3 +1,7 @@
+# Test bands and membership follow-up27November
+
+User reaffirmed dedicated test section with banding+upsell. Actualnumerical/commercial marks each show5segments and band:0–3Needswork,4Borderline,5Goodresult with maintain-through-practice guidance. One summary priority message uses lower mark,plus2,000+questions membershiplink at£89fortheyear (member goes directly to tests). This supplements actualwronganswer card;no invented pass guarantee/percentile. Current deployment9740eba mayfinish whilethisfollowup is being published;mustdeploy finalnewSHA.
+
 # Flag-count emphasis follow-up27November
 
 Dynamic more-flagged line now bold;weakest-lines flagged-count badge increased to16px. User examples12/15 are not hard-coded. Scoped CSSonly;diffchecked.
