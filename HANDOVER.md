@@ -1,3 +1,11 @@
+# START HERE — final compact tests and free/paid ending27November
+
+Latest steering overrides earlier testsbandgraphics/wronganswer upfront and Stilllockedending. Public Yourtests nowtworealmarks,onescore-specificwarning,one2,000+practicequestionsmembershiplink,topiccount. Nometer/bandbadges/question/answer upfront. Low0–3/5 aimsforconsistent4–5/5practice;4/5aimsforrepeat5/5;5/5maintainunderpressure. No inventedall-employer1%stat or guaranteedpasscutoff. Joinedusers canoptionallyopenclosedReviewonemistake withactualworkedexplanation. OldapprovedtestResultBandexportretainedcompatibilitybutnotrendered.
+
+ReplacedStilllockedwithGetforfreebenefits (Includedfreeafterjoin),thenexistingdarkplan-offer membershipstyle at£89fortheyear. Firstfix/firstsectionbenefitsconditionalonactualflaggedcontent. Membershiplistpersonalisedbyfirm/flagcount/testtopics;no fabricatedscoreuplift. Paymentnotenonautorenewalretained. Startagainbuttonpreserved. Phone390x844 screenshots tests.jpg/closing.jpg refreshed docs/verification/headline-reasons-27nov.114 focusedchecks passedbeforelastconditionalcopy;21latestsummary/valuechecks passed;finalbroadnext. Currentimplementation mustbedeployedandverified beforeclaiminglive;earlier79c25b4deploymentincludesattachedheadline+redirectbutnotthislatestcompactending.
+
+---
+
 # START HERE — attached headline reason framework27November
 
 Latestuserattachments Downloads/cv-fault-framework_1.mjs and test_1.mjs were read. Incorporated exactapprovedharsherCV_GAPS/FALLBACK_GAPS,headlinelead rule,sectionsCheck advice+trapwording andtestGap. Replacedattachedtestfile andpreservedproductionadapters/allFlaggedLines/coursemetadata/routewording/fairness fixes;blindwholereplacementwouldremove required APIfields andregresspriorfixes. Publicquotes remainexact,untruncated. Attachedtests pass. StrongCVfallback includes qualifyingCVsubject (AmeliaLVMHvaluation). Actualquizmarks feedtestGap,invalid/skippedmarks donot;testsweakmayleadat<=4/10. headlinepropertynow explicittrueonreason1. Skills/interests/orderingneverlead. Sectionsfullmemberrewritesremainfact-only/gaps.35 latestframework/reportchecks pass;broader112 priorchecks pass;finalbroad rerun next. Proof docs/verification/headline-reasons-27nov includes4CV-onlyphoneviews+testsection;sections8proof refreshed toattachedwording.
