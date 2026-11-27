@@ -1,0 +1,199 @@
+{
+  "first": {
+    "sections": [
+      {
+        "id": "interests",
+        "says": "Interests: investing, football, travelling",
+        "wrong": "You wrote \"investing\". They'll ask: \"Pitch me a stock.\""
+      },
+      {
+        "id": "skills",
+        "says": "Excel, PowerPoint, good communication, team player, hard working"
+      },
+      {
+        "id": "education",
+        "says": "Leeds University Business School, BSc Accounting and Finance, 2023-2026. Predicted 2:1."
+      }
+    ],
+    "interviewQuestion": {
+      "question": "At Patel & Co Accountants, how did you use analysis to make a recommendation?",
+      "situation": "I worked as Summer Intern at Patel & Co Accountants.",
+      "sourceRole": "Summer Intern · Patel & Co Accountants"
+    },
+    "testReview": {
+      "question": "A division's revenue grows from £50m to £60.5m over 2 years. What is the compound annual growth rate (CAGR), to the nearest whole percent?",
+      "section": "numerical",
+      "selectedAnswer": "21%",
+      "correctAnswer": "10%",
+      "otherTopicCount": 5
+    },
+    "target": {
+      "route": "Investment Banking / IBD",
+      "firm": "Barclays"
+    },
+    "ats": {
+      "level": "Low",
+      "version": "five-checks-v1"
+    },
+    "membership": {
+      "flaggedCount": 9,
+      "firm": "Barclays"
+    },
+    "score": 33,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: Sales Assistant, Next (part-time), Sep 2023 - present",
+    "tests": {
+      "skipped": false,
+      "numerical": 2,
+      "numericalTotal": 5,
+      "commercial": 2,
+      "commercialTotal": 5,
+      "missedCount": 6,
+      "topicCount": 6,
+      "topicCountKind": "topics"
+    },
+    "verdict": "Right now, you'd likely be screened out.",
+    "reasons": [
+      {
+        "id": "internship_tasks_only",
+        "headline": true,
+        "points": 12,
+        "text": "Your internship reads like a list of chores. Nothing shows you achieved anything.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear here. Your personalised reaso"
+    },
+    "courseTeaser": "BSc Accounting and Finance at Leeds University Business School · Predicted 2:1 · there's one thing banks will check →",
+    "course": null,
+    "university": "Leeds University Business School",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For your Summer Intern, Patel & Co Accountants (family friend's firm), July 2024 experience, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "internship",
+      "original": "Helped with bookkeeping",
+      "why": "Says what you were there for, not what you did.",
+      "remainingCount": 8,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ what you did",
+        "+ what it achieved",
+        "+ a number"
+      ],
+      "role": "Summer Intern · Patel & Co Accountants"
+    },
+    "scoreBreakdown": {
+      "cv": 25,
+      "tests": 8,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "second": {
+    "sections": [
+      {
+        "id": "interests",
+        "says": "Interests: cars, football, travelling",
+        "wrong": "You wrote \"football\". They'll ask: \"What was your role in the team?\""
+      },
+      {
+        "id": "skills",
+        "says": "Excel, PowerPoint, MATLAB, good communication"
+      },
+      {
+        "id": "education",
+        "says": "University of Nottingham, MEng Mechanical Engineering, 2023-2027. Predicted 2:1."
+      }
+    ],
+    "interviewQuestion": {
+      "question": "At Rolls-Royce, how did you use analysis to make a recommendation?",
+      "situation": "I worked as Engineering Intern at Rolls-Royce.",
+      "sourceRole": "Engineering Intern · Rolls-Royce"
+    },
+    "testReview": {
+      "question": "After a 50% increase, a client's annual fee is £540k. What was the fee before the increase?",
+      "section": "numerical",
+      "selectedAnswer": "£490k",
+      "correctAnswer": "£360k",
+      "otherTopicCount": 5
+    },
+    "target": {
+      "route": "Accounting / Audit",
+      "firm": ""
+    },
+    "ats": {
+      "level": "Low",
+      "version": "five-checks-v1"
+    },
+    "membership": {
+      "flaggedCount": 6,
+      "firm": ""
+    },
+    "score": 33,
+    "max": 100,
+    "band": "Developing",
+    "summary": "Your CV already describes: University of Nottingham, MEng Mechanical Engineering, 2023-2027.",
+    "tests": {
+      "skipped": false,
+      "numerical": 2,
+      "numericalTotal": 5,
+      "commercial": 2,
+      "commercialTotal": 5,
+      "missedCount": 6,
+      "topicCount": 6,
+      "topicCountKind": "topics"
+    },
+    "verdict": "Right now, you'd likely be screened out.",
+    "reasons": [
+      {
+        "id": "internship_tasks_only",
+        "headline": true,
+        "points": 12,
+        "text": "Your internship reads like a list of chores. Nothing shows you achieved anything.",
+        "shown": true
+      }
+    ],
+    "hiddenReason": {
+      "placeholder": "Your personalised reason and the next step appear here. Your personalised reaso"
+    },
+    "courseTeaser": "MEng Mechanical Engineering at University of Nottingham · Predicted 2:1 · there's one thing Big Four firms will check →",
+    "course": null,
+    "university": "University of Nottingham",
+    "universityContext": null,
+    "advice": "Developing — strengthen your evidence and test preparation before you submit.",
+    "practitioner": "For your Engineering Intern, Rolls-Royce, July-August 2025 experience, be ready for this question: What were you personally responsible for, and what did your work achieve? The first improvement is to make that answer clear in the CV, using only facts you can substantiate.",
+    "teaser": {
+      "section": "internship",
+      "original": "Helped with engineering reports",
+      "why": "Says what you were there for, not what you did.",
+      "remainingCount": 5,
+      "placeholder": "Your stronger wording appears here with confirmed facts",
+      "chips": [
+        "+ what you did",
+        "+ what it achieved",
+        "+ a number"
+      ],
+      "role": "Engineering Intern · Rolls-Royce"
+    },
+    "scoreBreakdown": {
+      "cv": 25,
+      "tests": 8,
+      "cvMax": 80,
+      "testMax": 20
+    },
+    "unlocked": false,
+    "fixes": [],
+    "deadline": null
+  },
+  "redirect": {
+    "status": 307,
+    "location": "/assessment.html?route=big4&firm=Deloitte"
+  },
+  "checks": "Two back-to-back same-owner runs, stale write rejected, old completed result preserved; locked sections payload clean."
+}

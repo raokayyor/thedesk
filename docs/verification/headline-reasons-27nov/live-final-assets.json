@@ -1,0 +1,16 @@
+{
+  "implementation": "b832c682b5bba96ea43bc7c1ba93a9159611d01e",
+  "checked": [
+    "result-entry.js",
+    "result-entry.css",
+    "lib/cv-fault-framework.mjs",
+    "lib/cv-framework-result.mjs",
+    "assessment-loading.js",
+    "assessment.html",
+    "result-final-design.html"
+  ],
+  "redirect": {
+    "status": 307,
+    "location": "/assessment.html?route=big4&firm=Deloitte"
+  }
+}
