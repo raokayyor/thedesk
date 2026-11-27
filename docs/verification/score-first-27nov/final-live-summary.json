@@ -1,0 +1,111 @@
+[
+  {
+    "key": "tom",
+    "label": "Tom — no experience",
+    "success": true,
+    "fixtureNote": "Exact no-experience Tom fixture from attached tests.",
+    "route": "General Finance",
+    "score": 10,
+    "repeatScore": 10,
+    "topicCount": 8,
+    "wrongQuestions": 8,
+    "flags": 1,
+    "teaserSection": "skills",
+    "chips": [
+      "+ what you did",
+      "+ what it achieved",
+      "+ a real example"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 7.6,
+    "atsLevel": "Low",
+    "coldFixtureNote": "Languages: English appended before cold run. These are not the unchanged original CV scores."
+  },
+  {
+    "key": "james",
+    "label": "James — weak",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 37,
+    "repeatScore": 37,
+    "topicCount": 5,
+    "wrongQuestions": 5,
+    "flags": 9,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what you did",
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 7.9,
+    "atsLevel": "Medium",
+    "coldFixtureNote": "Languages: English appended before cold run. These are not the unchanged original CV scores."
+  },
+  {
+    "key": "raj",
+    "label": "Raj — engineering / Big Four",
+    "success": true,
+    "fixtureNote": "Fictional reconstruction from user description; exact Raj source absent from attachments.",
+    "route": "Accounting / Audit",
+    "score": 32,
+    "repeatScore": 32,
+    "topicCount": 6,
+    "wrongQuestions": 6,
+    "flags": 6,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what you did",
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 3.2,
+    "atsLevel": "Medium",
+    "coldFixtureNote": "Languages: English appended before cold run. These are not the unchanged original CV scores."
+  },
+  {
+    "key": "amelia",
+    "label": "Amelia — corporate finance",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 60,
+    "repeatScore": 60,
+    "topicCount": 8,
+    "wrongQuestions": 8,
+    "flags": 7,
+    "teaserSection": "internship",
+    "chips": [
+      "+ what it achieved",
+      "+ a number"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 12,
+    "atsLevel": "Medium",
+    "coldFixtureNote": "Languages: English appended before cold run. These are not the unchanged original CV scores."
+  },
+  {
+    "key": "sophie",
+    "label": "Sophie — strong",
+    "success": true,
+    "fixtureNote": "Exact supplied test fixture.",
+    "route": "Investment Banking / IBD",
+    "score": 71,
+    "repeatScore": 71,
+    "topicCount": 4,
+    "wrongQuestions": 4,
+    "flags": 2,
+    "teaserSection": "positions",
+    "chips": [
+      "+ your contribution",
+      "+ what it achieved",
+      "+ the task and context"
+    ],
+    "privateFixStatus": 200,
+    "seconds": 8.5,
+    "atsLevel": "Medium",
+    "coldFixtureNote": "Languages: English appended before cold run. These are not the unchanged original CV scores."
+  }
+]

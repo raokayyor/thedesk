@@ -1,0 +1,26 @@
+[
+  {
+    "file": "result-final-design.html",
+    "status": 200,
+    "cacheControl": "no-cache, max-age=0, must-revalidate",
+    "sha256": "ee1a40a82c6e5c0dad5748fe78747523c232a351cf90243402ab3b9ba1ea8543"
+  },
+  {
+    "file": "result-free.js",
+    "status": 200,
+    "cacheControl": "no-cache, max-age=0, must-revalidate",
+    "sha256": "6bcbd46353327b85db1f3e436d1148b1a607674e3c6f30eed3773ef4d33033ad"
+  },
+  {
+    "file": "result-entry.js",
+    "status": 200,
+    "cacheControl": "no-cache, max-age=0, must-revalidate",
+    "sha256": "1a12063e8b20f3e202a7cc2029889e50a54a4fcbfa89ce65ac9dd1cd56865482"
+  },
+  {
+    "file": "result-entry.css",
+    "status": 200,
+    "cacheControl": "no-cache, max-age=0, must-revalidate",
+    "sha256": "ac8b304fd7740e6c6b4e1808ace62d07ff62bbf44b76d5d1a67fffad99971723"
+  }
+]

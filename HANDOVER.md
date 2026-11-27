@@ -1,3 +1,21 @@
+# START HERE — LIVE VERIFIED, 27 November 2026
+
+Latest deployed code3677944b3737d4336d6af55964bcccfda20cbb24. Production deployment dpl_5Xjg5ecREQadijStQNYCoxXgBkZv READY with matching SHA and thedesk.vercel.app alias. URL https://thedesk.vercel.app/assessment-start.html . This evidence/handover commit follows deployed code; report its final pushed SHA separately.
+
+Live result now opens with the approved bold full-phone score/verdict/route/firm and one Show me what’s holding me back button. It reveals CV reasons, original flagged line and missing-fact chips, test results, ATS level, approved testimonial and free-email form. Saved unlocked reports also retain the opening and reveal their existing full free content. No sidebar changes.
+
+Latest direct test-copy rules:0–3/5 Needs work;4/5 Borderline;5/5 Good result — Keep practising to maintain it under time pressure. Same89/year practice/full-review link and2,000+ questions/ worked answers offer. Real numerical/commercial marks and actual missed topics; no unsupported hiring-percentile statistic. No score weights/cache change.
+
+81 focused checks pass. All five cold fictional CVs passed real upload/extract→score→private first-fix preparation→owned reopen→same-score repeat on final deployment. Tom10, James37, Raj32, Amelia60, Sophie71; these fixtures append Languages English and are not the unchanged original source CVs. First cold run found Tom’s skills-only factual rewrite failure; fixed through a narrowly validated evidence-required Microsoft Office scaffold with no invented action/outcome and at most2amber gaps. Other generated rewrites retain independent fact checks. No failure was hidden: initial and final evidence retained.
+
+Additional live checks passed: James with numerical4/5+commercial5/5 gives45/100, same CV skipped gives27/80, fresh-owner original answers repeat37/100. CV marks stay fixed; only real test points change. Phone screenshot shows Borderline/Good result labels plus ATS. Actual saved live responses rendered through checked local viewer; five opening screenshots and sanitized API evidence in docs/verification/score-first-27nov. Desktop1280×800 and phone390×844 checked without horizontal overflow. Published result HTML/JS/CSS matched tested source, scorer showcase fingerprint matches.
+
+Boundaries: EMAIL IS STILL DEFERRED / UNCONFIGURED, no real email/account/payment journey claimed. ATS level derives from existing text-readiness score; file layout/reading order has not been verified. The new five-check ATS method, complete v6 after-join presentation, tappable amber-gap editing and end-to-end magic-link setup are not claimed done. Preserve the fixed framework,80/20 scoring and existing ownership gates.
+
+Next: user tests the live flow and gives visual feedback. Do not rebuild/simplify the opening or remove ATS/tests again. If continuing on laptop, fetch branch codex/sidebar-consistency safely and read this START HERE. Older compact-summary and portable-patch sections below are superseded; patch is already applied, do not apply again.
+
+---
+
 # RELEASE FOLLOW-UP — 27 November 2026
 
 Score-first implementation d03031360ab4a8a702c4662185b9214105394104 deployed READY as dpl_BeQHbkt3mM4FbnrqX2bV7ZAoP1KU, thedesk.vercel.app alias.80 focused checks passed, public HTML/JS/CSS byte-matched local tested files. Five cold fictional CVs all scored; James/Raj/Amelia/Sophie private fixes passed but Tom skills-only rewrite failed independent fact review. Honest initial evidence is in docs/verification/score-first-27nov/initial-live-summary.json. These cold fixtures add Languages English and are not claimed unchanged original-CV scores.

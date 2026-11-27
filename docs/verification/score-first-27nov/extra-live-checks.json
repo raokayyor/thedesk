@@ -1,0 +1,46 @@
+[
+  {
+    "name": "mixed-4-and-5",
+    "score": 45,
+    "max": 100,
+    "tests": {
+      "skipped": false,
+      "numerical": 4,
+      "numericalTotal": 5,
+      "commercial": 5,
+      "commercialTotal": 5,
+      "missedCount": 1,
+      "topicCount": 1,
+      "topicCountKind": "topics"
+    },
+    "ats": "Medium",
+    "repeatScore": 45
+  },
+  {
+    "name": "skipped-tests",
+    "score": 27,
+    "max": 80,
+    "tests": {
+      "skipped": true
+    },
+    "ats": "Medium",
+    "repeatScore": 27
+  },
+  {
+    "name": "fresh-owner-repeat",
+    "score": 37,
+    "max": 100,
+    "tests": {
+      "skipped": false,
+      "numerical": 3,
+      "numericalTotal": 5,
+      "commercial": 2,
+      "commercialTotal": 5,
+      "missedCount": 5,
+      "topicCount": 5,
+      "topicCountKind": "topics"
+    },
+    "ats": "Medium",
+    "repeatScore": 37
+  }
+]
