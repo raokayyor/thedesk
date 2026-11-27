@@ -96,4 +96,10 @@ assert.ok(sectionsCheck(CVS.sophie).find(r=>r.kind==='interests').wrong.includes
 const banned=/leverage|showcase|passionate about|dynamic|robust|impactful/i;
 for (const cv of Object.values(CVS)) for (const r of sectionsCheck(cv)) assert.ok(!banned.test(r.wrong+r.change), 'no AI-speak');
 assert.equal(testGap({numerical:1,commercial:1}).id,'tests_weak'); assert.equal(testGap({numerical:3,commercial:3}),null);
+// Reason 1 is always a headline (never skills/interests/ordering)
+const { CV_GAPS, FALLBACK_GAPS } = await import('../lib/cv-fault-framework.mjs');
+const headlineIds = new Set([...CV_GAPS, ...FALLBACK_GAPS].filter(g=>g.headline).map(g=>g.id));
+for (const [k,cv] of Object.entries(CVS)) assert.ok(headlineIds.has(runFramework(cv,{firm:'Barclays'}).reasons[0].id), k+' reason 1 is a headline gap');
+const interestsOnly = `Sam Ray\nEDUCATION\nUniversity of Leeds, BSc Economics, 2023-2026. Predicted 2:1.\nEXPERIENCE\nAnalyst Intern, Northern Capital, Summer 2025\n- Built a DCF for 2 retail companies and recommended 1, which the team took to the client meeting\n- Led a team of 3 to update 40 comps\nPOSITIONS\nPresident, Leeds Investment Society, 2024-2025\n- Grew membership 30% and ran a stock pitch competition for 60 students\nSKILLS\nExcel (DCF, comps), Python\nInterests: reading, travelling`;
+const ir = runFramework(interestsOnly,{firm:'Barclays'}); assert.ok(ir.reasons[0].id!=='interests_generic', 'interests never lead'); console.log('Strong CV with generic interests -> reason 1:', ir.reasons[0].text);
 console.log('sections + test gap tests pass');
