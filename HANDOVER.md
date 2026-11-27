@@ -1,3 +1,7 @@
+# Flag-count emphasis follow-up27November
+
+Dynamic more-flagged line now bold;weakest-lines flagged-count badge increased to16px. User examples12/15 are not hard-coded. Scoped CSSonly;diffchecked.
+
 # Reason badges follow-up27November
 
 User requested explicit visible2/3 beside blurred shortlist reasons. All three rows now have matching unblurred numbered badges;placeholder content stays gated. Included in current release before deployment.
