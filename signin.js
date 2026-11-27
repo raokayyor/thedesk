@@ -1,7 +1,8 @@
+import {isRenewalReturn} from '/lib/membership-pricing.mjs';
 import {localReturn} from '/lib/tier-journey.mjs';
 const $=id=>document.getElementById(id);
 async function post(body){const r=await fetch('/api/auth',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'Please try again.');return d;}
-const signParams=new URLSearchParams(location.search),token=signParams.get('token'),returnTo=signParams.get('next'),renewing=signParams.get('renew')==='1';
+const signParams=new URLSearchParams(location.search),token=signParams.get('token'),returnTo=signParams.get('next'),renewing=signParams.get('renew')==='1'||isRenewalReturn(returnTo);
 if(renewing)$('signedIn').querySelector('a').href='/membership-start.html?renew=1';
 if(token){$('title').textContent='Opening your Desk…';$('lede').textContent='Verifying your secure sign-in link.';$('form').hidden=true;history.replaceState(null,'','/signin.html');try{const d=await post({action:'verify',token});if(d.next?.includes('testing=1')){for(const key of ['desk-navigation-cache','desk-report-url','desk-interview-url','desk-progress','desk_mylist','desk-free-result-id','desk-free-assessment-v2']){try{sessionStorage.removeItem(key);localStorage.removeItem(key);}catch{}}}location.replace(d.next?.startsWith('/membership-start.html')||d.next?.startsWith('/tester-access.html')?d.next:localReturn(d.next||returnTo));}catch(e){$('title').textContent='Let’s get you a new link.';$('lede').textContent=e.message;$('form').hidden=false;}}
 else fetch('/api/membership',{credentials:'same-origin',cache:'no-store'}).then(r=>{$('signedIn').hidden=r.status!==200}).catch(()=>{});

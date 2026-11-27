@@ -1,3 +1,11 @@
+# RELEASE FOLLOW-UP — renewal header handoff,27November2026
+
+Pricing application df20cdfc4e44754121dbdf52ad2aeb0903cc592c deployed READY as dpl_6Fna7FwZxGCGAkRNsKJWhQ3hMhHJ, alias thedesk.vercel.app and matching SHA verified.11 production assets byte-matched tested source; desk-home public price £89 for the year, emailReady:false, unauthenticated email cron401. Evidence live-assets.json. No payment or email sent.
+
+Browser check caught shared header Log in uses next=/membership-start.html?renew=1 rather than direct renew=1. Narrow follow-up recognises only that local membership renewal destination (including cancelled-checkout query), retaining renewal intent through email/password sign-in. External URLs/protocol-relative/other pages rejected. New regression passes; total131 focused checks. No unrestricted post-login return and no access grants. Deploy this follow-up commit next, then record final READY/SHA. Five unlocked screenshots remain local layout-only and private fixes/live email unverified as below.
+
+---
+
 # START HERE — one-payment pricing + renewal reminders, 27 November 2026
 
 User confirmed £89 is one payment for12months, no auto-renewal. Public price CTAs/links now £89 for the year, including pinned join link, hidden mobile unlock, explore/signup/tool links and rebuilt interview bundle. Main purchase button note: One payment · no auto-renewal · less than one CV rewrite. Large price typography keeps89 + adjacent for the year. Both Stripe checkout paths remain mode payment and show £89 ·12months’ access ·no auto-renewal in product and pre-submit text; old open result checkouts without new copy marker are expired/replaced. No subscription and no cancel-anytime copy.

@@ -1,0 +1,65 @@
+{
+  "application": "df20cdfc4e44754121dbdf52ad2aeb0903cc592c",
+  "checks": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "my.html",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "signup.html",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "signup.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "membership-start.html",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "membership-start.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "result-final-design.html",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "result-entry.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "result-free.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "signin.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "interview.bundle.js",
+      "status": 200,
+      "sourceMatched": true
+    }
+  ],
+  "emailReady": false,
+  "cronUnauthenticated": 401,
+  "publicMembershipPrice": "£89 for the year",
+  "paymentTaken": false,
+  "emailSent": false
+}
