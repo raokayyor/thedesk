@@ -73,9 +73,6 @@
       "schedule": "0 5,6 * * 1"
     }
   ],
-  "redirects": [
-    {"source": "/assessment-start.html", "destination": "/assessment.html", "permanent": false}
-  ],
   "rewrites": [
     {
       "source": "/try.html",
@@ -197,6 +194,7 @@
     }
   ],
   "redirects": [
+    {"source": "/assessment-start.html", "destination": "/assessment.html", "permanent": false},
     {
       "source": "/mentor.html",
       "destination": "/one-to-one.html",
