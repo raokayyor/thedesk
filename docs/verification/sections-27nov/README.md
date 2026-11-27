@@ -1,0 +1,5 @@
+# Section card proof,27November2026
+
+Eight LOCAL390x844 browser card previews: James,Amelia,Sophie,Tom;locked and free-unlocked. They use the committed fictional CV fixture and actual deterministic sectionsPreview + sectionsCardMarkup. No AI generation, numeric score changes or live email-unlock bypass. The supplied updated attachment/mock was not present locally; implementation follows the written brief. Original says quotes asserted verbatim. Public payload contains no changes/rewrites;free payload contains one change only;member contains all changes and fact-only rewrites with amber gaps.
+
+112 focused assessment/framework/privacy/restart/ATS checks pass;13 HireVue,9 guide API,17 evidence guide and8 taster checks pass separately. Two pre-existing unrelated standalone harness tests remain failing (interview-taster-context lacks request headers;crib-trial mock lacks coachQuestion). No claim of a full repository test pass. Email saving remains explicitly deferred/unconfigured, so these unlocked screenshots are layout/data-gating previews, not live signup proof.

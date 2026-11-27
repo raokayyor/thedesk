@@ -1,4 +1,4 @@
-import { runFramework, verdictFor } from '../lib/cv-fault-framework.mjs';
+import { runFramework, verdictFor, sectionsCheck } from '../lib/cv-fault-framework.mjs';
 import assert from 'node:assert/strict';
 const CVS = {
 james: `James Patel
@@ -86,3 +86,9 @@ const so=runFramework(CVS.sophie,{firm:'Barclays'}); assert.ok(!so.flaggedLines.
 const am=runFramework(CVS.amelia,{firm:'Barclays',route:'Investment banking'}); assert.equal(am.teaserLine.section,'internship','Amelia teaser comes from her internship, not a membership'); console.log('\nAmelia teaser:', am.teaserLine.text, '|', am.courseTeaser);
 const b4=runFramework(CVS.james,{route:'Big Four'}); assert.equal(b4.screener,'Big Four firms'); console.log('Big Four wording:', b4.courseTeaser);
 console.log('\n', verdictFor(34).headline, '|', verdictFor(58).headline);
+
+assert.deepEqual(sectionsCheck(CVS.amelia).map(row=>row.id),['education']);
+assert.match(sectionsCheck(CVS.james).find(row=>row.id==='skills').change,/Did data entry in Excel for client accounts/);
+assert.match(sectionsCheck(CVS.james)[0].wrong,/Pitch me a stock/);
+assert.match(sectionsCheck(CVS.sophie)[0].wrong,/What was your last piece about/);
+assert.match(sectionsCheck(CVS.none)[0].wrong,/What are you reading now/);
