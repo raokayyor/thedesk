@@ -25,3 +25,5 @@
 .hero-open-session .session-dot{color:#cc453d;font-size:10px}.hero-open-session .session-copy{min-width:0}.hero-open-session .hero-session-row>a{margin-left:auto}
 
 .deadline-programmes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}.deadline-programmes a{display:grid;gap:5px;text-decoration:none;min-width:0}.deadline-programmes span{font-size:13px;line-height:1.4}.deadline-programmes small{color:var(--muted);font-size:12px}@media(max-width:900px){.deadline-programmes{grid-template-columns:1fr;gap:12px}.deadline-programmes a+ a{padding-top:12px;border-top:1px solid var(--line,#ddd7cf)}}
+
+@media(max-width:900px){.hero .phone-copy .explore-first{display:inline-flex;align-items:center;min-height:44px;font-size:16px;font-weight:600;padding:0 4px}.hero-open-session .live-seminar-heading{font-size:14px;line-height:1.3;margin:0 0 10px}}

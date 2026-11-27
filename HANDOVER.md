@@ -1,3 +1,12 @@
+# START HERE — homepage phone edits,27 November2026
+
+Branch codex/sidebar-consistency. This homepage batch enlarges Explore first to16px with44px tap height on phone; adds Live seminar heading above AMA in static and dynamic event rendering; replaces360k Goldman statistic with quoted How do I submit an application that gets through? and removes its unused source footnote. Home asset versions bumped. Phone390x844 and desktop1280 checked without horizontal overflow;4 relevant tests passed; diff reviewed. This batch is to be pushed/deployed; previous live application2b0415a1c89cfa4bacba070b94211c7712078f0f. Final release proof follows.
+
+ACTIVE WORK, NOT FINISHED: user asked for reliability framework and compact ~150-word free summary with email within1.5screens. Laptop has intentional uncommitted changes in api/analyse-mot.js, api/assessment-line-fixes.js, lib/assessment-evidence-contract.mjs, lib/free-line-rewrite.mjs, lib/prepared-assessment.mjs, lib/cv-fault-framework.mjs, result-entry.js/css, result-free.js/result HTML and tests. Do not discard. New evidence-only scoring contract removes AI prose as a condition for accepting valid source-backed marks; original80/20 weights/cache remain. Short supporting fragment gets a truthful amber-gap scaffold, never invented achievements.23 focused reliability checks passed; API integration and compact-summary tests/live proof still outstanding. Compact UI draft removes course/practitioner blocks, puts tests under band, shortens email/upsell and uses missing chips + blurred fix row. Not yet pushed or live.
+
+User explicitly deferred email setup/testing on27Nov: skip email for now because it is not set up. Do not request a test inbox again or claim email fixed. Earlier live diagnostic rerun: Tom succeeded13/100 this time, James summary35 stable but private rewrite still503. Need prove fixes on cold fixtures and five CVs after release. Continue pending reliability/summary work after homepage deploy; preserve sidebar.
+
+---
 # START HERE — light membership cues LIVE VERIFIED,26 November2026
 
 Branch codex/sidebar-consistency. Application2b0415a1c89cfa4bacba070b94211c7712078f0f pushed and deployed: production dpl_8Nt7jPEauzFfhUTxmDHXDd42KBXs READY, exact SHA and thedesk.vercel.app alias verified. Live https://thedesk.vercel.app/assessment.html ; immutable https://thedesk-dx3l2w0sa-raokayyor.vercel.app . This documentation/evidence commit follows deployed code; report final pushed SHA separately.
