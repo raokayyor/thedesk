@@ -1,5 +1,5 @@
 {
-  "application": "df20cdfc4e44754121dbdf52ad2aeb0903cc592c",
+  "application": "8a928ea7acf6d267356c587c9e5454e70a9b8146",
   "checks": [
     {
       "file": "index.html",
@@ -53,6 +53,16 @@
     },
     {
       "file": "interview.bundle.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "member-password-login.js",
+      "status": 200,
+      "sourceMatched": true
+    },
+    {
+      "file": "lib/membership-pricing.mjs",
       "status": 200,
       "sourceMatched": true
     }

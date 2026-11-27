@@ -1,3 +1,9 @@
+# RELEASE FOLLOW-UP — phone checkout button,27November2026
+
+Renewal handoff application8a928ea7acf6d267356c587c9e5454e70a9b8146 deployed READY as dpl_52wsBwK6T2xVe8Xc7YQUZb7GHpnc; exact SHA+production alias verified.13 live assets match source; emailReady:false and cron401 remain. Browser phone check found the existing membership-start purchase button was native20px high and header links touched. This small scoped HTML/CSS follow-up gives the main purchase CTA48px/full width, separates header links and gives the new payment note readable spacing. Same content/flows; no sidebar change. Deploy follow-up then capture final phone proof.131 code checks already pass; this is CSS-only and requires phone visual verification, not implementation-mirroring tests.
+
+---
+
 # RELEASE FOLLOW-UP — renewal header handoff,27November2026
 
 Pricing application df20cdfc4e44754121dbdf52ad2aeb0903cc592c deployed READY as dpl_6Fna7FwZxGCGAkRNsKJWhQ3hMhHJ, alias thedesk.vercel.app and matching SHA verified.11 production assets byte-matched tested source; desk-home public price £89 for the year, emailReady:false, unauthenticated email cron401. Evidence live-assets.json. No payment or email sent.
