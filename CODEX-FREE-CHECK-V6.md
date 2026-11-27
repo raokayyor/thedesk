@@ -15,13 +15,15 @@
    - the teaser line as a marked-up CV snippet: role · employer, the line highlighted, red handwritten note "↑ {why}", "MISSING" + green chips, blurred fix with ✓
    - the next 2 flagged lines as blurred cards with 🔒
    - "+ {n} more flagged on your CV"
-5. **ATS readiness:**
-   - level (Low / Medium / High) + "{passed} of 5 screening checks passed" + a 5-segment meter
-   - one line explaining what ATS readiness is
-   - the single highest-impact failed check with a concrete example from *their* CV
-   - "🔒 {n} more failed checks · fixed in your full review"
-   - the 5 checks: readability (PDF only; pasted text = "Upload your PDF to check"), standard headings, dates/titles format, route key terms (Rao-approved lists), contact basics present
-   - Low = 0–2 passed, Medium = 3–4, High = 5. Never claim "AI will reject you".
+5. **ATS readiness: level only, no details:**
+   - "LOW" (red) / "MEDIUM" (amber) / "STRONG" (green) + a 3-segment bar + one line:
+     - LOW: "Your CV could be filtered out before a person reads it."
+     - MEDIUM: "Parts of your CV may not read cleanly in application systems."
+     - STRONG: "Your CV should read cleanly in application systems."
+   - then "🔒 Full ATS breakdown and fixes in your full review"
+   - **no checks list and no examples on the free page** (same before and after joining)
+   - strict scoring from 5 real checks: route key terms used in experience lines (Rao-approved lists); 3+ lines with a number; standard headings; consistent dates/titles; PDF reads in order (pasted text = fail)
+   - STRONG = 5 pass; MEDIUM = 4; LOW = 3 or fewer. Never a fixed value. Never claim "AI will reject you".
 6. **Cydney's quote.**
 7. **Pinned bottom bar (phone):** "Join free to unlock your breakdown + first fix" · [email] [Join free →] · "or get your full review · £89/yr".
 
@@ -30,7 +32,7 @@
 - Reasons 2 and 3 revealed (same card style as reason 1).
 - **Teaser line:** "YOUR FIRST FIX", the validated rewrite with tappable amber gaps ("＋ how many?"), and "Tap the amber gaps to add your facts. We never invent them."
 - The other flagged lines unblurred with their *why*; their fixes stay locked 🔒.
-- ATS: still 1 issue shown, the rest locked.
+- ATS: unchanged (level only); the breakdown stays in the £89 full review.
 - **Membership card (dark)** under the quote: "£89 · YOUR FULL REVIEW + EVERY TOOL", heading "Get every line fixed before {firm} sees it.", 5 ticks using their numbers:
   - all {n} CV lines fixed, and your ATS readiness raised
   - your {firm} application answers drafted from your CV
