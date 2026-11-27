@@ -1,4 +1,4 @@
-import { runFramework, verdictFor } from '../lib/cv-fault-framework.mjs';
+import { runFramework, verdictFor, sectionsCheck, testGap } from '../lib/cv-fault-framework.mjs';
 import assert from 'node:assert/strict';
 const CVS = {
 james: `James Patel
@@ -86,3 +86,14 @@ const so=runFramework(CVS.sophie,{firm:'Barclays'}); assert.ok(!so.flaggedLines.
 const am=runFramework(CVS.amelia,{firm:'Barclays',route:'Investment banking'}); assert.equal(am.teaserLine.section,'internship','Amelia teaser comes from her internship, not a membership'); console.log('\nAmelia teaser:', am.teaserLine.text, '|', am.courseTeaser);
 const b4=runFramework(CVS.james,{route:'Big Four'}); assert.equal(b4.screener,'Big Four firms'); console.log('Big Four wording:', b4.courseTeaser);
 console.log('\n', verdictFor(34).headline, '|', verdictFor(58).headline);
+
+// sections check
+const js = sectionsCheck(CVS.james);
+assert.ok(js.find(r=>r.kind==='skills').change.includes('Did data entry in Excel for client accounts'), 'James Excel proof uses the line that names Excel');
+assert.ok(js.find(r=>r.kind==='interests').wrong.includes('Pitch me a stock'), 'investing -> pitch me a stock');
+assert.ok(!sectionsCheck(CVS.amelia).some(r=>r.kind==='skills'), 'backed skills (DCF, comps) are not flagged');
+assert.ok(sectionsCheck(CVS.sophie).find(r=>r.kind==='interests').wrong.includes('last piece'), 'newsletter beats markets');
+const banned=/leverage|showcase|passionate about|dynamic|robust|impactful/i;
+for (const cv of Object.values(CVS)) for (const r of sectionsCheck(cv)) assert.ok(!banned.test(r.wrong+r.change), 'no AI-speak');
+assert.equal(testGap({numerical:1,commercial:1}).id,'tests_weak'); assert.equal(testGap({numerical:3,commercial:3}),null);
+console.log('sections + test gap tests pass');
