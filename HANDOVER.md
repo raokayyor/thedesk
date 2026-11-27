@@ -1,3 +1,17 @@
+# START HERE — score-first result + test messages, 27 November 2026
+
+User approved publishing the large full-phone score/verdict opening. One button reveals the existing CV feedback, test results, ATS readiness and free-account form. Do not ship just the standalone prototype. User rejected the compact overloaded first screen. Local standalone design previews in outputs are not production routes.
+
+Latest direct test-copy decision: 0–3/5 Needs work; 4/5 Borderline; 5/5 Good result, Keep practising to maintain it under time pressure. Same £89 full-review/test-practice link for every band; 2,000+ questions and worked answers. No unsupported universal 1%/150-applications statistic or guarantee of hiring. Real numerical/commercial scores and missed-topic counts only.
+
+The portable assessment patch has been applied safely. Its documented checksum was stale: normalized committed Git blob SHA256 is d66f6b1cb71929277f9d8fbd54329fa0b7cbbc0869a4e237dd1a4091a6538cfe, verified against the checked-out file; Windows whitespace handling was needed for git apply. API tests now exercise sparse evidence, numeric/source rejection, bounded retries, stable cached totals, owner isolation, supported Consulting and skipped tests. The numeric80/20 scoring rubric and score cache remain unchanged. Fixed framework still supplies diagnoses. The short supporting-task scaffold has at most two truthful amber gaps; other rewrites retain mechanical and independent factual validation.
+
+Public entry now includes route/firm and ATS level derived from the EXISTING text-readiness result. It does not claim PDF layout/reading-order verification and is NOT the separate new five-check ATS specification. That enhanced specification remains outstanding. Email remains deferred/unconfigured: the button stays honestly disabled when emailReady:false. Do not claim magic-link delivery or the complete supplied v6 brief finished.
+
+78 focused checks passed before final two added regressions; final count follows in release notes. Local390×844 opening button bottom789px; no horizontal overflow; reveal contains actual ATS/tests, source line and placeholder-only locks. Desktop1280×800 also checked. Scorer showcase fingerprint matches. Release exact SHA/READY/alias and five cold fictional CV checks are next, not yet claimed live here. Broader original resume instructions below are historical where superseded by the score-first design.
+
+---
+
 # START HERE — OTHER-PC HANDOVER,27 November2026
 
 User is moving from the laptop to the other PC. Fetch origin/codex/sidebar-consistency, preserve work, then read docs/handover/RESUME-27NOV.md. It contains the exact state, patch instructions and next tests. Latest LIVE implementation95a8516258e590d1a5c211c63e5c6d9aa4b03361; deployment dpl_6wUHEwpe7CngKvSpa7BNwx7sqGV3 READY with matching SHA and thedesk.vercel.app alias. https://thedesk.vercel.app/ . Homepage: larger Explore first, Live seminar heading, new quoted application question.4 tests + phone/desktop checks passed.
