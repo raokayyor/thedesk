@@ -1,3 +1,11 @@
+# START HERE — practitioner loading walkthrough, 27 November 2026
+
+Scoped release: keep existing loading layout, strengthen Kayyor photo/experience and practitioner-developed framework copy, show evidence/outcome/recruiter-question checklist stages in sequence, and hold fast results for a minimum10seconds. This is an automated assessment against practitioner criteria, never a claim of live human review. Slow results receive no additional ten-second delay. Browser local fast-result harness measured10.01seconds when result ready after1second; phone390x844 inspected, Unicode correct in assessment page. Four loading tests pass;65 related working-tree tests pass. Deployment status pending: verify exact commit READY and production alias before calling live.
+
+IMPORTANT: other current local changes (restart/server draft reset, summary value cards, skills/interests and same-question trial handoff) are preserved UNCOMMITTED and not part of this scoped loading release.33 focused value tests pass and65 combined checks pass, but those changes still need end-to-end testing and screenshots; do not claim deployed. Detailed local notes docs/handover/WORKING-27NOV-PM.md. Two older independent tests fail with existing harness assumptions: interview-taster-context missing request headers, crib-trial missing coachQuestion mock;49 relevant trial/guide checks pass separately. Email remains explicitly deferred/unconfigured.
+
+---
+
 # LIVE VERIFIED — one-payment wording,27November2026
 
 Latest application a8af41eb115ddd98e1e4a293246362ba55e800a9 deployed READY as dpl_985MMjSTt3pr8MBa8uCUZDWakTPC. Exact SHA+https://thedesk.vercel.app alias verified; immutable https://thedesk-22sw9hrko-raokayyor.vercel.app .13 live assets match tested source; public desk-home price £89 for the year; emailReady:false; unauthenticated reminder cron401. Live membership https://thedesk.vercel.app/membership-start.html ; current result flow https://thedesk.vercel.app/assessment-start.html . This documentation/evidence commit follows deployed source; report final pushed SHA separately.

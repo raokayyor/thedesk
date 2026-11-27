@@ -17,7 +17,7 @@ test('advancing to the next visual step ticks every preceding step and never mov
  const loading=readFileSync(new URL('../assessment-loading.js',import.meta.url),'utf8');
  const code=loading.slice(loading.indexOf('function setStep('),loading.indexOf('\nwindow.assessmentLoading='));
  const items=Array.from({length:6},()=>({className:'',symbol:{textContent:''},querySelector(){return this.symbol}}));let now=0,tick;
- const context={serverStage:'checking',el:{classList:{remove(){}},querySelectorAll:()=>items,querySelector:()=>({style:{}})},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},showStat(){}};
+ const context={resultReady:false,serverStage:'checking',el:{classList:{remove(){}},querySelectorAll:()=>items,querySelector:()=>({style:{}})},Date:{now:()=>now},clearInterval(){},setInterval:fn=>{tick=fn;return 1},foot:{},showStat(){}};
  vm.createContext(context);vm.runInContext('let tipTimer,started,motionTimer,visualProgress=8,visualStep=2;'+code+';this.reset=reset;this.updateStage=updateStage',context);context.reset();
  assert.deepEqual(items.map(x=>x.className),['done','done','active','pending','pending','pending']);
  now=23000;context.updateStage();assert.equal(items[2].className,'done');assert.equal(items[3].className,'active');
@@ -31,3 +31,7 @@ test('advancing to the next visual step ticks every preceding step and never mov
  assert.doesNotMatch(loading,/Elapsed:|role.*timer|loading-elapsed/);
  assert.match(loading,/Applying The Desk’s practitioner framework/);
 });
+
+test('a ready result still shows the progress walkthrough for ten seconds, without delaying a slow result further',()=>{const s=readFileSync(new URL('../assessment-loading.js',import.meta.url),'utf8');const code=s.slice(s.indexOf('function minimumLoadingWait('),s.indexOf('function updateStage('));const box={};vm.runInNewContext(code+';this.wait=minimumLoadingWait',box);assert.equal(box.wait(1000,1000),10000);assert.equal(box.wait(1000,2000),9000);assert.equal(box.wait(1000,11000),0);assert.equal(box.wait(1000,61000),0);assert.match(s,/async complete\(\)[\s\S]*await new Promise[\s\S]*minimumLoadingWait/);assert.match(s,/Automated assessment using our practitioners’ review criteria/);assert.doesNotMatch(s,/a practitioner is reviewing|human review in progress/i);});
+
+ test('a fast result walks each checklist stage rather than jumping straight to done',()=>{const s=readFileSync(new URL('../assessment-loading.js',import.meta.url),'utf8');const code=s.slice(s.indexOf('function minimumLoadingWait('),s.indexOf('function updateStage('));const box={};vm.runInNewContext(code+';this.step=loadingVisualStep',box);assert.deepEqual([0,1000,2500,5000,7500,9999].map(ms=>box.step(5,0,ms)),[2,2,3,4,5,5]);assert.equal(box.step(6,0,10000),6);assert.match(s,/loading-human-copy\{display:block!important/);});
