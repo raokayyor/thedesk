@@ -1,0 +1,156 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Figtree&family=EB+Garamond&family=Caveat" rel="stylesheet">
+<style>
+:root{--ink:#1f2a2e;--paper:#f4f1ec;--card:#fbfaf7;--line:#e2ddd5;--accent:#c4562a;--good:#2f7a4f;--bad:#b4473a;--muted:#6f7673;--amber:#b7791f}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);font-family:Figtree,sans-serif;color:var(--ink);max-width:430px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px}
+.logo{font-family:'EB Garamond',serif;font-weight:600;font-size:22px}
+.tag{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.tag.in{color:var(--good);font-weight:700}
+.verdict{background:var(--ink);color:#fff;margin:0 12px;border-radius:18px;padding:20px 18px 18px}
+.k{font-size:11px;letter-spacing:.12em;font-weight:600;text-transform:uppercase}
+.verdict .k{color:#e9a07f}
+.verdict h1{font-family:'EB Garamond',serif;font-weight:600;font-size:29px;line-height:1.08;margin:8px 0 14px}
+.row{display:flex;align-items:flex-end;gap:12px}
+.score{font-family:'EB Garamond',serif;font-weight:600;font-size:56px;line-height:.85}
+.score small{font-family:Figtree;font-size:14px;color:#aab3b0;font-weight:500}
+.bar{flex:1;padding-bottom:6px}
+.track{height:8px;border-radius:5px;background:linear-gradient(90deg,#c9634f 0 65%,#d9b45b 65% 75%,#5f9a77 75%);position:relative}
+.pin{position:absolute;top:-5px;width:3px;height:18px;background:#fff;border-radius:2px}
+.lbl{display:flex;justify-content:space-between;font-size:10px;color:#aab3b0;margin-top:5px}
+.tests{margin-top:14px;padding-top:12px;border-top:1px solid #34424a;font-size:13px;color:#cdd4d1}
+.tests b{color:#fff}
+.sec{margin:22px 18px 0}
+.sec h2{font-family:'EB Garamond',serif;font-weight:600;font-size:22px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.pill{font-family:Figtree;font-size:12px;font-weight:700;border-radius:20px;padding:3px 9px}
+.pill.red{color:var(--bad);background:#f3dcd6}.pill.amb{color:var(--amber);background:#f7ead3}
+.reason{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:15px;line-height:1.35}
+.n{flex:none;width:24px;height:24px;border-radius:50%;background:#f3dcd6;color:var(--bad);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.locked{background:repeating-linear-gradient(135deg,#f3efe9 0 8px,#efe9e1 8px 16px);border-style:dashed}
+.locked .blur{filter:blur(5px);color:#7d7d7d}
+.lock{font-size:11.5px;font-weight:700;color:var(--accent);margin-top:3px;letter-spacing:.04em;text-transform:uppercase}
+.paper{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:0 2px 0 #eee8df}
+.role{font-size:12px;color:var(--muted);margin-bottom:5px}
+.cvline{font-family:'EB Garamond',serif;font-size:21px;line-height:1.25}
+.cvline mark{background:linear-gradient(transparent 55%,#f6c9bd 55%);color:inherit;padding:0 2px}
+.note{font-family:Caveat,cursive;font-size:22px;color:var(--bad);margin-top:5px;line-height:1.05;transform:rotate(-1.5deg)}
+.missing{margin-top:10px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:13px;font-weight:600;background:#e6f0ea;color:var(--good);border:1px solid #cfe2d6;border-radius:20px;padding:4px 10px}
+.fixline{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;display:flex;gap:8px;align-items:flex-start}
+.fixline .ok{flex:none;color:var(--good);font-weight:800;margin-top:2px}
+.fixline .blur{filter:blur(5px);font-family:'EB Garamond',serif;font-size:18px;color:#333}
+.fixline .txt{font-family:'EB Garamond',serif;font-size:19px;line-height:1.3}
+.gap{background:#f7ead3;color:var(--amber);font-family:Figtree;font-size:13px;font-weight:700;border-radius:6px;padding:1px 6px;white-space:nowrap}
+.ghost{margin-top:8px;padding:12px 16px}
+.ghost .cvline{font-size:18px}
+.ghost .blur2{filter:blur(4px)}
+.ghost .why{font-size:13px;color:var(--bad);margin-top:3px}
+.ghost .lk{float:right;font-size:12px;color:var(--muted)}
+.more{font-size:13px;color:var(--muted);margin-top:10px}.more b{color:var(--ink)}
+.ats{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.ats .i{display:flex;gap:10px;font-size:14.5px;line-height:1.35}
+.ats .i b{display:block}
+.ats .eg{font-size:13px;color:var(--muted);margin-top:2px}
+.ats .lockrow{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}
+.quote{margin:22px 18px 0;padding-left:14px;border-left:3px solid var(--accent);font-family:'EB Garamond',serif;font-size:17px;line-height:1.3;font-style:italic}
+.quote span{display:block;font-family:Figtree;font-style:normal;font-size:12px;color:var(--muted);margin-top:6px}
+.cta{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:12px 16px 14px;margin-top:24px}
+.cta .h{font-weight:700;font-size:14px;margin-bottom:8px}
+.form{display:flex;gap:8px}
+.form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:12px;font:15px Figtree;background:#fff}
+.btn{border:0;background:var(--ink);color:#fff;font:700 15px Figtree;border-radius:10px;padding:12px 14px;white-space:nowrap;text-align:center;display:block}
+.alt{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}.alt a{color:var(--ink);font-weight:600}
+.toast{margin:12px 12px 0;background:#e6f0ea;border:1px solid #cfe2d6;color:var(--good);border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600}
+.member{margin:22px 12px 0;background:var(--ink);color:#fff;border-radius:18px;padding:20px 18px}
+.member .k{color:#e9a07f}
+.member h3{font-family:'EB Garamond',serif;font-weight:600;font-size:25px;line-height:1.1;margin:6px 0 12px}
+.member ul{list-style:none;padding:0}
+.member li{display:flex;gap:10px;font-size:14.5px;line-height:1.35;padding:7px 0;border-bottom:1px solid #34424a}
+.member li:last-child{border:0}
+.member li .t{color:#7fc59b;font-weight:800}
+.member li em{font-style:normal;color:#e9a07f;font-weight:700}
+.member .btn{background:#fff;color:var(--ink);margin-top:14px;font-size:16px;padding:14px}
+.member .small{font-size:12px;color:#aab3b0;text-align:center;margin-top:8px}
+.member .small a{color:#fff}
+.u-only{display:none}
+body.unlocked .u-only{display:block}
+body.unlocked .reason.u-only{display:flex}
+body.unlocked .l-only{display:none}
+</style></head><body>
+<div class="top"><div class="logo">The Desk</div><div class="tag l-only">YOUR CV CHECK</div><div class="tag in u-only">✓ SAVED TO YOUR DESK</div></div>
+<div class="toast u-only">You're in, James. Your breakdown and first fix are unlocked ↓</div>
+
+<div class="verdict" style="margin-top:8px">
+  <div class="k">Investment banking · Barclays</div>
+  <h1>Right now, you'd likely be screened out.</h1>
+  <div class="row">
+    <div class="score">30<small>/100</small></div>
+    <div class="bar"><div class="track"><div class="pin" style="left:30%"></div></div>
+      <div class="lbl"><span>Developing</span><span>65</span><span>75 Competitive</span></div></div>
+  </div>
+  <div class="tests">Tests <b>1/5</b> numerical · <b>1/5</b> commercial · <b>8 topics</b> to revise</div>
+</div>
+
+<div class="sec">
+  <h2>Why you wouldn't be shortlisted</h2>
+  <div class="reason"><div class="n">1</div><div>Your internship says what you did, not what it achieved.</div></div>
+  <div class="reason locked l-only"><div class="n">2</div><div><div class="blur">Not one line on your CV has a number in it</div></div></div>
+  <div class="reason locked l-only"><div class="n">3</div><div><div class="blur">Nothing shows you can lead or take responsibility</div><div class="lock">The one most students miss</div></div></div>
+  <div class="reason u-only"><div class="n">2</div><div>Not one line on your CV has a number in it.</div></div>
+  <div class="reason u-only"><div class="n">3</div><div>Nothing shows you can lead or take responsibility.<div class="lock">The one most students miss</div></div></div>
+</div>
+
+<div class="sec">
+  <h2>Your weakest lines <span class="pill red">9 flagged</span></h2>
+  <div class="paper">
+    <div class="role">Summer Intern · Patel &amp; Co Accountants</div>
+    <div class="cvline"><mark>Helped with bookkeeping</mark></div>
+    <div class="note">↑ says what you were there for, not what you did</div>
+    <div class="l-only"><div class="missing">Missing</div>
+    <div class="chips"><span class="chip">+ what you did</span><span class="chip">+ what it achieved</span><span class="chip">+ a number</span></div>
+    <div class="fixline"><span class="ok">✓</span><span class="blur">Your stronger version of this line, rewritten</span></div></div>
+    <div class="u-only"><div class="missing" style="color:var(--good)">Your first fix</div>
+    <div class="fixline" style="border:0;padding-top:4px"><span class="ok">✓</span><span class="txt">Kept the books for <span class="gap">＋ how many?</span> client accounts up to date in Excel, so the partner could <span class="gap">＋ what it was used for?</span></span></div>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:8px">Tap the amber gaps to add your facts. We never invent them.</div></div>
+  </div>
+  <div class="paper ghost"><span class="lk">🔒</span><div class="cvline"><span class="blur2 l-only">Responsible for stock</span><span class="u-only">Responsible for stock</span></div><div class="why u-only">Says what you were there for, not what you did.</div></div>
+  <div class="paper ghost"><span class="lk">🔒</span><div class="cvline"><span class="blur2 l-only">Did data entry in Excel for client accounts</span><span class="u-only">Did data entry in Excel for client accounts</span></div><div class="why u-only">Reads as admin: no purpose, no result.</div></div>
+  <div class="more"><b>+ 6 more</b> flagged on your CV</div>
+</div>
+
+<div class="sec">
+  <h2>ATS check <span class="pill amb">3 issues</span></h2>
+  <div class="ats">
+    <div class="i"><span>⚠️</span><div><b>Missing the terms banks' systems look for</b><div class="eg">No "financial modelling", "valuation" or "analysis" anywhere on your CV.</div></div></div>
+    <div class="lockrow">🔒 2 more issues · fixed in your full review</div>
+  </div>
+</div>
+
+<div class="quote">"Kayyor showed me what my CV and applications looked like from the inside. Then The Desk helped me improve them. I'm now at J.P. Morgan."<span>Cydney · University of Exeter</span></div>
+
+<div class="member u-only">
+  <div class="k">£89 · your full review + every tool</div>
+  <h3>Get every line fixed before Barclays sees it.</h3>
+  <ul>
+    <li><span class="t">✓</span><span><em>All 9 CV lines</em> fixed, plus all 3 ATS issues</span></li>
+    <li><span class="t">✓</span><span>Your <em>Barclays application answers</em> drafted from your CV</span></li>
+    <li><span class="t">✓</span><span>Interview practice: <em>6 Barclays questions</em>, scored and fixed</span></li>
+    <li><span class="t">✓</span><span>Your <em>8 weak test topics</em>, with 2,000+ practice questions</span></li>
+    <li><span class="t">✓</span><span>A 30-day plan and a question answered by a practitioner</span></li>
+  </ul>
+  <a class="btn" href="#">Get my full review · £89/yr</a>
+  <div class="small">Less than one CV rewrite · <a href="#">See a full review →</a></div>
+</div>
+
+<div class="cta l-only">
+  <div class="h">Join free to unlock your breakdown + first fix</div>
+  <div class="form"><input placeholder="you@email.com"><button class="btn">Join free →</button></div>
+  <div class="alt">or <a href="#">get your full review · £89/yr</a></div>
+</div>
+<div class="cta u-only">
+  <a class="btn" href="#">Fix all 9 lines · £89/yr</a>
+  <div class="alt"><a href="#">Go to My Desk →</a> · your free trials are set up for Barclays</div>
+</div>
+</body></html>
