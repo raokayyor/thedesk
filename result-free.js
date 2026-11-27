@@ -1,4 +1,4 @@
-import {renderAssessmentEntry} from './result-entry.js?v=20261127-score-first-tests';
+import {renderAssessmentEntry} from './result-entry.js?v=20261127-v6-reveal';
 import {reallyAskingCard} from './why-firm-sheet.js';
 import {reallyAskingFor} from './data/question-coaching.mjs';
 import {tasterQuestion} from '/lib/taster-question.mjs';

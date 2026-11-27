@@ -1,3 +1,15 @@
+# START HERE — v6 revealed free check, 27 November 2026
+
+Latest batch keeps the full-phone score opening, then shows reason 1 only (API also returns only reason 1), placeholder-only reasons 2/3, label The one most students miss, one inline numerical/commercial/topics sentence, and cleaner Job title · Employer without dates/bracketed notes. The single join form pins after reveal on phone under768px; desktop stays inline. No duplicate end-of-page email form. Email remains explicitly deferred/unconfigured and honestly disabled when emailReady:false. No email/account/payment flow claimed.
+
+Strict ATS rating is now five-checks-v1: verified PDF/DOCX extraction, route dictionary term in experience, three quantified claim lines, standard headings, consistent role dates; Strong5/Medium4/Low<=3. James LOW. Pasted text/txt and old records without verified extraction fail readability. File receipts are random, server-issued, owner+exact-CV-digest bound and valid seven days; only hashes/format/readability stored. A client format claim cannot pass. Receipt is saved with the existing seven-day local draft. Extraction quality does not prove original visual layout; methodology is in unlocked full detail, removed from free ATS card. This changes the ATS display rating, not existing overall numeric80/20 weights/cache: same overall scores stay stable. Legacy numeric ATS component is not reweighted.
+
+87 focused tests pass (framework, API retries/cache/ownership, phone upload, strict ATS/source proof, entry markup and gates); showcase scorer fingerprint matches; diff check passed. Browser390x844: no horizontal overflow, dock fixed bottom844 through scroll, opening remains full-height;1280x800 form static/no overflow. Phone screenshots in docs/verification/v6-reveal-27nov render saved real James37/100 response through current source with strict ATS recalculated from exact fixture; not a new browser submission. Deployment and live API verification still pending at this commit; follow-up records READY/exact SHA.
+
+Branch codex/sidebar-consistency; fetched and compared HEAD/FETCH_HEAD0/0 before edits. Next: push, deploy exact SHA to existing The Desk project, verify READY alias and live owner-scoped result/source receipt, then record final pushed SHA. No sidebar changes. Latest direct user v6 brief supersedes previous two-reason/two-test-card layout.
+
+---
+
 # START HERE — LIVE VERIFIED, 27 November 2026
 
 Latest deployed code3677944b3737d4336d6af55964bcccfda20cbb24. Production deployment dpl_5Xjg5ecREQadijStQNYCoxXgBkZv READY with matching SHA and thedesk.vercel.app alias. URL https://thedesk.vercel.app/assessment-start.html . This evidence/handover commit follows deployed code; report its final pushed SHA separately.

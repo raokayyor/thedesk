@@ -1,3 +1,4 @@
+import {verifiedCvUpload} from '../lib/cv-upload-proof.mjs';
 import {evidenceContract,evidenceAssessment,EVIDENCE_RUBRIC,transientAssessmentError} from '../lib/assessment-evidence-contract.mjs';
 import {stableScoreCache} from '../lib/stable-assessment-score.mjs';
 import {runFramework} from '../lib/cv-fault-framework.mjs';
@@ -32,12 +33,14 @@ export default async function handler(req,res){
  }catch(e){return res.status(400).json({success:false,error:e.message});}
  try{
   const [,signedAccount]=await Promise.all([initStore(),currentAccount(req)]);const h=parent?.owner_hash||owner(req,res,true);
+  const cvUpload=await verifiedCvUpload(req,res,cvText,req.body.cv?.receipt);
+  const withUpload=async row=>{if(JSON.stringify(row.input.cvUpload)!==JSON.stringify(cvUpload)){await sql().query("UPDATE desk_assessments SET input=jsonb_set(input,'{cvUpload}',$1::jsonb) WHERE id=$2 AND owner_hash=$3",[JSON.stringify(cvUpload),row.id,h]);row.input={...row.input,cvUpload};}return row;};
   fingerprint=assessmentFingerprint(cvText,profile,req.body.answers);
   const nextFor=async id=>(parentMembership||(signedAccount&&await recordMembershipAccess({id}))?'/deep-assessment.html?id=':'/result-final-design.html?id=')+encodeURIComponent(id);
   if(parent){
-   if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',entry:assessmentEntry(parent)});
+   if(assessmentFingerprint(parent.input.cvText,parent.input.profile,parent.input.answers)===fingerprint)return res.json({success:true,id:parent.id,unchanged:true,message:'No assessment inputs changed. Your saved score is unchanged; no recheck was used.',entry:assessmentEntry(await withUpload(parent))});
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND (id=$3 OR root_id=$3 OR id=$4 OR root_id=$4) ORDER BY created_at DESC LIMIT 1",[h,fingerprint,parent.id,parent.root_id||parent.id]))[0];
-   if(cached){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
+   if(cached){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(await withUpload(cached))});}
   }
 
   const cvFingerprint=assessmentFingerprint(cvText,profile,{skipped:true});let prepared=null;
@@ -45,7 +48,7 @@ export default async function handler(req,res){
   // Restrict reuse to this browser owner and first assessments, never other accounts or rechecks.
   if(!parent){
    const cached=(await sql().query("SELECT id,input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'fingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,fingerprint]))[0];
-   if(cached&&Array.isArray(cached.result.weakLines)){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);if(req.body.warmup===true)return res.json({success:true,prepared:true});if(cached.input.backgroundPreparation===true)await sql().query("UPDATE desk_assessments SET input=input-'backgroundPreparation' WHERE id=$1 AND owner_hash=$2",[cached.id,h]);if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(cached)});}
+   if(cached&&Array.isArray(cached.result.weakLines)){cached.result=await stableScoreCache.freeze(cached.result,cvText,questionsForRoute(profile.targetSector).id,req.body.answers,quiz);if(req.body.warmup===true)return res.json({success:true,prepared:true});if(cached.input.backgroundPreparation===true)await sql().query("UPDATE desk_assessments SET input=input-'backgroundPreparation' WHERE id=$1 AND owner_hash=$2",[cached.id,h]);if(signedAccount)await linkAssessment(signedAccount.id,cached.id);return res.json({success:true,id:cached.id,cached:true,next:await nextFor(cached.id),entry:assessmentEntry(await withUpload(cached))});}
    const ready=(await sql().query("SELECT input,result FROM desk_assessments WHERE owner_hash=$1 AND input->>'cvFingerprint'=$2 AND root_id IS NULL ORDER BY created_at DESC LIMIT 1",[h,cvFingerprint]))[0];
    prepared=preparedAssessment(ready,cvText,profile,ats,quiz,cvFingerprint)||await stableScoreCache.read(cvText,questionsForRoute(profile.targetSector).id,ats,quiz);
   }
@@ -72,13 +75,13 @@ export default async function handler(req,res){
   result.candidateName=profile.name;result.targetFirm=profile.targetFirm;ats.weightedContribution={component:'ats',score:ats.score,max:WEIGHTS.ats,earned:result.breakdown.ats,appliedToOverall:true};
   await assessmentProgress(req.body.progressId,h,'saving');
   const keep=req.body.keepResult||{},resultEmail=typeof keep.email==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(keep.email)&&keep.email.length<=254?keep.email.trim().toLowerCase():undefined;
-  const id=newId(),input=JSON.stringify({profile,cvText,quiz,answers:req.body.answers,fingerprint,cvFingerprint,...(req.body.warmup===true?{backgroundPreparation:true}:{}),...(validLiveSource(req.body.source)?{source:validLiveSource(req.body.source)}:{}),...(resultEmail?{resultEmail,deadlineReminderConsent:keep.deadlineConsent===true,consentRecordedAt:new Date().toISOString()}:{})});
+  const id=newId(),input=JSON.stringify({profile,cvText,cvUpload,quiz,answers:req.body.answers,fingerprint,cvFingerprint,...(req.body.warmup===true?{backgroundPreparation:true}:{}),...(validLiveSource(req.body.source)?{source:validLiveSource(req.body.source)}:{}),...(resultEmail?{resultEmail,deadlineReminderConsent:keep.deadlineConsent===true,consentRecordedAt:new Date().toISOString()}:{})});
   if(parent)result.recheckComparison=compareRecheck(parent,result);
   if(parent){const inserted=await sql().query("WITH entitled AS (UPDATE desk_assessments SET rechecks_used=rechecks_used+1 WHERE id=$5 AND owner_hash=$2 AND (paid_at>now()-interval '365 days' OR $6::boolean) AND rechecks_used<12 RETURNING id) INSERT INTO desk_assessments(id,owner_hash,input,result,root_id) SELECT $1,$2,$3::jsonb,$4::jsonb,id FROM entitled RETURNING id",[id,h,input,JSON.stringify(result),parent.id,parentMembership]);if(!inserted.length)throw new Error('Recheck unavailable');}
   else await sql().query('INSERT INTO desk_assessments(id,owner_hash,input,result) VALUES($1,$2,$3::jsonb,$4::jsonb)',[id,h,input,JSON.stringify(result)]);
   if(req.body.warmup===true)return res.json({success:true,prepared:true});
   if(signedAccount)await linkAssessment(signedAccount.id,id);
   await funnelEvent(h,'assessment_completed',id).catch(()=>{});
-  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),entry:assessmentEntry({result,input:{cvText,quiz,profile}})});
+  await assessmentProgress(req.body.progressId,h,'complete');return res.json({success:true,id,next:await nextFor(id),entry:assessmentEntry({result,input:{cvText,quiz,profile,cvUpload}})});
  }catch(e){if(e?.status===400)console.error('desk assessment provider schema rejected',{message:String(e.error?.error?.message||e.message||'').slice(0,900)});return apiFailure(res,e);}
 }
